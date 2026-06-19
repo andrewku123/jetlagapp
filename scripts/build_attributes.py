@@ -9,10 +9,12 @@ import json, math, time, sys, urllib.request, urllib.parse
 SRC = 'stations.json'
 OUT = '/home/ubuntu/repos/bayarea-hideandseek/src/data/stations.json'
 
+# Coordinates of each airport's Google Maps pin/icon (the point the official
+# game rules measure from), per andrewku.
 AIRPORTS = {
-    'SFO': (37.6213, -122.3790),
-    'OAK': (37.7126, -122.2197),
-    'SJC': (37.3639, -121.9289),
+    'SFO': (37.619083, -122.381597),
+    'OAK': (37.719016, -122.219595),
+    'SJC': (37.363510, -121.928648),
 }
 
 def hav(a, b):

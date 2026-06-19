@@ -244,17 +244,28 @@ def build_line(rel_ways_list):
     cover ground the base doesn't (branches/extensions like eBART). Finally
     bridge so an extension joins the mainline."""
     rel_ways_list = sorted(rel_ways_list, key=lambda ws: -sum(chain_len_m(g) for g in ws))
-    chains = bridge_chains(stitch_ways(rel_ways_list[0]), BRIDGE_TOL_M)
+    # Start from the most-complete relation's single longest continuous chain.
+    # Add that relation's OTHER pieces only where they reach ground the mainline
+    # doesn't (`_covered` skip). A line's relation often carries the running track
+    # AND a parallel string of short stop/platform ways on the same alignment; if
+    # we bridged those in, we'd draw a second straight-chord copy that cuts across
+    # blocks instead of following the track (the F's Embarcadero "straight line"
+    # bug). Dropping the covered pieces keeps only the real, road-following track.
+    base = sorted(stitch_ways(rel_ways_list[0]), key=chain_len_m, reverse=True)
+    chains = [base[0]]
+    for ch in base[1:]:
+        if not _covered(ch, chains):
+            chains.append(ch)
+    # Add genuine branches/extensions from the other relations (other direction,
+    # short-turns, eBART) — again only where they aren't already drawn.
     for ways in rel_ways_list[1:]:
         for ch in bridge_chains(stitch_ways(ways), BRIDGE_TOL_M):
             if chain_len_m(ch) >= STRAY_MIN_M and not _covered(ch, chains):
                 chains.append(ch)
+    # Close genuine breaks (a dropped connecting way). Drop strays BEFORE the
+    # generous same-line bridge so they can't daisy-chain into surviving junk;
+    # the larger tolerance then only joins real same-line pieces.
     chains = bridge_chains(chains, BRIDGE_TOL_M)
-    # Drop small stray fragments (crossovers, platform/yard tracks) BEFORE the
-    # generous same-line bridge, so they can't be daisy-chained into surviving
-    # junk. Then bridge the remaining real pieces over larger gaps — they all
-    # belong to this one line, so closing a break (e.g. the F's Market segments)
-    # is safe.
     real = [c for c in chains if chain_len_m(c) >= STRAY_MIN_M]
     return bridge_chains(real, LINE_BRIDGE_TOL_M)
 

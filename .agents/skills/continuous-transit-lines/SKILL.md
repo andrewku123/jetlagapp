@@ -34,15 +34,23 @@ extensions like eBART). Each single relation is a **linear, single-direction**
 path whose member ways are listed in order and share end nodes. `build_line()`
 assembles all of a line's relations into continuous chains:
 
-1. **Group relations by `(system, color)`.** Start from the **most-complete
-   relation** (largest total way length). Using one direction's relation as the
-   base — instead of unioning every way of the line — avoids the classic failure
-   where stitching NB + SB tracks produces a self-doubling zigzag "blob".
+1. **Group relations by `(system, color)`.** Start from the **single longest
+   continuous chain** of the most-complete relation (largest total way length).
+   Using one direction's relation as the base — instead of unioning every way of
+   the line — avoids the classic failure where stitching NB + SB tracks produces
+   a self-doubling zigzag "blob". **Take only its longest stitched chain, and add
+   that relation's other pieces only where they reach uncovered ground**
+   (`_covered()` skip). A single relation often carries the running track AND a
+   parallel string of short stop/platform ways on the *same* alignment; if those
+   get bridged in, you draw a **second straight-chord copy that cuts across blocks
+   instead of following the track** — this was the F's "two straight lines near
+   the Ferry Building" bug. Dropping the covered pieces leaves only real,
+   road-following track.
    Then **augment**: for each other relation, add its chains only where they
-   *don't* already overlap the base (`_covered()` samples the candidate and skips
-   it if ≥60% of points lie within `COVER_TOL_M`≈140 m of an existing chain).
-   This adds genuine **extensions/branches** (eBART onto Yellow) without
-   re-drawing the opposite direction as a parallel double.
+   *don't* already overlap (`_covered()` samples the candidate and skips it if
+   ≥60% of points lie within `COVER_TOL_M`≈140 m of an existing chain). This adds
+   genuine **extensions/branches** (eBART onto Yellow) without re-drawing the
+   opposite direction as a parallel double.
 2. **`stitch_ways(ways)`** — concatenate ways that meet end-to-end (within
    `STITCH_TOL_M`, currently 25 m, which also bridges the tiny gaps OSM leaves
    between consecutive ways). At a junction where more than one way meets the
@@ -66,9 +74,9 @@ assembles all of a line's relations into continuous chains:
    *without* the over-raise problem below (small strays are already gone, so they
    can't be daisy-chained into surviving junk).
 
-Result for the Bay Area: ~25 features, one continuous line each, plus a few
-genuine branch stubs (Oakland BART wye, downtown San Jose VTA loop, the F-line
-wharf segment).
+Result for the Bay Area: ~18 features, one continuous line each (plus the
+explicitly-added OAK Silver connector), with the redundant stop-fragment doubles
+removed.
 
 ## Tuning the constants
 - `STITCH_TOL_M` (25 m): endpoint join tolerance. Raise if a line is fragmented
@@ -105,7 +113,7 @@ To re-tune, sweep values and print the resulting feature count + the small
   line "blob".
 
 ## Verify
-1. `python3 scripts/fetch_transit_lines.py` — expect "features: ~25".
+1. `python3 scripts/fetch_transit_lines.py` — expect "features: ~18".
 2. Sanity-check in Python: each `(system, color)` should be 1 chain (a few lines
    legitimately 2–4 because of real branches); Caltrain should be a single chain.
 3. `npm run lint && npx tsc -b --noEmit && npm test && npm run build`.
