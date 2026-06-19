@@ -1,0 +1,151 @@
+:root {
+  --bg: #0f1216;
+  --panel: #171c22;
+  --panel2: #1f262e;
+  --line: #2b333d;
+  --text: #e6eaef;
+  --muted: #93a0ad;
+  --accent: #2f81f7;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); }
+
+.app { display: flex; flex-direction: column; height: 100vh; }
+
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.brand { font-weight: 700; font-size: 16px; }
+.counts { font-size: 14px; color: var(--muted); }
+.counts strong { color: var(--text); font-size: 18px; }
+.toggles { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.chk { font-size: 13px; color: var(--muted); display: flex; gap: 5px; align-items: center; }
+
+.body { flex: 1; display: flex; min-height: 0; }
+.mapwrap { flex: 1; min-width: 0; }
+.map { width: 100%; height: 100%; }
+
+.sidebar { width: 360px; background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.tabs { display: flex; border-bottom: 1px solid var(--line); }
+.tabs button { flex: 1; padding: 10px 4px; background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 12px; }
+.tabs button.on { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.panel { padding: 12px; overflow-y: auto; }
+
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { background: var(--panel2); color: var(--muted); border: 0; padding: 6px 10px; cursor: pointer; font-size: 13px; }
+.seg button.on { background: var(--accent); color: #fff; }
+
+button { font: inherit; }
+.toggles button, .qactions button, .qform button { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; width: 100%; margin-top: 10px; padding: 10px; font-weight: 600; }
+
+.qform .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+.qform label { width: 96px; font-size: 12px; color: var(--muted); flex: none; }
+.qform select, .qform input { flex: 1; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px; }
+.qform .coord { flex: 1; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.blurb { font-size: 12px; color: var(--muted); margin: 4px 0 6px; }
+.blurb .cards { color: var(--accent); }
+.hint { font-size: 12px; color: var(--muted); }
+
+.qlist, .slist { list-style: none; margin: 0; padding: 0; }
+.qlist li { border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+.qlist li.off { opacity: 0.45; }
+.qtext { font-size: 13px; }
+.qnote { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.tag { background: #463a10; color: #f5d76e; font-size: 10px; padding: 1px 5px; border-radius: 4px; margin-left: 6px; }
+.qactions { display: flex; gap: 6px; margin-top: 6px; }
+.qactions button { font-size: 12px; padding: 4px 8px; }
+
+.slist li { display: flex; align-items: center; gap: 7px; padding: 5px 2px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.slist .sname { flex: 1; }
+.slist .ssys { color: var(--muted); font-size: 11px; }
+.slist .star { background: none; border: 0; color: #444; cursor: pointer; font-size: 15px; padding: 0; }
+.slist .star.on { color: #f5b301; }
+.slist .x { background: none; border: 0; color: var(--muted); cursor: pointer; }
+.slist .x:hover { color: #ff6b6b; }
+.dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: none; }
+
+.legend h3 { margin: 6px 0; font-size: 13px; }
+.legrow { display: flex; align-items: center; gap: 8px; font-size: 13px; margin: 4px 0; }
+
+.popup { font-size: 13px; }
+.popup .muted { color: #666; font-size: 12px; }
+.popup button { margin-top: 6px; }
+.muted { color: var(--muted); }
+
+.seeker-pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.4); }
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #fff; color: #111; }
+
+/* desktop: floating sheet controls are hidden */
+.sheet-toggle, .sheet-grab { display: none; }
+
+/* iOS safe-area padding for the notch / home indicator */
+.topbar {
+  padding-top: calc(8px + env(safe-area-inset-top));
+  padding-left: calc(14px + env(safe-area-inset-left));
+  padding-right: calc(14px + env(safe-area-inset-right));
+}
+
+@media (max-width: 760px) {
+  .app { height: 100dvh; }
+  .brand { font-size: 15px; }
+  .counts strong { font-size: 17px; }
+
+  /* map fills the screen; the sidebar becomes a slide-up bottom sheet */
+  .body { position: relative; display: block; }
+  .mapwrap { position: absolute; inset: 0; height: 100%; }
+
+  .sidebar {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 72dvh;
+    border-left: 0; border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,.45);
+    transform: translateY(calc(100% - 0px));
+    transition: transform .28s ease;
+    z-index: 1200;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sheet-open .sidebar { transform: translateY(0); }
+
+  /* drag handle at the top of the sheet */
+  .sheet-grab {
+    display: block; width: 100%; height: 22px; background: transparent;
+    border: 0; cursor: pointer; position: relative;
+  }
+  .sheet-grab::before {
+    content: ''; position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 4px; border-radius: 2px; background: var(--line);
+  }
+
+  /* floating button to open/close the sheet */
+  .sheet-toggle {
+    display: block; position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 1100;
+    background: var(--accent); color: #fff; border: 0; border-radius: 999px;
+    padding: 11px 20px; font-size: 15px; font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0,0,0,.45);
+  }
+  .sheet-open .sheet-toggle {
+    bottom: calc(72dvh + 10px); background: var(--panel2);
+  }
+
+  .panel { flex: 1; min-height: 0; -webkit-overflow-scrolling: touch; padding-bottom: 24px; }
+
+  /* larger touch targets on phones */
+  .tabs button { padding: 13px 4px; font-size: 13px; }
+  .seg button { padding: 9px 14px; font-size: 15px; }
+  .qform select, .qform input { padding: 11px; font-size: 16px; } /* 16px avoids iOS zoom */
+  .qform label { width: 86px; }
+  button.primary { padding: 13px; }
+  .toggles button, .qactions button { padding: 9px 12px; }
+  .slist li { padding: 10px 2px; }
+  .slist .star { font-size: 20px; }
+  .leaflet-touch .leaflet-bar a { width: 34px; height: 34px; line-height: 34px; }
+}

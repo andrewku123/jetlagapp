@@ -1,0 +1,259 @@
+import { useEffect, useMemo, useState } from 'react'
+import MapView from './components/MapView'
+import QuestionForm from './components/QuestionForm'
+import { applyFilters } from './lib/elimination'
+import { describeRecord } from './lib/describe'
+import { loadGame, saveGame, emptyGame } from './lib/storage'
+import { SYSTEM_COLORS, SYSTEM_ORDER } from './lib/style'
+import type { DayType, GameState, LatLng, QuestionRecord, Station } from './types'
+import rawStations from './data/stations.json'
+
+const STATIONS = rawStations as unknown as Station[]
+
+type Tab = 'ask' | 'history' | 'suspects' | 'legend'
+
+export default function App() {
+  const [game, setGame] = useState<GameState>(() => loadGame())
+  const [lastClick, setLastClick] = useState<LatLng | null>(null)
+  const [tab, setTab] = useState<Tab>('ask')
+  const [showEliminated, setShowEliminated] = useState(false)
+  const [sheetOpen, setSheetOpen] = useState(false)
+
+  useEffect(() => saveGame(game), [game])
+
+  const update = (patch: Partial<GameState>) => setGame((g) => ({ ...g, ...patch }))
+
+  const base = useMemo(
+    () =>
+      STATIONS.filter((s) => {
+        const sv = s.service[game.dayType]
+        return sv.served && (!game.hourlyOnly || sv.hourly)
+      }),
+    [game.dayType, game.hourlyOnly],
+  )
+
+  const { remaining, eliminated } = useMemo(() => {
+    const res = applyFilters(base, game.questions)
+    const manual = new Set(game.manualEliminated)
+    const remain = res.remaining.filter((s) => !manual.has(s.id))
+    const remainIds = new Set(remain.map((s) => s.id))
+    const elim = base.filter((s) => !remainIds.has(s.id))
+    return { remaining: remain, eliminated: elim }
+  }, [base, game.questions, game.manualEliminated])
+
+  const counties = useMemo(
+    () => uniqSorted(STATIONS.map((s) => s.county).filter(Boolean) as string[]),
+    [],
+  )
+  const cities = useMemo(
+    () => uniqSorted(STATIONS.map((s) => s.city).filter(Boolean) as string[]),
+    [],
+  )
+  const lines = useMemo(
+    () => uniqSorted(STATIONS.flatMap((s) => s.lines)),
+    [],
+  )
+  const airports = useMemo(
+    () => uniqSorted(STATIONS.map((s) => s.nearestAirport)),
+    [],
+  )
+
+  const starredSet = useMemo(() => new Set(game.starred), [game.starred])
+
+  const pickedPoints = useMemo(() => {
+    const pts: { label: string; point: LatLng; color: string }[] = []
+    for (const r of game.questions) {
+      if (!r.active) continue
+      if (r.kind === 'thermometer') {
+        pts.push({ label: 'Thermo start', point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#2563eb' })
+        pts.push({ label: 'Thermo end', point: { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }, color: '#7c3aed' })
+      }
+      if (r.kind === 'measure-airport') {
+        pts.push({ label: 'Measure (airport)', point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
+      }
+    }
+    if (lastClick) pts.push({ label: 'Last click', point: lastClick, color: '#111' })
+    return pts
+  }, [game.questions, lastClick])
+
+  function addQuestion(r: QuestionRecord) {
+    update({ questions: [r, ...game.questions] })
+    setTab('history')
+    setSheetOpen(true)
+  }
+  function toggleActive(id: string) {
+    update({ questions: game.questions.map((q) => (q.id === id ? { ...q, active: !q.active } : q)) })
+  }
+  function deleteQuestion(id: string) {
+    update({ questions: game.questions.filter((q) => q.id !== id) })
+  }
+  function toggleStar(id: string) {
+    update({ starred: starredSet.has(id) ? game.starred.filter((x) => x !== id) : [...game.starred, id] })
+  }
+  function toggleManual(id: string) {
+    const set = new Set(game.manualEliminated)
+    if (set.has(id)) set.delete(id)
+    else set.add(id)
+    update({ manualEliminated: [...set] })
+  }
+  function resetGame() {
+    if (confirm('Clear all questions, eliminations and notes?')) setGame({ ...emptyGame })
+  }
+
+  return (
+    <div className="app">
+      <header className="topbar">
+        <div className="brand">🕵️ Bay Area Hide &amp; Seek</div>
+        <div className="counts">
+          <strong>{remaining.length}</strong> of {base.length} possible
+        </div>
+        <div className="toggles">
+          <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
+          <label className="chk">
+            <input
+              type="checkbox"
+              checked={game.hourlyOnly}
+              onChange={(e) => update({ hourlyOnly: e.target.checked })}
+            />
+            ≥hourly only
+          </label>
+          <label className="chk">
+            <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
+            show eliminated
+          </label>
+          <button onClick={resetGame}>Reset</button>
+        </div>
+      </header>
+
+      <div className={`body${sheetOpen ? ' sheet-open' : ''}`}>
+        <div className="mapwrap">
+          <MapView
+            remaining={remaining}
+            eliminated={eliminated}
+            showEliminated={showEliminated}
+            starred={starredSet}
+            onPickLocation={setLastClick}
+            onStationClick={(st) => {
+              setTab('suspects')
+              toggleStar(st.id)
+              setSheetOpen(true)
+            }}
+            records={game.questions}
+            pickedPoints={pickedPoints}
+          />
+        </div>
+
+        <button
+          className="sheet-toggle"
+          onClick={() => setSheetOpen((v) => !v)}
+          aria-label={sheetOpen ? 'Hide controls' : 'Show controls'}
+        >
+          {sheetOpen ? '▾ Map' : `▴ Controls · ${remaining.length}`}
+        </button>
+
+        <aside className="sidebar">
+          <button className="sheet-grab" onClick={() => setSheetOpen((v) => !v)} aria-label="Toggle controls" />
+          <nav className="tabs">
+            {(['ask', 'history', 'suspects', 'legend'] as Tab[]).map((t) => (
+              <button key={t} className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>
+                {t === 'ask' ? 'Ask' : t === 'history' ? `History (${game.questions.length})` : t === 'suspects' ? `Suspects (${remaining.length})` : 'Legend'}
+              </button>
+            ))}
+          </nav>
+
+          {tab === 'ask' && (
+            <div className="panel">
+              <p className="hint">Click the map to drop a point, then use it as a seeker location.</p>
+              <QuestionForm
+                lastClick={lastClick}
+                counties={counties}
+                cities={cities}
+                lines={lines}
+                airports={airports}
+                onSubmit={addQuestion}
+              />
+            </div>
+          )}
+
+          {tab === 'history' && (
+            <div className="panel">
+              {game.questions.length === 0 && <p className="hint">No questions logged yet.</p>}
+              <ul className="qlist">
+                {game.questions.map((q) => (
+                  <li key={q.id} className={q.active ? '' : 'off'}>
+                    <div className="qtext">
+                      {describeRecord(q)}
+                      {!q.eliminates && <span className="tag">info</span>}
+                    </div>
+                    {q.note && <div className="qnote">{q.note}</div>}
+                    <div className="qactions">
+                      {q.eliminates && (
+                        <button onClick={() => toggleActive(q.id)}>{q.active ? 'Disable' : 'Enable'}</button>
+                      )}
+                      <button onClick={() => deleteQuestion(q.id)}>Delete</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {tab === 'suspects' && (
+            <div className="panel">
+              <p className="hint">{remaining.length} stations still possible. Click ★ to flag, ✕ to eliminate by hand.</p>
+              <ul className="slist">
+                {remaining
+                  .slice()
+                  .sort((a, b) => Number(starredSet.has(b.id)) - Number(starredSet.has(a.id)) || a.name.localeCompare(b.name))
+                  .map((s) => (
+                    <li key={s.id}>
+                      <button className={'star ' + (starredSet.has(s.id) ? 'on' : '')} onClick={() => toggleStar(s.id)}>★</button>
+                      <span className="dot" style={{ background: SYSTEM_COLORS[s.systems[0]] ?? '#444' }} />
+                      <span className="sname">{s.name}</span>
+                      <span className="ssys">{s.systems.join('·')}</span>
+                      <button className="x" onClick={() => toggleManual(s.id)} title="eliminate">✕</button>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
+
+          {tab === 'legend' && (
+            <div className="panel legend">
+              <h3>Systems</h3>
+              {SYSTEM_ORDER.map((sys) => (
+                <div key={sys} className="legrow">
+                  <span className="dot" style={{ background: SYSTEM_COLORS[sys] }} />
+                  {sys} ({STATIONS.filter((s) => s.systems.includes(sys)).length})
+                </div>
+              ))}
+              <p className="hint">
+                Total dataset: {STATIONS.length} stations. Weekday eligible:{' '}
+                {STATIONS.filter((s) => s.service.wd.served && s.service.wd.hourly).length}; weekend:{' '}
+                {STATIONS.filter((s) => s.service.we.served && s.service.we.hourly).length}.
+              </p>
+              <p className="hint">
+                Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name length)
+                and Measuring (airport / sea level). POI-based questions (parks, hospitals, museums, etc.) and
+                Tentacles are coming next.
+              </p>
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  )
+}
+
+function DayToggle({ value, onChange }: { value: DayType; onChange: (d: DayType) => void }) {
+  return (
+    <div className="seg">
+      <button className={value === 'wd' ? 'on' : ''} onClick={() => onChange('wd')}>Weekday</button>
+      <button className={value === 'we' ? 'on' : ''} onClick={() => onChange('we')}>Weekend</button>
+    </div>
+  )
+}
+
+function uniqSorted(arr: string[]): string[] {
+  return [...new Set(arr)].sort((a, b) => a.localeCompare(b))
+}

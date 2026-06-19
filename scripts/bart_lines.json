@@ -1,0 +1,334 @@
+{
+ "Millbrae": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "San Francisco International Airport": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "San Bruno": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "South San Francisco": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Colma": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Daly City": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Balboa Park": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Glen Park": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "24th Street / Mission": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "16th Street / Mission": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Civic Center / UN Plaza": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Powell Street": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Montgomery Street": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Embarcadero": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "West Oakland": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "12th Street / Oakland City Center": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "19th Street Oakland": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "MacArthur": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Ashby": [
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Downtown Berkeley": [
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "North Berkeley": [
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "El Cerrito Plaza": [
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "El Cerrito Del Norte": [
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Richmond": [
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Millbrae/SF Int'l Airport SFO to Richmond",
+  "BART Richmond to Berryessa/North San Jose",
+  "BART Richmond to SF Int'l Airport SFO/Millbrae"
+ ],
+ "Lake Merritt": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Fruitvale": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Coliseum": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Coliseum to Oakland Int'l Airport OAK",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Oakland Int'l Airport OAK to Coliseum",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "San Leandro": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Bay Fair": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Castro Valley": [
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City"
+ ],
+ "West Dublin / Pleasanton": [
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City"
+ ],
+ "Dublin / Pleasanton": [
+  "BART Daly City to Dublin/Pleasanton",
+  "BART Dublin/Pleasanton to Daly City"
+ ],
+ "Hayward": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "South Hayward": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Union City": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Fremont": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Warm Springs / South Fremont": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Milpitas": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Millbrae/SF Int'l SFO to Antioch",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Berryessa / North San Jose": [
+  "BART Berryessa/North San Jose to Daly City",
+  "BART Berryessa/North San Jose to Richmond",
+  "BART Daly City to Berryessa/North San Jose",
+  "BART Richmond to Berryessa/North San Jose"
+ ],
+ "Rockridge": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Orinda": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Lafayette": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Walnut Creek": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Pleasant Hill / Contra Costa Centre": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Concord": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "North Concord / Martinez": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Pittsburg / Bay Point": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Pittsburg Center": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Antioch": [
+  "BART Antioch to SF Int'l Airport SFO/Millbrae",
+  "BART Millbrae/SF Int'l SFO to Antioch"
+ ],
+ "Oakland International Airport": [
+  "BART Coliseum to Oakland Int'l Airport OAK",
+  "BART Oakland Int'l Airport OAK to Coliseum"
+ ]
+}
