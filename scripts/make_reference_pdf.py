@@ -38,7 +38,7 @@ nl_rows = [(L, nl.get(L, 0)) for L in range(nl_min, nl_max + 1)]
 # ---------- POI curation ----------
 peaks = []  # (name, ele_ft)
 water = {"bay": set(), "lake": set(), "reservoir": set(), "lagoon": set()}
-golf, theme, hospital = set(), set(), set()
+golf, theme, hospital, zoos = set(), set(), set(), set()
 for el in POI["elements"]:
     t = el.get("tags", {}); n = t.get("name")
     if not n:
@@ -56,6 +56,8 @@ for el in POI["elements"]:
         theme.add(n)
     elif t.get("amenity") == "hospital":
         hospital.add(n)
+    elif t.get("tourism") == "zoo":
+        zoos.add(n)
     elif t.get("natural") == "bay":
         water["bay"].add(n)
     elif t.get("water") in ("lake", "reservoir", "lagoon") or t.get("natural") == "water":
@@ -86,6 +88,7 @@ bodies = sorted(bodies)
 golf = sorted(golf)
 theme = sorted(theme)
 hospital = sorted(hospital)
+zoos = sorted(zoos)
 
 AIRPORTS = [
     ("SFO \u2014 San Francisco Intl", "37.619083, -122.381597"),
@@ -94,7 +97,7 @@ AIRPORTS = [
 ]
 
 # ---------- SVG histograms ----------
-def svg_vertical(counts, labels, w=520, h=230, pad_l=28, pad_b=46, pad_t=14):
+def svg_vertical(counts, labels, caption, color="#2563eb", w=520, h=210, pad_l=24, pad_b=42, pad_t=14):
     n = len(counts); mx = max(counts) or 1
     plot_w = w - pad_l - 8; plot_h = h - pad_b - pad_t
     bw = plot_w / n
@@ -103,32 +106,36 @@ def svg_vertical(counts, labels, w=520, h=230, pad_l=28, pad_b=46, pad_t=14):
         bh = plot_h * c / mx
         x = pad_l + i * bw + bw * 0.12
         y = pad_t + (plot_h - bh)
-        bars.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw*0.76:.1f}" height="{bh:.1f}" fill="#c2410c"/>')
+        bars.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw*0.76:.1f}" height="{bh:.1f}" fill="{color}"/>')
         if c:
             bars.append(f'<text x="{x+bw*0.38:.1f}" y="{y-2:.1f}" font-size="8" text-anchor="middle" fill="#444">{c}</text>')
         bars.append(f'<text x="{x+bw*0.38:.1f}" y="{h-pad_b+12:.1f}" font-size="7.5" text-anchor="end" fill="#555" transform="rotate(-45 {x+bw*0.38:.1f} {h-pad_b+12:.1f})">{labels[i]}</text>')
     axis = (f'<line x1="{pad_l}" y1="{pad_t}" x2="{pad_l}" y2="{pad_t+plot_h:.1f}" stroke="#999"/>'
             f'<line x1="{pad_l}" y1="{pad_t+plot_h:.1f}" x2="{w-8}" y2="{pad_t+plot_h:.1f}" stroke="#999"/>')
-    cap = f'<text x="{w/2:.0f}" y="{h-6}" font-size="9" text-anchor="middle" fill="#333">elevation (ft above sea level)</text>'
+    cap = f'<text x="{w/2:.0f}" y="{h-4}" font-size="9" text-anchor="middle" fill="#333">{caption}</text>'
     return f'<svg viewBox="0 0 {w} {h}" width="100%" >{axis}{"".join(bars)}{cap}</svg>'
 
-def svg_horizontal(rows, w=520, rh=11, pad_l=24, pad_r=26, pad_t=6):
+def svg_horizontal(rows, caption, color="#c2410c", w=520, rh=12, pad_l=44, pad_r=26, pad_t=6):
     mx = max(c for _, c in rows) or 1
-    h = pad_t * 2 + rh * len(rows) + 14
+    h = pad_t * 2 + rh * len(rows) + 16
     plot_w = w - pad_l - pad_r
     out = []
     for i, (L, c) in enumerate(rows):
         y = pad_t + i * rh
         bw = plot_w * c / mx
-        out.append(f'<text x="{pad_l-3}" y="{y+rh-2:.1f}" font-size="8" text-anchor="end" fill="#555">{L}</text>')
-        out.append(f'<rect x="{pad_l}" y="{y+1:.1f}" width="{bw:.1f}" height="{rh-3:.1f}" fill="#2563eb"/>')
+        out.append(f'<text x="{pad_l-3}" y="{y+rh-2:.1f}" font-size="7.5" text-anchor="end" fill="#555">{L}</text>')
+        out.append(f'<rect x="{pad_l}" y="{y+1:.1f}" width="{bw:.1f}" height="{rh-3:.1f}" fill="{color}"/>')
         if c:
             out.append(f'<text x="{pad_l+bw+3:.1f}" y="{y+rh-2:.1f}" font-size="7.5" fill="#444">{c}</text>')
-    out.append(f'<text x="{pad_l+plot_w/2:.0f}" y="{h-2}" font-size="9" text-anchor="middle" fill="#333">station-name length (characters)</text>')
+    out.append(f'<text x="{pad_l+plot_w/2:.0f}" y="{h-3}" font-size="9" text-anchor="middle" fill="#333">{caption}</text>')
     return f'<svg viewBox="0 0 {w} {h}" width="100%">{"".join(out)}</svg>'
 
-alt_svg = svg_vertical(alt_counts, alt_labels)
-nl_svg = svg_horizontal(nl_rows)
+# orientation reversed per request: altitude is now horizontal, name length vertical
+alt_rows = list(zip(alt_labels, alt_counts))
+alt_svg = svg_horizontal(alt_rows, "stations  (bars = elevation band, ft)", color="#c2410c")
+nl_counts = [c for _, c in nl_rows]
+nl_lbls = [str(L) for L, _ in nl_rows]
+nl_svg = svg_vertical(nl_counts, nl_lbls, "station-name length (characters)", color="#2563eb")
 
 # ---------- HTML ----------
 def ul(items, cls="cols"):
@@ -151,6 +158,7 @@ MEASURING = [
     ("A commercial airport", True), ("A high-speed train line", False),
     ("A rail station", False), ("An international border", False),
     ("A 1st admin. div. border (state)", False), ("A 2nd admin. div. border (county)", False),
+    ("A 3rd admin. div. border (city)", False), ("A 4th admin. div. border (neighborhood)", False),
     ("Sea level (altitude)", True), ("A body of water", False),
     ("A coastline", False), ("A mountain", False), ("A park", False),
     ("An amusement park", False), ("A zoo", False), ("An aquarium", False),
@@ -160,15 +168,23 @@ MEASURING = [
 RADAR = ["\u00bc", "\u00bd", "1", "3", "5", "10", "25", "50", "100"]
 THERMO = ["\u00bd", "3", "10"]
 TENTACLES = ["Museums", "Libraries", "Movie theaters", "Hospitals"]
-# photo: (label, endgame_blocked?) for Medium = All-Games + Medium/Large set
+# photo (Medium = All-Games + Medium/Large set): (title, requirement, endgame_blocked?)
+# requirements are verbatim from the official photo cards.
 PHOTO = [
-    ("A tree", False), ("The sky", False), ("You", False),
-    ("The widest street", False), ("The tallest structure in your sightline", False),
-    ("Any building visible from your station", True),
-    ("The tallest building visible from your station", True),
-    ("Trace the nearest street / path", False), ("Two buildings", False),
-    ("A restaurant interior", True), ("A train platform", True),
-    ("A park", True), ("A grocery store aisle", True), ("A place of worship", True),
+    ("Tree", "Must include the entire tree.", False),
+    ("The sky", "Place phone on ground, shoot directly up, no zoom.", False),
+    ("You", "Selfie mode, perpendicular to ground, arm extended, default lens, no zoom.", False),
+    ("Widest street", "Must include both sides of the street; background not required.", False),
+    ("Tallest structure in your sightline", "Tallest building from your perspective (not objectively tallest). Include top and both sides; top in the top 1/3 of the frame.", False),
+    ("Any building visible from transit station", "Stand directly outside a station entrance (pick one if several). Include roof and both sides; top of building in the top 1/3 of the frame.", True),
+    ("Tallest building visible from transit station", "As above, standing directly outside a station entrance. The station itself can\u2019t count unless unrelated (e.g. MetLife building atop Grand Central).", True),
+    ("Trace nearest street / path", "Street/path must be visible on a mapping app; trace intersection to intersection (photo-editing app or trace on paper).", False),
+    ("2 buildings", "Bottom up to four stories.", False),
+    ("Restaurant interior", "No zoom. Take the picture through the window from outside.", True),
+    ("Train platform", "5'\u00d75' section with 3 distinct elements.", True),
+    ("Park", "No zoom, perpendicular to ground. Must stand 5 feet from any obstruction.", True),
+    ("Grocery store aisle", "No zoom. Stand at the end of the aisle, shoot directly down.", True),
+    ("Place of worship", "5'\u00d75' section with 3 distinct elements (litmus test: could someone match it by visiting the spot?).", True),
 ]
 
 def boxes(items):
@@ -180,10 +196,12 @@ def boxes(items):
 
 def photo_boxes(items):
     out = []
-    for label, eg in items:
+    for title, req, eg in items:
         mark = ' <span class="egm">&dagger;</span>' if eg else ''
-        out.append(f'<li><span class="cb"></span>{html.escape(label)}{mark}</li>')
-    return "<ul class=\"chk\">" + "".join(out) + "</ul>"
+        out.append(f'<li><span class="cb"></span><span class="pt">'
+                   f'<b>{html.escape(title)}</b>{mark}<br>'
+                   f'<span class="pd">{html.escape(req)}</span></span></li>')
+    return "<ul class=\"chk photo\">" + "".join(out) + "</ul>"
 
 def scale(items, unit="mi"):
     cells = "".join(
@@ -199,7 +217,7 @@ META_FAIL_PHOTO = ('<p class="meta"><b>Answer window</b> &le; 10 min (Medium) &m
                    'fail to answer in time &rarr; hider\u2019s clock pauses until answered '
                    '&amp; they draw <b>no</b> card.</p>')
 
-deck_cards = f"""
+CARD_MATCHING = f"""
 <div class="card">
   <h2>1 &middot; Matching <span class="dk">draw 3, keep 1</span></h2>
   <p class="prompt">"Is your nearest ___ the same as mine?" &rarr; <b>Yes / No</b></p>
@@ -207,7 +225,8 @@ deck_cards = f"""
   <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {boxes(MATCHING)}
-</div>
+</div>"""
+CARD_MEASURING = f"""
 <div class="card">
   <h2>2 &middot; Measuring <span class="dk">draw 3, keep 1</span></h2>
   <p class="prompt">"Compared to me, are you closer to or further from ___?" &rarr; <b>Closer / Further</b></p>
@@ -215,7 +234,8 @@ deck_cards = f"""
   <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {boxes(MEASURING)}
-</div>
+</div>"""
+CARD_RADAR = f"""
 <div class="card slim">
   <h2>3 &middot; Radar <span class="dk">draw 2, keep 1</span></h2>
   <p class="prompt">"Are you within ___ of me?" &rarr; <b>Yes / No</b> &middot; Yes = keep inside circle, No = keep outside. <b>Custom</b> radius allowed.</p>
@@ -224,7 +244,8 @@ deck_cards = f"""
   {META_FAIL}
   {scale(RADAR)}
   <p class="app ok inline">app: radar + custom radius, eliminated-area shading</p>
-</div>
+</div>"""
+CARD_THERMO = f"""
 <div class="card slim">
   <h2>4 &middot; Thermometer <span class="dk">draw 2, keep 1</span></h2>
   <p class="prompt">"I've just traveled (at least) ___ &mdash; am I hotter or colder?" hotter = closer, colder = further; eliminates the colder half (perpendicular bisector).</p>
@@ -233,7 +254,8 @@ deck_cards = f"""
   {META_FAIL}
   {scale(THERMO)}
   <p class="app ok inline">app: thermometer + boundary line &amp; shading</p>
-</div>
+</div>"""
+CARD_TENTACLES = f"""
 <div class="card slim">
   <h2>5 &middot; Tentacles <span class="dk">draw 4, keep 2</span></h2>
   <p class="prompt">"Of all the ___ within 1 mi of you, which are you closest to?" (Hider must also be within 1 mi of one.)</p>
@@ -242,35 +264,52 @@ deck_cards = f"""
   {META_FAIL}
   {boxes([(t, False) for t in TENTACLES])}
   <p class="app no inline">app: not implemented</p>
-</div>
+</div>"""
+CARD_PHOTO = f"""
 <div class="card">
   <h2>6 &middot; Photo <span class="dk">draw 1</span></h2>
-  <p class="prompt">Hider sends a photo of the subject (no zoom / no obscuring). Reveals surroundings without coordinates.</p>
+  <p class="prompt">Hider sends a photo meeting the stated condition (no zoom / no obscuring). Reveals surroundings without coordinates.</p>
   <p class="send"><b>Send hider:</b> &mdash; (the hider sends the photo).</p>
-  <p class="eg warn"><b>End game:</b> subjects marked <span class="egm">&dagger;</span> need the station / a specific venue &mdash; if the hider can\u2019t reach it, \u201cI cannot answer\u201d is valid and they <b>still draw a card</b>.</p>
+  <p class="eg warn"><b>End game:</b> conditions marked <span class="egm">&dagger;</span> need the station / a specific venue &mdash; if the hider can\u2019t reach it, \u201cI cannot answer\u201d is valid and they <b>still draw a card</b>.</p>
   {META_FAIL_PHOTO}
   {photo_boxes(PHOTO)}
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
-</div>
-"""
+</div>"""
 
-back = f"""
-<div class="ref">
-  <div class="rblock"><h3>Commercial airports <span class="cnt">3</span></h3>
-    <ul class="plain">{"".join(f"<li><b>{html.escape(a)}</b><br><span class=coord>{c}</span></li>" for a,c in AIRPORTS)}</ul></div>
-  <div class="rblock"><h3>Counties (in play) <span class="cnt">{len(counties)}</span></h3>{ul(counties)}</div>
-  <div class="rblock"><h3>Cities / municipalities <span class="cnt">{len(cities)}</span></h3>{ul(cities)}</div>
-  <div class="rblock"><h3>Amusement parks <span class="cnt">{len(theme)}</span></h3>{ul(theme)}</div>
-  <div class="rblock"><h3>Bodies of water <span class="cnt">{len(bodies)}</span></h3>{ul(bodies)}</div>
-  <div class="rblock"><h3>Mountains &middot; named peaks &ge; 1,500 ft <span class="cnt">{len(mountains)}</span></h3>{ul(mountains)}</div>
-  <div class="rblock"><h3>Golf courses <span class="cnt">{len(golf)}</span></h3>{ul(golf)}</div>
-  <div class="rblock"><h3>Hospitals <span class="cnt">{len(hospital)}</span></h3>{ul(hospital)}</div>
-</div>
-<div class="charts">
-  <div class="chart"><h3>Stations by altitude</h3>{alt_svg}</div>
-  <div class="chart"><h3>Stations by name length</h3>{nl_svg}</div>
-</div>
-"""
+mini_graphs = f"""
+<div class="card minis">
+  <h2>Station profiles <span class="dk">{len(ST)} stations</span></h2>
+  <div class="mini">{alt_svg}</div>
+  <div class="mini">{nl_svg}</div>
+</div>"""
+
+def rblock(title, count, body):
+    return (f'<div class="rblock"><h3>{title} <span class="cnt">{count}</span></h3>'
+            f'{body}</div>')
+
+airports_html = ('<ul class="plain air">' + "".join(
+    f'<li><span class="aname">{html.escape(a)}</span>'
+    f'<span class="coord">{c}</span></li>' for a, c in AIRPORTS) + '</ul>')
+
+ref_air = rblock("Commercial airports", 3, airports_html)
+ref_counties = rblock("Counties (in play)", len(counties), ul(counties))
+ref_zoos = rblock("Zoos", len(zoos), ul(zoos))
+ref_theme = rblock("Amusement parks", len(theme), ul(theme))
+ref_cities = rblock("Cities / municipalities", len(cities), ul(cities))
+ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
+ref_mtn = rblock("Mountains &middot; named peaks &ge; 1,500 ft", len(mountains), ul(mountains))
+ref_golf = rblock("Golf courses", len(golf), ul(golf))
+ref_hosp = rblock("Hospitals", len(hospital), ul(hospital))
+
+page1_cols = f"""
+<div class="p1">
+  <div class="col col1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{mini_graphs}</div>
+  <div class="col col2">{CARD_TENTACLES}{CARD_PHOTO}</div>
+  <div class="col col3">{ref_air}{ref_counties}{ref_zoos}{ref_theme}</div>
+</div>"""
+
+page2_ref = f"""
+<div class="ref">{ref_cities}{ref_water}{ref_mtn}{ref_golf}{ref_hosp}</div>"""
 
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8"><style>
@@ -279,8 +318,15 @@ doc = f"""<!doctype html><html><head><meta charset="utf-8"><style>
 body {{ font-family: -apple-system, Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; }}
 h1 {{ font-size:17px; margin:0 0 2px; }}
 .sub {{ font-size:9.5px; color:#666; margin:0 0 8px; }}
-.deck {{ column-count:3; column-gap:12px; }}
-.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:7px 9px; margin:0 0 9px; background:#fafafa; display:inline-block; width:100%; }}
+/* page 1: three explicit columns */
+.p1 {{ display:flex; gap:10px; align-items:flex-start; }}
+.col {{ display:flex; flex-direction:column; }}
+.col1 {{ flex:1.08; }}
+.col2 {{ flex:1.0; }}
+.col3 {{ flex:0.92; }}
+.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:6px 8px; margin:0 0 8px; background:#fafafa; width:100%; }}
+.card.minis {{ background:#fff; }}
+.mini {{ margin:4px 0 2px; }}
 .card h2 {{ font-size:11.5px; margin:0 0 4px; color:#111; }}
 .dk {{ float:right; font-size:8px; font-weight:600; background:#111; color:#fff; padding:1px 5px; border-radius:8px; }}
 .prompt {{ font-size:8.7px; margin:2px 0 3px; color:#222; }}
@@ -295,6 +341,11 @@ ul.chk {{ list-style:none; margin:3px 0 0; padding:0; columns:2; column-gap:8px;
 ul.chk li {{ font-size:8.2px; margin:1.5px 0; break-inside:avoid; display:flex; align-items:flex-start; gap:3px; }}
 .card.slim ul.chk {{ columns:1; }}
 .cb {{ display:inline-block; width:8px; height:8px; min-width:8px; border:1px solid #555; border-radius:1.5px; margin-top:1px; }}
+/* photo conditions: full requirement under each title, single column */
+ul.chk.photo {{ columns:1; }}
+ul.chk.photo li {{ margin:3px 0; }}
+.pt {{ display:block; font-size:8.2px; line-height:1.25; }}
+.pd {{ color:#444; font-size:7.6px; }}
 /* radar/thermometer scale: checkbox above number */
 .scale {{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 2px; }}
 .sc {{ display:flex; flex-direction:column; align-items:center; }}
@@ -306,13 +357,16 @@ ul.chk li {{ font-size:8.2px; margin:1.5px 0; break-inside:avoid; display:flex; 
 .app.inline {{ display:inline-block; margin:4px 0 0; }}
 .page-break {{ break-before:page; }}
 .ref {{ column-count:3; column-gap:12px; }}
-.rblock {{ break-inside:avoid; margin-bottom:9px; }}
+.rblock {{ break-inside:avoid; margin-bottom:6px; }}
 .rblock h3, .chart h3 {{ font-size:10px; margin:0 0 3px; color:#111; border-bottom:1px solid #ddd; padding-bottom:2px; }}
 .cnt {{ float:right; font-size:8px; color:#fff; background:#c2410c; padding:0 5px; border-radius:8px; }}
 ul.cols {{ columns:2; column-gap:8px; margin:0; padding-left:13px; }}
-ul.cols li {{ font-size:7.6px; margin:0.5px 0; break-inside:avoid; }}
+ul.cols li {{ font-size:7.1px; margin:0.2px 0; break-inside:avoid; }}
 ul.plain {{ list-style:none; margin:0; padding:0; }}
 ul.plain li {{ font-size:8.5px; margin:0 0 3px; }}
+/* airports: name left, coords on the right, wrapping below if tight */
+ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 6px; align-items:baseline; }}
+.aname {{ font-weight:700; font-size:8.3px; }}
 .coord {{ font-size:7.5px; color:#666; font-family:monospace; }}
 .charts {{ display:flex; gap:14px; margin-top:6px; break-inside:avoid; }}
 .chart {{ flex:1; border:1px solid #eee; border-radius:6px; padding:6px 8px; }}
@@ -320,11 +374,11 @@ footer {{ font-size:7px; color:#888; margin-top:6px; }}
 </style></head><body>
 <h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck (Medium)</h1>
 <p class="sub">Seeker asks; hider answers truthfully &amp; then draws/keeps cards. <b>Send hider</b> = the minimum you must reveal for the question to be answerable. <span class="egm">&dagger;</span> = may be impossible in the end game. "app" = the Bay Area seeker tool auto-eliminates for it.</p>
-<div class="deck">{deck_cards}</div>
+{page1_cols}
 <div class="page-break"></div>
-<h1>Bay Area play-area reference</h1>
-<p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties; histograms from the app's {len(ST)} stations.</p>
-{back}
+<h1>Bay Area play-area reference (continued)</h1>
+<p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties; airports &amp; histograms on page 1.</p>
+{page2_ref}
 <footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. Mountains limited to named summits &ge; 1,500 ft; bodies of water limited to bays/straits, lakes, lagoons &amp; named reservoirs (minor coves/sloughs/ponds omitted). POIs from OpenStreetMap.</footer>
 </body></html>"""
 
@@ -341,6 +395,6 @@ with sync_playwright() as p:
     pg.goto("file:///tmp/reference.html", wait_until="networkidle")
     pg.emulate_media(media="print")
     pg.pdf(path=OUT, format="Letter", print_background=True,
-           margin={"top": "0.4in", "bottom": "0.4in", "left": "0.4in", "right": "0.4in"})
+           margin={"top": "0.5in", "bottom": "0.5in", "left": "0.5in", "right": "0.5in"})
     pg.close()
 print("wrote", OUT, os.path.getsize(OUT), "bytes")

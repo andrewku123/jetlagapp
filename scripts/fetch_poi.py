@@ -14,6 +14,7 @@ Q = """
   nwr[natural=peak][name](area.a);
   nwr[leisure=golf_course][name](area.a);
   nwr[tourism=theme_park][name](area.a);
+  nwr[tourism=zoo][name](area.a);
   nwr[amenity=hospital][name](area.a);
   nwr[natural=water][name](area.a);
   nwr[natural=bay][name](area.a);
