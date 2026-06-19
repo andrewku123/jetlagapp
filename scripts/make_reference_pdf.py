@@ -234,7 +234,6 @@ CARD_MATCHING = f"""
   <h2>1 &middot; Matching <span class="dk">draw 3, keep 1</span></h2>
   <p class="prompt">"Is your nearest ___ the same as mine?" &rarr; <b>Yes / No</b></p>
   <p class="send"><b>Send hider:</b> your own nearest ___ (the matching subject).</p>
-  <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {boxes(MATCHING)}
 </div>"""
@@ -243,7 +242,6 @@ CARD_MEASURING = f"""
   <h2>2 &middot; Measuring <span class="dk">draw 3, keep 1</span></h2>
   <p class="prompt">"Compared to me, are you closer to or further from ___?" &rarr; <b>Closer / Further</b></p>
   <p class="send"><b>Send hider:</b> your own distance to ___ (the measured feature).</p>
-  <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {boxes(MEASURING)}
 </div>"""
@@ -252,7 +250,6 @@ CARD_RADAR = f"""
   <h2>3 &middot; Radar <span class="dk">draw 2, keep 1</span></h2>
   <p class="prompt">"Are you within ___ of me?" &rarr; <b>Yes / No</b> &middot; Yes = keep inside circle, No = keep outside. <b>Custom</b> radius allowed <b>once per game</b>.</p>
   <p class="send"><b>Send hider:</b> your location pin (circle center) + the radius.</p>
-  <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {scale(RADAR, custom=True)}
   <p class="app ok inline">app: radar + custom radius, eliminated-area shading</p>
@@ -262,7 +259,6 @@ CARD_THERMO = f"""
   <h2>4 &middot; Thermometer <span class="dk">draw 2, keep 1</span></h2>
   <p class="prompt">"I've just traveled (at least) ___ &mdash; am I hotter or colder?" hotter = closer, colder = further; eliminates the colder half (perpendicular bisector).</p>
   <p class="send"><b>Send hider:</b> where you started and where you stopped.</p>
-  <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {scale(THERMO)}
   <p class="app ok inline">app: thermometer + boundary line &amp; shading</p>
@@ -272,7 +268,6 @@ CARD_TENTACLES = f"""
   <h2>5 &middot; Tentacles <span class="dk">draw 4, keep 2</span></h2>
   <p class="prompt">"Of all the ___ within 1 mi of you, which are you closest to?" (Hider must also be within 1 mi of one.)</p>
   <p class="send"><b>Send hider:</b> &mdash; (question is about the hider).</p>
-  <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
   {boxes([(t, False) for t in TENTACLES])}
   <p class="app no inline">app: not implemented</p>
@@ -316,10 +311,7 @@ ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
 
 # page 1: questions in two columns (Q1-3 | Q4-6)
 page1_cols = f"""
-<div class="p1">
-  <div class="col col1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}</div>
-  <div class="col col2">{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}</div>
-</div>"""
+<div class="p1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}</div>"""
 
 # page 2: both station tables + reference lists (golf & mountains removed)
 page2_ref = f"""
@@ -331,14 +323,13 @@ doc = f"""<!doctype html><html><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@page {{ size: letter; margin: 0; }}
+@page {{ size: letter; margin: 0.5in; }}
 * {{ box-sizing: border-box; }}
 body {{ font-family: 'IBM Plex Sans', -apple-system, Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; }}
 h1 {{ font-size:19px; margin:0 0 3px; }}
 .sub {{ font-size:10px; color:#666; margin:0 0 6px; }}
-/* page 1: two columns */
-.p1 {{ display:flex; gap:12px; align-items:flex-start; }}
-.col {{ display:flex; flex-direction:column; flex:1; }}
+/* page 1: two balanced columns */
+.p1 {{ column-count:2; column-gap:12px; }}
 .card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:7px 9px; margin:0 0 7px; background:#fafafa; width:100%; }}
 .ref .card.tbl {{ background:#fff; }}
 .card h2 {{ font-size:13.5px; margin:0 0 5px; color:#111; }}
@@ -414,7 +405,6 @@ with sync_playwright() as p:
     pg.goto("file:///tmp/reference.html", wait_until="networkidle")
     pg.evaluate("document.fonts.ready")  # ensure IBM Plex Sans is loaded
     pg.emulate_media(media="print")
-    pg.pdf(path=OUT, format="Letter", print_background=True,
-           margin={"top": "0.5in", "bottom": "0.5in", "left": "0.5in", "right": "0.5in"})
+    pg.pdf(path=OUT, print_background=True, prefer_css_page_size=True)
     pg.close()
 print("wrote", OUT, os.path.getsize(OUT), "bytes")
