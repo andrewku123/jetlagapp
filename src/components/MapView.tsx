@@ -54,6 +54,29 @@ function transitStyle(feature?: Feature<Geometry, { color: string }>) {
 // BART line labels carry a "(start–end)" suffix; drop it for the station popup
 const fmtLine = (l: string) => (l.startsWith('BART ') ? l.replace(/\s*\(.*\)\s*$/, '') : l)
 
+const abbrevName = (s: string) =>
+  s
+    .replace(/\bStreet\b/g, 'St')
+    .replace(/\bAvenue\b/g, 'Ave')
+    .replace(/\bBoulevard\b/g, 'Blvd')
+    .replace(/\bDrive\b/g, 'Dr')
+
+// Alternate stop names (other-direction pole / official name) worth showing in
+// the popup so a stop you'd find under that name on a map isn't "missing".
+// Skip the primary name and its spelled-out duplicate.
+const altNames = (st: Station): string[] => {
+  const seen = new Set([abbrevName(st.name).toLowerCase()])
+  const out: string[] = []
+  for (const a of st.aka) {
+    const ab = abbrevName(a)
+    const key = ab.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(ab)
+  }
+  return out
+}
+
 interface Props {
   remaining: Station[]
   eliminated: Station[]
@@ -469,6 +492,9 @@ export default function MapView({
               <Popup>
                 <div className="popup">
                   <strong>{st.name}</strong>
+                  {altNames(st).length > 0 && (
+                    <div className="muted">also: {altNames(st).join(' · ')}</div>
+                  )}
                   <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
                   {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
                   <div className="muted">
