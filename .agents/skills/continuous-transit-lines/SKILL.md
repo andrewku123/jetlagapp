@@ -74,9 +74,17 @@ assembles all of a line's relations into continuous chains:
    *without* the over-raise problem below (small strays are already gone, so they
    can't be daisy-chained into surviving junk).
 
-Result for the Bay Area: ~18 features, one continuous line each (plus the
+Result for the Bay Area: ~17 features, one continuous line each (plus the
 explicitly-added OAK Silver connector), with the redundant stop-fragment doubles
 removed.
+
+**Geographic clipping (game scope).** Some lines run beyond the play area; the
+drawn overlay is trimmed to what the game uses. Caltrain is clipped at **Tamien**
+via `clip_caltrain()` (the South County service Tamien→Gilroy is dropped): for
+each Caltrain chain, keep the contiguous part from the SF-ward end to the point
+nearest Tamien, then discard any chain a longer kept one already `_covered`s (a
+Diridon↔Gilroy variant otherwise leaves a redundant Diridon↔Tamien overlap stub).
+Add a similar clip for any future line that extends past the play boundary.
 
 ## Tuning the constants
 - `STITCH_TOL_M` (25 m): endpoint join tolerance. Raise if a line is fragmented

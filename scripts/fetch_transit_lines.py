@@ -270,6 +270,35 @@ def build_line(rel_ways_list):
     return bridge_chains(real, LINE_BRIDGE_TOL_M)
 
 
+# Caltrain is only used as far south as Tamien in this game; the South County
+# service (Tamien -> Capitol -> Blossom Hill -> Morgan Hill -> Gilroy) is dropped
+# from the drawn line. Tamien / the SF terminus (4th & King) reference points:
+TAMIEN = (-121.8844, 37.3118)
+CALTRAIN_NORTH = (-122.3953, 37.7765)
+
+
+def clip_caltrain(chains):
+    """Trim each Caltrain chain to the SF side of Tamien, then drop chains that
+    become redundant. Some service variants run Diridon<->Gilroy through Tamien;
+    clipping leaves only their Diridon<->Tamien overlap, which the mainline
+    already draws, so we discard anything covered by a longer kept chain."""
+    clipped = []
+    for c in chains:
+        ti = min(range(len(c)), key=lambda i: _dist_m(c[i], TAMIEN))
+        if _dist_m(c[0], CALTRAIN_NORTH) <= _dist_m(c[-1], CALTRAIN_NORTH):
+            seg = c[: ti + 1]
+        else:
+            seg = c[ti:]
+        if len(seg) >= 2 and chain_len_m(seg) >= STRAY_MIN_M:
+            clipped.append(seg)
+    clipped.sort(key=chain_len_m, reverse=True)
+    kept = []
+    for c in clipped:
+        if not _covered(c, kept):
+            kept.append(c)
+    return kept
+
+
 def main():
     raw = fetch()
     rels = []
@@ -308,7 +337,10 @@ def main():
     # can include a short non-revenue spur).
     merged = []
     for (system, color), rel_ways_list in lines.items():
-        for chain in build_line(rel_ways_list):
+        built = build_line(rel_ways_list)
+        if system == "Caltrain":
+            built = clip_caltrain(built)
+        for chain in built:
             if chain_len_m(chain) >= STRAY_MIN_M:
                 merged.append({"geom": chain, "system": system, "colors": [color]})
 
