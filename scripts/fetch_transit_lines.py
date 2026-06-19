@@ -40,6 +40,12 @@ COLOR_REMAP = {
 }
 
 
+# The Muni Metro lines we draw. The S ("S-Shuttle") is a special/peak shuttle
+# that overlays the Embarcadero alongside N/F and is excluded from the station
+# data too — keep it out of the overlay so it doesn't double the N's line.
+MUNI_LINES = {"F", "J", "K", "L", "M", "N", "T"}
+
+
 def matches(tags):
     """Return system name if this relation is one we want, else None.
 
@@ -50,15 +56,18 @@ def matches(tags):
     op = (tags.get("operator", "") + " " + tags.get("network", "")).lower()
     name = tags.get("name", "").lower()
     route = tags.get("route", "")
+    ref = tags.get("ref", "")
     # exclude cable cars (SF Powell/California lines) from the overlay
     if route == "cable_car" or "cable car" in name or "cable_car" in name:
         return None
     if "caltrain" in op or "peninsula corridor" in op:
         return "Caltrain"
-    if route == "subway" and ("bart" in op or "bay area rapid" in op):
+    # BART includes eBART (Pittsburg/Bay Point–Antioch), which OSM tags as
+    # route=light_rail, so accept both subway and light_rail for BART.
+    if route in ("subway", "light_rail") and ("bart" in op or "bay area rapid" in op):
         return "BART"
     if route in ("light_rail", "tram") and ("muni" in op or "san francisco municipal" in op or "sfmta" in op):
-        return "Muni"
+        return "Muni" if ref in MUNI_LINES else None
     if route == "light_rail" and ("vta" in op or "santa clara valley" in op):
         return "VTA"
     return None
@@ -168,11 +177,14 @@ def stitch_ways(geoms):
 
 def bridge_chains(chains, tol):
     """Join chains whose nearest endpoints are within `tol`, closing small
-    breaks (a missing/dropped connecting way) so a line reads continuous."""
+    breaks (a missing/dropped connecting way) so a line reads continuous.
+
+    Each pass joins the **globally closest** pair under `tol` (not just the first
+    found), so raising `tol` doesn't cause a near pair to be skipped in favor of
+    a worse early match — which would otherwise leave stray stubs behind."""
     chains = [list(c) for c in chains]
-    changed = True
-    while changed:
-        changed = False
+    while len(chains) > 1:
+        best = None  # (gap, i, j, joined)
         for i in range(len(chains)):
             for j in range(i + 1, len(chains)):
                 a, b = chains[i], chains[j]
@@ -183,14 +195,68 @@ def bridge_chains(chains, tol):
                     (_dist_m(a[0], b[-1]), b + a),
                 ]
                 gap, joined = min(opts, key=lambda o: o[0])
-                if gap <= tol:
-                    chains[i] = joined
-                    chains.pop(j)
-                    changed = True
-                    break
-            if changed:
-                break
+                if best is None or gap < best[0]:
+                    best = (gap, i, j, joined)
+        if best is None or best[0] > tol:
+            break
+        _, i, j, joined = best
+        chains[i] = joined
+        chains.pop(j)
     return chains
+
+
+# a candidate branch counts as "already drawn" when most of its sampled points
+# lie within this distance of an existing chain for the same line
+COVER_TOL_M = 140.0
+# final same-line bridge: chains here all belong to ONE line/color, so a larger
+# gap can be closed safely (e.g. the F's Market/Embarcadero pieces, where the
+# chosen direction relation drops a connecting way at a junction or loop).
+LINE_BRIDGE_TOL_M = 650.0
+
+
+def _min_dist_to_chains(p, chains):
+    best = float("inf")
+    for ch in chains:
+        for q in ch:
+            d = _dist_m(p, q)
+            if d < best:
+                best = d
+    return best
+
+
+def _covered(chain, chains, samples=24):
+    """True if most of `chain` overlaps an existing chain (e.g. the opposite
+    direction of the same line). Used to add genuine extensions/branches (eBART)
+    while skipping reverse-direction duplicates that would just double the line."""
+    if not chains:
+        return False
+    n = len(chain)
+    idxs = {int(i * (n - 1) / (samples - 1)) for i in range(samples)}
+    pts = [chain[i] for i in sorted(idxs)]
+    near = sum(1 for p in pts if _min_dist_to_chains(p, chains) <= COVER_TOL_M)
+    return near >= 0.6 * len(pts)
+
+
+def build_line(rel_ways_list):
+    """Build the continuous chains for one (system, color) from all its route
+    relations. Start from the most-complete relation (a single direction, so no
+    parallel doubling), then add chains from the other relations only where they
+    cover ground the base doesn't (branches/extensions like eBART). Finally
+    bridge so an extension joins the mainline."""
+    rel_ways_list = sorted(rel_ways_list, key=lambda ws: -sum(chain_len_m(g) for g in ws))
+    chains = bridge_chains(stitch_ways(rel_ways_list[0]), BRIDGE_TOL_M)
+    for ways in rel_ways_list[1:]:
+        for ch in bridge_chains(stitch_ways(ways), BRIDGE_TOL_M):
+            if chain_len_m(ch) >= STRAY_MIN_M and not _covered(ch, chains):
+                chains.append(ch)
+    chains = bridge_chains(chains, BRIDGE_TOL_M)
+    # Drop small stray fragments (crossovers, platform/yard tracks) BEFORE the
+    # generous same-line bridge, so they can't be daisy-chained into surviving
+    # junk. Then bridge the remaining real pieces over larger gaps — they all
+    # belong to this one line, so closing a break (e.g. the F's Market segments)
+    # is safe.
+    real = [c for c in chains if chain_len_m(c) >= STRAY_MIN_M]
+    return bridge_chains(real, LINE_BRIDGE_TOL_M)
 
 
 def main():
@@ -203,14 +269,13 @@ def main():
         if system:
             rels.append((system, el))
 
-    # Group by LINE = (system, color). A line usually has several route
-    # relations: one per direction plus service variants (short-turns, weekend).
-    # Each relation is a single linear direction whose member ways run in order
-    # and share end nodes — perfect for stitching with no parallel doubling. So
-    # for each line we keep the *most complete* relation (max total way length)
-    # and stitch only that one. This yields one continuous, correctly-colored
-    # line; shared trunks just draw several lines on top of each other (one color
-    # visible), as before. Caltrain (single color) naturally forms one line.
+    # Group by LINE = (system, color). A line has several route relations: one
+    # per direction plus service variants/extensions (short-turns, eBART). Each
+    # relation is a single linear direction whose member ways run in order and
+    # share end nodes — perfect for stitching with no parallel doubling. We build
+    # from the most-complete relation, then add only the parts other relations
+    # cover that it doesn't (branches/extensions, e.g. eBART to Antioch). See
+    # build_line(). Caltrain (single color) naturally forms one line.
     def rel_ways(el):
         out = []
         for m in el.get("members", []):
@@ -226,18 +291,13 @@ def main():
     for system, el in rels:
         seen_systems[system] = seen_systems.get(system, 0) + 1
         color = color_of(system, el.get("tags", {}))
-        ways = rel_ways(el)
-        total = sum(chain_len_m(g) for g in ways)
-        best = lines.get((system, color))
-        if best is None or total > best[0]:
-            lines[(system, color)] = (total, ways)
+        lines.setdefault((system, color), []).append(rel_ways(el))
 
-    # Stitch each kept relation's ordered ways into continuous chains; drop tiny
-    # stray fragments (a relation can include a short non-revenue spur).
+    # Build each line's continuous chains; drop tiny stray fragments (a relation
+    # can include a short non-revenue spur).
     merged = []
-    for (system, color), (_total, ways) in lines.items():
-        chains = bridge_chains(stitch_ways(ways), BRIDGE_TOL_M)
-        for chain in chains:
+    for (system, color), rel_ways_list in lines.items():
+        for chain in build_line(rel_ways_list):
             if chain_len_m(chain) >= STRAY_MIN_M:
                 merged.append({"geom": chain, "system": system, "colors": [color]})
 

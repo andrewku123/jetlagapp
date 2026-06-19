@@ -13,17 +13,36 @@ Rendering one feature per OSM way looks **broken** (gaps between fragments) and
 colored `LineString` per line. It is city-agnostic — reuse it for new metros (see
 `add-transit-city`).
 
+## Classification: which relations to keep (`matches()`)
+Classify a relation by **operator/network + `route` + `ref`** — never by the
+route *name* (a line's name can mention another system's terminus, e.g. Muni N's
+name ends "=> Caltrain", which misclassifies it). Gotchas baked in:
+- **Allowlist the lines you actually draw.** Muni uses `MUNI_LINES = {F,J,K,L,M,N,T}`
+  and keeps a relation only if its `ref` is in that set. This drops overlay-only
+  shuttles that share an alignment — the **S-Shuttle** (`#ffcc00`) runs the
+  Embarcadero on top of the N/F and otherwise renders as a duplicate yellow line
+  beside the N.
+- **eBART is `route=light_rail`, not `subway`.** Accept BOTH for BART, or the
+  Pittsburg/Bay Point→Antioch diesel extension is silently dropped and Yellow
+  stops short of Antioch.
+- Exclude cable cars (`route=cable_car`).
+
 ## The core idea
 A transit **line** is `(system, color)`. In OSM a line has several route
-relations: one per direction, plus service variants (short-turns, weekend). Each
-single relation is a **linear, single-direction** path whose member ways are
-listed in order and share end nodes. So:
+relations: one per direction, plus service variants (short-turns, weekend,
+extensions like eBART). Each single relation is a **linear, single-direction**
+path whose member ways are listed in order and share end nodes. `build_line()`
+assembles all of a line's relations into continuous chains:
 
-1. **Group relations by `(system, color)`.** For each line, keep only the
-   **most-complete relation** (largest total way length). Using one direction's
-   relation — instead of unioning every way of the line — is what avoids the
-   classic failure where stitching NB + SB tracks produces a self-doubling
-   zigzag "blob".
+1. **Group relations by `(system, color)`.** Start from the **most-complete
+   relation** (largest total way length). Using one direction's relation as the
+   base — instead of unioning every way of the line — avoids the classic failure
+   where stitching NB + SB tracks produces a self-doubling zigzag "blob".
+   Then **augment**: for each other relation, add its chains only where they
+   *don't* already overlap the base (`_covered()` samples the candidate and skips
+   it if ≥60% of points lie within `COVER_TOL_M`≈140 m of an existing chain).
+   This adds genuine **extensions/branches** (eBART onto Yellow) without
+   re-drawing the opposite direction as a parallel double.
 2. **`stitch_ways(ways)`** — concatenate ways that meet end-to-end (within
    `STITCH_TOL_M`, currently 25 m, which also bridges the tiny gaps OSM leaves
    between consecutive ways). At a junction where more than one way meets the
@@ -33,23 +52,40 @@ listed in order and share end nodes. So:
 3. **`bridge_chains(chains, BRIDGE_TOL_M)`** — join chains whose nearest
    endpoints are within `BRIDGE_TOL_M` (currently 350 m). This closes real breaks
    where a connecting way was missing or got dropped, so a line reads continuous.
+   Each pass joins the **globally closest** pair under the tolerance (not the
+   first match found), so a near pair is never skipped in favor of a worse early
+   one.
 4. **Drop strays** — discard any remaining chain shorter than `STRAY_MIN_M`
    (currently 800 m): yard leads, crossovers, station passing tracks. Real
    branches are far longer and survive.
+5. **Same-line generous bridge** — bridge the *surviving* real chains again at
+   `LINE_BRIDGE_TOL_M` (currently 650 m). Crucially this runs **after** the stray
+   drop, so only real same-line pieces participate. This stitches a line that
+   genuinely breaks into multiple long pieces (e.g. the **F**, which OSM splits
+   into ~10 km + ~3 km + ~2 km chunks around Market/Embarcadero) into one line,
+   *without* the over-raise problem below (small strays are already gone, so they
+   can't be daisy-chained into surviving junk).
 
 Result for the Bay Area: ~25 features, one continuous line each, plus a few
 genuine branch stubs (Oakland BART wye, downtown San Jose VTA loop, the F-line
 wharf segment).
 
-## Tuning the three constants
+## Tuning the constants
 - `STITCH_TOL_M` (25 m): endpoint join tolerance. Raise if a line is fragmented
   into many short pieces; lower if unrelated parallel tracks get joined.
-- `BRIDGE_TOL_M` (350 m): gap-closing distance. **Don't over-raise** — counter-
-  intuitively, a larger value yields *more* features, because it fuses several
-  sub-`STRAY_MIN_M` strays into chains long enough to survive the stray filter.
-  350 was the empirical minimum-feature sweet spot.
+- `BRIDGE_TOL_M` (350 m): gap-closing distance applied **before** the stray drop.
+  **Don't over-raise this one** — counter-intuitively a larger value yields *more*
+  features, because it fuses several sub-`STRAY_MIN_M` strays into chains long
+  enough to survive the stray filter. 350 is the sweet spot.
 - `STRAY_MIN_M` (800 m): below this a chain is a stray. Raise to prune more small
   stubs (risks deleting a short real branch); lower to keep more.
+- `LINE_BRIDGE_TOL_M` (650 m): same-line bridge applied **after** the stray drop,
+  so raising it is safe — only real (≥`STRAY_MIN_M`) pieces of one line/color can
+  combine. Raise it if a single line still renders in disconnected long pieces
+  (the F). It cannot resurrect junk because junk was already dropped.
+- `COVER_TOL_M` (140 m): overlap radius for `_covered()`. Raise if a reverse
+  direction still doubles a line; lower if a genuine close-by branch gets
+  swallowed and dropped.
 
 To re-tune, sweep values and print the resulting feature count + the small
 (`< few km`) chains' midpoints to see what is being kept/dropped.
