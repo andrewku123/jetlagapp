@@ -1517,7 +1517,8 @@
    "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
-   "San Bruno"
+   "San Bruno",
+   "San Bruno (BART)"
   ],
   "service": {
    "wd": {
@@ -1662,7 +1663,8 @@
    "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
-   "South San Francisco"
+   "South San Francisco",
+   "South San Francisco (BART)"
   ],
   "service": {
    "wd": {
@@ -2349,7 +2351,8 @@
    "Caltrain Local"
   ],
   "aka": [
-   "San Antonio"
+   "San Antonio",
+   "San Antonio (Caltrain)"
   ],
   "service": {
    "wd": {
@@ -2384,7 +2387,8 @@
    "Caltrain Local"
   ],
   "aka": [
-   "San Bruno"
+   "San Bruno",
+   "San Bruno (Caltrain)"
   ],
   "service": {
    "wd": {
@@ -2573,7 +2577,8 @@
    "Caltrain Local"
   ],
   "aka": [
-   "Santa Clara"
+   "Santa Clara",
+   "Santa Clara (Caltrain)"
   ],
   "service": {
    "wd": {
@@ -2610,7 +2615,8 @@
    "Caltrain Local"
   ],
   "aka": [
-   "South San Francisco"
+   "South San Francisco",
+   "South San Francisco (Caltrain)"
   ],
   "service": {
    "wd": {
@@ -2709,7 +2715,7 @@
   "nearestAirport": "SJC"
  },
  {
-  "name": "15th Avenue & Taraval Street",
+  "name": "15th Ave & Taraval St",
   "lat": 37.743051,
   "lon": -122.471364,
   "systems": [
@@ -2719,6 +2725,7 @@
    "Muni L"
   ],
   "aka": [
+   "15th Ave & Taraval St",
    "15th Avenue & Taraval Street"
   ],
   "service": {
@@ -2732,7 +2739,7 @@
    }
   },
   "id": "s073",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 124.8,
@@ -2744,7 +2751,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "19th Avenue & Holloway Avenue",
+  "name": "19th Ave & Holloway Ave (SF State)",
   "lat": 37.721663,
   "lon": -122.475203,
   "systems": [
@@ -2754,6 +2761,7 @@
    "Muni M"
   ],
   "aka": [
+   "19th Ave & Holloway Ave (SF State)",
    "19th Avenue & Holloway Avenue"
   ],
   "service": {
@@ -2767,7 +2775,7 @@
    }
   },
   "id": "s074",
-  "nameLength": 29,
+  "nameLength": 34,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 49.9,
@@ -2779,7 +2787,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "19th Avenue & North Randolph Street",
+  "name": "19th Ave & North Randolph St",
   "lat": 37.716524,
   "lon": -122.471967,
   "systems": [
@@ -2789,6 +2797,7 @@
    "Muni M"
   ],
   "aka": [
+   "19th Ave & North Randolph St",
    "19th Avenue & Junipero Serra Boulevard",
    "19th Avenue & North Randolph Street"
   ],
@@ -2803,7 +2812,7 @@
    }
   },
   "id": "s075",
-  "nameLength": 35,
+  "nameLength": 28,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 71.2,
@@ -2815,7 +2824,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "19th Avenue & Randolph Street",
+  "name": "19th Ave & Randolph St",
   "lat": 37.714615,
   "lon": -122.470144,
   "systems": [
@@ -2825,6 +2834,7 @@
    "Muni M"
   ],
   "aka": [
+   "19th Ave & Randolph St",
    "19th Avenue & Randolph Street"
   ],
   "service": {
@@ -2838,7 +2848,7 @@
    }
   },
   "id": "s076",
-  "nameLength": 29,
+  "nameLength": 22,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 72.0,
@@ -2850,7 +2860,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "19th Avenue & Winston Drive",
+  "name": "19th Ave & Winston Dr (Stonestown)",
   "lat": 37.72742,
   "lon": -122.474904,
   "systems": [
@@ -2860,6 +2870,7 @@
    "Muni M"
   ],
   "aka": [
+   "19th Ave & Winston Dr (Stonestown)",
    "19th Avenue & Winston Drive"
   ],
   "service": {
@@ -2873,7 +2884,7 @@
    }
   },
   "id": "s077",
-  "nameLength": 27,
+  "nameLength": 34,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 54.3,
@@ -2885,112 +2896,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "20th Street",
-  "lat": 37.760487,
-  "lon": -122.388576,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "20th Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s078",
-  "nameLength": 11,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 12.7,
-  "airportDist": {
-   "SFO": 15735.4,
-   "OAK": 15558.1,
-   "SJC": 59932.8
-  },
-  "nearestAirport": "OAK"
- },
- {
-  "name": "23rd Street",
-  "lat": 37.755415,
-  "lon": -122.388022,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "23rd Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s079",
-  "nameLength": 11,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 6.9,
-  "airportDist": {
-   "SFO": 15170.0,
-   "OAK": 15353.8,
-   "SJC": 59486.4
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "2nd & King",
-  "lat": 37.779329,
-  "lon": -122.39023,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni N"
-  ],
-  "aka": [
-   "2nd & King"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s080",
-  "nameLength": 10,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 5.4,
-  "airportDist": {
-   "SFO": 17834.7,
-   "OAK": 16433.3,
-   "SJC": 61585.1
-  },
-  "nearestAirport": "OAK"
- },
- {
-  "name": "30th Street & Dolores Street",
+  "name": "30th St & Dolores St",
   "lat": 37.742245,
   "lon": -122.424259,
   "systems": [
@@ -3000,6 +2906,7 @@
    "Muni J"
   ],
   "aka": [
+   "30th St & Dolores St",
    "30th Street & Dolores Street"
   ],
   "service": {
@@ -3013,7 +2920,7 @@
    }
   },
   "id": "s081",
-  "nameLength": 28,
+  "nameLength": 20,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 39.0,
@@ -3025,7 +2932,476 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "46th Avenue & Taraval Street",
+  "name": "3rd St & 20th St",
+  "lat": 37.760487,
+  "lon": -122.388576,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "20th Street",
+   "3rd St & 20th St"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s078",
+  "nameLength": 16,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 12.7,
+  "airportDist": {
+   "SFO": 15735.4,
+   "OAK": 15558.1,
+   "SJC": 59932.8
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "3rd St & 23rd St",
+  "lat": 37.755415,
+  "lon": -122.388022,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "23rd Street",
+   "3rd St & 23rd St"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s079",
+  "nameLength": 16,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 6.9,
+  "airportDist": {
+   "SFO": 15170.0,
+   "OAK": 15353.8,
+   "SJC": 59486.4
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Carroll Ave",
+  "lat": 37.725481,
+  "lon": -122.394271,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Carroll Ave",
+   "Carroll"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s094",
+  "nameLength": 20,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 6.7,
+  "airportDist": {
+   "SFO": 11883.4,
+   "OAK": 15380.2,
+   "SJC": 57490.9
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Evans Ave",
+  "lat": 37.742727,
+  "lon": -122.387939,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Evans Ave",
+   "Evans"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s107",
+  "nameLength": 18,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 4.2,
+  "airportDist": {
+   "SFO": 13759.9,
+   "OAK": 15037.7,
+   "SJC": 58458.1
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Gilman/Paul",
+  "lat": 37.722422,
+  "lon": -122.395654,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Gilman/Paul",
+   "Gilman/Paul"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s112",
+  "nameLength": 20,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 10.8,
+  "airportDist": {
+   "SFO": 11557.2,
+   "OAK": 15490.0,
+   "SJC": 57341.4
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Hudson/Innes",
+  "lat": 37.739917,
+  "lon": -122.388911,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Hudson/Innes",
+   "Hudson/Innes"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s113",
+  "nameLength": 21,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 6.6,
+  "airportDist": {
+   "SFO": 13451.5,
+   "OAK": 15070.8,
+   "SJC": 58293.2
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Kirkwood/La Salle",
+  "lat": 37.737558,
+  "lon": -122.389753,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Kirkwood/La Salle",
+   "Kirkwood/La Salle"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s133",
+  "nameLength": 26,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 12.9,
+  "airportDist": {
+   "SFO": 13193.4,
+   "OAK": 15106.2,
+   "SJC": 58157.5
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Le Conte Ave",
+  "lat": 37.718471,
+  "lon": -122.397853,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Le Conte Ave",
+   "Le Conte"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s134",
+  "nameLength": 21,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 35.6,
+  "airportDist": {
+   "SFO": 11143.7,
+   "OAK": 15679.3,
+   "SJC": 57177.4
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Marin St",
+  "lat": 37.749024,
+  "lon": -122.387487,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Marin St",
+   "Marin Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s135",
+  "nameLength": 17,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 4.1,
+  "airportDist": {
+   "SFO": 14458.1,
+   "OAK": 15136.7,
+   "SJC": 58936.6
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Mission Rock St",
+  "lat": 37.772939,
+  "lon": -122.389694,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Mission Rock St",
+   "Mission Rock (Northbound)",
+   "Mission Rock (Southbound)"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s146",
+  "nameLength": 24,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 3.5,
+  "airportDist": {
+   "SFO": 17122.8,
+   "OAK": 16113.2,
+   "SJC": 61023.1
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "3rd St & Oakdale/Palou",
+  "lat": 37.734411,
+  "lon": -122.390855,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Oakdale/Palou",
+   "Oakdale/Palou"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s147",
+  "nameLength": 22,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 22.9,
+  "airportDist": {
+   "SFO": 12849.7,
+   "OAK": 15159.0,
+   "SJC": 57976.6
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Revere/Shafter",
+  "lat": 37.732013,
+  "lon": -122.391696,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Revere/Shafter",
+   "Revere/Shafter"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s159",
+  "nameLength": 23,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 26.9,
+  "airportDist": {
+   "SFO": 12588.7,
+   "OAK": 15205.1,
+   "SJC": 57840.0
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "3rd St & Williams Ave",
+  "lat": 37.72924,
+  "lon": -122.392668,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "3rd St & Williams Ave",
+   "Williams"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s199",
+  "nameLength": 21,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 15.4,
+  "airportDist": {
+   "SFO": 12287.6,
+   "OAK": 15264.4,
+   "SJC": 57683.2
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "46th Ave & Taraval St",
   "lat": 37.741721,
   "lon": -122.504463,
   "systems": [
@@ -3035,6 +3411,7 @@
    "Muni L"
   ],
   "aka": [
+   "46th Ave & Taraval St",
    "46th Avenue & Taraval Street",
    "Taraval Street & 46th Avenue"
   ],
@@ -3049,7 +3426,7 @@
    }
   },
   "id": "s082",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 13.8,
@@ -3061,7 +3438,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "46th Avenue & Ulloa Street",
+  "name": "46th Ave & Ulloa St",
   "lat": 37.739916,
   "lon": -122.504508,
   "systems": [
@@ -3071,6 +3448,7 @@
    "Muni L"
   ],
   "aka": [
+   "46th Ave & Ulloa St",
    "46th Avenue & Ulloa Street"
   ],
   "service": {
@@ -3084,7 +3462,7 @@
    }
   },
   "id": "s083",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 12.5,
@@ -3096,7 +3474,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "46th Avenue & Vicente Street",
+  "name": "46th Ave & Vicente St",
   "lat": 37.738051,
   "lon": -122.504377,
   "systems": [
@@ -3106,6 +3484,7 @@
    "Muni L"
   ],
   "aka": [
+   "46th Ave & Vicente St",
    "46th Avenue & Vicente Street"
   ],
   "service": {
@@ -3119,7 +3498,7 @@
    }
   },
   "id": "s084",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 10.6,
@@ -3131,7 +3510,43 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "9th Avenue & Irving Street",
+  "name": "4th St & Brannan St",
+  "lat": 37.778682,
+  "lon": -122.396988,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "4th St & Brannan St",
+   "Fourth/Brannan"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s111",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 3.6,
+  "airportDist": {
+   "SFO": 17798.2,
+   "OAK": 16949.2,
+   "SJC": 61926.6
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "9th Ave & Irving St",
   "lat": 37.763834,
   "lon": -122.465708,
   "systems": [
@@ -3141,6 +3556,7 @@
    "Muni N"
   ],
   "aka": [
+   "9th Ave & Irving St",
    "9th Avenue & Irving Street",
    "Irving Street & 8th Avenue"
   ],
@@ -3155,7 +3571,7 @@
    }
   },
   "id": "s085",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 84.6,
@@ -3167,7 +3583,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Arleta",
+  "name": "Bayshore Blvd & Arleta/Blanken",
   "lat": 37.712338,
   "lon": -122.402025,
   "systems": [
@@ -3177,7 +3593,8 @@
    "Muni T"
   ],
   "aka": [
-   "Arleta"
+   "Arleta",
+   "Bayshore Blvd & Arleta/Blanken"
   ],
   "service": {
    "wd": {
@@ -3190,7 +3607,7 @@
    }
   },
   "id": "s086",
-  "nameLength": 6,
+  "nameLength": 30,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 20.9,
@@ -3202,9 +3619,45 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Beach Street & Mason Street",
-  "lat": 37.808379,
-  "lon": -122.414923,
+  "name": "Bayshore Blvd & Sunnydale Ave",
+  "lat": 37.70935,
+  "lon": -122.404901,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni T"
+  ],
+  "aka": [
+   "Bayshore Blvd & Sunnydale Ave",
+   "Sunnydale"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s172",
+  "nameLength": 29,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 7.2,
+  "airportDist": {
+   "SFO": 10244.7,
+   "OAK": 16335.5,
+   "SJC": 56940.6
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Beach St & Mason St",
+  "lat": 37.80741,
+  "lon": -122.41412,
   "systems": [
    "Muni"
   ],
@@ -3212,8 +3665,7 @@
    "Muni F"
   ],
   "aka": [
-   "Beach Street & Mason Street",
-   "Jefferson Street & Taylor Street"
+   "Beach St & Mason St"
   ],
   "service": {
    "wd": {
@@ -3226,29 +3678,29 @@
    }
   },
   "id": "s087",
-  "nameLength": 27,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
-  "elevation": 4.1,
+  "elevation": 3.4,
   "airportDist": {
-   "SFO": 21251.9,
-   "OAK": 19838.2,
-   "SJC": 65444.2
+   "SFO": 20923.8,
+   "OAK": 20081.1,
+   "SJC": 65269.2
   },
   "nearestAirport": "OAK"
  },
  {
-  "name": "Brannan",
-  "lat": 37.784019,
-  "lon": -122.388106,
+  "name": "Beach St & Stockton St",
+  "lat": 37.80784,
+  "lon": -122.41081,
   "systems": [
    "Muni"
   ],
   "lines": [
-   "Muni N"
+   "Muni F"
   ],
   "aka": [
-   "Brannan"
+   "Beach St & Stockton St"
   ],
   "service": {
    "wd": {
@@ -3260,20 +3712,20 @@
     "hourly": true
    }
   },
-  "id": "s088",
-  "nameLength": 7,
+  "id": "s257",
+  "nameLength": 22,
   "county": "San Francisco",
   "city": "San Francisco city",
-  "elevation": 4.5,
+  "elevation": 3.2,
   "airportDist": {
-   "SFO": 18349.0,
-   "OAK": 16484.4,
-   "SJC": 61854.0
+   "SFO": 20930.2,
+   "OAK": 19859.5,
+   "SJC": 65114.7
   },
   "nearestAirport": "OAK"
  },
  {
-  "name": "Broad Street & Capitol Avenue",
+  "name": "Broad St & Capitol Ave",
   "lat": 37.713178,
   "lon": -122.459045,
   "systems": [
@@ -3283,6 +3735,7 @@
    "Muni M"
   ],
   "aka": [
+   "Broad St & Capitol Ave",
    "Broad Street & Capitol Avenue"
   ],
   "service": {
@@ -3296,7 +3749,7 @@
    }
   },
   "id": "s089",
-  "nameLength": 29,
+  "nameLength": 22,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 94.3,
@@ -3308,7 +3761,44 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Broad Street & Plymouth Avenue",
+  "name": "Broad St & Orizaba Ave",
+  "lat": 37.713274,
+  "lon": -122.46249,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni M"
+  ],
+  "aka": [
+   "Broad St & Orizaba Ave",
+   "Broad Street & Orizaba Avenue",
+   "Orizaba Avenue & Broad Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s155",
+  "nameLength": 22,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 85.5,
+  "airportDist": {
+   "SFO": 12664.6,
+   "OAK": 21374.8,
+   "SJC": 61058.3
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Broad St & Plymouth Ave",
   "lat": 37.713203,
   "lon": -122.456073,
   "systems": [
@@ -3318,6 +3808,7 @@
    "Muni M"
   ],
   "aka": [
+   "Broad St & Plymouth Ave",
    "Broad Street & Plymouth Avenue"
   ],
   "service": {
@@ -3331,7 +3822,7 @@
    }
   },
   "id": "s090",
-  "nameLength": 30,
+  "nameLength": 23,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 95.0,
@@ -3343,7 +3834,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Carl Street & Cole Street",
+  "name": "Carl St & Cole St",
   "lat": 37.765803,
   "lon": -122.449972,
   "systems": [
@@ -3353,6 +3844,7 @@
    "Muni N"
   ],
   "aka": [
+   "Carl St & Cole St",
    "Carl Street & Cole Street"
   ],
   "service": {
@@ -3366,7 +3858,7 @@
    }
   },
   "id": "s091",
-  "nameLength": 25,
+  "nameLength": 17,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 92.0,
@@ -3378,7 +3870,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Carl Street & Hillway Avenue",
+  "name": "Carl St & Hillway Ave",
   "lat": 37.764997,
   "lon": -122.456345,
   "systems": [
@@ -3388,6 +3880,7 @@
    "Muni N"
   ],
   "aka": [
+   "Carl St & Hillway Ave",
    "Carl Street & Hillway Avenue"
   ],
   "service": {
@@ -3401,7 +3894,7 @@
    }
   },
   "id": "s092",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 99.7,
@@ -3413,7 +3906,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Carl Street & Stanyan Street",
+  "name": "Carl St & Stanyan St",
   "lat": 37.765453,
   "lon": -122.452791,
   "systems": [
@@ -3423,6 +3916,7 @@
    "Muni N"
   ],
   "aka": [
+   "Carl St & Stanyan St",
    "Carl Street & Stanyan Street"
   ],
   "service": {
@@ -3436,7 +3930,7 @@
    }
   },
   "id": "s093",
-  "nameLength": 28,
+  "nameLength": 20,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 94.9,
@@ -3448,41 +3942,6 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Carroll",
-  "lat": 37.725481,
-  "lon": -122.394271,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Carroll"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s094",
-  "nameLength": 7,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 6.7,
-  "airportDist": {
-   "SFO": 11883.4,
-   "OAK": 15380.2,
-   "SJC": 57490.9
-  },
-  "nearestAirport": "SFO"
- },
- {
   "name": "Castro Station",
   "lat": 37.76315,
   "lon": -122.434327,
@@ -3490,7 +3949,6 @@
    "Muni"
   ],
   "lines": [
-   "Muni F",
    "Muni K",
    "Muni L",
    "Muni M"
@@ -3559,6 +4017,263 @@
   "nearestAirport": "OAK"
  },
  {
+  "name": "Church St & 16th St",
+  "lat": 37.764516,
+  "lon": -122.428681,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Church St & 16th St",
+   "Church Street & 16th Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s098",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 28.5,
+  "airportDist": {
+   "SFO": 16693.7,
+   "OAK": 19068.5,
+   "SJC": 62695.3
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Church St & 22nd St",
+  "lat": 37.754604,
+  "lon": -122.427731,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Church St & 22nd St",
+   "Church Street & 22nd Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s099",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 56.3,
+  "airportDist": {
+   "SFO": 15606.5,
+   "OAK": 18725.6,
+   "SJC": 61858.8
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Church St & 24th St",
+  "lat": 37.751891,
+  "lon": -122.427477,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Church St & 24th St",
+   "Church Street & 24th Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s100",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 54.0,
+  "airportDist": {
+   "SFO": 15309.5,
+   "OAK": 18642.6,
+   "SJC": 61631.7
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Church St & 26th St",
+  "lat": 37.748507,
+  "lon": -122.427145,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Church St & 26th St",
+   "Church Street & 26th Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s101",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 39.2,
+  "airportDist": {
+   "SFO": 14939.0,
+   "OAK": 18544.2,
+   "SJC": 61348.3
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Church St & 28th St",
+  "lat": 37.745307,
+  "lon": -122.426841,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Church St & 28th St",
+   "Church Street & 28th Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s102",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 41.1,
+  "airportDist": {
+   "SFO": 14589.3,
+   "OAK": 18458.6,
+   "SJC": 61082.0
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Church St & Day St",
+  "lat": 37.742764,
+  "lon": -122.42655,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "30th Street & Church Street",
+   "Church St & Day St",
+   "Church Street & 29th Street",
+   "Church Street & 30th Street",
+   "Church Street & Day Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s103",
+  "nameLength": 18,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 40.4,
+  "airportDist": {
+   "SFO": 14310.4,
+   "OAK": 18390.9,
+   "SJC": 60867.8
+  },
+  "nearestAirport": "SFO"
+ },
+ {
+  "name": "Church St & Duboce Ave",
+  "lat": 37.769401,
+  "lon": -122.429201,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J",
+   "Muni N"
+  ],
+  "aka": [
+   "Church St & Duboce Ave",
+   "Church Street & Duboce Avenue",
+   "Duboce Avenue & Church Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s104",
+  "nameLength": 22,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 35.1,
+  "airportDist": {
+   "SFO": 17231.4,
+   "OAK": 19262.9,
+   "SJC": 63113.8
+  },
+  "nearestAirport": "SFO"
+ },
+ {
   "name": "Church St Station",
   "lat": 37.767174,
   "lon": -122.429197,
@@ -3566,7 +4281,6 @@
    "Muni"
   ],
   "lines": [
-   "Muni F",
    "Muni K",
    "Muni L",
    "Muni M"
@@ -3596,256 +4310,6 @@
    "SFO": 16991.2,
    "OAK": 19192.2,
    "SJC": 62937.2
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & 16th Street",
-  "lat": 37.764516,
-  "lon": -122.428681,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J"
-  ],
-  "aka": [
-   "Church Street & 16th Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s098",
-  "nameLength": 27,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 28.5,
-  "airportDist": {
-   "SFO": 16693.7,
-   "OAK": 19068.5,
-   "SJC": 62695.3
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & 22nd Street",
-  "lat": 37.754604,
-  "lon": -122.427731,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J"
-  ],
-  "aka": [
-   "Church Street & 22nd Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s099",
-  "nameLength": 27,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 56.3,
-  "airportDist": {
-   "SFO": 15606.5,
-   "OAK": 18725.6,
-   "SJC": 61858.8
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & 24th Street",
-  "lat": 37.751891,
-  "lon": -122.427477,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J"
-  ],
-  "aka": [
-   "Church Street & 24th Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s100",
-  "nameLength": 27,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 54.0,
-  "airportDist": {
-   "SFO": 15309.5,
-   "OAK": 18642.6,
-   "SJC": 61631.7
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & 26th Street",
-  "lat": 37.748507,
-  "lon": -122.427145,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J"
-  ],
-  "aka": [
-   "Church Street & 26th Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s101",
-  "nameLength": 27,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 39.2,
-  "airportDist": {
-   "SFO": 14939.0,
-   "OAK": 18544.2,
-   "SJC": 61348.3
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & 28th Street",
-  "lat": 37.745307,
-  "lon": -122.426841,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J"
-  ],
-  "aka": [
-   "Church Street & 28th Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s102",
-  "nameLength": 27,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 41.1,
-  "airportDist": {
-   "SFO": 14589.3,
-   "OAK": 18458.6,
-   "SJC": 61082.0
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & Day Street",
-  "lat": 37.742764,
-  "lon": -122.42655,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J"
-  ],
-  "aka": [
-   "30th Street & Church Street",
-   "Church Street & 29th Street",
-   "Church Street & 30th Street",
-   "Church Street & Day Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s103",
-  "nameLength": 26,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 40.4,
-  "airportDist": {
-   "SFO": 14310.4,
-   "OAK": 18390.9,
-   "SJC": 60867.8
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Church Street & Duboce Avenue",
-  "lat": 37.769401,
-  "lon": -122.429201,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni J",
-   "Muni N"
-  ],
-  "aka": [
-   "Church Street & Duboce Avenue",
-   "Duboce Avenue & Church Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s104",
-  "nameLength": 29,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 35.1,
-  "airportDist": {
-   "SFO": 17231.4,
-   "OAK": 19262.9,
-   "SJC": 63113.8
   },
   "nearestAirport": "SFO"
  },
@@ -3885,7 +4349,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Don Chee Way & Steuart Street",
+  "name": "Don Chee Way & Steuart St",
   "lat": 37.794001,
   "lon": -122.393591,
   "systems": [
@@ -3895,6 +4359,7 @@
    "Muni F"
   ],
   "aka": [
+   "Don Chee Way & Steuart St",
    "Don Chee Way & Steuart Street"
   ],
   "service": {
@@ -3908,7 +4373,7 @@
    }
   },
   "id": "s106",
-  "nameLength": 29,
+  "nameLength": 25,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.4,
@@ -3918,41 +4383,6 @@
    "SJC": 63008.8
   },
   "nearestAirport": "OAK"
- },
- {
-  "name": "Evans",
-  "lat": 37.742727,
-  "lon": -122.387939,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Evans"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s107",
-  "nameLength": 5,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 4.2,
-  "airportDist": {
-   "SFO": 13759.9,
-   "OAK": 15037.7,
-   "SJC": 58458.1
-  },
-  "nearestAirport": "SFO"
  },
  {
   "name": "Ferry Building",
@@ -3986,41 +4416,6 @@
    "SFO": 19612.7,
    "OAK": 17518.5,
    "SJC": 63134.1
-  },
-  "nearestAirport": "OAK"
- },
- {
-  "name": "Folsom",
-  "lat": 37.790213,
-  "lon": -122.389269,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni N"
-  ],
-  "aka": [
-   "Folsom"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s109",
-  "nameLength": 6,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 4.4,
-  "airportDist": {
-   "SFO": 19040.8,
-   "OAK": 16887.5,
-   "SJC": 62441.8
   },
   "nearestAirport": "OAK"
  },
@@ -4063,112 +4458,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Fourth/Brannan",
-  "lat": 37.778682,
-  "lon": -122.396988,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Fourth/Brannan"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s111",
-  "nameLength": 14,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 3.6,
-  "airportDist": {
-   "SFO": 17798.2,
-   "OAK": 16949.2,
-   "SJC": 61926.6
-  },
-  "nearestAirport": "OAK"
- },
- {
-  "name": "Gilman/Paul",
-  "lat": 37.722422,
-  "lon": -122.395654,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Gilman/Paul"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s112",
-  "nameLength": 11,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 10.8,
-  "airportDist": {
-   "SFO": 11557.2,
-   "OAK": 15490.0,
-   "SJC": 57341.4
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Hudson/Innes",
-  "lat": 37.739917,
-  "lon": -122.388911,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Hudson/Innes"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s113",
-  "nameLength": 12,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 6.6,
-  "airportDist": {
-   "SFO": 13451.5,
-   "OAK": 15070.8,
-   "SJC": 58293.2
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Irving Street & 2nd Avenue",
+  "name": "Irving St & 2nd Ave",
   "lat": 37.764399,
   "lon": -122.458485,
   "systems": [
@@ -4178,6 +4468,7 @@
    "Muni N"
   ],
   "aka": [
+   "Irving St & 2nd Ave",
    "Irving Street & 2nd Avenue",
    "Irving Street & Arguello Boulevard"
   ],
@@ -4192,7 +4483,7 @@
    }
   },
   "id": "s114",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 98.2,
@@ -4204,7 +4495,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Irving Street & 6th Avenue",
+  "name": "Irving St & 6th Ave",
   "lat": 37.764211,
   "lon": -122.462598,
   "systems": [
@@ -4214,6 +4505,7 @@
    "Muni N"
   ],
   "aka": [
+   "Irving St & 6th Ave",
    "Irving Street & 5th Avenue",
    "Irving Street & 6th Avenue"
   ],
@@ -4228,7 +4520,7 @@
    }
   },
   "id": "s115",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 87.3,
@@ -4240,7 +4532,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Jefferson Street & Powell Street",
+  "name": "Jefferson St & Powell St",
   "lat": 37.80858,
   "lon": -122.413383,
   "systems": [
@@ -4250,6 +4542,7 @@
    "Muni F"
   ],
   "aka": [
+   "Jefferson St & Powell St",
    "Jefferson Street & Powell Street"
   ],
   "service": {
@@ -4263,7 +4556,7 @@
    }
   },
   "id": "s116",
-  "nameLength": 32,
+  "nameLength": 24,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.5,
@@ -4275,7 +4568,42 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "Jones Street & Beach Street",
+  "name": "Jefferson St & Taylor St",
+  "lat": 37.80832,
+  "lon": -122.41551,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni F"
+  ],
+  "aka": [
+   "Jefferson St & Taylor St"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s256",
+  "nameLength": 24,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 3.4,
+  "airportDist": {
+   "SFO": 21042.2,
+   "OAK": 20238.2,
+   "SJC": 65425.7
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "Jones St & Beach St",
   "lat": 37.807347,
   "lon": -122.417395,
   "systems": [
@@ -4285,6 +4613,7 @@
    "Muni F"
   ],
   "aka": [
+   "Jones St & Beach St",
    "Jones Street & Beach Street"
   ],
   "service": {
@@ -4298,7 +4627,7 @@
    }
   },
   "id": "s117",
-  "nameLength": 27,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.9,
@@ -4310,7 +4639,7 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "Judah Street & 12th Avenue",
+  "name": "Judah St & 12th Ave",
   "lat": 37.762011,
   "lon": -122.470129,
   "systems": [
@@ -4320,6 +4649,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 12th Ave",
    "Judah Street & 12th Avenue",
    "Judah Street & Funston Avenue"
   ],
@@ -4334,7 +4664,7 @@
    }
   },
   "id": "s118",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 83.2,
@@ -4346,7 +4676,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 16th Avenue",
+  "name": "Judah St & 16th Ave",
   "lat": 37.761871,
   "lon": -122.473309,
   "systems": [
@@ -4356,6 +4686,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 16th Ave",
    "Judah Street & 15th Avenue",
    "Judah Street & 16th Avenue"
   ],
@@ -4370,7 +4701,7 @@
    }
   },
   "id": "s119",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 86.1,
@@ -4382,7 +4713,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 19th Avenue",
+  "name": "Judah St & 19th Ave",
   "lat": 37.761721,
   "lon": -122.476792,
   "systems": [
@@ -4392,6 +4723,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 19th Ave",
    "Judah Street & 19th Avenue"
   ],
   "service": {
@@ -4405,7 +4737,7 @@
    }
   },
   "id": "s120",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 80.1,
@@ -4417,7 +4749,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 22nd Avenue",
+  "name": "Judah St & 22nd Ave",
   "lat": 37.761558,
   "lon": -122.480379,
   "systems": [
@@ -4427,6 +4759,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 22nd Ave",
    "Judah Street & 22nd Avenue",
    "Judah Street & 23rd Avenue"
   ],
@@ -4441,7 +4774,7 @@
    }
   },
   "id": "s121",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 75.1,
@@ -4453,7 +4786,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 25th Avenue",
+  "name": "Judah St & 25th Ave",
   "lat": 37.761422,
   "lon": -122.483445,
   "systems": [
@@ -4463,6 +4796,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 25th Ave",
    "Judah Street & 25th Avenue"
   ],
   "service": {
@@ -4476,7 +4810,7 @@
    }
   },
   "id": "s122",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 68.2,
@@ -4488,7 +4822,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 28th Avenue",
+  "name": "Judah St & 28th Ave",
   "lat": 37.761296,
   "lon": -122.486429,
   "systems": [
@@ -4498,6 +4832,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 28th Ave",
    "Judah Street & 28th Avenue"
   ],
   "service": {
@@ -4511,7 +4846,7 @@
    }
   },
   "id": "s123",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 68.9,
@@ -4523,7 +4858,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 31st Avenue",
+  "name": "Judah St & 31st Ave",
   "lat": 37.761155,
   "lon": -122.489515,
   "systems": [
@@ -4533,6 +4868,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 31st Ave",
    "Judah Street & 31st Avenue"
   ],
   "service": {
@@ -4546,7 +4882,7 @@
    }
   },
   "id": "s124",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 67.5,
@@ -4558,7 +4894,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 34th Avenue",
+  "name": "Judah St & 34th Ave",
   "lat": 37.760997,
   "lon": -122.493085,
   "systems": [
@@ -4568,6 +4904,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 34th Ave",
    "Judah Street & 34th Avenue"
   ],
   "service": {
@@ -4581,7 +4918,7 @@
    }
   },
   "id": "s125",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 64.1,
@@ -4593,7 +4930,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 40th Avenue",
+  "name": "Judah St & 40th Ave",
   "lat": 37.760729,
   "lon": -122.499146,
   "systems": [
@@ -4603,6 +4940,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 40th Ave",
    "Judah Street & 40th Avenue"
   ],
   "service": {
@@ -4616,7 +4954,7 @@
    }
   },
   "id": "s126",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 37.8,
@@ -4628,7 +4966,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 43rd Avenue",
+  "name": "Judah St & 43rd Ave",
   "lat": 37.760571,
   "lon": -122.502732,
   "systems": [
@@ -4638,6 +4976,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 43rd Ave",
    "Judah Street & 43rd Avenue"
   ],
   "service": {
@@ -4651,7 +4990,7 @@
    }
   },
   "id": "s127",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 25.5,
@@ -4663,7 +5002,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 46th Avenue",
+  "name": "Judah St & 46th Ave",
   "lat": 37.760429,
   "lon": -122.505945,
   "systems": [
@@ -4673,6 +5012,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 46th Ave",
    "Judah Street & 46th Avenue"
   ],
   "service": {
@@ -4686,7 +5026,7 @@
    }
   },
   "id": "s128",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 15.5,
@@ -4698,7 +5038,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 48th Avenue",
+  "name": "Judah St & 48th Ave",
   "lat": 37.760279,
   "lon": -122.508691,
   "systems": [
@@ -4708,6 +5048,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 48th Ave",
    "Judah Street & 48th Avenue",
    "Judah Street & La Playa Street"
   ],
@@ -4722,7 +5063,7 @@
    }
   },
   "id": "s129",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 7.7,
@@ -4734,7 +5075,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & 9th Avenue",
+  "name": "Judah St & 9th Ave",
   "lat": 37.762161,
   "lon": -122.466712,
   "systems": [
@@ -4744,6 +5085,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & 9th Ave",
    "Judah Street & 9th Avenue"
   ],
   "service": {
@@ -4757,7 +5099,7 @@
    }
   },
   "id": "s130",
-  "nameLength": 25,
+  "nameLength": 18,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 87.8,
@@ -4769,7 +5111,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Judah Street & Sunset Boulevard",
+  "name": "Judah St & Sunset Blvd",
   "lat": 37.760873,
   "lon": -122.495895,
   "systems": [
@@ -4779,6 +5121,7 @@
    "Muni N"
   ],
   "aka": [
+   "Judah St & Sunset Blvd",
    "Judah Street & Sunset Boulevard"
   ],
   "service": {
@@ -4792,7 +5135,7 @@
    }
   },
   "id": "s131",
-  "nameLength": 31,
+  "nameLength": 22,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 49.4,
@@ -4804,7 +5147,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Junipero Serra Boulevard & Ocean Avenue",
+  "name": "Junipero Serra Blvd & Ocean Ave",
   "lat": 37.731608,
   "lon": -122.47177,
   "systems": [
@@ -4814,6 +5157,7 @@
    "Muni K"
   ],
   "aka": [
+   "Junipero Serra Blvd & Ocean Ave",
    "Junipero Serra Boulevard & Ocean Avenue"
   ],
   "service": {
@@ -4827,7 +5171,7 @@
    }
   },
   "id": "s132",
-  "nameLength": 39,
+  "nameLength": 31,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 78.1,
@@ -4839,17 +5183,18 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Kirkwood/La Salle",
-  "lat": 37.737558,
-  "lon": -122.389753,
+  "name": "King St & 2nd St",
+  "lat": 37.779329,
+  "lon": -122.39023,
   "systems": [
    "Muni"
   ],
   "lines": [
-   "Muni T"
+   "Muni N"
   ],
   "aka": [
-   "Kirkwood/La Salle"
+   "2nd & King",
+   "King St & 2nd St"
   ],
   "service": {
    "wd": {
@@ -4861,161 +5206,20 @@
     "hourly": true
    }
   },
-  "id": "s133",
-  "nameLength": 17,
+  "id": "s080",
+  "nameLength": 16,
   "county": "San Francisco",
   "city": "San Francisco city",
-  "elevation": 12.9,
+  "elevation": 5.4,
   "airportDist": {
-   "SFO": 13193.4,
-   "OAK": 15106.2,
-   "SJC": 58157.5
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Le Conte",
-  "lat": 37.718471,
-  "lon": -122.397853,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Le Conte"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s134",
-  "nameLength": 8,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 35.6,
-  "airportDist": {
-   "SFO": 11143.7,
-   "OAK": 15679.3,
-   "SJC": 57177.4
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Marin Street",
-  "lat": 37.749024,
-  "lon": -122.387487,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Marin Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s135",
-  "nameLength": 12,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 4.1,
-  "airportDist": {
-   "SFO": 14458.1,
-   "OAK": 15136.7,
-   "SJC": 58936.6
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Mission Rock (Northbound)",
-  "lat": 37.772939,
-  "lon": -122.389694,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Mission Rock (Northbound)",
-   "Mission Rock (Southbound)"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s146",
-  "nameLength": 25,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 3.5,
-  "airportDist": {
-   "SFO": 17122.8,
-   "OAK": 16113.2,
-   "SJC": 61023.1
+   "SFO": 17834.7,
+   "OAK": 16433.3,
+   "SJC": 61585.1
   },
   "nearestAirport": "OAK"
  },
  {
-  "name": "Oakdale/Palou",
-  "lat": 37.734411,
-  "lon": -122.390855,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Oakdale/Palou"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s147",
-  "nameLength": 13,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 22.9,
-  "airportDist": {
-   "SFO": 12849.7,
-   "OAK": 15159.0,
-   "SJC": 57976.6
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Ocean Avenue & Aptos Avenue",
+  "name": "Ocean Ave & Aptos Ave",
   "lat": 37.728334,
   "lon": -122.467748,
   "systems": [
@@ -5025,6 +5229,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & Aptos Ave",
    "Ocean Avenue & Aptos Avenue"
   ],
   "service": {
@@ -5038,7 +5243,7 @@
    }
   },
   "id": "s148",
-  "nameLength": 27,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 89.4,
@@ -5050,7 +5255,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Ocean Avenue & Fairfield Way",
+  "name": "Ocean Ave & Fairfield Way",
   "lat": 37.726031,
   "lon": -122.464231,
   "systems": [
@@ -5060,6 +5265,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & Fairfield Way",
    "Ocean Avenue & Fairfield Way",
    "Ocean Avenue & Victoria Street"
   ],
@@ -5074,7 +5280,7 @@
    }
   },
   "id": "s149",
-  "nameLength": 28,
+  "nameLength": 25,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 77.6,
@@ -5086,7 +5292,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Ocean Avenue & Jules Avenue",
+  "name": "Ocean Ave & Jules Ave",
   "lat": 37.724976,
   "lon": -122.461224,
   "systems": [
@@ -5096,6 +5302,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & Jules Ave",
    "Ocean Avenue & Dorado Terrace",
    "Ocean Avenue & Jules Avenue"
   ],
@@ -5110,7 +5317,7 @@
    }
   },
   "id": "s150",
-  "nameLength": 27,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 76.7,
@@ -5122,7 +5329,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Ocean Avenue & Lee Avenue",
+  "name": "Ocean Ave & Lee Ave",
   "lat": 37.723451,
   "lon": -122.454116,
   "systems": [
@@ -5132,6 +5339,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & Lee Ave",
    "Ocean Avenue & Lee Avenue"
   ],
   "service": {
@@ -5145,7 +5353,7 @@
    }
   },
   "id": "s151",
-  "nameLength": 25,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 90.9,
@@ -5157,7 +5365,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Ocean Avenue & Miramar Avenue",
+  "name": "Ocean Ave & Miramar Ave",
   "lat": 37.724317,
   "lon": -122.45819,
   "systems": [
@@ -5167,6 +5375,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & Miramar Ave",
    "Ocean Avenue & Miramar Avenue"
   ],
   "service": {
@@ -5180,7 +5389,7 @@
    }
   },
   "id": "s152",
-  "nameLength": 29,
+  "nameLength": 23,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 82.9,
@@ -5192,7 +5401,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Ocean Avenue & San Leandro Way",
+  "name": "Ocean Ave & San Leandro Way",
   "lat": 37.72998,
   "lon": -122.469354,
   "systems": [
@@ -5202,6 +5411,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & San Leandro Way",
    "Ocean Avenue & San Leandro Way"
   ],
   "service": {
@@ -5215,7 +5425,7 @@
    }
   },
   "id": "s153",
-  "nameLength": 30,
+  "nameLength": 27,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 83.7,
@@ -5227,7 +5437,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Ocean Avenue & Westgate Drive",
+  "name": "Ocean Ave & Westgate Dr",
   "lat": 37.727248,
   "lon": -122.466696,
   "systems": [
@@ -5237,6 +5447,7 @@
    "Muni K"
   ],
   "aka": [
+   "Ocean Ave & Westgate Dr",
    "Ocean Avenue & Cerritos Avenue",
    "Ocean Avenue & Westgate Drive"
   ],
@@ -5251,7 +5462,7 @@
    }
   },
   "id": "s154",
-  "nameLength": 29,
+  "nameLength": 23,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 84.8,
@@ -5263,79 +5474,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Orizaba Avenue & Broad Street",
-  "lat": 37.713274,
-  "lon": -122.46249,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni M"
-  ],
-  "aka": [
-   "Broad Street & Orizaba Avenue",
-   "Orizaba Avenue & Broad Street"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s155",
-  "nameLength": 29,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 85.5,
-  "airportDist": {
-   "SFO": 12664.6,
-   "OAK": 21374.8,
-   "SJC": 61058.3
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Pier 39",
-  "lat": 37.808028,
-  "lon": -122.410722,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni F"
-  ],
-  "aka": [
-   "Beach Street & Stockton Street",
-   "Pier 39"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s156",
-  "nameLength": 7,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 3.6,
-  "airportDist": {
-   "SFO": 21165.4,
-   "OAK": 19499.6,
-   "SJC": 65172.9
-  },
-  "nearestAirport": "OAK"
- },
- {
-  "name": "Randolph Street & Arch Street",
+  "name": "Randolph St & Arch St",
   "lat": 37.714282,
   "lon": -122.467105,
   "systems": [
@@ -5345,6 +5484,7 @@
    "Muni M"
   ],
   "aka": [
+   "Randolph St & Arch St",
    "Randolph Street & Arch Street"
   ],
   "service": {
@@ -5358,7 +5498,7 @@
    }
   },
   "id": "s157",
-  "nameLength": 29,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 86.1,
@@ -5370,7 +5510,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Randolph Street & Bright Street",
+  "name": "Randolph St & Bright St",
   "lat": 37.714305,
   "lon": -122.463517,
   "systems": [
@@ -5380,6 +5520,7 @@
    "Muni M"
   ],
   "aka": [
+   "Randolph St & Bright St",
    "Randolph Street & Bright Street"
   ],
   "service": {
@@ -5393,7 +5534,7 @@
    }
   },
   "id": "s158",
-  "nameLength": 31,
+  "nameLength": 23,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 92.7,
@@ -5405,42 +5546,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Revere/Shafter",
-  "lat": 37.732013,
-  "lon": -122.391696,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Revere/Shafter"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s159",
-  "nameLength": 14,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 26.9,
-  "airportDist": {
-   "SFO": 12588.7,
-   "OAK": 15205.1,
-   "SJC": 57840.0
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Right of Way & 18th Street",
+  "name": "Right Of Way/18th St",
   "lat": 37.761236,
   "lon": -122.42828,
   "systems": [
@@ -5451,6 +5557,7 @@
   ],
   "aka": [
    "Church Street & 18th Street",
+   "Right Of Way/18th St",
    "Right of Way & 18th Street"
   ],
   "service": {
@@ -5464,7 +5571,7 @@
    }
   },
   "id": "s160",
-  "nameLength": 26,
+  "nameLength": 20,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 17.2,
@@ -5476,7 +5583,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Right of Way & 20th Street",
+  "name": "Right Of Way/20th St",
   "lat": 37.758408,
   "lon": -122.427884,
   "systems": [
@@ -5486,6 +5593,7 @@
    "Muni J"
   ],
   "aka": [
+   "Right Of Way/20th St",
    "Right of Way & 20th Street"
   ],
   "service": {
@@ -5499,7 +5607,7 @@
    }
   },
   "id": "s161",
-  "nameLength": 26,
+  "nameLength": 20,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 44.0,
@@ -5511,7 +5619,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Right of Way & 21st Street",
+  "name": "Right Of Way/21st St",
   "lat": 37.757033,
   "lon": -122.426962,
   "systems": [
@@ -5521,6 +5629,7 @@
    "Muni J"
   ],
   "aka": [
+   "Right Of Way/21st St",
    "Right of Way & 21st Street",
    "Right of Way & Liberty Street"
   ],
@@ -5535,7 +5644,7 @@
    }
   },
   "id": "s162",
-  "nameLength": 26,
+  "nameLength": 20,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 55.9,
@@ -5547,7 +5656,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Right of Way & Ocean Avenue",
+  "name": "Right Of Way/Ocean Ave",
   "lat": 37.731511,
   "lon": -122.474074,
   "systems": [
@@ -5557,6 +5666,7 @@
    "Muni M"
   ],
   "aka": [
+   "Right Of Way/Ocean Ave",
    "Right of Way & Eucalyptus Drive",
    "Right of Way & Ocean Avenue"
   ],
@@ -5571,7 +5681,7 @@
    }
   },
   "id": "s163",
-  "nameLength": 27,
+  "nameLength": 22,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 69.4,
@@ -5619,7 +5729,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Farallones Street",
+  "name": "San Jose Ave & Farallones St",
   "lat": 37.714054,
   "lon": -122.452231,
   "systems": [
@@ -5629,6 +5739,7 @@
    "Muni M"
   ],
   "aka": [
+   "San Jose Ave & Farallones St",
    "San Jose Avenue & Farallones Street"
   ],
   "service": {
@@ -5642,7 +5753,7 @@
    }
   },
   "id": "s165",
-  "nameLength": 35,
+  "nameLength": 28,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 101.3,
@@ -5654,7 +5765,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Lakeview Avenue",
+  "name": "San Jose Ave & Lakeview Ave",
   "lat": 37.716181,
   "lon": -122.450394,
   "systems": [
@@ -5664,6 +5775,7 @@
    "Muni M"
   ],
   "aka": [
+   "San Jose Ave & Lakeview Ave",
    "San Jose Avenue & Lakeview Avenue"
   ],
   "service": {
@@ -5677,7 +5789,7 @@
    }
   },
   "id": "s166",
-  "nameLength": 33,
+  "nameLength": 27,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 92.8,
@@ -5689,7 +5801,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Niagara Avenue",
+  "name": "San Jose Ave & Niagara Ave",
   "lat": 37.71884,
   "lon": -122.44817,
   "systems": [
@@ -5699,6 +5811,7 @@
    "Muni M"
   ],
   "aka": [
+   "San Jose Ave & Niagara Ave",
    "San Jose Avenue & Mount Vernon Avenue",
    "San Jose Avenue & Niagara Avenue"
   ],
@@ -5713,7 +5826,7 @@
    }
   },
   "id": "s167",
-  "nameLength": 32,
+  "nameLength": 26,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 80.4,
@@ -5725,7 +5838,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Ocean Avenue",
+  "name": "San Jose Ave & Ocean Ave",
   "lat": 37.722963,
   "lon": -122.444766,
   "systems": [
@@ -5735,6 +5848,7 @@
    "Muni J"
   ],
   "aka": [
+   "San Jose Ave & Ocean Ave",
    "San Jose Avenue & Ocean Avenue"
   ],
   "service": {
@@ -5748,7 +5862,7 @@
    }
   },
   "id": "s168",
-  "nameLength": 30,
+  "nameLength": 24,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 59.7,
@@ -5760,7 +5874,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Randall Street",
+  "name": "San Jose Ave & Randall St",
   "lat": 37.739334,
   "lon": -122.424321,
   "systems": [
@@ -5770,6 +5884,7 @@
    "Muni J"
   ],
   "aka": [
+   "San Jose Ave & Randall St",
    "San Jose Avenue & Randall Street"
   ],
   "service": {
@@ -5783,7 +5898,7 @@
    }
   },
   "id": "s169",
-  "nameLength": 32,
+  "nameLength": 25,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 52.7,
@@ -5795,7 +5910,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Santa Rosa Avenue",
+  "name": "San Jose Ave & Santa Rosa Ave",
   "lat": 37.729089,
   "lon": -122.439817,
   "systems": [
@@ -5805,6 +5920,7 @@
    "Muni J"
   ],
   "aka": [
+   "San Jose Ave & Santa Rosa Ave",
    "San Jose Avenue & Santa Rosa Avenue"
   ],
   "service": {
@@ -5818,7 +5934,7 @@
    }
   },
   "id": "s170",
-  "nameLength": 35,
+  "nameLength": 29,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 47.6,
@@ -5830,7 +5946,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "San Jose Avenue & Santa Ynez Avenue",
+  "name": "San Jose Ave & Santa Ynez Ave",
   "lat": 37.725793,
   "lon": -122.442392,
   "systems": [
@@ -5840,6 +5956,7 @@
    "Muni J"
   ],
   "aka": [
+   "San Jose Ave & Santa Ynez Ave",
    "San Jose Avenue & Santa Ynez Avenue"
   ],
   "service": {
@@ -5853,7 +5970,7 @@
    }
   },
   "id": "s171",
-  "nameLength": 35,
+  "nameLength": 29,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 53.8,
@@ -5861,41 +5978,6 @@
    "SFO": 13016.3,
    "OAK": 19610.2,
    "SJC": 60616.0
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Sunnydale",
-  "lat": 37.70935,
-  "lon": -122.404901,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Sunnydale"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s172",
-  "nameLength": 9,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 7.2,
-  "airportDist": {
-   "SFO": 10244.7,
-   "OAK": 16335.5,
-   "SJC": 56940.6
   },
   "nearestAirport": "SFO"
  },
@@ -5935,7 +6017,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 17th Avenue",
+  "name": "Taraval St & 17th Ave",
   "lat": 37.743091,
   "lon": -122.473706,
   "systems": [
@@ -5945,6 +6027,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 17th Ave",
    "Taraval Street & 17th Avenue"
   ],
   "service": {
@@ -5958,7 +6041,7 @@
    }
   },
   "id": "s174",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 113.0,
@@ -5970,7 +6053,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 19th Avenue",
+  "name": "Taraval St & 19th Ave",
   "lat": 37.743058,
   "lon": -122.475662,
   "systems": [
@@ -5980,6 +6063,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 19th Ave",
    "Taraval Street & 19th Avenue"
   ],
   "service": {
@@ -5993,7 +6077,7 @@
    }
   },
   "id": "s175",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 104.2,
@@ -6005,7 +6089,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 22nd Avenue",
+  "name": "Taraval St & 22nd Ave",
   "lat": 37.742919,
   "lon": -122.478473,
   "systems": [
@@ -6015,6 +6099,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 22nd Ave",
    "Taraval Street & 22nd Avenue"
   ],
   "service": {
@@ -6028,7 +6113,7 @@
    }
   },
   "id": "s176",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 95.5,
@@ -6040,7 +6125,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 23rd Avenue",
+  "name": "Taraval St & 23rd Ave",
   "lat": 37.742864,
   "lon": -122.480436,
   "systems": [
@@ -6050,6 +6135,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 23rd Ave",
    "Taraval Street & 23rd Avenue"
   ],
   "service": {
@@ -6063,7 +6149,7 @@
    }
   },
   "id": "s177",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 93.2,
@@ -6075,7 +6161,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 26th Avenue",
+  "name": "Taraval St & 26th Ave",
   "lat": 37.742724,
   "lon": -122.483219,
   "systems": [
@@ -6085,6 +6171,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 26th Ave",
    "Taraval Street & 26th Avenue"
   ],
   "service": {
@@ -6098,7 +6185,7 @@
    }
   },
   "id": "s178",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 84.4,
@@ -6110,7 +6197,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 30th Avenue",
+  "name": "Taraval St & 30th Ave",
   "lat": 37.742537,
   "lon": -122.487499,
   "systems": [
@@ -6120,6 +6207,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 30th Ave",
    "Taraval Street & 30th Avenue"
   ],
   "service": {
@@ -6133,7 +6221,7 @@
    }
   },
   "id": "s179",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 63.0,
@@ -6145,7 +6233,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 32nd Avenue",
+  "name": "Taraval St & 32nd Ave",
   "lat": 37.742444,
   "lon": -122.489646,
   "systems": [
@@ -6155,6 +6243,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 32nd Ave",
    "Taraval Street & 32nd Avenue"
   ],
   "service": {
@@ -6168,7 +6257,7 @@
    }
   },
   "id": "s180",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 54.0,
@@ -6180,7 +6269,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 40th Avenue",
+  "name": "Taraval St & 40th Ave",
   "lat": 37.742067,
   "lon": -122.498212,
   "systems": [
@@ -6190,6 +6279,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 40th Ave",
    "Taraval Street & 40th Avenue"
   ],
   "service": {
@@ -6203,7 +6293,7 @@
    }
   },
   "id": "s181",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 31.5,
@@ -6215,7 +6305,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 42nd Avenue",
+  "name": "Taraval St & 42nd Ave",
   "lat": 37.741972,
   "lon": -122.500351,
   "systems": [
@@ -6225,6 +6315,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 42nd Ave",
    "Taraval Street & 42nd Avenue"
   ],
   "service": {
@@ -6238,7 +6329,7 @@
    }
   },
   "id": "s182",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 29.5,
@@ -6250,7 +6341,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & 44th Avenue",
+  "name": "Taraval St & 44th Ave",
   "lat": 37.741877,
   "lon": -122.502495,
   "systems": [
@@ -6260,6 +6351,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & 44th Ave",
    "Taraval Street & 44th Avenue"
   ],
   "service": {
@@ -6273,7 +6365,7 @@
    }
   },
   "id": "s183",
-  "nameLength": 28,
+  "nameLength": 21,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 21.0,
@@ -6285,7 +6377,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Taraval Street & Sunset Boulevard",
+  "name": "Taraval St & Sunset Blvd",
   "lat": 37.742224,
   "lon": -122.494583,
   "systems": [
@@ -6295,6 +6387,7 @@
    "Muni L"
   ],
   "aka": [
+   "Taraval St & Sunset Blvd",
    "Taraval Street & Sunset Boulevard"
   ],
   "service": {
@@ -6308,7 +6401,7 @@
    }
   },
   "id": "s184",
-  "nameLength": 33,
+  "nameLength": 24,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 42.9,
@@ -6320,7 +6413,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "The Embarcadero & Bay Street",
+  "name": "The Embarcadero & Bay St",
   "lat": 37.806931,
   "lon": -122.406388,
   "systems": [
@@ -6330,6 +6423,7 @@
    "Muni F"
   ],
   "aka": [
+   "The Embarcadero & Bay St",
    "The Embarcadero & Bay Street"
   ],
   "service": {
@@ -6343,7 +6437,7 @@
    }
   },
   "id": "s185",
-  "nameLength": 28,
+  "nameLength": 24,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.6,
@@ -6351,6 +6445,42 @@
    "SFO": 21001.3,
    "OAK": 19109.8,
    "SJC": 64832.0
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "The Embarcadero & Brannan St",
+  "lat": 37.784019,
+  "lon": -122.388106,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni N"
+  ],
+  "aka": [
+   "Brannan",
+   "The Embarcadero & Brannan St"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s088",
+  "nameLength": 28,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 4.5,
+  "airportDist": {
+   "SFO": 18349.0,
+   "OAK": 16484.4,
+   "SJC": 61854.0
   },
   "nearestAirport": "OAK"
  },
@@ -6390,7 +6520,43 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "The Embarcadero & Green Street",
+  "name": "The Embarcadero & Folsom St",
+  "lat": 37.790213,
+  "lon": -122.389269,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni N"
+  ],
+  "aka": [
+   "Folsom",
+   "The Embarcadero & Folsom St"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s109",
+  "nameLength": 27,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 4.4,
+  "airportDist": {
+   "SFO": 19040.8,
+   "OAK": 16887.5,
+   "SJC": 62441.8
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "The Embarcadero & Green St",
   "lat": 37.800938,
   "lon": -122.399171,
   "systems": [
@@ -6400,6 +6566,7 @@
    "Muni F"
   ],
   "aka": [
+   "The Embarcadero & Green St",
    "The Embarcadero & Green Street"
   ],
   "service": {
@@ -6413,7 +6580,7 @@
    }
   },
   "id": "s187",
-  "nameLength": 30,
+  "nameLength": 26,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.7,
@@ -6425,7 +6592,7 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "The Embarcadero & Greenwich Street",
+  "name": "The Embarcadero & Greenwich St",
   "lat": 37.803193,
   "lon": -122.401181,
   "systems": [
@@ -6435,6 +6602,7 @@
    "Muni F"
   ],
   "aka": [
+   "The Embarcadero & Greenwich St",
    "The Embarcadero & Greenwich Street"
   ],
   "service": {
@@ -6448,7 +6616,7 @@
    }
   },
   "id": "s188",
-  "nameLength": 34,
+  "nameLength": 30,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.6,
@@ -6460,7 +6628,7 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "The Embarcadero & Sansome Street",
+  "name": "The Embarcadero & Sansome St",
   "lat": 37.804835,
   "lon": -122.402953,
   "systems": [
@@ -6470,6 +6638,7 @@
    "Muni F"
   ],
   "aka": [
+   "The Embarcadero & Sansome St",
    "The Embarcadero & Sansome Street"
   ],
   "service": {
@@ -6483,7 +6652,7 @@
    }
   },
   "id": "s189",
-  "nameLength": 32,
+  "nameLength": 28,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.5,
@@ -6495,7 +6664,42 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "The Embarcadero & Washington Street",
+  "name": "The Embarcadero & Stockton St (Pier 39)",
+  "lat": 37.80835,
+  "lon": -122.41029,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni F"
+  ],
+  "aka": [
+   "The Embarcadero & Stockton St (Pier 39)"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s156",
+  "nameLength": 39,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 3.5,
+  "airportDist": {
+   "SFO": 20980.3,
+   "OAK": 19851.1,
+   "SJC": 65127.8
+  },
+  "nearestAirport": "OAK"
+ },
+ {
+  "name": "The Embarcadero & Washington St",
   "lat": 37.796726,
   "lon": -122.395453,
   "systems": [
@@ -6505,6 +6709,7 @@
    "Muni F"
   ],
   "aka": [
+   "The Embarcadero & Washington St",
    "The Embarcadero & Washington Street"
   ],
   "service": {
@@ -6518,7 +6723,7 @@
    }
   },
   "id": "s190",
-  "nameLength": 35,
+  "nameLength": 31,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 3.2,
@@ -6600,7 +6805,7 @@
   "nearestAirport": "OAK"
  },
  {
-  "name": "Ulloa Street & Forest Side Avenue",
+  "name": "Ulloa St & Forest Side Ave",
   "lat": 37.741497,
   "lon": -122.468612,
   "systems": [
@@ -6610,6 +6815,7 @@
    "Muni L"
   ],
   "aka": [
+   "Ulloa St & Forest Side Ave",
    "Ulloa Street & Forest Side Avenue"
   ],
   "service": {
@@ -6623,7 +6829,7 @@
    }
   },
   "id": "s193",
-  "nameLength": 33,
+  "nameLength": 26,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 113.9,
@@ -6677,7 +6883,6 @@
    "Muni"
   ],
   "lines": [
-   "Muni F",
    "Muni J",
    "Muni K",
    "Muni L",
@@ -6713,7 +6918,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "Wawona Street & 46th Avenue",
+  "name": "Wawona St & 46th Ave (SF Zoo)",
   "lat": 37.736347,
   "lon": -122.50485,
   "systems": [
@@ -6725,6 +6930,7 @@
   "aka": [
    "47th Avenue & Cutler Avenue",
    "SF ZOO (Wawona Street & 46th Avenue)",
+   "Wawona St & 46th Ave (SF Zoo)",
    "Wawona Street & 46th Avenue"
   ],
   "service": {
@@ -6738,7 +6944,7 @@
    }
   },
   "id": "s196",
-  "nameLength": 27,
+  "nameLength": 29,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 8.4,
@@ -6750,7 +6956,7 @@
   "nearestAirport": "SFO"
  },
  {
-  "name": "West Portal Avenue & 14th Avenue",
+  "name": "West Portal Ave & 14th Ave",
   "lat": 37.737989,
   "lon": -122.469067,
   "systems": [
@@ -6761,6 +6967,7 @@
    "Muni M"
   ],
   "aka": [
+   "West Portal Ave & 14th Ave",
    "West Portal Avenue & 14th Avenue"
   ],
   "service": {
@@ -6774,7 +6981,7 @@
    }
   },
   "id": "s197",
-  "nameLength": 32,
+  "nameLength": 26,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 95.9,
@@ -6820,41 +7027,6 @@
    "SFO": 15468.4,
    "OAK": 21765.6,
    "SJC": 63281.3
-  },
-  "nearestAirport": "SFO"
- },
- {
-  "name": "Williams",
-  "lat": 37.72924,
-  "lon": -122.392668,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni T"
-  ],
-  "aka": [
-   "Williams"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s199",
-  "nameLength": 8,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 15.4,
-  "airportDist": {
-   "SFO": 12287.6,
-   "OAK": 15264.4,
-   "SJC": 57683.2
   },
   "nearestAirport": "SFO"
  },
@@ -8496,7 +8668,8 @@
    "VTA Green"
   ],
   "aka": [
-   "San Antonio"
+   "San Antonio",
+   "San Antonio (VTA)"
   ],
   "service": {
    "wd": {
@@ -8567,7 +8740,8 @@
    "VTA Green"
   ],
   "aka": [
-   "Santa Clara"
+   "Santa Clara",
+   "Santa Clara (VTA)"
   ],
   "service": {
    "wd": {
