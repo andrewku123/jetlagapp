@@ -59,10 +59,16 @@ Annotations are **editable after placement** (not just click-to-delete):
 ## Gotchas (learned the hard way)
 - **Popup buttons must not drop a new point.** In `compass` mode the map `click`
   handler creates a circle on every click. A click on a popup's Delete button
-  bubbles to the Leaflet map and would drop a *second* circle. `MapClicks` guards
-  against this: it ignores clicks whose `originalEvent.target` is inside
-  `.leaflet-popup` or `.leaflet-marker-icon`. Keep that guard if you add new
-  immediate-draw tools.
+  re-fires as a Leaflet map click and would drop a *second* circle. The reliable
+  guard is at **mousedown** (capture phase), NOT at click: when Delete runs,
+  React removes the popup from the DOM *before* the map `click` handler reads
+  `originalEvent.target`, so checking the target at click time sees a detached
+  node and the `.leaflet-popup` lookup fails — a new circle drops exactly where
+  the button was. `MapClicks` therefore records on `mousedown`/`touchstart`
+  (document, capture) whether the press began inside `.leaflet-popup` /
+  `.leaflet-marker-icon` (`inAnnotationControl`) and suppresses the next map
+  click (it also still checks the click target as a backstop). Keep this
+  mousedown-based guard if you add new immediate-draw tools.
 - **The measure label won't follow a dragged endpoint** unless the `<Polyline>`
   remounts: a Leaflet permanent `<Tooltip permanent direction="center">` anchors
   to the line's center only when (re)bound. The Polyline therefore has a `key`
