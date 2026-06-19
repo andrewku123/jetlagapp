@@ -13,16 +13,18 @@ any public transit. Eligible systems:
 - **BART** — all stations (50)
 - **Caltrain** — SF (4th & King) → San Jose Diridon → Tamien (24)
 - **VTA light rail** — full system (59)
-- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (134)
+- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (124)
 
 Muni includes **every rail stop** (both the labeled stations and the smaller
 intermediate "Other Stop" dots) on lines N/J/F/K/L/M/T, pulled from OpenStreetMap
 and deduped: the two directional platforms of a stop are merged, shared subway
 stops (Embarcadero/Montgomery/Powell/Civic Center/Church/Castro/Forest Hill/West
-Portal) are counted once, and North Beach on the T is excluded. After merging
+Portal) are counted once, and North Beach on the T is excluded. The 10 F-only
+surface stops on Market St inland of Embarcadero are also excluded — they run
+directly above the Muni Metro subway and duplicate those stations. After merging
 stations shared across systems (e.g. 4th & King = Caltrain + Muni N/T; Balboa
-Park = BART + Muni; Milpitas = BART + VTA) the play area has **256 unique
-stations** (255 eligible on a weekday, 256 on a weekend). Distinct stations that
+Park = BART + Muni; Milpitas = BART + VTA) the play area has **246 unique
+stations** (245 eligible on a weekday, 246 on a weekend). Distinct stations that
 share a city name are disambiguated by system, e.g. "San Bruno (BART)" vs
 "San Bruno (Caltrain)".
 
@@ -46,6 +48,19 @@ Built for the **medium** game. The auto-elimination engine currently supports:
 POI-based Matching/Measuring (parks, hospitals, museums, libraries, movie
 theaters, zoos, aquariums, golf courses, mountains, foreign consulates) and
 Tentacles are planned next.
+
+## Map drawing tools
+
+A toolbar on the map lets seekers annotate by hand (drawings persist locally):
+
+- **Compass** — pick a radius and click a center to draw a circle.
+- **Line** — click two points to draw a straightedge line.
+- **Bisector** — click two points to draw their perpendicular bisector (the
+  hotter/colder boundary for a thermometer).
+- **Measure** — click two points to read the great-circle distance in miles.
+- **Select** — default mode; clicking the map drops a seeker point for questions.
+
+Click any drawing to delete it, or use **Clear drawings**.
 
 ## Develop
 

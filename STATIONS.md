@@ -1,7 +1,7 @@
 # Bay Area Hide & Seek — Eligible Stations
 
-**256 unique hideable stations** (deduped within and across systems).
-Eligible counts after the <1 hr-frequency rule: 255 weekday / 256 weekend.
+**246 unique hideable stations** (deduped within and across systems).
+Eligible counts after the <1 hr-frequency rule: 245 weekday / 246 weekend.
 
 Hide only at these stations; travel by any public transit. WD/WE = served on weekday/weekend; ✓ = at least hourly during the daytime window.
 
@@ -9,15 +9,17 @@ Stations are grouped below by **primary system**, so each shared station is
 listed once (e.g. 4th & King appears under Caltrain, not also under Muni); the
 "shared" tag notes the other systems. Per-system *membership* counts (a shared
 station counted in every system it serves) are BART 50 · Caltrain 24 · VTA 59 ·
-Muni 134.
+Muni 124. (10 F-only surface stops on Market St inland of Embarcadero are
+excluded — they sit directly above the Muni Metro subway and duplicate those
+stations.)
 
 | Primary system | Stations |
 |---|---|
 | BART | 50 |
 | Caltrain | 23 |
 | VTA | 55 |
-| Muni | 128 |
-| **Total (deduped)** | **256** |
+| Muni | 118 |
+| **Total (deduped)** | **246** |
 
 ## BART (50)
 
@@ -162,7 +164,7 @@ Muni 134.
 | Whisman | Orange | ✓ | ✓ | 37.3921, -122.0583 |
 | Winchester | Green | ✓ | ✓ | 37.2796, -121.9479 |
 
-## Muni (128)
+## Muni (118)
 
 | Station | Lines | WD | WE | Lat, Lon |
 |---|---|:--:|:--:|---|
@@ -229,16 +231,6 @@ Muni 134.
 | Kirkwood/La Salle | T | ✓ | ✓ | 37.7376, -122.3898 |
 | Le Conte | T | ✓ | ✓ | 37.7185, -122.3979 |
 | Marin Street | T | ✓ | ✓ | 37.7490, -122.3875 |
-| Market Street & 1st Street | F | ✓ | ✓ | 37.7909, -122.3993 |
-| Market Street & 3rd Street | F | ✓ | ✓ | 37.7876, -122.4035 |
-| Market Street & 5th Street | F | ✓ | ✓ | 37.7840, -122.4081 |
-| Market Street & 6th Street | F | ✓ | ✓ | 37.7822, -122.4104 |
-| Market Street & 8th Street | F | ✓ | ✓ | 37.7788, -122.4146 |
-| Market Street & 9th Street | F | ✓ | ✓ | 37.7775, -122.4163 |
-| Market Street & Dolores Street | F | ✓ | ✓ | 37.7688, -122.4272 |
-| Market Street & Gough Street | F | ✓ | ✓ | 37.7731, -122.4219 |
-| Market Street & Laguna Street | F | ✓ | ✓ | 37.7704, -122.4253 |
-| Market Street & Sanchez Street | F | ✓ | ✓ | 37.7659, -122.4310 |
 | Mission Rock (Northbound) | T | ✓ | ✓ | 37.7729, -122.3897 |
 | Oakdale/Palou | T | ✓ | ✓ | 37.7344, -122.3909 |
 | Ocean Avenue & Aptos Avenue | K | ✓ | ✓ | 37.7283, -122.4677 |
@@ -287,7 +279,7 @@ Muni 134.
 | UCSF Medical Center | T | ✓ | ✓ | 37.7643, -122.3889 |
 | UCSF/Chase Center | T | ✓ | ✓ | 37.7682, -122.3892 |
 | Ulloa Street & Forest Side Avenue | L | ✓ | ✓ | 37.7415, -122.4686 |
-| Union Square/Market Street | F, T | ✓ | ✓ | 37.7865, -122.4062 |
+| Union Square/Market Street | T | ✓ | ✓ | 37.7865, -122.4062 |
 | Van Ness Station | F, J, K, L, M, N | ✓ | ✓ | 37.7752, -122.4192 |
 | Wawona Street & 46th Avenue | L | ✓ | ✓ | 37.7363, -122.5049 |
 | West Portal Avenue & 14th Avenue | K, M | ✓ | ✓ | 37.7380, -122.4691 |

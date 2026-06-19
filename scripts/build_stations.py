@@ -77,6 +77,10 @@ for rel in [e for e in dm['elements'] if e['type'] == 'relation']:
         # drop spurious OSM nodes tagged onto a Muni relation there.
         if nm.strip().lower() == 'glen park':
             continue
+        # The F does not stop at Union Square/Market (Central Subway T station);
+        # drop the spurious F surface node tagged at Market & Stockton.
+        if ref == 'F' and nm.strip().lower() == 'market street & stockton street':
+            continue
         muni_pts.append((nm, n['lat'], n['lon'], ref))
 
 # nicer canonical display names for the shared subway / metro stations
@@ -112,8 +116,13 @@ def pick(names):
     return sorted(pool, key=len)[0]
 
 for c in mclusters:
-    stations.append({'name': pick(c['names']), 'lat': c['lat'], 'lon': c['lon'], 'systems': {'Muni'},
-                     'lines': c['lines'], 'names': set(c['names']) | {pick(c['names'])},
+    name = pick(c['names'])
+    # Drop the F-only surface stops on Market St inland of Embarcadero — they
+    # run directly above the Muni Metro subway and duplicate those stations.
+    if c['lines'] == {'Muni F'} and name.startswith('Market Street &'):
+        continue
+    stations.append({'name': name, 'lat': c['lat'], 'lon': c['lon'], 'systems': {'Muni'},
+                     'lines': c['lines'], 'names': set(c['names']) | {name},
                      'service': json.loads(json.dumps(FREQUENT))})
 
 print("PRE cross-system merge counts:")

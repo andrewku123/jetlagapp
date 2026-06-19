@@ -21,3 +21,30 @@ export function haversineMiles(a: LatLng, b: LatLng): number {
 function toRad(deg: number): number {
   return (deg * Math.PI) / 180
 }
+
+/**
+ * Endpoints of the perpendicular bisector of segment A–B, extended `lengthMiles`
+ * either side of the midpoint. Uses a local equirectangular approximation (good
+ * enough at metro scale). This is the hotter/colder boundary for a thermometer.
+ */
+export function bisectorEndpoints(
+  a: LatLng,
+  b: LatLng,
+  lengthMiles: number,
+): [LatLng, LatLng] {
+  const midLat = (a.lat + b.lat) / 2
+  const midLon = (a.lon + b.lon) / 2
+  const cos = Math.cos(toRad(midLat)) || 1e-6
+  const dx = (b.lon - a.lon) * cos
+  const dy = b.lat - a.lat
+  const len = Math.hypot(dx, dy) || 1
+  // unit vector perpendicular to A→B
+  const px = -dy / len
+  const py = dx / len
+  const degPerMile = 1 / 69.0
+  const ext = lengthMiles * degPerMile
+  return [
+    { lat: midLat + py * ext, lon: midLon + (px * ext) / cos },
+    { lat: midLat - py * ext, lon: midLon - (px * ext) / cos },
+  ]
+}

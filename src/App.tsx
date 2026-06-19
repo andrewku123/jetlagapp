@@ -5,7 +5,7 @@ import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER } from './lib/style'
-import type { DayType, GameState, LatLng, QuestionRecord, Station } from './types'
+import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station } from './types'
 import rawStations from './data/stations.json'
 
 const STATIONS = rawStations as unknown as Station[]
@@ -99,6 +99,15 @@ export default function App() {
   function resetGame() {
     if (confirm('Clear all questions, eliminations and notes?')) setGame({ ...emptyGame })
   }
+  function addAnnotation(a: Annotation) {
+    update({ annotations: [...game.annotations, a] })
+  }
+  function deleteAnnotation(id: string) {
+    update({ annotations: game.annotations.filter((a) => a.id !== id) })
+  }
+  function clearAnnotations() {
+    update({ annotations: [] })
+  }
 
   return (
     <div className="app">
@@ -140,6 +149,10 @@ export default function App() {
             }}
             records={game.questions}
             pickedPoints={pickedPoints}
+            annotations={game.annotations}
+            onAddAnnotation={addAnnotation}
+            onDeleteAnnotation={deleteAnnotation}
+            onClearAnnotations={clearAnnotations}
           />
         </div>
 

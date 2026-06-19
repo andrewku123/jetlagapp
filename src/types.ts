@@ -53,6 +53,30 @@ export interface QuestionRecord {
   active: boolean
 }
 
+// Manual compass / straightedge annotations the seeker draws on the map.
+export type DrawTool = 'select' | 'compass' | 'line' | 'bisector' | 'measure'
+
+export interface CircleAnnotation {
+  id: string
+  type: 'circle'
+  lat: number
+  lon: number
+  radiusMiles: number
+  color: string
+}
+
+export interface LineAnnotation {
+  id: string
+  type: 'line' | 'bisector' | 'measure'
+  aLat: number
+  aLon: number
+  bLat: number
+  bLon: number
+  color: string
+}
+
+export type Annotation = CircleAnnotation | LineAnnotation
+
 export interface GameState {
   dayType: DayType
   hourlyOnly: boolean
@@ -60,4 +84,5 @@ export interface GameState {
   manualEliminated: string[] // station ids eliminated by hand
   starred: string[] // station ids flagged as suspects
   notes: Record<string, string> // station id -> note
+  annotations: Annotation[] // compass / straightedge drawings
 }

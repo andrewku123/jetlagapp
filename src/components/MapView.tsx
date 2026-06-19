@@ -1,7 +1,20 @@
-import { MapContainer, TileLayer, CircleMarker, Circle, Popup, useMapEvents, Marker } from 'react-leaflet'
+import { useState } from 'react'
+import {
+  MapContainer,
+  TileLayer,
+  CircleMarker,
+  Circle,
+  Polyline,
+  Popup,
+  Tooltip,
+  useMapEvents,
+  Marker,
+} from 'react-leaflet'
 import L from 'leaflet'
-import type { LatLng, QuestionRecord, Station } from '../types'
+import type { Annotation, LatLng, QuestionRecord, Station, DrawTool } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
+import { bisectorEndpoints, haversineMiles } from '../lib/geo'
+import { RADAR_OPTIONS } from '../data/questions'
 
 interface Props {
   remaining: Station[]
@@ -12,12 +25,21 @@ interface Props {
   onStationClick: (st: Station) => void
   records: QuestionRecord[]
   pickedPoints: { label: string; point: LatLng; color: string }[]
+  annotations: Annotation[]
+  onAddAnnotation: (a: Annotation) => void
+  onDeleteAnnotation: (id: string) => void
+  onClearAnnotations: () => void
 }
 
-function ClickHandler({ onPick }: { onPick: (p: LatLng) => void }) {
+// length each side of the midpoint that a drawn line / bisector is extended (mi)
+const LINE_LENGTH_MI = 60
+
+const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
+
+function MapClicks({ onClick }: { onClick: (p: LatLng) => void }) {
   useMapEvents({
     click(e) {
-      onPick({ lat: e.latlng.lat, lon: e.latlng.lng })
+      onClick({ lat: e.latlng.lat, lon: e.latlng.lng })
     },
   })
   return null
@@ -31,6 +53,8 @@ const pin = (color: string) =>
     iconAnchor: [8, 8],
   })
 
+const rid = () => Math.random().toString(36).slice(2, 9)
+
 export default function MapView({
   remaining,
   eliminated,
@@ -40,79 +64,239 @@ export default function MapView({
   onStationClick,
   records,
   pickedPoints,
+  annotations,
+  onAddAnnotation,
+  onDeleteAnnotation,
+  onClearAnnotations,
 }: Props) {
+  const [tool, setTool] = useState<DrawTool>('select')
+  const [radiusMi, setRadiusMi] = useState(1)
+  const [color, setColor] = useState(DRAW_COLORS[0])
+  // first click of a two-point line / bisector
+  const [pending, setPending] = useState<LatLng | null>(null)
+
+  function handleClick(p: LatLng) {
+    if (tool === 'select') {
+      onPickLocation(p)
+      return
+    }
+    if (tool === 'compass') {
+      onAddAnnotation({ id: rid(), type: 'circle', lat: p.lat, lon: p.lon, radiusMiles: radiusMi, color })
+      return
+    }
+    // line / bisector / measure: collect two points
+    if (!pending) {
+      setPending(p)
+    } else {
+      const type = tool === 'bisector' ? 'bisector' : tool === 'measure' ? 'measure' : 'line'
+      onAddAnnotation({
+        id: rid(),
+        type,
+        aLat: pending.lat,
+        aLon: pending.lon,
+        bLat: p.lat,
+        bLon: p.lon,
+        color,
+      })
+      setPending(null)
+    }
+  }
+
+  function selectTool(t: DrawTool) {
+    setTool(t)
+    setPending(null)
+  }
+
+  const toolNoun = tool === 'bisector' ? 'bisector' : tool === 'measure' ? 'measurement' : 'line'
+  const hint =
+    tool === 'select'
+      ? 'Select: click drops a seeker point.'
+      : tool === 'compass'
+        ? `Compass: click a center to draw a ${radiusMi} mi circle.`
+        : pending
+          ? `Click the 2nd point to finish the ${toolNoun}.`
+          : tool === 'measure'
+            ? 'Measure: click two points to read the distance.'
+            : `${tool === 'bisector' ? 'Bisector' : 'Line'}: click the 1st point.`
+
   return (
-    <MapContainer center={[37.6, -122.2]} zoom={10} className="map" preferCanvas>
-      <TileLayer
-        attribution='&copy; OpenStreetMap contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      <ClickHandler onPick={onPickLocation} />
+    <>
+      <div className="draw-toolbar">
+        <div className="draw-tools">
+          {(['select', 'compass', 'line', 'bisector', 'measure'] as DrawTool[]).map((t) => (
+            <button key={t} className={tool === t ? 'on' : ''} onClick={() => selectTool(t)} title={t}>
+              {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : '📏'}
+              <span>{t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Bisector' : 'Measure'}</span>
+            </button>
+          ))}
+        </div>
+        {tool === 'compass' && (
+          <label className="draw-radius">
+            radius
+            <select value={radiusMi} onChange={(e) => setRadiusMi(Number(e.target.value))}>
+              {RADAR_OPTIONS.map((r) => (
+                <option key={r} value={r}>{r} mi</option>
+              ))}
+            </select>
+          </label>
+        )}
+        {tool !== 'select' && (
+          <div className="draw-colors">
+            {DRAW_COLORS.map((c) => (
+              <button
+                key={c}
+                className={'swatch' + (color === c ? ' on' : '')}
+                style={{ background: c }}
+                onClick={() => setColor(c)}
+                aria-label={`color ${c}`}
+              />
+            ))}
+          </div>
+        )}
+        <div className="draw-hint">{hint}</div>
+        {annotations.length > 0 && (
+          <button className="draw-clear" onClick={onClearAnnotations}>
+            Clear drawings ({annotations.length})
+          </button>
+        )}
+      </div>
 
-      {showEliminated &&
-        eliminated.map((st) => (
-          <CircleMarker
-            key={st.id}
-            center={[st.lat, st.lon]}
-            radius={3}
-            pathOptions={{ color: '#bbb', weight: 1, fillColor: '#ddd', fillOpacity: 0.4 }}
-          />
-        ))}
+      <MapContainer center={[37.6, -122.2]} zoom={10} className="map" preferCanvas>
+        <TileLayer
+          attribution='&copy; OpenStreetMap contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MapClicks onClick={handleClick} />
 
-      {remaining.map((st) => {
-        const color = stationColor(st)
-        const star = starred.has(st.id)
-        return (
-          <CircleMarker
-            key={st.id}
-            center={[st.lat, st.lon]}
-            radius={star ? 8 : 6}
-            pathOptions={{
-              color: star ? '#000' : color,
-              weight: star ? 3 : 1.5,
-              fillColor: color,
-              fillOpacity: 0.9,
-            }}
-            eventHandlers={{ click: () => onStationClick(st) }}
-          >
-            <Popup>
-              <div className="popup">
-                <strong>{st.name}</strong>
-                <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
-                {st.lines.length > 0 && <div className="muted">{st.lines.join(', ')}</div>}
-                <div className="muted">
-                  {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
-                  {st.elevation != null ? ` · ${Math.round(st.elevation)} m` : ''}
+        {showEliminated &&
+          eliminated.map((st) => (
+            <CircleMarker
+              key={st.id}
+              center={[st.lat, st.lon]}
+              radius={3}
+              pathOptions={{ color: '#bbb', weight: 1, fillColor: '#ddd', fillOpacity: 0.4 }}
+            />
+          ))}
+
+        {remaining.map((st) => {
+          const c = stationColor(st)
+          const star = starred.has(st.id)
+          return (
+            <CircleMarker
+              key={st.id}
+              center={[st.lat, st.lon]}
+              radius={star ? 8 : 6}
+              pathOptions={{
+                color: star ? '#000' : c,
+                weight: star ? 3 : 1.5,
+                fillColor: c,
+                fillOpacity: 0.9,
+              }}
+              eventHandlers={{ click: () => onStationClick(st) }}
+            >
+              <Popup>
+                <div className="popup">
+                  <strong>{st.name}</strong>
+                  <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
+                  {st.lines.length > 0 && <div className="muted">{st.lines.join(', ')}</div>}
+                  <div className="muted">
+                    {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
+                    {st.elevation != null ? ` · ${Math.round(st.elevation)} m` : ''}
+                  </div>
+                  <div className="muted">Nearest airport: {st.nearestAirport}</div>
+                  <button onClick={() => onStationClick(st)}>Actions…</button>
                 </div>
-                <div className="muted">Nearest airport: {st.nearestAirport}</div>
-                <button onClick={() => onStationClick(st)}>Actions…</button>
-              </div>
-            </Popup>
-          </CircleMarker>
-        )
-      })}
+              </Popup>
+            </CircleMarker>
+          )
+        })}
 
-      {records
-        .filter((r) => r.active && r.eliminates && r.kind === 'radar')
-        .map((r) => (
-          <Circle
-            key={r.id}
-            center={[Number(r.params.lat), Number(r.params.lon)]}
-            radius={Number(r.params.radiusMiles) * 1609.344}
-            pathOptions={{
-              color: r.params.answer === 'yes' ? '#1a7f37' : '#cf222e',
-              weight: 1,
-              fillOpacity: r.params.answer === 'yes' ? 0.06 : 0.04,
-              dashArray: r.params.answer === 'yes' ? undefined : '4',
-            }}
+        {records
+          .filter((r) => r.active && r.eliminates && r.kind === 'radar')
+          .map((r) => (
+            <Circle
+              key={r.id}
+              center={[Number(r.params.lat), Number(r.params.lon)]}
+              radius={Number(r.params.radiusMiles) * 1609.344}
+              pathOptions={{
+                color: r.params.answer === 'yes' ? '#1a7f37' : '#cf222e',
+                weight: 1,
+                fillOpacity: r.params.answer === 'yes' ? 0.06 : 0.04,
+                dashArray: r.params.answer === 'yes' ? undefined : '4',
+              }}
+            />
+          ))}
+
+        {/* manual compass / straightedge annotations */}
+        {annotations.map((a) => {
+          if (a.type === 'circle') {
+            return (
+              <Circle
+                key={a.id}
+                center={[a.lat, a.lon]}
+                radius={a.radiusMiles * 1609.344}
+                pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
+                eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
+              >
+                <Popup>
+                  <div className="popup">
+                    Compass circle · {a.radiusMiles} mi
+                    <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
+                  </div>
+                </Popup>
+              </Circle>
+            )
+          }
+          const endpoints =
+            a.type === 'bisector'
+              ? bisectorEndpoints({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon }, LINE_LENGTH_MI)
+              : [
+                  { lat: a.aLat, lon: a.aLon },
+                  { lat: a.bLat, lon: a.bLon },
+                ]
+          const miles =
+            a.type === 'measure'
+              ? haversineMiles({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon })
+              : null
+          const label =
+            a.type === 'bisector' ? 'Perpendicular bisector' : a.type === 'measure' ? `${miles!.toFixed(2)} mi` : 'Straightedge line'
+          return (
+            <Polyline
+              key={a.id}
+              positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
+              pathOptions={{ color: a.color, weight: 2, dashArray: a.type === 'bisector' ? '6 4' : a.type === 'measure' ? '2 6' : undefined }}
+              eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
+            >
+              {a.type === 'measure' && (
+                <Tooltip permanent direction="center" className="measure-label">
+                  {label}
+                </Tooltip>
+              )}
+              <Popup>
+                <div className="popup">
+                  {label}
+                  <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
+                </div>
+              </Popup>
+            </Polyline>
+          )
+        })}
+
+        {/* endpoints clicked for line/bisector are shown via the pending marker */}
+        {pending && (
+          <CircleMarker
+            center={[pending.lat, pending.lon]}
+            radius={5}
+            pathOptions={{ color, weight: 2, fillColor: '#fff', fillOpacity: 1 }}
           />
-        ))}
+        )}
 
-      {pickedPoints.map((pp, i) => (
-        <Marker key={i} position={[pp.point.lat, pp.point.lon]} icon={pin(pp.color)}>
-          <Popup>{pp.label}</Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+        {pickedPoints.map((pp, i) => (
+          <Marker key={i} position={[pp.point.lat, pp.point.lon]} icon={pin(pp.color)}>
+            <Popup>{pp.label}</Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </>
   )
 }

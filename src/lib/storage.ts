@@ -9,6 +9,7 @@ export const emptyGame: GameState = {
   manualEliminated: [],
   starred: [],
   notes: {},
+  annotations: [],
 }
 
 export function loadGame(): GameState {
