@@ -42,9 +42,9 @@ Key rules baked in (keep these):
 - **Disambiguation**: stations sharing a display name across systems get the system appended, e.g. `San Bruno (BART)` vs `San Bruno (Caltrain)`.
 - Writes `stations.json` (un-enriched) and prints per-system + eligible counts.
 
-Expected output: **248 unique stations** (BART 50 · Caltrain 24 · VTA 59 · Muni 126), **247 eligible weekday / 248 weekend** after the hourly filter. If your counts differ, diff against these before proceeding — a changed count usually means an upstream OSM/GTFS pull changed. (These same numbers are asserted in `src/data/stations.test.ts`; update both together on an intentional change.)
+Expected output: **249 unique stations** (BART 50 · Caltrain 24 · VTA 59 · Muni 127), **248 eligible weekday / 249 weekend** after the hourly filter. If your counts differ, diff against these before proceeding — a changed count usually means an upstream OSM/GTFS pull changed. (These same numbers are asserted in `src/data/stations.test.ts`; update both together on an intentional change.)
 
-> Muni 126 / 248 reflects the **F Wharf one-way loop** (see below): the inbound (Jefferson St) and outbound (Beach St) stops are kept as distinct stations rather than deduped into one corner.
+> Muni 127 / 249 reflects the **F Wharf one-way loop** (see below) and the N-Judah corrections in `fix_muni_eastbound.py` (kept in the `hideandseek` data dir): the inbound (Jefferson St) and outbound (Beach St) F stops stay distinct, Funston is its own N stop (not merged into 12th Ave), and split NB/SB poles take the **eastbound** pole (SW/SE side of an E-W street, from `muni_stops.json`) as the main name with the other direction as a secondary `aka`. The N terminal is `Judah St & La Playa St (Ocean Beach)` (there is no "48th Ave" stop), and the F's Ferry stop is `The Embarcadero/Ferry Bldg`. Other Muni surface lines (J/K/L/M/T) have not yet had this eastbound-pole audit applied.
 
 ### 2. `build_attributes.py` — enrich
 Reads `stations.json`, adds `id`, `nameLength`, `county`, `city`, `elevation`
