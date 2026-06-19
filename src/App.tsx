@@ -126,12 +126,6 @@ export default function App() {
         <div className="toggles">
           <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
           <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
-          <span
-            className="size-badge"
-            title={`Game size is auto-set from the map (${STATIONS.length} stations). Only stations served at least once an hour (≤${ELIGIBLE_HEADWAY_MIN} min) count as valid hiding spots.`}
-          >
-            {game.gameSize} · ≥hourly
-          </span>
           <label className="chk">
             <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
             show eliminated
@@ -261,6 +255,18 @@ export default function App() {
 
           {tab === 'legend' && (
             <div className="panel legend">
+              <h3>About this map</h3>
+              <p className="info">
+                <span className="info-tag">{game.gameSize}</span> game ({STATIONS.length} stations,
+                auto-set from station count).
+              </p>
+              <p className="info">
+                <strong>Eligibility:</strong> hiders' stations must be served at least once an hour
+                (≤{ELIGIBLE_HEADWAY_MIN} min between trains). Eligible —{' '}
+                weekday {STATIONS.filter((s) => s.headwayMin.wd <= ELIGIBLE_HEADWAY_MIN).length},{' '}
+                weekend {STATIONS.filter((s) => s.headwayMin.we <= ELIGIBLE_HEADWAY_MIN).length}{' '}
+                of {STATIONS.length}.
+              </p>
               <h3>Systems</h3>
               {SYSTEM_ORDER.map((sys) => (
                 <div key={sys} className="legrow">
@@ -268,11 +274,6 @@ export default function App() {
                   {sys} ({STATIONS.filter((s) => s.systems.includes(sys)).length})
                 </div>
               ))}
-              <p className="hint">
-                Total dataset: {STATIONS.length} stations. Weekday eligible:{' '}
-                {STATIONS.filter((s) => s.service.wd.served && s.service.wd.hourly).length}; weekend:{' '}
-                {STATIONS.filter((s) => s.service.we.served && s.service.we.hourly).length}.
-              </p>
               <p className="hint">
                 Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name length)
                 and Measuring (airport / sea level). POI-based questions (parks, hospitals, museums, etc.) and
