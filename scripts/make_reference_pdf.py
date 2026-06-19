@@ -130,27 +130,21 @@ def svg_horizontal(rows, caption, color="#c2410c", w=520, rh=12, pad_l=44, pad_r
     out.append(f'<text x="{pad_l+plot_w/2:.0f}" y="{h-3}" font-size="9" text-anchor="middle" fill="#333">{caption}</text>')
     return f'<svg viewBox="0 0 {w} {h}" width="100%">{"".join(out)}</svg>'
 
-# station profiles rendered as tables (not graphs), per request
-def html_table(rows, h1, h2, split=1):
-    cells = [f"<td>{html.escape(str(a))}</td><td>{c}</td>" for a, c in rows]
-    if split <= 1:
-        body = "".join(f"<tr>{c}</tr>" for c in cells)
-        head = f"<tr><th>{h1}</th><th>{h2}</th></tr>"
-    else:
-        per = -(-len(cells) // split)
-        cols = [cells[i * per:(i + 1) * per] for i in range(split)]
-        rows_out = []
-        for r in range(per):
-            tds = "".join(cols[c][r] if r < len(cols[c]) else "<td></td><td></td>"
-                          for c in range(split))
-            rows_out.append(f"<tr>{tds}</tr>")
-        body = "".join(rows_out)
-        head = "<tr>" + (f"<th>{h1}</th><th>{h2}</th>" * split) + "</tr>"
-    return f'<table class="dt"><thead>{head}</thead><tbody>{body}</tbody></table>'
+# station profiles rendered as horizontal grid tables (3 rows x n columns)
+def html_hgrid(rows, lab_head, val_head, nrows=3):
+    cells = [f'<span class="lab">{html.escape(str(a))}</span>'
+             f'<span class="val">{c}</span>' for a, c in rows]
+    ncols = -(-len(cells) // nrows)
+    cells += [""] * (nrows * ncols - len(cells))
+    body = "".join(
+        "<tr>" + "".join(f"<td>{cells[r * ncols + col]}</td>" for col in range(ncols)) + "</tr>"
+        for r in range(nrows))
+    cap = f'<caption>{lab_head} &rarr; {val_head}</caption>'
+    return f'<table class="hg">{cap}<tbody>{body}</tbody></table>'
 
 alt_rows = [(a, c) for a, c in zip(alt_labels, alt_counts) if c]
-alt_table = html_table(alt_rows, "Elevation band (ft)", "Stations")
-nl_table = html_table([(L, c) for L, c in nl_rows if c], "Name length", "Stations", split=2)
+alt_table = html_hgrid(alt_rows, "Elevation band (ft)", "stations")
+nl_table = html_hgrid([(L, c) for L, c in nl_rows if c], "Name length", "stations")
 
 # ---------- HTML ----------
 def ul(items, cls="cols"):
@@ -329,7 +323,7 @@ page1_cols = f"""
 
 # page 2: both station tables + reference lists (golf & mountains removed)
 page2_ref = f"""
-<div class="ref">{alt_card}{nl_card}{ref_air}{ref_counties}{ref_zoos}{ref_theme}{ref_cities}{ref_water}</div>"""
+<div class="ref">{alt_card}{nl_card}{ref_air}{ref_counties}{ref_zoos}{ref_theme}{ref_cities}</div>"""
 
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -375,11 +369,12 @@ ul.chk.photo li {{ margin:2.5px 0; }}
 .app.no {{ background:#f1f1f1; color:#999; }}
 .app.inline {{ display:inline-block; margin:5px 0 0; }}
 .page-break {{ break-before:page; }}
-/* station-profile tables */
-table.dt {{ width:100%; border-collapse:collapse; margin-top:4px; font-size:9.5px; }}
-table.dt th {{ text-align:left; background:#f0f0f0; border-bottom:1px solid #bbb; padding:3px 6px; font-size:9px; }}
-table.dt td {{ padding:2px 6px; border-bottom:1px solid #eee; }}
-table.dt td:nth-child(2n) {{ text-align:right; font-variant-numeric:tabular-nums; }}
+/* station-profile horizontal grid tables (3 rows x n cols) */
+table.hg {{ width:100%; border-collapse:collapse; margin-top:4px; table-layout:fixed; }}
+table.hg caption {{ caption-side:top; text-align:left; font-size:9px; color:#666; margin-bottom:3px; }}
+table.hg td {{ border:1px solid #e2e2e2; padding:3px 2px; text-align:center; vertical-align:middle; }}
+table.hg .lab {{ display:block; font-size:8.3px; color:#555; line-height:1.1; }}
+table.hg .val {{ display:block; font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; }}
 /* reference lists */
 .ref {{ column-count:2; column-gap:16px; }}
 .rblock {{ break-inside:auto; margin-bottom:9px; }}
@@ -403,7 +398,7 @@ footer {{ font-size:8px; color:#888; margin-top:8px; }}
 <h1>Bay Area play-area reference (continued)</h1>
 <p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties.</p>
 {page2_ref}
-<footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. Bodies of water limited to bays/straits, lakes, lagoons &amp; named reservoirs (minor coves/sloughs/ponds omitted). POIs from OpenStreetMap.</footer>
+<footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. POIs from OpenStreetMap.</footer>
 </body></html>"""
 
 open("/tmp/reference.html", "w").write(doc)

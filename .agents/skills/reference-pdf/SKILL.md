@@ -70,12 +70,13 @@ and Quick Start guide (`/docs/quick_start_guide/asking_questions`,
 - **Page 2** = both station tables + reference lists in `.ref { column-count:2 }`.
   `.rblock { break-inside:auto }` + `h3 { break-after:avoid }` lets long lists
   flow across the column break so everything packs onto one page.
-- **Station profiles are TABLES, not graphs** (`html_table`): altitude =
-  elevation-band -> station count; name-length = length -> count (`split=2`
-  for a 2-up table). Zero-count rows are filtered out. The old `svg_*`
-  helpers are unused.
+- **Station profiles are horizontal grid TABLES, not graphs** (`html_hgrid`):
+  laid out **3 rows × n columns**, each cell = bin label (small, on top) over
+  its station count (bold). altitude = elevation band; name-length = length.
+  Zero-count rows are filtered out. The old `svg_*` / `html_table` helpers are
+  unused.
 - **Reference lists included:** airports, counties, zoos, amusement parks,
-  cities, bodies of water. **Golf, mountains, and hospitals are intentionally
+  cities. **Golf, mountains, hospitals, and bodies of water are intentionally
   excluded** (per request). They're still fetched/curated — just not rendered.
 - **Airports**: name left, coords right (`ul.plain.air li` flex, wraps below).
 - **Radar** has a **Custom** checkbox after the presets (`scale(RADAR,
@@ -84,8 +85,7 @@ and Quick Start guide (`/docs/quick_start_guide/asking_questions`,
 ## Reference data
 Built from `src/data/stations.json` (counties, cities, altitude + name-length
 tables) and `/tmp/poi.json`. Curation: mountains = named
-peaks ≥ 1,500 ft; water = bays/straits/lakes/lagoons/named reservoirs (minor
-coves/sloughs/ponds dropped). Cities, amusement parks, zoos are full.
+peaks ≥ 1,500 ft. Cities, amusement parks, zoos are full.
 
 ## Gotchas
 - **Render with Playwright, not the `google-chrome` CLI.** In this environment
