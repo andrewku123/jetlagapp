@@ -3,6 +3,7 @@ import rawStations from './stations.json'
 import counties from './counties.geojson.json'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import { WEEKEND_EXCLUDED_LINES } from '../lib/style'
+import { ELIGIBLE_HEADWAY_MIN } from './questionSets'
 import type { Station } from '../types'
 
 const STATIONS = rawStations as unknown as Station[]
@@ -10,8 +11,9 @@ const STATIONS = rawStations as unknown as Station[]
 function count(system: string) {
   return STATIONS.filter((s) => s.systems.includes(system)).length
 }
+// Eligibility mirrors the app: a station counts if it's served at least hourly.
 function eligible(day: 'wd' | 'we') {
-  return STATIONS.filter((s) => s.service[day].served && s.service[day].hourly).length
+  return STATIONS.filter((s) => s.headwayMin[day] <= ELIGIBLE_HEADWAY_MIN).length
 }
 
 describe('station dataset invariants', () => {
@@ -80,6 +82,8 @@ describe('station dataset invariants', () => {
       expect(typeof s.lon).toBe('number')
       expect(s.systems.length).toBeGreaterThan(0)
       expect(s.nameLength).toBe(s.name.length)
+      expect(typeof s.headwayMin.wd).toBe('number')
+      expect(typeof s.headwayMin.we).toBe('number')
     }
   })
 })

@@ -1,3 +1,5 @@
+import type { GameSize } from './data/questionSets'
+
 export type DayType = 'wd' | 'we'
 
 export interface ServiceFlags {
@@ -20,6 +22,9 @@ export interface Station {
   airportDist: Record<string, number>
   nearestAirport: string
   service: { wd: ServiceFlags; we: ServiceFlags }
+  // typical midday headway (minutes between departures, best direction) per day;
+  // 999 = no regular midday service. Drives size-based eligibility.
+  headwayMin: { wd: number; we: number }
 }
 
 export interface LatLng {
@@ -83,7 +88,9 @@ export type UnitSystem = 'imperial' | 'metric'
 
 export interface GameState {
   dayType: DayType
-  hourlyOnly: boolean
+  // game size is auto-derived from the map (station count), not chosen by a
+  // person; it sets the station-frequency eligibility rule.
+  gameSize: GameSize
   units: UnitSystem
   questions: QuestionRecord[]
   manualEliminated: string[] // station ids eliminated by hand

@@ -5,6 +5,7 @@ import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
+import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
@@ -23,13 +24,11 @@ export default function App() {
 
   const update = (patch: Partial<GameState>) => setGame((g) => ({ ...g, ...patch }))
 
+  // A station is a valid hiding spot only if it's served at least hourly (the
+  // canonical Jet Lag rule, flat across all sizes).
   const base = useMemo(
-    () =>
-      STATIONS.filter((s) => {
-        const sv = s.service[game.dayType]
-        return sv.served && (!game.hourlyOnly || sv.hourly)
-      }),
-    [game.dayType, game.hourlyOnly],
+    () => STATIONS.filter((s) => s.headwayMin[game.dayType] <= ELIGIBLE_HEADWAY_MIN),
+    [game.dayType],
   )
 
   const { remaining, eliminated } = useMemo(() => {
@@ -127,14 +126,12 @@ export default function App() {
         <div className="toggles">
           <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
           <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
-          <label className="chk">
-            <input
-              type="checkbox"
-              checked={game.hourlyOnly}
-              onChange={(e) => update({ hourlyOnly: e.target.checked })}
-            />
-            ≥hourly only
-          </label>
+          <span
+            className="size-badge"
+            title={`Game size is auto-set from the map (${STATIONS.length} stations). Only stations served at least once an hour (≤${ELIGIBLE_HEADWAY_MIN} min) count as valid hiding spots.`}
+          >
+            {game.gameSize} · ≥hourly
+          </span>
           <label className="chk">
             <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
             show eliminated

@@ -34,7 +34,11 @@
    "OAK": 10446.9,
    "SJC": 57505.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 5.0
+  }
  },
  {
   "name": "16th Street / Mission",
@@ -72,7 +76,11 @@
    "OAK": 18328.8,
    "SJC": 62193.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
  },
  {
   "name": "19th Street Oakland",
@@ -109,7 +117,11 @@
    "OAK": 10805.1,
    "SJC": 57808.4
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 5.0
+  }
  },
  {
   "name": "24th Street / Mission",
@@ -147,7 +159,11 @@
    "OAK": 17878.5,
    "SJC": 61109.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "Antioch",
@@ -182,7 +198,11 @@
    "OAK": 49309.2,
    "SJC": 71461.8
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Ashby",
@@ -218,7 +238,11 @@
    "OAK": 15544.8,
    "SJC": 62179.6
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 13.0,
+   "we": 13.0
+  }
  },
  {
   "name": "Balboa Park",
@@ -262,7 +286,11 @@
    "OAK": 20016.6,
    "SJC": 60612.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "Bay Fair",
@@ -299,7 +327,11 @@
    "OAK": 8555.2,
    "SJC": 40970.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "Berryessa / North San Jose",
@@ -335,7 +367,11 @@
    "OAK": 49437.4,
    "SJC": 4801.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Castro Valley",
@@ -370,7 +406,11 @@
    "OAK": 13052.2,
    "SJC": 38624.8
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Civic Center / UN Plaza",
@@ -419,7 +459,11 @@
    "OAK": 18343.6,
    "SJC": 62988.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 4.0
+  }
  },
  {
   "name": "Coliseum",
@@ -457,7 +501,11 @@
    "OAK": 4337.7,
    "SJC": 49392.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "Colma",
@@ -493,7 +541,11 @@
    "OAK": 22026.3,
    "SJC": 59346.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 6.0,
+   "we": 7.0
+  }
  },
  {
   "name": "Concord",
@@ -528,7 +580,11 @@
    "OAK": 32897.1,
    "SJC": 68429.6
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 8.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Daly City",
@@ -566,7 +622,11 @@
    "OAK": 21976.6,
    "SJC": 61007.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 5.5,
+   "we": 6.0
+  }
  },
  {
   "name": "Downtown Berkeley",
@@ -602,7 +662,11 @@
    "OAK": 17333.2,
    "SJC": 63774.4
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10.0,
+   "we": 10.0
+  }
  },
  {
   "name": "Dublin / Pleasanton",
@@ -637,7 +701,11 @@
    "OAK": 28248.0,
    "SJC": 37688.4
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "El Cerrito Del Norte",
@@ -673,7 +741,11 @@
    "OAK": 24466.0,
    "SJC": 71197.9
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 7.0,
+   "we": 7.0
+  }
  },
  {
   "name": "El Cerrito Plaza",
@@ -709,7 +781,11 @@
    "OAK": 21571.3,
    "SJC": 68238.9
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 6.0,
+   "we": 6.0
+  }
  },
  {
   "name": "Embarcadero",
@@ -757,7 +833,11 @@
    "OAK": 17616.9,
    "SJC": 63103.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "Fremont",
@@ -793,7 +873,11 @@
    "OAK": 27935.1,
    "SJC": 21980.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Fruitvale",
@@ -830,7 +914,11 @@
    "OAK": 6220.0,
    "SJC": 52630.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "Glen Park",
@@ -868,7 +956,11 @@
    "OAK": 18880.4,
    "SJC": 60590.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
  },
  {
   "name": "Hayward",
@@ -904,7 +996,11 @@
    "OAK": 12894.5,
    "SJC": 36798.4
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Lafayette",
@@ -939,7 +1035,11 @@
    "OAK": 21087.5,
    "SJC": 61373.4
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 11.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Lake Merritt",
@@ -976,7 +1076,11 @@
    "OAK": 9587.6,
    "SJC": 56627.5
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 7.0,
+   "we": 7.0
+  }
  },
  {
   "name": "MacArthur",
@@ -1013,7 +1117,11 @@
    "OAK": 12902.2,
    "SJC": 59716.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 5.0,
+   "we": 5.0
+  }
  },
  {
   "name": "Millbrae",
@@ -1053,7 +1161,11 @@
    "OAK": 19791.8,
    "SJC": 48227.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Milpitas",
@@ -1091,7 +1203,11 @@
    "OAK": 44988.5,
    "SJC": 6098.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Montgomery Street",
@@ -1139,7 +1255,11 @@
    "OAK": 17803.1,
    "SJC": 63064.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "North Berkeley",
@@ -1175,7 +1295,11 @@
    "OAK": 18126.3,
    "SJC": 64800.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 6.0,
+   "we": 6.0
+  }
  },
  {
   "name": "North Concord / Martinez",
@@ -1210,7 +1334,11 @@
    "OAK": 35960.2,
    "SJC": 71649.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 8.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Oakland International Airport",
@@ -1245,7 +1373,11 @@
    "OAK": 910.6,
    "SJC": 46234.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 6.0,
+   "we": 6.0
+  }
  },
  {
   "name": "Orinda",
@@ -1280,7 +1412,11 @@
    "OAK": 18010.5,
    "SJC": 61509.5
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 8.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Pittsburg / Bay Point",
@@ -1315,7 +1451,11 @@
    "OAK": 41185.2,
    "SJC": 72890.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Pittsburg Center",
@@ -1350,7 +1490,11 @@
    "OAK": 44029.3,
    "SJC": 72731.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Pleasant Hill / Contra Costa Centre",
@@ -1385,7 +1529,11 @@
    "OAK": 27364.0,
    "SJC": 63809.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 8.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Powell Street",
@@ -1432,7 +1580,11 @@
    "OAK": 18046.0,
    "SJC": 63024.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
  },
  {
   "name": "Richmond",
@@ -1468,7 +1620,11 @@
    "OAK": 26899.6,
    "SJC": 73885.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 8.0,
+   "we": 8.0
+  }
  },
  {
   "name": "Rockridge",
@@ -1503,7 +1659,11 @@
    "OAK": 14255.4,
    "SJC": 60589.6
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 8.0,
+   "we": 20.0
+  }
  },
  {
   "name": "San Bruno (BART)",
@@ -1540,7 +1700,11 @@
    "OAK": 19530.8,
    "SJC": 52730.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 6.0,
+   "we": 6.0
+  }
  },
  {
   "name": "San Francisco International Airport",
@@ -1576,7 +1740,11 @@
    "OAK": 19003.5,
    "SJC": 49595.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 2.0,
+   "we": 2.0
+  }
  },
  {
   "name": "San Leandro",
@@ -1613,7 +1781,11 @@
    "OAK": 5185.8,
    "SJC": 44786.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "South Hayward",
@@ -1649,7 +1821,11 @@
    "OAK": 17116.1,
    "SJC": 32178.9
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "South San Francisco (BART)",
@@ -1686,7 +1862,11 @@
    "OAK": 20673.9,
    "SJC": 56459.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 7.0,
+   "we": 5.0
+  }
  },
  {
   "name": "Union City",
@@ -1722,7 +1902,11 @@
    "OAK": 22820.6,
    "SJC": 26448.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Walnut Creek",
@@ -1757,7 +1941,11 @@
    "OAK": 24703.2,
    "SJC": 61523.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 11.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Warm Springs / South Fremont",
@@ -1793,7 +1981,11 @@
    "OAK": 34495.9,
    "SJC": 15460.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "West Dublin / Pleasanton",
@@ -1828,7 +2020,11 @@
    "OAK": 25716.6,
    "SJC": 37385.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "West Oakland",
@@ -1866,7 +2062,11 @@
    "OAK": 11631.4,
    "SJC": 58751.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 3.0,
+   "we": 3.0
+  }
  },
  {
   "name": "22nd Street",
@@ -1903,7 +2103,11 @@
    "OAK": 15789.4,
    "SJC": 59925.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Bayshore",
@@ -1938,7 +2142,11 @@
    "OAK": 16077.7,
    "SJC": 56765.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 30.0,
+   "we": 29.0
+  }
  },
  {
   "name": "Belmont",
@@ -1973,7 +2181,11 @@
    "OAK": 22585.2,
    "SJC": 35291.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 30.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Broadway",
@@ -2008,7 +2220,11 @@
    "OAK": 19298.3,
    "SJC": 45692.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 999,
+   "we": 28.0
+  }
  },
  {
   "name": "Burlingame",
@@ -2043,7 +2259,11 @@
    "OAK": 18982.8,
    "SJC": 43943.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 50.0,
+   "we": 30.0
+  }
  },
  {
   "name": "California Avenue",
@@ -2079,7 +2299,11 @@
    "OAK": 32929.6,
    "SJC": 20216.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 25.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Hayward Park",
@@ -2114,7 +2338,11 @@
    "OAK": 20090.4,
    "SJC": 39681.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 43.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Hillsdale",
@@ -2151,7 +2379,11 @@
    "OAK": 20912.3,
    "SJC": 38476.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Lawrence",
@@ -2187,7 +2419,11 @@
    "OAK": 43435.2,
    "SJC": 6101.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 30.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Menlo Park",
@@ -2223,7 +2459,11 @@
    "OAK": 29567.7,
    "SJC": 24601.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 30.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Mountain View",
@@ -2263,7 +2503,11 @@
    "OAK": 38212.0,
    "SJC": 13507.4
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Palo Alto",
@@ -2300,7 +2544,11 @@
    "OAK": 31026.0,
    "SJC": 22664.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 19.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Redwood City",
@@ -2337,7 +2585,11 @@
    "OAK": 25922.0,
    "SJC": 30056.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 27.0,
+   "we": 30.0
+  }
  },
  {
   "name": "San Antonio (Caltrain)",
@@ -2374,7 +2626,11 @@
    "OAK": 36057.6,
    "SJC": 16500.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 28.0,
+   "we": 30.0
+  }
  },
  {
   "name": "San Bruno (Caltrain)",
@@ -2410,7 +2666,11 @@
    "OAK": 19566.3,
    "SJC": 51934.7
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 36.0,
+   "we": 16.0
+  }
  },
  {
   "name": "San Carlos",
@@ -2445,7 +2705,11 @@
    "OAK": 23743.2,
    "SJC": 33394.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 26.0,
+   "we": 30.0
+  }
  },
  {
   "name": "San Francisco (4th & King)",
@@ -2487,7 +2751,11 @@
    "OAK": 16642.6,
    "SJC": 61572.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "San Jose Diridon",
@@ -2526,7 +2794,11 @@
    "OAK": 51584.4,
    "SJC": 4465.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "San Mateo",
@@ -2563,7 +2835,11 @@
    "OAK": 19118.9,
    "SJC": 41672.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 24.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Santa Clara (Caltrain)",
@@ -2600,7 +2876,11 @@
    "OAK": 47743.0,
    "SJC": 1324.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 30.0,
+   "we": 30.0
+  }
  },
  {
   "name": "South San Francisco (Caltrain)",
@@ -2638,7 +2918,11 @@
    "OAK": 17756.7,
    "SJC": 53128.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 22.0,
+   "we": 20.0
+  }
  },
  {
   "name": "Sunnyvale",
@@ -2675,7 +2959,11 @@
    "OAK": 41308.8,
    "SJC": 9239.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 20.0,
+   "we": 30.0
+  }
  },
  {
   "name": "Tamien",
@@ -2712,7 +3000,11 @@
    "OAK": 54074.2,
    "SJC": 6951.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "15th Ave & Taraval St",
@@ -2748,7 +3040,11 @@
    "OAK": 22302.1,
    "SJC": 63796.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "19th Ave & Holloway Ave (SF State)",
@@ -2784,7 +3080,11 @@
    "OAK": 22484.2,
    "SJC": 62514.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "19th Ave & North Randolph St",
@@ -2821,7 +3121,11 @@
    "OAK": 22200.1,
    "SJC": 61932.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "19th Ave & Randolph St",
@@ -2857,7 +3161,11 @@
    "OAK": 22043.7,
    "SJC": 61674.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "19th Ave & Winston Dr (Stonestown)",
@@ -2893,7 +3201,11 @@
    "OAK": 22474.5,
    "SJC": 62902.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "30th St & Dolores St",
@@ -2929,7 +3241,11 @@
    "OAK": 18183.3,
    "SJC": 60682.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & 20th St",
@@ -2965,7 +3281,11 @@
    "OAK": 15558.1,
    "SJC": 59932.8
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & 23rd St",
@@ -3001,7 +3321,11 @@
    "OAK": 15353.8,
    "SJC": 59486.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Carroll Ave",
@@ -3037,7 +3361,11 @@
    "OAK": 15380.2,
    "SJC": 57490.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Evans Ave",
@@ -3073,7 +3401,11 @@
    "OAK": 15037.7,
    "SJC": 58458.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Gilman/Paul",
@@ -3109,7 +3441,11 @@
    "OAK": 15490.0,
    "SJC": 57341.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Hudson/Innes",
@@ -3145,7 +3481,11 @@
    "OAK": 15070.8,
    "SJC": 58293.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Kirkwood/La Salle",
@@ -3181,7 +3521,11 @@
    "OAK": 15106.2,
    "SJC": 58157.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Le Conte Ave",
@@ -3217,7 +3561,11 @@
    "OAK": 15679.3,
    "SJC": 57177.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Marin St",
@@ -3253,7 +3601,11 @@
    "OAK": 15136.7,
    "SJC": 58936.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Mission Rock St",
@@ -3290,7 +3642,11 @@
    "OAK": 16113.2,
    "SJC": 61023.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Oakdale/Palou",
@@ -3326,7 +3682,11 @@
    "OAK": 15159.0,
    "SJC": 57976.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Revere/Shafter",
@@ -3362,7 +3722,11 @@
    "OAK": 15205.1,
    "SJC": 57840.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "3rd St & Williams Ave",
@@ -3398,7 +3762,11 @@
    "OAK": 15264.4,
    "SJC": 57683.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "46th Ave & Taraval St",
@@ -3435,7 +3803,11 @@
    "OAK": 25179.3,
    "SJC": 65918.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "46th Ave & Ulloa St",
@@ -3471,7 +3843,11 @@
    "OAK": 25164.2,
    "SJC": 65794.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "46th Ave & Vicente St",
@@ -3507,7 +3883,11 @@
    "OAK": 25134.8,
    "SJC": 65654.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "4th St & Brannan St",
@@ -3543,7 +3923,11 @@
    "OAK": 16949.2,
    "SJC": 61926.6
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "9th Ave & Irving St",
@@ -3580,7 +3964,11 @@
    "OAK": 22207.3,
    "SJC": 64979.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Bayshore Blvd & Arleta/Blanken",
@@ -3616,7 +4004,11 @@
    "OAK": 16064.0,
    "SJC": 56978.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Bayshore Blvd & Sunnydale Ave",
@@ -3652,7 +4044,11 @@
    "OAK": 16335.5,
    "SJC": 56940.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Beach St & Mason St",
@@ -3687,7 +4083,11 @@
    "OAK": 20081.1,
    "SJC": 65269.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Beach St & Stockton St",
@@ -3722,7 +4122,11 @@
    "OAK": 19859.5,
    "SJC": 65114.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Broad St & Capitol Ave",
@@ -3758,7 +4162,11 @@
    "OAK": 21072.2,
    "SJC": 60817.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Broad St & Orizaba Ave",
@@ -3795,7 +4203,11 @@
    "OAK": 21374.8,
    "SJC": 61058.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Broad St & Plymouth Ave",
@@ -3831,7 +4243,11 @@
    "OAK": 20810.9,
    "SJC": 60618.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Carl St & Cole St",
@@ -3867,7 +4283,11 @@
    "OAK": 20914.4,
    "SJC": 64127.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Carl St & Hillway Ave",
@@ -3903,7 +4323,11 @@
    "OAK": 21436.1,
    "SJC": 64469.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Carl St & Stanyan St",
@@ -3939,7 +4363,11 @@
    "OAK": 21145.0,
    "SJC": 64279.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Castro Station",
@@ -3979,7 +4407,11 @@
    "OAK": 19509.0,
    "SJC": 62939.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Chinatown-Rose Pak",
@@ -4014,7 +4446,11 @@
    "OAK": 18589.4,
    "SJC": 63913.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & 16th St",
@@ -4050,7 +4486,11 @@
    "OAK": 19068.5,
    "SJC": 62695.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & 22nd St",
@@ -4086,7 +4526,11 @@
    "OAK": 18725.6,
    "SJC": 61858.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & 24th St",
@@ -4122,7 +4566,11 @@
    "OAK": 18642.6,
    "SJC": 61631.7
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & 26th St",
@@ -4158,7 +4606,11 @@
    "OAK": 18544.2,
    "SJC": 61348.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & 28th St",
@@ -4194,7 +4646,11 @@
    "OAK": 18458.6,
    "SJC": 61082.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & Day St",
@@ -4233,7 +4689,11 @@
    "OAK": 18390.9,
    "SJC": 60867.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Church St & Duboce Ave",
@@ -4271,7 +4731,11 @@
    "OAK": 19262.9,
    "SJC": 63113.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Church St Station",
@@ -4311,7 +4775,11 @@
    "OAK": 19192.2,
    "SJC": 62937.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "City College Pedestrian Bridge",
@@ -4346,7 +4814,11 @@
    "OAK": 20360.6,
    "SJC": 60983.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Don Chee Way & Steuart St",
@@ -4382,7 +4854,11 @@
    "OAK": 17421.4,
    "SJC": 63008.8
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Ferry Building",
@@ -4417,7 +4893,11 @@
    "OAK": 17518.5,
    "SJC": 63134.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Forest Hill Station",
@@ -4455,7 +4935,11 @@
    "OAK": 21307.2,
    "SJC": 63358.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Irving St & 2nd Ave",
@@ -4492,7 +4976,11 @@
    "OAK": 21603.4,
    "SJC": 64560.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Irving St & 6th Ave",
@@ -4529,7 +5017,11 @@
    "OAK": 21950.4,
    "SJC": 64808.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Jefferson St & Powell St",
@@ -4565,7 +5057,11 @@
    "OAK": 19732.4,
    "SJC": 65372.3
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Jefferson St & Taylor St",
@@ -4600,7 +5096,11 @@
    "OAK": 20238.2,
    "SJC": 65425.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Jones St & Beach St",
@@ -4636,7 +5136,11 @@
    "OAK": 19970.0,
    "SJC": 65500.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Judah St & 12th Ave",
@@ -4673,7 +5177,11 @@
    "OAK": 22542.7,
    "SJC": 65125.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 16th Ave",
@@ -4710,7 +5218,11 @@
    "OAK": 22812.8,
    "SJC": 65321.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 19th Ave",
@@ -4746,7 +5258,11 @@
    "OAK": 23109.0,
    "SJC": 65535.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 22nd Ave",
@@ -4783,7 +5299,11 @@
    "OAK": 23414.1,
    "SJC": 65757.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 25th Ave",
@@ -4819,7 +5339,11 @@
    "OAK": 23675.2,
    "SJC": 65947.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 28th Ave",
@@ -4855,7 +5379,11 @@
    "OAK": 23929.7,
    "SJC": 66133.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 31st Ave",
@@ -4891,7 +5419,11 @@
    "OAK": 24192.8,
    "SJC": 66325.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 34th Ave",
@@ -4927,7 +5459,11 @@
    "OAK": 24497.5,
    "SJC": 66548.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 40th Ave",
@@ -4963,7 +5499,11 @@
    "OAK": 25015.4,
    "SJC": 66929.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 43rd Ave",
@@ -4999,7 +5539,11 @@
    "OAK": 25322.2,
    "SJC": 67155.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 46th Ave",
@@ -5035,7 +5579,11 @@
    "OAK": 25597.2,
    "SJC": 67358.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 48th Ave",
@@ -5072,7 +5620,11 @@
    "OAK": 25831.8,
    "SJC": 67530.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & 9th Ave",
@@ -5108,7 +5660,11 @@
    "OAK": 22252.8,
    "SJC": 64916.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Judah St & Sunset Blvd",
@@ -5144,7 +5700,11 @@
    "OAK": 24737.6,
    "SJC": 66724.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Junipero Serra Blvd & Ocean Ave",
@@ -5180,7 +5740,11 @@
    "OAK": 22222.9,
    "SJC": 62991.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "King St & 2nd St",
@@ -5216,7 +5780,11 @@
    "OAK": 16433.3,
    "SJC": 61585.1
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Ocean Ave & Aptos Ave",
@@ -5252,7 +5820,11 @@
    "OAK": 21850.1,
    "SJC": 62486.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ocean Ave & Fairfield Way",
@@ -5289,7 +5861,11 @@
    "OAK": 21530.7,
    "SJC": 62085.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ocean Ave & Jules Ave",
@@ -5326,7 +5902,11 @@
    "OAK": 21262.5,
    "SJC": 61807.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ocean Ave & Lee Ave",
@@ -5362,7 +5942,11 @@
    "OAK": 20633.1,
    "SJC": 61222.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ocean Ave & Miramar Ave",
@@ -5398,7 +5982,11 @@
    "OAK": 20993.7,
    "SJC": 61557.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ocean Ave & San Leandro Way",
@@ -5434,7 +6022,11 @@
    "OAK": 22000.3,
    "SJC": 62712.7
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ocean Ave & Westgate Dr",
@@ -5471,7 +6063,11 @@
    "OAK": 21752.4,
    "SJC": 62337.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Randolph St & Arch St",
@@ -5507,7 +6103,11 @@
    "OAK": 21777.4,
    "SJC": 61443.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Randolph St & Bright St",
@@ -5543,7 +6143,11 @@
    "OAK": 21461.8,
    "SJC": 61200.9
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Right Of Way/18th St",
@@ -5580,7 +6184,11 @@
    "OAK": 18941.2,
    "SJC": 62412.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Right Of Way/20th St",
@@ -5616,7 +6224,11 @@
    "OAK": 18832.2,
    "SJC": 62165.6
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Right Of Way/21st St",
@@ -5653,7 +6265,11 @@
    "OAK": 18718.4,
    "SJC": 62000.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Right Of Way/Ocean Ave",
@@ -5690,7 +6306,11 @@
    "OAK": 22424.5,
    "SJC": 63139.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Saint Francis Circle",
@@ -5726,7 +6346,11 @@
    "OAK": 22207.8,
    "SJC": 63238.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "San Jose Ave & Farallones St",
@@ -5762,7 +6386,11 @@
    "OAK": 20470.2,
    "SJC": 60419.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "San Jose Ave & Lakeview Ave",
@@ -5798,7 +6426,11 @@
    "OAK": 20303.3,
    "SJC": 60448.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "San Jose Ave & Niagara Ave",
@@ -5835,7 +6467,11 @@
    "OAK": 20104.9,
    "SJC": 60491.4
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "San Jose Ave & Ocean Ave",
@@ -5871,7 +6507,11 @@
    "OAK": 19809.8,
    "SJC": 60565.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "San Jose Ave & Randall St",
@@ -5907,7 +6547,11 @@
    "OAK": 18145.9,
    "SJC": 60462.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "San Jose Ave & Santa Rosa Ave",
@@ -5943,7 +6587,11 @@
    "OAK": 19401.2,
    "SJC": 60690.7
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "San Jose Ave & Santa Ynez Ave",
@@ -5979,7 +6627,11 @@
    "OAK": 19610.2,
    "SJC": 60616.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Sunset Tunnel East Portal",
@@ -6014,7 +6666,11 @@
    "OAK": 19642.7,
    "SJC": 63387.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Taraval St & 17th Ave",
@@ -6050,7 +6706,11 @@
    "OAK": 22507.1,
    "SJC": 63954.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 19th Ave",
@@ -6086,7 +6746,11 @@
    "OAK": 22677.5,
    "SJC": 64081.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 22nd Ave",
@@ -6122,7 +6786,11 @@
    "OAK": 22921.2,
    "SJC": 64258.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 23rd Ave",
@@ -6158,7 +6826,11 @@
    "OAK": 23092.0,
    "SJC": 64384.7
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 26th Ave",
@@ -6194,7 +6866,11 @@
    "OAK": 23333.4,
    "SJC": 64560.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 30th Ave",
@@ -6230,7 +6906,11 @@
    "OAK": 23705.1,
    "SJC": 64832.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 32nd Ave",
@@ -6266,7 +6946,11 @@
    "OAK": 23891.7,
    "SJC": 64970.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 40th Ave",
@@ -6302,7 +6986,11 @@
    "OAK": 24636.3,
    "SJC": 65519.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 42nd Ave",
@@ -6338,7 +7026,11 @@
    "OAK": 24822.3,
    "SJC": 65657.7
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & 44th Ave",
@@ -6374,7 +7066,11 @@
    "OAK": 25008.8,
    "SJC": 65796.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Taraval St & Sunset Blvd",
@@ -6410,7 +7106,11 @@
    "OAK": 24320.7,
    "SJC": 65286.2
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "The Embarcadero & Bay St",
@@ -6446,7 +7146,11 @@
    "OAK": 19109.8,
    "SJC": 64832.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "The Embarcadero & Brannan St",
@@ -6482,7 +7186,11 @@
    "OAK": 16484.4,
    "SJC": 61854.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "The Embarcadero & Broadway",
@@ -6517,7 +7225,11 @@
    "OAK": 18017.8,
    "SJC": 63684.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "The Embarcadero & Folsom St",
@@ -6553,7 +7265,11 @@
    "OAK": 16887.5,
    "SJC": 62441.8
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "The Embarcadero & Green St",
@@ -6589,7 +7305,11 @@
    "OAK": 18226.0,
    "SJC": 63913.4
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "The Embarcadero & Greenwich St",
@@ -6625,7 +7345,11 @@
    "OAK": 18504.6,
    "SJC": 64218.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "The Embarcadero & Sansome St",
@@ -6661,7 +7385,11 @@
    "OAK": 18731.3,
    "SJC": 64458.7
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "The Embarcadero & Stockton St (Pier 39)",
@@ -6696,7 +7424,11 @@
    "OAK": 19851.1,
    "SJC": 65127.8
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "The Embarcadero & Washington St",
@@ -6732,7 +7464,11 @@
    "OAK": 17710.9,
    "SJC": 63345.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "UCSF Medical Center",
@@ -6767,7 +7503,11 @@
    "OAK": 15714.2,
    "SJC": 60265.0
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "UCSF/Chase Center",
@@ -6802,7 +7542,11 @@
    "OAK": 15887.7,
    "SJC": 60604.5
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Ulloa St & Forest Side Ave",
@@ -6838,7 +7582,11 @@
    "OAK": 22041.8,
    "SJC": 63500.5
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Union Square/Market Street",
@@ -6873,7 +7621,11 @@
    "OAK": 18042.8,
    "SJC": 63117.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Van Ness Station",
@@ -6915,7 +7667,11 @@
    "OAK": 18632.1,
    "SJC": 62968.1
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 9,
+   "we": 9
+  }
  },
  {
   "name": "Wawona St & 46th Ave (SF Zoo)",
@@ -6953,7 +7709,11 @@
    "OAK": 25161.3,
    "SJC": 65566.8
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "West Portal Ave & 14th Ave",
@@ -6990,7 +7750,11 @@
    "OAK": 22041.3,
    "SJC": 63274.0
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "West Portal Station",
@@ -7028,7 +7792,11 @@
    "OAK": 21765.6,
    "SJC": 63281.3
   },
-  "nearestAirport": "SFO"
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 10,
+   "we": 10
+  }
  },
  {
   "name": "Yerba Buena/Moscone",
@@ -7063,7 +7831,11 @@
    "OAK": 17490.4,
    "SJC": 62509.2
   },
-  "nearestAirport": "OAK"
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  },
  {
   "name": "Alder",
@@ -7098,7 +7870,11 @@
    "OAK": 43180.1,
    "SJC": 5650.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Alum Rock",
@@ -7133,7 +7909,11 @@
    "OAK": 52701.5,
    "SJC": 8556.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Bascom",
@@ -7168,7 +7948,11 @@
    "OAK": 53168.3,
    "SJC": 7116.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Baypointe",
@@ -7204,7 +7988,11 @@
    "OAK": 42137.0,
    "SJC": 5378.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Bayshore/NASA",
@@ -7239,7 +8027,11 @@
    "OAK": 38066.2,
    "SJC": 11596.3
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Berryessa",
@@ -7274,7 +8066,11 @@
    "OAK": 48535.5,
    "SJC": 6501.6
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Blossom Hill",
@@ -7309,7 +8105,11 @@
    "OAK": 61593.3,
    "SJC": 14470.3
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Bonaventura",
@@ -7345,7 +8145,11 @@
    "OAK": 44725.9,
    "SJC": 2816.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Borregas",
@@ -7380,7 +8184,11 @@
    "OAK": 38592.3,
    "SJC": 9438.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Branham",
@@ -7415,7 +8223,11 @@
    "OAK": 59435.5,
    "SJC": 12325.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Campbell",
@@ -7450,7 +8262,11 @@
    "OAK": 54007.0,
    "SJC": 8766.3
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Capitol",
@@ -7485,7 +8301,11 @@
    "OAK": 58504.6,
    "SJC": 11388.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Champion",
@@ -7521,7 +8341,11 @@
    "OAK": 41775.0,
    "SJC": 5456.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Children\u2019s Discovery Museum",
@@ -7556,7 +8380,11 @@
    "OAK": 52138.0,
    "SJC": 5031.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Cisco Way",
@@ -7591,7 +8419,11 @@
    "OAK": 42686.5,
    "SJC": 5427.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Civic Center",
@@ -7627,7 +8459,11 @@
    "OAK": 49464.1,
    "SJC": 2641.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Component",
@@ -7663,7 +8499,11 @@
    "OAK": 45404.3,
    "SJC": 2244.6
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Convention Center",
@@ -7699,7 +8539,11 @@
    "OAK": 52112.8,
    "SJC": 5056.6
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Cottle",
@@ -7734,7 +8578,11 @@
    "OAK": 64456.9,
    "SJC": 17420.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Cropley",
@@ -7769,7 +8617,11 @@
    "OAK": 46123.8,
    "SJC": 6052.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Crossman",
@@ -7804,7 +8656,11 @@
    "OAK": 39066.9,
    "SJC": 8875.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Curtner",
@@ -7839,7 +8695,11 @@
    "OAK": 56309.3,
    "SJC": 9185.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Fair Oaks",
@@ -7874,7 +8734,11 @@
    "OAK": 39797.2,
    "SJC": 8299.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Fruitdale",
@@ -7909,7 +8773,11 @@
    "OAK": 52649.0,
    "SJC": 5995.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Gish",
@@ -7945,7 +8813,11 @@
    "OAK": 48129.4,
    "SJC": 1639.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Great America",
@@ -7981,7 +8853,11 @@
    "OAK": 41213.7,
    "SJC": 5999.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Great Mall",
@@ -8016,7 +8892,11 @@
    "OAK": 44010.2,
    "SJC": 6097.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Hamilton",
@@ -8051,7 +8931,11 @@
    "OAK": 53474.4,
    "SJC": 7791.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Hostetter",
@@ -8086,7 +8970,11 @@
    "OAK": 47412.3,
    "SJC": 6284.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Japantown/Ayer",
@@ -8122,7 +9010,11 @@
    "OAK": 50302.0,
    "SJC": 3392.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Karina",
@@ -8158,7 +9050,11 @@
    "OAK": 46356.8,
    "SJC": 1587.3
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Lick Mill",
@@ -8194,7 +9090,11 @@
    "OAK": 41340.3,
    "SJC": 5785.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Lockheed Martin",
@@ -8229,7 +9129,11 @@
    "OAK": 38322.9,
    "SJC": 10103.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "McKee",
@@ -8264,7 +9168,11 @@
    "OAK": 50924.6,
    "SJC": 7525.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Metro/Airport",
@@ -8300,7 +9208,11 @@
    "OAK": 47107.0,
    "SJC": 1348.9
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Middlefield",
@@ -8335,7 +9247,11 @@
    "OAK": 38849.7,
    "SJC": 11478.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Moffett Park",
@@ -8370,7 +9286,11 @@
    "OAK": 38841.3,
    "SJC": 10222.0
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Ohlone/Chynoweth",
@@ -8405,7 +9325,11 @@
    "OAK": 60296.5,
    "SJC": 13218.3
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Old Ironsides",
@@ -8441,7 +9365,11 @@
    "OAK": 41011.3,
    "SJC": 6279.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Orchard",
@@ -8477,7 +9405,11 @@
    "OAK": 43844.7,
    "SJC": 3621.0
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Penitencia Creek",
@@ -8512,7 +9444,11 @@
    "OAK": 49483.9,
    "SJC": 6838.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Race",
@@ -8547,7 +9483,11 @@
    "OAK": 52328.4,
    "SJC": 5388.0
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Reamwood",
@@ -8582,7 +9522,11 @@
    "OAK": 40612.0,
    "SJC": 6840.0
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "River Oaks",
@@ -8618,7 +9562,11 @@
    "OAK": 42930.2,
    "SJC": 4488.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Saint James",
@@ -8654,7 +9602,11 @@
    "OAK": 51244.9,
    "SJC": 4302.4
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "San Antonio (VTA)",
@@ -8691,7 +9643,11 @@
    "OAK": 51959.7,
    "SJC": 4982.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "San Fernando",
@@ -8726,7 +9682,11 @@
    "OAK": 51652.1,
    "SJC": 4531.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Santa Clara (VTA)",
@@ -8763,7 +9723,11 @@
    "OAK": 51557.0,
    "SJC": 4598.1
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Santa Teresa",
@@ -8798,7 +9762,11 @@
    "OAK": 65717.1,
    "SJC": 18734.2
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Snell",
@@ -8833,7 +9801,11 @@
    "OAK": 62575.0,
    "SJC": 15452.5
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Tasman",
@@ -8869,7 +9841,11 @@
    "OAK": 42178.2,
    "SJC": 5212.7
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Vienna",
@@ -8904,7 +9880,11 @@
    "OAK": 40148.4,
    "SJC": 7593.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Virginia",
@@ -8939,7 +9919,11 @@
    "OAK": 53048.3,
    "SJC": 5928.0
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Whisman",
@@ -8974,7 +9958,11 @@
    "OAK": 39032.4,
    "SJC": 11891.3
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  },
  {
   "name": "Winchester",
@@ -9009,6 +9997,10 @@
    "OAK": 54422.5,
    "SJC": 9485.8
   },
-  "nearestAirport": "SJC"
+  "nearestAirport": "SJC",
+  "headwayMin": {
+   "wd": 15,
+   "we": 15
+  }
  }
 ]

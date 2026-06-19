@@ -18,6 +18,7 @@ function station(overrides: Partial<Station> = {}): Station {
     airportDist: { SFO: 20000, OAK: 18000, SJC: 70000 },
     nearestAirport: 'OAK',
     service: { wd: { served: true, hourly: true }, we: { served: true, hourly: true } },
+    headwayMin: { wd: 12, we: 12 },
     ...overrides,
   }
 }

@@ -84,7 +84,10 @@ via `clip_caltrain()` (the South County service Tamien→Gilroy is dropped): for
 each Caltrain chain, keep the contiguous part from the SF-ward end to the point
 nearest Tamien, then discard any chain a longer kept one already `_covered`s (a
 Diridon↔Gilroy variant otherwise leaves a redundant Diridon↔Tamien overlap stub).
-Add a similar clip for any future line that extends past the play boundary.
+The Muni **F** historic streetcar is clipped at **Civic Center** via `clip_f()`
+(same shape as `clip_caltrain`): keep the Fisherman's Wharf / Embarcadero side and
+drop the Civic Center→Castro tail up Market — a game design choice to end the F
+there. Add a similar clip for any future line that extends past the play boundary.
 
 ## Tuning the constants
 - `STITCH_TOL_M` (25 m): endpoint join tolerance. Raise if a line is fragmented

@@ -42,7 +42,9 @@ Key rules baked in (keep these):
 - **Disambiguation**: stations sharing a display name across systems get the system appended, e.g. `San Bruno (BART)` vs `San Bruno (Caltrain)`.
 - Writes `stations.json` (un-enriched) and prints per-system + eligible counts.
 
-Expected output: **246 unique stations** (BART 50 · Caltrain 24 · VTA 59 · Muni 124), **245 eligible weekday / 246 weekend** after the hourly filter. If your counts differ, diff against these before proceeding — a changed count usually means an upstream OSM/GTFS pull changed. (These same numbers are asserted in `src/data/stations.test.ts`; update both together on an intentional change.)
+Expected output: **248 unique stations** (BART 50 · Caltrain 24 · VTA 59 · Muni 126), **247 eligible weekday / 248 weekend** after the hourly filter. If your counts differ, diff against these before proceeding — a changed count usually means an upstream OSM/GTFS pull changed. (These same numbers are asserted in `src/data/stations.test.ts`; update both together on an intentional change.)
+
+> Muni 126 / 248 reflects the **F Wharf one-way loop** (see below): the inbound (Jefferson St) and outbound (Beach St) stops are kept as distinct stations rather than deduped into one corner.
 
 ### 2. `build_attributes.py` — enrich
 Reads `stations.json`, adds `id`, `nameLength`, `county`, `city`, `elevation`
@@ -57,6 +59,40 @@ BART GTFS route names are per-direction; this collapses them into the six BART
 color lines (Yellow/Red/Green/Orange/Blue/Beige) using `scripts/bart_lines.json`
 so the "matching transit line" question is sensible. Edits `src/data/stations.json`
 in place.
+
+### 3c. `compute_headways.py` — service frequency (`headwayMin`)
+
+Adds `headwayMin: {wd, we}` (typical midday minutes between departures, best
+direction; `999` = no regular midday service) to every station. This is what the
+app's **frequency eligibility** rule uses (`ELIGIBLE_HEADWAY_MIN = 60` in
+`src/data/questionSets.ts`): a station is a valid hiding spot only if
+`headwayMin[day] <= 60` — i.e. served at least once an hour. This is the
+canonical Jet Lag rule (their largest game, Japan, still required "served by at
+least one train an hour"), so it's **flat across all sizes**, not size-scaled.
+It's a game restriction derived from the data, not a user toggle (the old
+`≥hourly` checkbox is gone). Game size is still auto-derived from station count
+(`sizeForStationCount`) but only drives the question deck, not eligibility.
+A TODO in `questionSets.ts` notes a future auto-relax for genuinely sparse maps;
+the Bay Area never triggers it (247 of 248 qualify at ≤60).
+
+How each system gets its headway (kept in the `hideandseek` data dir as
+`compute_headways.py`):
+- **BART**: computed from the local GTFS (`gtfs/bart`) — resolves the active
+  service for a representative weekday + Saturday, takes the median consecutive
+  midday (10:00–15:00) gap per direction, and the station's value is the **min
+  across directions** (best service). Multi-platform stations aggregate platforms
+  within 300 m.
+- **Caltrain**: reuses the authoritative `wd_gap`/`we_gap` already in
+  `caltrain_service.json` (nearest stop within 600 m).
+- **Muni rail & VTA light rail**: representative published midday headways
+  (per-line constants in the script; SFMTA/VTA GTFS isn't directly fetchable).
+  They all run every ~8–15 min **every day**, comfortably below the smallest
+  threshold (30), so the exact value never changes eligibility.
+
+For a station served by several systems, take the **min** over systems. Re-run
+after any station rename/add. NOTE: the official rulebook does **not** define a
+frequency rule — these thresholds are our playability tuning and are flagged to
+reconcile against the original rulebook.
 
 ### 3b. `build_station_lines.py` — authoritative line membership (OSM)
 
@@ -97,6 +133,47 @@ Note its `matches()` classifier keys on **operator/network only, never the route
 name** — Muni Metro N's name ends "=> Caltrain" (its terminus), which otherwise
 misclassifies N as Caltrain and drops it from the overlay. eBART is tagged
 `light_rail`, so the BART matcher accepts both `subway` and `light_rail`.
+
+## Muni stop naming (SFMTA standardization)
+
+Raw OSM `name` tags for Muni surface stops are inconsistent — some are full
+cross-streets (`Beach Street & Mason Street`), some are bare (`20th Street`,
+`Arleta`). The deployed dataset standardizes all **Muni-only** stops to the
+abbreviated SFMTA display name. **BART/Caltrain names take precedence on shared
+stops** (a stop that also serves BART/Caltrain keeps its rail-station name and is
+not renamed).
+
+Reproduced by `standardize_muni_names.py` (kept in the `hideandseek` data dir,
+alongside `propose_muni_names.py` which prints the proposal for review):
+- **Abbreviate** Street→St, Avenue→Ave, Boulevard→Blvd, Drive→Dr, etc.
+- For `X & Y` names: token-set match (order-independent) against the scraped
+  SFMTA route pages (`/routes/<line>`); on an exact match use the route page's
+  canonical display (it carries landmark suffixes like `(SF State)`,
+  `(Stonestown)`). Otherwise keep the abbreviated existing name.
+- For **bare** stops: an explicit override map from the route pages
+  (`20th Street` → `3rd St & 20th St`, `Arleta` → `Bayshore Blvd & Arleta/Blanken`, …).
+- **Skip** named stations/landmarks (anything containing `Station`, plus
+  `Ferry Building`, `Saint Francis Circle`, `Chinatown-Rose Pak`, `Union Square/Market Street`, etc.).
+- Do **not** coordinate-match to the SF Muni Stops dataset for renaming — our
+  station coords are dedup centroids (off by 50–100 m) and stops are ~100 m
+  apart, so nearest-stop matching picks the wrong adjacent corner. Trust the
+  existing cross-street name + abbreviate.
+- Recompute `nameLength = len(name)` for every renamed/added station.
+
+## F Market & Wharves — Wharf terminal loop
+
+The F's north end is a **one-way terminal loop**, not a dead-end: inbound runs up
+The Embarcadero, then the loop returns west on **Jefferson St** → south on
+**Jones St** → east on **Beach St** → back to The Embarcadero. The overlay
+geometry is stitched from the OSM inbound + outbound relations (`clip_f` keeps
+the Wharf→Civic Center run; Civic Center is the south terminus — F is dropped
+from Castro/Church St/Van Ness, west of Civic Center).
+
+Because it's one-way, the inbound and outbound stops sit on **different streets**
+and are genuinely distinct — keep them separate (do not dedup as NB/SB poles):
+`Jefferson St & Taylor St` (outbound) vs `Beach St & Mason St` (return), and
+`Beach St & Stockton St` vs `The Embarcadero & Stockton St (Pier 39)`. The
+standardize script un-merges these and snaps each to its real SFMTA coordinate.
 
 ## Verify
 ```bash

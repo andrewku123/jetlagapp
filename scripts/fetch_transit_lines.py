@@ -299,6 +299,33 @@ def clip_caltrain(chains):
     return kept
 
 
+# The Muni F historic streetcar is drawn only as far as Civic Center; by design
+# the game ends the F there, so the Civic Center -> Castro tail up Market is
+# dropped. Keep the Fisherman's Wharf / Embarcadero side. Reference points:
+F_CIVIC_CENTER = (-122.4138, 37.7795)  # Civic Center station (Market & 8th)
+F_WHARF = (-122.4174, 37.8073)  # Fisherman's Wharf terminus (Jones & Beach)
+
+
+def clip_f(chains):
+    """Trim each F chain to the Wharf side of Civic Center (drop the
+    Civic Center -> Castro tail), mirroring clip_caltrain()."""
+    clipped = []
+    for c in chains:
+        ci = min(range(len(c)), key=lambda i: _dist_m(c[i], F_CIVIC_CENTER))
+        if _dist_m(c[0], F_WHARF) <= _dist_m(c[-1], F_WHARF):
+            seg = c[: ci + 1]
+        else:
+            seg = c[ci:]
+        if len(seg) >= 2 and chain_len_m(seg) >= STRAY_MIN_M:
+            clipped.append(seg)
+    clipped.sort(key=chain_len_m, reverse=True)
+    kept = []
+    for c in clipped:
+        if not _covered(c, kept):
+            kept.append(c)
+    return kept
+
+
 def main():
     raw = fetch()
     rels = []
@@ -340,6 +367,8 @@ def main():
         built = build_line(rel_ways_list)
         if system == "Caltrain":
             built = clip_caltrain(built)
+        if system == "Muni" and color == "#f0e68c":  # F historic streetcar
+            built = clip_f(built)
         for chain in built:
             if chain_len_m(chain) >= STRAY_MIN_M:
                 merged.append({"geom": chain, "system": system, "colors": [color]})
