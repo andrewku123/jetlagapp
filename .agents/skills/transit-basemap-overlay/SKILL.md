@@ -30,23 +30,26 @@ which:
    Caltrain` (see `matches()`); everything else (Amtrak, ACE, freight) is dropped.
 3. Colors lines from each route's OSM `colour` tag, except **Caltrain** which is
    collapsed to a single color (`CALTRAIN_COLOR`). `COLOR_REMAP` post-tweaks
-   specific colors (e.g. VTA orange → burnt orange so it differs from BART orange).
+   specific colors (e.g. VTA orange → a brighter orange `#ea580c` so it differs
+   from BART orange). **Cable cars are excluded** (see the `route == "cable_car"`
+   guard in `matches()`).
 4. Groups members by OSM way id, collecting **all** the colors running on each
-   way. **Caltrain is grouped in its own bucket** so it never merges with another
-   system and always stays a single line. Coords are rounded to 5 dp.
+   way, then merges co-located tracks (NB/SB pairs, stacked tunnels) into a single
+   centerline via `merge_colocated()`. **Caltrain is grouped in its own bucket** so
+   it never merges with another system. Coords are rounded to 5 dp.
+5. Appends the **BART Silver line** (Oakland Airport Connector, Coliseum→OAK) from
+   `scripts/oak_connector.json` with color `SILVER_COLOR` — this guideway isn't in
+   the rail route relations, so it's added explicitly.
 
-The app turns each way's `colors` into one-or-many parallel lines at render time
-(see the **interlining** skill). Regenerate with:
-`python3 scripts/fetch_transit_lines.py` (writes the JSON).
+Regenerate with `python3 scripts/fetch_transit_lines.py` (writes the JSON).
 
 ## Rendering (`src/components/MapView.tsx`)
-`buildTransit(interline)` expands the per-way features into the rendered
-`FeatureCollection` (see the **interlining** skill), memoized on the `interline`
-prop. It is drawn with `<GeoJSON data={transit} style={transitStyle}
-interactive={false} />` placed **after** the `<TileLayer>` and counties overlay
-but **before** the station markers, so stations sit on top. `transitStyle(feature)`
-returns `{ color: feature.properties.color, weight: 2.5, opacity: 0.95,
-interactive: false }`.
+Each way is rendered as a **single line in its first color** (`colors[0]`) — the
+static `TRANSIT` `FeatureCollection` is built once at module load. It is drawn with
+`<GeoJSON data={TRANSIT} style={transitStyle} interactive={false} />` placed
+**after** the `<TileLayer>` and counties overlay but **before** the station markers,
+so stations sit on top. `transitStyle(feature)` returns `{ color:
+feature.properties.color, weight: 2.5, opacity: 0.95, interactive: false }`.
 
 ## Common changes
 - **Recolor a system / line**: edit the OSM `colour` (upstream) is not an option;

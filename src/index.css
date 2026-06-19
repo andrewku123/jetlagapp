@@ -122,6 +122,8 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .popup { font-size: 13px; }
 .popup .muted { color: #666; font-size: 12px; }
 .popup button { margin-top: 6px; }
+.popup-actions { display: flex; gap: 6px; margin-top: 8px; }
+.popup-actions button { margin-top: 0; cursor: pointer; padding: 3px 8px; font-size: 12px; }
 .muted { color: var(--muted); }
 
 .seeker-pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.4); }

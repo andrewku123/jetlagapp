@@ -30,11 +30,13 @@ FALLBACK = {
     "VTA": "#1a73e8",
 }
 CALTRAIN_COLOR = "#9b1b30"
+# BART Oakland Airport Connector (Coliseum–OAK) — the "Silver" line.
+SILVER_COLOR = "#8a9099"
 
 # Per-system color overrides. VTA's orange (#f79729) is too close to BART's
-# orange (#faa61a); shift it to a distinct burnt orange.
+# orange (#faa61a); shift it to a distinct, brighter orange.
 COLOR_REMAP = {
-    "VTA": {"#f79729": "#c2410c"},
+    "VTA": {"#f79729": "#ea580c"},
 }
 
 
@@ -42,6 +44,9 @@ def matches(tags):
     """Return system name if this relation is one we want, else None."""
     op = (tags.get("operator", "") + " " + tags.get("network", "") + " " + tags.get("name", "")).lower()
     route = tags.get("route", "")
+    # exclude cable cars (SF Powell/California lines) from the overlay
+    if route == "cable_car" or "cable car" in op or "cable_car" in op:
+        return None
     if "caltrain" in op or "peninsula corridor" in op:
         return "Caltrain"
     if route == "subway" and ("bart" in op or "bay area rapid" in op):
@@ -201,6 +206,21 @@ def main():
             "properties": {"system": entry["system"], "colors": sorted(entry["colors"])},
             "geometry": {"type": "LineString", "coordinates": round_coords(entry["geom"])},
         })
+    # OAK Airport Connector (Coliseum -> OAK): an automated guideway that is not
+    # part of the rail route relations above, so add it explicitly as the Silver
+    # line using the saved alignment.
+    try:
+        with open("scripts/oak_connector.json") as f:
+            oak = json.load(f)
+        if len(oak) >= 2:
+            feats.append({
+                "type": "Feature",
+                "properties": {"system": "BART", "colors": [SILVER_COLOR]},
+                "geometry": {"type": "LineString", "coordinates": round_coords(oak)},
+            })
+    except FileNotFoundError:
+        pass
+
     out = {"type": "FeatureCollection", "features": feats}
     path = "src/data/transit-lines.geojson.json"
     with open(path, "w") as f:

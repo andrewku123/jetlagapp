@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useState } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -17,7 +17,6 @@ import type { Annotation, LatLng, QuestionRecord, Station, DrawTool } from '../t
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorEndpoints, haversineMiles, formatMiles } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { buildTransit, type TransitWay } from '../lib/transit'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
 import transitData from '../data/transit-lines.geojson.json'
@@ -30,20 +29,39 @@ function countyStyle(feature?: Feature<Geometry, { name: string }>) {
     : { stroke: true, color: '#6b7280', weight: 1, fillColor: '#6b7280', fillOpacity: 0.35, interactive: false }
 }
 
+interface TransitWay {
+  type: 'Feature'
+  properties: { system: string; colors: string[] }
+  geometry: { type: 'LineString'; coordinates: number[][] }
+}
 const TRANSIT_WAYS = (transitData as unknown as { features: TransitWay[] }).features
+
+// one line per physical track, drawn in the first color that runs on it
+const TRANSIT: GeoJSON.FeatureCollection = {
+  type: 'FeatureCollection',
+  features: TRANSIT_WAYS.map((w) => ({
+    type: 'Feature',
+    properties: { color: w.properties.colors[0] },
+    geometry: w.geometry,
+  })) as Feature[],
+}
 
 function transitStyle(feature?: Feature<Geometry, { color: string }>) {
   return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
 }
 
+// BART line labels carry a "(start–end)" suffix; drop it for the station popup
+const fmtLine = (l: string) => (l.startsWith('BART ') ? l.replace(/\s*\(.*\)\s*$/, '') : l)
+
 interface Props {
   remaining: Station[]
   eliminated: Station[]
   showEliminated: boolean
-  interline: boolean
   starred: Set<string>
+  manualEliminated: Set<string>
   onPickLocation: (p: LatLng) => void
-  onStationClick: (st: Station) => void
+  onToggleStar: (id: string) => void
+  onToggleEliminate: (id: string) => void
   records: QuestionRecord[]
   pickedPoints: { label: string; point: LatLng; color: string }[]
   annotations: Annotation[]
@@ -80,10 +98,11 @@ export default function MapView({
   remaining,
   eliminated,
   showEliminated,
-  interline,
   starred,
+  manualEliminated,
   onPickLocation,
-  onStationClick,
+  onToggleStar,
+  onToggleEliminate,
   records,
   pickedPoints,
   annotations,
@@ -98,7 +117,6 @@ export default function MapView({
   const [measureStep, setMeasureStep] = useState(0)
   // first click of a two-point line / bisector
   const [pending, setPending] = useState<LatLng | null>(null)
-  const transit = useMemo(() => buildTransit(TRANSIT_WAYS, interline), [interline])
 
   function handleClick(p: LatLng) {
     if (tool === 'select') {
@@ -225,7 +243,7 @@ export default function MapView({
         <MapClicks onClick={handleClick} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
-        <GeoJSON key={interline ? 'il' : 'flat'} data={transit} style={transitStyle as never} interactive={false} />
+        <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
 
         {showEliminated &&
           eliminated.map((st) => (
@@ -239,7 +257,13 @@ export default function MapView({
                 <div className="popup">
                   <strong>{st.name}</strong>
                   <div className="muted">{st.systems.join(' · ')}</div>
-                  <div className="muted">Eliminated — restore from the Suspects list.</div>
+                  <div className="muted">Eliminated.</div>
+                  <div className="popup-actions">
+                    <button onClick={() => onToggleStar(st.id)}>{starred.has(st.id) ? '★ Unstar' : '☆ Star'}</button>
+                    {manualEliminated.has(st.id) && (
+                      <button onClick={() => onToggleEliminate(st.id)}>↩ Restore</button>
+                    )}
+                  </div>
                 </div>
               </Popup>
             </CircleMarker>
@@ -259,19 +283,21 @@ export default function MapView({
                 fillColor: star ? '#f5b301' : c,
                 fillOpacity: 0.9,
               }}
-              eventHandlers={{ click: () => onStationClick(st) }}
             >
               <Popup>
                 <div className="popup">
                   <strong>{st.name}</strong>
                   <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
-                  {st.lines.length > 0 && <div className="muted">{st.lines.join(', ')}</div>}
+                  {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
                   <div className="muted">
                     {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
                     {st.elevation != null ? ` · ${Math.round(st.elevation)} m` : ''}
                   </div>
                   <div className="muted">Nearest airport: {st.nearestAirport}</div>
-                  <button onClick={() => onStationClick(st)}>Actions…</button>
+                  <div className="popup-actions">
+                    <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
+                    <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
+                  </div>
                 </div>
               </Popup>
             </CircleMarker>

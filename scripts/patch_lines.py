@@ -23,7 +23,7 @@ def canon(name: str) -> str:
     if has('Richmond') and ('Millbrae' in n or 'SFO' in n):
         return 'BART Red (Richmond–Millbrae/SFO)'
     if 'OAK' in n or 'Oakland Int' in n:
-        return 'BART Beige (Coliseum–OAK)'
+        return 'BART Silver (Coliseum–OAK)'
     return 'BART ' + n
 
 

@@ -17,7 +17,6 @@ export default function App() {
   const [lastClick, setLastClick] = useState<LatLng | null>(null)
   const [tab, setTab] = useState<Tab>('ask')
   const [showEliminated, setShowEliminated] = useState(true)
-  const [interline, setInterline] = useState(true)
   const [sheetOpen, setSheetOpen] = useState(false)
 
   useEffect(() => saveGame(game), [game])
@@ -132,10 +131,6 @@ export default function App() {
             <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
             show eliminated
           </label>
-          <label className="chk">
-            <input type="checkbox" checked={interline} onChange={(e) => setInterline(e.target.checked)} />
-            interline
-          </label>
           <button onClick={resetGame}>Reset</button>
         </div>
       </header>
@@ -146,14 +141,11 @@ export default function App() {
             remaining={remaining}
             eliminated={eliminated}
             showEliminated={showEliminated}
-            interline={interline}
             starred={starredSet}
+            manualEliminated={manualSet}
             onPickLocation={setLastClick}
-            onStationClick={(st) => {
-              setTab('suspects')
-              toggleStar(st.id)
-              setSheetOpen(true)
-            }}
+            onToggleStar={toggleStar}
+            onToggleEliminate={toggleManual}
             records={game.questions}
             pickedPoints={pickedPoints}
             annotations={game.annotations}
