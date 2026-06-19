@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import type { LatLng, QuestionKind, QuestionRecord } from '../types'
+import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS } from '../data/questions'
+import { KM_PER_MILE, FEET_PER_METER } from '../lib/geo'
 
 interface Props {
   lastClick: LatLng | null
+  units: UnitSystem
   counties: string[]
   cities: string[]
   lines: string[]
@@ -19,19 +21,63 @@ function fmt(p: LatLng | null): string {
   return p ? `${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}` : '— click map —'
 }
 
+// A location picker: "Use last click" plus manual lat/lon entry.
+function CoordPicker({
+  label,
+  point,
+  setPoint,
+  lastClick,
+}: {
+  label: string
+  point: LatLng | null
+  setPoint: (p: LatLng | null) => void
+  lastClick: LatLng | null
+}) {
+  const [lat, setLat] = useState('')
+  const [lon, setLon] = useState('')
+  function apply() {
+    const la = Number(lat)
+    const lo = Number(lon)
+    if (lat.trim() === '' || lon.trim() === '' || !Number.isFinite(la) || !Number.isFinite(lo))
+      return alert('Enter a valid latitude and longitude.')
+    if (la < -90 || la > 90 || lo < -180 || lo > 180)
+      return alert('Latitude must be between -90 and 90, longitude between -180 and 180.')
+    setPoint({ lat: la, lon: lo })
+  }
+  return (
+    <div className="coordpick">
+      <div className="row">
+        <label>{label}</label>
+        <span className="coord">{fmt(point)}</span>
+        <button disabled={!lastClick} onClick={() => setPoint(lastClick)}>Use last click</button>
+      </div>
+      <div className="row coordin">
+        <input type="number" step="any" placeholder="latitude" value={lat} onChange={(e) => setLat(e.target.value)} />
+        <input type="number" step="any" placeholder="longitude" value={lon} onChange={(e) => setLon(e.target.value)} />
+        <button onClick={apply}>Set</button>
+      </div>
+    </div>
+  )
+}
+
 export default function QuestionForm({
   lastClick,
+  units,
   counties,
   cities,
   lines,
   airports,
   onSubmit,
 }: Props) {
+  const metric = units === 'metric'
+  const distUnit = metric ? 'km' : 'mi'
+  const elevUnit = metric ? 'm' : 'ft'
   const [kind, setKind] = useState<QuestionKind>('radar')
   const meta = QUESTION_CATALOG.find((q) => q.kind === kind)!
 
   // shared param state
   const [radius, setRadius] = useState<string>('0.5')
+  const [customRadius, setCustomRadius] = useState<string>('')
   const [yesno, setYesno] = useState<'yes' | 'no'>('yes')
   const [hotcold, setHotcold] = useState<'hotter' | 'colder'>('hotter')
   const [closefar, setClosefar] = useState<'closer' | 'further'>('closer')
@@ -46,8 +92,16 @@ export default function QuestionForm({
     let params: Record<string, unknown> = {}
     switch (kind) {
       case 'radar': {
-        if (!center) return alert('Set the radar center by clicking the map.')
-        params = { lat: center.lat, lon: center.lon, radiusMiles: Number(radius), answer: yesno }
+        if (!center) return alert('Set the radar center (click the map or enter coordinates).')
+        const radiusMiles =
+          radius === 'custom'
+            ? metric
+              ? Number(customRadius) / KM_PER_MILE
+              : Number(customRadius)
+            : Number(radius)
+        if (!Number.isFinite(radiusMiles) || radiusMiles <= 0)
+          return alert('Enter a valid radar radius greater than 0.')
+        params = { lat: center.lat, lon: center.lon, radiusMiles, answer: yesno }
         break
       }
       case 'thermometer': {
@@ -61,8 +115,9 @@ export default function QuestionForm({
         break
       }
       case 'measure-sealevel': {
-        if (num === '') return alert('Enter your altitude in meters.')
-        params = { value: Number(num), answer: closefar }
+        if (num === '') return alert(`Enter your altitude in ${elevUnit}.`)
+        const meters = metric ? Number(num) : Number(num) / FEET_PER_METER
+        params = { value: meters, answer: closefar }
         break
       }
       case 'match-namelength': {
@@ -93,7 +148,7 @@ export default function QuestionForm({
       active: true,
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setNote('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setNote(''); setCustomRadius('')
   }
 
   const yesNo = (
@@ -138,29 +193,24 @@ export default function QuestionForm({
               {RADAR_OPTIONS.map((r) => (
                 <option key={r} value={r}>{r}</option>
               ))}
+              <option value="custom">Custom…</option>
             </select>
           </div>
-          <div className="row">
-            <label>Center</label>
-            <span className="coord">{fmt(center)}</span>
-            <button disabled={!lastClick} onClick={() => setCenter(lastClick)}>Use last click</button>
-          </div>
+          {radius === 'custom' && (
+            <div className="row">
+              <label>Custom ({distUnit})</label>
+              <input type="number" step="any" min="0" value={customRadius} onChange={(e) => setCustomRadius(e.target.value)} placeholder="e.g. 2.5" />
+            </div>
+          )}
+          <CoordPicker label="Center" point={center} setPoint={setCenter} lastClick={lastClick} />
           {yesNo}
         </>
       )}
 
       {kind === 'thermometer' && (
         <>
-          <div className="row">
-            <label>Start A</label>
-            <span className="coord">{fmt(ptA)}</span>
-            <button disabled={!lastClick} onClick={() => setPtA(lastClick)}>Use last click</button>
-          </div>
-          <div className="row">
-            <label>End B</label>
-            <span className="coord">{fmt(ptB)}</span>
-            <button disabled={!lastClick} onClick={() => setPtB(lastClick)}>Use last click</button>
-          </div>
+          <CoordPicker label="Start A" point={ptA} setPoint={setPtA} lastClick={lastClick} />
+          <CoordPicker label="End B" point={ptB} setPoint={setPtB} lastClick={lastClick} />
           <div className="row">
             <label>Result</label>
             <div className="seg">
@@ -173,11 +223,7 @@ export default function QuestionForm({
 
       {kind === 'measure-airport' && (
         <>
-          <div className="row">
-            <label>Your location</label>
-            <span className="coord">{fmt(center)}</span>
-            <button disabled={!lastClick} onClick={() => setCenter(lastClick)}>Use last click</button>
-          </div>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} />
           <div className="row">
             <label>Answer</label>
             <div className="seg">
@@ -191,7 +237,7 @@ export default function QuestionForm({
       {kind === 'measure-sealevel' && (
         <>
           <div className="row">
-            <label>Your altitude (m)</label>
+            <label>Your altitude ({elevUnit})</label>
             <input type="number" value={num} onChange={(e) => setNum(e.target.value)} />
           </div>
           <div className="row">

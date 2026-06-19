@@ -38,8 +38,11 @@ create **annotations** that persist in the saved game.
 ## Geometry helpers (`src/lib/geo.ts`)
 - `haversineMiles(a, b)` — great-circle miles (used for the measure label and the
   radar/thermometer engine; keep it the single source of distance truth).
-- `formatMiles(miles, step = 0)` — measure label formatter; `step > 0` snaps to
-  that bucket (`0.5`, `1`, `5`, `10`), else 2 decimals.
+- `formatMiles(miles, step = 0)` — legacy mile-only label formatter (kept for tests).
+- `formatDistance(miles, units, step = 0)` — unit-aware measure label formatter;
+  converts to km when `units === 'metric'`. `step > 0` snaps to that bucket in the
+  *display* unit, else 2 decimals. The measure tool uses this (see the
+  `units-toggle` skill).
 - `bisectorEndpoints(a, b, lengthMiles)` — endpoints of the perpendicular
   bisector of A–B (the thermometer hotter/colder boundary), via a local
   equirectangular projection. `LINE_LENGTH_MI` in MapView sets the half-length.

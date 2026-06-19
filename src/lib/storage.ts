@@ -5,6 +5,7 @@ const KEY = 'bahs.game.v1'
 export const emptyGame: GameState = {
   dayType: 'wd',
   hourlyOnly: true,
+  units: 'imperial',
   questions: [],
   manualEliminated: [],
   starred: [],

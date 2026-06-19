@@ -13,9 +13,9 @@ import {
 } from 'react-leaflet'
 import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
-import type { Annotation, LatLng, QuestionRecord, Station, DrawTool } from '../types'
+import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
-import { bisectorEndpoints, haversineMiles, formatMiles } from '../lib/geo'
+import { bisectorEndpoints, haversineMiles, formatDistance, formatElevation } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
@@ -59,6 +59,7 @@ interface Props {
   showEliminated: boolean
   starred: Set<string>
   manualEliminated: Set<string>
+  units: UnitSystem
   onPickLocation: (p: LatLng) => void
   onToggleStar: (id: string) => void
   onToggleEliminate: (id: string) => void
@@ -100,6 +101,7 @@ export default function MapView({
   showEliminated,
   starred,
   manualEliminated,
+  units,
   onPickLocation,
   onToggleStar,
   onToggleEliminate,
@@ -111,6 +113,9 @@ export default function MapView({
   onClearAnnotations,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
+  // stations are only clickable in select mode; in draw modes clicks pass
+  // through to the map so you can snap a point/endpoint onto a station
+  const selectMode = tool === 'select'
   const [radiusMi, setRadiusMi] = useState(1)
   const [color, setColor] = useState(DRAW_COLORS[0])
   // rounding step for the measure label: 0 = exact (2 dp), else snap to this many mi
@@ -189,10 +194,10 @@ export default function MapView({
             round
             <select value={measureStep} onChange={(e) => setMeasureStep(Number(e.target.value))}>
               <option value={0}>exact</option>
-              <option value={0.5}>½ mi</option>
-              <option value={1}>1 mi</option>
-              <option value={5}>5 mi</option>
-              <option value={10}>10 mi</option>
+              <option value={0.5}>½ {units === 'metric' ? 'km' : 'mi'}</option>
+              <option value={1}>1 {units === 'metric' ? 'km' : 'mi'}</option>
+              <option value={5}>5 {units === 'metric' ? 'km' : 'mi'}</option>
+              <option value={10}>10 {units === 'metric' ? 'km' : 'mi'}</option>
             </select>
           </label>
         )}
@@ -248,9 +253,10 @@ export default function MapView({
         {showEliminated &&
           eliminated.map((st) => (
             <CircleMarker
-              key={st.id}
+              key={st.id + (selectMode ? '-s' : '-d')}
               center={[st.lat, st.lon]}
               radius={5}
+              interactive={selectMode}
               pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
             >
               <Popup>
@@ -274,9 +280,10 @@ export default function MapView({
           const star = starred.has(st.id)
           return (
             <CircleMarker
-              key={st.id}
+              key={st.id + (selectMode ? '-s' : '-d')}
               center={[st.lat, st.lon]}
               radius={star ? 11 : 6}
+              interactive={selectMode}
               pathOptions={{
                 color: star ? '#b8860b' : c,
                 weight: star ? 3 : 1.5,
@@ -291,7 +298,7 @@ export default function MapView({
                   {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
                   <div className="muted">
                     {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
-                    {st.elevation != null ? ` · ${Math.round(st.elevation)} m` : ''}
+                    {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
                   </div>
                   <div className="muted">Nearest airport: {st.nearestAirport}</div>
                   <div className="popup-actions">
@@ -311,6 +318,7 @@ export default function MapView({
               key={r.id}
               center={[Number(r.params.lat), Number(r.params.lon)]}
               radius={Number(r.params.radiusMiles) * 1609.344}
+              interactive={false}
               pathOptions={{
                 color: r.params.answer === 'yes' ? '#1a7f37' : '#cf222e',
                 weight: 1,
@@ -319,6 +327,44 @@ export default function MapView({
               }}
             />
           ))}
+
+        {/* thermometer boundary: perpendicular bisector of the from→to segment.
+            The hotter half-plane is the side toward `to`. */}
+        {records
+          .filter((r) => r.active && r.eliminates && r.kind === 'thermometer')
+          .map((r) => {
+            const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
+            const to = { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }
+            const ends = bisectorEndpoints(from, to, LINE_LENGTH_MI)
+            const hotter = r.params.answer === 'hotter'
+            const hotSide = hotter ? to : from
+            // mark the hotter (kept) half-plane: a point between the boundary
+            // midpoint and the hot endpoint, so it sits clear of the A/B pins
+            const mid = { lat: (from.lat + to.lat) / 2, lon: (from.lon + to.lon) / 2 }
+            const hotMark = {
+              lat: mid.lat + 0.4 * (hotSide.lat - mid.lat),
+              lon: mid.lon + 0.4 * (hotSide.lon - mid.lon),
+            }
+            return (
+              <Fragment key={r.id}>
+                <Polyline
+                  positions={ends.map((p) => [p.lat, p.lon]) as [number, number][]}
+                  interactive={false}
+                  pathOptions={{ color: '#7c3aed', weight: 2.5, dashArray: '6 4' }}
+                />
+                <CircleMarker
+                  center={[hotMark.lat, hotMark.lon]}
+                  radius={6}
+                  interactive={false}
+                  pathOptions={{ color: '#cf222e', weight: 2, fillColor: '#cf222e', fillOpacity: 0.85 }}
+                >
+                  <Tooltip permanent direction="top" offset={[0, -6]}>
+                    hotter
+                  </Tooltip>
+                </CircleMarker>
+              </Fragment>
+            )
+          })}
 
         {/* manual compass / straightedge annotations */}
         {annotations.map((a) => {
@@ -362,7 +408,7 @@ export default function MapView({
             a.type === 'bisector'
               ? 'Perpendicular bisector'
               : a.type === 'measure'
-                ? formatMiles(miles!, a.step ?? 0)
+                ? formatDistance(miles!, units, a.step ?? 0)
                 : 'Straightedge line'
           return (
             <Polyline

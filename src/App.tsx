@@ -5,7 +5,7 @@ import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER } from './lib/style'
-import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station } from './types'
+import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
 const STATIONS = rawStations as unknown as Station[]
@@ -119,6 +119,7 @@ export default function App() {
         </div>
         <div className="toggles">
           <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
+          <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
           <label className="chk">
             <input
               type="checkbox"
@@ -143,6 +144,7 @@ export default function App() {
             showEliminated={showEliminated}
             starred={starredSet}
             manualEliminated={manualSet}
+            units={game.units}
             onPickLocation={setLastClick}
             onToggleStar={toggleStar}
             onToggleEliminate={toggleManual}
@@ -178,6 +180,7 @@ export default function App() {
               <p className="hint">Click the map to drop a point, then use it as a seeker location.</p>
               <QuestionForm
                 lastClick={lastClick}
+                units={game.units}
                 counties={counties}
                 cities={cities}
                 lines={lines}
@@ -194,7 +197,7 @@ export default function App() {
                 {game.questions.map((q) => (
                   <li key={q.id} className={q.active ? '' : 'off'}>
                     <div className="qtext">
-                      {describeRecord(q)}
+                      {describeRecord(q, game.units)}
                       {!q.eliminates && <span className="tag">info</span>}
                     </div>
                     {q.note && <div className="qnote">{q.note}</div>}
@@ -283,6 +286,15 @@ function DayToggle({ value, onChange }: { value: DayType; onChange: (d: DayType)
     <div className="seg">
       <button className={value === 'wd' ? 'on' : ''} onClick={() => onChange('wd')}>Weekday</button>
       <button className={value === 'we' ? 'on' : ''} onClick={() => onChange('we')}>Weekend</button>
+    </div>
+  )
+}
+
+function UnitsToggle({ value, onChange }: { value: UnitSystem; onChange: (u: UnitSystem) => void }) {
+  return (
+    <div className="seg">
+      <button className={value === 'imperial' ? 'on' : ''} onClick={() => onChange('imperial')}>mi/ft</button>
+      <button className={value === 'metric' ? 'on' : ''} onClick={() => onChange('metric')}>km/m</button>
     </div>
   )
 }

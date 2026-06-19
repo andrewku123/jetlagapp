@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { haversineMiles, formatMiles, bisectorEndpoints } from './geo'
+import { haversineMiles, formatMiles, formatDistance, formatElevation, bisectorEndpoints } from './geo'
 
 describe('haversineMiles', () => {
   it('is zero for the same point', () => {
@@ -34,6 +34,26 @@ describe('formatMiles', () => {
   it('snaps to 5 and 10 mi buckets', () => {
     expect(formatMiles(33.448, 5)).toBe('35 mi')
     expect(formatMiles(33.448, 10)).toBe('30 mi')
+  })
+})
+
+describe('formatDistance', () => {
+  it('shows miles for imperial', () => {
+    expect(formatDistance(33.448, 'imperial')).toBe('33.45 mi')
+    expect(formatDistance(33.448, 'imperial', 1)).toBe('33 mi')
+  })
+  it('converts to km for metric', () => {
+    expect(formatDistance(1, 'metric')).toBe('1.61 km')
+    expect(formatDistance(10, 'metric', 1)).toBe('16 km')
+  })
+})
+
+describe('formatElevation', () => {
+  it('converts meters to feet for imperial', () => {
+    expect(formatElevation(100, 'imperial')).toBe('328 ft')
+  })
+  it('shows meters for metric', () => {
+    expect(formatElevation(67, 'metric')).toBe('67 m')
   })
 })
 

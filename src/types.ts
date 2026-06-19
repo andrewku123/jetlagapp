@@ -79,9 +79,12 @@ export interface LineAnnotation {
 
 export type Annotation = CircleAnnotation | LineAnnotation
 
+export type UnitSystem = 'imperial' | 'metric'
+
 export interface GameState {
   dayType: DayType
   hourlyOnly: boolean
+  units: UnitSystem
   questions: QuestionRecord[]
   manualEliminated: string[] // station ids eliminated by hand
   starred: string[] // station ids flagged as suspects

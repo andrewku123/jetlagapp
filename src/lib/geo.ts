@@ -35,6 +35,30 @@ export function formatMiles(miles: number, step = 0): string {
   return `${miles.toFixed(2)} mi`
 }
 
+export type Units = 'imperial' | 'metric'
+export const KM_PER_MILE = 1.609344
+export const FEET_PER_METER = 3.280839895
+
+/**
+ * Format a distance (stored canonically in miles) for display in the chosen
+ * unit system. `step` is a coarseness in the *display* unit (0 = exact, 2 dp).
+ */
+export function formatDistance(miles: number, units: Units, step = 0): string {
+  const val = units === 'metric' ? miles * KM_PER_MILE : miles
+  const unit = units === 'metric' ? 'km' : 'mi'
+  if (step > 0) {
+    const snapped = Math.round(val / step) * step
+    return `${snapped.toFixed(step < 1 ? 1 : 0)} ${unit}`
+  }
+  return `${val.toFixed(2)} ${unit}`
+}
+
+/** Format an elevation (stored canonically in meters) for the chosen units. */
+export function formatElevation(meters: number, units: Units): string {
+  if (units === 'imperial') return `${Math.round(meters * FEET_PER_METER)} ft`
+  return `${Math.round(meters)} m`
+}
+
 /**
  * Endpoints of the perpendicular bisector of segment A–B, extended `lengthMiles`
  * either side of the midpoint. Uses a local equirectangular approximation (good
