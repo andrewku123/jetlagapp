@@ -106,6 +106,11 @@ export default function App() {
   function deleteAnnotation(id: string) {
     update({ annotations: game.annotations.filter((a) => a.id !== id) })
   }
+  function updateAnnotation(id: string, patch: Partial<Annotation>) {
+    update({
+      annotations: game.annotations.map((a) => (a.id === id ? ({ ...a, ...patch } as Annotation) : a)),
+    })
+  }
   function clearAnnotations() {
     update({ annotations: [] })
   }
@@ -153,6 +158,7 @@ export default function App() {
             annotations={game.annotations}
             onAddAnnotation={addAnnotation}
             onDeleteAnnotation={deleteAnnotation}
+            onUpdateAnnotation={updateAnnotation}
             onClearAnnotations={clearAnnotations}
           />
         </div>

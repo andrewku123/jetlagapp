@@ -69,6 +69,7 @@ interface Props {
   annotations: Annotation[]
   onAddAnnotation: (a: Annotation) => void
   onDeleteAnnotation: (id: string) => void
+  onUpdateAnnotation: (id: string, patch: Partial<Annotation>) => void
   onClearAnnotations: () => void
 }
 
@@ -111,6 +112,113 @@ const pin = (color: string) =>
     iconAnchor: [8, 8],
   })
 
+const handleIcon = (color: string, big = false) => {
+  const s = big ? 18 : 14
+  return L.divIcon({
+    className: 'drag-handle',
+    html: `<div style="background:${color}" class="drag-handle-dot"></div>`,
+    iconSize: [s, s],
+    iconAnchor: [s / 2, s / 2],
+  })
+}
+
+const MEASURE_STEPS = [0, 0.5, 1, 5, 10]
+
+function RadiusEditPopup({
+  value,
+  onChange,
+  onDelete,
+}: {
+  value: number
+  onChange: (v: number) => void
+  onDelete: () => void
+}) {
+  const [custom, setCustom] = useState(!RADAR_OPTIONS.includes(value))
+  return (
+    <div className="popup">
+      <label>
+        radius
+        <select
+          value={custom ? 'custom' : String(value)}
+          onChange={(e) => {
+            if (e.target.value === 'custom') setCustom(true)
+            else {
+              setCustom(false)
+              onChange(Number(e.target.value))
+            }
+          }}
+        >
+          {RADAR_OPTIONS.map((r) => (
+            <option key={r} value={r}>{r} mi</option>
+          ))}
+          <option value="custom">Custom…</option>
+        </select>
+      </label>
+      {custom && (
+        <input
+          className="popup-input"
+          type="number"
+          min={0}
+          step="any"
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+        />
+      )}
+      <button onClick={onDelete}>Delete</button>
+    </div>
+  )
+}
+
+function MeasureEditPopup({
+  step,
+  units,
+  onChange,
+  onDelete,
+}: {
+  step: number
+  units: UnitSystem
+  onChange: (v: number) => void
+  onDelete: () => void
+}) {
+  const [custom, setCustom] = useState(!MEASURE_STEPS.includes(step))
+  const u = units === 'metric' ? 'km' : 'mi'
+  return (
+    <div className="popup">
+      <label>
+        round
+        <select
+          value={custom ? 'custom' : String(step)}
+          onChange={(e) => {
+            if (e.target.value === 'custom') setCustom(true)
+            else {
+              setCustom(false)
+              onChange(Number(e.target.value))
+            }
+          }}
+        >
+          <option value={0}>exact</option>
+          <option value={0.5}>½ {u}</option>
+          <option value={1}>1 {u}</option>
+          <option value={5}>5 {u}</option>
+          <option value={10}>10 {u}</option>
+          <option value="custom">Custom…</option>
+        </select>
+      </label>
+      {custom && (
+        <input
+          className="popup-input"
+          type="number"
+          min={0}
+          step="any"
+          value={step}
+          onChange={(e) => onChange(Number(e.target.value))}
+        />
+      )}
+      <button onClick={onDelete}>Delete</button>
+    </div>
+  )
+}
+
 const rid = () => Math.random().toString(36).slice(2, 9)
 
 export default function MapView({
@@ -128,6 +236,7 @@ export default function MapView({
   annotations,
   onAddAnnotation,
   onDeleteAnnotation,
+  onUpdateAnnotation,
   onClearAnnotations,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
@@ -135,6 +244,7 @@ export default function MapView({
   // through to the map so you can snap a point/endpoint onto a station
   const selectMode = tool === 'select'
   const [radiusMi, setRadiusMi] = useState(1)
+  const [compassCustom, setCompassCustom] = useState(false)
   const [color, setColor] = useState(DRAW_COLORS[0])
   // rounding step for the measure label: 0 = exact (2 dp), else snap to this many mi
   const [measureStep, setMeasureStep] = useState(0)
@@ -200,11 +310,32 @@ export default function MapView({
         {tool === 'compass' && (
           <label className="draw-radius">
             radius
-            <select value={radiusMi} onChange={(e) => setRadiusMi(Number(e.target.value))}>
+            <select
+              value={compassCustom ? 'custom' : String(radiusMi)}
+              onChange={(e) => {
+                if (e.target.value === 'custom') {
+                  setCompassCustom(true)
+                } else {
+                  setCompassCustom(false)
+                  setRadiusMi(Number(e.target.value))
+                }
+              }}
+            >
               {RADAR_OPTIONS.map((r) => (
                 <option key={r} value={r}>{r} mi</option>
               ))}
+              <option value="custom">Custom…</option>
             </select>
+            {compassCustom && (
+              <input
+                type="number"
+                min={0}
+                step="any"
+                className="draw-radius-input"
+                value={radiusMi}
+                onChange={(e) => setRadiusMi(Number(e.target.value))}
+              />
+            )}
           </label>
         )}
         {tool === 'measure' && (
@@ -421,18 +552,25 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
                 />
-                <CircleMarker
-                  center={[a.lat, a.lon]}
-                  radius={4}
-                  pathOptions={{ color: a.color, weight: 2, fillColor: a.color, fillOpacity: 1 }}
-                  eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
-                />
-                <CircleMarker
-                  center={[a.lat, a.lon]}
-                  radius={9}
-                  pathOptions={{ stroke: false, fillOpacity: 0 }}
-                  eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
-                />
+                <Marker
+                  position={[a.lat, a.lon]}
+                  draggable
+                  icon={handleIcon(a.color, true)}
+                  eventHandlers={{
+                    dragend: (e) => {
+                      const ll = (e.target as L.Marker).getLatLng()
+                      onUpdateAnnotation(a.id, { lat: ll.lat, lon: ll.lng })
+                    },
+                  }}
+                >
+                  <Popup>
+                    <RadiusEditPopup
+                      value={a.radiusMiles}
+                      onChange={(v) => onUpdateAnnotation(a.id, { radiusMiles: v })}
+                      onDelete={() => onDeleteAnnotation(a.id)}
+                    />
+                  </Popup>
+                </Marker>
               </Fragment>
             )
           }
@@ -454,24 +592,50 @@ export default function MapView({
                 ? formatDistance(miles!, units, a.step ?? 0)
                 : 'Straightedge line'
           return (
-            <Polyline
-              key={a.id}
-              positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
-              pathOptions={{ color: a.color, weight: 2, dashArray: a.type === 'bisector' ? '6 4' : a.type === 'measure' ? '2 6' : undefined }}
-              eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
-            >
-              {a.type === 'measure' && (
-                <Tooltip permanent direction="center" className="measure-label">
-                  {label}
-                </Tooltip>
-              )}
-              <Popup>
-                <div className="popup">
-                  {label}
-                  <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
-                </div>
-              </Popup>
-            </Polyline>
+            <Fragment key={a.id}>
+              <Polyline
+                positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
+                pathOptions={{ color: a.color, weight: 2, dashArray: a.type === 'bisector' ? '6 4' : a.type === 'measure' ? '2 6' : undefined }}
+              >
+                {a.type === 'measure' && (
+                  <Tooltip permanent direction="center" className="measure-label">
+                    {label}
+                  </Tooltip>
+                )}
+                <Popup>
+                  {a.type === 'measure' ? (
+                    <MeasureEditPopup
+                      step={a.step ?? 0}
+                      units={units}
+                      onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
+                      onDelete={() => onDeleteAnnotation(a.id)}
+                    />
+                  ) : (
+                    <div className="popup">
+                      {label}
+                      <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
+                    </div>
+                  )}
+                </Popup>
+              </Polyline>
+              {(['a', 'b'] as const).map((k) => (
+                <Marker
+                  key={a.id + k}
+                  position={[k === 'a' ? a.aLat : a.bLat, k === 'a' ? a.aLon : a.bLon]}
+                  draggable
+                  icon={handleIcon(a.color)}
+                  eventHandlers={{
+                    dragend: (e) => {
+                      const ll = (e.target as L.Marker).getLatLng()
+                      onUpdateAnnotation(
+                        a.id,
+                        k === 'a' ? { aLat: ll.lat, aLon: ll.lng } : { bLat: ll.lat, bLon: ll.lng },
+                      )
+                    },
+                  }}
+                />
+              ))}
+            </Fragment>
           )
         })}
 
