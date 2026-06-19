@@ -12,17 +12,20 @@ boundary without affecting elimination logic.
 ## Data
 `src/data/counties.geojson.json` — a trimmed GeoJSON `FeatureCollection` of Bay
 Area + neighboring California counties. Each feature has a single property
-`name` (e.g. `"Marin"`). It was produced from the public
-[click_that_hood California counties](https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/california-counties.geojson)
-file by:
-1. Keeping only features whose bbox intersects the Bay Area region
-   (`lon -123.7..-120.9`, `lat 36.7..38.9`).
-2. Dropping all properties except `name`.
-3. Rounding coordinates to 4 decimal places to shrink the file (~90 KB).
+`name` (e.g. `"Marin"`). It uses **high-resolution** boundaries from the US
+Census 1:500k cartographic boundary file (`cb_2022_us_county_500k`, clipped to
+shoreline) so the gray edges follow the coast smoothly instead of looking blocky.
+Produced by:
+1. Convert the Census county shapefile to GeoJSON, filtering `STATEFP == '06'`
+   (California): `npx mapshaper cb_2022_us_county_500k.shp -filter "'06'==STATEFP"
+   -o format=geojson`.
+2. Keep only the ~25 counties already present (match by `NAME`), rename `NAME` →
+   `name`, drop all other properties.
+3. Round coordinates to 4 decimal places to shrink the file (~356 KB).
 
-To regenerate (e.g. to widen the region or add counties), re-run that filter; see
-the inline snippet in this repo's git history or rebuild with a short Node script
-that applies the three steps above.
+To regenerate (e.g. to widen the region or add counties), re-run those steps with
+a short Node script. (An older version used the lower-res click_that_hood file,
+which made San Francisco only 26 points and looked blocky.)
 
 ## Code (`src/components/MapView.tsx`)
 - `IN_PLAY_COUNTIES: Set<string>` — the county names that are in play. Currently

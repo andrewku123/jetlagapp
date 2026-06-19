@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -17,6 +17,7 @@ import type { Annotation, LatLng, QuestionRecord, Station, DrawTool } from '../t
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorEndpoints, haversineMiles, formatMiles } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
+import { buildTransit, type TransitWay } from '../lib/transit'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
 import transitData from '../data/transit-lines.geojson.json'
@@ -29,15 +30,17 @@ function countyStyle(feature?: Feature<Geometry, { name: string }>) {
     : { stroke: true, color: '#6b7280', weight: 1, fillColor: '#6b7280', fillOpacity: 0.35, interactive: false }
 }
 
-const TRANSIT = transitData as unknown as GeoJSON.FeatureCollection
+const TRANSIT_WAYS = (transitData as unknown as { features: TransitWay[] }).features
+
 function transitStyle(feature?: Feature<Geometry, { color: string }>) {
-  return { color: feature?.properties.color ?? '#666', weight: 3, opacity: 0.9, interactive: false }
+  return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
 }
 
 interface Props {
   remaining: Station[]
   eliminated: Station[]
   showEliminated: boolean
+  interline: boolean
   starred: Set<string>
   onPickLocation: (p: LatLng) => void
   onStationClick: (st: Station) => void
@@ -77,6 +80,7 @@ export default function MapView({
   remaining,
   eliminated,
   showEliminated,
+  interline,
   starred,
   onPickLocation,
   onStationClick,
@@ -94,6 +98,7 @@ export default function MapView({
   const [measureStep, setMeasureStep] = useState(0)
   // first click of a two-point line / bisector
   const [pending, setPending] = useState<LatLng | null>(null)
+  const transit = useMemo(() => buildTransit(TRANSIT_WAYS, interline), [interline])
 
   function handleClick(p: LatLng) {
     if (tool === 'select') {
@@ -220,7 +225,7 @@ export default function MapView({
         <MapClicks onClick={handleClick} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
-        <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
+        <GeoJSON key={interline ? 'il' : 'flat'} data={transit} style={transitStyle as never} interactive={false} />
 
         {showEliminated &&
           eliminated.map((st) => (
@@ -293,20 +298,27 @@ export default function MapView({
         {annotations.map((a) => {
           if (a.type === 'circle') {
             return (
-              <Circle
-                key={a.id}
-                center={[a.lat, a.lon]}
-                radius={a.radiusMiles * 1609.344}
-                pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
-                eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
-              >
-                <Popup>
-                  <div className="popup">
-                    Compass circle · {a.radiusMiles} mi
-                    <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
-                  </div>
-                </Popup>
-              </Circle>
+              <Fragment key={a.id}>
+                <Circle
+                  center={[a.lat, a.lon]}
+                  radius={a.radiusMiles * 1609.344}
+                  pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
+                  eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
+                >
+                  <Popup>
+                    <div className="popup">
+                      Compass circle · {a.radiusMiles} mi
+                      <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
+                    </div>
+                  </Popup>
+                </Circle>
+                <CircleMarker
+                  center={[a.lat, a.lon]}
+                  radius={3}
+                  pathOptions={{ color: a.color, weight: 2, fillColor: a.color, fillOpacity: 1 }}
+                  eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
+                />
+              </Fragment>
             )
           }
           const endpoints =
