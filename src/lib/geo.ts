@@ -60,6 +60,22 @@ export function formatElevation(meters: number, units: Units): string {
 }
 
 /**
+ * Approximate a geodesic circle as a ring of `n` points (equirectangular, fine
+ * at metro scale). Used to shade the eliminated area outside/inside a radar.
+ */
+export function circlePolygon(center: LatLng, radiusMiles: number, n = 72): LatLng[] {
+  const cos = Math.cos(toRad(center.lat)) || 1e-6
+  const degPerMile = 1 / 69.0
+  const r = radiusMiles * degPerMile
+  const pts: LatLng[] = []
+  for (let i = 0; i < n; i++) {
+    const t = (i / n) * 2 * Math.PI
+    pts.push({ lat: center.lat + r * Math.sin(t), lon: center.lon + (r * Math.cos(t)) / cos })
+  }
+  return pts
+}
+
+/**
  * Endpoints of the perpendicular bisector of segment A–B, extended `lengthMiles`
  * either side of the midpoint. Uses a local equirectangular approximation (good
  * enough at metro scale). This is the hotter/colder boundary for a thermometer.

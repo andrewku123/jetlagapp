@@ -37,11 +37,18 @@ and adjusting a few region constants. There is no per-city code branching.
 4. **Run the pipeline** (see the `rebuild-station-dataset` skill) and verify the
    enriched `src/data/stations.json` has every field in the `Station` type.
 
-5. **Update the map default view** in `src/components/MapView.tsx` (initial
+5. **Transit line overlay**: adapt `scripts/fetch_transit_lines.py` for the new
+   region (its Overpass bbox + `matches()` operator/network keywords + colors).
+   Follow the **`continuous-transit-lines`** skill so the new city's lines come
+   out continuous (no gaps / stray yard bits / NB-SB doubling) — the same OSM
+   fragmentation problem affects every metro, so reuse that algorithm rather than
+   rendering one feature per raw OSM way.
+
+6. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
    `STATIONS.md`, and `public/stations-map.html`.
 
-6. **Question set**: the existing medium-game questions in `src/data/questions.ts`
+7. **Question set**: the existing medium-game questions in `src/data/questions.ts`
    are geography-generic and need no change. If the new region lacks an attribute
    a question relies on (e.g. no airports), hide that question or ensure the
    attribute is still populated.

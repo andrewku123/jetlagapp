@@ -1,6 +1,6 @@
 ---
 name: question-map-overlays
-description: Draw logged questions on the map — radar circles and the thermometer hotter/colder boundary — and keep them click-through so stations stay selectable. Use when asked to visualize a question type or fix overlay click-blocking.
+description: Draw logged questions on the map — radar circles and the thermometer hotter/colder boundary — shading the eliminated area, and keep them click-through so stations stay selectable. Use when asked to visualize a question type, shade eliminated area, or fix overlay click-blocking.
 ---
 
 # Question map overlays
@@ -18,12 +18,22 @@ interactive overlay would sit on top and swallow clicks — this is exactly the
 them. (Manual compass/line annotations are a separate, intentionally clickable
 layer — see `map-drawing-tools`.)
 
+## Shade the ELIMINATED area (not the kept area)
+The convention is to shade what a question **removes**, using the shared
+`ELIM_FILL` style (translucent red, `weight: 0`, `interactive: false`). The kept
+area is left clear. Overlapping eliminations stack (darker = removed by more than
+one question), which is the desired read.
+
 ## Radar circles
-Filter `records` to `active && eliminates && kind === 'radar'` and render a
-Leaflet `<Circle>`:
-- center `[params.lat, params.lon]`, radius `params.radiusMiles * 1609.344` (m).
-- green solid fill for `answer === 'yes'` (inside kept), red dashed for `no`.
-- `interactive={false}`.
+Filter `records` to `active && eliminates && kind === 'radar'`. Build the circle
+as a polygon ring with `circlePolygon(center, radiusMiles)` (from `geo.ts`):
+- `answer === 'yes'` (within X → keep inside): shade **outside** with a
+  `<Polygon positions={[WORLD_RING, ring]} />` — the near-world outer ring minus
+  the circle as a hole.
+- `answer === 'no'` (keep outside): shade **inside** with
+  `<Polygon positions={[ring]} />`.
+- Always also draw a thin non-filled `<Circle>` outline so the radius is visible.
+- All `interactive={false}` (via `ELIM_FILL`).
 
 ## Thermometer boundary
 Filter to `active && eliminates && kind === 'thermometer'`. The hotter/colder
@@ -32,9 +42,14 @@ boundary is the **perpendicular bisector** of the `from → to` segment:
 const ends = bisectorEndpoints(from, to, LINE_LENGTH_MI)  // from geo.ts
 const hotSide = params.answer === 'hotter' ? to : from
 ```
-Render a dashed `<Polyline>` through `ends` (purple) plus a small
-`<CircleMarker>` dot on `hotSide` (red) so it's clear which half-plane is
-"hotter". Both `interactive={false}`. The engine truth is in
+Render: (1) a `<Polygon>` shading the **colder (eliminated) half-plane** — a wide
+band built from `bisectorEndpoints(from, to, 300)` pushed ~8° toward the cold
+side (`coldSide = hotter ? from : to`); (2) a dashed `<Polyline>` through `ends`
+(purple); (3) a `<CircleMarker>` with a permanent "hotter" `<Tooltip>` placed
+*between* the boundary midpoint and `hotSide` (so it clears the A/B pins). All
+`interactive={false}`. Note the `from`/`to` endpoints already get pins via
+`pickedPoints` in `App.tsx`, so a marker exactly on an endpoint is hidden under
+its pin. The engine truth is in
 `src/lib/elimination.ts` (`gotCloser === (answer === 'hotter')`) — the line is
 purely the visual of that boundary; keep them consistent.
 

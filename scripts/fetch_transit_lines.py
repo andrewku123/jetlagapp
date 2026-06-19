@@ -83,79 +83,108 @@ def color_of(system, tags):
     return COLOR_REMAP.get(system, {}).get(color.lower(), color)
 
 
-# Two tracks within this many metres of each other along their shared extent are
-# treated as the same corridor (the two ~13m-apart direction tracks, stacked
-# BART/Muni tunnels, or a short way lying on top of a longer one).
-MERGE_TOL_M = 35.0
 # reference latitude for the metres-per-degree conversion (Bay Area)
 _MX = 111320.0 * math.cos(math.radians(37.7))
 _MY = 110540.0
 
 
-def resample(coords, n):
-    """Return n points evenly spaced (by arc length) along a polyline."""
-    if len(coords) <= 1:
-        return coords
-    seg = [math.dist(coords[i], coords[i + 1]) for i in range(len(coords) - 1)]
-    total = sum(seg) or 1.0
-    out = [coords[0]]
-    for k in range(1, n):
-        target = total * k / (n - 1)
-        acc = 0.0
-        for i, d in enumerate(seg):
-            if acc + d >= target:
-                t = (target - acc) / (d or 1.0)
-                ax, ay = coords[i]
-                bx, by = coords[i + 1]
-                out.append([ax + (bx - ax) * t, ay + (by - ay) * t])
+def _dist_m(a, b):
+    return math.hypot((a[0] - b[0]) * _MX, (a[1] - b[1]) * _MY)
+
+
+def chain_len_m(coords):
+    return sum(_dist_m(coords[i], coords[i + 1]) for i in range(len(coords) - 1))
+
+
+# ways whose endpoints are within this distance are treated as joined (also
+# bridges the small gaps OSM sometimes leaves between consecutive ways)
+STITCH_TOL_M = 25.0
+# after stitching, chains of the same line whose endpoints are within this gap
+# are joined (closes small breaks where a connecting way was missing/dropped)
+BRIDGE_TOL_M = 350.0
+# stitched chains shorter than this are dropped as strays (yards, crossovers,
+# station passing tracks); real branches are far longer
+STRAY_MIN_M = 800.0
+
+
+def _heading(a, b):
+    return math.atan2((b[1] - a[1]) * _MY, (b[0] - a[0]) * _MX)
+
+
+def _angdiff(h1, h2):
+    d = (h1 - h2 + math.pi) % (2 * math.pi) - math.pi
+    return abs(d)
+
+
+def stitch_ways(geoms):
+    """Join polylines that meet end-to-end into maximal continuous chains.
+
+    At a junction (where more than one way meets the chain's current end) the
+    *straightest* continuation is chosen, so the mainline stays together and a
+    short spur/siding is left as its own (later dropped) chain rather than
+    derailing the line."""
+    remaining = [list(g) for g in geoms if len(g) >= 2]
+    chains = []
+    while remaining:
+        chain = remaining.pop(0)
+        while True:
+            # try to extend the tail, then the head; pick straightest each time
+            tail_h = _heading(chain[-2], chain[-1])
+            cands = []
+            for i, w in enumerate(remaining):
+                if _dist_m(chain[-1], w[0]) <= STITCH_TOL_M:
+                    cands.append((_angdiff(tail_h, _heading(w[0], w[1])), i, w[1:]))
+                if _dist_m(chain[-1], w[-1]) <= STITCH_TOL_M:
+                    rw = list(reversed(w))
+                    cands.append((_angdiff(tail_h, _heading(rw[0], rw[1])), i, rw[1:]))
+            if cands:
+                _, i, tail = min(cands, key=lambda c: c[0])
+                chain = chain + tail
+                remaining.pop(i)
+                continue
+            head_h = _heading(chain[1], chain[0])
+            cands = []
+            for i, w in enumerate(remaining):
+                if _dist_m(chain[0], w[-1]) <= STITCH_TOL_M:
+                    cands.append((_angdiff(head_h, _heading(w[-1], w[-2])), i, w[:-1]))
+                if _dist_m(chain[0], w[0]) <= STITCH_TOL_M:
+                    rw = list(reversed(w))
+                    cands.append((_angdiff(head_h, _heading(rw[-1], rw[-2])), i, rw[:-1]))
+            if cands:
+                _, i, head = min(cands, key=lambda c: c[0])
+                chain = head + chain
+                remaining.pop(i)
+                continue
+            break
+        chains.append(chain)
+    return chains
+
+
+def bridge_chains(chains, tol):
+    """Join chains whose nearest endpoints are within `tol`, closing small
+    breaks (a missing/dropped connecting way) so a line reads continuous."""
+    chains = [list(c) for c in chains]
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(chains)):
+            for j in range(i + 1, len(chains)):
+                a, b = chains[i], chains[j]
+                opts = [
+                    (_dist_m(a[-1], b[0]), a + b),
+                    (_dist_m(a[-1], b[-1]), a + list(reversed(b))),
+                    (_dist_m(a[0], b[0]), list(reversed(b)) + a),
+                    (_dist_m(a[0], b[-1]), b + a),
+                ]
+                gap, joined = min(opts, key=lambda o: o[0])
+                if gap <= tol:
+                    chains[i] = joined
+                    chains.pop(j)
+                    changed = True
+                    break
+            if changed:
                 break
-            acc += d
-        else:
-            out.append(coords[-1])
-    return out
-
-
-def _pt_seg_m(p, a, b):
-    """Distance (metres) from point p to segment a-b, in lon/lat degrees."""
-    px, py = (p[0] - a[0]) * _MX, (p[1] - a[1]) * _MY
-    bx, by = (b[0] - a[0]) * _MX, (b[1] - a[1]) * _MY
-    d2 = bx * bx + by * by
-    t = 0.0 if d2 == 0 else max(0.0, min(1.0, (px * bx + py * by) / d2))
-    return math.hypot(px - bx * t, py - by * t)
-
-
-def _covered_by(sample, poly):
-    """True if every point of `sample` lies within MERGE_TOL_M of polyline `poly`."""
-    for p in sample:
-        best = min(_pt_seg_m(p, poly[i], poly[i + 1]) for i in range(len(poly) - 1))
-        if best > MERGE_TOL_M:
-            return False
-    return True
-
-
-def merge_colocated(entries):
-    """Collapse co-located tracks (NB/SB direction pairs, stacked tunnels, and
-    sub-segments lying on a longer way) into a single representative centerline,
-    unioning the colors that run along it."""
-    # longest first so shorter overlapping ways fold into the full corridor
-    entries = sorted(entries, key=lambda e: -len(e["geom"]))
-    samples = [resample(e["geom"], 8) for e in entries]
-    out = []
-    reps = []  # (geom, sample) for each kept group
-    for e, s in zip(entries, samples):
-        merged = False
-        for g, (gg, gs) in zip(out, reps):
-            if _covered_by(s, gg) or _covered_by(gs, e["geom"]):
-                for c in e["colors"]:
-                    if c not in g["colors"]:
-                        g["colors"].append(c)
-                merged = True
-                break
-        if not merged:
-            grp = {"geom": e["geom"], "system": e["system"], "colors": list(e["colors"])}
-            out.append(grp)
-            reps.append((e["geom"], s))
-    return out
+    return chains
 
 
 def main():
@@ -168,42 +197,50 @@ def main():
         if system:
             rels.append((system, el))
 
-    # Group by physical OSM way: way_id -> { geometry, system, colors:set }.
-    # Multiple line colors on one way means those lines interline (share track).
-    # Caltrain is grouped on its own so it never merges with another system's
-    # tracks and always renders as a single line.
-    ways = {}
-    caltrain = {}
+    # Group by LINE = (system, color). A line usually has several route
+    # relations: one per direction plus service variants (short-turns, weekend).
+    # Each relation is a single linear direction whose member ways run in order
+    # and share end nodes — perfect for stitching with no parallel doubling. So
+    # for each line we keep the *most complete* relation (max total way length)
+    # and stitch only that one. This yields one continuous, correctly-colored
+    # line; shared trunks just draw several lines on top of each other (one color
+    # visible), as before. Caltrain (single color) naturally forms one line.
+    def rel_ways(el):
+        out = []
+        for m in el.get("members", []):
+            if m.get("type") != "way" or not m.get("geometry"):
+                continue
+            geom = [[p["lon"], p["lat"]] for p in m["geometry"]]
+            if len(geom) >= 2:
+                out.append(geom)
+        return out
+
+    lines = {}
     seen_systems = {}
     for system, el in rels:
         seen_systems[system] = seen_systems.get(system, 0) + 1
         color = color_of(system, el.get("tags", {}))
-        bucket = caltrain if system == "Caltrain" else ways
-        for m in el.get("members", []):
-            if m.get("type") != "way" or not m.get("geometry"):
-                continue
-            way_id = m.get("ref")
-            entry = bucket.get(way_id)
-            if entry is None:
-                line = [[p["lon"], p["lat"]] for p in m["geometry"]]
-                if len(line) < 2:
-                    continue
-                entry = bucket[way_id] = {"geom": line, "system": system, "colors": []}
-            if color not in entry["colors"]:
-                entry["colors"].append(color)
+        ways = rel_ways(el)
+        total = sum(chain_len_m(g) for g in ways)
+        best = lines.get((system, color))
+        if best is None or total > best[0]:
+            lines[(system, color)] = (total, ways)
 
-    # Collapse the two direction tracks (and stacked tunnels) of each corridor
-    # into a single representative centerline so a route shows as one line.
-    merged = merge_colocated(list(ways.values())) + merge_colocated(list(caltrain.values()))
+    # Stitch each kept relation's ordered ways into continuous chains; drop tiny
+    # stray fragments (a relation can include a short non-revenue spur).
+    merged = []
+    for (system, color), (_total, ways) in lines.items():
+        chains = bridge_chains(stitch_ways(ways), BRIDGE_TOL_M)
+        for chain in chains:
+            if chain_len_m(chain) >= STRAY_MIN_M:
+                merged.append({"geom": chain, "system": system, "colors": [color]})
 
-    # One feature per merged track, carrying the base geometry and the list of
-    # line colors that run on it. The app computes parallel offsets at render
-    # time (so interlining can be toggled on/off instantly).
+    # One feature per continuous line chain.
     feats = []
     for entry in merged:
         feats.append({
             "type": "Feature",
-            "properties": {"system": entry["system"], "colors": sorted(entry["colors"])},
+            "properties": {"system": entry["system"], "colors": entry["colors"]},
             "geometry": {"type": "LineString", "coordinates": round_coords(entry["geom"])},
         })
     # OAK Airport Connector (Coliseum -> OAK): an automated guideway that is not

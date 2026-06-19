@@ -5,6 +5,7 @@ import {
   CircleMarker,
   Circle,
   Polyline,
+  Polygon,
   Popup,
   Tooltip,
   GeoJSON,
@@ -15,7 +16,7 @@ import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
-import { bisectorEndpoints, haversineMiles, formatDistance, formatElevation } from '../lib/geo'
+import { bisectorEndpoints, circlePolygon, haversineMiles, formatDistance, formatElevation } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
@@ -73,6 +74,23 @@ interface Props {
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
 const LINE_LENGTH_MI = 60
+
+// translucent shading for the area a question has eliminated
+const ELIM_FILL = {
+  color: '#cf222e',
+  weight: 0,
+  fillColor: '#cf222e',
+  fillOpacity: 0.12,
+  interactive: false,
+} as const
+
+// a near-world outer ring; eliminated-outside-circle is this minus the circle hole
+const WORLD_RING: [number, number][] = [
+  [-85, -179.9],
+  [-85, 179.9],
+  [85, 179.9],
+  [85, -179.9],
+]
 
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 
@@ -311,22 +329,33 @@ export default function MapView({
           )
         })}
 
+        {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
+            the circle; NO eliminates inside it. The circle outline always shows
+            the radius. */}
         {records
           .filter((r) => r.active && r.eliminates && r.kind === 'radar')
-          .map((r) => (
-            <Circle
-              key={r.id}
-              center={[Number(r.params.lat), Number(r.params.lon)]}
-              radius={Number(r.params.radiusMiles) * 1609.344}
-              interactive={false}
-              pathOptions={{
-                color: r.params.answer === 'yes' ? '#1a7f37' : '#cf222e',
-                weight: 1,
-                fillOpacity: r.params.answer === 'yes' ? 0.06 : 0.04,
-                dashArray: r.params.answer === 'yes' ? undefined : '4',
-              }}
-            />
-          ))}
+          .map((r) => {
+            const center = { lat: Number(r.params.lat), lon: Number(r.params.lon) }
+            const radiusMiles = Number(r.params.radiusMiles)
+            const ring = circlePolygon(center, radiusMiles).map(
+              (p) => [p.lat, p.lon] as [number, number],
+            )
+            const yes = r.params.answer === 'yes'
+            return (
+              <Fragment key={r.id}>
+                <Polygon
+                  positions={yes ? [WORLD_RING, ring] : [ring]}
+                  pathOptions={ELIM_FILL}
+                />
+                <Circle
+                  center={[center.lat, center.lon]}
+                  radius={radiusMiles * 1609.344}
+                  interactive={false}
+                  pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
+                />
+              </Fragment>
+            )
+          })}
 
         {/* thermometer boundary: perpendicular bisector of the from→to segment.
             The hotter half-plane is the side toward `to`. */}
@@ -345,8 +374,23 @@ export default function MapView({
               lat: mid.lat + 0.4 * (hotSide.lat - mid.lat),
               lon: mid.lon + 0.4 * (hotSide.lon - mid.lon),
             }
+            // shade the colder (eliminated) half-plane: a wide band built from
+            // the boundary edge extended far, then pushed toward the cold side.
+            const coldSide = hotter ? from : to
+            const longEdge = bisectorEndpoints(from, to, 300)
+            const dLat = coldSide.lat - mid.lat
+            const dLon = coldSide.lon - mid.lon
+            const dLen = Math.hypot(dLat, dLon) || 1
+            const off = { lat: (dLat / dLen) * 8, lon: (dLon / dLen) * 8 }
+            const coldBand: [number, number][] = [
+              [longEdge[0].lat, longEdge[0].lon],
+              [longEdge[1].lat, longEdge[1].lon],
+              [longEdge[1].lat + off.lat, longEdge[1].lon + off.lon],
+              [longEdge[0].lat + off.lat, longEdge[0].lon + off.lon],
+            ]
             return (
               <Fragment key={r.id}>
+                <Polygon positions={coldBand} pathOptions={ELIM_FILL} />
                 <Polyline
                   positions={ends.map((p) => [p.lat, p.lon]) as [number, number][]}
                   interactive={false}
@@ -374,20 +418,19 @@ export default function MapView({
                 <Circle
                   center={[a.lat, a.lon]}
                   radius={a.radiusMiles * 1609.344}
+                  interactive={false}
                   pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
-                  eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
-                >
-                  <Popup>
-                    <div className="popup">
-                      Compass circle · {a.radiusMiles} mi
-                      <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
-                    </div>
-                  </Popup>
-                </Circle>
+                />
                 <CircleMarker
                   center={[a.lat, a.lon]}
-                  radius={3}
+                  radius={4}
                   pathOptions={{ color: a.color, weight: 2, fillColor: a.color, fillOpacity: 1 }}
+                  eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
+                />
+                <CircleMarker
+                  center={[a.lat, a.lon]}
+                  radius={9}
+                  pathOptions={{ stroke: false, fillOpacity: 0 }}
                   eventHandlers={{ click: () => onDeleteAnnotation(a.id) }}
                 />
               </Fragment>

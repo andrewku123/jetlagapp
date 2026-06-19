@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { haversineMiles, formatMiles, formatDistance, formatElevation, bisectorEndpoints } from './geo'
+import {
+  haversineMiles,
+  formatMiles,
+  formatDistance,
+  formatElevation,
+  bisectorEndpoints,
+  circlePolygon,
+} from './geo'
 
 describe('haversineMiles', () => {
   it('is zero for the same point', () => {
@@ -45,6 +52,18 @@ describe('formatDistance', () => {
   it('converts to km for metric', () => {
     expect(formatDistance(1, 'metric')).toBe('1.61 km')
     expect(formatDistance(10, 'metric', 1)).toBe('16 km')
+  })
+})
+
+describe('circlePolygon', () => {
+  it('returns n points all ~radius miles from the center', () => {
+    const center = { lat: 37.7, lon: -122.2 }
+    const ring = circlePolygon(center, 10, 36)
+    expect(ring).toHaveLength(36)
+    for (const p of ring) {
+      expect(haversineMiles(center, p)).toBeGreaterThan(9.5)
+      expect(haversineMiles(center, p)).toBeLessThan(10.5)
+    }
   })
 })
 

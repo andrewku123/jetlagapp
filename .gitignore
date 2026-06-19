@@ -7,3 +7,8 @@ dist-ssr
 !.vscode/extensions.json
 
 tsconfig.tsbuildinfo
+
+# Python
+scripts/__pycache__/
+__pycache__/
+*.pyc
