@@ -58,6 +58,46 @@ color lines (Yellow/Red/Green/Orange/Blue/Beige) using `scripts/bart_lines.json`
 so the "matching transit line" question is sensible. Edits `src/data/stations.json`
 in place.
 
+### 3b. `build_station_lines.py` — authoritative line membership (OSM)
+
+`patch_lines.py` only handles BART colors. For a full, accurate audit of which
+lines serve which station, run `python scripts/build_station_lines.py` (from the
+repo root). It refetches every BART/Muni/VTA/Caltrain **route relation** from
+Overpass, reads each relation's ordered `stop` member node coords, and assigns a
+line to a station when any of that line's stops is within `MATCH_M = 170 m` of
+the station. This is what splits Caltrain into **Local / Limited / Express**
+(from the OSM service-pattern relations) and removes false BART colors (e.g.
+Milpitas/Bay Fair should not have **Yellow** — only Green/Orange serve the
+Berryessa branch).
+
+Important constraints baked in (keep them):
+- **`REBUILD_SYSTEMS = {BART, VTA, Caltrain}` only.** Muni membership is left
+  **untouched** — its dense overlapping surface/subway stops make 170 m proximity
+  unreliable, and several Muni rules are hand-curated (e.g. F is deliberately
+  *not* at Union Square/Market; J is *not* at Church St Station). Those are
+  guarded by `src/data/stations.test.ts`; do not let an automated pass overwrite
+  them.
+- **`BART Silver (Coliseum–OAK)`** has no rail route relation in OSM, so it is
+  explicitly preserved from the existing data (don't let the rebuild drop it).
+- Caltrain Holiday/Game-day/South County Connector variants and the discontinued
+  Muni **S** are excluded (`canon_line` / `MUNI_EXCLUDE_REF`).
+
+**Weekday-only services.** Some lines don't run on weekends — Caltrain
+**Express** ("Baby Bullet") and **Limited** are weekday-only. They stay in each
+station's `lines` (they're real services), but the "Transit line" question's
+dropdown filters them out in **Weekend** mode via `WEEKEND_EXCLUDED_LINES` in
+`src/lib/style.ts` (the `lines` memo in `App.tsx` depends on `game.dayType`).
+Every station carrying Express/Limited also carries **Caltrain Local**, so it
+stays selectable on weekends (asserted in `stations.test.ts`). Add any other
+weekday-only line to `WEEKEND_EXCLUDED_LINES` — don't remove it from the data.
+
+The line *geometry* overlay (`src/data/transit-lines.geojson.json`) is built
+separately by `scripts/fetch_transit_lines.py` (see `continuous-transit-lines`).
+Note its `matches()` classifier keys on **operator/network only, never the route
+name** — Muni Metro N's name ends "=> Caltrain" (its terminus), which otherwise
+misclassifies N as Caltrain and drops it from the overlay. eBART is tagged
+`light_rail`, so the BART matcher accepts both `subway` and `light_rail`.
+
 ## Verify
 ```bash
 npm run lint && npx tsc -b --noEmit && npm test && npm run build

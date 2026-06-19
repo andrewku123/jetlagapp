@@ -32,11 +32,11 @@ stations.)
 | Antioch | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.9954, -121.7803 |
 | Ashby | Orange (Berryessa–Richmond), Red (Richmond–Millbrae/SFO) | ✓ | ✓ | 37.8531, -122.2698 |
 | Balboa Park _(shared: BART, Muni)_ | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), Muni J, Muni K, Muni M | ✓ | ✓ | 37.7214, -122.4471 |
-| Bay Fair | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6969, -122.1264 |
+| Bay Fair | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.6969, -122.1264 |
 | Berryessa / North San Jose | Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.3685, -121.8747 |
 | Castro Valley | Blue (Dublin/Pleasanton–Daly City) | ✓ | ✓ | 37.6907, -122.0756 |
 | Civic Center / UN Plaza _(shared: BART, Muni)_ | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), Muni F, Muni J, Muni K, Muni L, Muni M, Muni N | ✓ | ✓ | 37.7796, -122.4137 |
-| Coliseum | Beige (Coliseum–OAK), Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.7536, -122.1967 |
+| Coliseum | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond), Silver (Coliseum–OAK) | ✓ | ✓ | 37.7536, -122.1967 |
 | Colma | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6846, -122.4662 |
 | Concord | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.9738, -122.0291 |
 | Daly City | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.7063, -122.4689 |
@@ -52,12 +52,12 @@ stations.)
 | Lafayette | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.8932, -122.1246 |
 | Lake Merritt | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.7973, -122.2652 |
 | MacArthur | Orange (Berryessa–Richmond), Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.8288, -122.2671 |
-| Millbrae _(shared: BART, Caltrain)_ | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), Caltrain | ✓ | ✓ | 37.6000, -122.3868 |
-| Milpitas _(shared: BART, VTA)_ | Green (Berryessa–Daly City), Orange (Berryessa–Richmond), Yellow (Antioch–SFO/Millbrae), VTA Orange | ✓ | ✓ | 37.4094, -121.8910 |
+| Millbrae _(shared: BART, Caltrain)_ | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), Caltrain Express, Caltrain Limited, Caltrain Local | ✓ | ✓ | 37.6000, -122.3868 |
+| Milpitas _(shared: BART, VTA)_ | Green (Berryessa–Daly City), Orange (Berryessa–Richmond), VTA Orange | ✓ | ✓ | 37.4094, -121.8910 |
 | Montgomery Street _(shared: BART, Muni)_ | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), Muni F, Muni J, Muni K, Muni L, Muni M, Muni N | ✓ | ✓ | 37.7891, -122.4017 |
 | North Berkeley | Orange (Berryessa–Richmond), Red (Richmond–Millbrae/SFO) | ✓ | ✓ | 37.8740, -122.2835 |
 | North Concord / Martinez | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 38.0034, -122.0245 |
-| Oakland International Airport | Beige (Coliseum–OAK) | ✓ | ✓ | 37.7133, -122.2122 |
+| Oakland International Airport | Silver (Coliseum–OAK) | ✓ | ✓ | 37.7133, -122.2122 |
 | Orinda | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.8785, -122.1837 |
 | Pittsburg / Bay Point | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 38.0189, -121.9442 |
 | Pittsburg Center | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 38.0168, -121.8891 |
@@ -65,11 +65,11 @@ stations.)
 | Powell Street _(shared: BART, Muni)_ | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), Muni F, Muni J, Muni K, Muni L, Muni M, Muni N | ✓ | ✓ | 37.7846, -122.4074 |
 | Richmond | Orange (Berryessa–Richmond), Red (Richmond–Millbrae/SFO) | ✓ | ✓ | 37.9368, -122.3530 |
 | Rockridge | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.8448, -122.2512 |
-| San Bruno (BART) | BART | ✓ | ✓ | 37.6377, -122.4163 |
+| San Bruno (BART) | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6377, -122.4163 |
 | San Francisco International Airport | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6161, -122.3920 |
 | San Leandro | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.7218, -122.1607 |
 | South Hayward | Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.6343, -122.0572 |
-| South San Francisco (BART) | BART | ✓ | ✓ | 37.6645, -122.4442 |
+| South San Francisco (BART) | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6645, -122.4442 |
 | Union City | Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.5907, -122.0172 |
 | Walnut Creek | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.9058, -122.0673 |
 | Warm Springs / South Fremont | Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.5023, -121.9394 |
@@ -80,29 +80,29 @@ stations.)
 
 | Station | Lines | WD | WE | Lat, Lon |
 |---|---|:--:|:--:|---|
-| 22nd Street | Caltrain | ✓ | ✓ | 37.7576, -122.3924 |
-| Bayshore | Caltrain | ✓ | ✓ | 37.7095, -122.4020 |
-| Belmont | Caltrain | ✓ | ✓ | 37.5208, -122.2758 |
-| Broadway | Caltrain | — | ✓ | 37.5876, -122.3627 |
-| Burlingame | Caltrain | ✓ | ✓ | 37.5802, -122.3451 |
-| California Avenue | Caltrain | ✓ | ✓ | 37.4293, -122.1420 |
-| Hayward Park | Caltrain | ✓ | ✓ | 37.5530, -122.3096 |
-| Hillsdale | Caltrain | ✓ | ✓ | 37.5425, -122.3017 |
-| Lawrence | Caltrain | ✓ | ✓ | 37.3705, -121.9971 |
-| Menlo Park | Caltrain | ✓ | ✓ | 37.4547, -122.1824 |
-| Mountain View _(shared: Caltrain, VTA)_ | Caltrain, VTA Orange | ✓ | ✓ | 37.3947, -122.0764 |
-| Palo Alto | Caltrain | ✓ | ✓ | 37.4434, -122.1647 |
-| Redwood City | Caltrain | ✓ | ✓ | 37.4861, -122.2320 |
-| San Antonio (Caltrain) | Caltrain | ✓ | ✓ | 37.4072, -122.1071 |
-| San Bruno (Caltrain) | Caltrain | ✓ | ✓ | 37.6305, -122.4117 |
-| San Carlos | Caltrain | ✓ | ✓ | 37.5079, -122.2603 |
-| San Francisco (4th & King) _(shared: Caltrain, Muni)_ | Caltrain, Muni N, Muni T | ✓ | ✓ | 37.7761, -122.3946 |
-| San Jose Diridon _(shared: Caltrain, VTA)_ | Caltrain, VTA Green | ✓ | ✓ | 37.3287, -121.9034 |
-| San Mateo | Caltrain | ✓ | ✓ | 37.5683, -122.3241 |
-| Santa Clara (Caltrain) | Caltrain | ✓ | ✓ | 37.3532, -121.9361 |
-| South San Francisco (Caltrain) | Caltrain | ✓ | ✓ | 37.6559, -122.4050 |
-| Sunnyvale | Caltrain | ✓ | ✓ | 37.3788, -122.0314 |
-| Tamien _(shared: Caltrain, VTA)_ | Caltrain, VTA Blue | ✓ | ✓ | 37.3118, -121.8844 |
+| 22nd Street | Express, Limited, Local | ✓ | ✓ | 37.7576, -122.3924 |
+| Bayshore | Local | ✓ | ✓ | 37.7095, -122.4020 |
+| Belmont | Local | ✓ | ✓ | 37.5208, -122.2758 |
+| Broadway | Local | — | ✓ | 37.5876, -122.3627 |
+| Burlingame | Local | ✓ | ✓ | 37.5802, -122.3451 |
+| California Avenue | Limited, Local | ✓ | ✓ | 37.4293, -122.1420 |
+| Hayward Park | Local | ✓ | ✓ | 37.5530, -122.3096 |
+| Hillsdale | Express, Limited, Local | ✓ | ✓ | 37.5425, -122.3017 |
+| Lawrence | Limited, Local | ✓ | ✓ | 37.3705, -121.9971 |
+| Menlo Park | Limited, Local | ✓ | ✓ | 37.4547, -122.1824 |
+| Mountain View _(shared: Caltrain, VTA)_ | Express, Limited, Local, VTA Orange | ✓ | ✓ | 37.3947, -122.0764 |
+| Palo Alto | Express, Limited, Local | ✓ | ✓ | 37.4434, -122.1647 |
+| Redwood City | Express, Limited, Local | ✓ | ✓ | 37.4861, -122.2320 |
+| San Antonio (Caltrain) | Limited, Local | ✓ | ✓ | 37.4072, -122.1071 |
+| San Bruno (Caltrain) | Local | ✓ | ✓ | 37.6305, -122.4117 |
+| San Carlos | Local | ✓ | ✓ | 37.5079, -122.2603 |
+| San Francisco (4th & King) _(shared: Caltrain, Muni)_ | Express, Limited, Local, Muni N, Muni T | ✓ | ✓ | 37.7761, -122.3946 |
+| San Jose Diridon _(shared: Caltrain, VTA)_ | Express, Limited, Local, VTA Green | ✓ | ✓ | 37.3287, -121.9034 |
+| San Mateo | Express, Limited, Local | ✓ | ✓ | 37.5683, -122.3241 |
+| Santa Clara (Caltrain) | Limited, Local | ✓ | ✓ | 37.3532, -121.9361 |
+| South San Francisco (Caltrain) | Express, Limited, Local | ✓ | ✓ | 37.6559, -122.4050 |
+| Sunnyvale | Express, Limited, Local | ✓ | ✓ | 37.3788, -122.0314 |
+| Tamien _(shared: Caltrain, VTA)_ | Local, VTA Blue | ✓ | ✓ | 37.3118, -121.8844 |
 
 ## VTA (55)
 
@@ -192,7 +192,7 @@ stations.)
 | Carroll | T | ✓ | ✓ | 37.7255, -122.3943 |
 | Castro Station | F, K, L, M | ✓ | ✓ | 37.7632, -122.4343 |
 | Chinatown-Rose Pak | T | ✓ | ✓ | 37.7948, -122.4081 |
-| Church St Station | F, J, K, L, M | ✓ | ✓ | 37.7672, -122.4292 |
+| Church St Station | F, K, L, M | ✓ | ✓ | 37.7672, -122.4292 |
 | Church Street & 16th Street | J | ✓ | ✓ | 37.7645, -122.4287 |
 | Church Street & 22nd Street | J | ✓ | ✓ | 37.7546, -122.4277 |
 | Church Street & 24th Street | J | ✓ | ✓ | 37.7519, -122.4275 |
@@ -287,4 +287,3 @@ stations.)
 | Williams | T | ✓ | ✓ | 37.7292, -122.3927 |
 | Yerba Buena/Moscone | T | ✓ | ✓ | 37.7824, -122.4017 |
 
-_Legend: ✓ = hourly+ service, • = served but sub-hourly (excluded by the hourly toggle), — = not served._

@@ -4,7 +4,7 @@ import QuestionForm from './components/QuestionForm'
 import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
-import { SYSTEM_COLORS, SYSTEM_ORDER } from './lib/style'
+import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
@@ -49,10 +49,12 @@ export default function App() {
     () => uniqSorted(STATIONS.map((s) => s.city).filter(Boolean) as string[]),
     [],
   )
-  const lines = useMemo(
-    () => uniqSorted(STATIONS.flatMap((s) => s.lines)),
-    [],
-  )
+  const lines = useMemo(() => {
+    const all = uniqSorted(STATIONS.flatMap((s) => s.lines))
+    return game.dayType === 'we'
+      ? all.filter((l) => !WEEKEND_EXCLUDED_LINES.includes(l))
+      : all
+  }, [game.dayType])
   const airports = useMemo(
     () => uniqSorted(STATIONS.map((s) => s.nearestAirport)),
     [],

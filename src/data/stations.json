@@ -274,8 +274,7 @@
   "lines": [
    "BART Blue (Dublin/Pleasanton\u2013Daly City)",
    "BART Green (Berryessa\u2013Daly City)",
-   "BART Orange (Berryessa\u2013Richmond)",
-   "BART Yellow (Antioch\u2013SFO/Millbrae)"
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Bay Fair"
@@ -430,10 +429,10 @@
    "BART"
   ],
   "lines": [
-   "BART Silver (Coliseum\u2013OAK)",
    "BART Blue (Dublin/Pleasanton\u2013Daly City)",
    "BART Green (Berryessa\u2013Daly City)",
-   "BART Orange (Berryessa\u2013Richmond)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Silver (Coliseum\u2013OAK)"
   ],
   "aka": [
    "Coliseum"
@@ -1027,7 +1026,9 @@
   "lines": [
    "BART Red (Richmond\u2013Millbrae/SFO)",
    "BART Yellow (Antioch\u2013SFO/Millbrae)",
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Millbrae"
@@ -1065,7 +1066,6 @@
   "lines": [
    "BART Green (Berryessa\u2013Daly City)",
    "BART Orange (Berryessa\u2013Richmond)",
-   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "VTA Orange"
   ],
   "aka": [
@@ -1874,7 +1874,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "22nd Street"
@@ -1909,7 +1911,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "Bayshore"
@@ -1944,7 +1946,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "Belmont"
@@ -1979,7 +1981,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "Broadway"
@@ -2014,7 +2016,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "Burlingame"
@@ -2049,7 +2051,8 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "California Avenue"
@@ -2084,7 +2087,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "Hayward Park"
@@ -2119,7 +2122,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Hillsdale"
@@ -2154,7 +2159,8 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Lawrence"
@@ -2189,7 +2195,8 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Menlo Park"
@@ -2225,7 +2232,9 @@
    "VTA"
   ],
   "lines": [
-   "Caltrain",
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local",
    "VTA Orange"
   ],
   "aka": [
@@ -2262,7 +2271,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Palo Alto"
@@ -2297,7 +2308,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Redwood City"
@@ -2332,7 +2345,8 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "San Antonio"
@@ -2367,7 +2381,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "San Bruno"
@@ -2402,7 +2416,7 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Local"
   ],
   "aka": [
    "San Carlos"
@@ -2438,7 +2452,9 @@
    "Muni"
   ],
   "lines": [
-   "Caltrain",
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local",
    "Muni N",
    "Muni T"
   ],
@@ -2478,7 +2494,9 @@
    "VTA"
   ],
   "lines": [
-   "Caltrain",
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local",
    "VTA Green"
   ],
   "aka": [
@@ -2514,7 +2532,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "San Mateo"
@@ -2549,7 +2569,8 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Santa Clara"
@@ -2584,7 +2605,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "South San Francisco"
@@ -2619,7 +2642,9 @@
    "Caltrain"
   ],
   "lines": [
-   "Caltrain"
+   "Caltrain Express",
+   "Caltrain Limited",
+   "Caltrain Local"
   ],
   "aka": [
    "Sunnyvale"
@@ -2655,7 +2680,7 @@
    "VTA"
   ],
   "lines": [
-   "Caltrain",
+   "Caltrain Local",
    "VTA Blue"
   ],
   "aka": [

@@ -9,6 +9,10 @@ export const SYSTEM_COLORS: Record<string, string> = {
 
 export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni']
 
+// Lines that don't run on weekends; hidden from the transit-line question in
+// Weekend mode. Caltrain Express ("Baby Bullet") and Limited are weekday-only.
+export const WEEKEND_EXCLUDED_LINES = ['Caltrain Express', 'Caltrain Limited']
+
 export function stationColor(st: Station): string {
   // primary color = first system in canonical order
   for (const sys of SYSTEM_ORDER) {

@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import rawStations from './stations.json'
 import counties from './counties.geojson.json'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
+import { WEEKEND_EXCLUDED_LINES } from '../lib/style'
 import type { Station } from '../types'
 
 const STATIONS = rawStations as unknown as Station[]
@@ -41,6 +42,21 @@ describe('station dataset invariants', () => {
     const usm = STATIONS.find((s) => s.name === 'Union Square/Market Street')
     expect(usm).toBeDefined()
     expect(usm!.lines).not.toContain('Muni F')
+  })
+
+  it('weekday-only Caltrain services exist in the data but are weekend-excluded', () => {
+    const all = new Set(STATIONS.flatMap((s) => s.lines))
+    // Express/Limited are real lines in the data (weekday service)...
+    for (const l of WEEKEND_EXCLUDED_LINES) expect(all.has(l)).toBe(true)
+    // ...and Caltrain Local is never excluded (it runs on weekends).
+    expect(WEEKEND_EXCLUDED_LINES).not.toContain('Caltrain Local')
+    // Any station with Express/Limited must also offer Local (so it stays
+    // selectable in Weekend mode after the weekday-only lines are filtered out).
+    for (const s of STATIONS) {
+      if (s.lines.some((l) => WEEKEND_EXCLUDED_LINES.includes(l))) {
+        expect(s.lines).toContain('Caltrain Local')
+      }
+    }
   })
 
   it('drops College Park entirely', () => {

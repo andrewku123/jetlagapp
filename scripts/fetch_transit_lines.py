@@ -41,11 +41,17 @@ COLOR_REMAP = {
 
 
 def matches(tags):
-    """Return system name if this relation is one we want, else None."""
-    op = (tags.get("operator", "") + " " + tags.get("network", "") + " " + tags.get("name", "")).lower()
+    """Return system name if this relation is one we want, else None.
+
+    Classification uses only operator/network — NOT the route name. The name
+    can mention another system's station (e.g. Muni Metro N's name ends
+    "=> Caltrain" because it terminates at the Caltrain depot), which would
+    otherwise misclassify the line and drop it from the overlay."""
+    op = (tags.get("operator", "") + " " + tags.get("network", "")).lower()
+    name = tags.get("name", "").lower()
     route = tags.get("route", "")
     # exclude cable cars (SF Powell/California lines) from the overlay
-    if route == "cable_car" or "cable car" in op or "cable_car" in op:
+    if route == "cable_car" or "cable car" in name or "cable_car" in name:
         return None
     if "caltrain" in op or "peninsula corridor" in op:
         return "Caltrain"
