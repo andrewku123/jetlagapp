@@ -3203,8 +3203,8 @@
  },
  {
   "name": "Beach Street & Mason Street",
-  "lat": 37.807865,
-  "lon": -122.414822,
+  "lat": 37.808379,
+  "lon": -122.414923,
   "systems": [
    "Muni"
   ],
@@ -3231,9 +3231,9 @@
   "city": "San Francisco city",
   "elevation": 4.1,
   "airportDist": {
-   "SFO": 21194.1,
-   "OAK": 19802.0,
-   "SJC": 65395.3
+   "SFO": 21251.9,
+   "OAK": 19838.2,
+   "SJC": 65444.2
   },
   "nearestAirport": "OAK"
  },
@@ -8450,8 +8450,8 @@
  },
  {
   "name": "Saint James",
-  "lat": 37.338364,
-  "lon": -121.892124,
+  "lat": 37.33881,
+  "lon": -121.891182,
   "systems": [
    "VTA"
   ],
@@ -8478,16 +8478,16 @@
   "city": "San Jose city",
   "elevation": 25.3,
   "airportDist": {
-   "SFO": 53290.6,
-   "OAK": 51239.0,
-   "SJC": 4271.0
+   "SFO": 53328.9,
+   "OAK": 51244.9,
+   "SJC": 4302.4
   },
   "nearestAirport": "SJC"
  },
  {
   "name": "San Antonio (VTA)",
-  "lat": 37.332817,
-  "lon": -121.88799,
+  "lat": 37.333264,
+  "lon": -121.88706,
   "systems": [
    "VTA"
   ],
@@ -8514,9 +8514,9 @@
   "city": "San Jose city",
   "elevation": 26.7,
   "airportDist": {
-   "SFO": 53949.6,
-   "OAK": 51954.6,
-   "SJC": 4956.3
+   "SFO": 53986.5,
+   "OAK": 51959.7,
+   "SJC": 4982.5
   },
   "nearestAirport": "SJC"
  },
@@ -8557,8 +8557,8 @@
  },
  {
   "name": "Santa Clara (VTA)",
-  "lat": 37.335936,
-  "lon": -121.890313,
+  "lat": 37.336388,
+  "lon": -121.889382,
   "systems": [
    "VTA"
   ],
@@ -8585,9 +8585,9 @@
   "city": "San Jose city",
   "elevation": 26.5,
   "airportDist": {
-   "SFO": 53579.0,
-   "OAK": 51552.3,
-   "SJC": 4569.8
+   "SFO": 53615.9,
+   "OAK": 51557.0,
+   "SJC": 4598.1
   },
   "nearestAirport": "SJC"
  },
