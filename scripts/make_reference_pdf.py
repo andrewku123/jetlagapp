@@ -146,6 +146,65 @@ alt_rows = [(a, c) for a, c in zip(alt_labels, alt_counts) if c]
 alt_table = html_hgrid(alt_rows, "Elevation band (ft)", "stations")
 nl_table = html_hgrid([(L, c) for L, c in nl_rows if c], "Name length", "stations")
 
+# ---------- black & white system map (built from the app's own data) ----------
+import math
+INPLAY = {"Alameda", "Contra Costa", "San Francisco", "San Mateo", "Santa Clara"}
+
+def _rings(geom):
+    if geom["type"] == "Polygon":
+        return geom["coordinates"]
+    if geom["type"] == "MultiPolygon":
+        return [ring for poly in geom["coordinates"] for ring in poly]
+    return []
+
+def system_map_svg(target_h=1000.0):
+    counties_gj = json.load(open(f"{REPO}/src/data/counties.geojson.json"))
+    lines_gj = json.load(open(f"{REPO}/src/data/transit-lines.geojson.json"))
+    play = [f for f in counties_gj["features"] if f["properties"]["name"] in INPLAY]
+    # bbox from in-play county polygons
+    xs, ys = [], []
+    for f in play:
+        for ring in _rings(f["geometry"]):
+            for lon, lat in ring:
+                xs.append(lon); ys.append(lat)
+    lon0, lon1 = min(xs), max(xs)
+    lat0, lat1 = min(ys), max(ys)
+    k = math.cos(math.radians((lat0 + lat1) / 2))
+    Wd, Hd = (lon1 - lon0) * k, (lat1 - lat0)
+    SC = target_h / Hd
+    VW, VH = Wd * SC, Hd * SC
+
+    def P(lon, lat):
+        return ((lon - lon0) * k * SC, (lat1 - lat) * SC)
+
+    def ring_path(ring):
+        pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in (P(lo, la) for lo, la in ring))
+        return f"M{pts}Z"
+
+    out = []
+    # county fills + outlines (light), defines the play area
+    for f in play:
+        d = "".join(ring_path(r) for r in _rings(f["geometry"]))
+        out.append(f'<path d="{d}" fill="#f2f2f2" stroke="#9a9a9a" stroke-width="1.6" '
+                   f'stroke-linejoin="round"/>')
+    # transit lines (uniform dark for a clean B&W look)
+    for f in lines_gj["features"]:
+        g = f["geometry"]
+        chains = g["coordinates"] if g["type"] == "MultiLineString" else [g["coordinates"]]
+        for ch in chains:
+            pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in (P(lo, la) for lo, la in ch))
+            out.append(f'<polyline points="{pts}" fill="none" stroke="#1a1a1a" '
+                       f'stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>')
+    # station dots
+    for s in ST:
+        x, y = P(s["lon"], s["lat"])
+        out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="#000" '
+                   f'stroke="#fff" stroke-width="0.8"/>')
+    return (f'<svg viewBox="0 0 {VW:.0f} {VH:.0f}" preserveAspectRatio="xMidYMid meet" '
+            f'class="sysmap">{"".join(out)}</svg>')
+
+MAP_SVG = system_map_svg()
+
 # ---------- HTML ----------
 def ul(items, cls="cols"):
     lis = "".join(f"<li>{html.escape(i)}</li>" for i in items)
@@ -313,9 +372,13 @@ ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
 page1_cols = f"""
 <div class="p1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}</div>"""
 
-# page 2: both station tables + reference lists (golf & mountains removed)
+# page 2: tables + reference lists (counties in col 2), then full-width B&W map
 page2_ref = f"""
-<div class="ref">{alt_card}{nl_card}{ref_air}{ref_counties}{ref_zoos}{ref_theme}{ref_cities}</div>"""
+<div class="ref">{alt_card}{nl_card}{ref_air}{ref_zoos}{ref_theme}{ref_cities}{ref_counties}</div>
+<div class="mapwrap">
+  <div class="maptitle">Transit system map &mdash; in-play counties</div>
+  {MAP_SVG}
+</div>"""
 
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -380,6 +443,10 @@ ul.plain li {{ font-size:10px; margin:0 0 4px; }}
 ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 8px; align-items:baseline; }}
 .aname {{ font-weight:700; font-size:10px; }}
 .coord {{ font-size:9px; color:#555; font-family:'IBM Plex Mono', monospace; }}
+/* black & white system map */
+.mapwrap {{ margin-top:10px; text-align:center; break-inside:avoid; }}
+.maptitle {{ font-size:11px; font-weight:600; color:#111; margin:0 0 4px; }}
+svg.sysmap {{ display:block; margin:0 auto; height:4.6in; max-width:100%; border:1px solid #e2e2e2; background:#fff; }}
 footer {{ font-size:8px; color:#888; margin-top:8px; }}
 </style></head><body>
 <h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck (Medium)</h1>
