@@ -45,9 +45,9 @@ body { background: var(--bg); color: var(--text); }
 }
 .draw-tools button span { font-size: 10px; }
 .draw-tools button.on { color: #fff; border-color: var(--accent); background: var(--accent); }
-.draw-radius { display: flex; align-items: center; gap: 6px; margin-top: 8px; color: var(--muted); }
+.draw-radius { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; color: var(--muted); }
 .draw-radius select {
-  flex: 1; background: var(--panel2); color: var(--text);
+  flex: 1; min-width: 0; background: var(--panel2); color: var(--text);
   border: 1px solid var(--line); border-radius: 6px; padding: 4px;
 }
 .draw-colors { display: flex; gap: 6px; margin-top: 8px; }
@@ -135,8 +135,13 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 
 .drag-handle-dot { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.5); cursor: grab; }
 .drag-handle-dot:active { cursor: grabbing; }
-.draw-radius-input { width: 64px; margin-left: 4px; }
+.draw-radius-input {
+  flex-basis: 100%; width: 100%; margin: 0; box-sizing: border-box;
+  background: var(--panel2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px;
+}
 .popup label { display: block; margin-bottom: 4px; }
+.popup label select { margin-left: 6px; }
 .popup .popup-input { width: 70px; margin-left: 4px; }
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #fff; color: #111; }

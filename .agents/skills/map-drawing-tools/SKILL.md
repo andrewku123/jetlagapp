@@ -56,6 +56,23 @@ Annotations are **editable after placement** (not just click-to-delete):
 - `updateAnnotation(id, patch)` in `App.tsx` maps over `game.annotations` and
   merges the patch onto the matching `id`; persists via storage like the others.
 
+## Gotchas (learned the hard way)
+- **Popup buttons must not drop a new point.** In `compass` mode the map `click`
+  handler creates a circle on every click. A click on a popup's Delete button
+  bubbles to the Leaflet map and would drop a *second* circle. `MapClicks` guards
+  against this: it ignores clicks whose `originalEvent.target` is inside
+  `.leaflet-popup` or `.leaflet-marker-icon`. Keep that guard if you add new
+  immediate-draw tools.
+- **The measure label won't follow a dragged endpoint** unless the `<Polyline>`
+  remounts: a Leaflet permanent `<Tooltip permanent direction="center">` anchors
+  to the line's center only when (re)bound. The Polyline therefore has a `key`
+  that includes the rounded endpoint coords so it remounts on `dragend` and the
+  label re-centers.
+- **Toolbar custom-value input** (`.draw-radius-input`) uses `flex-basis: 100%`
+  inside the `flex-wrap` `.draw-radius` row so it drops to its own line instead of
+  overflowing the panel, and is styled dark (`--panel2`) to match. Popup `<label>`
+  selects get `margin-left` so the label text isn't flush against the dropdown.
+
 ## Geometry helpers (`src/lib/geo.ts`)
 - `haversineMiles(a, b)` — great-circle miles (used for the measure label and the
   radar/thermometer engine; keep it the single source of distance truth).

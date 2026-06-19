@@ -98,6 +98,10 @@ const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 function MapClicks({ onClick }: { onClick: (p: LatLng) => void }) {
   useMapEvents({
     click(e) {
+      // ignore clicks that bubbled out of a popup / marker handle (e.g. the
+      // Delete button in an annotation popup) so they don't drop a new point
+      const target = e.originalEvent?.target as HTMLElement | null
+      if (target?.closest('.leaflet-popup') || target?.closest('.leaflet-marker-icon')) return
       onClick({ lat: e.latlng.lat, lon: e.latlng.lng })
     },
   })
@@ -594,6 +598,7 @@ export default function MapView({
           return (
             <Fragment key={a.id}>
               <Polyline
+                key={`${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
                 positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
                 pathOptions={{ color: a.color, weight: 2, dashArray: a.type === 'bisector' ? '6 4' : a.type === 'measure' ? '2 6' : undefined }}
               >
