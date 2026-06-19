@@ -12,3 +12,6 @@ tsconfig.tsbuildinfo
 scripts/__pycache__/
 __pycache__/
 *.pyc
+
+# generated reference deliverable
+jetlag_reference_medium.pdf
