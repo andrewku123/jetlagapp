@@ -58,6 +58,6 @@ predicate compares those precomputed values.
   `params`; matching/measuring store the seeker's own attribute `value`.
 
 ## Verify
-`npm run lint && npx tsc -b --noEmit`, then `npm run dev`: log the new question,
+`npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: log the new question,
 confirm the "N of M possible" count and the map's eliminated markers update, and
 that toggling the record off in History restores the stations.

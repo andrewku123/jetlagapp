@@ -13,7 +13,7 @@ import {
 import L from 'leaflet'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
-import { bisectorEndpoints, haversineMiles } from '../lib/geo'
+import { bisectorEndpoints, haversineMiles, formatMiles } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
 
 interface Props {
@@ -72,6 +72,8 @@ export default function MapView({
   const [tool, setTool] = useState<DrawTool>('select')
   const [radiusMi, setRadiusMi] = useState(1)
   const [color, setColor] = useState(DRAW_COLORS[0])
+  // rounding step for the measure label: 0 = exact (2 dp), else snap to this many mi
+  const [measureStep, setMeasureStep] = useState(0)
   // first click of a two-point line / bisector
   const [pending, setPending] = useState<LatLng | null>(null)
 
@@ -97,6 +99,7 @@ export default function MapView({
         bLat: p.lat,
         bLon: p.lon,
         color,
+        ...(type === 'measure' ? { step: measureStep } : {}),
       })
       setPending(null)
     }
@@ -137,6 +140,18 @@ export default function MapView({
               {RADAR_OPTIONS.map((r) => (
                 <option key={r} value={r}>{r} mi</option>
               ))}
+            </select>
+          </label>
+        )}
+        {tool === 'measure' && (
+          <label className="draw-radius">
+            round
+            <select value={measureStep} onChange={(e) => setMeasureStep(Number(e.target.value))}>
+              <option value={0}>exact</option>
+              <option value={0.5}>½ mi</option>
+              <option value={1}>1 mi</option>
+              <option value={5}>5 mi</option>
+              <option value={10}>10 mi</option>
             </select>
           </label>
         )}
@@ -185,7 +200,7 @@ export default function MapView({
             <CircleMarker
               key={st.id}
               center={[st.lat, st.lon]}
-              radius={star ? 8 : 6}
+              radius={star ? 11 : 6}
               pathOptions={{
                 color: star ? '#000' : c,
                 weight: star ? 3 : 1.5,
@@ -259,7 +274,11 @@ export default function MapView({
               ? haversineMiles({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon })
               : null
           const label =
-            a.type === 'bisector' ? 'Perpendicular bisector' : a.type === 'measure' ? `${miles!.toFixed(2)} mi` : 'Straightedge line'
+            a.type === 'bisector'
+              ? 'Perpendicular bisector'
+              : a.type === 'measure'
+                ? formatMiles(miles!, a.step ?? 0)
+                : 'Straightedge line'
           return (
             <Polyline
               key={a.id}

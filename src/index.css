@@ -104,6 +104,13 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .slist .star.on { color: #f5b301; }
 .slist .x { background: none; border: 0; color: var(--muted); cursor: pointer; }
 .slist .x:hover { color: #ff6b6b; }
+.slist li.starred { background: rgba(245, 179, 1, 0.10); }
+.slist li.elim { opacity: 0.55; }
+.slist li.elim .sname { color: #9aa0a6; text-decoration: line-through; }
+.slist li.elim .ssys { color: #9aa0a6; }
+.slist .star-spacer, .slist .x-spacer { width: 15px; flex: none; display: inline-block; }
+.slist .restore { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 14px; padding: 0; }
+.slist .restore:hover { color: #3fb950; }
 .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: none; }
 
 .legend h3 { margin: 6px 0; font-size: 13px; }

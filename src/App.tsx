@@ -59,6 +59,7 @@ export default function App() {
   )
 
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
+  const manualSet = useMemo(() => new Set(game.manualEliminated), [game.manualEliminated])
 
   const pickedPoints = useMemo(() => {
     const pts: { label: string; point: LatLng; color: string }[] = []
@@ -213,13 +214,15 @@ export default function App() {
 
           {tab === 'suspects' && (
             <div className="panel">
-              <p className="hint">{remaining.length} stations still possible. Click ★ to flag, ✕ to eliminate by hand.</p>
+              <p className="hint">
+                {remaining.length} of {base.length} still possible. Click ★ to flag (pins to top), ✕ to eliminate by hand.
+              </p>
               <ul className="slist">
                 {remaining
                   .slice()
                   .sort((a, b) => Number(starredSet.has(b.id)) - Number(starredSet.has(a.id)) || a.name.localeCompare(b.name))
                   .map((s) => (
-                    <li key={s.id}>
+                    <li key={s.id} className={starredSet.has(s.id) ? 'starred' : ''}>
                       <button className={'star ' + (starredSet.has(s.id) ? 'on' : '')} onClick={() => toggleStar(s.id)}>★</button>
                       <span className="dot" style={{ background: SYSTEM_COLORS[s.systems[0]] ?? '#444' }} />
                       <span className="sname">{s.name}</span>
@@ -227,6 +230,25 @@ export default function App() {
                       <button className="x" onClick={() => toggleManual(s.id)} title="eliminate">✕</button>
                     </li>
                   ))}
+                {eliminated
+                  .slice()
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((s) => {
+                    const manual = manualSet.has(s.id)
+                    return (
+                      <li key={s.id} className="elim">
+                        <span className="star-spacer" />
+                        <span className="dot" style={{ background: '#9aa0a6' }} />
+                        <span className="sname">{s.name}</span>
+                        <span className="ssys">{s.systems.join('·')}</span>
+                        {manual ? (
+                          <button className="restore" onClick={() => toggleManual(s.id)} title="restore">↩</button>
+                        ) : (
+                          <span className="x-spacer" title="eliminated by a question" />
+                        )}
+                      </li>
+                    )
+                  })}
               </ul>
             </div>
           )}

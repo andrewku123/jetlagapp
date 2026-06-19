@@ -10,9 +10,10 @@ out of the box.
 
 ## GitHub Pages (default, automatic)
 
-A workflow at `.github/workflows/deploy.yml` builds on every push to `main`/`master`
-and publishes `dist/` to Pages. It sets the Vite `base` to `/<repo-name>/`
-automatically via the `BASE` env var.
+A workflow at `.github/workflows/deploy.yml` runs **lint → test → build** on every
+push to `main`/`master` and publishes `dist/` to Pages (a failing lint or test
+blocks the deploy). It sets the Vite `base` to `/<repo-name>/` automatically via
+the `BASE` env var.
 
 One-time setup in the GitHub repo:
 1. **Settings → Pages → Build and deployment → Source = "GitHub Actions"**.

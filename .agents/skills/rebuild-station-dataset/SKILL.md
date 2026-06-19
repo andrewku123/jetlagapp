@@ -34,12 +34,15 @@ Inputs (all relative to `scripts/`):
 - `raw_muni.json` — OSM relations for Muni N/J/F/K/L/M/T.
 
 Key rules baked in (keep these):
-- **Muni = every rail stop** (labeled + unlabeled "Other Stop" dots), deduped **within Muni**: identical stop name clusters together at any distance; otherwise nearest cluster `< 150 m`. North Beach (T) and a spurious "Glen Park" Muni node are dropped. Shared subway stops get canonical display names via the `RENAME` dict.
+- **Muni = every rail stop** (labeled + unlabeled "Other Stop" dots), deduped **within Muni**: identical stop name clusters together at any distance; otherwise nearest cluster `< 150 m`. Shared subway stops get canonical display names via the `RENAME` dict. Curated drops (keep them):
+  - **North Beach (T)** and a spurious **Glen Park** Muni node.
+  - The **F-only surface stops on Market St inland of Embarcadero** (any F-only cluster whose name starts with `Market Street &`) — they run directly above the Muni Metro subway and duplicate those stations.
+  - The **F node at Market & Stockton** (the F does not stop at Union Square/Market, the Central Subway T station).
 - **Cross-system merge** only between *different* systems within `< 200 m` (`merge_service` ORs the service flags). This is what makes 4th & King = Caltrain + Muni, Balboa Park = BART + Muni, Milpitas = BART + VTA, etc.
 - **Disambiguation**: stations sharing a display name across systems get the system appended, e.g. `San Bruno (BART)` vs `San Bruno (Caltrain)`.
 - Writes `stations.json` (un-enriched) and prints per-system + eligible counts.
 
-Expected output: **256 unique stations** (BART 50 · Caltrain 24 · VTA 59 · Muni 134), **255 eligible weekday / 256 weekend** after the hourly filter. If your counts differ, diff against these before proceeding — a changed count usually means an upstream OSM/GTFS pull changed.
+Expected output: **246 unique stations** (BART 50 · Caltrain 24 · VTA 59 · Muni 124), **245 eligible weekday / 246 weekend** after the hourly filter. If your counts differ, diff against these before proceeding — a changed count usually means an upstream OSM/GTFS pull changed. (These same numbers are asserted in `src/data/stations.test.ts`; update both together on an intentional change.)
 
 ### 2. `build_attributes.py` — enrich
 Reads `stations.json`, adds `id`, `nameLength`, `county`, `city`, `elevation`
@@ -57,7 +60,7 @@ in place.
 
 ## Verify
 ```bash
-npm run lint && npx tsc -b --noEmit && npm run build
+npm run lint && npx tsc -b --noEmit && npm test && npm run build
 ```
 Then `npm run dev` and confirm the map renders all stations and the
 weekday/weekend + "≥hourly only" toggles change the "N of M possible" count.

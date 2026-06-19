@@ -23,6 +23,19 @@ function toRad(deg: number): number {
 }
 
 /**
+ * Format a mileage label, optionally snapped to a coarser step.
+ * step = 0 → exact (2 dp); step = 1 → nearest whole mile; step = 0.5 → nearest half, etc.
+ */
+export function formatMiles(miles: number, step = 0): string {
+  if (step > 0) {
+    const snapped = Math.round(miles / step) * step
+    const dp = step < 1 ? 1 : 0
+    return `${snapped.toFixed(dp)} mi`
+  }
+  return `${miles.toFixed(2)} mi`
+}
+
+/**
  * Endpoints of the perpendicular bisector of segment A–B, extended `lengthMiles`
  * either side of the midpoint. Uses a local equirectangular approximation (good
  * enough at metro scale). This is the hotter/colder boundary for a thermometer.

@@ -54,5 +54,5 @@ region file the exact same `Station[]` shape so the elimination engine is
 untouched.
 
 ## Verify
-`npm run lint && npx tsc -b --noEmit && npm run build`, then `npm run dev` and
+`npm run lint && npx tsc -b --noEmit && npm test && npm run build`, then `npm run dev` and
 confirm the new region renders and the toggles/filters behave.
