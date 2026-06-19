@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -95,13 +95,35 @@ const WORLD_RING: [number, number][] = [
 
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 
+function inAnnotationControl(t: HTMLElement | null | undefined): boolean {
+  return !!(t?.closest?.('.leaflet-popup') || t?.closest?.('.leaflet-marker-icon'))
+}
+
 function MapClicks({ onClick }: { onClick: (p: LatLng) => void }) {
+  // A click on a popup control (e.g. the Delete button) can re-fire as a map
+  // click; by then React may have already removed the popup from the DOM, so
+  // checking the click target is unreliable. Record at mousedown/touchstart
+  // (capture phase, before any React state update) whether the press began on
+  // a popup or marker handle, and suppress the next map click if so.
+  const suppressRef = useRef(false)
+  useEffect(() => {
+    const onDown = (e: Event) => {
+      suppressRef.current = inAnnotationControl(e.target as HTMLElement | null)
+    }
+    document.addEventListener('mousedown', onDown, true)
+    document.addEventListener('touchstart', onDown, true)
+    return () => {
+      document.removeEventListener('mousedown', onDown, true)
+      document.removeEventListener('touchstart', onDown, true)
+    }
+  }, [])
   useMapEvents({
     click(e) {
-      // ignore clicks that bubbled out of a popup / marker handle (e.g. the
-      // Delete button in an annotation popup) so they don't drop a new point
       const target = e.originalEvent?.target as HTMLElement | null
-      if (target?.closest('.leaflet-popup') || target?.closest('.leaflet-marker-icon')) return
+      if (suppressRef.current || inAnnotationControl(target)) {
+        suppressRef.current = false
+        return
+      }
       onClick({ lat: e.latlng.lat, lon: e.latlng.lng })
     },
   })
