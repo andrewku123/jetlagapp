@@ -130,12 +130,27 @@ def svg_horizontal(rows, caption, color="#c2410c", w=520, rh=12, pad_l=44, pad_r
     out.append(f'<text x="{pad_l+plot_w/2:.0f}" y="{h-3}" font-size="9" text-anchor="middle" fill="#333">{caption}</text>')
     return f'<svg viewBox="0 0 {w} {h}" width="100%">{"".join(out)}</svg>'
 
-# orientation reversed per request: altitude is now horizontal, name length vertical
-alt_rows = list(zip(alt_labels, alt_counts))
-alt_svg = svg_horizontal(alt_rows, "stations  (bars = elevation band, ft)", color="#c2410c")
-nl_counts = [c for _, c in nl_rows]
-nl_lbls = [str(L) for L, _ in nl_rows]
-nl_svg = svg_vertical(nl_counts, nl_lbls, "station-name length (characters)", color="#2563eb")
+# station profiles rendered as tables (not graphs), per request
+def html_table(rows, h1, h2, split=1):
+    cells = [f"<td>{html.escape(str(a))}</td><td>{c}</td>" for a, c in rows]
+    if split <= 1:
+        body = "".join(f"<tr>{c}</tr>" for c in cells)
+        head = f"<tr><th>{h1}</th><th>{h2}</th></tr>"
+    else:
+        per = -(-len(cells) // split)
+        cols = [cells[i * per:(i + 1) * per] for i in range(split)]
+        rows_out = []
+        for r in range(per):
+            tds = "".join(cols[c][r] if r < len(cols[c]) else "<td></td><td></td>"
+                          for c in range(split))
+            rows_out.append(f"<tr>{tds}</tr>")
+        body = "".join(rows_out)
+        head = "<tr>" + (f"<th>{h1}</th><th>{h2}</th>" * split) + "</tr>"
+    return f'<table class="dt"><thead>{head}</thead><tbody>{body}</tbody></table>'
+
+alt_rows = [(a, c) for a, c in zip(alt_labels, alt_counts) if c]
+alt_table = html_table(alt_rows, "Elevation band (ft)", "Stations")
+nl_table = html_table([(L, c) for L, c in nl_rows if c], "Name length", "Stations", split=2)
 
 # ---------- HTML ----------
 def ul(items, cls="cols"):
@@ -203,11 +218,14 @@ def photo_boxes(items):
                    f'<span class="pd">{html.escape(req)}</span></span></li>')
     return "<ul class=\"chk photo\">" + "".join(out) + "</ul>"
 
-def scale(items, unit="mi"):
+def scale(items, unit="mi", custom=False):
     cells = "".join(
         f'<div class="sc"><span class="cb"></span><span class="num">{v}</span></div>'
         for v in items)
-    return f'<div class="scale">{cells}<div class="sc unit">{unit}</div></div>'
+    custom_cell = ('<div class="sc"><span class="cb"></span>'
+                   '<span class="num">Custom</span></div>') if custom else ''
+    return (f'<div class="scale">{cells}<div class="sc unit">{unit}</div>'
+            f'{custom_cell}</div>')
 
 # per-card meta lines
 META_FAIL = ('<p class="meta"><b>Answer window</b> &le; 5 min &middot; '
@@ -238,11 +256,11 @@ CARD_MEASURING = f"""
 CARD_RADAR = f"""
 <div class="card slim">
   <h2>3 &middot; Radar <span class="dk">draw 2, keep 1</span></h2>
-  <p class="prompt">"Are you within ___ of me?" &rarr; <b>Yes / No</b> &middot; Yes = keep inside circle, No = keep outside. <b>Custom</b> radius allowed.</p>
+  <p class="prompt">"Are you within ___ of me?" &rarr; <b>Yes / No</b> &middot; Yes = keep inside circle, No = keep outside. <b>Custom</b> radius allowed <b>once per game</b>.</p>
   <p class="send"><b>Send hider:</b> your location pin (circle center) + the radius.</p>
   <p class="eg ok"><b>End game:</b> completable.</p>
   {META_FAIL}
-  {scale(RADAR)}
+  {scale(RADAR, custom=True)}
   <p class="app ok inline">app: radar + custom radius, eliminated-area shading</p>
 </div>"""
 CARD_THERMO = f"""
@@ -276,11 +294,15 @@ CARD_PHOTO = f"""
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
 </div>"""
 
-mini_graphs = f"""
-<div class="card minis">
-  <h2>Station profiles <span class="dk">{len(ST)} stations</span></h2>
-  <div class="mini">{alt_svg}</div>
-  <div class="mini">{nl_svg}</div>
+alt_card = f"""
+<div class="card tbl">
+  <h2>Stations by altitude <span class="dk">{len(ST)} stations</span></h2>
+  {alt_table}
+</div>"""
+nl_card = f"""
+<div class="card tbl">
+  <h2>Stations by name length <span class="dk">{len(ST)} stations</span></h2>
+  {nl_table}
 </div>"""
 
 def rblock(title, count, body):
@@ -297,89 +319,91 @@ ref_zoos = rblock("Zoos", len(zoos), ul(zoos))
 ref_theme = rblock("Amusement parks", len(theme), ul(theme))
 ref_cities = rblock("Cities / municipalities", len(cities), ul(cities))
 ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
-ref_mtn = rblock("Mountains &middot; named peaks &ge; 1,500 ft", len(mountains), ul(mountains))
-ref_golf = rblock("Golf courses", len(golf), ul(golf))
-ref_hosp = rblock("Hospitals", len(hospital), ul(hospital))
 
+# page 1: questions in two columns (Q1-3 | Q4-6)
 page1_cols = f"""
 <div class="p1">
-  <div class="col col1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{mini_graphs}</div>
-  <div class="col col2">{CARD_TENTACLES}{CARD_PHOTO}</div>
-  <div class="col col3">{ref_air}{ref_counties}{ref_zoos}{ref_theme}</div>
+  <div class="col col1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}</div>
+  <div class="col col2">{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}</div>
 </div>"""
 
+# page 2: both station tables + reference lists (golf & mountains removed)
 page2_ref = f"""
-<div class="ref">{ref_cities}{ref_water}{ref_mtn}{ref_golf}{ref_hosp}</div>"""
+<div class="ref">{alt_card}{nl_card}{ref_air}{ref_counties}{ref_zoos}{ref_theme}{ref_cities}{ref_water}</div>"""
 
 
-doc = f"""<!doctype html><html><head><meta charset="utf-8"><style>
+doc = f"""<!doctype html><html><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
 @page {{ size: letter; margin: 0; }}
 * {{ box-sizing: border-box; }}
-body {{ font-family: -apple-system, Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; }}
-h1 {{ font-size:17px; margin:0 0 2px; }}
-.sub {{ font-size:9.5px; color:#666; margin:0 0 8px; }}
-/* page 1: three explicit columns */
-.p1 {{ display:flex; gap:10px; align-items:flex-start; }}
-.col {{ display:flex; flex-direction:column; }}
-.col1 {{ flex:1.08; }}
-.col2 {{ flex:1.0; }}
-.col3 {{ flex:0.92; }}
-.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:6px 8px; margin:0 0 8px; background:#fafafa; width:100%; }}
-.card.minis {{ background:#fff; }}
-.mini {{ margin:4px 0 2px; }}
-.card h2 {{ font-size:11.5px; margin:0 0 4px; color:#111; }}
-.dk {{ float:right; font-size:8px; font-weight:600; background:#111; color:#fff; padding:1px 5px; border-radius:8px; }}
-.prompt {{ font-size:8.7px; margin:2px 0 3px; color:#222; }}
-.send {{ font-size:8.2px; margin:2px 0; color:#0c4a6e; background:#e0f2fe; border-radius:4px; padding:2px 4px; }}
-.eg {{ font-size:8px; margin:2px 0; padding:2px 4px; border-radius:4px; }}
+body {{ font-family: 'IBM Plex Sans', -apple-system, Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; }}
+h1 {{ font-size:19px; margin:0 0 3px; }}
+.sub {{ font-size:10px; color:#666; margin:0 0 6px; }}
+/* page 1: two columns */
+.p1 {{ display:flex; gap:12px; align-items:flex-start; }}
+.col {{ display:flex; flex-direction:column; flex:1; }}
+.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:7px 9px; margin:0 0 7px; background:#fafafa; width:100%; }}
+.ref .card.tbl {{ background:#fff; }}
+.card h2 {{ font-size:13.5px; margin:0 0 5px; color:#111; }}
+.dk {{ float:right; font-size:9.5px; font-weight:600; background:#111; color:#fff; padding:1px 6px; border-radius:8px; }}
+.prompt {{ font-size:10px; margin:2px 0; color:#222; }}
+.send {{ font-size:9.5px; margin:2px 0; color:#0c4a6e; background:#e0f2fe; border-radius:4px; padding:2px 5px; }}
+.eg {{ font-size:9.3px; margin:2px 0; padding:2px 5px; border-radius:4px; }}
 .eg.ok {{ color:#166534; background:#f0fdf4; }}
 .eg.warn {{ color:#9a3412; background:#fff7ed; }}
-.meta {{ font-size:7.8px; margin:2px 0 4px; color:#555; }}
+.meta {{ font-size:9px; margin:2px 0 3px; color:#555; }}
 .egm {{ color:#c2410c; font-weight:700; }}
 /* checkbox subject lists */
-ul.chk {{ list-style:none; margin:3px 0 0; padding:0; columns:2; column-gap:8px; }}
-ul.chk li {{ font-size:8.2px; margin:1.5px 0; break-inside:avoid; display:flex; align-items:flex-start; gap:3px; }}
-.card.slim ul.chk {{ columns:1; }}
-.cb {{ display:inline-block; width:8px; height:8px; min-width:8px; border:1px solid #555; border-radius:1.5px; margin-top:1px; }}
+ul.chk {{ list-style:none; margin:4px 0 0; padding:0; columns:2; column-gap:10px; }}
+ul.chk li {{ font-size:9.6px; margin:1.5px 0; break-inside:avoid; display:flex; align-items:flex-start; gap:4px; }}
+.cb {{ display:inline-block; width:10px; height:10px; min-width:10px; border:1px solid #555; border-radius:2px; margin-top:1px; }}
 /* photo conditions: full requirement under each title, single column */
 ul.chk.photo {{ columns:1; }}
-ul.chk.photo li {{ margin:3px 0; }}
-.pt {{ display:block; font-size:8.2px; line-height:1.25; }}
-.pd {{ color:#444; font-size:7.6px; }}
+ul.chk.photo li {{ margin:2.5px 0; }}
+.pt {{ display:block; font-size:9.6px; line-height:1.3; }}
+.pd {{ color:#444; font-size:9px; font-weight:400; }}
 /* radar/thermometer scale: checkbox above number */
-.scale {{ display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 2px; }}
+.scale {{ display:flex; flex-wrap:wrap; gap:9px; margin:5px 0 2px; }}
 .sc {{ display:flex; flex-direction:column; align-items:center; }}
-.sc .num {{ font-size:9px; margin-top:2px; color:#222; }}
-.sc.unit {{ justify-content:flex-end; font-size:8px; color:#777; align-self:flex-end; }}
-.app {{ font-size:7px; padding:0 4px; border-radius:6px; margin-left:3px; }}
+.sc .num {{ font-size:11px; margin-top:3px; color:#222; }}
+.sc.unit {{ justify-content:flex-end; font-size:9.5px; color:#777; align-self:flex-end; }}
+.app {{ font-size:8.5px; padding:0 5px; border-radius:6px; margin-left:3px; }}
 .app.ok {{ background:#dcfce7; color:#166534; }}
 .app.no {{ background:#f1f1f1; color:#999; }}
-.app.inline {{ display:inline-block; margin:4px 0 0; }}
+.app.inline {{ display:inline-block; margin:5px 0 0; }}
 .page-break {{ break-before:page; }}
-.ref {{ column-count:3; column-gap:12px; }}
-.rblock {{ break-inside:avoid; margin-bottom:6px; }}
-.rblock h3, .chart h3 {{ font-size:10px; margin:0 0 3px; color:#111; border-bottom:1px solid #ddd; padding-bottom:2px; }}
-.cnt {{ float:right; font-size:8px; color:#fff; background:#c2410c; padding:0 5px; border-radius:8px; }}
-ul.cols {{ columns:2; column-gap:8px; margin:0; padding-left:13px; }}
-ul.cols li {{ font-size:7.1px; margin:0.2px 0; break-inside:avoid; }}
+/* station-profile tables */
+table.dt {{ width:100%; border-collapse:collapse; margin-top:4px; font-size:9.5px; }}
+table.dt th {{ text-align:left; background:#f0f0f0; border-bottom:1px solid #bbb; padding:3px 6px; font-size:9px; }}
+table.dt td {{ padding:2px 6px; border-bottom:1px solid #eee; }}
+table.dt td:nth-child(2n) {{ text-align:right; font-variant-numeric:tabular-nums; }}
+/* reference lists */
+.ref {{ column-count:2; column-gap:16px; }}
+.rblock {{ break-inside:auto; margin-bottom:9px; }}
+.rblock h3 {{ font-size:12px; margin:0 0 4px; color:#111; border-bottom:1px solid #ddd; padding-bottom:2px; break-after:avoid; }}
+.card.tbl {{ break-inside:avoid; }}
+.cnt {{ float:right; font-size:9px; color:#fff; background:#c2410c; padding:0 6px; border-radius:8px; }}
+ul.cols {{ columns:2; column-gap:10px; margin:0; padding-left:15px; }}
+ul.cols li {{ font-size:9px; margin:1px 0; break-inside:avoid; }}
 ul.plain {{ list-style:none; margin:0; padding:0; }}
-ul.plain li {{ font-size:8.5px; margin:0 0 3px; }}
+ul.plain li {{ font-size:10px; margin:0 0 4px; }}
 /* airports: name left, coords on the right, wrapping below if tight */
-ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 6px; align-items:baseline; }}
-.aname {{ font-weight:700; font-size:8.3px; }}
-.coord {{ font-size:7.5px; color:#666; font-family:monospace; }}
-.charts {{ display:flex; gap:14px; margin-top:6px; break-inside:avoid; }}
-.chart {{ flex:1; border:1px solid #eee; border-radius:6px; padding:6px 8px; }}
-footer {{ font-size:7px; color:#888; margin-top:6px; }}
+ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 8px; align-items:baseline; }}
+.aname {{ font-weight:700; font-size:10px; }}
+.coord {{ font-size:9px; color:#555; font-family:'IBM Plex Mono', monospace; }}
+footer {{ font-size:8px; color:#888; margin-top:8px; }}
 </style></head><body>
 <h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck (Medium)</h1>
 <p class="sub">Seeker asks; hider answers truthfully &amp; then draws/keeps cards. <b>Send hider</b> = the minimum you must reveal for the question to be answerable. <span class="egm">&dagger;</span> = may be impossible in the end game. "app" = the Bay Area seeker tool auto-eliminates for it.</p>
 {page1_cols}
 <div class="page-break"></div>
 <h1>Bay Area play-area reference (continued)</h1>
-<p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties; airports &amp; histograms on page 1.</p>
+<p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties.</p>
 {page2_ref}
-<footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. Mountains limited to named summits &ge; 1,500 ft; bodies of water limited to bays/straits, lakes, lagoons &amp; named reservoirs (minor coves/sloughs/ponds omitted). POIs from OpenStreetMap.</footer>
+<footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. Bodies of water limited to bays/straits, lakes, lagoons &amp; named reservoirs (minor coves/sloughs/ponds omitted). POIs from OpenStreetMap.</footer>
 </body></html>"""
 
 open("/tmp/reference.html", "w").write(doc)
@@ -393,6 +417,7 @@ with sync_playwright() as p:
     ctx = b.contexts[0] if b.contexts else b.new_context()
     pg = ctx.new_page()
     pg.goto("file:///tmp/reference.html", wait_until="networkidle")
+    pg.evaluate("document.fonts.ready")  # ensure IBM Plex Sans is loaded
     pg.emulate_media(media="print")
     pg.pdf(path=OUT, format="Letter", print_background=True,
            margin={"top": "0.5in", "bottom": "0.5in", "left": "0.5in", "right": "0.5in"})

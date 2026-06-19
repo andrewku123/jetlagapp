@@ -60,31 +60,42 @@ and Quick Start guide (`/docs/quick_start_guide/asking_questions`,
   transit line, station-name length, county, city, sea level, radar, thermometer).
 
 ## Layout (current)
-- **Page 1** is an explicit 3-column flex (`.p1` / `.col1-3`), not auto-balanced:
-  col1 = questions 1-4 + both station graphs (minimized); col2 = Tentacles +
-  Photo; col3 = the short reference lists (airports, counties, zoos, amusement
-  parks). Keep col1's content within one page height or it overflows the column.
-- **Page 2** = the long reference lists (cities, water, mountains, golf,
-  hospitals) in `.ref { column-count:3 }`, with the footer after them. If the
-  footer spills to a 3rd page, tighten `ul.cols li` font/margins until it fits.
+- **Font:** IBM Plex Sans (+ IBM Plex Mono for coords), loaded from Google
+  Fonts via `<link>`; the render waits on `document.fonts.ready` before
+  `page.pdf`. Verify with `document.fonts.check('14px "IBM Plex Sans"')`.
+- **Page 1** is a 2-column flex (`.p1` / `.col`, `flex:1`): col1 = questions
+  1-3 (Matching, Measuring, Radar); col2 = questions 4-6 (Thermometer,
+  Tentacles, Photo). Flex does NOT paginate cleanly — each column must fit
+  within one page or the trailing card spills. Keep page-1 spacing tight.
+- **Page 2** = both station tables + reference lists in `.ref { column-count:2 }`.
+  `.rblock { break-inside:auto }` + `h3 { break-after:avoid }` lets long lists
+  flow across the column break so everything packs onto one page.
+- **Station profiles are TABLES, not graphs** (`html_table`): altitude =
+  elevation-band -> station count; name-length = length -> count (`split=2`
+  for a 2-up table). Zero-count rows are filtered out. The old `svg_*`
+  helpers are unused.
+- **Reference lists included:** airports, counties, zoos, amusement parks,
+  cities, bodies of water. **Golf, mountains, and hospitals are intentionally
+  excluded** (per request). They're still fetched/curated — just not rendered.
 - **Airports**: name left, coords right (`ul.plain.air li` flex, wraps below).
-- **Graphs (reversed orientation)**: altitude = `svg_horizontal` (bars run
-  horizontally), name-length = `svg_vertical`. Both take a `caption` + `color`.
+- **Radar** has a **Custom** checkbox after the presets (`scale(RADAR,
+  custom=True)`), labelled once-per-game in the prompt.
 
 ## Reference data
 Built from `src/data/stations.json` (counties, cities, altitude + name-length
-histograms as inline SVG) and `/tmp/poi.json`. Curation: mountains = named
+tables) and `/tmp/poi.json`. Curation: mountains = named
 peaks ≥ 1,500 ft; water = bays/straits/lakes/lagoons/named reservoirs (minor
-coves/sloughs/ponds dropped). Golf, hospitals, cities, amusement parks, zoos
-are full.
+coves/sloughs/ponds dropped). Cities, amusement parks, zoos are full.
 
 ## Gotchas
 - **Render with Playwright, not the `google-chrome` CLI.** In this environment
   `google-chrome` is a CDP wrapper that won't write a file; connect over CDP
   (`http://localhost:29229`) and call `page.pdf(...)`. Set `@page { margin:0 }`
   and pass the margins to `page.pdf` (otherwise margins double).
-- **Page-1 columns are explicit** (`.p1` flex with `.col1/.col2/.col3`) so each
-  question lands in the column golden asked for; this does NOT paginate, so
-  oversized column content is clipped — keep cards/graphs compact.
+- **Page-1 is a 2-column flex** (`.p1` with two `.col`s) so questions land in
+  fixed columns; flex does NOT paginate well, so if a column's content exceeds
+  one page the last card spills onto page 2 — keep page-1 spacing tight.
+- **Margins:** `@page { margin:0 }` + `page.pdf(margin=0.5in all sides)` gives a
+  true 0.5in printable border. Don't set both CSS and pdf margins to non-zero.
 - Overpass is rate-limited; `fetch_poi.py` retries 4×. Reuse `/tmp/poi.json`
   when it's recent instead of re-querying.
