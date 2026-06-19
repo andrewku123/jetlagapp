@@ -16,7 +16,7 @@ export default function App() {
   const [game, setGame] = useState<GameState>(() => loadGame())
   const [lastClick, setLastClick] = useState<LatLng | null>(null)
   const [tab, setTab] = useState<Tab>('ask')
-  const [showEliminated, setShowEliminated] = useState(false)
+  const [showEliminated, setShowEliminated] = useState(true)
   const [sheetOpen, setSheetOpen] = useState(false)
 
   useEffect(() => saveGame(game), [game])

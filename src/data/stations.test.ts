@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import rawStations from './stations.json'
+import counties from './counties.geojson.json'
+import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import type { Station } from '../types'
 
 const STATIONS = rawStations as unknown as Station[]
@@ -43,6 +45,15 @@ describe('station dataset invariants', () => {
 
   it('drops College Park entirely', () => {
     expect(STATIONS.find((s) => s.name.includes('College Park'))).toBeUndefined()
+  })
+
+  it('keeps the in-play counties consistent with the station data and overlay', () => {
+    // Every county that has a station must be marked in-play.
+    const stationCounties = new Set(STATIONS.map((s) => s.county).filter(Boolean) as string[])
+    for (const c of stationCounties) expect(IN_PLAY_COUNTIES.has(c)).toBe(true)
+    // The overlay GeoJSON must contain a polygon for every in-play county to dim around.
+    const overlayNames = new Set(counties.features.map((f) => f.properties.name))
+    for (const c of IN_PLAY_COUNTIES) expect(overlayNames.has(c)).toBe(true)
   })
 
   it('gives every station a unique id and required attributes', () => {

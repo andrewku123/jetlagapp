@@ -7,14 +7,32 @@ import {
   Polyline,
   Popup,
   Tooltip,
+  GeoJSON,
   useMapEvents,
   Marker,
 } from 'react-leaflet'
 import L from 'leaflet'
+import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorEndpoints, haversineMiles, formatMiles } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
+import { IN_PLAY_COUNTIES } from '../lib/playArea'
+import countiesData from '../data/counties.geojson.json'
+import transitData from '../data/transit-lines.geojson.json'
+
+const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
+function countyStyle(feature?: Feature<Geometry, { name: string }>) {
+  const inPlay = feature ? IN_PLAY_COUNTIES.has(feature.properties.name) : false
+  return inPlay
+    ? { stroke: false, fill: false, interactive: false }
+    : { stroke: true, color: '#6b7280', weight: 1, fillColor: '#6b7280', fillOpacity: 0.35, interactive: false }
+}
+
+const TRANSIT = transitData as unknown as GeoJSON.FeatureCollection
+function transitStyle(feature?: Feature<Geometry, { color: string }>) {
+  return { color: feature?.properties.color ?? '#666', weight: 3, opacity: 0.9, interactive: false }
+}
 
 interface Props {
   remaining: Station[]
@@ -169,28 +187,57 @@ export default function MapView({
           </div>
         )}
         <div className="draw-hint">{hint}</div>
-        {annotations.length > 0 && (
-          <button className="draw-clear" onClick={onClearAnnotations}>
-            Clear drawings ({annotations.length})
-          </button>
+        {(annotations.length > 0 || pending) && (
+          <div className="draw-actions">
+            <button
+              className="draw-undo"
+              onClick={() => {
+                if (pending) {
+                  setPending(null)
+                } else if (annotations.length > 0) {
+                  onDeleteAnnotation(annotations[annotations.length - 1].id)
+                }
+              }}
+            >
+              ↩ Undo
+            </button>
+            {annotations.length > 0 && (
+              <button className="draw-clear" onClick={onClearAnnotations}>
+                Clear ({annotations.length})
+              </button>
+            )}
+          </div>
         )}
       </div>
 
       <MapContainer center={[37.6, -122.2]} zoom={10} className="map" preferCanvas>
         <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; OpenStreetMap contributors &copy; CARTO'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          subdomains="abcd"
+          maxZoom={20}
         />
         <MapClicks onClick={handleClick} />
+
+        <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
+        <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
 
         {showEliminated &&
           eliminated.map((st) => (
             <CircleMarker
               key={st.id}
               center={[st.lat, st.lon]}
-              radius={3}
-              pathOptions={{ color: '#bbb', weight: 1, fillColor: '#ddd', fillOpacity: 0.4 }}
-            />
+              radius={5}
+              pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
+            >
+              <Popup>
+                <div className="popup">
+                  <strong>{st.name}</strong>
+                  <div className="muted">{st.systems.join(' · ')}</div>
+                  <div className="muted">Eliminated — restore from the Suspects list.</div>
+                </div>
+              </Popup>
+            </CircleMarker>
           ))}
 
         {remaining.map((st) => {
@@ -202,9 +249,9 @@ export default function MapView({
               center={[st.lat, st.lon]}
               radius={star ? 11 : 6}
               pathOptions={{
-                color: star ? '#000' : c,
+                color: star ? '#b8860b' : c,
                 weight: star ? 3 : 1.5,
-                fillColor: c,
+                fillColor: star ? '#f5b301' : c,
                 fillOpacity: 0.9,
               }}
               eventHandlers={{ click: () => onStationClick(st) }}

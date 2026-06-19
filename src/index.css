@@ -56,10 +56,13 @@ body { background: var(--bg); color: var(--text); }
 }
 .draw-colors .swatch.on { border-color: #fff; }
 .draw-hint { margin-top: 8px; color: var(--muted); line-height: 1.3; }
-.draw-clear {
-  margin-top: 8px; width: 100%; background: var(--panel2); color: var(--text);
+.draw-actions { display: flex; gap: 6px; margin-top: 8px; }
+.draw-undo, .draw-clear {
+  flex: 1; background: var(--panel2); color: var(--text);
   border: 1px solid var(--line); border-radius: 6px; padding: 6px; cursor: pointer;
 }
+.draw-clear { margin-top: 0; }
+.draw-undo:hover, .draw-clear:hover { border-color: var(--muted); }
 .measure-label.leaflet-tooltip {
   background: #111; color: #fff; border: 0; font-weight: 600;
   box-shadow: 0 1px 4px rgba(0,0,0,.4);

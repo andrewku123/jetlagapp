@@ -28,8 +28,10 @@ create **annotations** that persist in the saved game.
 - Rendering: circles via Leaflet `<Circle>` (radius in metres = `miles * 1609.344`);
   lines via `<Polyline>`. Bisector endpoints come from `bisectorEndpoints()`;
   measure shows a permanent `<Tooltip>` label.
-- Every annotation is click-to-delete (`onDeleteAnnotation`); "Clear drawings"
-  calls `onClearAnnotations`.
+- Every annotation is click-to-delete (`onDeleteAnnotation`). The toolbar also has
+  **Undo** (removes the in-progress `pending` first click if any, otherwise the
+  most-recently-added annotation via `onDeleteAnnotation(annotations.at(-1).id)`)
+  and **Clear** (`onClearAnnotations`).
 - Handlers are owned by `src/App.tsx` (`addAnnotation` / `deleteAnnotation` /
   `clearAnnotations`) and passed down as props.
 
