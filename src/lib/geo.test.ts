@@ -5,7 +5,10 @@ import {
   formatDistance,
   formatElevation,
   bisectorEndpoints,
+  bisectorPolyline,
+  bisectorHalfPlane,
   circlePolygon,
+  parseLatLng,
 } from './geo'
 
 describe('haversineMiles', () => {
@@ -88,3 +91,92 @@ describe('bisectorEndpoints', () => {
     }
   })
 })
+
+describe('bisectorPolyline', () => {
+  const a = { lat: 37.7, lon: -122.45 }
+  const b = { lat: 37.8, lon: -122.25 }
+
+  it('passes exactly through the A–B midpoint (even segment count)', () => {
+    const pts = bisectorPolyline(a, b, 60, 64)
+    const mid = pts[32]
+    expect(mid.lat).toBeCloseTo((a.lat + b.lat) / 2, 9)
+    expect(mid.lon).toBeCloseTo((a.lon + b.lon) / 2, 9)
+  })
+
+  it('starts and ends at the bisector endpoints', () => {
+    const [e0, e1] = bisectorEndpoints(a, b, 60)
+    const pts = bisectorPolyline(a, b, 60, 64)
+    expect(pts[0].lat).toBeCloseTo(e1.lat, 9)
+    expect(pts[0].lon).toBeCloseTo(e1.lon, 9)
+    expect(pts[pts.length - 1].lat).toBeCloseTo(e0.lat, 9)
+    expect(pts[pts.length - 1].lon).toBeCloseTo(e0.lon, 9)
+  })
+
+  it('every sample is equidistant from A and B', () => {
+    // equirectangular bisector: equidistant to within a small drift over 60 mi
+    for (const pt of bisectorPolyline(a, b, 60, 16)) {
+      expect(haversineMiles(pt, a)).toBeCloseTo(haversineMiles(pt, b), 0)
+    }
+  })
+})
+
+describe('bisectorHalfPlane', () => {
+  const a = { lat: 38.0, lon: -122.6 } // NW
+  const b = { lat: 37.2, lon: -121.8 } // SE
+
+  it('shares its first edge with the bisector line (shading aligns)', () => {
+    const ends = bisectorEndpoints(a, b, 300)
+    const poly = bisectorHalfPlane(a, b, a, 300)
+    expect(poly[0].lat).toBeCloseTo(ends[0].lat, 9)
+    expect(poly[0].lon).toBeCloseTo(ends[0].lon, 9)
+    expect(poly[1].lat).toBeCloseTo(ends[1].lat, 9)
+    expect(poly[1].lon).toBeCloseTo(ends[1].lon, 9)
+  })
+
+  it('covers the half toward `toward` and not the other half', () => {
+    // colder ⇒ shade side toward A. A's side must be inside, B's side outside.
+    const poly = bisectorHalfPlane(a, b, a, 300)
+    expect(pointInPolygon(a, poly)).toBe(true)
+    expect(pointInPolygon(b, poly)).toBe(false)
+    // flip the side: toward B now contains B, not A
+    const polyB = bisectorHalfPlane(a, b, b, 300)
+    expect(pointInPolygon(b, polyB)).toBe(true)
+    expect(pointInPolygon(a, polyB)).toBe(false)
+  })
+})
+
+describe('parseLatLng', () => {
+  it('parses plain comma-separated Google Maps coordinates', () => {
+    expect(parseLatLng('37.7749, -122.4194')).toEqual({ lat: 37.7749, lon: -122.4194 })
+  })
+  it('accepts space/tab separators', () => {
+    expect(parseLatLng('37.7749  -122.4194')).toEqual({ lat: 37.7749, lon: -122.4194 })
+    expect(parseLatLng('37.7749\t-122.4194')).toEqual({ lat: 37.7749, lon: -122.4194 })
+  })
+  it('handles degree + hemisphere notation', () => {
+    expect(parseLatLng('37.7749° N, 122.4194° W')).toEqual({ lat: 37.7749, lon: -122.4194 })
+  })
+  it('handles leading hemisphere letters', () => {
+    expect(parseLatLng('N 37.7749 W 122.4194')).toEqual({ lat: 37.7749, lon: -122.4194 })
+  })
+  it('handles lon-first when hemispheres disambiguate', () => {
+    expect(parseLatLng('122.4194 W, 37.7749 N')).toEqual({ lat: 37.7749, lon: -122.4194 })
+  })
+  it('rejects junk and out-of-range values', () => {
+    expect(parseLatLng('')).toBeNull()
+    expect(parseLatLng('hello')).toBeNull()
+    expect(parseLatLng('37.7749')).toBeNull()
+    expect(parseLatLng('200, 10')).toBeNull()
+  })
+})
+
+function pointInPolygon(p: { lat: number; lon: number }, poly: { lat: number; lon: number }[]): boolean {
+  let inside = false
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const xi = poly[i].lon, yi = poly[i].lat
+    const xj = poly[j].lon, yj = poly[j].lat
+    const hit = yi > p.lat !== yj > p.lat && p.lon < ((xj - xi) * (p.lat - yi)) / (yj - yi) + xi
+    if (hit) inside = !inside
+  }
+  return inside
+}

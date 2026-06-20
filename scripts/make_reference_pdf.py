@@ -342,6 +342,16 @@ CARD_PHOTO = f"""
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
 </div>"""
 
+CARD_INSIDE = f"""
+<div class="card slim">
+  <h2>7 &middot; Inside <span class="dk">draw 3, keep 1</span></h2>
+  <p class="prompt"><b>End game only.</b> "I'm inside ___ (building) &mdash; are you on a higher or lower floor?" &rarr; <b>Higher / Lower / Same</b>, or <b>"I can't answer"</b> if the hider is in a different building or outdoors.</p>
+  <p class="send"><b>Send hider:</b> the building you are inside.</p>
+  {META_FAIL}
+  {boxes([("Floor in a building", True)])}
+  <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
+</div>"""
+
 alt_card = f"""
 <div class="card tbl">
   <h2>Stations by altitude <span class="dk">{len(ST)} stations</span></h2>
@@ -370,7 +380,7 @@ ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
 
 # page 1: questions in two columns (Q1-3 | Q4-6)
 page1_cols = f"""
-<div class="p1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}</div>"""
+<div class="p1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}{CARD_INSIDE}</div>"""
 
 # page 2: tables + reference lists (counties in col 2), then full-width B&W map
 page2_ref = f"""

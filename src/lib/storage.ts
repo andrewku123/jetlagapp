@@ -16,6 +16,7 @@ export const emptyGame: GameState = {
   starred: [],
   notes: {},
   annotations: [],
+  endgame: null,
 }
 
 export function loadGame(): GameState {

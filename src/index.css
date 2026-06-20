@@ -36,16 +36,16 @@ body { background: var(--bg); color: var(--text); }
 .draw-toolbar {
   position: absolute; top: 10px; right: 10px; z-index: 1000;
   background: rgba(23, 28, 34, 0.95); border: 1px solid var(--line);
-  border-radius: 10px; padding: 8px; width: 188px;
+  border-radius: 10px; padding: 6px; width: 168px;
   box-shadow: 0 4px 14px rgba(0,0,0,.4); font-size: 12px;
 }
-.draw-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+/* icon-only tools, all on one compact row */
+.draw-tools { display: flex; gap: 4px; }
 .draw-tools button {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  flex: 1; display: flex; align-items: center; justify-content: center;
   background: var(--panel2); color: var(--muted); border: 1px solid var(--line);
-  border-radius: 6px; padding: 6px 2px; cursor: pointer; font-size: 16px;
+  border-radius: 6px; padding: 6px 0; cursor: pointer; font-size: 16px; line-height: 1;
 }
-.draw-tools button span { font-size: 10px; }
 .draw-tools button.on { color: #fff; border-color: var(--accent); background: var(--accent); }
 .draw-radius { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; color: var(--muted); }
 .draw-radius select {
@@ -57,11 +57,28 @@ body { background: var(--bg); color: var(--text); }
   width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; padding: 0;
 }
 .draw-colors .swatch.on { border-color: #fff; }
+.draw-coords { margin-top: 8px; }
+.draw-coords-toggle {
+  width: 100%; text-align: left; background: transparent; color: var(--muted);
+  border: 0; padding: 2px 0; cursor: pointer; font-size: 11px;
+}
+.draw-coords-body { display: flex; gap: 6px; margin-top: 4px; }
+.draw-coords-input {
+  flex: 1; min-width: 0; box-sizing: border-box; background: var(--panel2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; font-size: 12px;
+}
+.draw-coords-input.err { border-color: #cf222e; }
+.draw-coords-body button {
+  flex: none; background: var(--panel2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px;
+}
+.draw-coords-err { margin-top: 4px; color: #cf222e; font-size: 11px; }
 .draw-hint { margin-top: 8px; color: var(--muted); line-height: 1.3; }
 .draw-actions { display: flex; gap: 6px; margin-top: 8px; }
 .draw-undo, .draw-clear {
   flex: 1; background: var(--panel2); color: var(--text);
   border: 1px solid var(--line); border-radius: 6px; padding: 6px; cursor: pointer;
+  font-size: 16px; line-height: 1;
 }
 .draw-clear { margin-top: 0; }
 .draw-undo:hover, .draw-clear:hover { border-color: var(--muted); }
@@ -75,11 +92,13 @@ body { background: var(--bg); color: var(--text); }
 .tabs { display: flex; border-bottom: 1px solid var(--line); }
 .tabs button { flex: 1; padding: 10px 4px; background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 12px; }
 .tabs button.on { color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
-.panel { padding: 12px; overflow-y: auto; }
+.panel { padding: 12px; overflow-y: auto; overflow-x: hidden; box-sizing: border-box; }
 
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
 .seg button { background: var(--panel2); color: var(--muted); border: 0; padding: 6px 10px; cursor: pointer; font-size: 13px; }
 .seg button.on { background: var(--accent); color: #fff; }
+.seg.seg-wrap { display: flex; flex-wrap: wrap; max-width: 100%; }
+.seg.seg-wrap button { flex: 1 1 auto; }
 
 button { font: inherit; }
 .toggles button, .qactions button, .qform button { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
@@ -87,12 +106,15 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 
 .qform .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
 .qform label { width: 96px; font-size: 12px; color: var(--muted); flex: none; }
-.qform select, .qform input { flex: 1; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px; }
+/* min-width:0 lets the <select> shrink below its longest option so the row
+   never forces the sidebar to scroll horizontally */
+.qform select, .qform input { flex: 1; min-width: 0; box-sizing: border-box; background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px; }
 .qform .coord { flex: 1; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .qform .coordpick { margin: 8px 0; }
 .qform .coordpick .row { margin: 4px 0; }
 .qform .coordin { gap: 6px; }
 .qform .coordin input { flex: 1; min-width: 0; padding: 5px 6px; font-size: 12px; }
+.qform .coordin input.err { border-color: #cf222e; }
 .qform .coordin button { flex: none; }
 .blurb { font-size: 12px; color: var(--muted); margin: 4px 0 6px; }
 .blurb .cards { color: var(--accent); }
@@ -122,6 +144,18 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .slist .restore { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 14px; padding: 0; }
 .slist .restore:hover { color: #3fb950; }
 .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex: none; }
+
+.sortbar { display: flex; align-items: center; gap: 7px; margin: 6px 0 4px; }
+.sortbar label { font-size: 12px; color: var(--muted); }
+.sortbar select { font-size: 12px; padding: 3px 6px; }
+.slist li.sgroup { display: block; border-bottom: 0; }
+.slist li.sgroup.agency { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 10px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+.slist li.sgroup.agency .dot { margin-right: 6px; vertical-align: middle; }
+.slist li.sgroup.line { font-size: 11px; color: var(--muted); margin: 4px 0 1px; padding-left: 2px; }
+.slist li.sgroup.elimhdr { font-weight: 600; font-size: 12px; color: #9aa0a6; margin-top: 14px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
+
+.endgame-banner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 10px; background: #dcfce7; color: #14532d; border-bottom: 1px solid #16a34a; font-size: 13px; }
+.endgame-banner button { font-size: 12px; padding: 3px 10px; border: 1px solid #16a34a; background: #fff; color: #14532d; border-radius: 4px; cursor: pointer; }
 
 .legend h3 { margin: 6px 0; font-size: 13px; }
 .legrow { display: flex; align-items: center; gap: 8px; font-size: 13px; margin: 4px 0; }

@@ -17,8 +17,8 @@ function eligible(day: 'wd' | 'we') {
 }
 
 describe('station dataset invariants', () => {
-  it('has 249 unique stations', () => {
-    expect(STATIONS.length).toBe(249)
+  it('has 260 unique stations', () => {
+    expect(STATIONS.length).toBe(260)
   })
 
   it('has the expected per-system membership counts', () => {
@@ -26,11 +26,12 @@ describe('station dataset invariants', () => {
     expect(count('Caltrain')).toBe(24)
     expect(count('VTA')).toBe(59)
     expect(count('Muni')).toBe(127)
+    expect(count('SFO AirTrain')).toBe(11)
   })
 
   it('has the expected eligible counts (weekday/weekend)', () => {
-    expect(eligible('wd')).toBe(248)
-    expect(eligible('we')).toBe(249)
+    expect(eligible('wd')).toBe(259)
+    expect(eligible('we')).toBe(260)
   })
 
   it('has no F-only surface stops on Market St inland of Embarcadero', () => {
@@ -81,7 +82,11 @@ describe('station dataset invariants', () => {
       expect(typeof s.lat).toBe('number')
       expect(typeof s.lon).toBe('number')
       expect(s.systems.length).toBeGreaterThan(0)
-      expect(s.nameLength).toBe(s.name.length)
+      // nameLength counts the base name, ignoring the agency disambiguator
+      // suffix (e.g. "San Bruno (BART)" counts as 9) but keeping descriptive
+      // parentheticals like "(Ocean Beach)".
+      const base = s.name.replace(/\s*\((?:BART|Caltrain|VTA|Muni)\)\s*$/, '')
+      expect(s.nameLength).toBe(base.length)
       expect(typeof s.headwayMin.wd).toBe('number')
       expect(typeof s.headwayMin.we).toBe('number')
     }

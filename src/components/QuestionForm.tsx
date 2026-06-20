@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS } from '../data/questions'
-import { KM_PER_MILE, FEET_PER_METER } from '../lib/geo'
+import { KM_PER_MILE, FEET_PER_METER, parseLatLng } from '../lib/geo'
 
 interface Props {
   lastClick: LatLng | null
@@ -33,16 +33,17 @@ function CoordPicker({
   setPoint: (p: LatLng | null) => void
   lastClick: LatLng | null
 }) {
-  const [lat, setLat] = useState('')
-  const [lon, setLon] = useState('')
+  const [text, setText] = useState('')
+  const [err, setErr] = useState(false)
   function apply() {
-    const la = Number(lat)
-    const lo = Number(lon)
-    if (lat.trim() === '' || lon.trim() === '' || !Number.isFinite(la) || !Number.isFinite(lo))
-      return alert('Enter a valid latitude and longitude.')
-    if (la < -90 || la > 90 || lo < -180 || lo > 180)
-      return alert('Latitude must be between -90 and 90, longitude between -180 and 180.')
-    setPoint({ lat: la, lon: lo })
+    const p = parseLatLng(text)
+    if (!p) {
+      setErr(true)
+      return
+    }
+    setErr(false)
+    setText('')
+    setPoint(p)
   }
   return (
     <div className="coordpick">
@@ -52,8 +53,19 @@ function CoordPicker({
         <button disabled={!lastClick} onClick={() => setPoint(lastClick)}>Use last click</button>
       </div>
       <div className="row coordin">
-        <input type="number" step="any" placeholder="latitude" value={lat} onChange={(e) => setLat(e.target.value)} />
-        <input type="number" step="any" placeholder="longitude" value={lon} onChange={(e) => setLon(e.target.value)} />
+        <input
+          className={err ? 'err' : ''}
+          type="text"
+          placeholder="paste lat, lon"
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value)
+            setErr(false)
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') apply()
+          }}
+        />
         <button onClick={apply}>Set</button>
       </div>
     </div>
@@ -86,6 +98,8 @@ export default function QuestionForm({
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [num, setNum] = useState<string>('')
+  const [building, setBuilding] = useState<string>('')
+  const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
   const [note, setNote] = useState<string>('')
 
   function submit() {
@@ -133,6 +147,11 @@ export default function QuestionForm({
         params = { value, answer: yesno }
         break
       }
+      case 'inside-floor': {
+        if (!building.trim()) return alert('Enter the building you are inside.')
+        params = { building: building.trim(), answer: floorAns }
+        break
+      }
       case 'photo': {
         params = { description: value }
         break
@@ -148,7 +167,7 @@ export default function QuestionForm({
       active: true,
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setNote(''); setCustomRadius('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setNote(''); setCustomRadius('')
   }
 
   const yesNo = (
@@ -270,6 +289,24 @@ export default function QuestionForm({
         </>
       )}
 
+      {kind === 'inside-floor' && (
+        <>
+          <div className="row">
+            <label>Building</label>
+            <input type="text" value={building} onChange={(e) => setBuilding(e.target.value)} placeholder="e.g. Salesforce Tower" />
+          </div>
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg seg-wrap">
+              <button className={floorAns === 'higher' ? 'on' : ''} onClick={() => setFloorAns('higher')}>Higher</button>
+              <button className={floorAns === 'lower' ? 'on' : ''} onClick={() => setFloorAns('lower')}>Lower</button>
+              <button className={floorAns === 'same' ? 'on' : ''} onClick={() => setFloorAns('same')}>Same</button>
+              <button className={floorAns === 'cannot' ? 'on' : ''} onClick={() => setFloorAns('cannot')}>Can’t answer</button>
+            </div>
+          </div>
+        </>
+      )}
+
       {kind === 'photo' && (
         <div className="row">
           <label>Describe</label>
@@ -282,7 +319,7 @@ export default function QuestionForm({
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
 
-      <button className="primary" onClick={submit}>Log question &amp; eliminate</button>
+      <button className="primary" onClick={submit}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
     </div>
   )
 }

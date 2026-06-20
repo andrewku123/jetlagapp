@@ -5,9 +5,10 @@ export const SYSTEM_COLORS: Record<string, string> = {
   Caltrain: '#d4001a',
   VTA: '#f5821f',
   Muni: '#7b2d8b',
+  'SFO AirTrain': '#00897b',
 }
 
-export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni']
+export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain']
 
 // Lines that don't run on weekends; hidden from the transit-line question in
 // Weekend mode. Caltrain Express ("Baby Bullet") and Limited are weekday-only.

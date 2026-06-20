@@ -43,6 +43,7 @@ export type QuestionKind =
   | 'match-line'
   | 'measure-airport'
   | 'measure-sealevel'
+  | 'inside-floor'
   | 'photo'
 
 export interface QuestionRecord {
@@ -97,4 +98,7 @@ export interface GameState {
   starred: string[] // station ids flagged as suspects
   notes: Record<string, string> // station id -> note
   annotations: Annotation[] // compass / straightedge drawings
+  // endgame: the single station the seeker has narrowed to. When set, only this
+  // station remains and a hiding-zone circle is drawn around it.
+  endgame: string | null
 }

@@ -10,19 +10,29 @@ import {
   Tooltip,
   GeoJSON,
   useMapEvents,
+  useMap,
   Marker,
 } from 'react-leaflet'
 import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
-import { bisectorEndpoints, circlePolygon, haversineMiles, formatDistance, formatElevation } from '../lib/geo'
+import { bisectorEndpoints, bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
 import transitData from '../data/transit-lines.geojson.json'
 
 const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
+
+// Bounding box of the in-play counties; used to restrict satellite imagery tile
+// requests to the play area (out-of-play tiles never load → much faster).
+const PLAY_BOUNDS = L.geoJSON({
+  type: 'FeatureCollection',
+  features: COUNTIES.features.filter((f) =>
+    IN_PLAY_COUNTIES.has((f.properties as { name: string }).name),
+  ),
+} as GeoJSON.FeatureCollection).getBounds()
 function countyStyle(feature?: Feature<Geometry, { name: string }>) {
   const inPlay = feature ? IN_PLAY_COUNTIES.has(feature.properties.name) : false
   return inPlay
@@ -81,6 +91,7 @@ interface Props {
   remaining: Station[]
   eliminated: Station[]
   showEliminated: boolean
+  satellite: boolean
   starred: Set<string>
   manualEliminated: Set<string>
   units: UnitSystem
@@ -94,6 +105,10 @@ interface Props {
   onDeleteAnnotation: (id: string) => void
   onUpdateAnnotation: (id: string, patch: Partial<Annotation>) => void
   onClearAnnotations: () => void
+  endgameStation: Station | null
+  hidingRadiusMi: number
+  onStartEndgame: (id: string) => void
+  onExitEndgame: () => void
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -150,6 +165,37 @@ function MapClicks({ onClick }: { onClick: (p: LatLng) => void }) {
       onClick({ lat: e.latlng.lat, lon: e.latlng.lng })
     },
   })
+  return null
+}
+
+// Fits the view to the live area: once on first load (to the remaining
+// stations), and again whenever endgame locks onto a station (to its
+// hiding-zone circle). Manual zoom/pan afterwards is left untouched.
+function MapFit({
+  remaining,
+  endgame,
+  radiusMi,
+}: {
+  remaining: Station[]
+  endgame: Station | null
+  radiusMi: number
+}) {
+  const map = useMap()
+  const didInit = useRef(false)
+  const lastEndgame = useRef<string | null>(null)
+  useEffect(() => {
+    if (didInit.current || remaining.length === 0) return
+    didInit.current = true
+    map.fitBounds(L.latLngBounds(remaining.map((s) => [s.lat, s.lon])).pad(0.12))
+  }, [map, remaining])
+  useEffect(() => {
+    const id = endgame?.id ?? null
+    if (id === lastEndgame.current) return
+    lastEndgame.current = id
+    if (!endgame) return
+    const b = L.latLng(endgame.lat, endgame.lon).toBounds(radiusMi * 1609.344 * 2.6)
+    map.fitBounds(b)
+  }, [map, endgame, radiusMi])
   return null
 }
 
@@ -274,6 +320,7 @@ export default function MapView({
   remaining,
   eliminated,
   showEliminated,
+  satellite,
   starred,
   manualEliminated,
   units,
@@ -287,6 +334,10 @@ export default function MapView({
   onDeleteAnnotation,
   onUpdateAnnotation,
   onClearAnnotations,
+  endgameStation,
+  hidingRadiusMi,
+  onStartEndgame,
+  onExitEndgame,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // stations are only clickable in select mode; in draw modes clicks pass
@@ -299,6 +350,21 @@ export default function MapView({
   const [measureStep, setMeasureStep] = useState(0)
   // first click of a two-point line / bisector
   const [pending, setPending] = useState<LatLng | null>(null)
+  // collapsible "enter coordinates" box for placing points without clicking
+  const [showCoordEntry, setShowCoordEntry] = useState(false)
+  const [coordText, setCoordText] = useState('')
+  const [coordError, setCoordError] = useState(false)
+
+  function addCoordPoint() {
+    const p = parseLatLng(coordText)
+    if (!p) {
+      setCoordError(true)
+      return
+    }
+    setCoordError(false)
+    setCoordText('')
+    handleClick(p)
+  }
 
   function handleClick(p: LatLng) {
     if (tool === 'select') {
@@ -350,9 +416,14 @@ export default function MapView({
       <div className="draw-toolbar">
         <div className="draw-tools">
           {(['select', 'compass', 'line', 'bisector', 'measure'] as DrawTool[]).map((t) => (
-            <button key={t} className={tool === t ? 'on' : ''} onClick={() => selectTool(t)} title={t}>
+            <button
+              key={t}
+              className={tool === t ? 'on' : ''}
+              onClick={() => selectTool(t)}
+              title={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : 'Measure'}
+              aria-label={t}
+            >
               {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : '📏'}
-              <span>{t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Bisector' : 'Measure'}</span>
             </button>
           ))}
         </div>
@@ -412,11 +483,43 @@ export default function MapView({
             ))}
           </div>
         )}
+        {tool !== 'select' && (
+          <div className="draw-coords">
+            <button
+              className="draw-coords-toggle"
+              onClick={() => setShowCoordEntry((v) => !v)}
+            >
+              {showCoordEntry ? '▾' : '▸'} enter coordinates
+            </button>
+            {showCoordEntry && (
+              <div className="draw-coords-body">
+                <input
+                  className={'draw-coords-input' + (coordError ? ' err' : '')}
+                  placeholder="lat, lon"
+                  value={coordText}
+                  onChange={(e) => {
+                    setCoordText(e.target.value)
+                    setCoordError(false)
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') addCoordPoint()
+                  }}
+                />
+                <button onClick={addCoordPoint}>
+                  {tool === 'compass' ? 'Draw' : pending ? 'Add 2nd' : 'Add'}
+                </button>
+              </div>
+            )}
+            {coordError && <div className="draw-coords-err">Couldn’t read those coordinates.</div>}
+          </div>
+        )}
         <div className="draw-hint">{hint}</div>
         {(annotations.length > 0 || pending) && (
           <div className="draw-actions">
             <button
               className="draw-undo"
+              title="Undo"
+              aria-label="Undo"
               onClick={() => {
                 if (pending) {
                   setPending(null)
@@ -425,16 +528,31 @@ export default function MapView({
                 }
               }}
             >
-              ↩ Undo
+              ↩
             </button>
             {annotations.length > 0 && (
-              <button className="draw-clear" onClick={onClearAnnotations}>
-                Clear ({annotations.length})
+              <button
+                className="draw-clear"
+                title={`Clear all (${annotations.length})`}
+                aria-label={`Clear all (${annotations.length})`}
+                onClick={onClearAnnotations}
+              >
+                🧹
               </button>
             )}
           </div>
         )}
       </div>
+
+      {endgameStation && (
+        <div className="endgame-banner">
+          <span>
+            <b>Endgame:</b> {endgameStation.name} — hider within{' '}
+            {formatDistance(hidingRadiusMi, units)}
+          </span>
+          <button onClick={onExitEndgame}>Exit</button>
+        </div>
+      )}
 
       <MapContainer center={[37.6, -122.2]} zoom={10} className="map" preferCanvas>
         <TileLayer
@@ -443,10 +561,28 @@ export default function MapView({
           subdomains="abcd"
           maxZoom={20}
         />
+        {satellite && (
+          <TileLayer
+            attribution='Imagery &copy; Esri, Maxar, Earthstar Geographics'
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            bounds={PLAY_BOUNDS}
+            maxZoom={20}
+          />
+        )}
         <MapClicks onClick={handleClick} />
+        <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
         <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
+
+        {endgameStation && (
+          <Circle
+            center={[endgameStation.lat, endgameStation.lon]}
+            radius={hidingRadiusMi * 1609.344}
+            interactive={false}
+            pathOptions={{ color: '#16a34a', weight: 2, fillColor: '#16a34a', fillOpacity: 0.12 }}
+          />
+        )}
 
         {showEliminated &&
           eliminated.map((st) => (
@@ -505,6 +641,11 @@ export default function MapView({
                   <div className="popup-actions">
                     <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
                     <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
+                    {endgameStation?.id === st.id ? (
+                      <button onClick={onExitEndgame}>↩ Exit endgame</button>
+                    ) : (
+                      <button onClick={() => onStartEndgame(st.id)}>🎯 Endgame here</button>
+                    )}
                   </div>
                 </div>
               </Popup>
@@ -560,17 +701,9 @@ export default function MapView({
             // shade the colder (eliminated) half-plane: a wide band built from
             // the boundary edge extended far, then pushed toward the cold side.
             const coldSide = hotter ? from : to
-            const longEdge = bisectorEndpoints(from, to, 300)
-            const dLat = coldSide.lat - mid.lat
-            const dLon = coldSide.lon - mid.lon
-            const dLen = Math.hypot(dLat, dLon) || 1
-            const off = { lat: (dLat / dLen) * 8, lon: (dLon / dLen) * 8 }
-            const coldBand: [number, number][] = [
-              [longEdge[0].lat, longEdge[0].lon],
-              [longEdge[1].lat, longEdge[1].lon],
-              [longEdge[1].lat + off.lat, longEdge[1].lon + off.lon],
-              [longEdge[0].lat + off.lat, longEdge[0].lon + off.lon],
-            ]
+            const coldBand = bisectorHalfPlane(from, to, coldSide, 300).map(
+              (p) => [p.lat, p.lon] as [number, number],
+            )
             return (
               <Fragment key={r.id}>
                 <Polygon positions={coldBand} pathOptions={ELIM_FILL} />
@@ -579,6 +712,32 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#7c3aed', weight: 2.5, dashArray: '6 4' }}
                 />
+                {/* the A→B move the seeker made, so the kept side is unambiguous */}
+                <Polyline
+                  positions={[[from.lat, from.lon], [to.lat, to.lon]]}
+                  interactive={false}
+                  pathOptions={{ color: '#6b7280', weight: 1.5, dashArray: '2 3' }}
+                />
+                <CircleMarker
+                  center={[from.lat, from.lon]}
+                  radius={5}
+                  interactive={false}
+                  pathOptions={{ color: '#1971c2', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
+                >
+                  <Tooltip permanent direction="top" offset={[0, -6]}>
+                    A (start)
+                  </Tooltip>
+                </CircleMarker>
+                <CircleMarker
+                  center={[to.lat, to.lon]}
+                  radius={5}
+                  interactive={false}
+                  pathOptions={{ color: '#1971c2', weight: 2, fillColor: '#1971c2', fillOpacity: 1 }}
+                >
+                  <Tooltip permanent direction="top" offset={[0, -6]}>
+                    B (end)
+                  </Tooltip>
+                </CircleMarker>
                 <CircleMarker
                   center={[hotMark.lat, hotMark.lon]}
                   radius={6}
@@ -586,7 +745,7 @@ export default function MapView({
                   pathOptions={{ color: '#cf222e', weight: 2, fillColor: '#cf222e', fillOpacity: 0.85 }}
                 >
                   <Tooltip permanent direction="top" offset={[0, -6]}>
-                    hotter
+                    {hotter ? 'hotter (kept)' : 'colder → kept'}
                   </Tooltip>
                 </CircleMarker>
               </Fragment>
@@ -628,7 +787,7 @@ export default function MapView({
           }
           const endpoints =
             a.type === 'bisector'
-              ? bisectorEndpoints({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon }, LINE_LENGTH_MI)
+              ? bisectorPolyline({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon }, LINE_LENGTH_MI)
               : [
                   { lat: a.aLat, lon: a.aLon },
                   { lat: a.bLat, lon: a.bLon },

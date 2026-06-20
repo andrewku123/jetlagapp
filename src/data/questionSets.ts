@@ -30,6 +30,7 @@ export const GAME_SIZES: GameSize[] = ['small', 'medium', 'large']
 export const DRAW_KEEP = {
   Matching: { draw: 3, keep: 1 },
   Measuring: { draw: 3, keep: 1 },
+  Inside: { draw: 3, keep: 1 },
   Radar: { draw: 2, keep: 1 },
   Thermometer: { draw: 2, keep: 1 },
   Tentacles: { draw: 4, keep: 2 },
@@ -118,6 +119,31 @@ export const MEASURING: SubjectCard[] = [
   { subject: 'A Hospital', group: 'Public Utilities', note: 'nearest', sizes: ALL },
   { subject: 'A Library', group: 'Public Utilities', note: 'nearest', sizes: ALL },
   { subject: 'A Foreign Consulate', group: 'Public Utilities', note: 'nearest', sizes: ALL },
+]
+
+// ---------------------------------------------------------------------------
+// Inside (Indoors) — endgame only. "I'm inside [building] — are you on a higher
+// or lower floor?" The hider answers Higher / Lower / Same, or "can't answer"
+// when they're in a different building or outdoors. Logged for reference; it
+// does not auto-eliminate stations.
+// ---------------------------------------------------------------------------
+export interface InsideCard {
+  subject: string
+  note?: string
+  sizes: GameSize[]
+  /** only legal during the end game */
+  endgameOnly?: boolean
+  appKind?: QuestionKind
+}
+
+export const INSIDE: InsideCard[] = [
+  {
+    subject: 'Floor in a Building',
+    note: 'higher / lower / same floor, or can’t answer (different building or outside)',
+    sizes: ALL,
+    endgameOnly: true,
+    appKind: 'inside-floor',
+  },
 ]
 
 // ---------------------------------------------------------------------------
@@ -216,6 +242,7 @@ export interface QuestionSet {
   params: (typeof SIZE_PARAMS)[GameSize]
   matching: SubjectCard[]
   measuring: SubjectCard[]
+  inside: InsideCard[]
   radar: ScaleCard[]
   thermometer: ScaleCard[]
   tentacles: TentacleCard[]
@@ -229,6 +256,7 @@ export function questionsForSize(size: GameSize): QuestionSet {
     params: SIZE_PARAMS[size],
     matching: inSize(MATCHING, size),
     measuring: inSize(MEASURING, size),
+    inside: inSize(INSIDE, size),
     radar: inSize(RADAR, size),
     thermometer: inSize(THERMOMETER, size),
     tentacles: inSize(TENTACLES, size),

@@ -7,9 +7,9 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "12th Street / Oakland City Center"
@@ -48,10 +48,10 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "16th Street / Mission"
@@ -90,9 +90,9 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "19th Street Oakland"
@@ -131,10 +131,10 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "24th Street / Mission"
@@ -173,7 +173,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Antioch"
@@ -212,8 +212,8 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)"
   ],
   "aka": [
    "Ashby"
@@ -253,10 +253,10 @@
    "Muni"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "Muni J",
    "Muni K",
    "Muni M"
@@ -300,9 +300,9 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Bay Fair"
@@ -341,8 +341,8 @@
    "BART"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Berryessa / North San Jose"
@@ -381,7 +381,7 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)"
   ],
   "aka": [
    "Castro Valley"
@@ -421,10 +421,10 @@
    "Muni"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "Muni F",
    "Muni J",
    "Muni K",
@@ -473,10 +473,10 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)",
-   "BART Silver (Coliseum–OAK)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Silver (Coliseum\u2013OAK)"
   ],
   "aka": [
    "Coliseum"
@@ -515,8 +515,8 @@
    "BART"
   ],
   "lines": [
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Colma"
@@ -555,7 +555,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Concord"
@@ -594,10 +594,10 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Daly City"
@@ -636,8 +636,8 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)"
   ],
   "aka": [
    "Downtown Berkeley"
@@ -676,7 +676,7 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)"
   ],
   "aka": [
    "Dublin / Pleasanton"
@@ -715,8 +715,8 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)"
   ],
   "aka": [
    "El Cerrito Del Norte"
@@ -755,8 +755,8 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)"
   ],
   "aka": [
    "El Cerrito Plaza"
@@ -796,10 +796,10 @@
    "Muni"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "Muni F",
    "Muni J",
    "Muni K",
@@ -847,8 +847,8 @@
    "BART"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Fremont"
@@ -887,9 +887,9 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Fruitvale"
@@ -928,10 +928,10 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Glen Park"
@@ -970,8 +970,8 @@
    "BART"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Hayward"
@@ -1010,7 +1010,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Lafayette"
@@ -1049,9 +1049,9 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Lake Merritt"
@@ -1090,9 +1090,9 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "MacArthur"
@@ -1132,8 +1132,8 @@
    "Caltrain"
   ],
   "lines": [
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "Caltrain Express",
    "Caltrain Limited",
    "Caltrain Local"
@@ -1176,8 +1176,8 @@
    "VTA"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)",
    "VTA Orange"
   ],
   "aka": [
@@ -1218,10 +1218,10 @@
    "Muni"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "Muni F",
    "Muni J",
    "Muni K",
@@ -1269,8 +1269,8 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)"
   ],
   "aka": [
    "North Berkeley"
@@ -1309,7 +1309,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "North Concord / Martinez"
@@ -1348,7 +1348,7 @@
    "BART"
   ],
   "lines": [
-   "BART Silver (Coliseum–OAK)"
+   "BART Silver (Coliseum\u2013OAK)"
   ],
   "aka": [
    "Oakland International Airport"
@@ -1387,7 +1387,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Orinda"
@@ -1426,7 +1426,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Pittsburg / Bay Point"
@@ -1465,7 +1465,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Pittsburg Center"
@@ -1504,7 +1504,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Pleasant Hill / Contra Costa Centre"
@@ -1544,10 +1544,10 @@
    "Muni"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)",
    "Muni F",
    "Muni J",
    "Muni K",
@@ -1594,8 +1594,8 @@
    "BART"
   ],
   "lines": [
-   "BART Orange (Berryessa–Richmond)",
-   "BART Red (Richmond–Millbrae/SFO)"
+   "BART Orange (Berryessa\u2013Richmond)",
+   "BART Red (Richmond\u2013Millbrae/SFO)"
   ],
   "aka": [
    "Richmond"
@@ -1634,7 +1634,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Rockridge"
@@ -1673,8 +1673,8 @@
    "BART"
   ],
   "lines": [
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "San Bruno",
@@ -1691,7 +1691,7 @@
    }
   },
   "id": "s040",
-  "nameLength": 16,
+  "nameLength": 9,
   "county": "San Mateo",
   "city": "San Bruno city",
   "elevation": 11.1,
@@ -1714,8 +1714,8 @@
    "BART"
   ],
   "lines": [
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "San Francisco International Airport"
@@ -1754,9 +1754,9 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "San Leandro"
@@ -1795,8 +1795,8 @@
    "BART"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "South Hayward"
@@ -1835,8 +1835,8 @@
    "BART"
   ],
   "lines": [
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "South San Francisco",
@@ -1853,7 +1853,7 @@
    }
   },
   "id": "s044",
-  "nameLength": 26,
+  "nameLength": 19,
   "county": "San Mateo",
   "city": "South San Francisco city",
   "elevation": 23.4,
@@ -1876,8 +1876,8 @@
    "BART"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Union City"
@@ -1916,7 +1916,7 @@
    "BART"
   ],
   "lines": [
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "Walnut Creek"
@@ -1955,8 +1955,8 @@
    "BART"
   ],
   "lines": [
-   "BART Green (Berryessa–Daly City)",
-   "BART Orange (Berryessa–Richmond)"
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Orange (Berryessa\u2013Richmond)"
   ],
   "aka": [
    "Warm Springs / South Fremont"
@@ -1995,7 +1995,7 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)"
   ],
   "aka": [
    "West Dublin / Pleasanton"
@@ -2034,10 +2034,10 @@
    "BART"
   ],
   "lines": [
-   "BART Blue (Dublin/Pleasanton–Daly City)",
-   "BART Green (Berryessa–Daly City)",
-   "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Blue (Dublin/Pleasanton\u2013Daly City)",
+   "BART Green (Berryessa\u2013Daly City)",
+   "BART Red (Richmond\u2013Millbrae/SFO)",
+   "BART Yellow (Antioch\u2013SFO/Millbrae)"
   ],
   "aka": [
    "West Oakland"
@@ -2617,7 +2617,7 @@
    }
   },
   "id": "s063",
-  "nameLength": 22,
+  "nameLength": 11,
   "county": "Santa Clara",
   "city": "Mountain View city",
   "elevation": 13.5,
@@ -2657,7 +2657,7 @@
    }
   },
   "id": "s064",
-  "nameLength": 20,
+  "nameLength": 9,
   "county": "San Mateo",
   "city": "San Bruno city",
   "elevation": 12.4,
@@ -2867,7 +2867,7 @@
    }
   },
   "id": "s069",
-  "nameLength": 22,
+  "nameLength": 11,
   "county": "Santa Clara",
   "city": "Santa Clara city",
   "elevation": 20.3,
@@ -2909,7 +2909,7 @@
    }
   },
   "id": "s070",
-  "nameLength": 30,
+  "nameLength": 19,
   "county": "San Mateo",
   "city": "South San Francisco city",
   "elevation": 5.0,
@@ -8348,7 +8348,7 @@
   }
  },
  {
-  "name": "Children’s Discovery Museum",
+  "name": "Children\u2019s Discovery Museum",
   "lat": 37.327807,
   "lon": -121.893685,
   "systems": [
@@ -8358,7 +8358,7 @@
    "VTA Blue"
   ],
   "aka": [
-   "Children’s Discovery Museum"
+   "Children\u2019s Discovery Museum"
   ],
   "service": {
    "wd": {
@@ -9634,7 +9634,7 @@
    }
   },
   "id": "s246",
-  "nameLength": 17,
+  "nameLength": 11,
   "county": "Santa Clara",
   "city": "San Jose city",
   "elevation": 26.7,
@@ -9714,7 +9714,7 @@
    }
   },
   "id": "s248",
-  "nameLength": 17,
+  "nameLength": 11,
   "county": "Santa Clara",
   "city": "San Jose city",
   "elevation": 26.5,
@@ -10041,6 +10041,419 @@
   "headwayMin": {
    "wd": 9,
    "we": 9
+  }
+ },
+ {
+  "name": "Terminal 1",
+  "lat": 37.61519,
+  "lon": -122.38569,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Red",
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air01",
+  "nameLength": 10,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 2.9,
+  "airportDist": {
+   "SFO": 899.3,
+   "OAK": 18187.9,
+   "SJC": 49041.0
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Terminal 2",
+  "lat": 37.616754,
+  "lon": -122.3846,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Red",
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air02",
+  "nameLength": 10,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 3.3,
+  "airportDist": {
+   "SFO": 706.3,
+   "OAK": 18007.3,
+   "SJC": 49061.2
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Terminal 3",
+  "lat": 37.617529,
+  "lon": -122.386602,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Red",
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air03",
+  "nameLength": 10,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 3.1,
+  "airportDist": {
+   "SFO": 790.0,
+   "OAK": 18099.1,
+   "SJC": 49255.1
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Rental Car Center",
+  "lat": 37.628192,
+  "lon": -122.401224,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air04",
+  "nameLength": 17,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 2.9,
+  "airportDist": {
+   "SFO": 2101.9,
+   "OAK": 18529.8,
+   "SJC": 50989.8
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Garage G / BART",
+  "lat": 37.615918,
+  "lon": -122.392769,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Red",
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air05",
+  "nameLength": 15,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 2.3,
+  "airportDist": {
+   "SFO": 1352.3,
+   "OAK": 18645.3,
+   "SJC": 49601.1
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Garage A",
+  "lat": 37.613869,
+  "lon": -122.391728,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air06",
+  "nameLength": 8,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 2.7,
+  "airportDist": {
+   "SFO": 1392.7,
+   "OAK": 18703.5,
+   "SJC": 49397.3
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "International Terminal G",
+  "lat": 37.616628,
+  "lon": -122.389619,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Red",
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air07",
+  "nameLength": 24,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 2.9,
+  "airportDist": {
+   "SFO": 1069.9,
+   "OAK": 18373.4,
+   "SJC": 49416.7
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "International Terminal A",
+  "lat": 37.614583,
+  "lon": -122.388812,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Red",
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air08",
+  "nameLength": 24,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 2.8,
+  "airportDist": {
+   "SFO": 1142.2,
+   "OAK": 18449.2,
+   "SJC": 49229.5
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "West Field Road",
+  "lat": 37.62172,
+  "lon": -122.399504,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air09",
+  "nameLength": 15,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 3.2,
+  "airportDist": {
+   "SFO": 1806.5,
+   "OAK": 18777.3,
+   "SJC": 50455.0
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Grand Hyatt",
+  "lat": 37.613428,
+  "lon": -122.393492,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air10",
+  "nameLength": 11,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 3.1,
+  "airportDist": {
+   "SFO": 1547.7,
+   "OAK": 18858.1,
+   "SJC": 49498.6
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
+  }
+ },
+ {
+  "name": "Long Term Parking",
+  "lat": 37.635077,
+  "lon": -122.400367,
+  "systems": [
+   "SFO AirTrain"
+  ],
+  "lines": [
+   "SFO AirTrain Blue"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "air11",
+  "nameLength": 17,
+  "county": "San Mateo",
+  "city": null,
+  "elevation": 3.1,
+  "airportDist": {
+   "SFO": 2426.4,
+   "OAK": 18087.0,
+   "SJC": 51372.0
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 4.0,
+   "we": 4.0
   }
  }
 ]

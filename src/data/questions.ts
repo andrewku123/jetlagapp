@@ -7,7 +7,7 @@ export const THERMOMETER_OPTIONS = [0.5, 3, 10]
 
 export interface QuestionMeta {
   kind: QuestionKind
-  category: 'Radar' | 'Thermometer' | 'Matching' | 'Measuring' | 'Photo'
+  category: 'Radar' | 'Thermometer' | 'Matching' | 'Measuring' | 'Inside' | 'Photo'
   label: string
   // cards the hider draws (medium game) — shown to the seeker as the cost
   cards: string
@@ -91,6 +91,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     cards: 'draw 3, keep 1',
     eliminates: true,
     blurb: 'Compared to me, are you closer to or further from sea level (lower altitude)?',
+  },
+  {
+    kind: 'inside-floor',
+    category: 'Inside',
+    label: 'Inside — floor in a building (endgame)',
+    cards: 'draw 3, keep 1',
+    eliminates: false,
+    blurb: 'Endgame only. “I’m inside [building] — are you on a higher or lower floor?” Answer Higher / Lower / Same / Can’t answer (different building or outside). Logged for reference; does not auto-eliminate stations.',
   },
   {
     kind: 'photo',

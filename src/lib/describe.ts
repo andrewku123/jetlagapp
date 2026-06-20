@@ -22,6 +22,15 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Closer/further from airport → ${String(p.answer)}`
     case 'measure-sealevel':
       return `Altitude vs ${formatElevation(Number(p.value), units)} → ${String(p.answer)}`
+    case 'inside-floor': {
+      const ans: Record<string, string> = {
+        higher: 'higher floor',
+        lower: 'lower floor',
+        same: 'same floor',
+        cannot: "can't answer",
+      }
+      return `Inside "${p.building}" → ${ans[String(p.answer)] ?? String(p.answer)}`
+    }
     case 'photo':
       return `Photo: ${p.description || '(logged)'}`
     default:

@@ -4,10 +4,19 @@ Adds per station: nameLength, county, city, elevation (m), distance to each
 commercial airport (SFO/OAK/SJC) and nearest airport. Writes enriched file to
 the app's data dir.
 """
-import json, math, time, sys, urllib.request, urllib.parse
+import json, math, time, sys, re, urllib.request, urllib.parse
 
 SRC = 'stations.json'
 OUT = '/home/ubuntu/repos/bayarea-hideandseek/src/data/stations.json'
+
+# Agency suffix appended by build_stations.py to disambiguate stations that share
+# a display name across systems (e.g. "San Bruno (BART)" vs "San Bruno (Caltrain)").
+# The name-length question should count the *base* name only, so strip just this
+# agency parenthetical — never descriptive ones like "(Ocean Beach)".
+_AGENCY_SUFFIX = re.compile(r'\s*\((?:BART|Caltrain|VTA|Muni)\)\s*$')
+
+def name_length(name):
+    return len(_AGENCY_SUFFIX.sub('', name))
 
 # Coordinates of each airport's Google Maps pin/icon (the point the official
 # game rules measure from), per andrewku.
@@ -88,7 +97,7 @@ def main():
             dist = {k: round(hav((lat, lon), v), 1) for k, v in AIRPORTS.items()}
             nearest = min(dist, key=dist.get)
             rec = dict(s)
-            rec['id'] = f's{i:03d}'; rec['nameLength'] = len(s['name'])
+            rec['id'] = f's{i:03d}'; rec['nameLength'] = name_length(s['name'])
             rec['county'] = cc; rec['city'] = city; rec['elevation'] = elev
             rec['airportDist'] = dist; rec['nearestAirport'] = nearest
             out.append(rec)
@@ -102,7 +111,7 @@ def main():
         nearest = min(dist, key=dist.get)
         rec = dict(s)
         rec['id'] = f's{i:03d}'
-        rec['nameLength'] = len(s['name'])
+        rec['nameLength'] = name_length(s['name'])
         rec['county'] = (county or '').replace(' County', '') or None
         rec['city'] = city
         rec['elevation'] = elev
