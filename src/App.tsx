@@ -373,7 +373,7 @@ export default function App() {
                 const q = suspectQuery.trim().toLowerCase()
                 const matches = (s: Station) =>
                   !q ||
-                  [s.name, ...s.aka, ...s.systems, ...s.lines, s.city ?? '', s.county ?? '']
+                  [s.name, ...s.aka, ...s.systems, ...s.lines.map((l) => l.replace(/\s*\([^)]*\)/g, '')), s.city ?? '', s.county ?? '']
                     .join(' ')
                     .toLowerCase()
                     .includes(q)
