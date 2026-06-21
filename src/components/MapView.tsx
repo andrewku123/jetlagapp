@@ -409,6 +409,13 @@ export default function MapView({
   // measure polylines by id, so the distance label can open the line's rounding
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
+  // true while a handle is being dragged: suppress snap-hover state updates so the
+  // map's mousemove doesn't re-render mid-drag (a re-render resets the dragged
+  // marker back to its prop position, fighting/cancelling the drag)
+  const draggingRef = useRef(false)
+  const setHover = (idx: number | null) => {
+    if (!draggingRef.current) setSnapHover(idx)
+  }
 
   function readCoord(p: LatLng) {
     setCoordPin(p)
@@ -675,7 +682,7 @@ export default function MapView({
             maxZoom={20}
           />
         )}
-        <MapClicks onClick={handleClick} onHover={setSnapHover} snapPoints={snapPoints} />
+        <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
@@ -927,7 +934,12 @@ export default function MapView({
                       }
                       handleClick({ lat: a.lat, lon: a.lon })
                     },
+                    dragstart: () => {
+                      draggingRef.current = true
+                      setSnapHover(null)
+                    },
                     dragend: (e) => {
+                      draggingRef.current = false
                       const ll = (e.target as L.Marker).getLatLng()
                       onMovePoint({ lat: a.lat, lon: a.lon }, { lat: ll.lat, lon: ll.lng })
                     },
@@ -1044,7 +1056,12 @@ export default function MapView({
                         lon: k === 'a' ? a.aLon : a.bLon,
                       })
                     },
+                    dragstart: () => {
+                      draggingRef.current = true
+                      setSnapHover(null)
+                    },
                     dragend: (e) => {
+                      draggingRef.current = false
                       const ll = (e.target as L.Marker).getLatLng()
                       const old =
                         k === 'a' ? { lat: a.aLat, lon: a.aLon } : { lat: a.bLat, lon: a.bLon }

@@ -78,6 +78,13 @@ broke dragging while a drawing tool was active).
   `snapHover` *or* its coords equal `snapPulse`; active dots render at `radius 11`
   in the draw `color`, idle at `radius 6` white. `onHover` calls with an unchanged
   value are cheap (React `useState` bails out), so per-move re-renders are fine.
+  **But never let `mousemove` re-render *during a handle drag*:** react-leaflet
+  calls `marker.setLatLng(props.position)` on every render (the `position` array is
+  a new ref each time), so a mid-drag re-render snaps the handle back to its
+  original spot and cancels the drag. Guard it: a `draggingRef` is set on each
+  handle's `dragstart`/cleared on `dragend`, and `setHover` no-ops while it's true
+  (also clears `snapHover` on `dragstart`). Any new always-on map `mousemove`
+  state update must respect this guard.
 - **Edit popups render ONLY in Select (✋) mode** (plus the compass special-case).
   This keeps popups from interrupting drawing/snapping:
   - compass center → `<RadiusEditPopup>` (a `<select>` of `RADAR_OPTIONS` +
