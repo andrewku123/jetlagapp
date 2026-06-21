@@ -116,6 +116,15 @@ broke dragging while a drawing tool was active).
   `.leaflet-marker-icon` (`inAnnotationControl`) and suppresses the next map
   click (it also still checks the click target as a backstop). Keep this
   mousedown-based guard if you add new immediate-draw tools.
+- **Opening a measure-endpoint popup needs `setTimeout(..., 0)`.** The measure
+  endpoints (`a`/`b` markers) bind a `<Popup>` and, in Select mode, their `click`
+  handler calls `marker.openPopup()` so clicking an endpoint shows the rounding
+  editor (clicking the line body works too). Calling `openPopup()` synchronously
+  in the click handler is swallowed — the same click cycle immediately re-closes
+  it (`closePopupOnClick`), so the popup never appears. Defer it one tick
+  (`setTimeout(() => mk.openPopup(), 0)`) and it stays open. The compass-center
+  popup happens not to hit this race, but use the deferred call if you add popups
+  to other endpoint handles.
 - **The measure label won't follow a dragged endpoint** unless the `<Polyline>`
   remounts: a Leaflet permanent `<Tooltip permanent direction="center">` anchors
   to the line's center only when (re)bound. The Polyline therefore has a `key`

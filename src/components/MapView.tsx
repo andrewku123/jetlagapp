@@ -963,12 +963,21 @@ export default function MapView({
                   draggable
                   icon={handleIcon(a.color)}
                   eventHandlers={{
-                    click: () => {
-                      if (!selectMode)
-                        handleClick({
-                          lat: k === 'a' ? a.aLat : a.bLat,
-                          lon: k === 'a' ? a.aLon : a.bLon,
-                        })
+                    click: (e) => {
+                      // in select mode a measure endpoint opens its rounding
+                      // editor (same popup as clicking the line body); while a
+                      // drawing tool is active the click reuses the point
+                      if (selectMode) {
+                        if (a.type === 'measure') {
+                          const mk = e.target as L.Marker
+                          setTimeout(() => mk.openPopup(), 0)
+                        }
+                        return
+                      }
+                      handleClick({
+                        lat: k === 'a' ? a.aLat : a.bLat,
+                        lon: k === 'a' ? a.aLon : a.bLon,
+                      })
                     },
                     dragend: (e) => {
                       const ll = (e.target as L.Marker).getLatLng()
@@ -977,7 +986,18 @@ export default function MapView({
                       onMovePoint(old, { lat: ll.lat, lon: ll.lng })
                     },
                   }}
-                />
+                >
+                  {selectMode && a.type === 'measure' && (
+                    <Popup>
+                      <MeasureEditPopup
+                        step={a.step ?? 0}
+                        units={units}
+                        onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
+                        onDelete={() => onDeleteAnnotation(a.id)}
+                      />
+                    </Popup>
+                  )}
+                </Marker>
               ))}
             </Fragment>
           )
