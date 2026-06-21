@@ -139,7 +139,7 @@ function inAnnotationControl(t: HTMLElement | null | undefined): boolean {
   return !!(t?.closest?.('.leaflet-popup') || t?.closest?.('.leaflet-marker-icon'))
 }
 
-function MapClicks({ onClick }: { onClick: (p: LatLng) => void }) {
+function MapClicks({ onClick, snapPoints }: { onClick: (p: LatLng) => void; snapPoints: LatLng[] }) {
   // A click on a popup control (e.g. the Delete button) can re-fire as a map
   // click; by then React may have already removed the popup from the DOM, so
   // checking the click target is unreliable. Record at mousedown/touchstart
@@ -157,14 +157,27 @@ function MapClicks({ onClick }: { onClick: (p: LatLng) => void }) {
       document.removeEventListener('touchstart', onDown, true)
     }
   }, [])
-  useMapEvents({
+  const map = useMapEvents({
     click(e) {
       const target = e.originalEvent?.target as HTMLElement | null
       if (suppressRef.current || inAnnotationControl(target)) {
         suppressRef.current = false
         return
       }
-      onClick({ lat: e.latlng.lat, lon: e.latlng.lng })
+      // snap to an existing drawn point if the click lands within ~14px of one,
+      // so you can reuse points across tools instead of re-clicking them
+      let p: LatLng = { lat: e.latlng.lat, lon: e.latlng.lng }
+      let best: LatLng | null = null
+      let bestD = Infinity
+      for (const sp of snapPoints) {
+        const d = e.containerPoint.distanceTo(map.latLngToContainerPoint([sp.lat, sp.lon]))
+        if (d < bestD) {
+          bestD = d
+          best = sp
+        }
+      }
+      if (best && bestD <= 14) p = best
+      onClick(p)
     },
   })
   return null
@@ -422,6 +435,23 @@ export default function MapView({
     setCoordCopied(false)
   }
 
+  // points already drawn that a new click can snap onto (reuse across tools):
+  // compass centers + every line/bisector/measure endpoint, plus the in-progress
+  // first point. Only offered while a drawing tool is active.
+  const snapPoints: LatLng[] = selectMode
+    ? []
+    : [
+        ...annotations.flatMap((a) =>
+          a.type === 'circle'
+            ? [{ lat: a.lat, lon: a.lon }]
+            : [
+                { lat: a.aLat, lon: a.aLon },
+                { lat: a.bLat, lon: a.bLon },
+              ],
+        ),
+        ...(pending ? [pending] : []),
+      ]
+
   return (
     <>
       <div className="draw-toolbar">
@@ -596,7 +626,7 @@ export default function MapView({
             maxZoom={20}
           />
         )}
-        <MapClicks onClick={handleClick} />
+        <MapClicks onClick={handleClick} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
@@ -918,6 +948,18 @@ export default function MapView({
             </Fragment>
           )
         })}
+
+        {/* reusable snap targets: existing drawn points, clickable to reuse */}
+        {!selectMode &&
+          snapPoints.map((sp, i) => (
+            <CircleMarker
+              key={`snap-${i}`}
+              center={[sp.lat, sp.lon]}
+              radius={6}
+              interactive={false}
+              pathOptions={{ color: '#111', weight: 1, opacity: 0.5, fillColor: '#fff', fillOpacity: 0.4 }}
+            />
+          ))}
 
         {/* endpoints clicked for line/bisector are shown via the pending marker */}
         {pending && (
