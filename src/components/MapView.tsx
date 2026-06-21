@@ -504,7 +504,7 @@ export default function MapView({
           </div>
         )}
         {(annotations.length > 0 || pending) && (
-          <div className="draw-actions">
+          <div className={'draw-actions' + (tool !== 'select' ? ' open' : '')}>
             <button
               className="draw-undo"
               data-tip="Undo"
@@ -526,7 +526,7 @@ export default function MapView({
                 aria-label={`Clear all (${annotations.length})`}
                 onClick={onClearAnnotations}
               >
-                🧹
+                🗑️
               </button>
             )}
           </div>
