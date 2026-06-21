@@ -410,7 +410,7 @@ export default function MapView({
               key={t}
               className={tool === t ? 'on' : ''}
               onClick={() => selectTool(t)}
-              title={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : 'Measure'}
+              data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : 'Measure'}
               aria-label={t}
             >
               {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : '📏'}
@@ -507,7 +507,7 @@ export default function MapView({
           <div className="draw-actions">
             <button
               className="draw-undo"
-              title="Undo"
+              data-tip="Undo"
               aria-label="Undo"
               onClick={() => {
                 if (pending) {
@@ -522,7 +522,7 @@ export default function MapView({
             {annotations.length > 0 && (
               <button
                 className="draw-clear"
-                title={`Clear all (${annotations.length})`}
+                data-tip={`Clear all (${annotations.length})`}
                 aria-label={`Clear all (${annotations.length})`}
                 onClick={onClearAnnotations}
               >

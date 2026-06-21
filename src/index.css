@@ -36,17 +36,25 @@ body { background: var(--bg); color: var(--text); }
 .draw-toolbar {
   position: absolute; top: 10px; right: 10px; z-index: 1000;
   background: rgba(23, 28, 34, 0.95); border: 1px solid var(--line);
-  border-radius: 10px; padding: 6px; width: 168px;
+  border-radius: 10px; padding: 6px; width: fit-content; min-width: 44px;
   box-shadow: 0 4px 14px rgba(0,0,0,.4); font-size: 12px;
 }
-/* icon-only tools, stacked in a vertical column */
-.draw-tools { display: flex; flex-direction: column; gap: 4px; }
+/* icon-only tools, stacked in a slim vertical column */
+.draw-tools { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .draw-tools button {
-  width: 100%; display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 30px; display: flex; align-items: center; justify-content: center;
   background: var(--panel2); color: var(--muted); border: 1px solid var(--line);
   border-radius: 6px; padding: 6px 0; cursor: pointer; font-size: 16px; line-height: 1;
 }
 .draw-tools button.on { color: #fff; border-color: var(--accent); background: var(--accent); }
+/* instant hover tooltip to the left of each toolbar button */
+.draw-toolbar button[data-tip] { position: relative; }
+.draw-toolbar button[data-tip]:hover::after {
+  content: attr(data-tip); position: absolute; right: calc(100% + 8px); top: 50%;
+  transform: translateY(-50%); background: #171c22; color: #fff; border: 1px solid var(--line);
+  padding: 3px 7px; border-radius: 5px; font-size: 11px; white-space: nowrap;
+  pointer-events: none; z-index: 1001; box-shadow: 0 2px 8px rgba(0,0,0,.4);
+}
 .draw-radius { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; color: var(--muted); }
 .draw-radius select {
   flex: 1; min-width: 0; background: var(--panel2); color: var(--text);
@@ -153,7 +161,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .slist li.sgroup.line { font-size: 11px; color: var(--muted); margin: 4px 0 1px; padding-left: 2px; }
 .slist li.sgroup.elimhdr { font-weight: 600; font-size: 12px; color: #9aa0a6; margin-top: 14px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
 
-.endgame-banner { position: absolute; top: 10px; left: 10px; z-index: 1000; max-width: calc(100% - 200px); display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: #dcfce7; color: #14532d; border: 1px solid #16a34a; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.25); font-size: 13px; }
+.endgame-banner { position: absolute; top: 10px; left: 52px; z-index: 1000; max-width: calc(100% - 240px); display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: #dcfce7; color: #14532d; border: 1px solid #16a34a; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.25); font-size: 13px; }
 .endgame-banner button { flex: none; font-size: 12px; padding: 3px 10px; border: 1px solid #16a34a; background: #fff; color: #14532d; border-radius: 4px; cursor: pointer; }
 
 .legend h3 { margin: 6px 0; font-size: 13px; }
