@@ -356,6 +356,21 @@ export default function MapView({
   const [showCoordEntry, setShowCoordEntry] = useState(false)
   const [coordText, setCoordText] = useState('')
   const [coordError, setCoordError] = useState(false)
+  // coordinate read-out tool: a transient dot + copied coords, no annotation
+  const [coordPin, setCoordPin] = useState<LatLng | null>(null)
+  const [coordCopied, setCoordCopied] = useState(false)
+
+  function readCoord(p: LatLng) {
+    setCoordPin(p)
+    const text = `${p.lat.toFixed(6)}, ${p.lon.toFixed(6)}`
+    navigator.clipboard?.writeText(text).then(
+      () => {
+        setCoordCopied(true)
+        window.setTimeout(() => setCoordCopied(false), 1200)
+      },
+      () => setCoordCopied(false),
+    )
+  }
 
   function addCoordPoint() {
     const p = parseLatLng(coordText)
@@ -375,6 +390,10 @@ export default function MapView({
     }
     if (tool === 'compass') {
       onAddAnnotation({ id: rid(), type: 'circle', lat: p.lat, lon: p.lon, radiusMiles: radiusMi, color })
+      return
+    }
+    if (tool === 'coord') {
+      readCoord(p)
       return
     }
     // line / bisector / measure: collect two points
@@ -399,21 +418,23 @@ export default function MapView({
   function selectTool(t: DrawTool) {
     setTool(t)
     setPending(null)
+    setCoordPin(null)
+    setCoordCopied(false)
   }
 
   return (
     <>
       <div className="draw-toolbar">
         <div className="draw-tools">
-          {(['select', 'compass', 'line', 'bisector', 'measure'] as DrawTool[]).map((t) => (
+          {(['select', 'compass', 'line', 'bisector', 'measure', 'coord'] as DrawTool[]).map((t) => (
             <button
               key={t}
               className={tool === t ? 'on' : ''}
               onClick={() => selectTool(t)}
-              data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : 'Measure'}
+              data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : t === 'measure' ? 'Measure' : 'Coordinates'}
               aria-label={t}
             >
-              {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : '📏'}
+              {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : t === 'measure' ? '📏' : '📍'}
             </button>
           ))}
         </div>
@@ -460,7 +481,7 @@ export default function MapView({
             </select>
           </label>
         )}
-        {tool !== 'select' && (
+        {tool !== 'select' && tool !== 'coord' && (
           <div className="draw-colors">
             {DRAW_COLORS.map((c) => (
               <button
@@ -473,7 +494,24 @@ export default function MapView({
             ))}
           </div>
         )}
-        {tool !== 'select' && (
+        {tool === 'coord' && (
+          <div className="draw-coord-readout">
+            {coordPin ? (
+              <>
+                <span className="cr-val">{coordPin.lat.toFixed(6)}, {coordPin.lon.toFixed(6)}</span>
+                <button
+                  className="cr-copy"
+                  onClick={() => readCoord(coordPin)}
+                >
+                  {coordCopied ? 'Copied ✓' : 'Copy'}
+                </button>
+              </>
+            ) : (
+              <span className="cr-hint">Click the map to read &amp; copy coordinates.</span>
+            )}
+          </div>
+        )}
+        {tool !== 'select' && tool !== 'coord' && (
           <div className="draw-coords">
             <button
               className="draw-coords-toggle"
@@ -895,6 +933,20 @@ export default function MapView({
             <Popup>{pp.label}</Popup>
           </Marker>
         ))}
+
+        {/* transient coordinate-tool dot: shows the lat/lon, no annotation kept */}
+        {tool === 'coord' && coordPin && (
+          <CircleMarker
+            center={[coordPin.lat, coordPin.lon]}
+            radius={5}
+            pathOptions={{ color: '#111', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
+          >
+            <Tooltip permanent direction="top" offset={[0, -6]}>
+              {coordPin.lat.toFixed(6)}, {coordPin.lon.toFixed(6)}
+              {coordCopied ? ' ✓' : ''}
+            </Tooltip>
+          </CircleMarker>
+        )}
       </MapContainer>
     </>
   )

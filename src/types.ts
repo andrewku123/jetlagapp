@@ -60,7 +60,7 @@ export interface QuestionRecord {
 }
 
 // Manual compass / straightedge annotations the seeker draws on the map.
-export type DrawTool = 'select' | 'compass' | 'line' | 'bisector' | 'measure'
+export type DrawTool = 'select' | 'compass' | 'line' | 'bisector' | 'measure' | 'coord'
 
 export interface CircleAnnotation {
   id: string
