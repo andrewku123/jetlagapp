@@ -71,6 +71,8 @@ body { background: var(--bg); color: var(--text); }
   border: 0; padding: 2px 0; cursor: pointer; font-size: 11px;
 }
 .draw-coords-body { display: flex; gap: 6px; margin-top: 4px; }
+.draw-coords-body.two { flex-direction: column; align-items: stretch; }
+.draw-coords-body.two button { align-self: flex-end; }
 .draw-coords-input {
   flex: 1; min-width: 0; box-sizing: border-box; background: var(--panel2); color: var(--text);
   border: 1px solid var(--line); border-radius: 6px; padding: 4px 6px; font-size: 12px;

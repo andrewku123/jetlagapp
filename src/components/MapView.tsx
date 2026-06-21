@@ -396,6 +396,9 @@ export default function MapView({
   // collapsible "enter coordinates" box for placing points without clicking
   const [showCoordEntry, setShowCoordEntry] = useState(false)
   const [coordText, setCoordText] = useState('')
+  // second coordinate field for two-point tools (line / bisector / measure), so
+  // both endpoints can be entered at once instead of one-then-the-other
+  const [coordTextB, setCoordTextB] = useState('')
   const [coordError, setCoordError] = useState(false)
   // coordinate read-out tool: a transient dot + copied coords, no annotation
   const [coordPin, setCoordPin] = useState<LatLng | null>(null)
@@ -438,6 +441,37 @@ export default function MapView({
     setCoordError(false)
     setCoordText('')
     handleClick(p)
+  }
+
+  // two-point tools: place an endpoint from each filled field. With both filled,
+  // build the line/bisector/measure directly (A→B); with one filled, fall back to
+  // the click flow (sets/uses `pending`) so map-click + typed point still mix.
+  function addCoordPair() {
+    const a = coordText.trim() ? parseLatLng(coordText) : null
+    const b = coordTextB.trim() ? parseLatLng(coordTextB) : null
+    if ((coordText.trim() && !a) || (coordTextB.trim() && !b) || (!a && !b)) {
+      setCoordError(true)
+      return
+    }
+    setCoordError(false)
+    if (a && b) {
+      const type = tool === 'bisector' ? 'bisector' : tool === 'measure' ? 'measure' : 'line'
+      onAddAnnotation({
+        id: rid(),
+        type,
+        aLat: a.lat,
+        aLon: a.lon,
+        bLat: b.lat,
+        bLon: b.lon,
+        color,
+        ...(type === 'measure' ? { step: measureStep } : {}),
+      })
+      setPending(null)
+    } else {
+      handleClick((a ?? b) as LatLng)
+    }
+    setCoordText('')
+    setCoordTextB('')
   }
 
   function handleClick(p: LatLng) {
@@ -484,6 +518,9 @@ export default function MapView({
     setPending(null)
     setCoordPin(null)
     setCoordCopied(false)
+    setCoordText('')
+    setCoordTextB('')
+    setCoordError(false)
   }
 
   // points already drawn that a new click can snap onto (reuse across tools):
@@ -605,25 +642,52 @@ export default function MapView({
             >
               {showCoordEntry ? '▾' : '▸'} enter coordinates
             </button>
-            {showCoordEntry && (
-              <div className="draw-coords-body">
-                <input
-                  className={'draw-coords-input' + (coordError ? ' err' : '')}
-                  placeholder="lat, lon"
-                  value={coordText}
-                  onChange={(e) => {
-                    setCoordText(e.target.value)
-                    setCoordError(false)
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') addCoordPoint()
-                  }}
-                />
-                <button onClick={addCoordPoint}>
-                  {tool === 'compass' ? 'Draw' : pending ? 'Add 2nd' : 'Add'}
-                </button>
-              </div>
-            )}
+            {showCoordEntry &&
+              (tool === 'line' || tool === 'bisector' || tool === 'measure' ? (
+                <div className="draw-coords-body two">
+                  <input
+                    className={'draw-coords-input' + (coordError ? ' err' : '')}
+                    placeholder="A: lat, lon"
+                    value={coordText}
+                    onChange={(e) => {
+                      setCoordText(e.target.value)
+                      setCoordError(false)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') addCoordPair()
+                    }}
+                  />
+                  <input
+                    className={'draw-coords-input' + (coordError ? ' err' : '')}
+                    placeholder="B: lat, lon"
+                    value={coordTextB}
+                    onChange={(e) => {
+                      setCoordTextB(e.target.value)
+                      setCoordError(false)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') addCoordPair()
+                    }}
+                  />
+                  <button onClick={addCoordPair}>Add</button>
+                </div>
+              ) : (
+                <div className="draw-coords-body">
+                  <input
+                    className={'draw-coords-input' + (coordError ? ' err' : '')}
+                    placeholder="lat, lon"
+                    value={coordText}
+                    onChange={(e) => {
+                      setCoordText(e.target.value)
+                      setCoordError(false)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') addCoordPoint()
+                    }}
+                  />
+                  <button onClick={addCoordPoint}>{tool === 'compass' ? 'Draw' : 'Add'}</button>
+                </div>
+              ))}
             {coordError && <div className="draw-coords-err">Couldn’t read those coordinates.</div>}
           </div>
         )}
