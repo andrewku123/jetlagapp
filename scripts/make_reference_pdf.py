@@ -345,8 +345,8 @@ CARD_PHOTO = f"""
 CARD_INSIDE = f"""
 <div class="card slim">
   <h2>7 &middot; Inside <span class="dk">draw 3, keep 1</span></h2>
-  <p class="prompt"><b>End game only.</b> "I'm inside ___ (building) &mdash; are you on a higher or lower floor?" &rarr; <b>Higher / Lower / Same</b>, or <b>"I can't answer"</b> if the hider is in a different building or outdoors.</p>
-  <p class="send"><b>Send hider:</b> the building you are inside.</p>
+  <p class="prompt"><b>End game only.</b> "I'm inside ___ (building) on ___ (floor) &mdash; are you on a higher or lower floor?" &rarr; <b>Higher / Lower / Same</b>, or <b>"I can't answer"</b> if the hider is in a different building or outdoors.</p>
+  <p class="send"><b>Send hider:</b> the building you are inside <b>and the floor you are on</b>.</p>
   {META_FAIL}
   {boxes([("Floor in a building", True)])}
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>

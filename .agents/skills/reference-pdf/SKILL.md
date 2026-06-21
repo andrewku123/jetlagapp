@@ -55,7 +55,15 @@ and Quick Start guide (`/docs/quick_start_guide/asking_questions`,
 - **"Send hider":** the minimum the seeker must reveal for the question to be
   answerable — Matching = your nearest ___; Measuring = your distance to ___;
   Radar = location pin + radius; Thermometer = start & stop points; Tentacles /
-  Photo = nothing (about the hider / hider sends the photo).
+  Photo = nothing (about the hider / hider sends the photo); Inside = the
+  building you're in **and the floor you're on**.
+- **Card 7 — Inside (`CARD_INSIDE`)** is an app-only endgame question (not in the
+  official Medium deck): "I'm inside ___ (building) on ___ (floor) — higher or
+  lower floor?" → Higher/Lower/Same or "I can't answer". `app: logged only (no
+  auto-eliminate)`. It's appended to the page-1 multicol after Photo and (because
+  Photo fills column 2) spills onto its own page — the deck is currently 3 pages.
+  Keep its prompt + "Send hider" line in sync with the app's Ask form
+  (`inside-floor`), which makes the seeker enter both building and floor.
 - **`app` badge** = the seeker tool auto-eliminates for that subject (airport,
   transit line, station-name length, county, city, sea level, radar, thermometer).
 
