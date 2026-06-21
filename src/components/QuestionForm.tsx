@@ -11,6 +11,7 @@ interface Props {
   lines: string[]
   airports: string[]
   onSubmit: (r: QuestionRecord) => void
+  onPreview: (p: LatLng) => void
 }
 
 function uid(): string {
@@ -27,11 +28,13 @@ function CoordPicker({
   point,
   setPoint,
   lastClick,
+  onPreview,
 }: {
   label: string
   point: LatLng | null
   setPoint: (p: LatLng | null) => void
   lastClick: LatLng | null
+  onPreview: (p: LatLng) => void
 }) {
   const [text, setText] = useState('')
   const [err, setErr] = useState(false)
@@ -44,6 +47,7 @@ function CoordPicker({
     setErr(false)
     setText('')
     setPoint(p)
+    onPreview(p)
   }
   return (
     <div className="coordpick">
@@ -80,6 +84,7 @@ export default function QuestionForm({
   lines,
   airports,
   onSubmit,
+  onPreview,
 }: Props) {
   const metric = units === 'metric'
   const distUnit = metric ? 'km' : 'mi'
@@ -221,15 +226,15 @@ export default function QuestionForm({
               <input type="number" step="any" min="0" value={customRadius} onChange={(e) => setCustomRadius(e.target.value)} placeholder="e.g. 2.5" />
             </div>
           )}
-          <CoordPicker label="Center" point={center} setPoint={setCenter} lastClick={lastClick} />
+          <CoordPicker label="Center" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {yesNo}
         </>
       )}
 
       {kind === 'thermometer' && (
         <>
-          <CoordPicker label="Start A" point={ptA} setPoint={setPtA} lastClick={lastClick} />
-          <CoordPicker label="End B" point={ptB} setPoint={setPtB} lastClick={lastClick} />
+          <CoordPicker label="Start A" point={ptA} setPoint={setPtA} lastClick={lastClick} onPreview={onPreview} />
+          <CoordPicker label="End B" point={ptB} setPoint={setPtB} lastClick={lastClick} onPreview={onPreview} />
           <div className="row">
             <label>Result</label>
             <div className="seg">
@@ -242,7 +247,7 @@ export default function QuestionForm({
 
       {kind === 'measure-airport' && (
         <>
-          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} />
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           <div className="row">
             <label>Answer</label>
             <div className="seg">

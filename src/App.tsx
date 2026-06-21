@@ -311,6 +311,7 @@ export default function App() {
                 lines={lines}
                 airports={airports}
                 onSubmit={addQuestion}
+                onPreview={setLastClick}
               />
             </div>
           )}
