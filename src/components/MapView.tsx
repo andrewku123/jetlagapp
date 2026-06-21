@@ -198,8 +198,12 @@ function MapClicks({
       onHover(null)
       onClick(p)
     },
-    // highlight the point the next click would snap onto as the pointer nears it
+    // highlight the point the next click would snap onto as the pointer nears it.
+    // Skip while a mouse button is held: a hover state change re-renders the map,
+    // and a re-render mid-drag resets the dragged handle to its prop position and
+    // cancels the drag (react-leaflet calls setLatLng on every render).
     mousemove(e) {
+      if ((e.originalEvent as MouseEvent | undefined)?.buttons) return
       const idx = snapPoints.length ? nearest(e.containerPoint) : -1
       onHover(idx === -1 ? null : idx)
     },
@@ -984,11 +988,21 @@ export default function MapView({
                   )
                 })()}
                 <Marker
+                  key={`${a.id}-center-${selectMode}`}
                   position={[a.lat, a.lon]}
-                  draggable
+                  draggable={selectMode}
+                  interactive={selectMode}
                   icon={handleIcon(a.color, true)}
                   eventHandlers={{
+                    // set the no-rerender guard on press, BEFORE any movement: the
+                    // map's mousemove (which updates snap-hover state) fires during
+                    // the initial drag threshold, and a re-render then would reset
+                    // the marker to its prop position and cancel the drag
+                    mousedown: () => {
+                      draggingRef.current = true
+                    },
                     click: (e) => {
+                      draggingRef.current = false
                       // select or compass tool: open this circle's edit bar.
                       // other tools: reuse the center as a point for that tool.
                       if (selectMode || tool === 'compass') {
@@ -998,12 +1012,9 @@ export default function MapView({
                       }
                       handleClick({ lat: a.lat, lon: a.lon })
                     },
-                    dragstart: () => {
-                      draggingRef.current = true
-                      setSnapHover(null)
-                    },
                     dragend: (e) => {
                       draggingRef.current = false
+                      setSnapHover(null)
                       const ll = (e.target as L.Marker).getLatLng()
                       onMovePoint({ lat: a.lat, lon: a.lon }, { lat: ll.lat, lon: ll.lng })
                     },
@@ -1041,17 +1052,6 @@ export default function MapView({
                 : 'Straightedge line'
           return (
             <Fragment key={a.id}>
-              {a.type === 'bisector' && (
-                <Polyline
-                  positions={[[a.aLat, a.aLon], [a.bLat, a.bLon]]}
-                  interactive={false}
-                  pathOptions={{ color: '#6b7280', weight: 1.5, dashArray: '2 4' }}
-                >
-                  <Tooltip permanent direction="center" className="measure-label">
-                    {formatDistance(haversineMiles({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon }), units)}
-                  </Tooltip>
-                </Polyline>
-              )}
               <Polyline
                 key={`${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
                 ref={(el) => {
@@ -1099,12 +1099,17 @@ export default function MapView({
               </Polyline>
               {(['a', 'b'] as const).map((k) => (
                 <Marker
-                  key={a.id + k}
+                  key={`${a.id}${k}-${selectMode}`}
                   position={[k === 'a' ? a.aLat : a.bLat, k === 'a' ? a.aLon : a.bLon]}
-                  draggable
+                  draggable={selectMode}
+                  interactive={selectMode}
                   icon={handleIcon(a.color)}
                   eventHandlers={{
+                    mousedown: () => {
+                      draggingRef.current = true
+                    },
                     click: (e) => {
+                      draggingRef.current = false
                       // in select mode a measure endpoint opens its rounding
                       // editor (same popup as clicking the line body); while a
                       // drawing tool is active the click reuses the point
@@ -1120,12 +1125,9 @@ export default function MapView({
                         lon: k === 'a' ? a.aLon : a.bLon,
                       })
                     },
-                    dragstart: () => {
-                      draggingRef.current = true
-                      setSnapHover(null)
-                    },
                     dragend: (e) => {
                       draggingRef.current = false
+                      setSnapHover(null)
                       const ll = (e.target as L.Marker).getLatLng()
                       const old =
                         k === 'a' ? { lat: a.aLat, lon: a.aLon } : { lat: a.bLat, lon: a.bLon }

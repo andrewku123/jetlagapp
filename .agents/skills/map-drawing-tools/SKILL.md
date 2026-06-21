@@ -36,20 +36,34 @@ tool switch).
   `updateAnnotation` / `clearAnnotations`) and passed down as props.
 
 ## Editing & moving placed annotations
-Annotations are **editable after placement**. The key design rule: **dragging a
-handle and click-to-snap coexist on the same always-interactive handle** — a
-drag moves the point, a no-move click reuses it. Do NOT gate handle
-`draggable`/`interactive` on `selectMode` (an earlier attempt did and it silently
-broke dragging while a drawing tool was active).
+Annotations are **editable after placement**. The key design rule, learned the
+hard way: **drag and click-to-snap are mutually ambiguous on one handle** (a
+click is a zero-distance drag), so they are **split by mode**, NOT made to
+coexist on the same handle:
+- **Select (✋) mode:** handles are `draggable` + `interactive` → drag to move,
+  click to open edit popups.
+- **drawing tool active:** handles are `draggable={false}` + `interactive={false}`
+  → clicks fall through to the map, where the 14px snap reuses the point. No
+  handle drag, no popup, no ambiguity.
 
-- **Drag handles** — every annotation renders Leaflet `<Marker>`s (always
-  `draggable`) using the `handleIcon(color, big?)` divIcon. On `dragend` we read
-  `e.target.getLatLng()` and call `onUpdateAnnotation(id, patch)`:
-  - compass: one big center handle → patches `{ lat, lon }` (moves the circle).
-  - line/measure: two handles at the endpoints → patch `{ aLat, aLon }` /
-    `{ bLat, bLon }`.
+Gate BOTH `draggable={selectMode}` and `interactive={selectMode}` on each
+`<Marker>`, and give the marker a `key` that includes `selectMode`
+(`` key={`${a.id}-center-${selectMode}`} `` / `` key={`${a.id}${k}-${selectMode}`} ``).
+**The key is load-bearing:** react-leaflet does NOT re-initialise a marker's
+`interactive`/dragging when the prop flips, so without the remount, switching to
+Select mode leaves the handle non-draggable. The `key` forces a fresh marker per
+mode. (An even earlier attempt kept handles always interactive+draggable and
+tried to let drag+click coexist — drawing-mode drag silently broke because the
+handle absorbed the press but, when `draggable=false`, never fired its own click
+either; this split-by-mode design is what actually works. Verified via CDP.)
+
+- **Drag handles** — every annotation renders Leaflet `<Marker>`s
+  (`draggable={selectMode}`) using the `handleIcon(color, big?)` divIcon. On
+  `dragend` we read `e.target.getLatLng()` and call `onMovePoint(from, to)`:
+  - compass: one big center handle (moves the circle + any coincident points).
+  - line/measure: two handles at the endpoints.
   - bisector: two handles at the **reference points** `a`/`b` (the drawn line is
-    recomputed from them via `bisectorEndpoints`).
+    recomputed from them via `bisectorPolyline`/`bisectorEndpoints`).
 - **Linked drag (coincident points move together).** `dragend` does NOT patch the
   one annotation; it calls `onMovePoint(from, to)` (`movePoint` in `App.tsx`),
   which moves *every* annotation point sitting at exactly `from` to `to`. Because
@@ -58,17 +72,17 @@ broke dragging while a drawing tool was active).
   `===` coord comparison is the linkage (no anchor/id model). Single
   (non-coincident) points behave exactly as before. The radius/step popups still
   use `onUpdateAnnotation`; only position drags use `onMovePoint`.
-- **Click-to-snap / reuse a point** — each handle's `click` handler checks the
-  active tool. While a drawing tool is active (`!selectMode`), clicking a handle
-  calls `handleClick({lat,lon})` with that point's exact coords, feeding it into
-  the current tool (e.g. start a measure on an existing compass center). Clicking
-  *near* a handle also snaps: `MapClicks` snaps any map click within **14 screen
-  pixels** (`map.latLngToContainerPoint`, zoom-aware so zooming in lets you place
-  a new point right next to an existing one) of a `snapPoints` entry. `snapPoints`
-  = all annotation endpoints + the in-progress `pending` point, only while a
-  drawing tool is active. **Exception: with the compass active, circle centers are
-  excluded from `snapPoints`** (see compass rule below). The snap threshold lives
-  in the `SNAP_PX` constant (14) shared by the click and hover logic.
+- **Click-to-snap / reuse a point** — because handles are non-interactive while a
+  drawing tool is active, reuse happens entirely through the **map**: `MapClicks`
+  snaps any map click within **14 screen pixels** (`map.latLngToContainerPoint`,
+  zoom-aware so zooming in lets you place a new point right next to an existing
+  one) of a `snapPoints` entry — including a click landing *exactly on* a handle
+  (the click passes through to the map). `snapPoints` = all annotation endpoints +
+  the in-progress `pending` point, only while a drawing tool is active.
+  **Exception: with the compass active, circle centers are excluded from
+  `snapPoints`** (see compass rule below). The snap threshold lives in the
+  `SNAP_PX` constant (14). (The handle `click` handlers still exist but only fire
+  in Select mode — there they open edit popups, not snap.)
 - **Snap-target highlight.** The snap dot the *next* click would land on is
   enlarged + tinted so the reuse is obvious. `MapClicks`'s `mousemove`/`mouseout`
   report the nearest in-range `snapPoints` index via `onHover` → `snapHover`
@@ -81,10 +95,13 @@ broke dragging while a drawing tool was active).
   **But never let `mousemove` re-render *during a handle drag*:** react-leaflet
   calls `marker.setLatLng(props.position)` on every render (the `position` array is
   a new ref each time), so a mid-drag re-render snaps the handle back to its
-  original spot and cancels the drag. Guard it: a `draggingRef` is set on each
-  handle's `dragstart`/cleared on `dragend`, and `setHover` no-ops while it's true
-  (also clears `snapHover` on `dragstart`). Any new always-on map `mousemove`
-  state update must respect this guard.
+  original spot and cancels the drag. The robust guard is in `MapClicks.mousemove`:
+  **skip the hover update whenever a mouse button is held** (`if
+  (e.originalEvent?.buttons) return`). It fires before any re-render and is
+  independent of which marker (if any) is being dragged. (A `draggingRef` set on
+  handle `mousedown`/cleared on `dragend` also exists as a backstop. In practice
+  `snapPoints` is empty in Select mode anyway — the only mode where handles drag —
+  so hover never fires during a drag, but keep the buttons-guard for safety.)
 - **Edit popups render ONLY in Select (✋) mode** (plus the compass special-case).
   This keeps popups from interrupting drawing/snapping:
   - compass center → `<RadiusEditPopup>` (a `<select>` of `RADAR_OPTIONS` +
@@ -97,6 +114,12 @@ broke dragging while a drawing tool was active).
   - **line / bisector have NO popup** (the old "Straightedge line | Delete" /
     "Perpendicular bisector | Delete" popups were removed at the user's request).
     Delete a line/bisector via **Undo** or just redraw it.
+- **A bisector renders ONLY its perpendicular line — no distance label.** Only
+  `measure` shows a distance `<Tooltip>`. A bisector is the perpendicular bisector
+  of A–B; it deliberately does NOT draw the A–B connector segment or its length
+  (an experimental gray A–B connector + distance label was added then removed — it
+  cluttered the map with overlapping labels and isn't what the bisector is for;
+  use the Measure tool to measure two points).
 - **Compass center click rule** — while the compass is active, clicking an
   existing center **opens its edit bar** (via `marker.openPopup()` in the click
   handler) instead of dropping a concentric ring. To draw a deliberate concentric
@@ -186,13 +209,14 @@ broke dragging while a drawing tool was active).
 
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: draw each
-shape, confirm the measure label respects the rounding selector, **drag an
-endpoint / the compass center while a drawing tool is active and confirm the
-shape + label update** (the drag must NOT be gated to Select mode), **click an
-existing point with another tool active and confirm it snaps/reuses it**, **with
-compass active click an existing center and confirm it opens the edit bar instead
-of stacking a ring**, edit a placed circle's radius / a measure's rounding via
-their popups (incl. Custom…) **in Select mode**, confirm line/bisector have no
+shape, confirm the measure label respects the rounding selector, **in Select (✋)
+mode drag an endpoint / the compass center and confirm the shape + label update
+(incl. linked drag of coincident points)**, **with a drawing tool active click an
+existing point — even directly on its handle — and confirm it snaps/reuses it**,
+**with compass active click an existing center and confirm it opens the edit bar
+instead of stacking a ring**, **confirm a bisector shows only the perpendicular
+line (no distance label)**, edit a placed circle's radius / a measure's rounding
+via their popups (incl. Custom…) **in Select mode**, confirm line/bisector have no
 popup, "Clear drawings", and reload to confirm annotations persist. For
 deterministic interaction tests (drag/snap/popup) drive real clicks via CDP and
 read `localStorage` — see the `verify-map-interactions` skill. Unit tests for the
