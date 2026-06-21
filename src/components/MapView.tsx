@@ -443,7 +443,12 @@ export default function MapView({
     : [
         ...annotations.flatMap((a) =>
           a.type === 'circle'
-            ? [{ lat: a.lat, lon: a.lon }]
+            ? // with the compass active, a click on a center opens its edit bar
+              // rather than snap-adding a concentric ring (use the coordinate
+              // box for that), so don't offer circle centers as snap targets
+              tool === 'compass'
+              ? []
+              : [{ lat: a.lat, lon: a.lon }]
             : [
                 { lat: a.aLat, lon: a.aLon },
                 { lat: a.bLat, lon: a.bLon },
@@ -865,23 +870,34 @@ export default function MapView({
                 })()}
                 <Marker
                   position={[a.lat, a.lon]}
-                  draggable={selectMode}
-                  interactive={selectMode}
+                  draggable
                   icon={handleIcon(a.color, true)}
                   eventHandlers={{
+                    click: (e) => {
+                      // select or compass tool: open this circle's edit bar.
+                      // other tools: reuse the center as a point for that tool.
+                      if (selectMode || tool === 'compass') {
+                        const mk = e.target as L.Marker
+                        mk.openPopup()
+                        return
+                      }
+                      handleClick({ lat: a.lat, lon: a.lon })
+                    },
                     dragend: (e) => {
                       const ll = (e.target as L.Marker).getLatLng()
                       onUpdateAnnotation(a.id, { lat: ll.lat, lon: ll.lng })
                     },
                   }}
                 >
-                  <Popup>
-                    <RadiusEditPopup
-                      value={a.radiusMiles}
-                      onChange={(v) => onUpdateAnnotation(a.id, { radiusMiles: v })}
-                      onDelete={() => onDeleteAnnotation(a.id)}
-                    />
-                  </Popup>
+                  {(selectMode || tool === 'compass') && (
+                    <Popup>
+                      <RadiusEditPopup
+                        value={a.radiusMiles}
+                        onChange={(v) => onUpdateAnnotation(a.id, { radiusMiles: v })}
+                        onDelete={() => onDeleteAnnotation(a.id)}
+                      />
+                    </Popup>
+                  )}
                 </Marker>
               </Fragment>
             )
@@ -919,6 +935,7 @@ export default function MapView({
               <Polyline
                 key={`${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
                 positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
+                interactive={selectMode && a.type === 'measure'}
                 pathOptions={{ color: a.color, weight: 2, dashArray: a.type === 'bisector' ? '6 4' : a.type === 'measure' ? '2 6' : undefined }}
               >
                 {a.type === 'measure' && (
@@ -926,30 +943,31 @@ export default function MapView({
                     {label}
                   </Tooltip>
                 )}
-                <Popup>
-                  {a.type === 'measure' ? (
+                {selectMode && a.type === 'measure' && (
+                  <Popup>
                     <MeasureEditPopup
                       step={a.step ?? 0}
                       units={units}
                       onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
                       onDelete={() => onDeleteAnnotation(a.id)}
                     />
-                  ) : (
-                    <div className="popup">
-                      {label}
-                      <button onClick={() => onDeleteAnnotation(a.id)}>Delete</button>
-                    </div>
-                  )}
-                </Popup>
+                  </Popup>
+                )}
               </Polyline>
               {(['a', 'b'] as const).map((k) => (
                 <Marker
                   key={a.id + k}
                   position={[k === 'a' ? a.aLat : a.bLat, k === 'a' ? a.aLon : a.bLon]}
-                  draggable={selectMode}
-                  interactive={selectMode}
+                  draggable
                   icon={handleIcon(a.color)}
                   eventHandlers={{
+                    click: () => {
+                      if (!selectMode)
+                        handleClick({
+                          lat: k === 'a' ? a.aLat : a.bLat,
+                          lon: k === 'a' ? a.aLon : a.bLon,
+                        })
+                    },
                     dragend: (e) => {
                       const ll = (e.target as L.Marker).getLatLng()
                       onUpdateAnnotation(
