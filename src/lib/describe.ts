@@ -29,7 +29,7 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
         same: 'same floor',
         cannot: "can't answer",
       }
-      return `Inside "${p.building}" → ${ans[String(p.answer)] ?? String(p.answer)}`
+      return `Inside "${p.building}"${p.floor ? ` (floor ${String(p.floor)})` : ''} → ${ans[String(p.answer)] ?? String(p.answer)}`
     }
     case 'photo':
       return `Photo: ${p.description || '(logged)'}`

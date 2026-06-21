@@ -104,6 +104,7 @@ export default function QuestionForm({
   const [value, setValue] = useState<string>('')
   const [num, setNum] = useState<string>('')
   const [building, setBuilding] = useState<string>('')
+  const [floor, setFloor] = useState<string>('')
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
   const [note, setNote] = useState<string>('')
 
@@ -154,7 +155,8 @@ export default function QuestionForm({
       }
       case 'inside-floor': {
         if (!building.trim()) return alert('Enter the building you are inside.')
-        params = { building: building.trim(), answer: floorAns }
+        if (!floor.trim()) return alert('Enter the floor you are on.')
+        params = { building: building.trim(), floor: floor.trim(), answer: floorAns }
         break
       }
       case 'photo': {
@@ -172,7 +174,7 @@ export default function QuestionForm({
       active: true,
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setNote(''); setCustomRadius('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius('')
   }
 
   const yesNo = (
@@ -299,6 +301,10 @@ export default function QuestionForm({
           <div className="row">
             <label>Building</label>
             <input type="text" value={building} onChange={(e) => setBuilding(e.target.value)} placeholder="e.g. Salesforce Tower" />
+          </div>
+          <div className="row">
+            <label>Your floor</label>
+            <input type="text" value={floor} onChange={(e) => setFloor(e.target.value)} placeholder="e.g. 12 or Ground" />
           </div>
           <div className="row">
             <label>Answer</label>

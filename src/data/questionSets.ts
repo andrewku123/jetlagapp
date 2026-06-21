@@ -122,10 +122,11 @@ export const MEASURING: SubjectCard[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// Inside (Indoors) — endgame only. "I'm inside [building] — are you on a higher
-// or lower floor?" The hider answers Higher / Lower / Same, or "can't answer"
-// when they're in a different building or outdoors. Logged for reference; it
-// does not auto-eliminate stations.
+// Inside (Indoors) — endgame only. "I'm inside [building] on [floor] — are you on
+// a higher or lower floor?" The seeker must reveal the building AND the floor
+// they are on. The hider answers Higher / Lower / Same, or "can't answer" when
+// they're in a different building or outdoors. Logged for reference; it does not
+// auto-eliminate stations.
 // ---------------------------------------------------------------------------
 export interface InsideCard {
   subject: string
@@ -139,7 +140,7 @@ export interface InsideCard {
 export const INSIDE: InsideCard[] = [
   {
     subject: 'Floor in a Building',
-    note: 'higher / lower / same floor, or can’t answer (different building or outside)',
+    note: 'seeker reveals building + their floor; hider answers higher / lower / same floor, or can’t answer (different building or outside)',
     sizes: ALL,
     endgameOnly: true,
     appKind: 'inside-floor',

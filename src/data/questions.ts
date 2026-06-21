@@ -98,7 +98,7 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Inside — floor in a building (endgame)',
     cards: 'draw 3, keep 1',
     eliminates: false,
-    blurb: 'Endgame only. “I’m inside [building] — are you on a higher or lower floor?” Answer Higher / Lower / Same / Can’t answer (different building or outside). Logged for reference; does not auto-eliminate stations.',
+    blurb: 'Endgame only. “I’m inside [building] on [floor] — are you on a higher or lower floor?” You reveal the building AND your floor. Answer Higher / Lower / Same / Can’t answer (different building or outside). Logged for reference; does not auto-eliminate stations.',
   },
   {
     kind: 'photo',
