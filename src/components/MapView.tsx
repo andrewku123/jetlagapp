@@ -140,7 +140,19 @@ function inAnnotationControl(t: HTMLElement | null | undefined): boolean {
   return !!(t?.closest?.('.leaflet-popup') || t?.closest?.('.leaflet-marker-icon'))
 }
 
-function MapClicks({ onClick, snapPoints }: { onClick: (p: LatLng) => void; snapPoints: LatLng[] }) {
+// snap radius in screen pixels (zoom-aware): a click/pointer within this many
+// pixels of an existing drawn point reuses that exact point.
+const SNAP_PX = 14
+
+function MapClicks({
+  onClick,
+  onHover,
+  snapPoints,
+}: {
+  onClick: (p: LatLng) => void
+  onHover: (idx: number | null) => void
+  snapPoints: LatLng[]
+}) {
   // A click on a popup control (e.g. the Delete button) can re-fire as a map
   // click; by then React may have already removed the popup from the DOM, so
   // checking the click target is unreliable. Record at mousedown/touchstart
@@ -158,7 +170,21 @@ function MapClicks({ onClick, snapPoints }: { onClick: (p: LatLng) => void; snap
       document.removeEventListener('touchstart', onDown, true)
     }
   }, [])
-  const map = useMapEvents({
+  const map = useMap()
+  // nearest snap point to a container-pixel position, or -1 if none within range
+  const nearest = (cp: L.Point): number => {
+    let best = -1
+    let bestD = Infinity
+    snapPoints.forEach((sp, i) => {
+      const d = cp.distanceTo(map.latLngToContainerPoint([sp.lat, sp.lon]))
+      if (d < bestD) {
+        bestD = d
+        best = i
+      }
+    })
+    return bestD <= SNAP_PX ? best : -1
+  }
+  useMapEvents({
     click(e) {
       const target = e.originalEvent?.target as HTMLElement | null
       if (suppressRef.current || inAnnotationControl(target)) {
@@ -167,18 +193,18 @@ function MapClicks({ onClick, snapPoints }: { onClick: (p: LatLng) => void; snap
       }
       // snap to an existing drawn point if the click lands within ~14px of one,
       // so you can reuse points across tools instead of re-clicking them
-      let p: LatLng = { lat: e.latlng.lat, lon: e.latlng.lng }
-      let best: LatLng | null = null
-      let bestD = Infinity
-      for (const sp of snapPoints) {
-        const d = e.containerPoint.distanceTo(map.latLngToContainerPoint([sp.lat, sp.lon]))
-        if (d < bestD) {
-          bestD = d
-          best = sp
-        }
-      }
-      if (best && bestD <= 14) p = best
+      const idx = nearest(e.containerPoint)
+      const p: LatLng = idx >= 0 ? snapPoints[idx] : { lat: e.latlng.lat, lon: e.latlng.lng }
+      onHover(null)
       onClick(p)
+    },
+    // highlight the point the next click would snap onto as the pointer nears it
+    mousemove(e) {
+      const idx = snapPoints.length ? nearest(e.containerPoint) : -1
+      onHover(idx === -1 ? null : idx)
+    },
+    mouseout() {
+      onHover(null)
     },
   })
   return null
@@ -374,6 +400,15 @@ export default function MapView({
   // coordinate read-out tool: a transient dot + copied coords, no annotation
   const [coordPin, setCoordPin] = useState<LatLng | null>(null)
   const [coordCopied, setCoordCopied] = useState(false)
+  // index (into snapPoints) of the existing point the next click would snap onto,
+  // enlarged so you can see what you're about to reuse; null when none in range
+  const [snapHover, setSnapHover] = useState<number | null>(null)
+  // a point that was just snapped onto, briefly enlarged so the snap reads on
+  // touch (where there's no hover); cleared after a short pulse
+  const [snapPulse, setSnapPulse] = useState<LatLng | null>(null)
+  // measure polylines by id, so the distance label can open the line's rounding
+  // popup (the label tooltip isn't the popup's source by default)
+  const measureLineRefs = useRef<Record<string, L.Polyline>>({})
 
   function readCoord(p: LatLng) {
     setCoordPin(p)
@@ -402,6 +437,13 @@ export default function MapView({
     if (tool === 'select') {
       onPickLocation(p)
       return
+    }
+    // if this click reused an existing point, briefly enlarge it so the snap is
+    // visible even on touch (no hover); exact-coord match means it was snapped
+    const snapped = snapPoints.find((sp) => sp.lat === p.lat && sp.lon === p.lon)
+    if (snapped) {
+      setSnapPulse(snapped)
+      window.setTimeout(() => setSnapPulse((cur) => (cur === snapped ? null : cur)), 450)
     }
     if (tool === 'compass') {
       onAddAnnotation({ id: rid(), type: 'circle', lat: p.lat, lon: p.lon, radiusMiles: radiusMi, color })
@@ -633,7 +675,7 @@ export default function MapView({
             maxZoom={20}
           />
         )}
-        <MapClicks onClick={handleClick} snapPoints={snapPoints} />
+        <MapClicks onClick={handleClick} onHover={setSnapHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
@@ -936,12 +978,35 @@ export default function MapView({
               )}
               <Polyline
                 key={`${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
+                ref={(el) => {
+                  if (el) measureLineRefs.current[a.id] = el as unknown as L.Polyline
+                  else delete measureLineRefs.current[a.id]
+                }}
                 positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
                 interactive={selectMode && a.type === 'measure'}
                 pathOptions={{ color: a.color, weight: 2, dashArray: a.type === 'bisector' ? '6 4' : a.type === 'measure' ? '2 6' : undefined }}
               >
                 {a.type === 'measure' && (
-                  <Tooltip permanent direction="center" className="measure-label">
+                  <Tooltip
+                    key={`tip-${selectMode}`}
+                    permanent
+                    direction="center"
+                    className={selectMode ? 'measure-label measure-label-click' : 'measure-label'}
+                    interactive={selectMode}
+                    eventHandlers={
+                      selectMode
+                        ? {
+                            // clicking the distance label opens the same rounding
+                            // popup as clicking the line body (deferred a tick so
+                            // Leaflet's close-on-click doesn't swallow it)
+                            click: () => {
+                              const ln = measureLineRefs.current[a.id]
+                              if (ln) setTimeout(() => ln.openPopup(), 0)
+                            },
+                          }
+                        : undefined
+                    }
+                  >
                     {label}
                   </Tooltip>
                 )}
@@ -1003,17 +1068,26 @@ export default function MapView({
           )
         })}
 
-        {/* reusable snap targets: existing drawn points, clickable to reuse */}
+        {/* reusable snap targets: existing drawn points, clickable to reuse. the
+            one the next click would snap onto (hover) or that was just snapped
+            onto (pulse) is enlarged + highlighted so the snap is obvious */}
         {!selectMode &&
-          snapPoints.map((sp, i) => (
-            <CircleMarker
-              key={`snap-${i}`}
-              center={[sp.lat, sp.lon]}
-              radius={6}
-              interactive={false}
-              pathOptions={{ color: '#111', weight: 1, opacity: 0.5, fillColor: '#fff', fillOpacity: 0.4 }}
-            />
-          ))}
+          snapPoints.map((sp, i) => {
+            const active = i === snapHover || (!!snapPulse && sp.lat === snapPulse.lat && sp.lon === snapPulse.lon)
+            return (
+              <CircleMarker
+                key={`snap-${i}`}
+                center={[sp.lat, sp.lon]}
+                radius={active ? 11 : 6}
+                interactive={false}
+                pathOptions={
+                  active
+                    ? { color, weight: 2, opacity: 1, fillColor: color, fillOpacity: 0.45 }
+                    : { color: '#111', weight: 1, opacity: 0.5, fillColor: '#fff', fillOpacity: 0.4 }
+                }
+              />
+            )
+          })}
 
         {/* endpoints clicked for line/bisector are shown via the pending marker */}
         {pending && (

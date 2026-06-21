@@ -67,7 +67,17 @@ broke dragging while a drawing tool was active).
   a new point right next to an existing one) of a `snapPoints` entry. `snapPoints`
   = all annotation endpoints + the in-progress `pending` point, only while a
   drawing tool is active. **Exception: with the compass active, circle centers are
-  excluded from `snapPoints`** (see compass rule below).
+  excluded from `snapPoints`** (see compass rule below). The snap threshold lives
+  in the `SNAP_PX` constant (14) shared by the click and hover logic.
+- **Snap-target highlight.** The snap dot the *next* click would land on is
+  enlarged + tinted so the reuse is obvious. `MapClicks`'s `mousemove`/`mouseout`
+  report the nearest in-range `snapPoints` index via `onHover` → `snapHover`
+  state; `handleClick` sets `snapPulse` to the just-snapped point and clears it
+  ~450ms later (so the snap still reads on touch, which has no hover). In the
+  `snapPoints.map`, a snap `CircleMarker` is `active` when its index is
+  `snapHover` *or* its coords equal `snapPulse`; active dots render at `radius 11`
+  in the draw `color`, idle at `radius 6` white. `onHover` calls with an unchanged
+  value are cheap (React `useState` bails out), so per-move re-renders are fine.
 - **Edit popups render ONLY in Select (✋) mode** (plus the compass special-case).
   This keeps popups from interrupting drawing/snapping:
   - compass center → `<RadiusEditPopup>` (a `<select>` of `RADAR_OPTIONS` +
@@ -125,6 +135,17 @@ broke dragging while a drawing tool was active).
   (`setTimeout(() => mk.openPopup(), 0)`) and it stays open. The compass-center
   popup happens not to hit this race, but use the deferred call if you add popups
   to other endpoint handles.
+- **The measure distance label opens the rounding popup too.** In Select mode the
+  measure's permanent `<Tooltip>` (the `measure-label`) is `interactive` with a
+  `click` handler, so clicking the label is a third way to reach the rounding
+  editor (line body + endpoints being the other two). The popup is bound to the
+  `<Polyline>`, not the tooltip, so the click can't use `e.target`: keep the
+  Polyline in a `measureLineRefs` ref keyed by `a.id` and call
+  `setTimeout(() => ln.openPopup(), 0)` (same close-on-click race as above). The
+  tooltip is `interactive` only in Select mode (a `key={`tip-${selectMode}`}`
+  forces it to remount when the mode flips so Leaflet re-applies `interactive`),
+  so it never eats snap clicks while drawing. `.measure-label-click` just adds a
+  pointer cursor.
 - **The measure label won't follow a dragged endpoint** unless the `<Polyline>`
   remounts: a Leaflet permanent `<Tooltip permanent direction="center">` anchors
   to the line's center only when (re)bound. The Polyline therefore has a `key`
