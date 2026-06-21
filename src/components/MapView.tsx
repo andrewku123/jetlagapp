@@ -834,25 +834,39 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
                 />
-                {/* radius spoke: center → east edge, labelled with its length */}
-                <Polyline
-                  positions={[
-                    [a.lat, a.lon],
-                    (() => {
-                      const e = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[0]
-                      return [e.lat, e.lon] as [number, number]
-                    })(),
-                  ]}
-                  interactive={false}
-                  pathOptions={{ color: a.color, weight: 1.5, dashArray: '4 4' }}
-                >
-                  <Tooltip permanent direction="center" className="measure-label">
-                    {formatDistance(a.radiusMiles, units)}
-                  </Tooltip>
-                </Polyline>
+                {/* radius spoke: center → east edge, labelled at the spoke midpoint.
+                    The label is anchored to a marker at the midpoint (not the
+                    polyline) so it re-positions when the radius is edited. */}
+                {(() => {
+                  const edge = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[0]
+                  const mid = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles / 2)[0]
+                  return (
+                    <>
+                      <Polyline
+                        positions={[
+                          [a.lat, a.lon],
+                          [edge.lat, edge.lon],
+                        ]}
+                        interactive={false}
+                        pathOptions={{ color: a.color, weight: 1.5, dashArray: '4 4' }}
+                      />
+                      <CircleMarker
+                        center={[mid.lat, mid.lon]}
+                        radius={1}
+                        interactive={false}
+                        pathOptions={{ opacity: 0, fillOpacity: 0 }}
+                      >
+                        <Tooltip permanent direction="center" className="measure-label">
+                          {formatDistance(a.radiusMiles, units)}
+                        </Tooltip>
+                      </CircleMarker>
+                    </>
+                  )
+                })()}
                 <Marker
                   position={[a.lat, a.lon]}
-                  draggable
+                  draggable={selectMode}
+                  interactive={selectMode}
                   icon={handleIcon(a.color, true)}
                   eventHandlers={{
                     dragend: (e) => {
@@ -932,7 +946,8 @@ export default function MapView({
                 <Marker
                   key={a.id + k}
                   position={[k === 'a' ? a.aLat : a.bLat, k === 'a' ? a.aLon : a.bLon]}
-                  draggable
+                  draggable={selectMode}
+                  interactive={selectMode}
                   icon={handleIcon(a.color)}
                   eventHandlers={{
                     dragend: (e) => {
