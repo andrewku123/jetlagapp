@@ -43,7 +43,9 @@ function countyStyle(feature?: Feature<Geometry, { name: string }>) {
 interface TransitWay {
   type: 'Feature'
   properties: { system: string; colors: string[] }
-  geometry: { type: 'LineString'; coordinates: number[][] }
+  geometry:
+    | { type: 'LineString'; coordinates: number[][] }
+    | { type: 'MultiLineString'; coordinates: number[][][] }
 }
 const TRANSIT_WAYS = (transitData as unknown as { features: TransitWay[] }).features
 

@@ -1711,14 +1711,16 @@
   "lat": 37.616091,
   "lon": -122.391954,
   "systems": [
-   "BART"
+   "BART",
+   "SFO AirTrain"
   ],
   "lines": [
    "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch–SFO/Millbrae)",
+   "SFO AirTrain"
   ],
   "aka": [
-   "San Francisco International Airport"
+   "Garage G (AirTrain)"
   ],
   "service": {
    "wd": {
@@ -10184,43 +10186,6 @@
    "SFO": 2101.9,
    "OAK": 18529.8,
    "SJC": 50989.8
-  },
-  "nearestAirport": "SFO",
-  "headwayMin": {
-   "wd": 4.0,
-   "we": 4.0
-  }
- },
- {
-  "name": "Garage G / BART",
-  "lat": 37.615918,
-  "lon": -122.392769,
-  "systems": [
-   "SFO AirTrain"
-  ],
-  "lines": [
-   "SFO AirTrain"
-  ],
-  "aka": [],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "air05",
-  "nameLength": 15,
-  "county": "San Mateo",
-  "city": "San Francisco city",
-  "elevation": 2.3,
-  "airportDist": {
-   "SFO": 1352.3,
-   "OAK": 18645.3,
-   "SJC": 49601.1
   },
   "nearestAirport": "SFO",
   "headwayMin": {
