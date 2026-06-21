@@ -401,18 +401,6 @@ export default function MapView({
     setPending(null)
   }
 
-  const toolNoun = tool === 'bisector' ? 'bisector' : tool === 'measure' ? 'measurement' : 'line'
-  const hint =
-    tool === 'select'
-      ? 'Select: click drops a seeker point.'
-      : tool === 'compass'
-        ? `Compass: click a center to draw a ${radiusMi} mi circle.`
-        : pending
-          ? `Click the 2nd point to finish the ${toolNoun}.`
-          : tool === 'measure'
-            ? 'Measure: click two points to read the distance.'
-            : `${tool === 'bisector' ? 'Bisector' : 'Line'}: click the 1st point.`
-
   return (
     <>
       <div className="draw-toolbar">
@@ -515,7 +503,6 @@ export default function MapView({
             {coordError && <div className="draw-coords-err">Couldn’t read those coordinates.</div>}
           </div>
         )}
-        <div className="draw-hint">{hint}</div>
         {(annotations.length > 0 || pending) && (
           <div className="draw-actions">
             <button

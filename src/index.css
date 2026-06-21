@@ -39,10 +39,10 @@ body { background: var(--bg); color: var(--text); }
   border-radius: 10px; padding: 6px; width: 168px;
   box-shadow: 0 4px 14px rgba(0,0,0,.4); font-size: 12px;
 }
-/* icon-only tools, all on one compact row */
-.draw-tools { display: flex; gap: 4px; }
+/* icon-only tools, stacked in a vertical column */
+.draw-tools { display: flex; flex-direction: column; gap: 4px; }
 .draw-tools button {
-  flex: 1; display: flex; align-items: center; justify-content: center;
+  width: 100%; display: flex; align-items: center; justify-content: center;
   background: var(--panel2); color: var(--muted); border: 1px solid var(--line);
   border-radius: 6px; padding: 6px 0; cursor: pointer; font-size: 16px; line-height: 1;
 }
@@ -73,7 +73,6 @@ body { background: var(--bg); color: var(--text); }
   border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 12px;
 }
 .draw-coords-err { margin-top: 4px; color: #cf222e; font-size: 11px; }
-.draw-hint { margin-top: 8px; color: var(--muted); line-height: 1.3; }
 .draw-actions { display: flex; gap: 6px; margin-top: 8px; }
 .draw-undo, .draw-clear {
   flex: 1; background: var(--panel2); color: var(--text);
