@@ -1052,6 +1052,18 @@ export default function MapView({
                 : 'Straightedge line'
           return (
             <Fragment key={a.id}>
+              {a.type === 'bisector' && (
+                <Polyline
+                  key={`bcon-${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
+                  positions={[[a.aLat, a.aLon], [a.bLat, a.bLon]]}
+                  interactive={false}
+                  pathOptions={{ color: '#6b7280', weight: 1.5, dashArray: '2 4' }}
+                >
+                  <Tooltip permanent direction="center" className="measure-label">
+                    {formatDistance(haversineMiles({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon }), units)}
+                  </Tooltip>
+                </Polyline>
+              )}
               <Polyline
                 key={`${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
                 ref={(el) => {

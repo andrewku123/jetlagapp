@@ -114,12 +114,15 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   - **line / bisector have NO popup** (the old "Straightedge line | Delete" /
     "Perpendicular bisector | Delete" popups were removed at the user's request).
     Delete a line/bisector via **Undo** or just redraw it.
-- **A bisector renders ONLY its perpendicular line — no distance label.** Only
-  `measure` shows a distance `<Tooltip>`. A bisector is the perpendicular bisector
-  of A–B; it deliberately does NOT draw the A–B connector segment or its length
-  (an experimental gray A–B connector + distance label was added then removed — it
-  cluttered the map with overlapping labels and isn't what the bisector is for;
-  use the Measure tool to measure two points).
+- **A bisector draws TWO polylines.** (1) the long perpendicular bisector line
+  (orange dashed, recomputed from A/B), and (2) a short gray dashed **A–B
+  connector** carrying a permanent `<Tooltip>` distance label (the length of the
+  segment being bisected). Like the measure label, this connector MUST have a
+  `key` that includes the rounded endpoint coords (`` key={`bcon-${a.id}-…`} ``) so
+  it remounts on `dragend` — otherwise the permanent `Tooltip permanent
+  direction="center"` stays anchored to the *stale* center and the label appears
+  detached from the line after dragging endpoints around (the exact bug class as
+  the measure label; see the remount gotcha below).
 - **Compass center click rule** — while the compass is active, clicking an
   existing center **opens its edit bar** (via `marker.openPopup()` in the click
   handler) instead of dropping a concentric ring. To draw a deliberate concentric
@@ -214,8 +217,9 @@ mode drag an endpoint / the compass center and confirm the shape + label update
 (incl. linked drag of coincident points)**, **with a drawing tool active click an
 existing point — even directly on its handle — and confirm it snaps/reuses it**,
 **with compass active click an existing center and confirm it opens the edit bar
-instead of stacking a ring**, **confirm a bisector shows only the perpendicular
-line (no distance label)**, edit a placed circle's radius / a measure's rounding
+instead of stacking a ring**, **drag a bisector endpoint several times and confirm
+its distance label stays glued to the A–B connector midpoint (not stranded at a
+stale spot)**, edit a placed circle's radius / a measure's rounding
 via their popups (incl. Custom…) **in Select mode**, confirm line/bisector have no
 popup, "Clear drawings", and reload to confirm annotations persist. For
 deterministic interaction tests (drag/snap/popup) drive real clicks via CDP and
