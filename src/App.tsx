@@ -229,6 +229,24 @@ export default function App() {
       annotations: game.annotations.map((a) => (a.id === id ? ({ ...a, ...patch } as Annotation) : a)),
     })
   }
+  // Move every annotation point sitting at exactly `from` to `to`. Snapping
+  // copies coords verbatim, so points dropped on the same spot are bit-identical
+  // and drag together — a shared point stays shared.
+  function movePoint(from: LatLng, to: LatLng) {
+    if (from.lat === to.lat && from.lon === to.lon) return
+    setGame((g) => ({
+      ...g,
+      annotations: g.annotations.map((a): Annotation => {
+        if (a.type === 'circle') {
+          return a.lat === from.lat && a.lon === from.lon ? { ...a, lat: to.lat, lon: to.lon } : a
+        }
+        let na = a
+        if (na.aLat === from.lat && na.aLon === from.lon) na = { ...na, aLat: to.lat, aLon: to.lon }
+        if (na.bLat === from.lat && na.bLon === from.lon) na = { ...na, bLat: to.lat, bLon: to.lon }
+        return na
+      }),
+    }))
+  }
   function clearAnnotations() {
     update({ annotations: [] })
   }
@@ -274,6 +292,7 @@ export default function App() {
             onAddAnnotation={addAnnotation}
             onDeleteAnnotation={deleteAnnotation}
             onUpdateAnnotation={updateAnnotation}
+            onMovePoint={movePoint}
             onClearAnnotations={clearAnnotations}
             endgameStation={endgameStation}
             hidingRadiusMi={hidingRadiusMi}

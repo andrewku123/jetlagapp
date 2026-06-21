@@ -106,6 +106,7 @@ interface Props {
   onAddAnnotation: (a: Annotation) => void
   onDeleteAnnotation: (id: string) => void
   onUpdateAnnotation: (id: string, patch: Partial<Annotation>) => void
+  onMovePoint: (from: LatLng, to: LatLng) => void
   onClearAnnotations: () => void
   endgameStation: Station | null
   hidingRadiusMi: number
@@ -348,6 +349,7 @@ export default function MapView({
   onAddAnnotation,
   onDeleteAnnotation,
   onUpdateAnnotation,
+  onMovePoint,
   onClearAnnotations,
   endgameStation,
   hidingRadiusMi,
@@ -885,7 +887,7 @@ export default function MapView({
                     },
                     dragend: (e) => {
                       const ll = (e.target as L.Marker).getLatLng()
-                      onUpdateAnnotation(a.id, { lat: ll.lat, lon: ll.lng })
+                      onMovePoint({ lat: a.lat, lon: a.lon }, { lat: ll.lat, lon: ll.lng })
                     },
                   }}
                 >
@@ -970,10 +972,9 @@ export default function MapView({
                     },
                     dragend: (e) => {
                       const ll = (e.target as L.Marker).getLatLng()
-                      onUpdateAnnotation(
-                        a.id,
-                        k === 'a' ? { aLat: ll.lat, aLon: ll.lng } : { bLat: ll.lat, bLon: ll.lng },
-                      )
+                      const old =
+                        k === 'a' ? { lat: a.aLat, lon: a.aLon } : { lat: a.bLat, lon: a.bLon }
+                      onMovePoint(old, { lat: ll.lat, lon: ll.lng })
                     },
                   }}
                 />

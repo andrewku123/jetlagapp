@@ -5,10 +5,13 @@ description: Work on the in-app map drawing tools — compass (circle), straight
 
 # Map drawing tools
 
-The map has a drawing toolbar (top-right) with five modes, defined by the
+The map has a drawing toolbar (top-right) with six modes, defined by the
 `DrawTool` union in `src/types.ts`: `select | compass | line | bisector |
-measure`. `select` is the normal "drop a seeker point" mode; the other four
-create **annotations** that persist in the saved game.
+measure | coord`. `select` is the normal "drop a seeker point" mode; `compass /
+line / bisector / measure` create **annotations** that persist in the saved game;
+`coord` is a transient read-out tool (drops a temporary dot, shows the clicked
+lat/lon at 6 dp and auto-copies it to the clipboard — no annotation, clears on
+tool switch).
 
 ## Data model (`src/types.ts`)
 - `CircleAnnotation` — `{ type: 'circle', lat, lon, radiusMiles, color }` (compass).
@@ -33,28 +36,72 @@ create **annotations** that persist in the saved game.
   `updateAnnotation` / `clearAnnotations`) and passed down as props.
 
 ## Editing & moving placed annotations
-Annotations are **editable after placement** (not just click-to-delete):
-- **Drag handles** — every annotation renders draggable Leaflet `<Marker>`s using
-  the `handleIcon(color, big?)` divIcon. On `dragend` we read
+Annotations are **editable after placement**. The key design rule: **dragging a
+handle and click-to-snap coexist on the same always-interactive handle** — a
+drag moves the point, a no-move click reuses it. Do NOT gate handle
+`draggable`/`interactive` on `selectMode` (an earlier attempt did and it silently
+broke dragging while a drawing tool was active).
+
+- **Drag handles** — every annotation renders Leaflet `<Marker>`s (always
+  `draggable`) using the `handleIcon(color, big?)` divIcon. On `dragend` we read
   `e.target.getLatLng()` and call `onUpdateAnnotation(id, patch)`:
   - compass: one big center handle → patches `{ lat, lon }` (moves the circle).
   - line/measure: two handles at the endpoints → patch `{ aLat, aLon }` /
     `{ bLat, bLon }`.
   - bisector: two handles at the **reference points** `a`/`b` (the drawn line is
     recomputed from them via `bisectorEndpoints`).
-- **Popups** (open on click of the handle/line, replacing the old
-  click-to-delete):
-  - compass center → `<RadiusEditPopup>`: a `<select>` of `RADAR_OPTIONS` + a
-    "Custom…" option that reveals a number input; changes call
-    `onUpdateAnnotation(id, { radiusMiles })`. Includes a **Delete** button.
-  - measure line → `<MeasureEditPopup>`: a rounding `<select>` (exact / ½ / 1 / 5 /
-    10 / Custom…) → `onUpdateAnnotation(id, { step })`, unit-aware label. Includes
-    **Delete**. line/bisector use a plain delete popup.
+- **Linked drag (coincident points move together).** `dragend` does NOT patch the
+  one annotation; it calls `onMovePoint(from, to)` (`movePoint` in `App.tsx`),
+  which moves *every* annotation point sitting at exactly `from` to `to`. Because
+  snapping copies coords verbatim, points dropped on the same spot are
+  bit-identical and therefore drag as a group — a shared point stays shared. Plain
+  `===` coord comparison is the linkage (no anchor/id model). Single
+  (non-coincident) points behave exactly as before. The radius/step popups still
+  use `onUpdateAnnotation`; only position drags use `onMovePoint`.
+- **Click-to-snap / reuse a point** — each handle's `click` handler checks the
+  active tool. While a drawing tool is active (`!selectMode`), clicking a handle
+  calls `handleClick({lat,lon})` with that point's exact coords, feeding it into
+  the current tool (e.g. start a measure on an existing compass center). Clicking
+  *near* a handle also snaps: `MapClicks` snaps any map click within **14 screen
+  pixels** (`map.latLngToContainerPoint`, zoom-aware so zooming in lets you place
+  a new point right next to an existing one) of a `snapPoints` entry. `snapPoints`
+  = all annotation endpoints + the in-progress `pending` point, only while a
+  drawing tool is active. **Exception: with the compass active, circle centers are
+  excluded from `snapPoints`** (see compass rule below).
+- **Edit popups render ONLY in Select (✋) mode** (plus the compass special-case).
+  This keeps popups from interrupting drawing/snapping:
+  - compass center → `<RadiusEditPopup>` (a `<select>` of `RADAR_OPTIONS` +
+    "Custom…" number input → `onUpdateAnnotation(id, { radiusMiles })`, with
+    **Delete**). Rendered when `selectMode || tool === 'compass'`.
+  - measure line → `<MeasureEditPopup>` (rounding `<select>`: exact / ½ / 1 / 5 /
+    10 / Custom… → `onUpdateAnnotation(id, { step })`, unit-aware, with
+    **Delete**). Rendered + the polyline `interactive` only when
+    `selectMode && a.type === 'measure'`.
+  - **line / bisector have NO popup** (the old "Straightedge line | Delete" /
+    "Perpendicular bisector | Delete" popups were removed at the user's request).
+    Delete a line/bisector via **Undo** or just redraw it.
+- **Compass center click rule** — while the compass is active, clicking an
+  existing center **opens its edit bar** (via `marker.openPopup()` in the click
+  handler) instead of dropping a concentric ring. To draw a deliberate concentric
+  ring at the same center, paste the same lat/lon (the 📍 coord tool copies it)
+  with a different radius into the **coordinate-entry box**. This is why circle
+  centers are dropped from `snapPoints` under the compass (so a near-click can't
+  silently stack a ring).
 - The toolbar still has **Undo** (removes the in-progress `pending` first click if
   any, otherwise the most-recently-added annotation) and **Clear**
   (`onClearAnnotations`).
 - `updateAnnotation(id, patch)` in `App.tsx` maps over `game.annotations` and
   merges the patch onto the matching `id`; persists via storage like the others.
+
+## Toolbar UI conventions
+- Vertical slim icon column (`['select','compass','line','bisector','measure','coord']`),
+  each `<button>` carries a `data-tip` (CSS hover tooltip to the left) + `aria-label`.
+- Undo/Clear sit **horizontal when a tool is open** (panel is already wide from its
+  options) and **vertical when closed** (stays slim, never widens on its own).
+- Per-tool option rows (`.draw-radius` for compass radius / measure rounding,
+  `.draw-colors`, the coord read-out, the coordinate-entry box) are gated on
+  `tool === '<mode>'`. The custom-radius `<input>` uses `flex-basis:100%` so it
+  drops to its own line inside the wrapping row.
 
 ## Gotchas (learned the hard way)
 - **Popup buttons must not drop a new point.** In `compass` mode the map `click`
@@ -103,8 +150,13 @@ Annotations are **editable after placement** (not just click-to-delete):
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: draw each
 shape, confirm the measure label respects the rounding selector, **drag an
-endpoint / the compass center and confirm the shape + label update**, **edit a
-placed circle's radius and a measure's rounding via their popups (incl.
-Custom…)**, delete a single annotation, "Clear drawings", and reload the page to
-confirm annotations persist. Unit tests for the helpers live in
-`src/lib/geo.test.ts`.
+endpoint / the compass center while a drawing tool is active and confirm the
+shape + label update** (the drag must NOT be gated to Select mode), **click an
+existing point with another tool active and confirm it snaps/reuses it**, **with
+compass active click an existing center and confirm it opens the edit bar instead
+of stacking a ring**, edit a placed circle's radius / a measure's rounding via
+their popups (incl. Custom…) **in Select mode**, confirm line/bisector have no
+popup, "Clear drawings", and reload to confirm annotations persist. For
+deterministic interaction tests (drag/snap/popup) drive real clicks via CDP and
+read `localStorage` — see the `verify-map-interactions` skill. Unit tests for the
+helpers live in `src/lib/geo.test.ts`.
