@@ -157,6 +157,18 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .sortbar { display: flex; align-items: center; gap: 7px; margin: 6px 0 4px; }
 .sortbar label { font-size: 12px; color: var(--muted); }
 .sortbar select { font-size: 12px; padding: 3px 6px; }
+.searchbar { position: relative; margin: 0 0 6px; }
+.suspect-search {
+  width: 100%; box-sizing: border-box; background: var(--panel2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 26px 6px 8px; font-size: 12px;
+}
+.suspect-search::placeholder { color: var(--muted); }
+.search-clear {
+  position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+  background: transparent; border: 0; color: var(--muted); cursor: pointer;
+  font-size: 12px; padding: 2px 6px; line-height: 1;
+}
+.search-clear:hover { color: var(--text); }
 .slist li.sgroup { display: block; border-bottom: 0; }
 .slist li.sgroup.agency { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 10px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
 .slist li.sgroup.agency .dot { margin-right: 6px; vertical-align: middle; }

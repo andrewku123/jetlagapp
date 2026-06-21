@@ -84,6 +84,7 @@ export default function App() {
   const [satellite, setSatellite] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
   const [suspectSort, setSuspectSort] = useState<'name' | 'agency'>('name')
+  const [suspectQuery, setSuspectQuery] = useState('')
 
   useEffect(() => saveGame(game), [game])
 
@@ -353,25 +354,55 @@ export default function App() {
                   <option value="agency">by agency → line</option>
                 </select>
               </div>
-              <ul className="slist">
-                {suspectSort === 'name' ? (
-                  <>
-                    {remaining
-                      .slice()
-                      .sort((a, b) => Number(starredSet.has(b.id)) - Number(starredSet.has(a.id)) || a.name.localeCompare(b.name))
-                      .map(remainingLi)}
-                    {eliminated.slice().sort((a, b) => a.name.localeCompare(b.name)).map(eliminatedLi)}
-                  </>
-                ) : (
-                  <>
-                    {groupedLis(remaining, remainingLi)}
-                    {eliminated.length > 0 && (
-                      <li className="sgroup elimhdr">Eliminated ({eliminated.length})</li>
-                    )}
-                    {groupedLis(eliminated, eliminatedLi)}
-                  </>
+              <div className="searchbar">
+                <input
+                  type="search"
+                  className="suspect-search"
+                  placeholder="Search name, line, agency…"
+                  value={suspectQuery}
+                  onChange={(e) => setSuspectQuery(e.target.value)}
+                />
+                {suspectQuery && (
+                  <button className="search-clear" aria-label="Clear search" onClick={() => setSuspectQuery('')}>
+                    ✕
+                  </button>
                 )}
-              </ul>
+              </div>
+              {(() => {
+                const q = suspectQuery.trim().toLowerCase()
+                const matches = (s: Station) =>
+                  !q ||
+                  [s.name, ...s.aka, ...s.systems, ...s.lines, s.city ?? '', s.county ?? '']
+                    .join(' ')
+                    .toLowerCase()
+                    .includes(q)
+                const fRemaining = remaining.filter(matches)
+                const fEliminated = eliminated.filter(matches)
+                if (q && fRemaining.length + fEliminated.length === 0) {
+                  return <p className="hint">No stations match “{suspectQuery}”.</p>
+                }
+                return (
+                  <ul className="slist">
+                    {suspectSort === 'name' ? (
+                      <>
+                        {fRemaining
+                          .slice()
+                          .sort((a, b) => Number(starredSet.has(b.id)) - Number(starredSet.has(a.id)) || a.name.localeCompare(b.name))
+                          .map(remainingLi)}
+                        {fEliminated.slice().sort((a, b) => a.name.localeCompare(b.name)).map(eliminatedLi)}
+                      </>
+                    ) : (
+                      <>
+                        {groupedLis(fRemaining, remainingLi)}
+                        {fEliminated.length > 0 && (
+                          <li className="sgroup elimhdr">Eliminated ({fEliminated.length})</li>
+                        )}
+                        {groupedLis(fEliminated, eliminatedLi)}
+                      </>
+                    )}
+                  </ul>
+                )
+              })()}
             </div>
           )}
 
