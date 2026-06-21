@@ -154,8 +154,8 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .slist li.sgroup.line { font-size: 11px; color: var(--muted); margin: 4px 0 1px; padding-left: 2px; }
 .slist li.sgroup.elimhdr { font-weight: 600; font-size: 12px; color: #9aa0a6; margin-top: 14px; padding-bottom: 2px; border-bottom: 1px solid var(--line); }
 
-.endgame-banner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 10px; background: #dcfce7; color: #14532d; border-bottom: 1px solid #16a34a; font-size: 13px; }
-.endgame-banner button { font-size: 12px; padding: 3px 10px; border: 1px solid #16a34a; background: #fff; color: #14532d; border-radius: 4px; cursor: pointer; }
+.endgame-banner { position: absolute; top: 10px; left: 10px; z-index: 1000; max-width: calc(100% - 200px); display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: #dcfce7; color: #14532d; border: 1px solid #16a34a; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,.25); font-size: 13px; }
+.endgame-banner button { flex: none; font-size: 12px; padding: 3px 10px; border: 1px solid #16a34a; background: #fff; color: #14532d; border-radius: 4px; cursor: pointer; }
 
 .legend h3 { margin: 6px 0; font-size: 13px; }
 .legrow { display: flex; align-items: center; gap: 8px; font-size: 13px; margin: 4px 0; }

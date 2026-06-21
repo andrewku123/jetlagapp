@@ -575,13 +575,27 @@ export default function MapView({
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
         <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
 
+        {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
+            radar/thermometer); the circle outline marks the zone, left clear. */}
         {endgameStation && (
-          <Circle
-            center={[endgameStation.lat, endgameStation.lon]}
-            radius={hidingRadiusMi * 1609.344}
-            interactive={false}
-            pathOptions={{ color: '#16a34a', weight: 2, fillColor: '#16a34a', fillOpacity: 0.12 }}
-          />
+          <Fragment>
+            <Polygon
+              positions={[
+                WORLD_RING,
+                circlePolygon(
+                  { lat: endgameStation.lat, lon: endgameStation.lon },
+                  hidingRadiusMi,
+                ).map((p) => [p.lat, p.lon] as [number, number]),
+              ]}
+              pathOptions={ELIM_FILL}
+            />
+            <Circle
+              center={[endgameStation.lat, endgameStation.lon]}
+              radius={hidingRadiusMi * 1609.344}
+              interactive={false}
+              pathOptions={{ color: '#16a34a', weight: 2, fill: false }}
+            />
+          </Fragment>
         )}
 
         {showEliminated &&
@@ -763,6 +777,22 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: a.color, weight: 2, fillOpacity: 0.05 }}
                 />
+                {/* radius spoke: center → east edge, labelled with its length */}
+                <Polyline
+                  positions={[
+                    [a.lat, a.lon],
+                    (() => {
+                      const e = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[0]
+                      return [e.lat, e.lon] as [number, number]
+                    })(),
+                  ]}
+                  interactive={false}
+                  pathOptions={{ color: a.color, weight: 1.5, dashArray: '4 4' }}
+                >
+                  <Tooltip permanent direction="center" className="measure-label">
+                    {formatDistance(a.radiusMiles, units)}
+                  </Tooltip>
+                </Polyline>
                 <Marker
                   position={[a.lat, a.lon]}
                   draggable
@@ -804,6 +834,17 @@ export default function MapView({
                 : 'Straightedge line'
           return (
             <Fragment key={a.id}>
+              {a.type === 'bisector' && (
+                <Polyline
+                  positions={[[a.aLat, a.aLon], [a.bLat, a.bLon]]}
+                  interactive={false}
+                  pathOptions={{ color: '#6b7280', weight: 1.5, dashArray: '2 4' }}
+                >
+                  <Tooltip permanent direction="center" className="measure-label">
+                    {formatDistance(haversineMiles({ lat: a.aLat, lon: a.aLon }, { lat: a.bLat, lon: a.bLon }), units)}
+                  </Tooltip>
+                </Polyline>
+              )}
               <Polyline
                 key={`${a.id}-${a.aLat.toFixed(5)}-${a.aLon.toFixed(5)}-${a.bLat.toFixed(5)}-${a.bLon.toFixed(5)}`}
                 positions={endpoints.map((p) => [p.lat, p.lon]) as [number, number][]}
