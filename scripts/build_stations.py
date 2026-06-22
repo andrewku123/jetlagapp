@@ -73,10 +73,13 @@ for rel in [e for e in dm['elements'] if e['type'] == 'relation']:
         nm = n.get('tags', {}).get('name')
         if not nm or 'north beach' in nm.lower():
             continue
-        # NOTE: the J's surface stop at Glen Park (tagged just "Glen Park" in OSM)
-        # is REAL and is kept. It is renamed below and stays a SEPARATE station
-        # from Glen Park BART (~80 m away but split by I-280); proximity alone
-        # never merges across agencies — see the curated cross-system merge.
+        # The J's surface stop at Glen Park (tagged just "Glen Park" in OSM) is
+        # REAL and kept, but renamed to its SFMTA name so it neither collides
+        # with the BART station's name nor lists "Glen Park" as an alias. It stays
+        # a SEPARATE station from Glen Park BART (~80 m away, split by I-280);
+        # proximity alone never merges across agencies — see cross-system merge.
+        if nm.strip().lower() == 'glen park':
+            nm = 'San Jose Ave/Glen Park Station'
         # The F does not stop at Union Square/Market (Central Subway T station);
         # drop the spurious F surface node tagged at Market & Stockton.
         if ref == 'F' and nm.strip().lower() == 'market street & stockton street':
@@ -89,10 +92,6 @@ RENAME = {
     'Powell Street': 'Powell St Station', 'Civic Center': 'Civic Center Station',
     'Van Ness': 'Van Ness Station', 'Church': 'Church St Station', 'Castro': 'Castro Station',
     'Forest Hill': 'Forest Hill Station', 'West Portal': 'West Portal Station',
-    # The J's surface stop at Glen Park BART is tagged just "Glen Park" in OSM;
-    # give it its SFMTA name so it doesn't collide with the BART station's name
-    # (the two are deliberately NOT merged — see the cross-system merge below).
-    'Glen Park': 'San Jose Ave/Glen Park Station',
 }
 mclusters = []
 for nm, lat, lon, ref in muni_pts:
