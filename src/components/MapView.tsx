@@ -413,22 +413,27 @@ export default function MapView({
   // a point that was just snapped onto, briefly enlarged so the snap reads on
   // touch (where there's no hover); cleared after a short pulse
   const [snapPulse, setSnapPulse] = useState<LatLng | null>(null)
-  // thermometer A/B/answer labels show briefly when a thermometer overlay
-  // appears or changes, then hide so they don't clutter the map
-  const [thermoLabels, setThermoLabels] = useState(true)
-  const thermoSig = records
-    .filter((r) => r.active && r.eliminates && r.kind === 'thermometer')
-    .map(
-      (r) =>
-        `${r.id}:${r.params.fromLat},${r.params.fromLon},${r.params.toLat},${r.params.toLon},${r.params.answer}`,
-    )
-    .join('|')
+  // thermometer A/B/answer labels show for ~5s only for a NEWLY-added thermometer
+  // (per record id), then hide — adding a new one must not re-show existing ones.
+  // Each id gets its own self-clearing timeout; we deliberately don't bulk-clear
+  // timers in a cleanup, since StrictMode's mount/unmount/mount would then drop a
+  // timer the seen-guard won't reschedule, leaving labels stuck on.
+  const [labelThermoIds, setLabelThermoIds] = useState<string[]>([])
+  const seenThermoIds = useRef<Set<string>>(new Set())
   useEffect(() => {
-    if (!thermoSig) return
-    setThermoLabels(true)
-    const t = window.setTimeout(() => setThermoLabels(false), 5000)
-    return () => window.clearTimeout(t)
-  }, [thermoSig])
+    const activeIds = records
+      .filter((r) => r.active && r.eliminates && r.kind === 'thermometer')
+      .map((r) => r.id)
+    const newIds = activeIds.filter((id) => !seenThermoIds.current.has(id))
+    if (newIds.length === 0) return
+    newIds.forEach((id) => seenThermoIds.current.add(id))
+    setLabelThermoIds((cur) => Array.from(new Set([...cur, ...newIds])))
+    newIds.forEach((id) => {
+      window.setTimeout(() => {
+        setLabelThermoIds((cur) => cur.filter((x) => x !== id))
+      }, 5000)
+    })
+  }, [records])
   // measure polylines by id, so the distance label can open the line's rounding
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
@@ -935,7 +940,7 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#1971c2', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
                 >
-                  {thermoLabels && (
+                  {labelThermoIds.includes(r.id) && (
                     <Tooltip permanent direction="top" offset={[0, -6]}>
                       A (start)
                     </Tooltip>
@@ -947,7 +952,7 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#1971c2', weight: 2, fillColor: '#1971c2', fillOpacity: 1 }}
                 >
-                  {thermoLabels && (
+                  {labelThermoIds.includes(r.id) && (
                     <Tooltip permanent direction="top" offset={[0, -6]}>
                       B (end)
                     </Tooltip>
@@ -959,7 +964,7 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#cf222e', weight: 2, fillColor: '#cf222e', fillOpacity: 0.85 }}
                 >
-                  {thermoLabels && (
+                  {labelThermoIds.includes(r.id) && (
                     <Tooltip permanent direction="top" offset={[0, -6]}>
                       {hotter ? 'hotter (kept)' : 'colder → kept'}
                     </Tooltip>
