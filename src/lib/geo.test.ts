@@ -124,13 +124,16 @@ describe('bisectorHalfPlane', () => {
   const a = { lat: 38.0, lon: -122.6 } // NW
   const b = { lat: 37.2, lon: -121.8 } // SE
 
-  it('shares its first edge with the bisector line (shading aligns)', () => {
-    const ends = bisectorEndpoints(a, b, 300)
-    const poly = bisectorHalfPlane(a, b, a, 300)
-    expect(poly[0].lat).toBeCloseTo(ends[0].lat, 9)
-    expect(poly[0].lon).toBeCloseTo(ends[0].lon, 9)
-    expect(poly[1].lat).toBeCloseTo(ends[1].lat, 9)
-    expect(poly[1].lon).toBeCloseTo(ends[1].lon, 9)
+  it('shares its first edge with the (sampled) bisector line (shading aligns)', () => {
+    const line = bisectorPolyline(a, b, 300, 64)
+    const poly = bisectorHalfPlane(a, b, a, 300, 64)
+    // the first half of the ribbon polygon is exactly the sampled bisector, so
+    // the shaded edge lies on the drawn boundary line at every sample.
+    expect(poly.length).toBe(line.length * 2)
+    for (let i = 0; i < line.length; i++) {
+      expect(poly[i].lat).toBeCloseTo(line[i].lat, 9)
+      expect(poly[i].lon).toBeCloseTo(line[i].lon, 9)
+    }
   })
 
   it('covers the half toward `toward` and not the other half', () => {

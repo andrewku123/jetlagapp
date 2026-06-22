@@ -135,19 +135,27 @@ export function bisectorPolyline(
 
 /**
  * Polygon covering the half-plane (of the perpendicular bisector of A–B) that
- * lies on the same side as `toward`. One edge is exactly the bisector
- * (`bisectorEndpoints`), so the shaded region aligns precisely with the drawn
- * boundary line. Used to shade the eliminated (colder) half of a thermometer.
- * The offset uses the same equirectangular projection as the bisector, so it is
- * not skewed by longitude compression at non-equatorial latitudes.
+ * lies on the same side as `toward`. Used to shade the eliminated (colder) half
+ * of a thermometer.
+ *
+ * Built as a sampled "ribbon": one long edge is the sampled bisector
+ * (`bisectorPolyline`) and the other is that same polyline offset toward
+ * `toward`. Sampling BOTH long edges is essential — a 4-corner polygon with
+ * straight lat/lon edges over a long span bows badly once projected to Web
+ * Mercator, so the fill lands on the wrong area. Because the first edge is the
+ * exact sampled bisector, the shading aligns precisely with the drawn boundary
+ * line (which also uses `bisectorPolyline`). The offset uses the same
+ * equirectangular projection as the bisector, so it is not skewed by longitude
+ * compression at non-equatorial latitudes.
  */
 export function bisectorHalfPlane(
   a: LatLng,
   b: LatLng,
   toward: LatLng,
   lengthMiles: number,
+  segments = 64,
 ): LatLng[] {
-  const [e0, e1] = bisectorEndpoints(a, b, lengthMiles)
+  const boundary = bisectorPolyline(a, b, lengthMiles, segments)
   const midLat = (a.lat + b.lat) / 2
   const midLon = (a.lon + b.lon) / 2
   const cos = Math.cos(toRad(midLat)) || 1e-6
@@ -160,12 +168,10 @@ export function bisectorHalfPlane(
   const ext = lengthMiles * (1 / 69.0)
   const dLat = uy * ext
   const dLon = (ux * ext) / cos
-  return [
-    e0,
-    e1,
-    { lat: e1.lat + dLat, lon: e1.lon + dLon },
-    { lat: e0.lat + dLat, lon: e0.lon + dLon },
-  ]
+  const far = boundary
+    .map((p) => ({ lat: p.lat + dLat, lon: p.lon + dLon }))
+    .reverse()
+  return [...boundary, ...far]
 }
 
 /**

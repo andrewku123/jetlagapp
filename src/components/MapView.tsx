@@ -17,7 +17,7 @@ import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import { stationColor, isMultiSystem } from '../lib/style'
-import { bisectorEndpoints, bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
+import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
@@ -413,6 +413,22 @@ export default function MapView({
   // a point that was just snapped onto, briefly enlarged so the snap reads on
   // touch (where there's no hover); cleared after a short pulse
   const [snapPulse, setSnapPulse] = useState<LatLng | null>(null)
+  // thermometer A/B/answer labels show briefly when a thermometer overlay
+  // appears or changes, then hide so they don't clutter the map
+  const [thermoLabels, setThermoLabels] = useState(true)
+  const thermoSig = records
+    .filter((r) => r.active && r.eliminates && r.kind === 'thermometer')
+    .map(
+      (r) =>
+        `${r.id}:${r.params.fromLat},${r.params.fromLon},${r.params.toLat},${r.params.toLon},${r.params.answer}`,
+    )
+    .join('|')
+  useEffect(() => {
+    if (!thermoSig) return
+    setThermoLabels(true)
+    const t = window.setTimeout(() => setThermoLabels(false), 5000)
+    return () => window.clearTimeout(t)
+  }, [thermoSig])
   // measure polylines by id, so the distance label can open the line's rounding
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
@@ -883,7 +899,7 @@ export default function MapView({
           .map((r) => {
             const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
             const to = { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }
-            const ends = bisectorEndpoints(from, to, LINE_LENGTH_MI)
+            const ends = bisectorPolyline(from, to, LINE_LENGTH_MI)
             const hotter = r.params.answer === 'hotter'
             const hotSide = hotter ? to : from
             // mark the hotter (kept) half-plane: a point between the boundary
@@ -919,9 +935,11 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#1971c2', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
                 >
-                  <Tooltip permanent direction="top" offset={[0, -6]}>
-                    A (start)
-                  </Tooltip>
+                  {thermoLabels && (
+                    <Tooltip permanent direction="top" offset={[0, -6]}>
+                      A (start)
+                    </Tooltip>
+                  )}
                 </CircleMarker>
                 <CircleMarker
                   center={[to.lat, to.lon]}
@@ -929,9 +947,11 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#1971c2', weight: 2, fillColor: '#1971c2', fillOpacity: 1 }}
                 >
-                  <Tooltip permanent direction="top" offset={[0, -6]}>
-                    B (end)
-                  </Tooltip>
+                  {thermoLabels && (
+                    <Tooltip permanent direction="top" offset={[0, -6]}>
+                      B (end)
+                    </Tooltip>
+                  )}
                 </CircleMarker>
                 <CircleMarker
                   center={[hotMark.lat, hotMark.lon]}
@@ -939,9 +959,11 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#cf222e', weight: 2, fillColor: '#cf222e', fillOpacity: 0.85 }}
                 >
-                  <Tooltip permanent direction="top" offset={[0, -6]}>
-                    {hotter ? 'hotter (kept)' : 'colder → kept'}
-                  </Tooltip>
+                  {thermoLabels && (
+                    <Tooltip permanent direction="top" offset={[0, -6]}>
+                      {hotter ? 'hotter (kept)' : 'colder → kept'}
+                    </Tooltip>
+                  )}
                 </CircleMarker>
               </Fragment>
             )

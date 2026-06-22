@@ -39,15 +39,30 @@ as a polygon ring with `circlePolygon(center, radiusMiles)` (from `geo.ts`):
 Filter to `active && eliminates && kind === 'thermometer'`. The hotter/colder
 boundary is the **perpendicular bisector** of the `from → to` segment:
 ```ts
-const ends = bisectorEndpoints(from, to, LINE_LENGTH_MI)  // from geo.ts
+const ends = bisectorPolyline(from, to, LINE_LENGTH_MI)  // from geo.ts
 const hotSide = params.answer === 'hotter' ? to : from
 ```
-Render: (1) a `<Polygon>` shading the **colder (eliminated) half-plane** — a wide
-band built from `bisectorEndpoints(from, to, 300)` pushed ~8° toward the cold
-side (`coldSide = hotter ? from : to`); (2) a dashed `<Polyline>` through `ends`
-(purple); (3) a `<CircleMarker>` with a permanent "hotter" `<Tooltip>` placed
-*between* the boundary midpoint and `hotSide` (so it clears the A/B pins). All
-`interactive={false}`. Note the `from`/`to` endpoints already get pins via
+**Mercator-bowing gotcha (this bit people twice):** do NOT draw the boundary or
+build the shading from `bisectorEndpoints` (just the two far endpoints). A single
+straight lat/lon segment over a long span (LINE_LENGTH_MI=60 → 120 mi, and the
+300-mi shading band → 600 mi) bows visibly once projected to Web Mercator, so the
+line stops passing through the A–B midpoint ("the line doesn't bisect") and the
+4-corner shading polygon lands on the wrong area. Always **sample** both: draw the
+line through `bisectorPolyline(from, to, LINE_LENGTH_MI)`, and shade with
+`bisectorHalfPlane(...)`, which is itself a *sampled ribbon* (one long edge is the
+sampled bisector, the other is that polyline offset toward the cold side) so both
+long edges hug the true geometry. `bisectorEndpoints` is fine only for math
+(e.g. tests), not for long rendered geometry.
+
+Render: (1) a `<Polygon>` shading the **colder (eliminated) half-plane** via
+`bisectorHalfPlane(from, to, coldSide, 300)` (`coldSide = hotter ? from : to`);
+(2) a dashed `<Polyline>` through `ends` (purple); (3) a `<CircleMarker>` with a
+"hotter" `<Tooltip>` placed *between* the boundary midpoint and `hotSide` (so it
+clears the A/B pins). The A/B/answer tooltips are **not permanent** — they show
+for ~5s when the overlay appears/changes then hide (a `thermoLabels` state +
+5s `setTimeout`, keyed on a signature of the active thermometer records), so they
+don't clutter the map. All `interactive={false}`. Note the `from`/`to` endpoints
+already get pins via
 `pickedPoints` in `App.tsx`, so a marker exactly on an endpoint is hidden under
 its pin. The engine truth is in
 `src/lib/elimination.ts` (`gotCloser === (answer === 'hotter')`) — the line is
