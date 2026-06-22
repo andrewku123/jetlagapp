@@ -25,14 +25,95 @@ import transitData from '../data/transit-lines.geojson.json'
 
 const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
-// Bounding box of the in-play counties; used to restrict satellite imagery tile
-// requests to the play area (out-of-play tiles never load → much faster).
+const IN_PLAY_FEATURES = COUNTIES.features.filter((f) =>
+  IN_PLAY_COUNTIES.has((f.properties as { name: string }).name),
+)
+
+// Bounding box of the in-play counties; used as a cheap first-pass filter on
+// satellite imagery tile requests (out-of-play tiles never load → much faster).
 const PLAY_BOUNDS = L.geoJSON({
   type: 'FeatureCollection',
-  features: COUNTIES.features.filter((f) =>
-    IN_PLAY_COUNTIES.has((f.properties as { name: string }).name),
-  ),
+  features: IN_PLAY_FEATURES,
 } as GeoJSON.FeatureCollection).getBounds()
+
+// --- satellite-to-play-area clipping ----------------------------------------
+// The satellite imagery is restricted to the *actual* in-play county polygons
+// (not just their bounding box) in two ways: tiles that don't intersect a county
+// are never requested (perf), and the layer's pane is clipped with an SVG
+// clip-path so imagery only shows inside the counties (visual). Rings below are
+// GeoJSON [lng, lat] order.
+type Ring = number[][]
+type Poly = Ring[] // [outer, ...holes]
+function featureRings(f: Feature): Ring[] {
+  const g = f.geometry
+  if (g.type === 'Polygon') return g.coordinates as Ring[]
+  if (g.type === 'MultiPolygon') return (g.coordinates as Ring[][]).flat()
+  return []
+}
+function featurePolys(f: Feature): Poly[] {
+  const g = f.geometry
+  if (g.type === 'Polygon') return [g.coordinates as Poly]
+  if (g.type === 'MultiPolygon') return g.coordinates as Poly[]
+  return []
+}
+const PLAY_RINGS: Ring[] = IN_PLAY_FEATURES.flatMap(featureRings)
+const PLAY_POLYS: Poly[] = IN_PLAY_FEATURES.flatMap(featurePolys)
+
+function pointInRing(lng: number, lat: number, ring: Ring): boolean {
+  let inside = false
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i]
+    const [xj, yj] = ring[j]
+    if (
+      yi > lat !== yj > lat &&
+      lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi
+    )
+      inside = !inside
+  }
+  return inside
+}
+function pointInPoly(lng: number, lat: number, poly: Poly): boolean {
+  if (!pointInRing(lng, lat, poly[0])) return false
+  for (let h = 1; h < poly.length; h++)
+    if (pointInRing(lng, lat, poly[h])) return false // inside a hole
+  return true
+}
+// Does an axis-aligned lat/lng box intersect any in-play county polygon? Used to
+// cull tiles. Biased permissive (tests box corners/centre inside a county, and
+// county vertices inside the box) so we never drop a tile the play area needs.
+function boxIntersectsPlay(b: L.LatLngBounds): boolean {
+  const w = b.getWest(), e = b.getEast(), s = b.getSouth(), n = b.getNorth()
+  const probes: [number, number][] = [
+    [w, s], [w, n], [e, s], [e, n], [(w + e) / 2, (s + n) / 2],
+  ]
+  for (const [lng, lat] of probes)
+    for (const poly of PLAY_POLYS) if (pointInPoly(lng, lat, poly)) return true
+  for (const ring of PLAY_RINGS)
+    for (const [lng, lat] of ring)
+      if (lng >= w && lng <= e && lat >= s && lat <= n) return true
+  return false
+}
+
+type GridInternals = {
+  _isValidTile(coords: L.Coords): boolean
+  _tileCoordsToBounds(coords: L.Coords): L.LatLngBounds
+}
+const gridProto = L.GridLayer.prototype as unknown as GridInternals
+
+// TileLayer that only requests tiles intersecting the in-play counties.
+const SatelliteTileLayer = L.TileLayer.extend({
+  _isValidTile(this: GridInternals, coords: L.Coords): boolean {
+    if (!gridProto._isValidTile.call(this, coords)) return false
+    return boxIntersectsPlay(this._tileCoordsToBounds(coords).pad(0.3))
+  },
+})
+type SatelliteTileLayerCtor = new (
+  url: string,
+  opts: L.TileLayerOptions,
+) => L.TileLayer
+const SATELLITE_URL =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+
 function countyStyle(feature?: Feature<Geometry, { name: string }>) {
   const inPlay = feature ? IN_PLAY_COUNTIES.has(feature.properties.name) : false
   return inPlay
@@ -267,6 +348,74 @@ function MapFocus({
     const zoom = Math.max(map.getMinZoom(), endgameZoom - 1)
     map.flyTo([station.lat, station.lon], zoom, { duration: 0.6 })
   }, [map, target, radiusMi])
+  return null
+}
+
+// Satellite imagery clipped to the in-play county polygons. Lives in its own
+// pane so an SVG clip-path (rebuilt on every view change) can mask it to the
+// county shapes; the pane is `leaflet-zoom-hide` so the clip never lags behind
+// during the zoom animation (it reappears, re-clipped, on zoomend).
+let satClipSeq = 0
+function SatelliteLayer() {
+  const map = useMap()
+  useEffect(() => {
+    const paneName = 'satellite'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      pane.style.zIndex = '250' // above base tiles (200), below overlays (400)
+      pane.classList.add('leaflet-zoom-hide')
+    }
+
+    const clipId = `sat-clip-${satClipSeq++}`
+    const svgNS = 'http://www.w3.org/2000/svg'
+    const svg = document.createElementNS(svgNS, 'svg')
+    svg.setAttribute('width', '0')
+    svg.setAttribute('height', '0')
+    svg.style.position = 'absolute'
+    const clip = document.createElementNS(svgNS, 'clipPath')
+    clip.setAttribute('id', clipId)
+    clip.setAttribute('clipPathUnits', 'userSpaceOnUse')
+    const path = document.createElementNS(svgNS, 'path')
+    clip.appendChild(path)
+    const defs = document.createElementNS(svgNS, 'defs')
+    defs.appendChild(clip)
+    svg.appendChild(defs)
+    map.getContainer().appendChild(svg)
+    pane.style.clipPath = `url(#${clipId})`
+
+    const layer = new (SatelliteTileLayer as SatelliteTileLayerCtor)(
+      SATELLITE_URL,
+      {
+        attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics',
+        bounds: PLAY_BOUNDS,
+        maxZoom: 20,
+        pane: paneName,
+      },
+    )
+    layer.addTo(map)
+
+    const updateClip = () => {
+      let d = ''
+      for (const ring of PLAY_RINGS) {
+        for (let i = 0; i < ring.length; i++) {
+          const p = map.latLngToLayerPoint([ring[i][1], ring[i][0]])
+          d += `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`
+        }
+        d += 'Z'
+      }
+      path.setAttribute('d', d)
+    }
+    updateClip()
+    map.on('viewreset zoomend moveend resize', updateClip)
+
+    return () => {
+      map.off('viewreset zoomend moveend resize', updateClip)
+      map.removeLayer(layer)
+      pane.style.clipPath = ''
+      svg.remove()
+    }
+  }, [map])
   return null
 }
 
@@ -789,14 +938,7 @@ export default function MapView({
           subdomains="abcd"
           maxZoom={20}
         />
-        {satellite && (
-          <TileLayer
-            attribution='Imagery &copy; Esri, Maxar, Earthstar Geographics'
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-            bounds={PLAY_BOUNDS}
-            maxZoom={20}
-          />
-        )}
+        {satellite && <SatelliteLayer />}
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
