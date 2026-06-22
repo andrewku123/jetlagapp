@@ -135,6 +135,8 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .qform .coordin input { flex: 1; min-width: 0; padding: 5px 6px; font-size: 12px; }
 .qform .coordin input.err { border-color: #cf222e; }
 .qform .coordin button { flex: none; }
+.qform .qrow-cat { align-items: flex-start; }
+.qform .qcat { flex: 1; }
 .blurb { font-size: 12px; color: var(--muted); margin: 4px 0 6px; }
 .blurb .cards { color: var(--accent); }
 .hint { font-size: 12px; color: var(--muted); }
@@ -149,7 +151,9 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .qactions button { font-size: 12px; padding: 4px 8px; }
 
 .slist li { display: flex; align-items: center; gap: 7px; padding: 5px 2px; border-bottom: 1px solid var(--line); font-size: 13px; }
-.slist .sname { flex: 1; }
+.slist .sname { flex: 1; text-align: left; background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; }
+.slist .sname:hover { color: var(--accent); text-decoration: underline; }
+.slist li.elim .sname:hover { color: var(--accent); }
 .slist .ssys { color: var(--muted); font-size: 11px; }
 .slist .star { background: none; border: 0; color: #444; cursor: pointer; font-size: 15px; padding: 0; }
 .slist .star.on { color: #f5b301; }

@@ -110,6 +110,7 @@ interface Props {
   onClearAnnotations: () => void
   endgameStation: Station | null
   hidingRadiusMi: number
+  focusTarget: { station: Station; nonce: number } | null
   onStartEndgame: (id: string) => void
   onExitEndgame: () => void
 }
@@ -242,6 +243,30 @@ function MapFit({
     const b = L.latLng(endgame.lat, endgame.lon).toBounds(radiusMi * 1609.344 * 2.6)
     map.fitBounds(b)
   }, [map, endgame, radiusMi])
+  return null
+}
+
+// Re-centers the map on a station picked from the Suspects list. Uses the same
+// bounds endgame would fit to, but one zoom level out (~2x less zoomed in) so
+// you see the station in context rather than fully locked on.
+function MapFocus({
+  target,
+  radiusMi,
+}: {
+  target: { station: Station; nonce: number } | null
+  radiusMi: number
+}) {
+  const map = useMap()
+  const lastNonce = useRef<number>(0)
+  useEffect(() => {
+    if (!target || target.nonce === lastNonce.current) return
+    lastNonce.current = target.nonce
+    const { station } = target
+    const b = L.latLng(station.lat, station.lon).toBounds(radiusMi * 1609.344 * 2.6)
+    const endgameZoom = map.getBoundsZoom(b)
+    const zoom = Math.max(map.getMinZoom(), endgameZoom - 1)
+    map.flyTo([station.lat, station.lon], zoom, { duration: 0.6 })
+  }, [map, target, radiusMi])
   return null
 }
 
@@ -383,6 +408,7 @@ export default function MapView({
   onClearAnnotations,
   endgameStation,
   hidingRadiusMi,
+  focusTarget,
   onStartEndgame,
   onExitEndgame,
 }: Props) {
@@ -773,6 +799,7 @@ export default function MapView({
         )}
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
+        <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
         <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />

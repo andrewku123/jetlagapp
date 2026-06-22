@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS } from '../data/questions'
+import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng } from '../lib/geo'
 
 interface Props {
@@ -91,6 +92,24 @@ export default function QuestionForm({
   const elevUnit = metric ? 'm' : 'ft'
   const [kind, setKind] = useState<QuestionKind>('radar')
   const meta = QUESTION_CATALOG.find((q) => q.kind === kind)!
+  // category is step 1 (segmented buttons); the kind dropdown (step 2) only shows
+  // for categories with more than one question.
+  const categories = QUESTION_CATALOG.reduce<QuestionMeta['category'][]>(
+    (acc, q) => (acc.includes(q.category) ? acc : [...acc, q.category]),
+    [],
+  )
+  const [category, setCategory] = useState<QuestionMeta['category']>(meta.category)
+  const kindsInCategory = QUESTION_CATALOG.filter((q) => q.category === category)
+  function pickCategory(c: QuestionMeta['category']) {
+    setCategory(c)
+    const first = QUESTION_CATALOG.find((q) => q.category === c)!
+    setKind(first.kind)
+  }
+  // strip the "Category — " prefix so the step-2 dropdown is just the specifics
+  const subLabel = (label: string) => {
+    const i = label.indexOf(' — ')
+    return i >= 0 ? label.slice(i + 3) : label
+  }
 
   // shared param state
   const [radius, setRadius] = useState<string>('0.5')
@@ -201,14 +220,24 @@ export default function QuestionForm({
 
   return (
     <div className="qform">
-      <div className="row">
-        <label>Question</label>
-        <select value={kind} onChange={(e) => setKind(e.target.value as QuestionKind)}>
-          {QUESTION_CATALOG.map((q) => (
-            <option key={q.kind} value={q.kind}>{q.label}</option>
+      <div className="row qrow-cat">
+        <label>Type</label>
+        <div className="seg seg-wrap qcat">
+          {categories.map((c) => (
+            <button key={c} className={category === c ? 'on' : ''} onClick={() => pickCategory(c)}>{c}</button>
           ))}
-        </select>
+        </div>
       </div>
+      {kindsInCategory.length > 1 && (
+        <div className="row">
+          <label>Question</label>
+          <select value={kind} onChange={(e) => setKind(e.target.value as QuestionKind)}>
+            {kindsInCategory.map((q) => (
+              <option key={q.kind} value={q.kind}>{subLabel(q.label)}</option>
+            ))}
+          </select>
+        </div>
+      )}
       <p className="blurb">{meta.blurb} <span className="cards">({meta.cards})</span></p>
 
       {kind === 'radar' && (

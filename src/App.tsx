@@ -85,6 +85,12 @@ export default function App() {
   const [sheetOpen, setSheetOpen] = useState(false)
   const [suspectSort, setSuspectSort] = useState<'name' | 'agency'>('name')
   const [suspectQuery, setSuspectQuery] = useState('')
+  // bump nonce so the map re-centers even when the same station is clicked twice
+  const [focusTarget, setFocusTarget] = useState<{ station: Station; nonce: number } | null>(null)
+  const focusStation = (s: Station) => {
+    setFocusTarget({ station: s, nonce: Date.now() })
+    setSheetOpen(false) // reveal the map on mobile (bottom sheet)
+  }
 
   useEffect(() => saveGame(game), [game])
 
@@ -185,7 +191,7 @@ export default function App() {
     <li key={s.id} className={starredSet.has(s.id) ? 'starred' : ''}>
       <button className={'star ' + (starredSet.has(s.id) ? 'on' : '')} onClick={() => toggleStar(s.id)}>★</button>
       <span className="dot" style={{ background: SYSTEM_COLORS[s.systems[0]] ?? '#444' }} />
-      <span className="sname">{s.name}</span>
+      <button className="sname" onClick={() => focusStation(s)} title="Show on map">{s.name}</button>
       <span className="ssys">{s.systems.join('·')}</span>
       <button className="x" onClick={() => toggleManual(s.id)} title="eliminate">✕</button>
     </li>
@@ -194,7 +200,7 @@ export default function App() {
     <li key={s.id} className="elim">
       <span className="star-spacer" />
       <span className="dot" style={{ background: '#9aa0a6' }} />
-      <span className="sname">{s.name}</span>
+      <button className="sname" onClick={() => focusStation(s)} title="Show on map">{s.name}</button>
       <span className="ssys">{s.systems.join('·')}</span>
       {manualSet.has(s.id) ? (
         <button className="restore" onClick={() => toggleManual(s.id)} title="restore">↩</button>
@@ -296,6 +302,7 @@ export default function App() {
             onClearAnnotations={clearAnnotations}
             endgameStation={endgameStation}
             hidingRadiusMi={hidingRadiusMi}
+            focusTarget={focusTarget}
             onStartEndgame={(id) => update({ endgame: id })}
             onExitEndgame={() => update({ endgame: null })}
           />
