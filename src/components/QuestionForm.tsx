@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
-import { QUESTION_CATALOG, RADAR_OPTIONS } from '../data/questions'
+import { QUESTION_CATALOG, RADAR_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng } from '../lib/geo'
 
@@ -13,6 +13,24 @@ interface Props {
   airports: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
+  // how many times each question group has already been asked, keyed by
+  // questionGroupKey — used to preview the scaled cost of asking once more.
+  askGroupCounts: Map<string, number>
+}
+
+function ordinalSuffix(n: number): string {
+  const t = n % 100
+  if (t >= 11 && t <= 13) return 'th'
+  switch (n % 10) {
+    case 1:
+      return 'st'
+    case 2:
+      return 'nd'
+    case 3:
+      return 'rd'
+    default:
+      return 'th'
+  }
 }
 
 function uid(): string {
@@ -86,6 +104,7 @@ export default function QuestionForm({
   airports,
   onSubmit,
   onPreview,
+  askGroupCounts,
 }: Props) {
   const metric = units === 'metric'
   const distUnit = metric ? 'km' : 'mi'
@@ -200,6 +219,29 @@ export default function QuestionForm({
     setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius('')
   }
 
+  // Preview of the hider's cost if this question were asked now: the nth ask of
+  // the same group costs ×n. Radar/thermometer key on the chosen distance, so the
+  // preview updates as you change the radius dropdown or set the A/B points.
+  const previewMult = (() => {
+    let params: Record<string, unknown> = {}
+    if (kind === 'radar') {
+      const r =
+        radius === 'custom'
+          ? metric
+            ? Number(customRadius) / KM_PER_MILE
+            : Number(customRadius)
+          : Number(radius)
+      if (!Number.isFinite(r) || r <= 0) return 1
+      params = { radiusMiles: r }
+    } else if (kind === 'thermometer') {
+      if (!ptA || !ptB) return 1
+      params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon }
+    }
+    const key = questionGroupKey(kind, params)
+    return (askGroupCounts.get(key) ?? 0) + 1
+  })()
+  const previewCards = scaleCards(meta.cards, previewMult)
+
   const yesNo = (
     <div className="row">
       <label>Answer</label>
@@ -242,7 +284,19 @@ export default function QuestionForm({
           </select>
         </div>
       )}
-      <p className="blurb">{meta.blurb} <span className="cards">({meta.cards})</span></p>
+      <p className="blurb">
+        {meta.blurb}{' '}
+        <span className="cards">
+          ({previewCards}
+          {previewMult > 1 && (
+            <span className="cards-mult">
+              {' '}— ×{previewMult}, {previewMult}
+              {ordinalSuffix(previewMult)} time asked
+            </span>
+          )}
+          )
+        </span>
+      </p>
 
       {kind === 'radar' && (
         <>

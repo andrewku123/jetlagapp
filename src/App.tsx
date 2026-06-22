@@ -6,8 +6,7 @@ import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
-import { rewardForKind, THERMOMETER_OPTIONS } from './data/questions'
-import { haversineMiles } from './lib/geo'
+import { rewardForKind, questionGroupKey } from './data/questions'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
@@ -161,11 +160,22 @@ export default function App() {
       .slice()
       .sort((a, b) => a.createdAt - b.createdAt)
       .forEach((q) => {
-        const key = questionGroupKey(q)
+        const key = questionGroupKey(q.kind, q.params)
         const n = (counts.get(key) ?? 0) + 1
         counts.set(key, n)
         m.set(q.id, n)
       })
+    return m
+  }, [game.questions])
+
+  // Per-group counts of questions already asked, so the Ask form can preview the
+  // scaled cost of asking a given question one more time (n = count + 1).
+  const askGroupCounts = useMemo(() => {
+    const m = new Map<string, number>()
+    for (const q of game.questions) {
+      const key = questionGroupKey(q.kind, q.params)
+      m.set(key, (m.get(key) ?? 0) + 1)
+    }
     return m
   }, [game.questions])
 
@@ -360,6 +370,7 @@ export default function App() {
                 airports={airports}
                 onSubmit={addQuestion}
                 onPreview={setLastClick}
+                askGroupCounts={askGroupCounts}
               />
             </div>
           )}
@@ -544,27 +555,6 @@ function UnitsToggle({ value, onChange }: { value: UnitSystem; onChange: (u: Uni
 
 function uniqSorted(arr: string[]): string[] {
   return [...new Set(arr)].sort((a, b) => a.localeCompare(b))
-}
-
-// Key that defines whether two asks count as "the same question" for the repeat
-// reward multiplier. Most kinds key on kind alone; radar and thermometer also
-// key on their distance, snapped to the medium-game options so tiny GPS jitter
-// between two same-distance asks still groups them together.
-function questionGroupKey(q: QuestionRecord): string {
-  if (q.kind === 'radar') {
-    return `radar:${Number(q.params.radiusMiles)}`
-  }
-  if (q.kind === 'thermometer') {
-    const travel = haversineMiles(
-      { lat: Number(q.params.fromLat), lon: Number(q.params.fromLon) },
-      { lat: Number(q.params.toLat), lon: Number(q.params.toLon) },
-    )
-    const bucket = THERMOMETER_OPTIONS.reduce((best, o) =>
-      Math.abs(o - travel) < Math.abs(best - travel) ? o : best,
-    )
-    return `thermometer:${bucket}`
-  }
-  return q.kind
 }
 
 function ordinalSuffix(n: number): string {

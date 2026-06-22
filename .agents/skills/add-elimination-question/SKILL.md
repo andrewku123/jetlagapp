@@ -88,7 +88,8 @@ you to pick an answer — so the veto action lives in the **Ask form**, not Hist
 ## Repeat-question reward multiplier
 Game rule: the **nth time the same question is asked**, the hider's card reward is
 multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
-- "Same question" is decided by `questionGroupKey(q)` in `App.tsx`:
+- "Same question" is decided by `questionGroupKey(kind, params)` (exported from
+  `src/data/questions.ts`, shared by `App.tsx` and `QuestionForm.tsx`):
   - **radar** keys on `radiusMiles` (`radar:5` vs `radar:10` are different
     questions; two 5mi radars are the same — center is ignored).
   - **thermometer** keys on travel distance `haversineMiles(A,B)` snapped to the
@@ -102,6 +103,12 @@ multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
 - The History row shows `rewardForKind(kind, n)` (in `src/data/questions.ts`), which
   applies `scaleCards` — multiplies every integer in the "draw X, keep Y" string by
   n. Base reward per kind is the `cards` field in `QUESTION_CATALOG`.
+- **Live cost preview:** the Ask form blurb shows what the *next* ask would cost.
+  `App.tsx` passes `askGroupCounts` (a `Map<groupKey, count>` over existing
+  questions) to `QuestionForm`, which computes `questionGroupKey` from the *current*
+  form params (selected radius / set A-B points) and shows `scaleCards(meta.cards,
+  count+1)` with a `×n, nth time asked` note. Updates as the radius dropdown or A/B
+  points change.
 
 ## Conventions
 - Keep predicates pure and total; never throw on missing params.

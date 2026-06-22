@@ -1,4 +1,5 @@
 import type { QuestionKind } from '../types'
+import { haversineMiles } from '../lib/geo'
 
 export const RADAR_OPTIONS = [0.25, 0.5, 1, 3, 5, 10, 25, 50, 100]
 // Medium game thermometer travel distances (informational; elimination uses the
@@ -127,4 +128,28 @@ export const QUESTION_BY_KIND: Record<QuestionKind, QuestionMeta> =
 // The hider's reward for a question, scaled when it's the nth ask of that kind.
 export function rewardForKind(kind: QuestionKind, askMult = 1): string {
   return scaleCards(QUESTION_BY_KIND[kind]?.cards ?? '', askMult)
+}
+
+// Key that decides whether two asks count as "the same question" for the repeat
+// reward multiplier. Most kinds key on kind alone; radar and thermometer also key
+// on their distance (a 5mi radar and a 10mi radar are different; two 5mi radars
+// are the same). Thermometer travel distance is snapped to the nearest medium
+// option so GPS jitter between two same-distance asks still groups them.
+export function questionGroupKey(
+  kind: QuestionKind,
+  params: Record<string, unknown>,
+): string {
+  if (kind === 'radar') return `radar:${Number(params.radiusMiles)}`
+  if (kind === 'thermometer') {
+    const travel = haversineMiles(
+      { lat: Number(params.fromLat), lon: Number(params.fromLon) },
+      { lat: Number(params.toLat), lon: Number(params.toLon) },
+    )
+    if (!Number.isFinite(travel)) return 'thermometer'
+    const bucket = THERMOMETER_OPTIONS.reduce((best, o) =>
+      Math.abs(o - travel) < Math.abs(best - travel) ? o : best,
+    )
+    return `thermometer:${bucket}`
+  }
+  return kind
 }
