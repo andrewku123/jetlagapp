@@ -13,7 +13,8 @@ any public transit. Eligible systems:
 - **BART** — all stations (50)
 - **Caltrain** — SF (4th & King) → San Jose Diridon → Tamien (24)
 - **VTA light rail** — full system (59)
-- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (124)
+- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (128)
+- **SFO AirTrain** — all people-mover stops (11)
 
 Muni includes **every rail stop** (both the labeled stations and the smaller
 intermediate "Other Stop" dots) on lines N/J/F/K/L/M/T, pulled from OpenStreetMap
@@ -23,8 +24,8 @@ Portal) are counted once, and North Beach on the T is excluded. The 10 F-only
 surface stops on Market St inland of Embarcadero are also excluded — they run
 directly above the Muni Metro subway and duplicate those stations. After merging
 stations shared across systems (e.g. 4th & King = Caltrain + Muni N/T; Balboa
-Park = BART + Muni; Milpitas = BART + VTA) the play area has **246 unique
-stations** (245 eligible on a weekday, 246 on a weekend). Distinct stations that
+Park = BART + Muni; Milpitas = BART + VTA) the play area has **260 unique
+stations** (259 eligible on a weekday, 260 on a weekend). Distinct stations that
 share a city name are disambiguated by system, e.g. "San Bruno (BART)" vs
 "San Bruno (Caltrain)".
 
@@ -45,13 +46,30 @@ Built for the **medium** game. The auto-elimination engine currently supports:
 - **Measuring** — commercial airport, sea level (altitude)
 - **Photo** — logged for reference (does not auto-eliminate)
 
+Every logged question shows the hider's card reward. Re-asking the **same**
+question costs the hider more: the nth ask of a question multiplies the reward by
+n (radar/thermometer count as "the same" only at the same radius/travel distance).
+The Ask form previews this cost live as you choose parameters. If the hider
+**vetoes** a question (refuses to answer), use the **Hider vetoed** button to log
+it without an answer — it's recorded but eliminates nothing, and still counts
+toward the repeat-cost tally.
+
 POI-based Matching/Measuring (parks, hospitals, museums, libraries, movie
 theaters, zoos, aquariums, golf courses, mountains, foreign consulates) and
 Tentacles are planned next.
 
-## Map drawing tools
+## Satellite imagery
 
-A toolbar on the map lets seekers annotate by hand (drawings persist locally):
+A **satellite** toggle (top bar) overlays Esri World Imagery, clipped to the
+play-area counties (land + bay, ocean and the Farallones excluded) to keep tiles
+down. Road and place name labels render on top so streets stay readable. The
+**Legend** tab lists the imagery source and per-county capture dates; a quarterly
+check (`scripts/check_imagery_dates.py`) flags when Esri refreshes the imagery.
+
+## Map drawing tools (toolbox)
+
+A toolbar on the right of the map lets seekers annotate by hand (drawings persist
+locally):
 
 - **Compass** — pick a radius and click a center to draw a circle.
 - **Line** — click two points to draw a straightedge line.
@@ -60,7 +78,9 @@ A toolbar on the map lets seekers annotate by hand (drawings persist locally):
 - **Measure** — click two points to read the great-circle distance in miles.
 - **Select** — default mode; clicking the map drops a seeker point for questions.
 
-Click any drawing to delete it, or use **Clear drawings**.
+Click any drawing to delete it, or use **Clear drawings**. See
+[TUTORIAL.md](TUTORIAL.md) for a full step-by-step walkthrough of the app and
+toolbox.
 
 ## Develop
 
