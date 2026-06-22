@@ -38,11 +38,26 @@ Apply a correction consistently to **all** stops at that place (e.g. every
 AirTrain stop + the SFO BART stop), and regenerate the reference PDF
 (`reference-pdf`) since it lists stations by city.
 
-## Merging two stops into one station
-Two situations:
-- **Automated**: `build_stations.py` does a cross-system merge of stops `< 200 m`
-  apart across *different* systems (ORs their service flags) — this is what makes
-  e.g. 4th & King = Caltrain + Muni. Tunable threshold; see `rebuild-station-dataset`.
+## When are two stops one station? (it's a judgement call, not a formula)
+**Merging is decided by the official transit map + real-world facts, never by
+distance alone.** The authority is the map's **"Shared Station"** designation
+(plus physical reality: shared concourse/fare gates, same grade, walkability).
+Proximity is only a hint and is often wrong:
+- **Merge** — *Balboa Park* (BART + Muni) and the downtown stations (Embarcadero,
+  Montgomery, Powell, Civic Center): the SFMTA Metro map draws these as shared
+  stations, so they are one record.
+- **Keep separate** — *Glen Park BART* vs the *San Jose Ave/Glen Park Station*
+  Muni J stop: only ~80 m apart, but split by **I-280** (grade change, no shared
+  concourse) and drawn as two distinct stations on the map. They are **two**
+  records (`Glen Park` = BART, `San Jose Ave/Glen Park Station` = Muni J).
+
+How this is encoded:
+- **Curated allow-list** (the right way): `build_stations.py` only merges a
+  cross-agency pair if both stops sit within `MERGE_RADIUS_M` (250 m) of an entry
+  in the hand-maintained **`SHARED_STATIONS`** anchor list (read off the official
+  maps). There is **no** automatic "merge anything within X metres" rule, on
+  purpose — that rule wrongly fused Glen Park. **Expanding to a new city: review
+  every shared station on that system's map and add anchors by hand.**
 - **Manual one-off**: when two records are really the same place (e.g. SFO BART
   "San Francisco International Airport" and the AirTrain "Garage G / BART" stop,
   ~74 m apart), merge into **one** station whose `systems` is the union (BART +

@@ -73,10 +73,10 @@ for rel in [e for e in dm['elements'] if e['type'] == 'relation']:
         nm = n.get('tags', {}).get('name')
         if not nm or 'north beach' in nm.lower():
             continue
-        # Glen Park has no Muni rail service (BART-only on the official map);
-        # drop spurious OSM nodes tagged onto a Muni relation there.
-        if nm.strip().lower() == 'glen park':
-            continue
+        # NOTE: the J's surface stop at Glen Park (tagged just "Glen Park" in OSM)
+        # is REAL and is kept. It is renamed below and stays a SEPARATE station
+        # from Glen Park BART (~80 m away but split by I-280); proximity alone
+        # never merges across agencies — see the curated cross-system merge.
         # The F does not stop at Union Square/Market (Central Subway T station);
         # drop the spurious F surface node tagged at Market & Stockton.
         if ref == 'F' and nm.strip().lower() == 'market street & stockton street':
@@ -89,6 +89,10 @@ RENAME = {
     'Powell Street': 'Powell St Station', 'Civic Center': 'Civic Center Station',
     'Van Ness': 'Van Ness Station', 'Church': 'Church St Station', 'Castro': 'Castro Station',
     'Forest Hill': 'Forest Hill Station', 'West Portal': 'West Portal Station',
+    # The J's surface stop at Glen Park BART is tagged just "Glen Park" in OSM;
+    # give it its SFMTA name so it doesn't collide with the BART station's name
+    # (the two are deliberately NOT merged — see the cross-system merge below).
+    'Glen Park': 'San Jose Ave/Glen Park Station',
 }
 mclusters = []
 for nm, lat, lon, ref in muni_pts:
@@ -130,7 +134,48 @@ for sys in ['BART', 'Caltrain', 'VTA', 'Muni']:
     print(f"  {sys}: {sum(1 for s in stations if sys in s['systems'])}")
 print("  total points:", len(stations))
 
-# ---- Cross-system merge at 150m (only across different systems) ----
+# ---- Cross-system merge: CURATED from the official maps, NOT by distance. ----
+# Two stops of *different* agencies are the same station ONLY when the official
+# transit map marks them as a shared station. Proximity alone is NOT sufficient
+# grounds to merge: e.g. Glen Park BART and the San Jose Ave Muni J stop are
+# ~80 m apart but are split by I-280 (grade change, no shared concourse) and the
+# SFMTA Metro map draws them as two distinct stations — so they stay separate.
+#
+# SHARED_STATIONS is the set of "Shared Station" markers read off the official
+# maps (SF Muni Metro / BART / Caltrain / VTA). Each entry is (label, lat, lon);
+# a cross-agency stop merges only if it lies within MERGE_RADIUS_M of an anchor.
+#
+#   *** HUMAN REVIEW REQUIRED ***
+# This list is a real-world judgement call, not a formula. When expanding to a
+# new metro, do NOT reinstate an automatic distance rule — review every shared
+# station against that system's official map (physical connection, fare gates,
+# grade) and add anchors here by hand.
+SHARED_STATIONS = [
+    ('Embarcadero',                        37.7929, -122.3969),  # BART + Muni
+    ('Montgomery Street',                  37.7891, -122.4017),  # BART + Muni
+    ('Powell Street',                      37.7846, -122.4074),  # BART + Muni
+    ('Civic Center / UN Plaza',            37.7796, -122.4137),  # BART + Muni
+    ('Balboa Park',                        37.7214, -122.4471),  # BART + Muni
+    ('Millbrae',                           37.6000, -122.3868),  # BART + Caltrain
+    ('Milpitas',                           37.4094, -121.8910),  # BART + VTA
+    ('Mountain View',                      37.3947, -122.0764),  # Caltrain + VTA
+    ('San Francisco (4th & King)',         37.7761, -122.3946),  # Caltrain + Muni
+    ('San Jose Diridon',                   37.3287, -121.9034),  # Caltrain + VTA
+    ('Tamien',                             37.3118, -121.8844),  # Caltrain + VTA
+    # SFO is BART + SFO AirTrain on the map, but AirTrain stops are added by a
+    # later pipeline stage (not in this script); kept here for completeness.
+    ('San Francisco International Airport', 37.6161, -122.3920),
+]
+MERGE_RADIUS_M = 250
+
+def shared_anchor(lat, lon):
+    """Canonical label of the curated shared-station anchor this stop sits on, or
+    None if the stop is not at an official shared station (so it won't merge)."""
+    for label, alat, alon in SHARED_STATIONS:
+        if hav((lat, lon), (alat, alon)) < MERGE_RADIUS_M:
+            return label
+    return None
+
 def merge_service(a, b):
     out = {}
     for d in ('wd', 'we'):
@@ -140,16 +185,22 @@ def merge_service(a, b):
 
 merged = []
 for s in stations:
+    anchor = shared_anchor(s['lat'], s['lon'])
     hit = None
-    for m in merged:
-        if m['systems'].isdisjoint(s['systems']) and hav((s["lat"], s["lon"]), (m["lat"], m["lon"])) < 200:
-            hit = m; break
+    if anchor is not None:
+        for m in merged:
+            if m.get('_anchor') == anchor and m['systems'].isdisjoint(s['systems']):
+                hit = m; break
     if hit:
         hit['systems'] |= s['systems']; hit['lines'] |= s['lines']; hit['names'] |= s['names']
         hit['lat'] = (hit['lat']+s['lat'])/2; hit['lon'] = (hit['lon']+s['lon'])/2
         hit['service'] = merge_service(hit['service'], s['service'])
     else:
-        merged.append(dict(s))
+        nd = dict(s); nd['_anchor'] = anchor; merged.append(nd)
+
+# strip the internal anchor tag before output
+for m in merged:
+    m.pop('_anchor', None)
 
 print("\nAFTER cross-system merge: total unique stations =", len(merged))
 
