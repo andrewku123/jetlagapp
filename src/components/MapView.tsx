@@ -988,10 +988,10 @@ export default function MapView({
                   )
                 })()}
                 <Marker
-                  key={`${a.id}-center-${selectMode}`}
+                  key={`${a.id}-center-${selectMode}-${tool === 'compass'}`}
                   position={[a.lat, a.lon]}
                   draggable={selectMode}
-                  interactive={selectMode}
+                  interactive={selectMode || tool === 'compass'}
                   icon={handleIcon(a.color, true)}
                   eventHandlers={{
                     // set the no-rerender guard on press, BEFORE any movement: the

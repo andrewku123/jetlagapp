@@ -129,7 +129,14 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   ring at the same center, paste the same lat/lon (the 📍 coord tool copies it)
   with a different radius into the **coordinate-entry box**. This is why circle
   centers are dropped from `snapPoints` under the compass (so a near-click can't
-  silently stack a ring).
+  silently stack a ring). **IMPORTANT exception to the mode-split rule:** the
+  compass-center `<Marker>` must be `interactive={selectMode || tool === 'compass'}`
+  (NOT just `selectMode`) — otherwise in compass mode the center is click-through,
+  the click falls to the map, and since centers aren't in `snapPoints` it drops a
+  *new* circle instead of opening the edit bar. Keep `tool === 'compass'` in that
+  marker's remount `key` too. (`draggable` stays `selectMode`-only — compass mode
+  edits, it doesn't drag.) Endpoint handles for line/bisector/measure keep the
+  plain `interactive={selectMode}`.
 - The toolbar still has **Undo** (removes the in-progress `pending` first click if
   any, otherwise the most-recently-added annotation) and **Clear**
   (`onClearAnnotations`).
