@@ -26,6 +26,8 @@ body { background: var(--bg); color: var(--text); }
 .toggles { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .chk { font-size: 13px; color: var(--muted); display: flex; gap: 5px; align-items: center; }
 .legend .info { font-size: 13px; color: var(--text); margin: 6px 0; line-height: 1.4; }
+.legend a, .panel a { color: #6cb0ff; text-decoration: underline; }
+.legend a:hover, .panel a:hover { color: #9ccbff; }
 .legend .info-tag { display: inline-block; background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; text-transform: capitalize; font-weight: 600; }
 
 .body { flex: 1; display: flex; min-height: 0; }

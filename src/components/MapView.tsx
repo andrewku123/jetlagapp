@@ -26,9 +26,10 @@ import transitData from '../data/transit-lines.geojson.json'
 
 const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
-// In-play counties drawn with their full legal (water-inclusive) boundaries so
-// the satellite clip covers the bay, not just the land. The plain land-clipped
-// `COUNTIES` set above is still used for the out-of-play dimming overlay.
+// In-play play area used for the satellite clip: the counties' legal boundaries
+// with the bay kept but the open Pacific (and offshore Farallones) removed — see
+// scripts/build_play_area.mjs. The plain land-clipped `COUNTIES` set above is
+// still used for the out-of-play dimming overlay.
 const IN_PLAY_FEATURES = (
   playAreaData as unknown as GeoJSON.FeatureCollection
 ).features.filter((f) =>

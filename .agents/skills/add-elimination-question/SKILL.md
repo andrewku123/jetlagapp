@@ -50,6 +50,25 @@ radius, etc.) you must first add that POI data per station (e.g. nearest-feature
 distance or in-radius counts via OSM/Overpass) in the enrichment step, then the
 predicate compares those precomputed values.
 
+### Coastline / "distance to the coast" questions
+The satellite-clip work already produced reusable coast geometry under `scripts/`,
+so a coast question doesn't need new downloads:
+- `scripts/play_area_src_water.geojson.json` — the in-play counties' full **legal
+  (water-inclusive)** boundaries (land + bay + a Pacific strip), Census TIGERweb.
+- `scripts/pacific_ocean.geojson.json` — Census TIGERweb "Pacific Ocean" areal
+  hydrography polygons for the region.
+- `scripts/build_play_area.mjs` — computes `water-inclusive ∖ Pacific Ocean` (and
+  drops the offshore Farallones) via `polygon-clipping`; its output is
+  `src/data/play-area.geojson.json` (land + bay only).
+
+To get a **coastline polyline**: take the boundary of the Pacific Ocean polygons
+(or the land∖ocean difference) and keep the rings/segments that border land — that
+ring is the Pacific shoreline. For a *bay* shoreline, intersect the land boundary
+with the bay water instead. Then precompute per station, in `build_attributes.py`,
+`coastDistMi` (min distance from the station to that polyline) for a Measuring
+question, and/or `nearestSaltwater` ('Pacific' vs 'Bay') for a Matching question,
+following the attribute pattern above.
+
 ## Conventions
 - Keep predicates pure and total; never throw on missing params.
 - Distances: stations store metric (`airportDist` in metres, `elevation` in
