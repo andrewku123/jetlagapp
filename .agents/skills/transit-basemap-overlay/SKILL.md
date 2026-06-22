@@ -35,11 +35,13 @@ to the play area for both perf and looks:
   Regenerate it with `node scripts/build_play_area.mjs` (uses
   `scripts/play_area_src_water.geojson.json` + `scripts/pacific_ocean.geojson.json`
   and `polygon-clipping`).
-- **Labels on top of imagery**: satellite would otherwise hide the basemap's road/
-  place names, so two Esri reference overlays (`SAT_LABEL_URLS`:
-  `World_Boundaries_and_Places` + `World_Transportation` — white text with dark
-  halos, made for imagery) are added to the **same clipped pane** at higher
-  `zIndex`, giving readable city/road names over the satellite.
+- **Labels on top of imagery**: satellite would otherwise hide the basemap's
+  place names, so an Esri reference overlay (`SAT_LABEL_URLS`:
+  `World_Boundaries_and_Places` — white text with dark halos, made for imagery) is
+  added to the **same clipped pane** at higher `zIndex`, giving readable city/town
+  names over the satellite. The dense road network (`World_Transportation`) is
+  deliberately *omitted* to avoid clutter — `SAT_LABEL_URLS` is a list, so add it
+  back there if road labels are wanted.
 
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous

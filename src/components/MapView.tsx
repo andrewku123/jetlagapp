@@ -120,12 +120,13 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-// Esri reference overlays designed to sit on imagery (white text + dark halo):
-// place/city names + admin boundaries, and road names + major roads. Shown above
-// the satellite so labels aren't hidden when imagery covers the labelled basemap.
+// Esri reference overlay designed to sit on imagery (white text + dark halo):
+// just place/city/neighborhood names + admin boundaries. Shown above the
+// satellite so names aren't hidden when imagery covers the labelled basemap. The
+// dense road network (World_Transportation) is intentionally left off to keep the
+// satellite view uncluttered — place names only is the in-between look.
 const SAT_LABEL_URLS = [
   'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
 ]
 
 function countyStyle(feature?: Feature<Geometry, { name: string }>) {
