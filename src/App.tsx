@@ -6,6 +6,7 @@ import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
+import { rewardForKind } from './data/questions'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
@@ -147,10 +148,22 @@ export default function App() {
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
   const manualSet = useMemo(() => new Set(game.manualEliminated), [game.manualEliminated])
 
+  // veto count: the nth veto (ordered by when it happened) scales the hider's
+  // reward by n. Un-vetoing renumbers the rest.
+  const vetoOrdinal = useMemo(() => {
+    const m = new Map<string, number>()
+    game.questions
+      .filter((q) => q.vetoed)
+      .slice()
+      .sort((a, b) => (a.vetoedAt ?? 0) - (b.vetoedAt ?? 0))
+      .forEach((q, i) => m.set(q.id, i + 1))
+    return m
+  }, [game.questions])
+
   const pickedPoints = useMemo(() => {
     const pts: { label: string; point: LatLng; color: string }[] = []
     for (const r of game.questions) {
-      if (!r.active) continue
+      if (!r.active || r.vetoed) continue
       if (r.kind === 'thermometer') {
         pts.push({ label: 'Thermo start', point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#2563eb' })
         pts.push({ label: 'Thermo end', point: { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }, color: '#7c3aed' })
@@ -170,6 +183,17 @@ export default function App() {
   }
   function toggleActive(id: string) {
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, active: !q.active } : q)) })
+  }
+  function toggleVeto(id: string) {
+    update({
+      questions: game.questions.map((q) =>
+        q.id === id
+          ? q.vetoed
+            ? { ...q, vetoed: false, vetoedAt: undefined }
+            : { ...q, vetoed: true, vetoedAt: Date.now() }
+          : q,
+      ),
+    })
   }
   function deleteQuestion(id: string) {
     update({ questions: game.questions.filter((q) => q.id !== id) })
@@ -347,16 +371,30 @@ export default function App() {
               {game.questions.length === 0 && <p className="hint">No questions logged yet.</p>}
               <ul className="qlist">
                 {game.questions.map((q) => (
-                  <li key={q.id} className={q.active ? '' : 'off'}>
+                  <li key={q.id} className={`${q.active ? '' : 'off'}${q.vetoed ? ' vetoed' : ''}`}>
                     <div className="qtext">
                       {describeRecord(q, game.units)}
                       {!q.eliminates && <span className="tag">info</span>}
+                      {q.vetoed && (
+                        <span className="tag veto">vetoed ×{vetoOrdinal.get(q.id) ?? 1}</span>
+                      )}
                     </div>
+                    {q.vetoed && (
+                      <div className="qreward">
+                        Hider reward: {rewardForKind(q.kind, vetoOrdinal.get(q.id) ?? 1)}
+                        {(vetoOrdinal.get(q.id) ?? 1) > 1 && (
+                          <span className="qreward-mult"> (×{vetoOrdinal.get(q.id)} — {vetoOrdinal.get(q.id)}{ordinalSuffix(vetoOrdinal.get(q.id) ?? 1)} veto)</span>
+                        )}
+                      </div>
+                    )}
                     {q.note && <div className="qnote">{q.note}</div>}
                     <div className="qactions">
-                      {q.eliminates && (
+                      {q.eliminates && !q.vetoed && (
                         <button onClick={() => toggleActive(q.id)}>{q.active ? 'Disable' : 'Enable'}</button>
                       )}
+                      <button onClick={() => toggleVeto(q.id)} title={q.vetoed ? 'Hider answered after all — restore' : 'Hider vetoed this question (no answer); ask it again later'}>
+                        {q.vetoed ? 'Un-veto' : 'Veto'}
+                      </button>
                       <button onClick={() => deleteQuestion(q.id)}>Delete</button>
                     </div>
                   </li>
@@ -506,4 +544,19 @@ function UnitsToggle({ value, onChange }: { value: UnitSystem; onChange: (u: Uni
 
 function uniqSorted(arr: string[]): string[] {
   return [...new Set(arr)].sort((a, b) => a.localeCompare(b))
+}
+
+function ordinalSuffix(n: number): string {
+  const t = n % 100
+  if (t >= 11 && t <= 13) return 'th'
+  switch (n % 10) {
+    case 1:
+      return 'st'
+    case 2:
+      return 'nd'
+    case 3:
+      return 'rd'
+    default:
+      return 'th'
+  }
 }

@@ -16,6 +16,13 @@ export interface QuestionMeta {
   blurb: string
 }
 
+// Scale a "draw X, keep Y" reward string by a whole-number multiplier (the veto
+// count). e.g. scaleCards('draw 2, keep 1', 2) === 'draw 4, keep 2'.
+export function scaleCards(cards: string, mult: number): string {
+  if (!Number.isFinite(mult) || mult <= 1) return cards
+  return cards.replace(/\d+/g, (d) => String(Number(d) * mult))
+}
+
 // Only the medium-game-legal questions that the engine can auto-apply, plus a
 // generic Photo logger. POI-based matching/measuring/tentacles are tracked
 // separately as they require extra geodata.
@@ -109,3 +116,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     blurb: 'Record a photo question + response for your own reference.',
   },
 ]
+
+export const QUESTION_BY_KIND: Record<QuestionKind, QuestionMeta> =
+  Object.fromEntries(QUESTION_CATALOG.map((q) => [q.kind, q])) as Record<
+    QuestionKind,
+    QuestionMeta
+  >
+
+// The hider's reward for a question, scaled if it was the nth veto.
+export function rewardForKind(kind: QuestionKind, vetoMult = 1): string {
+  return scaleCards(QUESTION_BY_KIND[kind]?.cards ?? '', vetoMult)
+}

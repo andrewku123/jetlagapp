@@ -627,7 +627,7 @@ export default function MapView({
   const seenThermoIds = useRef<Set<string>>(new Set())
   useEffect(() => {
     const activeIds = records
-      .filter((r) => r.active && r.eliminates && r.kind === 'thermometer')
+      .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'thermometer')
       .map((r) => r.id)
     const newIds = activeIds.filter((id) => !seenThermoIds.current.has(id))
     if (newIds.length === 0) return
@@ -1072,7 +1072,7 @@ export default function MapView({
             the circle; NO eliminates inside it. The circle outline always shows
             the radius. */}
         {records
-          .filter((r) => r.active && r.eliminates && r.kind === 'radar')
+          .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'radar')
           .map((r) => {
             const center = { lat: Number(r.params.lat), lon: Number(r.params.lon) }
             const radiusMiles = Number(r.params.radiusMiles)
@@ -1099,7 +1099,7 @@ export default function MapView({
         {/* thermometer boundary: perpendicular bisector of the from→to segment.
             The hotter half-plane is the side toward `to`. */}
         {records
-          .filter((r) => r.active && r.eliminates && r.kind === 'thermometer')
+          .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'thermometer')
           .map((r) => {
             const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
             const to = { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }

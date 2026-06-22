@@ -18,7 +18,7 @@ function nearestAirportMiles(p: LatLng): number {
  * Photo questions (and inactive / non-eliminating records) always return true.
  */
 export function stationPasses(station: Station, record: QuestionRecord): boolean {
-  if (!record.active || !record.eliminates) return true
+  if (!record.active || record.vetoed || !record.eliminates) return true
   const p = record.params
 
   switch (record.kind) {

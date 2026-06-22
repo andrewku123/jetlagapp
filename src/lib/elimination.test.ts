@@ -35,6 +35,12 @@ describe('stationPasses — gating', () => {
   it('photo questions never eliminate', () => {
     expect(stationPasses(station(), record('photo', {}))).toBe(true)
   })
+  it('vetoed questions never eliminate (no answer was given)', () => {
+    const far = station({ lat: 37.33, lon: -121.9 })
+    const r = record('radar', { lat: 37.7749, lon: -122.4194, radiusMiles: 1, answer: 'yes' })
+    expect(stationPasses(far, r)).toBe(false)
+    expect(stationPasses(far, { ...r, vetoed: true })).toBe(true)
+  })
 })
 
 describe('stationPasses — radar', () => {

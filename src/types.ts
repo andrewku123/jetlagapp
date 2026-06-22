@@ -57,6 +57,12 @@ export interface QuestionRecord {
   eliminates: boolean
   // whether this record is active in the filter
   active: boolean
+  // hider vetoed the question: no answer was given, so it eliminates nothing,
+  // but it's kept (tagged) so the seeker knows they can ask it again.
+  vetoed?: boolean
+  // when it was vetoed (ms). Used to order vetoes so the nth veto scales the
+  // hider's reward by n.
+  vetoedAt?: number
 }
 
 // Manual compass / straightedge annotations the seeker draws on the map.

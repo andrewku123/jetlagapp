@@ -69,6 +69,20 @@ with the bay water instead. Then precompute per station, in `build_attributes.py
 question, and/or `nearestSaltwater` ('Pacific' vs 'Bay') for a Matching question,
 following the attribute pattern above.
 
+## Veto (hider refuses to answer)
+A logged question can be **vetoed** by the hider (no answer given). On the History
+tab each question has a **Veto / Un-veto** button (`toggleVeto` in `App.tsx`).
+- A vetoed record carries `vetoed: true` + `vetoedAt` (ms). `stationPasses` returns
+  `true` for any vetoed record (it eliminates nothing — same gate as inactive /
+  non-eliminating), and `MapView`'s radar/thermometer overlays + `pickedPoints`
+  skip `vetoed` records too. The question stays in the list (struck through, tagged
+  `vetoed ×n`) so the seeker knows they can ask it again.
+- **Escalating reward:** the nth veto (ordered by `vetoedAt`) multiplies the
+  hider's card reward by n (1st ×1, 2nd ×2, 3rd ×3 …). `App.tsx` computes the
+  ordinal (`vetoOrdinal`, recomputed so Un-veto renumbers the rest) and shows the
+  scaled `cards` via `rewardForKind(kind, n)` / `scaleCards` in `src/data/questions.ts`
+  (`scaleCards` just multiplies every integer in a "draw X, keep Y" string).
+
 ## Conventions
 - Keep predicates pure and total; never throw on missing params.
 - Distances: stations store metric (`airportDist` in metres, `elevation` in
