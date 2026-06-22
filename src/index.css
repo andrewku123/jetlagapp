@@ -152,8 +152,6 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .tag.veto { background: #4a1f1f; color: #ff9a9a; }
 .qlist li.vetoed { border-color: #6b2a2a; }
 .qlist li.vetoed .qtext { text-decoration: line-through; text-decoration-color: rgba(255, 154, 154, 0.6); }
-.qreward { font-size: 12px; color: #ff9a9a; margin-top: 3px; }
-.qreward-mult { color: var(--muted); }
 .qactions { display: flex; gap: 6px; margin-top: 6px; }
 .qactions button { font-size: 12px; padding: 4px 8px; }
 
