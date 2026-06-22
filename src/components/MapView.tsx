@@ -120,6 +120,13 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+// Esri reference overlays designed to sit on imagery (white text + dark halo):
+// place/city names + admin boundaries, and road names + major roads. Shown above
+// the satellite so labels aren't hidden when imagery covers the labelled basemap.
+const SAT_LABEL_URLS = [
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+]
 
 function countyStyle(feature?: Feature<Geometry, { name: string }>) {
   const inPlay = feature ? IN_PLAY_COUNTIES.has(feature.properties.name) : false
@@ -398,9 +405,23 @@ function SatelliteLayer() {
         bounds: PLAY_BOUNDS,
         maxZoom: 20,
         pane: paneName,
+        zIndex: 1,
       },
     )
     layer.addTo(map)
+
+    // Label overlays in the same (clipped) pane, above the imagery, so road and
+    // place names stay visible where the satellite covers the labelled basemap.
+    const labelLayers = SAT_LABEL_URLS.map((url, i) => {
+      const l = new (SatelliteTileLayer as SatelliteTileLayerCtor)(url, {
+        bounds: PLAY_BOUNDS,
+        maxZoom: 20,
+        pane: paneName,
+        zIndex: 2 + i,
+      })
+      l.addTo(map)
+      return l
+    })
 
     const updateClip = () => {
       let d = ''
@@ -419,6 +440,7 @@ function SatelliteLayer() {
     return () => {
       map.off('viewreset zoomend moveend resize', updateClip)
       map.removeLayer(layer)
+      for (const l of labelLayers) map.removeLayer(l)
       pane.style.clipPath = ''
       svg.remove()
     }

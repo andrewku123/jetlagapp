@@ -19,6 +19,28 @@ basemap cannot fully delete freeways — to remove them entirely you'd need a ve
 basemap (MapLibre + a custom style JSON). Use `light_nolabels` for no place
 labels.
 
+## Satellite layer (`src/components/MapView.tsx`, `SatelliteLayer`)
+Optional Esri **World Imagery** layer toggled by the `satellite` prop, restricted
+to the play area for both perf and looks:
+- Lives in its own `'satellite'` pane (zIndex 250: above base tiles, below the
+  400 overlay pane), masked by an **SVG `clip-path`** built from `PLAY_RINGS` and
+  rebuilt on `viewreset zoomend moveend resize` so imagery only shows inside the
+  play-area polygons. The pane is `leaflet-zoom-hide` so the clip never lags.
+- Tiles are culled: `SatelliteTileLayer` overrides `_isValidTile` to skip any tile
+  whose bounds don't intersect the play area (`boxIntersectsPlay`), so off-area
+  tiles never download.
+- The clip/cull shape is `src/data/play-area.geojson.json` — the in-play counties'
+  legal **water-inclusive** boundaries **minus the Pacific Ocean** (and the
+  offshore Farallones), so the bay shows imagery but the open ocean doesn't.
+  Regenerate it with `node scripts/build_play_area.mjs` (uses
+  `scripts/play_area_src_water.geojson.json` + `scripts/pacific_ocean.geojson.json`
+  and `polygon-clipping`).
+- **Labels on top of imagery**: satellite would otherwise hide the basemap's road/
+  place names, so two Esri reference overlays (`SAT_LABEL_URLS`:
+  `World_Boundaries_and_Places` + `World_Transportation` — white text with dark
+  halos, made for imagery) are added to the **same clipped pane** at higher
+  `zIndex`, giving readable city/road names over the satellite.
+
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous
 line chain** — each with `properties = { system, colors }` (`colors` is a single
