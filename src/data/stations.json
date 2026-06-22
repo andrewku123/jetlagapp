@@ -925,19 +925,16 @@
   "lat": 37.733235,
   "lon": -122.433515,
   "systems": [
-   "BART",
-   "Muni"
+   "BART"
   ],
   "lines": [
    "BART Blue (Dublin/Pleasanton–Daly City)",
    "BART Green (Berryessa–Daly City)",
    "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)",
-   "Muni J"
+   "BART Yellow (Antioch–SFO/Millbrae)"
   ],
   "aka": [
-   "Glen Park",
-   "San Jose Ave/Glen Park Station"
+   "Glen Park"
   ],
   "service": {
    "wd": {
@@ -963,6 +960,46 @@
   "headwayMin": {
    "wd": 4.0,
    "we": 4.0
+  }
+ },
+ {
+  "name": "San Jose Ave/Glen Park Station",
+  "lat": 37.7325,
+  "lon": -122.4334,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "San Jose Ave/Glen Park Station",
+   "Glen Park"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s259",
+  "nameLength": 30,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 50.0,
+  "airportDist": {
+   "SFO": 13400.0,
+   "OAK": 18850.0,
+   "SJC": 60550.0
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
   }
  },
  {
