@@ -127,7 +127,7 @@ export default function QuestionForm({
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
   const [note, setNote] = useState<string>('')
 
-  function submit() {
+  function submit(vetoed = false) {
     let params: Record<string, unknown> = {}
     switch (kind) {
       case 'radar': {
@@ -183,6 +183,9 @@ export default function QuestionForm({
         break
       }
     }
+    // A vetoed question carries no answer (the hider refused to answer), so it
+    // eliminates nothing but is still logged.
+    if (vetoed) delete params.answer
     onSubmit({
       id: uid(),
       kind,
@@ -191,6 +194,7 @@ export default function QuestionForm({
       note: note || undefined,
       eliminates: meta.eliminates,
       active: true,
+      ...(vetoed ? { vetoed: true } : {}),
     })
     // reset point captures but keep kind
     setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius('')
@@ -359,7 +363,18 @@ export default function QuestionForm({
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
 
-      <button className="primary" onClick={submit}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
+      <div className="qform-actions">
+        <button className="primary" onClick={() => submit(false)}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
+        {kind !== 'photo' && (
+          <button
+            className="veto"
+            onClick={() => submit(true)}
+            title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
+          >
+            Hider vetoed
+          </button>
+        )}
+      </div>
     </div>
   )
 }

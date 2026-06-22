@@ -6,6 +6,8 @@ import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
+import { rewardForKind, THERMOMETER_OPTIONS } from './data/questions'
+import { haversineMiles } from './lib/geo'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
@@ -147,6 +149,26 @@ export default function App() {
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
   const manualSet = useMemo(() => new Set(game.manualEliminated), [game.manualEliminated])
 
+  // Repeat-question reward: the nth time the SAME question is asked, the hider's
+  // reward is multiplied by n. "Same question" = same kind, except radar and
+  // thermometer also depend on their distance (a 5mi radar and a 10mi radar are
+  // different questions; two 5mi radars are the same). Map each record id -> its
+  // 1-based ask ordinal within its group (in ask order).
+  const askOrdinal = useMemo(() => {
+    const m = new Map<string, number>()
+    const counts = new Map<string, number>()
+    game.questions
+      .slice()
+      .sort((a, b) => a.createdAt - b.createdAt)
+      .forEach((q) => {
+        const key = questionGroupKey(q)
+        const n = (counts.get(key) ?? 0) + 1
+        counts.set(key, n)
+        m.set(q.id, n)
+      })
+    return m
+  }, [game.questions])
+
   const pickedPoints = useMemo(() => {
     const pts: { label: string; point: LatLng; color: string }[] = []
     for (const r of game.questions) {
@@ -170,9 +192,6 @@ export default function App() {
   }
   function toggleActive(id: string) {
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, active: !q.active } : q)) })
-  }
-  function toggleVeto(id: string) {
-    update({ questions: game.questions.map((q) => (q.id === id ? { ...q, vetoed: !q.vetoed } : q)) })
   }
   function deleteQuestion(id: string) {
     update({ questions: game.questions.filter((q) => q.id !== id) })
@@ -356,14 +375,26 @@ export default function App() {
                       {!q.eliminates && <span className="tag">info</span>}
                       {q.vetoed && <span className="tag veto">vetoed</span>}
                     </div>
+                    {!q.vetoed &&
+                      (() => {
+                        const n = askOrdinal.get(q.id) ?? 1
+                        return (
+                          <div className="qreward">
+                            Hider reward: {rewardForKind(q.kind, n)}
+                            {n > 1 && (
+                              <span className="qreward-mult">
+                                {' '}(×{n} — {n}
+                                {ordinalSuffix(n)} time asked)
+                              </span>
+                            )}
+                          </div>
+                        )
+                      })()}
                     {q.note && <div className="qnote">{q.note}</div>}
                     <div className="qactions">
                       {q.eliminates && !q.vetoed && (
                         <button onClick={() => toggleActive(q.id)}>{q.active ? 'Disable' : 'Enable'}</button>
                       )}
-                      <button onClick={() => toggleVeto(q.id)} title={q.vetoed ? 'Hider answered after all — restore' : 'Hider vetoed this question (no answer); ask it again later'}>
-                        {q.vetoed ? 'Un-veto' : 'Veto'}
-                      </button>
                       <button onClick={() => deleteQuestion(q.id)}>Delete</button>
                     </div>
                   </li>
@@ -513,6 +544,42 @@ function UnitsToggle({ value, onChange }: { value: UnitSystem; onChange: (u: Uni
 
 function uniqSorted(arr: string[]): string[] {
   return [...new Set(arr)].sort((a, b) => a.localeCompare(b))
+}
+
+// Key that defines whether two asks count as "the same question" for the repeat
+// reward multiplier. Most kinds key on kind alone; radar and thermometer also
+// key on their distance, snapped to the medium-game options so tiny GPS jitter
+// between two same-distance asks still groups them together.
+function questionGroupKey(q: QuestionRecord): string {
+  if (q.kind === 'radar') {
+    return `radar:${Number(q.params.radiusMiles)}`
+  }
+  if (q.kind === 'thermometer') {
+    const travel = haversineMiles(
+      { lat: Number(q.params.fromLat), lon: Number(q.params.fromLon) },
+      { lat: Number(q.params.toLat), lon: Number(q.params.toLon) },
+    )
+    const bucket = THERMOMETER_OPTIONS.reduce((best, o) =>
+      Math.abs(o - travel) < Math.abs(best - travel) ? o : best,
+    )
+    return `thermometer:${bucket}`
+  }
+  return q.kind
+}
+
+function ordinalSuffix(n: number): string {
+  const t = n % 100
+  if (t >= 11 && t <= 13) return 'th'
+  switch (n % 10) {
+    case 1:
+      return 'st'
+    case 2:
+      return 'nd'
+    case 3:
+      return 'rd'
+    default:
+      return 'th'
+  }
 }
 
 

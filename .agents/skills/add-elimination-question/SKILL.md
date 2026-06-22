@@ -70,14 +70,38 @@ question, and/or `nearestSaltwater` ('Pacific' vs 'Bay') for a Matching question
 following the attribute pattern above.
 
 ## Veto (hider refuses to answer)
-A logged question can be **vetoed** by the hider (no answer given). On the History
-tab each question has a **Veto / Un-veto** button (`toggleVeto` in `App.tsx`) that
-flips `vetoed: true` on the record. `stationPasses` returns `true` for any vetoed
-record (it eliminates nothing — same gate as inactive / non-eliminating), and
-`MapView`'s radar/thermometer overlays + `pickedPoints` skip `vetoed` records too.
-The question stays in the list (struck through, tagged `vetoed`) so the seeker
-knows they can ask it again. (Note: the game's "ask the same question a 2nd time →
-reward doubled" rule is a *separate* mechanic unrelated to vetoes.)
+A question is **vetoed** when the hider refuses to answer. You only know a question
+is vetoed at *ask* time (you never get a yes/no), and the normal "Log" path forces
+you to pick an answer — so the veto action lives in the **Ask form**, not History.
+- `QuestionForm`'s `submit(vetoed)` builds the params as usual, then `delete
+  params.answer` and sets `vetoed: true` when vetoed. The "**Hider vetoed**" button
+  calls `submit(true)`; it's hidden for `photo` (no hider answer). It validates the
+  identifying params (center/points/value) but not an answer.
+- A vetoed record has **no `answer`**. `describeRecord` drops the "→ answer" suffix
+  when `params.answer == null`. `stationPasses` returns `true` for any vetoed record
+  (eliminates nothing — same gate as inactive / non-eliminating); `MapView`'s
+  radar/thermometer overlays + `pickedPoints` skip `vetoed` records.
+- On History a vetoed row is struck through, tagged `vetoed`, shows **no** Hider
+  reward, and only offers **Delete** (no Disable/Un-veto — there's no answer to
+  restore; to use it, ask it again with the answer).
+
+## Repeat-question reward multiplier
+Game rule: the **nth time the same question is asked**, the hider's card reward is
+multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
+- "Same question" is decided by `questionGroupKey(q)` in `App.tsx`:
+  - **radar** keys on `radiusMiles` (`radar:5` vs `radar:10` are different
+    questions; two 5mi radars are the same — center is ignored).
+  - **thermometer** keys on travel distance `haversineMiles(A,B)` snapped to the
+    nearest `THERMOMETER_OPTIONS` bucket (so GPS jitter between two same-distance
+    asks still groups them).
+  - every other kind keys on `kind` alone (`match-county` ≠ `match-city`, etc.).
+  - If you add a new parameterised question whose cost depends on a param, extend
+    `questionGroupKey` to include that param.
+- `App.tsx` builds `askOrdinal` (memo): records sorted by `createdAt`, each gets a
+  1-based ordinal within its group key. A **vetoed** ask still counts toward the tally.
+- The History row shows `rewardForKind(kind, n)` (in `src/data/questions.ts`), which
+  applies `scaleCards` — multiplies every integer in the "draw X, keep Y" string by
+  n. Base reward per kind is the `cards` field in `QUESTION_CATALOG`.
 
 ## Conventions
 - Keep predicates pure and total; never throw on missing params.
