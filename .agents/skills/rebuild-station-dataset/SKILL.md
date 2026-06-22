@@ -182,8 +182,11 @@ npm run lint && npx tsc -b --noEmit && npm test && npm run build
 ```
 Then `npm run dev` and confirm the map renders all stations and the
 weekday/weekend + "≥hourly only" toggles change the "N of M possible" count.
-Also regenerate `STATIONS.md` and the standalone `public/stations-map.html` if
-the set changed (they embed the station list).
+Also regenerate `STATIONS.md` (docs only) with `node scripts/build_stations_md.mjs`
+and the standalone `public/stations-map.html` if the set changed (they embed the
+station list). `build_stations_md.mjs` lists each station once under its PRIMARY
+system (priority `BART > Caltrain > VTA > Muni > SFO AirTrain`), tags shared
+stations, and strips the primary system's own line prefix.
 
 ## Gotchas
 - Run the scripts from `scripts/`; they use relative input paths but `build_attributes.py`/`patch_lines.py` write to an **absolute** app path — update that constant if the repo lives elsewhere.

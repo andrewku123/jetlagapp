@@ -1,15 +1,14 @@
 # Bay Area Hide & Seek — Eligible Stations
 
-**246 unique hideable stations** (deduped within and across systems).
-Eligible counts after the <1 hr-frequency rule: 245 weekday / 246 weekend.
+**260 unique hideable stations** (deduped within and across systems).
+Eligible counts after the <1 hr-frequency rule: 259 weekday / 260 weekend.
 
 Hide only at these stations; travel by any public transit. WD/WE = served on weekday/weekend; ✓ = at least hourly during the daytime window.
 
 Stations are grouped below by **primary system**, so each shared station is
 listed once (e.g. 4th & King appears under Caltrain, not also under Muni); the
 "shared" tag notes the other systems. Per-system *membership* counts (a shared
-station counted in every system it serves) are BART 50 · Caltrain 24 · VTA 59 ·
-Muni 124. (10 F-only surface stops on Market St inland of Embarcadero are
+station counted in every system it serves) are BART 50 · Caltrain 24 · VTA 59 · Muni 128 · SFO AirTrain 11. (10 F-only surface stops on Market St inland of Embarcadero are
 excluded — they sit directly above the Muni Metro subway and duplicate those
 stations.)
 
@@ -18,8 +17,9 @@ stations.)
 | BART | 50 |
 | Caltrain | 23 |
 | VTA | 55 |
-| Muni | 118 |
-| **Total (deduped)** | **246** |
+| Muni | 122 |
+| SFO AirTrain | 10 |
+| **Total (deduped)** | **260** |
 
 ## BART (50)
 
@@ -66,7 +66,7 @@ stations.)
 | Richmond | Orange (Berryessa–Richmond), Red (Richmond–Millbrae/SFO) | ✓ | ✓ | 37.9368, -122.3530 |
 | Rockridge | Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.8448, -122.2512 |
 | San Bruno (BART) | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6377, -122.4163 |
-| San Francisco International Airport | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6161, -122.3920 |
+| San Francisco International Airport _(shared: BART, SFO AirTrain)_ | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae), SFO AirTrain | ✓ | ✓ | 37.6161, -122.3920 |
 | San Leandro | Blue (Dublin/Pleasanton–Daly City), Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.7218, -122.1607 |
 | South Hayward | Green (Berryessa–Daly City), Orange (Berryessa–Richmond) | ✓ | ✓ | 37.6343, -122.0572 |
 | South San Francisco (BART) | Red (Richmond–Millbrae/SFO), Yellow (Antioch–SFO/Millbrae) | ✓ | ✓ | 37.6645, -122.4442 |
@@ -152,10 +152,10 @@ stations.)
 | Race | Green | ✓ | ✓ | 37.3172, -121.9108 |
 | Reamwood | Orange | ✓ | ✓ | 37.4035, -121.9874 |
 | River Oaks | Blue, Green | ✓ | ✓ | 37.4028, -121.9401 |
-| Saint James | Blue, Green | ✓ | ✓ | 37.3384, -121.8921 |
-| San Antonio (VTA) | Blue, Green | ✓ | ✓ | 37.3328, -121.8880 |
+| Saint James | Blue, Green | ✓ | ✓ | 37.3388, -121.8912 |
+| San Antonio (VTA) | Blue, Green | ✓ | ✓ | 37.3333, -121.8871 |
 | San Fernando | Green | ✓ | ✓ | 37.3302, -121.8991 |
-| Santa Clara (VTA) | Blue, Green | ✓ | ✓ | 37.3359, -121.8903 |
+| Santa Clara (VTA) | Blue, Green | ✓ | ✓ | 37.3364, -121.8894 |
 | Santa Teresa | Blue | ✓ | ✓ | 37.2367, -121.7892 |
 | Snell | Blue | ✓ | ✓ | 37.2481, -121.8313 |
 | Tasman | Blue, Green | ✓ | ✓ | 37.4087, -121.9444 |
@@ -164,126 +164,144 @@ stations.)
 | Whisman | Orange | ✓ | ✓ | 37.3921, -122.0583 |
 | Winchester | Green | ✓ | ✓ | 37.2796, -121.9479 |
 
-## Muni (118)
+## Muni (122)
 
 | Station | Lines | WD | WE | Lat, Lon |
 |---|---|:--:|:--:|---|
-| 15th Avenue & Taraval Street | L | ✓ | ✓ | 37.7431, -122.4714 |
-| 19th Avenue & Holloway Avenue | M | ✓ | ✓ | 37.7217, -122.4752 |
-| 19th Avenue & North Randolph Street | M | ✓ | ✓ | 37.7165, -122.4720 |
-| 19th Avenue & Randolph Street | M | ✓ | ✓ | 37.7146, -122.4701 |
-| 19th Avenue & Winston Drive | M | ✓ | ✓ | 37.7274, -122.4749 |
-| 20th Street | T | ✓ | ✓ | 37.7605, -122.3886 |
-| 23rd Street | T | ✓ | ✓ | 37.7554, -122.3880 |
-| 2nd & King | N | ✓ | ✓ | 37.7793, -122.3902 |
-| 30th Street & Dolores Street | J | ✓ | ✓ | 37.7422, -122.4243 |
-| 46th Avenue & Taraval Street | L | ✓ | ✓ | 37.7417, -122.5045 |
-| 46th Avenue & Ulloa Street | L | ✓ | ✓ | 37.7399, -122.5045 |
-| 46th Avenue & Vicente Street | L | ✓ | ✓ | 37.7381, -122.5044 |
-| 9th Avenue & Irving Street | N | ✓ | ✓ | 37.7638, -122.4657 |
-| Arleta | T | ✓ | ✓ | 37.7123, -122.4020 |
-| Beach Street & Mason Street | F | ✓ | ✓ | 37.8079, -122.4148 |
-| Brannan | N | ✓ | ✓ | 37.7840, -122.3881 |
-| Broad Street & Capitol Avenue | M | ✓ | ✓ | 37.7132, -122.4590 |
-| Broad Street & Plymouth Avenue | M | ✓ | ✓ | 37.7132, -122.4561 |
-| Carl Street & Cole Street | N | ✓ | ✓ | 37.7658, -122.4500 |
-| Carl Street & Hillway Avenue | N | ✓ | ✓ | 37.7650, -122.4563 |
-| Carl Street & Stanyan Street | N | ✓ | ✓ | 37.7655, -122.4528 |
-| Carroll | T | ✓ | ✓ | 37.7255, -122.3943 |
-| Castro Station | F, K, L, M | ✓ | ✓ | 37.7632, -122.4343 |
+| 15th Ave & Taraval St | L | ✓ | ✓ | 37.7431, -122.4714 |
+| 19th Ave & Holloway Ave (SF State) | M | ✓ | ✓ | 37.7217, -122.4752 |
+| 19th Ave & North Randolph St | M | ✓ | ✓ | 37.7165, -122.4720 |
+| 19th Ave & Randolph St | M | ✓ | ✓ | 37.7146, -122.4701 |
+| 19th Ave & Winston Dr (Stonestown) | M | ✓ | ✓ | 37.7274, -122.4749 |
+| 30th St & Dolores St | J | ✓ | ✓ | 37.7422, -122.4243 |
+| 3rd St & 20th St | T | ✓ | ✓ | 37.7605, -122.3886 |
+| 3rd St & 23rd St | T | ✓ | ✓ | 37.7554, -122.3880 |
+| 3rd St & Carroll Ave | T | ✓ | ✓ | 37.7255, -122.3943 |
+| 3rd St & Evans Ave | T | ✓ | ✓ | 37.7427, -122.3879 |
+| 3rd St & Gilman/Paul | T | ✓ | ✓ | 37.7224, -122.3957 |
+| 3rd St & Hudson/Innes | T | ✓ | ✓ | 37.7399, -122.3889 |
+| 3rd St & Kirkwood/La Salle | T | ✓ | ✓ | 37.7376, -122.3898 |
+| 3rd St & Le Conte Ave | T | ✓ | ✓ | 37.7185, -122.3979 |
+| 3rd St & Marin St | T | ✓ | ✓ | 37.7490, -122.3875 |
+| 3rd St & Mission Rock St | T | ✓ | ✓ | 37.7729, -122.3897 |
+| 3rd St & Oakdale/Palou | T | ✓ | ✓ | 37.7344, -122.3909 |
+| 3rd St & Revere/Shafter | T | ✓ | ✓ | 37.7320, -122.3917 |
+| 3rd St & Williams Ave | T | ✓ | ✓ | 37.7292, -122.3927 |
+| 46th Ave & Taraval St | L | ✓ | ✓ | 37.7417, -122.5045 |
+| 46th Ave & Ulloa St | L | ✓ | ✓ | 37.7399, -122.5045 |
+| 46th Ave & Vicente St | L | ✓ | ✓ | 37.7381, -122.5044 |
+| 4th St & Brannan St | T | ✓ | ✓ | 37.7787, -122.3970 |
+| Bayshore Blvd & Arleta/Blanken | T | ✓ | ✓ | 37.7123, -122.4020 |
+| Bayshore Blvd & Sunnydale Ave | T | ✓ | ✓ | 37.7094, -122.4049 |
+| Beach St & Mason St | F | ✓ | ✓ | 37.8074, -122.4141 |
+| Beach St & Stockton St | F | ✓ | ✓ | 37.8078, -122.4108 |
+| Broad St & Capitol Ave | M | ✓ | ✓ | 37.7132, -122.4590 |
+| Broad St & Orizaba Ave | M | ✓ | ✓ | 37.7133, -122.4625 |
+| Broad St & Plymouth Ave | M | ✓ | ✓ | 37.7132, -122.4561 |
+| Carl St & Cole St | N | ✓ | ✓ | 37.7658, -122.4500 |
+| Carl St & Hillway Ave | N | ✓ | ✓ | 37.7650, -122.4563 |
+| Carl St & Stanyan St | N | ✓ | ✓ | 37.7655, -122.4528 |
+| Castro Station | K, L, M | ✓ | ✓ | 37.7632, -122.4343 |
 | Chinatown-Rose Pak | T | ✓ | ✓ | 37.7948, -122.4081 |
-| Church St Station | F, K, L, M | ✓ | ✓ | 37.7672, -122.4292 |
-| Church Street & 16th Street | J | ✓ | ✓ | 37.7645, -122.4287 |
-| Church Street & 22nd Street | J | ✓ | ✓ | 37.7546, -122.4277 |
-| Church Street & 24th Street | J | ✓ | ✓ | 37.7519, -122.4275 |
-| Church Street & 26th Street | J | ✓ | ✓ | 37.7485, -122.4271 |
-| Church Street & 28th Street | J | ✓ | ✓ | 37.7453, -122.4268 |
-| Church Street & Day Street | J | ✓ | ✓ | 37.7428, -122.4266 |
-| Church Street & Duboce Avenue | J, N | ✓ | ✓ | 37.7694, -122.4292 |
+| Church St & 16th St | J | ✓ | ✓ | 37.7645, -122.4287 |
+| Church St & 22nd St | J | ✓ | ✓ | 37.7546, -122.4277 |
+| Church St & 24th St | J | ✓ | ✓ | 37.7519, -122.4275 |
+| Church St & 26th St | J | ✓ | ✓ | 37.7485, -122.4271 |
+| Church St & 28th St | J | ✓ | ✓ | 37.7453, -122.4268 |
+| Church St & Day St | J | ✓ | ✓ | 37.7428, -122.4266 |
+| Church St & Duboce Ave | J, N | ✓ | ✓ | 37.7694, -122.4292 |
+| Church St Station | K, L, M | ✓ | ✓ | 37.7672, -122.4292 |
 | City College Pedestrian Bridge | K | ✓ | ✓ | 37.7230, -122.4510 |
-| Don Chee Way & Steuart Street | F | ✓ | ✓ | 37.7940, -122.3936 |
-| Evans | T | ✓ | ✓ | 37.7427, -122.3879 |
-| Ferry Building | F | ✓ | ✓ | 37.7952, -122.3940 |
-| Folsom | N | ✓ | ✓ | 37.7902, -122.3893 |
+| Don Chee Way & Steuart St | F | ✓ | ✓ | 37.7940, -122.3936 |
 | Forest Hill Station | K, L, M | ✓ | ✓ | 37.7480, -122.4591 |
-| Fourth/Brannan | T | ✓ | ✓ | 37.7787, -122.3970 |
-| Gilman/Paul | T | ✓ | ✓ | 37.7224, -122.3957 |
-| Hudson/Innes | T | ✓ | ✓ | 37.7399, -122.3889 |
-| Irving Street & 2nd Avenue | N | ✓ | ✓ | 37.7644, -122.4585 |
-| Irving Street & 6th Avenue | N | ✓ | ✓ | 37.7642, -122.4626 |
-| Jefferson Street & Powell Street | F | ✓ | ✓ | 37.8086, -122.4134 |
-| Jones Street & Beach Street | F | ✓ | ✓ | 37.8073, -122.4174 |
-| Judah Street & 12th Avenue | N | ✓ | ✓ | 37.7620, -122.4701 |
-| Judah Street & 16th Avenue | N | ✓ | ✓ | 37.7619, -122.4733 |
-| Judah Street & 19th Avenue | N | ✓ | ✓ | 37.7617, -122.4768 |
-| Judah Street & 22nd Avenue | N | ✓ | ✓ | 37.7616, -122.4804 |
-| Judah Street & 25th Avenue | N | ✓ | ✓ | 37.7614, -122.4834 |
-| Judah Street & 28th Avenue | N | ✓ | ✓ | 37.7613, -122.4864 |
-| Judah Street & 31st Avenue | N | ✓ | ✓ | 37.7612, -122.4895 |
-| Judah Street & 34th Avenue | N | ✓ | ✓ | 37.7610, -122.4931 |
-| Judah Street & 40th Avenue | N | ✓ | ✓ | 37.7607, -122.4991 |
-| Judah Street & 43rd Avenue | N | ✓ | ✓ | 37.7606, -122.5027 |
-| Judah Street & 46th Avenue | N | ✓ | ✓ | 37.7604, -122.5059 |
-| Judah Street & 48th Avenue | N | ✓ | ✓ | 37.7603, -122.5087 |
-| Judah Street & 9th Avenue | N | ✓ | ✓ | 37.7622, -122.4667 |
-| Judah Street & Sunset Boulevard | N | ✓ | ✓ | 37.7609, -122.4959 |
-| Junipero Serra Boulevard & Ocean Avenue | K | ✓ | ✓ | 37.7316, -122.4718 |
-| Kirkwood/La Salle | T | ✓ | ✓ | 37.7376, -122.3898 |
-| Le Conte | T | ✓ | ✓ | 37.7185, -122.3979 |
-| Marin Street | T | ✓ | ✓ | 37.7490, -122.3875 |
-| Mission Rock (Northbound) | T | ✓ | ✓ | 37.7729, -122.3897 |
-| Oakdale/Palou | T | ✓ | ✓ | 37.7344, -122.3909 |
-| Ocean Avenue & Aptos Avenue | K | ✓ | ✓ | 37.7283, -122.4677 |
-| Ocean Avenue & Fairfield Way | K | ✓ | ✓ | 37.7260, -122.4642 |
-| Ocean Avenue & Jules Avenue | K | ✓ | ✓ | 37.7250, -122.4612 |
-| Ocean Avenue & Lee Avenue | K | ✓ | ✓ | 37.7235, -122.4541 |
-| Ocean Avenue & Miramar Avenue | K | ✓ | ✓ | 37.7243, -122.4582 |
-| Ocean Avenue & San Leandro Way | K | ✓ | ✓ | 37.7300, -122.4694 |
-| Ocean Avenue & Westgate Drive | K | ✓ | ✓ | 37.7272, -122.4667 |
-| Orizaba Avenue & Broad Street | M | ✓ | ✓ | 37.7133, -122.4625 |
-| Pier 39 | F | ✓ | ✓ | 37.8080, -122.4107 |
-| Randolph Street & Arch Street | M | ✓ | ✓ | 37.7143, -122.4671 |
-| Randolph Street & Bright Street | M | ✓ | ✓ | 37.7143, -122.4635 |
-| Revere/Shafter | T | ✓ | ✓ | 37.7320, -122.3917 |
-| Right of Way & 18th Street | J | ✓ | ✓ | 37.7612, -122.4283 |
-| Right of Way & 20th Street | J | ✓ | ✓ | 37.7584, -122.4279 |
-| Right of Way & 21st Street | J | ✓ | ✓ | 37.7570, -122.4270 |
-| Right of Way & Ocean Avenue | M | ✓ | ✓ | 37.7315, -122.4741 |
+| Irving St & 5th Ave | N | ✓ | ✓ | 37.7642, -122.4621 |
+| Irving St & 8th Ave | N | ✓ | ✓ | 37.7640, -122.4654 |
+| Irving St & Arguello Blvd | N | ✓ | ✓ | 37.7644, -122.4580 |
+| Jefferson St & Powell St | F | ✓ | ✓ | 37.8086, -122.4134 |
+| Jefferson St & Taylor St | F | ✓ | ✓ | 37.8083, -122.4155 |
+| Jones St & Beach St | F | ✓ | ✓ | 37.8073, -122.4174 |
+| Judah St & 12th Ave | N | ✓ | ✓ | 37.7620, -122.4695 |
+| Judah St & 15th Ave | N | ✓ | ✓ | 37.7618, -122.4728 |
+| Judah St & 19th Ave | N | ✓ | ✓ | 37.7617, -122.4768 |
+| Judah St & 22nd Ave | N | ✓ | ✓ | 37.7616, -122.4804 |
+| Judah St & 25th Ave | N | ✓ | ✓ | 37.7614, -122.4834 |
+| Judah St & 28th Ave | N | ✓ | ✓ | 37.7613, -122.4864 |
+| Judah St & 31st Ave | N | ✓ | ✓ | 37.7612, -122.4895 |
+| Judah St & 34th Ave | N | ✓ | ✓ | 37.7610, -122.4931 |
+| Judah St & 40th Ave | N | ✓ | ✓ | 37.7607, -122.4991 |
+| Judah St & 43rd Ave | N | ✓ | ✓ | 37.7606, -122.5027 |
+| Judah St & 46th Ave | N | ✓ | ✓ | 37.7604, -122.5059 |
+| Judah St & 9th Ave | N | ✓ | ✓ | 37.7622, -122.4667 |
+| Judah St & Funston Ave | N | ✓ | ✓ | 37.7619, -122.4706 |
+| Judah St & La Playa St (Ocean Beach) | N | ✓ | ✓ | 37.7603, -122.5082 |
+| Judah St & Sunset Blvd | N | ✓ | ✓ | 37.7609, -122.4959 |
+| Junipero Serra Blvd & Ocean Ave | K | ✓ | ✓ | 37.7316, -122.4718 |
+| King St & 2nd St | N | ✓ | ✓ | 37.7793, -122.3902 |
+| Ocean Ave & Aptos Ave | K | ✓ | ✓ | 37.7283, -122.4677 |
+| Ocean Ave & Jules Ave | K | ✓ | ✓ | 37.7249, -122.4614 |
+| Ocean Ave & Lee Ave | K | ✓ | ✓ | 37.7235, -122.4541 |
+| Ocean Ave & Miramar Ave | K | ✓ | ✓ | 37.7243, -122.4582 |
+| Ocean Ave & San Leandro Way | K | ✓ | ✓ | 37.7300, -122.4694 |
+| Ocean Ave & Victoria St | K | ✓ | ✓ | 37.7260, -122.4643 |
+| Ocean Ave & Westgate Dr | K | ✓ | ✓ | 37.7272, -122.4667 |
+| Randolph St & Arch St | M | ✓ | ✓ | 37.7143, -122.4671 |
+| Randolph St & Bright St | M | ✓ | ✓ | 37.7143, -122.4635 |
+| Right Of Way/18th St | J | ✓ | ✓ | 37.7612, -122.4283 |
+| Right Of Way/20th St | J | ✓ | ✓ | 37.7584, -122.4279 |
+| Right Of Way/21st St | J | ✓ | ✓ | 37.7570, -122.4270 |
+| Right Of Way/Ocean Ave | M | ✓ | ✓ | 37.7315, -122.4741 |
 | Saint Francis Circle | K, M | ✓ | ✓ | 37.7355, -122.4712 |
-| San Jose Avenue & Farallones Street | M | ✓ | ✓ | 37.7141, -122.4522 |
-| San Jose Avenue & Lakeview Avenue | M | ✓ | ✓ | 37.7162, -122.4504 |
-| San Jose Avenue & Niagara Avenue | M | ✓ | ✓ | 37.7188, -122.4482 |
-| San Jose Avenue & Ocean Avenue | J | ✓ | ✓ | 37.7230, -122.4448 |
-| San Jose Avenue & Randall Street | J | ✓ | ✓ | 37.7393, -122.4243 |
-| San Jose Avenue & Santa Rosa Avenue | J | ✓ | ✓ | 37.7291, -122.4398 |
-| San Jose Avenue & Santa Ynez Avenue | J | ✓ | ✓ | 37.7258, -122.4424 |
-| Sunnydale | T | ✓ | ✓ | 37.7094, -122.4049 |
+| San Jose Ave & Farallones St | M | ✓ | ✓ | 37.7141, -122.4522 |
+| San Jose Ave & Lakeview Ave | M | ✓ | ✓ | 37.7162, -122.4504 |
+| San Jose Ave & Niagara Ave | M | ✓ | ✓ | 37.7201, -122.4472 |
+| San Jose Ave & Ocean Ave | J | ✓ | ✓ | 37.7230, -122.4448 |
+| San Jose Ave & Randall St | J | ✓ | ✓ | 37.7393, -122.4243 |
+| San Jose Ave & Santa Rosa Ave | J | ✓ | ✓ | 37.7291, -122.4398 |
+| San Jose Ave & Santa Ynez Ave | J | ✓ | ✓ | 37.7258, -122.4424 |
+| San Jose Ave/Glen Park Station | J | ✓ | ✓ | 37.7325, -122.4334 |
 | Sunset Tunnel East Portal | N | ✓ | ✓ | 37.7693, -122.4337 |
-| Taraval Street & 17th Avenue | L | ✓ | ✓ | 37.7431, -122.4737 |
-| Taraval Street & 19th Avenue | L | ✓ | ✓ | 37.7431, -122.4757 |
-| Taraval Street & 22nd Avenue | L | ✓ | ✓ | 37.7429, -122.4785 |
-| Taraval Street & 23rd Avenue | L | ✓ | ✓ | 37.7429, -122.4804 |
-| Taraval Street & 26th Avenue | L | ✓ | ✓ | 37.7427, -122.4832 |
-| Taraval Street & 30th Avenue | L | ✓ | ✓ | 37.7425, -122.4875 |
-| Taraval Street & 32nd Avenue | L | ✓ | ✓ | 37.7424, -122.4896 |
-| Taraval Street & 40th Avenue | L | ✓ | ✓ | 37.7421, -122.4982 |
-| Taraval Street & 42nd Avenue | L | ✓ | ✓ | 37.7420, -122.5004 |
-| Taraval Street & 44th Avenue | L | ✓ | ✓ | 37.7419, -122.5025 |
-| Taraval Street & Sunset Boulevard | L | ✓ | ✓ | 37.7422, -122.4946 |
-| The Embarcadero & Bay Street | F | ✓ | ✓ | 37.8069, -122.4064 |
+| Taraval St & 17th Ave | L | ✓ | ✓ | 37.7431, -122.4737 |
+| Taraval St & 19th Ave | L | ✓ | ✓ | 37.7431, -122.4757 |
+| Taraval St & 22nd Ave | L | ✓ | ✓ | 37.7429, -122.4785 |
+| Taraval St & 23rd Ave | L | ✓ | ✓ | 37.7429, -122.4804 |
+| Taraval St & 26th Ave | L | ✓ | ✓ | 37.7427, -122.4832 |
+| Taraval St & 30th Ave | L | ✓ | ✓ | 37.7425, -122.4875 |
+| Taraval St & 32nd Ave | L | ✓ | ✓ | 37.7424, -122.4896 |
+| Taraval St & 40th Ave | L | ✓ | ✓ | 37.7421, -122.4982 |
+| Taraval St & 42nd Ave | L | ✓ | ✓ | 37.7420, -122.5004 |
+| Taraval St & 44th Ave | L | ✓ | ✓ | 37.7419, -122.5025 |
+| Taraval St & Sunset Blvd | L | ✓ | ✓ | 37.7422, -122.4946 |
+| The Embarcadero & Bay St | F | ✓ | ✓ | 37.8069, -122.4064 |
+| The Embarcadero & Brannan St | N | ✓ | ✓ | 37.7840, -122.3881 |
 | The Embarcadero & Broadway | F | ✓ | ✓ | 37.7992, -122.3977 |
-| The Embarcadero & Green Street | F | ✓ | ✓ | 37.8009, -122.3992 |
-| The Embarcadero & Greenwich Street | F | ✓ | ✓ | 37.8032, -122.4012 |
-| The Embarcadero & Sansome Street | F | ✓ | ✓ | 37.8048, -122.4030 |
-| The Embarcadero & Washington Street | F | ✓ | ✓ | 37.7967, -122.3955 |
+| The Embarcadero & Folsom St | N | ✓ | ✓ | 37.7902, -122.3893 |
+| The Embarcadero & Green St | F | ✓ | ✓ | 37.8009, -122.3992 |
+| The Embarcadero & Greenwich St | F | ✓ | ✓ | 37.8032, -122.4012 |
+| The Embarcadero & Sansome St | F | ✓ | ✓ | 37.8048, -122.4030 |
+| The Embarcadero & Stockton St (Pier 39) | F | ✓ | ✓ | 37.8083, -122.4103 |
+| The Embarcadero & Washington St | F | ✓ | ✓ | 37.7967, -122.3955 |
+| The Embarcadero/Ferry Bldg | F | ✓ | ✓ | 37.7952, -122.3940 |
 | UCSF Medical Center | T | ✓ | ✓ | 37.7643, -122.3889 |
 | UCSF/Chase Center | T | ✓ | ✓ | 37.7682, -122.3892 |
-| Ulloa Street & Forest Side Avenue | L | ✓ | ✓ | 37.7415, -122.4686 |
+| Ulloa St & Forest Side Ave | L | ✓ | ✓ | 37.7415, -122.4686 |
 | Union Square/Market Street | T | ✓ | ✓ | 37.7865, -122.4062 |
-| Van Ness Station | F, J, K, L, M, N | ✓ | ✓ | 37.7752, -122.4192 |
-| Wawona Street & 46th Avenue | L | ✓ | ✓ | 37.7363, -122.5049 |
-| West Portal Avenue & 14th Avenue | K, M | ✓ | ✓ | 37.7380, -122.4691 |
+| Van Ness Station | J, K, L, M, N | ✓ | ✓ | 37.7752, -122.4192 |
+| Wawona St & 46th Ave (SF Zoo) | L | ✓ | ✓ | 37.7363, -122.5049 |
+| West Portal Ave & 14th Ave | K, M | ✓ | ✓ | 37.7380, -122.4691 |
 | West Portal Station | K, L, M | ✓ | ✓ | 37.7413, -122.4655 |
-| Williams | T | ✓ | ✓ | 37.7292, -122.3927 |
 | Yerba Buena/Moscone | T | ✓ | ✓ | 37.7824, -122.4017 |
 
+## SFO AirTrain (10)
+
+| Station | Lines | WD | WE | Lat, Lon |
+|---|---|:--:|:--:|---|
+| Garage A | — | ✓ | ✓ | 37.6139, -122.3917 |
+| Grand Hyatt | — | ✓ | ✓ | 37.6134, -122.3935 |
+| International Terminal A | — | ✓ | ✓ | 37.6146, -122.3888 |
+| International Terminal G | — | ✓ | ✓ | 37.6166, -122.3896 |
+| Long Term Parking | — | ✓ | ✓ | 37.6351, -122.4004 |
+| Rental Car Center | — | ✓ | ✓ | 37.6282, -122.4012 |
+| Terminal 1 | — | ✓ | ✓ | 37.6152, -122.3857 |
+| Terminal 2 | — | ✓ | ✓ | 37.6168, -122.3846 |
+| Terminal 3 | — | ✓ | ✓ | 37.6175, -122.3866 |
+| West Field Road | — | ✓ | ✓ | 37.6217, -122.3995 |
