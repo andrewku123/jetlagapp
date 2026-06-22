@@ -25,7 +25,7 @@ describe('station dataset invariants', () => {
     expect(count('BART')).toBe(50)
     expect(count('Caltrain')).toBe(24)
     expect(count('VTA')).toBe(59)
-    expect(count('Muni')).toBe(127)
+    expect(count('Muni')).toBe(128)
     expect(count('SFO AirTrain')).toBe(11)
   })
 

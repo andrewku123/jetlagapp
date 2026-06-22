@@ -925,16 +925,19 @@
   "lat": 37.733235,
   "lon": -122.433515,
   "systems": [
-   "BART"
+   "BART",
+   "Muni"
   ],
   "lines": [
    "BART Blue (Dublin/Pleasanton–Daly City)",
    "BART Green (Berryessa–Daly City)",
    "BART Red (Richmond–Millbrae/SFO)",
-   "BART Yellow (Antioch–SFO/Millbrae)"
+   "BART Yellow (Antioch–SFO/Millbrae)",
+   "Muni J"
   ],
   "aka": [
-   "Glen Park"
+   "Glen Park",
+   "San Jose Ave/Glen Park Station"
   ],
   "service": {
    "wd": {
