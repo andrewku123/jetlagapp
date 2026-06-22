@@ -36,12 +36,16 @@ to the play area for both perf and looks:
   `scripts/play_area_src_water.geojson.json` + `scripts/pacific_ocean.geojson.json`
   and `polygon-clipping`).
 - **Labels on top of imagery**: satellite would otherwise hide the basemap's
-  place names, so an Esri reference overlay (`SAT_LABEL_URLS`:
-  `World_Boundaries_and_Places` — white text with dark halos, made for imagery) is
-  added to the **same clipped pane** at higher `zIndex`, giving readable city/town
-  names over the satellite. The dense road network (`World_Transportation`) is
-  deliberately *omitted* to avoid clutter — `SAT_LABEL_URLS` is a list, so add it
-  back there if road labels are wanted.
+  road/place names, so a labels-only overlay (`SAT_LABEL_URLS`) is added to the
+  **same clipped pane** at higher `zIndex`. We use CARTO's
+  `light_only_labels` tiles — the **same label set as the base map** (road + place
+  names) but with **no road/area shading or fills** — so road names stay readable
+  in satellite view without the busy colored road network. Needs
+  `subdomains: 'abcd'` (CARTO `{s}` URL). `SAT_LABEL_URLS` is a list, so other
+  overlays can be layered in. (History: Esri `World_Boundaries_and_Places`
+  gave only place names; adding Esri `World_Transportation` for roads was too
+  busy because it draws road *lines/shields*. CARTO labels-only is the in-between:
+  road names, no road geometry.)
 
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous

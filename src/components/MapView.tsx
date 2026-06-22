@@ -120,13 +120,12 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-// Esri reference overlay designed to sit on imagery (white text + dark halo):
-// just place/city/neighborhood names + admin boundaries. Shown above the
-// satellite so names aren't hidden when imagery covers the labelled basemap. The
-// dense road network (World_Transportation) is intentionally left off to keep the
-// satellite view uncluttered — place names only is the in-between look.
+// Labels shown on top of the satellite imagery: CARTO's labels-only tiles — the
+// SAME label set as the base map (road + place names) but with NO road/area
+// shading or fills. This restores readable road names in satellite view without
+// the busy colored road network.
 const SAT_LABEL_URLS = [
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
 ]
 
 function countyStyle(feature?: Feature<Geometry, { name: string }>) {
@@ -419,6 +418,7 @@ function SatelliteLayer() {
         maxZoom: 20,
         pane: paneName,
         zIndex: 2 + i,
+        subdomains: 'abcd',
       })
       l.addTo(map)
       return l
