@@ -21,11 +21,17 @@ import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, for
 import { RADAR_OPTIONS } from '../data/questions'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
 import countiesData from '../data/counties.geojson.json'
+import playAreaData from '../data/play-area.geojson.json'
 import transitData from '../data/transit-lines.geojson.json'
 
 const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
-const IN_PLAY_FEATURES = COUNTIES.features.filter((f) =>
+// In-play counties drawn with their full legal (water-inclusive) boundaries so
+// the satellite clip covers the bay, not just the land. The plain land-clipped
+// `COUNTIES` set above is still used for the out-of-play dimming overlay.
+const IN_PLAY_FEATURES = (
+  playAreaData as unknown as GeoJSON.FeatureCollection
+).features.filter((f) =>
   IN_PLAY_COUNTIES.has((f.properties as { name: string }).name),
 )
 

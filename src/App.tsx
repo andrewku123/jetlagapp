@@ -447,6 +447,25 @@ export default function App() {
                 weekend {STATIONS.filter((s) => s.headwayMin.we <= ELIGIBLE_HEADWAY_MIN).length}{' '}
                 of {STATIONS.length}.
               </p>
+              <h3>Satellite imagery</h3>
+              <p className="info">
+                The <strong>satellite</strong> layer is{' '}
+                <a
+                  href="https://www.arcgis.com/home/item.html?id=10df2279f9684e4a9f6a7f08febac2a9"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Esri World Imagery
+                </a>{' '}
+                (Maxar / aerial), clipped to the play-area counties. It's a mosaic,
+                so the capture date varies by location — in the Bay Area it's
+                generally late 2024–2025 (e.g. San Francisco Aug 2025, Oakland Jun
+                2025, San Jose Nov 2024). Check the exact date anywhere with{' '}
+                <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noreferrer">
+                  Esri Wayback
+                </a>
+                .
+              </p>
               <h3>Systems</h3>
               {SYSTEM_ORDER.map((sys) => (
                 <div key={sys} className="legrow">
