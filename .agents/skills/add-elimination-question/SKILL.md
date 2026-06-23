@@ -92,9 +92,14 @@ multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
   `src/data/questions.ts`, shared by `App.tsx` and `QuestionForm.tsx`):
   - **radar** keys on `radiusMiles` (`radar:5` vs `radar:10` are different
     questions; two 5mi radars are the same — center is ignored).
-  - **thermometer** keys on travel distance `haversineMiles(A,B)` snapped to the
-    nearest `THERMOMETER_OPTIONS` bucket (so GPS jitter between two same-distance
-    asks still groups them).
+  - **thermometer** keys on the thermometer the seeker **explicitly chose**
+    (`params.thermometerMiles`, set via the "Thermometer (mi)" dropdown in the Ask
+    form — `THERMOMETER_OPTIONS` + Custom). Two asks with the same chosen
+    thermometer are the same question; a different thermometer is separate. For
+    older logged records with no `thermometerMiles`, `questionGroupKey` falls back
+    to inferring the bucket from `haversineMiles(A,B)` snapped to the nearest
+    `THERMOMETER_OPTIONS` value. `describeRecord` shows the chosen distance
+    (`Thermometer 0.5 mi → hotter`); elimination still uses the A/B points.
   - every other kind keys on `kind` alone (`match-county` ≠ `match-city`, etc.).
   - If you add a new parameterised question whose cost depends on a param, extend
     `questionGroupKey` to include that param.

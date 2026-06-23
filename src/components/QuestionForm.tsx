@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
-import { QUESTION_CATALOG, RADAR_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
+import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng } from '../lib/geo'
 
@@ -133,6 +133,8 @@ export default function QuestionForm({
   // shared param state
   const [radius, setRadius] = useState<string>('0.5')
   const [customRadius, setCustomRadius] = useState<string>('')
+  const [thermo, setThermo] = useState<string>('0.5')
+  const [customThermo, setCustomThermo] = useState<string>('')
   const [yesno, setYesno] = useState<'yes' | 'no'>('yes')
   const [hotcold, setHotcold] = useState<'hotter' | 'colder'>('hotter')
   const [closefar, setClosefar] = useState<'closer' | 'further'>('closer')
@@ -145,6 +147,12 @@ export default function QuestionForm({
   const [floor, setFloor] = useState<string>('')
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
   const [note, setNote] = useState<string>('')
+
+  // The thermometer the seeker chose (converted to miles), or NaN if invalid.
+  function thermoMiles(): number {
+    if (thermo === 'custom') return metric ? Number(customThermo) / KM_PER_MILE : Number(customThermo)
+    return Number(thermo)
+  }
 
   function submit(vetoed = false) {
     let params: Record<string, unknown> = {}
@@ -164,7 +172,10 @@ export default function QuestionForm({
       }
       case 'thermometer': {
         if (!ptA || !ptB) return alert('Set both start (A) and end (B) points.')
-        params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, answer: hotcold }
+        const tMiles = thermoMiles()
+        if (!Number.isFinite(tMiles) || tMiles <= 0)
+          return alert('Choose which thermometer you used (a travel distance greater than 0).')
+        params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, thermometerMiles: tMiles, answer: hotcold }
         break
       }
       case 'measure-airport': {
@@ -216,7 +227,7 @@ export default function QuestionForm({
       ...(vetoed ? { vetoed: true } : {}),
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo('')
   }
 
   // Preview of the hider's cost if this question were asked now: the nth ask of
@@ -234,8 +245,9 @@ export default function QuestionForm({
       if (!Number.isFinite(r) || r <= 0) return 1
       params = { radiusMiles: r }
     } else if (kind === 'thermometer') {
-      if (!ptA || !ptB) return 1
-      params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon }
+      const t = thermoMiles()
+      if (!Number.isFinite(t) || t <= 0) return 1
+      params = { thermometerMiles: t }
     }
     const key = questionGroupKey(kind, params)
     return (askGroupCounts.get(key) ?? 0) + 1
@@ -322,6 +334,21 @@ export default function QuestionForm({
 
       {kind === 'thermometer' && (
         <>
+          <div className="row">
+            <label>Thermometer ({distUnit})</label>
+            <select value={thermo} onChange={(e) => setThermo(e.target.value)}>
+              {THERMOMETER_OPTIONS.map((t) => (
+                <option key={t} value={t}>{metric ? +(t * KM_PER_MILE).toFixed(2) : t}</option>
+              ))}
+              <option value="custom">Custom…</option>
+            </select>
+          </div>
+          {thermo === 'custom' && (
+            <div className="row">
+              <label>Custom ({distUnit})</label>
+              <input type="number" step="any" min="0" value={customThermo} onChange={(e) => setCustomThermo(e.target.value)} placeholder="e.g. 1" />
+            </div>
+          )}
           <CoordPicker label="Start A" point={ptA} setPoint={setPtA} lastClick={lastClick} onPreview={onPreview} />
           <CoordPicker label="End B" point={ptB} setPoint={setPtB} lastClick={lastClick} onPreview={onPreview} />
           <div className="row">

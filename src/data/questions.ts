@@ -141,6 +141,11 @@ export function questionGroupKey(
 ): string {
   if (kind === 'radar') return `radar:${Number(params.radiusMiles)}`
   if (kind === 'thermometer') {
+    // Prefer the thermometer the seeker explicitly chose; two asks with the same
+    // chosen thermometer are "the same question". Fall back to inferring the
+    // bucket from the recorded A→B travel distance for older logged questions.
+    const chosen = Number(params.thermometerMiles)
+    if (Number.isFinite(chosen) && chosen > 0) return `thermometer:${chosen}`
     const travel = haversineMiles(
       { lat: Number(params.fromLat), lon: Number(params.fromLon) },
       { lat: Number(params.toLat), lon: Number(params.toLon) },

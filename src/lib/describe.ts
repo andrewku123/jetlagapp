@@ -9,8 +9,11 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
   switch (r.kind) {
     case 'radar':
       return `Radar ${formatDistance(Number(p.radiusMiles), units)}${arrow(String(a).toUpperCase())}`
-    case 'thermometer':
-      return `Thermometer${arrow(String(a))}`
+    case 'thermometer': {
+      const t = Number(p.thermometerMiles)
+      const dist = Number.isFinite(t) && t > 0 ? ` ${formatDistance(t, units)}` : ''
+      return `Thermometer${dist}${arrow(String(a))}`
+    }
     case 'match-county':
       return `Same county as "${p.value}"?${arrow(String(a))}`
     case 'match-city':
