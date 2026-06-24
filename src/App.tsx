@@ -7,12 +7,14 @@ import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
 import { rewardForKind, questionGroupKey } from './data/questions'
+import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
+import type { RenderPoi } from './lib/poi'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
 import rawStations from './data/stations.json'
 
 const STATIONS = rawStations as unknown as Station[]
 
-type Tab = 'ask' | 'history' | 'suspects' | 'legend'
+type Tab = 'ask' | 'history' | 'suspects' | 'poi' | 'legend'
 
 // the agency a station is filed under = the first system in canonical order
 const primarySystem = (s: Station) =>
@@ -86,6 +88,10 @@ export default function App() {
   const [sheetOpen, setSheetOpen] = useState(false)
   const [suspectSort, setSuspectSort] = useState<'name' | 'agency'>('name')
   const [suspectQuery, setSuspectQuery] = useState('')
+  const [poiEnabled, setPoiEnabled] = useState<Set<string>>(
+    () => new Set(POI_CATEGORIES.map((c) => c.key)),
+  )
+  const [poiQuery, setPoiQuery] = useState('')
   // bump nonce so the map re-centers even when the same station is clicked twice
   const [focusTarget, setFocusTarget] = useState<{ station: Station; nonce: number } | null>(null)
   const focusStation = (s: Station) => {
@@ -194,6 +200,44 @@ export default function App() {
     if (lastClick) pts.push({ label: 'Last click', point: lastClick, color: '#111' })
     return pts
   }, [game.questions, lastClick])
+
+  // POIs to draw: every enabled category, name-filtered by the POI search box.
+  const pois = useMemo<RenderPoi[]>(() => {
+    const q = poiQuery.trim().toLowerCase()
+    const out: RenderPoi[] = []
+    for (const cat of POI_CATEGORIES) {
+      if (!poiEnabled.has(cat.key)) continue
+      for (const p of POI_BY_CATEGORY[cat.key]) {
+        if (q && !p.name.toLowerCase().includes(q)) continue
+        out.push({ ...p, categoryKey: cat.key, label: cat.label, color: cat.color })
+      }
+    }
+    return out
+  }, [poiEnabled, poiQuery])
+
+  // Per-category counts after the search filter (shown next to each toggle).
+  const poiFilteredCounts = useMemo<Record<string, number>>(() => {
+    const q = poiQuery.trim().toLowerCase()
+    const m: Record<string, number> = {}
+    for (const cat of POI_CATEGORIES) {
+      m[cat.key] = q
+        ? POI_BY_CATEGORY[cat.key].filter((p) => p.name.toLowerCase().includes(q)).length
+        : POI_BY_CATEGORY[cat.key].length
+    }
+    return m
+  }, [poiQuery])
+
+  // Only overlay POIs while the POI tab is open, so the elimination view stays clean.
+  const visiblePois = tab === 'poi' ? pois : []
+
+  function togglePoi(key: string) {
+    setPoiEnabled((s) => {
+      const n = new Set(s)
+      if (n.has(key)) n.delete(key)
+      else n.add(key)
+      return n
+    })
+  }
 
   function addQuestion(r: QuestionRecord) {
     update({ questions: [r, ...game.questions] })
@@ -337,6 +381,7 @@ export default function App() {
             focusTarget={focusTarget}
             onStartEndgame={(id) => update({ endgame: id })}
             onExitEndgame={() => update({ endgame: null })}
+            pois={visiblePois}
           />
         </div>
 
@@ -351,9 +396,17 @@ export default function App() {
         <aside className="sidebar">
           <button className="sheet-grab" onClick={() => setSheetOpen((v) => !v)} aria-label="Toggle controls" />
           <nav className="tabs">
-            {(['ask', 'history', 'suspects', 'legend'] as Tab[]).map((t) => (
+            {(['ask', 'history', 'suspects', 'poi', 'legend'] as Tab[]).map((t) => (
               <button key={t} className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>
-                {t === 'ask' ? 'Ask' : t === 'history' ? `History (${game.questions.length})` : t === 'suspects' ? `Suspects (${remaining.length})` : 'Legend'}
+                {t === 'ask'
+                  ? 'Ask'
+                  : t === 'history'
+                    ? `History (${game.questions.length})`
+                    : t === 'suspects'
+                      ? `Suspects (${remaining.length})`
+                      : t === 'poi'
+                        ? 'POI'
+                        : 'Legend'}
               </button>
             ))}
           </nav>
@@ -479,6 +532,53 @@ export default function App() {
                   </ul>
                 )
               })()}
+            </div>
+          )}
+
+          {tab === 'poi' && (
+            <div className="panel">
+              <p className="hint">
+                Reference layer for composing Tentacles / Matching / Measuring questions. Toggle
+                categories and search by name; dots show on the map while this tab is open. A place
+                counts if it has the Google Maps category icon and ≥5 reviews.
+              </p>
+              <div className="searchbar">
+                <input
+                  type="search"
+                  className="suspect-search"
+                  placeholder="Search POI name…"
+                  value={poiQuery}
+                  onChange={(e) => setPoiQuery(e.target.value)}
+                />
+                {poiQuery && (
+                  <button className="search-clear" aria-label="Clear search" onClick={() => setPoiQuery('')}>
+                    ✕
+                  </button>
+                )}
+              </div>
+              <div className="poi-actions">
+                <button onClick={() => setPoiEnabled(new Set(POI_CATEGORIES.map((c) => c.key)))}>
+                  Show all
+                </button>
+                <button onClick={() => setPoiEnabled(new Set())}>Hide all</button>
+                <span className="poi-total">{pois.length} shown</span>
+              </div>
+              <ul className="poi-list">
+                {POI_CATEGORIES.map((cat) => (
+                  <li key={cat.key}>
+                    <label className="poi-row">
+                      <input
+                        type="checkbox"
+                        checked={poiEnabled.has(cat.key)}
+                        onChange={() => togglePoi(cat.key)}
+                      />
+                      <span className="dot" style={{ background: cat.color }} />
+                      <span className="poi-name">{cat.label}</span>
+                      <span className="poi-count">{poiFilteredCounts[cat.key]}</span>
+                    </label>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
 
