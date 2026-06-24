@@ -10417,5 +10417,84 @@
    "wd": 12,
    "we": 12
   }
+ },
+ {
+  "name": "Ulloa St & West Portal Ave",
+  "lat": 37.74107,
+  "lon": -122.46617,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni L"
+  ],
+  "aka": [
+   "Ulloa St & West Portal Ave",
+   "Ulloa St & Lenox Way"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s262",
+  "nameLength": 26,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 107.1,
+  "airportDist": {
+   "SFO": 15472.1,
+   "OAK": 21823.1,
+   "SJC": 63307.9
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
+ },
+ {
+  "name": "Ulloa St & 14th Ave",
+  "lat": 37.74143,
+  "lon": -122.47009,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni L"
+  ],
+  "aka": [
+   "Ulloa St & 14th Ave"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s263",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 119.1,
+  "airportDist": {
+   "SFO": 15675.7,
+   "OAK": 22170.1,
+   "SJC": 63593.3
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
  }
 ]
