@@ -574,22 +574,19 @@ function escapeHtml(s: string): string {
   )
 }
 
-// Reference POI overlay. Drawn imperatively (one canvas in a dedicated low pane)
-// rather than as React components: there can be thousands of POIs, so a declarative
-// CircleMarker per point would be far too heavy. The pane sits below the station
-// markers so stations always win clicks; POIs are only interactive in select mode.
+// Reference POI overlay. Drawn imperatively onto a single shared canvas rather
+// than as React components: there can be thousands of POIs, so a declarative
+// CircleMarker per point would be far too heavy. POIs live in the overlay pane,
+// which is below the markerPane the stations use, so stations always render on
+// top and win clicks. POIs are only interactive (popups) in select mode.
 function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boolean }) {
   const map = useMap()
   const groupRef = useRef<L.LayerGroup | null>(null)
   const rendererRef = useRef<L.Canvas | null>(null)
 
   useEffect(() => {
-    if (!map.getPane('poiPane')) {
-      const pane = map.createPane('poiPane')
-      pane.style.zIndex = '350' // tiles 200 < poi 350 < overlay 400 < markers 600
-    }
-    const renderer = L.canvas({ pane: 'poiPane' })
-    const group = L.layerGroup([], { pane: 'poiPane' }).addTo(map)
+    const renderer = L.canvas({ padding: 0.5 })
+    const group = L.layerGroup([]).addTo(map)
     rendererRef.current = renderer
     groupRef.current = group
     return () => {
@@ -606,13 +603,13 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
     for (const p of pois) {
       const marker = L.circleMarker([p.lat, p.lon], {
         renderer,
-        pane: 'poiPane',
         radius: 4,
         color: '#fff',
         weight: 1,
         fillColor: p.color,
         fillOpacity: 0.9,
         interactive,
+        bubblingMouseEvents: false,
       })
       if (interactive) {
         const maps = `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`
