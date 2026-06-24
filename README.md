@@ -13,7 +13,7 @@ any public transit. Eligible systems:
 - **BART** — all stations (50)
 - **Caltrain** — SF (4th & King) → San Jose Diridon → Tamien (24)
 - **VTA light rail** — full system (59)
-- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (128)
+- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (132)
 - **SFO AirTrain** — all people-mover stops (11)
 
 Muni includes **every rail stop** (both the labeled stations and the smaller
@@ -24,8 +24,8 @@ Portal) are counted once, and North Beach on the T is excluded. The 10 F-only
 surface stops on Market St inland of Embarcadero are also excluded — they run
 directly above the Muni Metro subway and duplicate those stations. After merging
 stations shared across systems (e.g. 4th & King = Caltrain + Muni N/T; Balboa
-Park = BART + Muni; Milpitas = BART + VTA) the play area has **260 unique
-stations** (259 eligible on a weekday, 260 on a weekend). Distinct stations that
+Park = BART + Muni; Milpitas = BART + VTA) the play area has **264 unique
+stations** (263 eligible on a weekday, 264 on a weekend). Distinct stations that
 share a city name are disambiguated by system, e.g. "San Bruno (BART)" vs
 "San Bruno (Caltrain)".
 
