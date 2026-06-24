@@ -17,21 +17,21 @@ function eligible(day: 'wd' | 'we') {
 }
 
 describe('station dataset invariants', () => {
-  it('has 263 unique stations', () => {
-    expect(STATIONS.length).toBe(263)
+  it('has 264 unique stations', () => {
+    expect(STATIONS.length).toBe(264)
   })
 
   it('has the expected per-system membership counts', () => {
     expect(count('BART')).toBe(50)
     expect(count('Caltrain')).toBe(24)
     expect(count('VTA')).toBe(59)
-    expect(count('Muni')).toBe(131)
+    expect(count('Muni')).toBe(132)
     expect(count('SFO AirTrain')).toBe(11)
   })
 
   it('has the expected eligible counts (weekday/weekend)', () => {
-    expect(eligible('wd')).toBe(262)
-    expect(eligible('we')).toBe(263)
+    expect(eligible('wd')).toBe(263)
+    expect(eligible('we')).toBe(264)
   })
 
   it('has no F-only surface stops on Market St inland of Embarcadero', () => {
