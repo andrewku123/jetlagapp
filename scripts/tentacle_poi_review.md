@@ -1,0 +1,1800 @@
+# Tentacles POI — legitimacy rule applied (>=5 Google reviews)
+
+Each place has its category's Google icon (`primaryType`) **and** >=5 reviews. Permanently-closed places dropped. Coordinates are the Google pin.
+
+| Category | Radius | Raw | Legit (>=5) | Dropped <5 | Closed |
+|---|---|---|---|---|---|
+| Museums | 1 mi | 220 | **151** | 69 | 0 |
+| Libraries | 1 mi | 522 | **168** | 354 | 0 |
+| Movie Theaters | 1 mi | 74 | **64** | 10 | 0 |
+| Hospitals | 1 mi | 758 | **194** | 564 | 0 |
+| Zoos | 15 mi | 33 | **16** | 17 | 0 |
+| Aquariums | 15 mi | 11 | **4** | 7 | 0 |
+| Amusement Parks | 15 mi | 44 | **29** | 15 | 0 |
+
+
+
+## Museums  (within 1 mi, 151 legitimate)
+
+
+<details><summary>All 151 legitimate places</summary>
+
+- [San Francisco Museum of Modern Art](https://www.google.com/maps/search/?api=1&query=37.7857182%2C-122.40105080000001&query_place_id=ChIJ53I1Yn2AhYAR_Vl1vNygfMg) — 16494 reviews (4.6★) · `art_museum`
+- [de Young Museum](https://www.google.com/maps/search/?api=1&query=37.771468999999996%2C-122.46867549999997&query_place_id=ChIJI7NivpmAhYARSuRPlbbn_2w) — 9655 reviews (4.6★) · `art_museum`
+- [Exploratorium](https://www.google.com/maps/search/?api=1&query=37.8016649%2C-122.397348&query_place_id=ChIJk2vl5NSGhYARwPGvs_ubIws) — 8529 reviews (4.7★) · `museum`
+- [Musée Mécanique](https://www.google.com/maps/search/?api=1&query=37.8093037%2C-122.4159684&query_place_id=ChIJCQAzVOKAhYARuOpiALmomu0) — 8278 reviews (4.7★) · `museum`
+- [Computer History Museum](https://www.google.com/maps/search/?api=1&query=37.4142744%2C-122.077409&query_place_id=ChIJm7NJkla3j4AR8vR-HWRxgOo) — 7620 reviews (4.7★) · `history_museum`
+- [Cable Car Museum](https://www.google.com/maps/search/?api=1&query=37.7946366%2C-122.41150739999999&query_place_id=ChIJX1oMlvKAhYARNZquwetszd8) — 6982 reviews (4.7★) · `museum`
+- [California Academy of Sciences](https://www.google.com/maps/search/?api=1&query=37.7698646%2C-122.4660947&query_place_id=ChIJIUT7rEOHhYARucp3wM-HhBs) — 6088 reviews (4.6★) · `museum`
+- [Asian Art Museum](https://www.google.com/maps/search/?api=1&query=37.7802772%2C-122.41616049999999&query_place_id=ChIJkQQVTZqAhYARHxPt2iJkm1Q) — 4302 reviews (4.6★) · `art_museum`
+- [The Tech Interactive](https://www.google.com/maps/search/?api=1&query=37.3314903%2C-121.8902357&query_place_id=ChIJR8HI1brMj4ARBnFq5rlvpx4) — 4112 reviews (4.4★) · `museum`
+- [Children's Discovery Museum of San Jose](https://www.google.com/maps/search/?api=1&query=37.3269922%2C-121.8920824&query_place_id=ChIJHyD5sa_Mj4ARURwnBwmTwTU) — 3888 reviews (4.6★) · `museum`
+- [Rosicrucian Egyptian Museum](https://www.google.com/maps/search/?api=1&query=37.333486%2C-121.922884&query_place_id=ChIJ1UbraGvLj4ARkgVRgqtwO4E) — 3692 reviews (4.6★) · `museum`
+- [Oakland Museum of California](https://www.google.com/maps/search/?api=1&query=37.7987496%2C-122.2633654&query_place_id=ChIJD9KbIzWHj4AR1Mp5x7ZVBWs) — 3673 reviews (4.7★) · `museum`
+- [Intel Museum](https://www.google.com/maps/search/?api=1&query=37.387853199999995%2C-121.96350259999998&query_place_id=ChIJi0P5bJHJj4ARlze0BLmnRHY) — 3146 reviews (4.5★) · `museum`
+- [Cantor Arts Center at Stanford University](https://www.google.com/maps/search/?api=1&query=37.4329672%2C-122.17052659999999&query_place_id=ChIJOfekbSy7j4ARlnP73s9MMBw) — 2478 reviews (4.8★) · `museum`
+- [USS Pampanito Museum and Memorial](https://www.google.com/maps/search/?api=1&query=37.8099899%2C-122.41643810000001&query_place_id=ChIJ60RjV-KAhYARZTyNwVT1AWo) — 2443 reviews (4.6★) · `museum`
+- [Hiller Aviation Museum](https://www.google.com/maps/search/?api=1&query=37.512718%2C-122.25300899999999&query_place_id=ChIJ77MvtQiij4ARUN77J8sg2Zk) — 2061 reviews (4.6★) · `museum`
+- [Palo Alto Junior Museum and Zoo](https://www.google.com/maps/search/?api=1&query=37.4436634%2C-122.14462549999999&query_place_id=ChIJ59OJRxq7j4ARx5SvEGmwmJg) — 1693 reviews (4.7★) · `museum`
+- [San Jose Museum of Art](https://www.google.com/maps/search/?api=1&query=37.3337262%2C-121.88992449999999&query_place_id=ChIJVx91TrvMj4ARzWqeIcRwuXs) — 1501 reviews (4.2★) · `art_museum`
+- [SS Jeremiah O'Brien](https://www.google.com/maps/search/?api=1&query=37.8086539%2C-122.40687439999999&query_place_id=ChIJR3tgUOKAhYARqS7NZ7xDM44) — 1491 reviews (4.7★) · `museum`
+- [Lindsay Wildlife Experience](https://www.google.com/maps/search/?api=1&query=37.9237909%2C-122.0754247&query_place_id=ChIJlxXuGHthhYAR3CnS6Chu_Hk) — 1410 reviews (4.6★) · `museum`
+- [Rodin Sculpture Garden](https://www.google.com/maps/search/?api=1&query=37.4322972%2C-122.1708556&query_place_id=ChIJ74QFdyy7j4ARyfQrfMs4jlk) — 1084 reviews (4.8★) · `art_museum`
+- [Berkeley Art Museum and Pacific Film Archive](https://www.google.com/maps/search/?api=1&query=37.870735599999996%2C-122.26648409999999&query_place_id=ChIJB8EriZ1-hYAReKDxrhGFK-o) — 911 reviews (4.5★) · `art_museum`
+- [The Contemporary Jewish Museum](https://www.google.com/maps/search/?api=1&query=37.786002599999996%2C-122.40367200000001&query_place_id=ChIJQ4ofxYeAhYARnLQjgdsj76k) — 721 reviews (4.2★) · `art_museum`
+- [Children's Creativity Museum](https://www.google.com/maps/search/?api=1&query=37.7833445%2C-122.4023038&query_place_id=ChIJt1SMQ4eAhYAR-8dkWSoHKZI) — 712 reviews (4.5★) · `museum`
+- [Museum of 3D Illusions](https://www.google.com/maps/search/?api=1&query=37.808447799999996%2C-122.41321610000001&query_place_id=ChIJgZJSZ1GBhYARfsSZ-RTNCwo) — 652 reviews (4.4★) · `museum`
+- [Moffett Field Museum](https://www.google.com/maps/search/?api=1&query=37.411155799999996%2C-122.0542111&query_place_id=ChIJAQAAANWwj4ARwi4IwGaw3pM) — 645 reviews (4.6★) · `museum`
+- [Randall Museum](https://www.google.com/maps/search/?api=1&query=37.764426%2C-122.43831920000001&query_place_id=ChIJ3dPu2zl-j4ARe9aRil_Yrmk) — 566 reviews (4.7★) · `museum`
+- [The Lawrence Hall of Science](https://www.google.com/maps/search/?api=1&query=37.879205000000006%2C-122.246517&query_place_id=ChIJVVbd7z58hYARmsbuevROjI0) — 564 reviews (4.6★) · `museum`
+- [Museum of the African Diaspora](https://www.google.com/maps/search/?api=1&query=37.786376%2C-122.40138710000001&query_place_id=ChIJrV7u94eAhYARVQN3mR8cQGM) — 519 reviews (4.5★) · `art_museum`
+- [GLBT Historical Society Museum](https://www.google.com/maps/search/?api=1&query=37.760714899999996%2C-122.43563569999999&query_place_id=ChIJiaELzAR-j4ARq0FRvpCYv1Q) — 516 reviews (4.6★) · `museum`
+- [Oakland Aviation Museum](https://www.google.com/maps/search/?api=1&query=37.733178099999996%2C-122.21264470000001&query_place_id=ChIJ6ZC_dLGFj4ARMmRNGVuy3As) — 465 reviews (4.6★) · `museum`
+- [San Mateo County History Museum](https://www.google.com/maps/search/?api=1&query=37.487035899999995%2C-122.22968030000001&query_place_id=ChIJ1QLjxlKij4ARAwbv3Pf7wn8) — 442 reviews (4.6★) · `history_museum`
+- [International Art Museum of America](https://www.google.com/maps/search/?api=1&query=37.781380299999995%2C-122.4106676&query_place_id=ChIJyQNK-4SAhYARO2DZaJleWRc) — 434 reviews (4.5★) · `art_museum`
+- [Cartoon Art Museum](https://www.google.com/maps/search/?api=1&query=37.8063311%2C-122.42179290000001&query_place_id=ChIJWwSkVn2AhYARUQfWE_EJ9ZQ) — 421 reviews (4.2★) · `art_museum`
+- [San Francisco Railway Museum](https://www.google.com/maps/search/?api=1&query=37.7938256%2C-122.3935533&query_place_id=ChIJ_f7xMWSAhYARThFhbatwJak) — 413 reviews (4.4★) · `museum`
+- [Triton Museum of Art](https://www.google.com/maps/search/?api=1&query=37.3561353%2C-121.95490950000001&query_place_id=ChIJGWxtr0nKj4ARGHKbY2HbPUw) — 407 reviews (4.5★) · `art_museum`
+- [Dublin Historic Park and Museums](https://www.google.com/maps/search/?api=1&query=37.7006096%2C-121.93854299999998&query_place_id=ChIJTRLdHGXsj4ARrLyh0ASH8_0) — 319 reviews (4.5★) · `museum`
+- [Museum of Craft and Design](https://www.google.com/maps/search/?api=1&query=37.7568398%2C-122.3877893&query_place_id=ChIJn8w1go6AhYARdfFGEuY4mIc) — 305 reviews (4.1★) · `art_museum`
+- [Niles Essanay Silent Film Museum](https://www.google.com/maps/search/?api=1&query=37.5769082%2C-121.98021369999998&query_place_id=ChIJZXJ46W3Aj4AR5cVsJNpaDAA) — 295 reviews (4.7★) · `museum`
+- [The Beat Museum](https://www.google.com/maps/search/?api=1&query=37.7980878%2C-122.40619509999999&query_place_id=ChIJY6qvZfSAhYARE-zWxUt9vxE) — 285 reviews (4.5★) · `museum`
+- [Museum of Art and Digital Entertainment - (MADE)](https://www.google.com/maps/search/?api=1&query=37.8019902%2C-122.2743559&query_place_id=ChIJfTK51q-Aj4ARI5bIG6D0BKQ) — 273 reviews (4.8★) · `museum`
+- [Maritime Museum](https://www.google.com/maps/search/?api=1&query=37.8063433%2C-122.42389310000002&query_place_id=ChIJ7bPtqOGAhYAR0PehdroyYdw) — 261 reviews (4.5★) · `museum`
+- [Tenderloin Museum](https://www.google.com/maps/search/?api=1&query=37.7838761%2C-122.4141613&query_place_id=ChIJG_lNbZCAhYARgMivyuFP_yQ) — 257 reviews (4.5★) · `museum`
+- [Japanese American Museum of San Jose](https://www.google.com/maps/search/?api=1&query=37.347495599999995%2C-121.89360370000001&query_place_id=ChIJrS08KpvMj4ARG-szUj-5o9s) — 242 reviews (4.8★) · `museum`
+- [Chinese Historical Society of America Museum](https://www.google.com/maps/search/?api=1&query=37.793836299999995%2C-122.40878699999998&query_place_id=ChIJQS4IxoyAhYARBylg5_xO8TE) — 237 reviews (4.5★) · `museum`
+- [San Jose Museum of Quilts & Textiles](https://www.google.com/maps/search/?api=1&query=37.3281515%2C-121.88435539999999&query_place_id=ChIJtTFOzrbMj4ARqza0OELfESI) — 229 reviews (4.5★) · `art_museum`
+- [Papua New Guinea Sculpture Garden (PAPU)](https://www.google.com/maps/search/?api=1&query=37.4248288%2C-122.1736717&query_place_id=ChIJ3Wk4O9W6j4AR-QT7imrUuY0) — 226 reviews (4.7★) · `art_museum`
+- [The Gregangelo Museum](https://www.google.com/maps/search/?api=1&query=37.732698%2C-122.468418&query_place_id=ChIJq6qqqsZ9j4ARlcJgnPlyHL0) — 200 reviews (4.8★) · `art_museum`
+- [South Bay Historical Railroad Society](https://www.google.com/maps/search/?api=1&query=37.353108299999995%2C-121.9362194&query_place_id=ChIJg9cO86_Lj4ARCJ7sBmMkLtU) — 198 reviews (4.8★) · `museum`
+- [SFO Museum Louis A. Turpen Aviation Museum and Library](https://www.google.com/maps/search/?api=1&query=37.615014099999996%2C-122.388899&query_place_id=ChIJsUM6Mpd3j4ARMQf5LGgx9fw) — 195 reviews (4.4★) · `museum`
+- [Haas-Lilienthal House](https://www.google.com/maps/search/?api=1&query=37.7933576%2C-122.4247784&query_place_id=ChIJDwAg6cGAhYARwU2X5hTMK_s) — 187 reviews (4.6★) · `museum`
+- [The Foster Museum](https://www.google.com/maps/search/?api=1&query=37.4235876%2C-122.0996787&query_place_id=ChIJ3Q3UaxG6j4ARXxHdJBjn1tQ) — 180 reviews (4.8★) · `art_museum`
+- [Hayward Area Historical Society](https://www.google.com/maps/search/?api=1&query=37.676826%2C-122.0826719&query_place_id=ChIJdaRK7tiTj4ARadPgI6vryjM) — 178 reviews (4.6★) · `history_museum`
+- [The Museum of American Heritage](https://www.google.com/maps/search/?api=1&query=37.4445267%2C-122.15747599999997&query_place_id=ChIJcy4OdTy7j4AReY5i-WOiVkc) — 171 reviews (4.7★) · `museum`
+- [Lacis Museum of Lace and Textiles](https://www.google.com/maps/search/?api=1&query=37.854949399999995%2C-122.26951269999999&query_place_id=ChIJi_jJRn5-hYARJLmnH4TDgb0) — 153 reviews (4.9★) · `museum`
+- [Piazza Piccola Italia](https://www.google.com/maps/search/?api=1&query=37.3358227%2C-121.89877829999999&query_place_id=ChIJMQ2_0qHMj4ARwoForAC-llI) — 140 reviews (4.3★) · `museum`
+- [The American Bookbinders Museum](https://www.google.com/maps/search/?api=1&query=37.7814153%2C-122.4028766&query_place_id=ChIJ6yvxeCV-j4AR0CoeO_roGfs) — 132 reviews (4.6★) · `museum`
+- [Anderson Collection at Stanford University](https://www.google.com/maps/search/?api=1&query=37.4336382%2C-122.1705781&query_place_id=ChIJqWfDDCy7j4ARgIS8gwuKMV4) — 113 reviews (4.8★) · `art_museum`
+- [Niles Depot Museum](https://www.google.com/maps/search/?api=1&query=37.5774571%2C-121.97833820000001&query_place_id=ChIJqUFNwHLAj4ARk_U3nqzPh8g) — 113 reviews (4.6★) · `museum`
+- [Antique Vibrator Museum](https://www.google.com/maps/search/?api=1&query=37.7918775%2C-122.42083379999998&query_place_id=ChIJheOWIuuAhYARowpyvdOYGS0) — 110 reviews (4.6★) · `museum`
+- [The 49ers Museum](https://www.google.com/maps/search/?api=1&query=37.4041654%2C-121.9709552&query_place_id=ChIJUQECmPfJj4AROgbZ06JAZFQ) — 107 reviews (4.3★) · `museum`
+- [African American Museum and Library at Oakland](https://www.google.com/maps/search/?api=1&query=37.8061667%2C-122.27635279999998&query_place_id=ChIJ6yRLAbCAj4ARMG4GjbyYjQg) — 106 reviews (4.6★) · `museum`
+- [Ainsley House](https://www.google.com/maps/search/?api=1&query=37.2887365%2C-121.94359509999998&query_place_id=ChIJnxGdxt40joARCw6vT6cVsYY) — 102 reviews (4.7★) · `history_museum`
+- [Institute of Contemporary Art San Jose](https://www.google.com/maps/search/?api=1&query=37.327841%2C-121.88392100000002&query_place_id=ChIJ3U_ft7bMj4ARDcNsTlh79zo) — 96 reviews (4.5★) · `art_museum`
+- [Osher Rainforest at the California Academy of Sciences](https://www.google.com/maps/search/?api=1&query=37.7696903%2C-122.46641229999999&query_place_id=ChIJc31tqUOHhYARE-nCDOi4clw) — 92 reviews (4.8★) · `museum`
+- [ICA SF](https://www.google.com/maps/search/?api=1&query=37.79524240000001%2C-122.40308109999998&query_place_id=ChIJzcTTQW9_j4ARoUrZADzZOzM) — 89 reviews (4.8★) · `museum`
+- [Aftel Archive of Curious Scents](https://www.google.com/maps/search/?api=1&query=37.879433899999995%2C-122.26844039999999&query_place_id=ChIJffjTJqF-hYARCQd9uRkMYiE) — 86 reviews (4.9★) · `museum`
+- [The Museum @ The Mural House](https://www.google.com/maps/search/?api=1&query=37.8071121%2C-122.2945623&query_place_id=ChIJ3zgSyqiBj4ARtY82ZQVFCWY) — 84 reviews (4.9★) · `museum`
+- [Pacific Bus Museum](https://www.google.com/maps/search/?api=1&query=37.56672830000001%2C-121.9839175&query_place_id=ChIJGZEhpXvAj4ARId0Q1am15ys) — 82 reviews (4.5★) · `museum`
+- [Black Panther Party Museum](https://www.google.com/maps/search/?api=1&query=37.8048283%2C-122.27111239999999&query_place_id=ChIJ5SN_GQCBj4ARxGOP091Z9UI) — 81 reviews (4.9★) · `museum`
+- [Hyde St. Pier Historic Ships](https://www.google.com/maps/search/?api=1&query=37.809057599999996%2C-122.42125650000001&query_place_id=ChIJeQBULeCAhYAR7iBgEb0gMPE) — 81 reviews (4.6★) · `museum`
+- [Camron-Stanford House](https://www.google.com/maps/search/?api=1&query=37.801460299999995%2C-122.26227920000001&query_place_id=ChIJX8jOfUqHj4AReW4snLhyAK0) — 78 reviews (4.5★) · `museum`
+- [Museum of Children's Art [MOCHA]](https://www.google.com/maps/search/?api=1&query=37.8035674%2C-122.2723613&query_place_id=ChIJyVbt27GAj4ARBnLCZhTLscI) — 78 reviews (4.5★) · `museum`
+- [California Historical Radio Society](https://www.google.com/maps/search/?api=1&query=37.766115%2C-122.248133&query_place_id=ChIJ5fn8Nb-Gj4ARKifz3Vgxi6I) — 76 reviews (4.8★) · `history_museum`
+- [Children's Natural History Museum](https://www.google.com/maps/search/?api=1&query=37.552022199999996%2C-121.99645&query_place_id=ChIJ8eqdJ3y_j4ARjRFZ7uDZGF4) — 73 reviews (4.7★) · `museum`
+- [McElroy Octagon House](https://www.google.com/maps/search/?api=1&query=37.7977932%2C-122.42744769999999&query_place_id=ChIJqZL4LsOAhYARelXz1lpKDTQ) — 70 reviews (4.5★) · `museum`
+- [Truhlsen-Marmor Museum of the Eye](https://www.google.com/maps/search/?api=1&query=37.806586599999996%2C-122.41999450000002&query_place_id=ChIJQZeIFuGAhYARMhMjtO1mHd0) — 70 reviews (4.8★) · `museum`
+- [Academy of Art University Automobile Museum](https://www.google.com/maps/search/?api=1&query=37.792798%2C-122.423476&query_place_id=ChIJEyrOeuqAhYARTVmNd_tGbn0) — 69 reviews (4.5★) · `museum`
+- [De Saisset Museum](https://www.google.com/maps/search/?api=1&query=37.349953899999996%2C-121.9405869&query_place_id=ChIJUVuaM6zLj4ARoQSjNyb1ebQ) — 69 reviews (4.4★) · `art_museum`
+- [SFO Museum Gallery Harvey Milk Terminal 1](https://www.google.com/maps/search/?api=1&query=37.6145318%2C-122.3853714&query_place_id=ChIJMVLxukF3j4ARSPlx4pF6uwE) — 69 reviews (4.7★) · `museum`
+- [Federal Court](https://www.google.com/maps/search/?api=1&query=37.332203799999995%2C-121.8869098&query_place_id=ChIJzZrZWrrMj4ARtVgqrnZDZuA) — 63 reviews (4.2★) · `museum`
+- [Pittsburg Historical Museum](https://www.google.com/maps/search/?api=1&query=38.031562199999996%2C-121.88361869999999&query_place_id=ChIJn96DuJRbhYARyv8xeZCh2As) — 55 reviews (4.6★) · `museum`
+- [Pardee Home Museum](https://www.google.com/maps/search/?api=1&query=37.8047477%2C-122.27789229999998&query_place_id=ChIJM46_krqAj4ARRSedqCrOgT0) — 53 reviews (4.8★) · `museum`
+- [WWII Pacific War Memorial Hall](https://www.google.com/maps/search/?api=1&query=37.793210099999996%2C-122.4063607&query_place_id=ChIJDZ14eouAhYARQSdz_CDre44) — 52 reviews (4.8★) · `museum`
+- [Stanford Mausoleum](https://www.google.com/maps/search/?api=1&query=37.4365275%2C-122.16993819999999&query_place_id=ChIJ1wFl7i27j4ARNiHRlLttzdg) — 51 reviews (4.7★) · `museum`
+- [Guardians of the City Museum & Safety Learning Center](https://www.google.com/maps/search/?api=1&query=37.785631699999996%2C-122.4468123&query_place_id=ChIJFe6ALcuAhYARzveAYJBhgwQ) — 49 reviews (4.8★) · `museum`
+- [Three Gems by James Turrell](https://www.google.com/maps/search/?api=1&query=37.7709141%2C-122.4697028&query_place_id=ChIJJ7sLAGqHhYARWReEYuSI1AI) — 49 reviews (4.4★) · `museum`
+- [Campbell Historical Museum](https://www.google.com/maps/search/?api=1&query=37.2877449%2C-121.94390449999997&query_place_id=ChIJrX3s7940joARk_4y4We6zys) — 47 reviews (4.4★) · `museum`
+- [Martin Lawrence Galleries](https://www.google.com/maps/search/?api=1&query=37.7873917%2C-122.40940499999998&query_place_id=ChIJfa30_I6AhYARX_6xMsL4QdE) — 42 reviews (4.5★) · `art_museum`
+- [Richmond Museum of History & Culture](https://www.google.com/maps/search/?api=1&query=37.936541999999996%2C-122.36530700000002&query_place_id=ChIJbzUV2q2ChYARsBbdOsxr8fo) — 39 reviews (4.5★) · `museum`
+- [Viet Museum](https://www.google.com/maps/search/?api=1&query=37.320297499999995%2C-121.8600105&query_place_id=ChIJPf3SkygzjoARe7JZJQFuAhI) — 39 reviews (4.2★) · `museum`
+- [Cohen Bray House](https://www.google.com/maps/search/?api=1&query=37.7797948%2C-122.2281414&query_place_id=ChIJl0SyDfGGj4AR2HCv3GVmxdk) — 37 reviews (4.5★) · `museum`
+- [San Francisco Historical Society](https://www.google.com/maps/search/?api=1&query=37.794208%2C-122.40364740000001&query_place_id=ChIJO8s-hIaAhYARa1YTyBrckZY) — 37 reviews (4.2★) · `museum`
+- [Graffiti MUSEUM](https://www.google.com/maps/search/?api=1&query=37.763040499999995%2C-122.420227&query_place_id=ChIJLWhrJCN-j4ARCXa7QdqT38M) — 36 reviews (4.3★) · `museum`
+- [Berkeley Natural History Museums](https://www.google.com/maps/search/?api=1&query=37.8716124%2C-122.26215689999998&query_place_id=ChIJ_THm3SZ8hYARIVwtyJiq2V0) — 35 reviews (3.9★) · `museum`
+- [Letterform Archive](https://www.google.com/maps/search/?api=1&query=37.7601343%2C-122.38826089999999&query_place_id=ChIJ-wTvDcl_j4AR6aTm9O_DUII) — 35 reviews (4★) · `art_museum`
+- [The Lace Museum](https://www.google.com/maps/search/?api=1&query=37.494751699999995%2C-121.9255503&query_place_id=ChIJn1yLyma2j4ARJwBPAHBASEA) — 34 reviews (4.6★) · `museum`
+- [Mission Science Workshop - Excelsior Site](https://www.google.com/maps/search/?api=1&query=37.7264251%2C-122.43386839999998&query_place_id=ChIJM3OgCIZ-j4AR34GnIqoSJc0) — 29 reviews (4.7★) · `museum`
+- [Counterculture Museum](https://www.google.com/maps/search/?api=1&query=37.7699372%2C-122.44674920000001&query_place_id=ChIJXX78PQCHhYARxIh8fPDW0cw) — 28 reviews (5★) · `museum`
+- [Museo Italo Americano](https://www.google.com/maps/search/?api=1&query=37.806757999999995%2C-122.43144799999999&query_place_id=ChIJRdUWXd6AhYARLksoyE6b01E) — 27 reviews (4.4★) · `museum`
+- [Museum of Russian Culture](https://www.google.com/maps/search/?api=1&query=37.7852415%2C-122.44091560000001&query_place_id=ChIJ8cUX98mAhYAR9gpEbO077dE) — 26 reviews (4.3★) · `museum`
+- [Museum of Vertebrate Zoology](https://www.google.com/maps/search/?api=1&query=37.871373%2C-122.26217299999999&query_place_id=ChIJz_Rh4CZ8hYAR4N0-olz6FOQ) — 26 reviews (4.5★) · `museum`
+- [San Jose Fire Museum](https://www.google.com/maps/search/?api=1&query=37.338400799999995%2C-121.89463749999997&query_place_id=ChIJAQAAOyYzjoARZTM8JFb-Mpo) — 26 reviews (4.8★) · `museum`
+- [Mission Science Workshop](https://www.google.com/maps/search/?api=1&query=37.762014%2C-122.42822899999999&query_place_id=ChIJJ7ZlURh-j4AR-evfCEXiSHE) — 25 reviews (4.8★) · `museum`
+- [Harris Lass House Museum](https://www.google.com/maps/search/?api=1&query=37.3423392%2C-121.95356509999999&query_place_id=ChIJ-aZQhFbKj4ARDDqQVHPU_w8) — 23 reviews (4.7★) · `museum`
+- [The Magnes Collection of Jewish Art and Life](https://www.google.com/maps/search/?api=1&query=37.869794999999996%2C-122.26687&query_place_id=ChIJMzhl88t9hYARd1_SfZe3Aoo) — 23 reviews (4.5★) · `museum`
+- [Dr. Sun Yat-Sen Memorial Hall of San Francisco](https://www.google.com/maps/search/?api=1&query=37.7937544%2C-122.4076507&query_place_id=ChIJa5sEo4yAhYARKZOjw4sOZU4) — 22 reviews (3.6★) · `museum`
+- [Eames Institute](https://www.google.com/maps/search/?api=1&query=37.913201%2C-122.32595280000001&query_place_id=ChIJS0ytO7J5hYAR4EultrUTF0o) — 22 reviews (4.8★) · `museum`
+- [Bill's Backyard](https://www.google.com/maps/search/?api=1&query=37.326420999999996%2C-121.89140819999999&query_place_id=ChIJ-R7Mr6_Mj4ARTt_i4kd0XHU) — 21 reviews (5★) · `museum`
+- [San Leandro History Museum](https://www.google.com/maps/search/?api=1&query=37.7243328%2C-122.15785360000001&query_place_id=ChIJO8JCS5GPj4ARY6-jdia-rn8) — 20 reviews (4.8★) · `museum`
+- [Aléna Museum](https://www.google.com/maps/search/?api=1&query=37.84512970000001%2C-122.27624890000001&query_place_id=ChIJqySbOGZ_hYARAhSt1ffB0Rs) — 19 reviews (4.6★) · `museum`
+- [Domini Hoskins Black History Museum and Learning Center](https://www.google.com/maps/search/?api=1&query=37.484997899999996%2C-122.2282517&query_place_id=ChIJ6fnwBwCjj4AR6i7rx7ASTi0) — 19 reviews (4.8★) · `museum`
+- [Galindo Home Museum & Gardens](https://www.google.com/maps/search/?api=1&query=37.973402199999995%2C-122.03476119999998&query_place_id=ChIJe2Ay-yhnhYARo7q4iG8simA) — 19 reviews (4.4★) · `museum`
+- [Millbrae Train Museum](https://www.google.com/maps/search/?api=1&query=37.598453%2C-122.38555330000001&query_place_id=ChIJ26Vaq7F3j4ARvyJff1DUVUs) — 18 reviews (4.9★) · `museum`
+- [Sneaker Museum Oakland](https://www.google.com/maps/search/?api=1&query=37.8014751%2C-122.27429520000001&query_place_id=ChIJ6-wtTxmBj4ARHiSwdamvCnc) — 18 reviews (4.9★) · `museum`
+- [San Carlos Museum of History](https://www.google.com/maps/search/?api=1&query=37.507536099999996%2C-122.2620579&query_place_id=ChIJ74esAAOij4ARHEv-ZttAYf8) — 17 reviews (4.3★) · `museum`
+- [Chinese Railroad Workers History Center](https://www.google.com/maps/search/?api=1&query=37.7943332%2C-122.40499069999998&query_place_id=ChIJdwZOLV2BhYARD518MhfEKtE) — 16 reviews (4.5★) · `museum`
+- [Gadar Memorial](https://www.google.com/maps/search/?api=1&query=37.783634899999996%2C-122.44967799999999&query_place_id=ChIJmdF3qDWHhYAR9X_ZtrB31H4) — 15 reviews (4.5★) · `museum`
+- [Old Mission Dolores Museum](https://www.google.com/maps/search/?api=1&query=37.7641637%2C-122.4269497&query_place_id=ChIJ8wUtmwt_j4AR5JKY0QK6LsU) — 15 reviews (4.5★) · `museum`
+- [Agnews Historic Cemetery](https://www.google.com/maps/search/?api=1&query=37.4010258%2C-121.95319699999999&query_place_id=ChIJj6mJ5qPJj4ARtQyoZ61jbn4) — 14 reviews (4.6★) · `museum`
+- [Essig Museum of Entomology Research](https://www.google.com/maps/search/?api=1&query=37.8714176%2C-122.2628623&query_place_id=ChIJ__9v1yB8hYARoSPEC_Z6krk) — 14 reviews (4.9★) · `museum`
+- [SFO Museum International Terminal ( FLY & EXPLORE VIDEO ARTS )](https://www.google.com/maps/search/?api=1&query=37.6161769%2C-122.39012229999999&query_place_id=ChIJVaOQJt53j4ARNeTBYsgfDD4) — 14 reviews (4.3★) · `art_museum`
+- [Casa Peralta](https://www.google.com/maps/search/?api=1&query=37.724345%2C-122.15834439999999&query_place_id=ChIJdxoTRpGPj4ARX5NZLVVAJZc) — 13 reviews (4.6★) · `museum`
+- [Daly City History Museum](https://www.google.com/maps/search/?api=1&query=37.7052618%2C-122.4617456&query_place_id=ChIJXeFlQjx8j4ARpxyzprgYkS8) — 12 reviews (4.6★) · `museum`
+- [Fisher Bay Observatory Gallery](https://www.google.com/maps/search/?api=1&query=37.8023284%2C-122.39693729999999&query_place_id=ChIJp3USt16AhYARYvwOJld3Owo) — 12 reviews (4.4★) · `museum`
+- [Hiller Aviation Museum Gift Shop](https://www.google.com/maps/search/?api=1&query=37.5126961%2C-122.2532916&query_place_id=ChIJr3iJsgiij4ARLEZFpgQ2588) — 12 reviews (4.5★) · `museum`
+- [Niles Train Plaza](https://www.google.com/maps/search/?api=1&query=37.576698199999996%2C-121.97845079999998&query_place_id=ChIJW1cwKWzAj4ARzAqLG21aX98) — 12 reviews (4.8★) · `museum`
+- [Derby Street Diorama Museum](https://www.google.com/maps/search/?api=1&query=37.8613876%2C-122.260655&query_place_id=ChIJ0b83qul9hYARAmihO1cca5A) — 11 reviews (5★) · `art_museum`
+- [Dublin Camp Parks Military History Center](https://www.google.com/maps/search/?api=1&query=37.715712499999995%2C-121.90931139999999&query_place_id=ChIJi4Gp8Rjsj4ART1_lS6KE-qI) — 11 reviews (4.3★) · `museum`
+- [Maker Faire](https://www.google.com/maps/search/?api=1&query=37.5463977%2C-122.30367210000001&query_place_id=ChIJkaRzWdyfj4ARHn5Gvc4JwhY) — 11 reviews (4.7★) · `museum`
+- [Berkeley Historical Society & Museum](https://www.google.com/maps/search/?api=1&query=37.8700781%2C-122.27181569999999&query_place_id=ChIJr-DIWZl-hYARBCWbfKTysbE) — 10 reviews (4.7★) · `museum`
+- [Colma Historical Association](https://www.google.com/maps/search/?api=1&query=37.6823443%2C-122.4565874&query_place_id=ChIJ5xP0Sfh7j4ARaNFVZi4t4pI) — 10 reviews (4.7★) · `museum`
+- [Eric Joyner Art Studio](https://www.google.com/maps/search/?api=1&query=37.727862699999996%2C-122.3647728&query_place_id=ChIJpyh2iVx_j4AROMtP1MZ_jcI) — 9 reviews (4.4★) · `museum`
+- [Museum of San Francisco](https://www.google.com/maps/search/?api=1&query=37.7943305%2C-122.4032987&query_place_id=ChIJhcb0qLGBhYARDMRdlLqXfXo) — 8 reviews (4.9★) · `museum`
+- [Plymire-Schwarz House Museum](https://www.google.com/maps/search/?api=1&query=37.6564656%2C-122.4169464&query_place_id=ChIJOfqkGKd5j4ARgY2pNYyrG14) — 8 reviews (5★) · `museum`
+- [Tusher African Hall](https://www.google.com/maps/search/?api=1&query=37.7702957%2C-122.4660034&query_place_id=ChIJ2TD_xK6HhYARtPRkAHwCuSI) — 8 reviews (4.6★) · `museum`
+- [Örly Museum of Hungarian Culture](https://www.google.com/maps/search/?api=1&query=37.8770811%2C-122.26456900000001&query_place_id=ChIJg8qDNUN9hYARCldRT10MssU) — 8 reviews (4.9★) · `museum`
+- [Dr. Pathmini Pathmanabhan, DDS](https://www.google.com/maps/search/?api=1&query=37.5534343%2C-121.98393990000001&query_place_id=ChIJ_____37Aj4AR-CrHYX4kwLY) — 7 reviews (5★) · `museum`
+- [Angler's Lodge - Golden Gate Park](https://www.google.com/maps/search/?api=1&query=37.7680143%2C-122.49665499999999&query_place_id=ChIJP1yQs4KHhYAR7XvP8AoLBEs) — 6 reviews (4.8★) · `museum`
+- [Bob Mizer Museum and Photographic Archives](https://www.google.com/maps/search/?api=1&query=37.7865014%2C-122.41806659999999&query_place_id=ChIJ0Vb-U5GAhYARjUu_r2QiTFM) — 6 reviews (4.7★) · `museum`
+- [Showgirl Magic Museum](https://www.google.com/maps/search/?api=1&query=37.7934275%2C-122.4065857&query_place_id=ChIJFXHLifeBhYARYSO0sXhOJa8) — 6 reviews (4.8★) · `museum`
+- [University of California Museum of Paleontology](https://www.google.com/maps/search/?api=1&query=37.871181299999996%2C-122.2620198&query_place_id=ChIJfZ2s5SZ8hYARosaEQVcRqEs) — 6 reviews (4.7★) · `museum`
+- [World Wildlife & Heritage Museum](https://www.google.com/maps/search/?api=1&query=38.01494040000001%2C-122.00145320000001&query_place_id=ChIJqWCdMABnhYARpQwKkeWzKiY) — 6 reviews (1.8★) · `museum`
+- [Chiang Kai-shek Pavilion](https://www.google.com/maps/search/?api=1&query=37.3653032%2C-121.85410820000001&query_place_id=ChIJX1zR_uDNj4ARZnuWz2BiLgQ) — 5 reviews (4.2★) · `museum`
+- [Cooperstown S. F. Baseball Hall Of Fame Exhibit](https://www.google.com/maps/search/?api=1&query=37.7796853%2C-122.3901858&query_place_id=ChIJhWNNidd_j4ARXRiIZ-99Je8) — 5 reviews (4★) · `museum`
+- [Fashion District](https://www.google.com/maps/search/?api=1&query=37.8194261%2C-122.27498979999999&query_place_id=ChIJXWf-n19_hYARh0mBnLSuZ_0) — 5 reviews (4.8★) · `museum`
+- [Headen-Inman House](https://www.google.com/maps/search/?api=1&query=37.356791799999996%2C-121.9556153&query_place_id=ChIJX713yknKj4ARLCNoF8cXX_s) — 5 reviews (4.6★) · `museum`
+- [Little Italy San Jose Italian Cultural Center & Museum](https://www.google.com/maps/search/?api=1&query=37.3351618%2C-121.8985166&query_place_id=ChIJLRQqt6HMj4ARN8zCQ8gjayw) — 5 reviews (3.8★) · `museum`
+- [Meek mansion](https://www.google.com/maps/search/?api=1&query=37.6845277%2C-122.1134465&query_place_id=ChIJ932Mc4WRj4AR2dZUE-9zMrU) — 5 reviews (5★) · `museum`
+- [Rituals of Life](https://www.google.com/maps/search/?api=1&query=37.769301299999995%2C-122.45148249999998&query_place_id=ChIJiyaTYACHhYARPdFVUJozy7Q) — 5 reviews (5★) · `museum`
+- [The Poetry Center](https://www.google.com/maps/search/?api=1&query=37.722077399999996%2C-122.4814181&query_place_id=ChIJcbu70q99j4ARSU_DJE2piMw) — 5 reviews (5★) · `museum`
+
+</details>
+
+
+<details><summary>Dropped: 69 with &lt;5 reviews</summary>
+
+- 15 Boardman — 3 reviews
+- ACSO Archive — 0 reviews
+- Alameda County Sheriff's Archive — 1 reviews
+- Alchemy Museum — 0 reviews
+- Alix2 — 0 reviews
+- BODY WORLDS Decoded — 1 reviews
+- Bade Museum — 4 reviews
+- Bank of California Museum — 4 reviews
+- Bee Gray — 0 reviews
+- Beyond The Flesh — 1 reviews
+- Burlingame Hillsborough History Museum — 2 reviews
+- California Migration Museum : Japantown | Returning to the Harlem of the West: Immersive Walking Tour — 0 reviews
+- California Migration Museum | Chinatown Walking Tour — 2 reviews
+- Carousel Columbia Museum — 0 reviews
+- Castro Valley History Museum — 0 reviews
+- Catherine Brennan Memorial Rose Garden — 3 reviews
+- Center Street and Dr. Huey P. Newton Way, Oakland, CA — 1 reviews
+- DragonOaks — 0 reviews
+- Eames Archives — 1 reviews
+- Egbert Ave Murals (2018.05) — 1 reviews
+- El Cerrito Historical Society — 0 reviews
+- Epic Strips — 0 reviews
+- Fateshifter — 0 reviews
+- Fly Explore Video Arts — 1 reviews
+- Foster Youth Museum Blog — 0 reviews
+- Francophone Museum — 1 reviews
+- Gems and Minerals Unearthed — 1 reviews
+- Golden Gate Park Museum — 1 reviews
+- Guadalupe River Park | Visitor & Education Center — 4 reviews
+- HistoricMira Flores nursery building — 0 reviews
+- Institute of Crazyology — 0 reviews
+- Ira F. Brilliant Center for Beethoven Studies — 0 reviews
+- Jenny’s studio — 0 reviews
+- Jingletown Native Plant Garden and Murals — 1 reviews
+- KDK Buddhist Center — 0 reviews
+- Kim Smith Art Studio — 1 reviews
+- Levi Walking Trail — 3 reviews
+- Lightship Relief — 1 reviews
+- Mechanic Plaza Statue (James Donahue) — 0 reviews
+- Millbrae Museum — 2 reviews
+- Moffett Field Model HO Railroad — 0 reviews
+- Museo Italo Americano Annex — 0 reviews
+- OUT | 出 | MUSEUM — 3 reviews
+- Oakland History Center — 1 reviews
+- Oakland Museum Women's Board — 2 reviews
+- Palo Alto Museum — 3 reviews
+- Poster Wall Museum — 3 reviews
+- Queer Silicon Valley Gallery by BAYMEC — 2 reviews
+- Right Window — 2 reviews
+- SFO Museum Gallery Terminal 2 — 4 reviews
+- Sculpture Garden — 3 reviews
+- Serbian Cultural Center and Museum — 3 reviews
+- South San Francisco Historical Society Museum — 4 reviews
+- St. Francis Museum — 1 reviews
+- Stanford Home of Champions — 2 reviews
+- Stephens Meat Products Neon Pig Sign — 3 reviews
+- Taube Carriage Gallery Museum (San Mateo County History Museum — 0 reviews
+- The Amelia Vollers House — 1 reviews
+- The Floating Art Museum — 2 reviews
+- The Global Museum — 1 reviews
+- The Vault — 2 reviews
+- Toro y Tiburon Cottage — 0 reviews
+- Veterans Gallery San Francisco — 1 reviews
+- Welcome To Ocean Avenue Mural — 1 reviews
+- Willie Mays Experience — 1 reviews
+- YooV Art Foundation — 0 reviews
+- boniliana — 0 reviews
+- di Rosa SF — 4 reviews
+- juan carlos quintana — 0 reviews
+
+</details>
+
+
+## Libraries  (within 1 mi, 168 legitimate)
+
+
+<details><summary>All 168 legitimate places</summary>
+
+- [Main Library - San Francisco Public Library](https://www.google.com/maps/search/?api=1&query=37.7790819%2C-122.41579610000001&query_place_id=ChIJd2spnJuAhYARhkuvhLCp3us) — 936 reviews (4.5★) · `library`
+- [Sunnyvale Public Library](https://www.google.com/maps/search/?api=1&query=37.372005099999996%2C-122.03890729999999&query_place_id=ChIJScWuUvW2j4ARdZnELFy2HM4) — 646 reviews (4.7★) · `library`
+- [Milpitas Library](https://www.google.com/maps/search/?api=1&query=37.4323653%2C-121.9070968&query_place_id=ChIJndQ-LdTIj4ARBgBr-nlY0eY) — 640 reviews (4.7★) · `library`
+- [Mountain View Public Library](https://www.google.com/maps/search/?api=1&query=37.3904084%2C-122.0836156&query_place_id=ChIJiVyFzMywj4ARPLuAlYVzhmE) — 588 reviews (4.7★) · `library`
+- [Dr. Martin Luther King, Jr. Library](https://www.google.com/maps/search/?api=1&query=37.3354825%2C-121.88499949999999&query_place_id=ChIJgbAiC7zMj4ARf9VjyD-BcOM) — 510 reviews (4.4★) · `library`
+- [Fremont Main Library](https://www.google.com/maps/search/?api=1&query=37.5508224%2C-121.9709789&query_place_id=ChIJq5MEbpPAj4AR8_aqX4v_HA8) — 507 reviews (4.5★) · `library`
+- [Hayward Public Library](https://www.google.com/maps/search/?api=1&query=37.6711205%2C-122.083445&query_place_id=ChIJSzixutiTj4ARvgg30CwF5AQ) — 322 reviews (4.7★) · `library`
+- [Mitchell Park Library](https://www.google.com/maps/search/?api=1&query=37.4222037%2C-122.11283580000001&query_place_id=ChIJ87Nodmm6j4ARiEJRRlTJ9fQ) — 288 reviews (4.8★) · `library`
+- [San Mateo Public Library](https://www.google.com/maps/search/?api=1&query=37.5622306%2C-122.32682749999998&query_place_id=ChIJ1fLw5HGej4ARrQaNChl0Atk) — 271 reviews (4.6★) · `library`
+- [Redwood City Public Library](https://www.google.com/maps/search/?api=1&query=37.4840501%2C-122.22733539999999&query_place_id=ChIJcy9sW6yjj4ARjJ-jcqUsICY) — 254 reviews (4.6★) · `library`
+- [Northside Branch Library](https://www.google.com/maps/search/?api=1&query=37.3957452%2C-121.94697079999999&query_place_id=ChIJzUhUiXXJj4AR4feVBEeCXkg) — 226 reviews (4.5★) · `library`
+- [Dublin Library](https://www.google.com/maps/search/?api=1&query=37.7027825%2C-121.9186798&query_place_id=ChIJ58H2bQ7sj4ARXrFGvAvPK9E) — 216 reviews (4.7★) · `library`
+- [San Leandro Public Library](https://www.google.com/maps/search/?api=1&query=37.72603%2C-122.1540461&query_place_id=ChIJzwDBRJaPj4ARhD-JBeOkjxo) — 212 reviews (4.6★) · `library`
+- [Berkeley Public Library](https://www.google.com/maps/search/?api=1&query=37.8681512%2C-122.26846300000001&query_place_id=ChIJx9e2_px-hYARsVoF7Q_SXrY) — 211 reviews (4.5★) · `library`
+- [Alameda Free Library](https://www.google.com/maps/search/?api=1&query=37.76681%2C-122.2423415&query_place_id=ChIJR2vWGL-Gj4ARRzEiBGui5tE) — 208 reviews (4.7★) · `library`
+- [Castro Valley Library](https://www.google.com/maps/search/?api=1&query=37.692941%2C-122.071&query_place_id=ChIJyTr8jCSSj4ARsAda-fdLYE0) — 207 reviews (4.7★) · `library`
+- [Oakland Public Library](https://www.google.com/maps/search/?api=1&query=37.800951399999995%2C-122.26368079999999&query_place_id=ChIJE5sbf7aAj4ARypE-AKq0n90) — 199 reviews (4.5★) · `library`
+- [Burlingame Public Library](https://www.google.com/maps/search/?api=1&query=37.579288399999996%2C-122.34922630000001&query_place_id=ChIJYTTl5vOdj4ARyFydCg6C0_4) — 195 reviews (4.8★) · `library`
+- [Walnut Creek Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9012275%2C-122.06019590000001&query_place_id=ChIJ4-YH179hhYARoFgpB1qJopk) — 195 reviews (4.6★) · `library`
+- [South San Francisco Public Library](https://www.google.com/maps/search/?api=1&query=37.6563383%2C-122.43540069999999&query_place_id=ChIJx1bYEHh5j4ARTWMy84XOi8o) — 194 reviews (4.7★) · `library`
+- [Pleasant Hill Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.933869%2C-122.0673655&query_place_id=ChIJ1UtuDmlhhYARSJdOU5nCfsI) — 180 reviews (4.5★) · `library`
+- [Campbell Library](https://www.google.com/maps/search/?api=1&query=37.2882269%2C-121.94324829999998&query_place_id=ChIJyRG-iN40joAR9cs0lcE1os4) — 174 reviews (4.4★) · `library`
+- [Berryessa Branch Library](https://www.google.com/maps/search/?api=1&query=37.3939483%2C-121.8407935&query_place_id=ChIJRUOyYpXNj4AR2iSjcJvg4Fo) — 158 reviews (4.6★) · `library`
+- [Millbrae Library](https://www.google.com/maps/search/?api=1&query=37.602291699999995%2C-122.39698329999999&query_place_id=ChIJ_8FHUKF3j4AR5vSJXCyJiAs) — 133 reviews (4.4★) · `library`
+- [San Lorenzo Library](https://www.google.com/maps/search/?api=1&query=37.6809764%2C-122.1260754&query_place_id=ChIJVyQWjbKRj4AR1Iekdbzim2A) — 133 reviews (4.4★) · `library`
+- [Belmont Public Library](https://www.google.com/maps/search/?api=1&query=37.508882%2C-122.293139&query_place_id=ChIJ-wwPXWGfj4ARdsO2xllckJo) — 130 reviews (4.6★) · `library`
+- [Menlo Park Library](https://www.google.com/maps/search/?api=1&query=37.453925%2C-122.1797114&query_place_id=ChIJ4yNha7Kkj4ARdOB3TPqdsOE) — 128 reviews (4.6★) · `library`
+- [Concord Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9815924%2C-122.02518610000001&query_place_id=ChIJsWkuFDtnhYARkKZQ6yo1idA) — 125 reviews (4.2★) · `library`
+- [Santa Teresa Branch Library](https://www.google.com/maps/search/?api=1&query=37.237400099999995%2C-121.79976169999999&query_place_id=ChIJw_1wJC4ujoARsEMtIHCY7-U) — 124 reviews (4.8★) · `library`
+- [Willow Glen Branch Library](https://www.google.com/maps/search/?api=1&query=37.3029407%2C-121.9000616&query_place_id=ChIJqxLnzFgzjoARojjJwYYgy_s) — 121 reviews (4.6★) · `library`
+- [Mission Bay Branch Library](https://www.google.com/maps/search/?api=1&query=37.7754291%2C-122.3931303&query_place_id=ChIJTw5KKtF_j4ARZxO_eQ6ysBw) — 119 reviews (4.3★) · `library`
+- [San Carlos Library](https://www.google.com/maps/search/?api=1&query=37.5036152%2C-122.2623124&query_place_id=ChIJkQvU4Ryij4ARJaFew7KkIBw) — 118 reviews (4.7★) · `library`
+- [Santa Clara University Library](https://www.google.com/maps/search/?api=1&query=37.3482069%2C-121.93785&query_place_id=ChIJ96u7xajLj4ARSaF7XJ2vE3Y) — 115 reviews (4.8★) · `library`
+- [Edenvale Branch Library](https://www.google.com/maps/search/?api=1&query=37.267635%2C-121.82125029999997&query_place_id=ChIJWUfZXAMyjoARjaqTCdc1G3w) — 113 reviews (4.5★) · `library`
+- [Albany Library](https://www.google.com/maps/search/?api=1&query=37.8879693%2C-122.2929898&query_place_id=ChIJ4YrCpDR5hYAR4L3NMDT7iGE) — 112 reviews (4.4★) · `library`
+- [Rinconada Library](https://www.google.com/maps/search/?api=1&query=37.4450052%2C-122.1390158&query_place_id=ChIJ44hkHAW7j4ARgHyd2BdSyN8) — 110 reviews (4.6★) · `library`
+- [Bascom Branch Library](https://www.google.com/maps/search/?api=1&query=37.3073905%2C-121.9311176&query_place_id=ChIJxxkKssw0joARnAZ9TB0hJcI) — 109 reviews (4.5★) · `library`
+- [Union City Library](https://www.google.com/maps/search/?api=1&query=37.58792%2C-122.0271514&query_place_id=ChIJ706YNH2Vj4ARxbxxKKbobEs) — 102 reviews (4.4★) · `library`
+- [Park Branch Library](https://www.google.com/maps/search/?api=1&query=37.7701548%2C-122.4510289&query_place_id=ChIJgSgwP1KHhYARg5fpG_CfGYM) — 101 reviews (4.6★) · `library`
+- [Richmond / Senator Milton Marks Branch Library](https://www.google.com/maps/search/?api=1&query=37.7818632%2C-122.46816020000001&query_place_id=ChIJBUvIwz2HhYARiB874NqVsBY) — 101 reviews (4.7★) · `library`
+- [Dr. Roberto Cruz Alum Rock Branch Library](https://www.google.com/maps/search/?api=1&query=37.365214%2C-121.82798600000001&query_place_id=ChIJ768M2m3Nj4AR9e9x6wTRhZM) — 99 reviews (4.5★) · `library`
+- [Lafayette Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.8919322%2C-122.11566909999998&query_place_id=ChIJBYwuMVtihYARffszT-0XSBg) — 98 reviews (4.5★) · `library`
+- [Bernal Heights Branch Library](https://www.google.com/maps/search/?api=1&query=37.738817999999995%2C-122.41609999999999&query_place_id=ChIJC-gtDVl-j4ARWaj-8baki0Q) — 97 reviews (4.8★) · `library`
+- [Excelsior Branch Library](https://www.google.com/maps/search/?api=1&query=37.7271332%2C-122.4333545&query_place_id=ChIJKatO-Yh-j4ARTkDLxHym40k) — 96 reviews (4.6★) · `library`
+- [Ortega Branch Library](https://www.google.com/maps/search/?api=1&query=37.7511957%2C-122.4980659&query_place_id=ChIJ6yn7j3-HhYAR5JY2CkywIsg) — 95 reviews (4.7★) · `library`
+- [Chinatown / Him Mark Lai Branch Library](https://www.google.com/maps/search/?api=1&query=37.7952365%2C-122.41023229999999&query_place_id=ChIJydAUIPOAhYARnIYNiNpW_Gw) — 94 reviews (4.2★) · `library`
+- [Potrero Branch Library](https://www.google.com/maps/search/?api=1&query=37.7601333%2C-122.3976556&query_place_id=ChIJqQ2Vdsp_j4ARehdK_aeN0dk) — 93 reviews (4.7★) · `library`
+- [North Beach Branch Library](https://www.google.com/maps/search/?api=1&query=37.8026243%2C-122.41319209999999&query_place_id=ChIJx4aX_e-AhYARCeCy-L30FYc) — 88 reviews (4.4★) · `library`
+- [Oakland Public Library: Rockridge Branch](https://www.google.com/maps/search/?api=1&query=37.8399084%2C-122.25107589999999&query_place_id=ChIJL1NC_uh9hYARrjQVdqaJxk8) — 86 reviews (4.6★) · `library`
+- [Pittsburg Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.0186452%2C-121.89099519999999&query_place_id=ChIJYYDBp_pbhYARlLDcvEuc3WM) — 86 reviews (4.5★) · `library`
+- [El Cerrito Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9084062%2C-122.303975&query_place_id=ChIJY3K7lVF4hYARwZss3v5l0B8) — 84 reviews (4.9★) · `library`
+- [Eureka Valley / Harvey Milk Memorial Branch Library](https://www.google.com/maps/search/?api=1&query=37.764074799999996%2C-122.4319259&query_place_id=ChIJ8Y-lehx-j4ARel4hMV6Zo20) — 83 reviews (4.4★) · `library`
+- [J. Paul Leonard Library](https://www.google.com/maps/search/?api=1&query=37.721365299999995%2C-122.47813639999998&query_place_id=ChIJo5P3nLF9j4ARwdRBcNUbtoI) — 81 reviews (4.6★) · `library`
+- [Redwood Shores Branch Library](https://www.google.com/maps/search/?api=1&query=37.530423%2C-122.258643&query_place_id=ChIJVfO2t7aYj4ARIPik0Lc3hpw) — 81 reviews (4.6★) · `library`
+- [Rose Garden Branch Library](https://www.google.com/maps/search/?api=1&query=37.331780099999996%2C-121.926357&query_place_id=ChIJ_5VVkhTLj4AR5vkGtQN-Olc) — 80 reviews (4.5★) · `library`
+- [Sunset Branch Library](https://www.google.com/maps/search/?api=1&query=37.7633703%2C-122.47627310000001&query_place_id=ChIJHc3-7GWHhYARYP-cCRdqnTg) — 80 reviews (4.5★) · `library`
+- [Doe Library](https://www.google.com/maps/search/?api=1&query=37.8722202%2C-122.25923949999999&query_place_id=ChIJHQXpIiR8hYARqKk0ptub3CM) — 79 reviews (4.8★) · `library`
+- [Atherton Library](https://www.google.com/maps/search/?api=1&query=37.463196599999996%2C-122.1969398&query_place_id=ChIJ5_kz912jj4ARnFxe36Rr0q0) — 78 reviews (4.7★) · `library`
+- [Cecil H Green Library](https://www.google.com/maps/search/?api=1&query=37.4268182%2C-122.16714&query_place_id=ChIJh_57W9a6j4ARj1Z0pGMtNIk) — 78 reviews (4.4★) · `library`
+- [Mission Branch Library (City of Santa Clara Library System)](https://www.google.com/maps/search/?api=1&query=37.3472746%2C-121.94497059999999&query_place_id=ChIJzVB_gKzLj4ARZxZTMX21Fcc) — 78 reviews (4.5★) · `library`
+- [Bayview / Linda Brooks-Burton Branch Library](https://www.google.com/maps/search/?api=1&query=37.7325783%2C-122.3912975&query_place_id=ChIJ47yEtxp_j4ARMMcf0MuzvB4) — 77 reviews (4.6★) · `library`
+- [Educational Park Branch Library](https://www.google.com/maps/search/?api=1&query=37.3656305%2C-121.85766729999999&query_place_id=ChIJs8FINP7Mj4ARTIb7E8jrPsk) — 77 reviews (4.3★) · `library`
+- [Noe Valley / Sally Brunn Branch Library](https://www.google.com/maps/search/?api=1&query=37.7502639%2C-122.4350361&query_place_id=ChIJF9ySgxJ-j4ARSRdKY7jGLy0) — 76 reviews (4.5★) · `library`
+- [Pearl Avenue Branch Library](https://www.google.com/maps/search/?api=1&query=37.2677896%2C-121.86639799999999&query_place_id=ChIJn7JWbsgzjoARLxd7jcF5jNM) — 76 reviews (4.5★) · `library`
+- [San Bruno Library](https://www.google.com/maps/search/?api=1&query=37.625308%2C-122.414854&query_place_id=ChIJFdOYidl5j4ARr21IX7CJ5Mw) — 74 reviews (4.4★) · `library`
+- [Oakland Public Library: César E. Chávez Branch](https://www.google.com/maps/search/?api=1&query=37.7760604%2C-122.22500559999999&query_place_id=ChIJX3zpvfSGj4ARQHsmjgmSzJg) — 73 reviews (4.6★) · `library`
+- [Oakland Public Library: 81st Avenue Branch](https://www.google.com/maps/search/?api=1&query=37.75352000000001%2C-122.18553620000002&query_place_id=ChIJU1RI-vGFj4AR62U7lyzdpqo) — 72 reviews (4.7★) · `library`
+- [West Oakland Branch | Oakland Public Library:](https://www.google.com/maps/search/?api=1&query=37.812834699999996%2C-122.28515610000001&query_place_id=ChIJs70hiqCAj4ARmKwi54Agmn4) — 72 reviews (4.2★) · `library`
+- [West Portal Branch Library](https://www.google.com/maps/search/?api=1&query=37.7413787%2C-122.46620670000001&query_place_id=ChIJfYQerOt9j4ARW3HQCGMPSeo) — 72 reviews (4.6★) · `library`
+- [Hillview Branch Library](https://www.google.com/maps/search/?api=1&query=37.337804399999996%2C-121.83114719999998&query_place_id=ChIJ8YZy0krNj4AR3Jm9qQTtZgA) — 70 reviews (4.4★) · `library`
+- [Mission Branch Library](https://www.google.com/maps/search/?api=1&query=37.7531165%2C-122.4210433&query_place_id=ChIJhco-vEB-j4AR4SK7rNtShM0) — 69 reviews (4.3★) · `library`
+- [Presidio Branch Library](https://www.google.com/maps/search/?api=1&query=37.7888519%2C-122.444892&query_place_id=ChIJ9Ta-m8yAhYARB6A8Efv-3eA) — 69 reviews (4.6★) · `library`
+- [Oakland Public Library: Golden Gate Branch](https://www.google.com/maps/search/?api=1&query=37.83921600000001%2C-122.28225300000001&query_place_id=ChIJBzRMtW5-hYAR32tjh4LHmpQ) — 67 reviews (4.7★) · `library`
+- [Berkeley Public Library - Claremont Branch](https://www.google.com/maps/search/?api=1&query=37.8566126%2C-122.25435680000001&query_place_id=ChIJi8YnBtJ9hYAR_xFnV0yZxxs) — 66 reviews (4.8★) · `library`
+- [Berkeley Public Library - North Branch](https://www.google.com/maps/search/?api=1&query=37.8854563%2C-122.27545429999998&query_place_id=ChIJo1_CNa5-hYARKmcoHNh3qao) — 66 reviews (4.7★) · `library`
+- [Joyce Ellington Branch Library](https://www.google.com/maps/search/?api=1&query=37.3498412%2C-121.8869455&query_place_id=ChIJq8za15HMj4ARrJHg1r0c4X4) — 66 reviews (4.7★) · `library`
+- [Mechanics' Institute](https://www.google.com/maps/search/?api=1&query=37.7888534%2C-122.4030107&query_place_id=ChIJO-j0NYiAhYARqxk-_uyhU3Y) — 66 reviews (4.7★) · `library`
+- [Merced Branch Library](https://www.google.com/maps/search/?api=1&query=37.7266575%2C-122.47450979999999&query_place_id=ChIJDeyn_rl9j4ARhOar37HzMLw) — 66 reviews (4.4★) · `library`
+- [Visitacion Valley Branch Library](https://www.google.com/maps/search/?api=1&query=37.712455%2C-122.40788599999998&query_place_id=ChIJgXItsdl-j4AR6ddjjd7sHgo) — 65 reviews (4.7★) · `library`
+- [Western Addition Branch Library](https://www.google.com/maps/search/?api=1&query=37.7841709%2C-122.4376376&query_place_id=ChIJOzjFtbeAhYARXA7J4xSdE0A) — 65 reviews (4.5★) · `library`
+- [Marina Branch Library](https://www.google.com/maps/search/?api=1&query=37.8013195%2C-122.4341471&query_place_id=ChIJo4XD9tmAhYARpvfo5tgNXdc) — 64 reviews (4.4★) · `library`
+- [Downtown Library](https://www.google.com/maps/search/?api=1&query=37.4438889%2C-122.1591667&query_place_id=ChIJp2xbvzu7j4ARbE0Yv7Tx68g) — 63 reviews (4.4★) · `library`
+- [Glen Park Branch Library](https://www.google.com/maps/search/?api=1&query=37.7339585%2C-122.43374899999998&query_place_id=ChIJe7MgZGN-j4ARekk-kVpXnY8) — 63 reviews (4.7★) · `library`
+- [Moffitt Library](https://www.google.com/maps/search/?api=1&query=37.8725327%2C-122.26083659999999&query_place_id=ChIJxWEsuCZ8hYAR48_Sst45khU) — 63 reviews (4.2★) · `library`
+- [Anza Branch Library](https://www.google.com/maps/search/?api=1&query=37.7785234%2C-122.49721749999999&query_place_id=ChIJz_EtRJ2AhYARHEJlyPJLliM) — 62 reviews (4.6★) · `library`
+- [Orinda Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.8824618%2C-122.1876739&query_place_id=ChIJvY6hQdh8hYARkSmjplqIjFc) — 62 reviews (4.8★) · `library`
+- [Serramonte Main Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.6628945%2C-122.47042119999999&query_place_id=ChIJ0zynJJV7j4ARpnHwN0fjaRE) — 62 reviews (4.5★) · `library`
+- [Berkeley Tool Lending Library](https://www.google.com/maps/search/?api=1&query=37.856362%2C-122.2711192&query_place_id=ChIJ_2K_soB-hYARumqRRkVlzpI) — 61 reviews (4.6★) · `library`
+- [Portola Branch Library](https://www.google.com/maps/search/?api=1&query=37.7270374%2C-122.406509&query_place_id=ChIJo09-aON-j4ARLn6OLNNg2vM) — 61 reviews (4.3★) · `library`
+- [Berkeley Public Library - Tarea Hall Pittman South Branch](https://www.google.com/maps/search/?api=1&query=37.856408%2C-122.27103679999999&query_place_id=ChIJ_2K_soB-hYARHmgdRdpFdyo) — 60 reviews (4.6★) · `library`
+- [Weekes Branch Library](https://www.google.com/maps/search/?api=1&query=37.633361%2C-122.0789123&query_place_id=ChIJT1M7FRyUj4AR28q7HKSZXEg) — 60 reviews (3.8★) · `library`
+- [Oakland Public Library: Oakland Tool Lending Library](https://www.google.com/maps/search/?api=1&query=37.838221600000004%2C-122.26249940000001&query_place_id=ChIJQaHVYeB9hYARyNqd6kuQld8) — 59 reviews (4.6★) · `library`
+- [UCSF Kalmanovitz Library](https://www.google.com/maps/search/?api=1&query=37.7633027%2C-122.4590156&query_place_id=ChIJc_qHxFmHhYARDbn6qECUMAk) — 59 reviews (4.6★) · `library`
+- [Ingleside Branch Library](https://www.google.com/maps/search/?api=1&query=37.7240421%2C-122.4562952&query_place_id=ChIJE02zo819j4ARGP-V7I3bWLs) — 56 reviews (4.6★) · `library`
+- [Parkside Branch Library](https://www.google.com/maps/search/?api=1&query=37.7431595%2C-122.47937019999999&query_place_id=ChIJBUvIwz2HhYAR10tn1XruUUk) — 56 reviews (4.5★) · `library`
+- [Richmond Public Library - Auditorium Temporary Branch](https://www.google.com/maps/search/?api=1&query=37.9366664%2C-122.3441131&query_place_id=ChIJZZpLMhB4hYAR-IMsVWEpcxI) — 55 reviews (4.5★) · `library`
+- [Golden Gate Valley Branch Library](https://www.google.com/maps/search/?api=1&query=37.7968098%2C-122.4290512&query_place_id=ChIJW2IRRMOAhYARXhey6sF1bX8) — 54 reviews (4.6★) · `library`
+- [Manor Branch Library](https://www.google.com/maps/search/?api=1&query=37.691403799999996%2C-122.1526586&query_place_id=ChIJm6dIVj2Qj4AROMoUgwyFJLw) — 54 reviews (4.6★) · `library`
+- [Internet Archive](https://www.google.com/maps/search/?api=1&query=37.782320999999996%2C-122.471637&query_place_id=ChIJAeBSOgCHhYARdadXQDhc1jY) — 53 reviews (4.9★) · `library`
+- [Oakland Public Library: Lakeview Branch](https://www.google.com/maps/search/?api=1&query=37.8092001%2C-122.2489488&query_place_id=ChIJb3krt0aHj4ARnoV27t9Dni8) — 52 reviews (4.7★) · `library`
+- [Alviso Branch Library](https://www.google.com/maps/search/?api=1&query=37.4245818%2C-121.9691237&query_place_id=ChIJUd79B0fIj4AR3C7IVa5KV1I) — 51 reviews (4.6★) · `library`
+- [Biblioteca Latinoamericana Branch Library](https://www.google.com/maps/search/?api=1&query=37.3222431%2C-121.88041509999998&query_place_id=ChIJFwHhuUozjoARtQNA_O_Jdz4) — 49 reviews (4.7★) · `library`
+- [The CORE - University Libraries](https://www.google.com/maps/search/?api=1&query=37.6551435%2C-122.0548007&query_place_id=ChIJjbzlMfOTj4ARjz9LD6q_kxc) — 48 reviews (4.6★) · `library`
+- [East San Jose Carnegie Library](https://www.google.com/maps/search/?api=1&query=37.3464422%2C-121.8682711&query_place_id=ChIJy3jsEejMj4AR2d7I_X2GLJo) — 45 reviews (4.6★) · `library`
+- [Westlake Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.697223%2C-122.4854045&query_place_id=ChIJFXfqNFx8j4ARcjc6jk0lt58) — 44 reviews (4.3★) · `library`
+- [Oakland Public Library: Melrose Branch](https://www.google.com/maps/search/?api=1&query=37.772436%2C-122.2076209&query_place_id=ChIJ9Yuid2aGj4AReJY6m70EpN0) — 42 reviews (4.6★) · `library`
+- [South San Francisco - Grand Avenue Library](https://www.google.com/maps/search/?api=1&query=37.656497300000005%2C-122.41399399999999&query_place_id=ChIJ7SD-NqZ5j4ARrEAQZR7HITA) — 42 reviews (4.5★) · `library`
+- [Children's Library](https://www.google.com/maps/search/?api=1&query=37.4447937%2C-122.1451991&query_place_id=ChIJgbmTChq7j4ARpD7cQgKJBvM) — 41 reviews (4.5★) · `library`
+- [John Daly Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.7020567%2C-122.46280549999997&query_place_id=ChIJaxKC9D18j4AR7PbIY3KORJ8) — 41 reviews (4.5★) · `library`
+- [Oakland Public Library: Brookfield Branch](https://www.google.com/maps/search/?api=1&query=37.7376116%2C-122.1884853&query_place_id=ChIJh_-ef5CFj4ARYJvacu-cqnc) — 41 reviews (4.8★) · `library`
+- [Ocean View Branch Library](https://www.google.com/maps/search/?api=1&query=37.714138299999995%2C-122.465995&query_place_id=ChIJsfS9jzZ8j4AR0qe5bZT4rZo) — 40 reviews (4.6★) · `library`
+- [Oakland Public Library - Martin Luther King Jr. Branch](https://www.google.com/maps/search/?api=1&query=37.76069%2C-122.190677&query_place_id=ChIJVwgYCOSFj4ARGzMC7VRU2Eo) — 39 reviews (4.8★) · `library`
+- [Hillsdale Branch - San Mateo Public Library](https://www.google.com/maps/search/?api=1&query=37.5334301%2C-122.30467870000001&query_place_id=ChIJd7AbIQSfj4ARAsz_e1iC20I) — 38 reviews (4.3★) · `library`
+- [The Bancroft Library](https://www.google.com/maps/search/?api=1&query=37.8723046%2C-122.2586503&query_place_id=ChIJoZpCSCV8hYARAEbWLD-SHhk) — 38 reviews (4.8★) · `library`
+- [Oakland Public Library: Piedmont Avenue Branch](https://www.google.com/maps/search/?api=1&query=37.827837099999996%2C-122.24817789999997&query_place_id=ChIJJV6KofZ9hYARX1m08tpzzIs) — 37 reviews (4.6★) · `library`
+- [Oakland Public Library, Asian Branch](https://www.google.com/maps/search/?api=1&query=37.800767500000006%2C-122.2711403&query_place_id=ChIJawFMfraAj4ARXrPa08HcCxg) — 36 reviews (4.5★) · `library`
+- [Berkeley Public Library West Branch](https://www.google.com/maps/search/?api=1&query=37.869561999999995%2C-122.290914&query_place_id=ChIJUxStzMF-hYARGe-wjWOhUEs) — 33 reviews (4.6★) · `library`
+- [Marina Branch - San Mateo Public Library](https://www.google.com/maps/search/?api=1&query=37.55641%2C-122.29307759999999&query_place_id=ChIJQ5YQM-mej4AR1vJHuJwsFwE) — 33 reviews (4.3★) · `library`
+- [North Fair Oaks Library](https://www.google.com/maps/search/?api=1&query=37.4774765%2C-122.213846&query_place_id=ChIJX0E2xg6jj4AR1RiIgIV8a5g) — 33 reviews (4★) · `library`
+- [Oakland Public Library: Temescal Branch](https://www.google.com/maps/search/?api=1&query=37.8382302%2C-122.2625023&query_place_id=ChIJ7aGBiuB9hYARc_fkY4xQ2XA) — 33 reviews (4.3★) · `library`
+- [C.V. Starr East Asian Library](https://www.google.com/maps/search/?api=1&query=37.873575699999996%2C-122.25997960000001&query_place_id=ChIJAQCwhiZ8hYARhe-BsmCY4VI) — 31 reviews (4.8★) · `library`
+- [Gleeson Library | Geschke Center](https://www.google.com/maps/search/?api=1&query=37.7765524%2C-122.45195129999999&query_place_id=ChIJC0DK_kuHhYARZQIRNNzw5NQ) — 31 reviews (4.1★) · `library`
+- [Rosenberg Library](https://www.google.com/maps/search/?api=1&query=37.7247007%2C-122.4493828&query_place_id=ChIJwwfA1Cp8j4ARPiDVj1iyB7w) — 30 reviews (4.6★) · `library`
+- [Burlingame Library Easton Branch](https://www.google.com/maps/search/?api=1&query=37.5839341%2C-122.37158260000001&query_place_id=ChIJB6W-szt2j4AR6QJH6K6l8PI) — 28 reviews (4.6★) · `library`
+- [Lathrop Library](https://www.google.com/maps/search/?api=1&query=37.4291471%2C-122.16742579999999&query_place_id=ChIJVVUVwim7j4AR79mh7iy3fX0) — 27 reviews (4.4★) · `library`
+- [College Terrace Library](https://www.google.com/maps/search/?api=1&query=37.4233725%2C-122.1486523&query_place_id=ChIJ_RRg9ui6j4ARBSGMtCmv98U) — 26 reviews (4.3★) · `library`
+- [Santa Clara County Law Library](https://www.google.com/maps/search/?api=1&query=37.341533999999996%2C-121.894086&query_place_id=ChIJu0lxaZnMj4ARBTD5O-CftCM) — 24 reviews (4.4★) · `library`
+- [Kensington Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9129819%2C-122.28102870000001&query_place_id=ChIJy6TJa2l5hYARtR26NhbIGgk) — 21 reviews (4.8★) · `library`
+- [Oakland Public Library: Elmhurst Branch](https://www.google.com/maps/search/?api=1&query=37.7515679%2C-122.17491539999999&query_place_id=ChIJnS5Lq4qFj4ARsyJ_0188nKc) — 21 reviews (4.8★) · `library`
+- [Helen Crocker Russell Library](https://www.google.com/maps/search/?api=1&query=37.7668714%2C-122.46745360000001&query_place_id=ChIJpxPh31yHhYARY3HE8X5-ni0) — 20 reviews (4.9★) · `library`
+- [Prelinger Library](https://www.google.com/maps/search/?api=1&query=37.7748604%2C-122.40963680000002&query_place_id=ChIJ-Yt01Cl-j4ARmNcclXlWB6Y) — 20 reviews (5★) · `library`
+- [Library | Mission College](https://www.google.com/maps/search/?api=1&query=37.3919688%2C-121.98074869999999&query_place_id=ChIJJ-WjOsPJj4AR00gGp3XTIBk) — 19 reviews (4.4★) · `library`
+- [Schaberg Branch Library](https://www.google.com/maps/search/?api=1&query=37.4664888%2C-122.24309889999999&query_place_id=ChIJ_7YFosCjj4ARzltxVvaZehY) — 19 reviews (4.8★) · `library`
+- [Earth Science & Map Library](https://www.google.com/maps/search/?api=1&query=37.8739719%2C-122.2596097&query_place_id=ChIJAQBA_SN8hYARtaE4ZpOzXcA) — 17 reviews (4.5★) · `library`
+- [Kresge Engineering Library](https://www.google.com/maps/search/?api=1&query=37.8738211%2C-122.2583076&query_place_id=ChIJF4BsiyN8hYARLZ1vIPraljI) — 17 reviews (4.7★) · `library`
+- [Jean Gray Hargrove Music Library](https://www.google.com/maps/search/?api=1&query=37.8704442%2C-122.2561865&query_place_id=ChIJ__-_ciV8hYARxgPm1ycRiEQ) — 16 reviews (4.6★) · `library`
+- [Lane Medical Library](https://www.google.com/maps/search/?api=1&query=37.432701699999996%2C-122.17554069999998&query_place_id=ChIJ77t1StOkj4ARm475_u6K4Lk) — 16 reviews (4.4★) · `library`
+- [San Francisco Law Library](https://www.google.com/maps/search/?api=1&query=37.7795419%2C-122.4134156&query_place_id=ChIJ5cCAsJmAhYARbI_oLz5bPdA) — 16 reviews (4.6★) · `library`
+- [Alameda County Law Library](https://www.google.com/maps/search/?api=1&query=37.7998577%2C-122.26450179999999&query_place_id=ChIJVc03QTWHj4ARCa_4JF7J3ZA) — 15 reviews (4.9★) · `library`
+- [César E. Chávez Library](https://www.google.com/maps/search/?api=1&query=37.3157999%2C-121.9263063&query_place_id=ChIJe-iBSDbLj4ARHfZ-VxnkhSU) — 13 reviews (4.7★) · `library`
+- [Main (Gardner) Stacks](https://www.google.com/maps/search/?api=1&query=37.8727881%2C-122.25908629999999&query_place_id=ChIJQ5poxV59hYARuD-jFIiXHP8) — 13 reviews (4.7★) · `library`
+- [Laney College Library](https://www.google.com/maps/search/?api=1&query=37.7967004%2C-122.2626145&query_place_id=ChIJM1ImhTSHj4AR6wbWSy4D3I8) — 12 reviews (4.7★) · `library`
+- [Richmond Public Library - Bayview Branch](https://www.google.com/maps/search/?api=1&query=37.9151837%2C-122.3238432&query_place_id=ChIJrTepNxB4hYARNvlXatdGiBE) — 12 reviews (4.8★) · `library`
+- [San Mateo County Law Library](https://www.google.com/maps/search/?api=1&query=37.487283%2C-122.2305436&query_place_id=ChIJiweHl1Kij4ARzQY_iPTvNro) — 12 reviews (4.3★) · `library`
+- [Little Free Library](https://www.google.com/maps/search/?api=1&query=37.787869199999996%2C-122.4362179&query_place_id=ChIJocrjGt2BhYAR2sQP8_mk58w) — 10 reviews (5★) · `library`
+- [San Francisco Museum of Modern Art - Library](https://www.google.com/maps/search/?api=1&query=37.7858686%2C-122.40066700000001&query_place_id=ChIJZRx2OtyBhYARtXhXFXeA6MI) — 10 reviews (4.3★) · `library`
+- [Bayshore Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.7016011%2C-122.4190304&query_place_id=ChIJx85YGMl-j4AREl3gsnZD_hY) — 9 reviews (4.7★) · `library`
+- [Stanford Business Library](https://www.google.com/maps/search/?api=1&query=37.4284828%2C-122.16220930000001&query_place_id=ChIJG8XsPti6j4AR7yc0x77lq-8) — 9 reviews (4.9★) · `library`
+- [The International Library of Young Authors](https://www.google.com/maps/search/?api=1&query=37.7592535%2C-122.4210652&query_place_id=ChIJ3_QMYQB_j4ARy9AOAEh9VBc) — 9 reviews (4.9★) · `library`
+- [Bowes Art & Architecture Library](https://www.google.com/maps/search/?api=1&query=37.4327906%2C-122.17169220000001&query_place_id=ChIJC4r4Fta6j4ARZhnmxbveO_Q) — 8 reviews (4.5★) · `library`
+- [David Rumsey Map Center](https://www.google.com/maps/search/?api=1&query=37.4266949%2C-122.1674928&query_place_id=ChIJj5-eQta6j4ARKlWkGfNgPgM) — 8 reviews (4.5★) · `library`
+- [Environmental Design Library](https://www.google.com/maps/search/?api=1&query=37.8707352%2C-122.25489350000001&query_place_id=ChIJLVUAUCV8hYARvXQnG_cbi4w) — 8 reviews (4.9★) · `library`
+- [Green Library, East Wing entrance](https://www.google.com/maps/search/?api=1&query=37.4266308%2C-122.16708639999997&query_place_id=ChIJvf077hi7j4ARMqYIHLXY5yA) — 7 reviews (3.4★) · `library`
+- [Long Business Library](https://www.google.com/maps/search/?api=1&query=37.871465%2C-122.25344500000001&query_place_id=ChIJmY7BsDp8hYARfG23CBRdZdU) — 7 reviews (4.6★) · `library`
+- [Niles Library](https://www.google.com/maps/search/?api=1&query=37.5760565%2C-121.97816999999999&query_place_id=ChIJlcnhjm7Aj4ARqZTk-CHV3qw) — 7 reviews (4.9★) · `library`
+- [Northern Regional Library Facility (NRLF)](https://www.google.com/maps/search/?api=1&query=37.9174313%2C-122.33543300000001&query_place_id=ChIJfaEr8F54hYARTaAjFURNejA) — 7 reviews (4.3★) · `library`
+- [Science Library (Li and Ma)](https://www.google.com/maps/search/?api=1&query=37.4306507%2C-122.17141339999999&query_place_id=ChIJ49t_oSu7j4ARrcKxrqb-wGk) — 7 reviews (4.4★) · `library`
+- [Sutro Library](https://www.google.com/maps/search/?api=1&query=37.7214457%2C-122.4780362&query_place_id=ChIJLwt8nbF9j4ARYILNL0GwzxI) — 7 reviews (4.4★) · `library`
+- [Terman Engineering Library](https://www.google.com/maps/search/?api=1&query=37.4280737%2C-122.17421689999999&query_place_id=ChIJpfoMziq7j4ARQj5mJsVr8wY) — 7 reviews (5★) · `library`
+- [UCLSF Library](https://www.google.com/maps/search/?api=1&query=37.7811659%2C-122.41584449999999&query_place_id=ChIJOxXbXpqAhYARw8_DY2Jxudk) — 7 reviews (4.9★) · `library`
+- [East Asia Library](https://www.google.com/maps/search/?api=1&query=37.4294684%2C-122.1672722&query_place_id=ChIJw9DEC2W7j4AReHwSguLp2DQ) — 6 reviews (4.3★) · `library`
+- [Marian Koshland Bioscience & Natural Resources Library](https://www.google.com/maps/search/?api=1&query=37.8714896%2C-122.2621408&query_place_id=ChIJ_____-B-hYARkH8qFkVlQZA) — 6 reviews (5★) · `library`
+- [Niebyl-Proctor Marxist Library](https://www.google.com/maps/search/?api=1&query=37.8511108%2C-122.26073620000001&query_place_id=ChIJPdyUOtd9hYARxyvEOMR2dqQ) — 6 reviews (5★) · `library`
+- [South Branch Library](https://www.google.com/maps/search/?api=1&query=37.7086882%2C-122.1339814&query_place_id=ChIJi2IbyNWPj4ARu6zQ6krqYaM) — 6 reviews (4.3★) · `library`
+- [City College of San Francisco Downtown Center Library](https://www.google.com/maps/search/?api=1&query=37.7845051%2C-122.40468680000001&query_place_id=ChIJUc9gToaAhYAR3ylgci0CdGQ) — 5 reviews (4.6★) · `library`
+- [Jewish Community Library](https://www.google.com/maps/search/?api=1&query=37.781447799999995%2C-122.43654269999999&query_place_id=ChIJDxYg5RSHhYAR2JrRf_Biwwc) — 5 reviews (4.8★) · `library`
+- [NASA Life Sciences Library](https://www.google.com/maps/search/?api=1&query=37.4145123%2C-122.0581667&query_place_id=ChIJZUGCqmW3j4ARKFsb5_oVdpk) — 5 reviews (5★) · `library`
+- [Robert Crown Law Library](https://www.google.com/maps/search/?api=1&query=37.424098%2C-122.1675664&query_place_id=ChIJJ1XBu9a6j4ARkgoTD8JaHNA) — 5 reviews (4★) · `library`
+
+</details>
+
+
+<details><summary>Dropped: 354 with &lt;5 reviews</summary>
+
+- "The Restricted Section" Little Library — 0 reviews
+- "Tigger" Little Free Library — 0 reviews
+- 45th Avenue Honey Little Free Library — 0 reviews
+- Abigail's little library — 2 reviews
+- Abraham's Little Free Library — 0 reviews
+- Academy of American Franciscan — 0 reviews
+- Adocentyn Research Library — 0 reviews
+- Agua Way Little Free Library — 0 reviews
+- Alioto-Lazio Fish Co Little Free Library — 0 reviews
+- Amesbury Ave Little Library — 1 reviews
+- Ana's Little Free Library — 0 reviews
+- Andrea Rease's Little Free Library — 0 reviews
+- Angela's Little Free Library — 2 reviews
+- Anthropology Library — 2 reviews
+- Apple Tree Library Foundation — 0 reviews
+- Area 181 Free Little Library — 1 reviews
+- Art History/Classics Library — 0 reviews
+- Ashbury Little Children’s Library — 4 reviews
+- Ashby Health Science Library — 0 reviews
+- Atherton Chinese Library (by appointment only) — 1 reviews
+- Balboa and 39th Little Free Library — 0 reviews
+- Barcy Ct Free Little Library — 4 reviews
+- Bayview Mission's Little Free Library — 0 reviews
+- Beach House Little Free Library — 0 reviews
+- Beach Hut Little Free Library — 2 reviews
+- Berkeley Law Library — 3 reviews
+- Berkeley/Onique Little Free Library — 0 reviews
+- Bessie Carmichael Read in Color Little Free Library — 0 reviews
+- BookTree LLC — 1 reviews
+- Bowman Library — 0 reviews
+- Bradley Catalog Copywriting — 0 reviews
+- Branner Earth Sciences Library — 4 reviews
+- CED Visual Resources Center — 0 reviews
+- California Digital Library — 0 reviews
+- California Mayflower Society — 0 reviews
+- Career Counseling Library — 1 reviews
+- Carl Street sidewalk Library — 3 reviews
+- Celestial Books — 0 reviews
+- Central Elementary Little Library — 1 reviews
+- Chemistry, Astronomy & Physics Library — 3 reviews
+- Christian Science Reading Room — 0 reviews
+- Christian Science Reading Room — 3 reviews
+- Chrysanthemum Little Library — 1 reviews
+- College Hill Little Free Library — 0 reviews
+- Cubberley Education Library — 1 reviews
+- Dave's Little Free Library — 0 reviews
+- David Baker Little Free Library — 1 reviews
+- David Del Simone Memorial Law Library (branch of) Contra Costa County Law Library — 1 reviews
+- Deadenders Little Library — 0 reviews
+- Dempsey's Little Free Library — 0 reviews
+- Department of Health Services Library — 0 reviews
+- Dianne's Little Free Library — 0 reviews
+- Dickson Library Associates — 0 reviews
+- Dishari Public Library — 4 reviews
+- Dr. Mattie McGlothen Library/Museum — 1 reviews
+- Dublin High School Library — 0 reviews
+- E&E's Little Free Library — 0 reviews
+- Emma's Little Free Library — 1 reviews
+- Eshleman Hall — 2 reviews
+- Ethnic Studies Library — 3 reviews
+- Exchange Box / Boitre D'Exchange Des Voisins — 1 reviews
+- Fairy Garden Little Free Library — 0 reviews
+- Family Resource Library — 0 reviews
+- Farm Table Little Free Library — 0 reviews
+- Fernwood Little Library — 1 reviews
+- Flora Lamson Hewlett Library — 2 reviews
+- Free Little Library — 0 reviews
+- Free Little Library — 1 reviews
+- Free Little Library — 0 reviews
+- Free Little Library — 0 reviews
+- Free Little Library — 0 reviews
+- Free Little Library — 0 reviews
+- Free Little Library – College Avenue — 0 reviews
+- Free Little Library – Princeton Street — 0 reviews
+- Free little library — 1 reviews
+- Free little library — 0 reviews
+- Free little library — 0 reviews
+- Genesis Networks — 0 reviews
+- Geography Map Library — 2 reviews
+- George Hall Little Library — 2 reviews
+- Girl Scout Troop 62421 Little Free Library — 0 reviews
+- Green Little Free Library — 0 reviews
+- Grehan Goodies Little Free Library — 0 reviews
+- Guildford Little Free Library — 1 reviews
+- Gunn Library — 1 reviews
+- HEERASHA — 0 reviews
+- Harris M Fishbon Memorial Library — 1 reviews
+- Hart Middle School Library — 1 reviews
+- Hazelton Ave. Little Free Library — 2 reviews
+- Health Science Library — 0 reviews
+- Health Sciences Library — 0 reviews
+- Health Sciences Library: California Pacific Medical Center: Davies Campus — 0 reviews
+- Henry Wilson Coil Library and Museum of Freemasonry — 2 reviews
+- Hiratsuka Little Free Library — 0 reviews
+- Holt Labor Library — 0 reviews
+- Hoover War-Revolution-Peace Library — 1 reviews
+- Howison Philosophy Library — 4 reviews
+- Hua Kuang Chinese Reading Room — 0 reviews
+- Hudson Little Free Library — 0 reviews
+- Inez Jackson Library — 1 reviews
+- Institute of Governmental Studies Library — 1 reviews
+- Institute of Transportation Studies Library — 0 reviews
+- Invisible Jet Comics Little Free library — 0 reviews
+- Iris — 0 reviews
+- Japanese American National Library — 2 reviews
+- Jefferson's Little Free Library — 0 reviews
+- John A Graziano Memorial Lib — 0 reviews
+- Josh & Kaitlyn Proposal Lityle Free Library — 0 reviews
+- Karen's Little Free Library — 0 reviews
+- Karina’s Little Free Library — 0 reviews
+- Kelly Park Little Library — 1 reviews
+- Kids free library — 0 reviews
+- Lane Community Room — 0 reviews
+- Laurance S. Rockefeller Library — 4 reviews
+- Law Library Consulting- St. John & Associates — 2 reviews
+- Leah's Little Free Library — 0 reviews
+- Lending Library and Seed Swap — 2 reviews
+- Librarians by Design — 0 reviews
+- Library Media Center — 0 reviews
+- Library Science University — 1 reviews
+- Library of Asian Amer Studies — 0 reviews
+- Lincoln University Library — 3 reviews
+- Little Book Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 3 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 4 reviews
+- Little Free Library — 1 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 2 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library — 0 reviews
+- Little Free Library #116295 — 0 reviews
+- Little Free Library #123115 — 2 reviews
+- Little Free Library #157713 — 0 reviews
+- Little Free Library #195099 — 0 reviews
+- Little Free Library #32620 — 0 reviews
+- Little Free Library #97087 — 1 reviews
+- Little Free Library (Charter #154297) — 0 reviews
+- Little Free Library (Charter #157967) — 1 reviews
+- Little Free Library (Charter #8859) — 0 reviews
+- Little Free Library - Michelle & Megan — 3 reviews
+- Little Free Library - Neighborhood Book Nook — 0 reviews
+- Little Free Library Charter #121731 — 0 reviews
+- Little Free Library Charter #132782 — 0 reviews
+- Little Free Library Charter #88060 — 1 reviews
+- Little Free Library at Cowper & Churchill — 0 reviews
+- Little Free Library at Legend Derry Painting — 0 reviews
+- Little Free Library at Sloat — 0 reviews
+- Little Free Library in front of 1927 — 0 reviews
+- Little Free Library on 39th Ave — 0 reviews
+- Little Free Library on the Greenway — 0 reviews
+- Little Free Library | Vailwood & Woodbridge Twins A — 0 reviews
+- Little Free Library | Vailwood & Woodbridge Twins B — 0 reviews
+- Little Free Library – Colorado Avenue — 0 reviews
+- Little Free Library – Colorado Avenue #2 — 2 reviews
+- Little Free Library – Harvard Street — 0 reviews
+- Little Free Library – Laurel Street #87079 — 1 reviews
+- Little Free Library – Palo Alto Avenue — 1 reviews
+- Little Free Library – Stanford Avenue — 0 reviews
+- Little Free Library – Waverley Street — 0 reviews
+- Little Free Library#29521 — 0 reviews
+- Little Free LibraryCharter #45105 — 0 reviews
+- Little Library — 0 reviews
+- Little Library — 0 reviews
+- Little Library — 0 reviews
+- Little Library — 0 reviews
+- Little Library - On Street Box With Books — 0 reviews
+- Little Library Exchange — 0 reviews
+- Little Library at Parkmead Entrance — 0 reviews
+- Little free library — 0 reviews
+- Little free library — 0 reviews
+- Little free library — 0 reviews
+- Little free library — 0 reviews
+- Little free library #150757 — 2 reviews
+- Little free library #54192 — 1 reviews
+- Little free library 35417 — 0 reviews
+- Little free library 46131 — 1 reviews
+- Little free library 47771 — 1 reviews
+- Little free library at alden and alameda de las polgas — 0 reviews
+- Lola’s Little Free Library — 0 reviews
+- Lowell Library — 1 reviews
+- Magellan's Little Free Library — 0 reviews
+- Maritime Research Center — 3 reviews
+- Martha's Little Free Library — 0 reviews
+- Maya Angelou Library and Literacy Center — 1 reviews
+- McCarthy Institute for Intellectual Property Law — 0 reviews
+- Media Library — 0 reviews
+- Medical Library — 0 reviews
+- Mexico Consulting Group — 0 reviews
+- Milner Jim — 0 reviews
+- Milton J. Chatton Medical Library — 2 reviews
+- Milton St Little Free Library — 0 reviews
+- Molly Lynch Little Free Library — 1 reviews
+- Monta Loma Lassen Ave Little Free Library — 1 reviews
+- Monta Loma Mardell Little Free Library — 4 reviews
+- Monte Diablo Little Library — 1 reviews
+- Morrison Library — 4 reviews
+- Mountain View Ave Little Free Library — 1 reviews
+- Music Library — 3 reviews
+- N Norfolk St Little Free Library — 1 reviews
+- Nadya's Little Free Library — 1 reviews
+- Newspapers & Microforms Library — 1 reviews
+- Northern California Greek American Archive — 0 reviews
+- Oakland Public Children’s Library — 2 reviews
+- Optometry and Health Sciences Library — 2 reviews
+- Orinda Historical Society — 0 reviews
+- PIRE/Prevention Research Center — 0 reviews
+- Page Street Little Free Library — 1 reviews
+- Palo Alto High School Library — 0 reviews
+- Parking for Little Free Library — 0 reviews
+- Patricia Wharton Little Library — 1 reviews
+- Patrick J. Dowling Library at the UICC — 2 reviews
+- Patten University Library — 1 reviews
+- Perry the Library — 4 reviews
+- Picture Library Antique — 0 reviews
+- Police Callbox themed Little Free Library — 1 reviews
+- Private Library of Notre Dame College — 1 reviews
+- Project Read-Menlo Park — 1 reviews
+- Punjabi Audio Library — 0 reviews
+- Puzzle free library — 2 reviews
+- Quesada Garden Little free library — 0 reviews
+- ROMC Resource Library — 0 reviews
+- Reading on 45th Little Free Library — 0 reviews
+- RebEl Books Little Free Library — 1 reviews
+- Red Morton Little Free Library — 2 reviews
+- Richmond Public Library - Children's Room — 1 reviews
+- Richmond Public Library-Leap — 1 reviews
+- Robbins Collection Library — 1 reviews
+- Robot Little Free Library — 0 reviews
+- Rock Exchange Library — 2 reviews
+- Rosberg International Studies Library — 0 reviews
+- Rosicrucian Research Library — 2 reviews
+- S Norfolk St Little Free Library — 1 reviews
+- SFCM Music Library — 2 reviews
+- SFPL Catalog & Tech Services — 0 reviews
+- SFPL Dogpatch Kiosk — 0 reviews
+- San Francisco Public Library - Sunnydale Kiosk — 4 reviews
+- San Francisco Seed Library — 2 reviews
+- Science Education Partnership and Assessment Laboratory — 0 reviews
+- Sidewalk Library — 2 reviews
+- Simpson Library (California College of the Arts) — 1 reviews
+- Social Research Library — 2 reviews
+- Soyinfo Center — 1 reviews
+- Stanford Health Library — 2 reviews
+- Statler Library — 3 reviews
+- Steph's Little Free Library — 0 reviews
+- Sunnybrae Park Little Library — 1 reviews
+- Sunnyslope Little Free Library — 1 reviews
+- Sunset Books Little Free Library — 1 reviews
+- Tauber Holocaust Library — 1 reviews
+- Teaching Library — 0 reviews
+- Texas St Little Free Library — 0 reviews
+- The Alfred S Wilsey Library — 0 reviews
+- The Big Lift Little Library — 1 reviews
+- The Carl Gellert And Celia Berta Gellert Library — 3 reviews
+- The Jane R.Clouch Memorial Library — 0 reviews
+- The Lower Haight Little Library — 1 reviews
+- The Old Cat's Little Free Library — 0 reviews
+- The Phantom Dolebooth LFL & LFP — 4 reviews
+- The Richmond Public Library Foundation — 3 reviews
+- The Torreya Little free library #194574 — 0 reviews
+- The red Little Free Library — 0 reviews
+- Tien's Little Free Library — 0 reviews
+- Trollman Little Library — 3 reviews
+- Troop 485's Little Free Library — 1 reviews
+- Tsakopoulos Library Collection — 0 reviews
+- UCSF Mission Bay FAMRI Library — 4 reviews
+- USF School of Law, Zief Law Library — 4 reviews
+- United States District Court Library — 1 reviews
+- United States District Ct Library — 0 reviews
+- Valleycare Health Library — 0 reviews
+- Varsi Hall — 2 reviews
+- WHS Library — 0 reviews
+- Waller Street Mini Children’s Library — 0 reviews
+- Washington Manor Branch Library — 0 reviews
+- Wild Waves Little Free Library — 0 reviews
+- Woman’s Club Little Library — 1 reviews
+- Yerba Buena Gardens Little Free Library — 2 reviews
+- York Ave Little Library — 1 reviews
+- ZSFG Library — 2 reviews
+- mnoLlc — 0 reviews
+- russo elementary public library — 0 reviews
+- short story cube — 0 reviews
+
+</details>
+
+
+## Movie Theaters  (within 1 mi, 64 legitimate)
+
+
+<details><summary>All 64 legitimate places</summary>
+
+- [Cinemark Century Mountain View 16](https://www.google.com/maps/search/?api=1&query=37.4144292%2C-122.08115539999999&query_place_id=ChIJOYvCo1W3j4AR1LAifgk13rs) — 8195 reviews (4.6★) · `movie_theater`
+- [AMC Mercado 20](https://www.google.com/maps/search/?api=1&query=37.3891813%2C-121.98301989999997&query_place_id=ChIJRxpmaN3Jj4AR8UKnsvpVnoE) — 7644 reviews (4.2★) · `movie_theater`
+- [Alamo Drafthouse Cinema New Mission](https://www.google.com/maps/search/?api=1&query=37.7562178%2C-122.4191225&query_place_id=ChIJFyM_zj5-j4ARVy4Crc6cSdM) — 4794 reviews (4.6★) · `movie_theater`
+- [West Wind Capitol Drive-In](https://www.google.com/maps/search/?api=1&query=37.280252499999996%2C-121.84033830000001&query_place_id=ChIJrZFSwkYyjoARm94DpIT6ylM) — 4534 reviews (4.4★) · `movie_theater`
+- [Cinemark Century Daly City 20 XD and IMAX](https://www.google.com/maps/search/?api=1&query=37.7022745%2C-122.470544&query_place_id=ChIJbzxsjEB8j4ARMzaEAY4Sn8M) — 4163 reviews (4.3★) · `movie_theater`
+- [Cinemark Century Great Mall 20 XD and SCREENX](https://www.google.com/maps/search/?api=1&query=37.4182504%2C-121.89917079999998&query_place_id=ChIJx1qYeMvOj4ARFI_EBvRG0Rw) — 4131 reviews (4.4★) · `movie_theater`
+- [AMC Metreon 16](https://www.google.com/maps/search/?api=1&query=37.7843985%2C-122.4034217&query_place_id=ChIJ-zhtDYeAhYARu4ew7BWOoo4) — 3967 reviews (4.4★) · `movie_theater`
+- [West Wind Solano Drive-In](https://www.google.com/maps/search/?api=1&query=37.999718699999995%2C-122.04972269999999&query_place_id=ChIJ9-WA_ldmhYARAlc777QLpAY) — 3922 reviews (4.5★) · `movie_theater`
+- [Regal Hacienda Crossings](https://www.google.com/maps/search/?api=1&query=37.70312%2C-121.88530999999998&query_place_id=ChIJl8w4ZEvpj4AR96jUNf7rAsQ) — 3471 reviews (4.3★) · `movie_theater`
+- [AMC Bay Street 16](https://www.google.com/maps/search/?api=1&query=37.8329817%2C-122.29204680000001&query_place_id=ChIJ22DWFkF-hYARcdrN1YSJF4w) — 3183 reviews (4.2★) · `movie_theater`
+- [Alameda Theatre & Cineplex](https://www.google.com/maps/search/?api=1&query=37.7645866%2C-122.2433868&query_place_id=ChIJ3YmMD76Gj4ARRTRo5mzDWHs) — 3049 reviews (4.7★) · `movie_theater`
+- [Cinemark Century Redwood Downtown 20 and XD](https://www.google.com/maps/search/?api=1&query=37.486259499999996%2C-122.2286872&query_place_id=ChIJW0q6La2jj4ARfAm-rgZ5HoY) — 2938 reviews (4.4★) · `movie_theater`
+- [Grand Lake Theatre](https://www.google.com/maps/search/?api=1&query=37.8115054%2C-122.2477279&query_place_id=ChIJFQpx8kOHj4ARPedZK4hrPtE) — 2736 reviews (4.7★) · `movie_theater`
+- [The Castro Theatre](https://www.google.com/maps/search/?api=1&query=37.7620333%2C-122.43475910000001&query_place_id=ChIJeWH4Txt-j4ARJZQ5pivU-hQ) — 2655 reviews (4.7★) · `movie_theater`
+- [AMC Kabuki 8](https://www.google.com/maps/search/?api=1&query=37.7849354%2C-122.43252319999999&query_place_id=ChIJmf0AV7iAhYARylK9tmGaQvM) — 2365 reviews (4.1★) · `movie_theater`
+- [Cinemark Century Oakridge 20 XD and SCREENX](https://www.google.com/maps/search/?api=1&query=37.251377999999995%2C-121.86277799999999&query_place_id=ChIJYQ8MAtYzjoARKhr5uuWZyX0) — 2219 reviews (4.5★) · `movie_theater`
+- [Brenden Theatres](https://www.google.com/maps/search/?api=1&query=37.976181%2C-122.0362548&query_place_id=ChIJh3-QySdnhYARXqJljNgJPzI) — 2056 reviews (4.5★) · `movie_theater`
+- [Cinemark Century at Hayward](https://www.google.com/maps/search/?api=1&query=37.6734647%2C-122.0812889&query_place_id=ChIJacHnN9iTj4ARdWeCdGi6wYU) — 1959 reviews (4.3★) · `movie_theater`
+- [Cinemark Century San Mateo 12](https://www.google.com/maps/search/?api=1&query=37.5663339%2C-122.32235319999998&query_place_id=ChIJd3dEm3Cej4ARl8USef836uE) — 1878 reviews (4.4★) · `movie_theater`
+- [AMC Sunnyvale 12](https://www.google.com/maps/search/?api=1&query=37.3740182%2C-122.0308701&query_place_id=ChIJvQ9808q3j4ARcxdonur6Mlk) — 1861 reviews (4.5★) · `movie_theater`
+- [Ciné Lounge Fremont 7 Cinemas](https://www.google.com/maps/search/?api=1&query=37.5540583%2C-121.97961110000001&query_place_id=ChIJC_OOcmnBj4AR8_gJ-Bz5Ssk) — 1760 reviews (4.2★) · `movie_theater`
+- [Regal Jack London](https://www.google.com/maps/search/?api=1&query=37.79614%2C-122.27762999999999&query_place_id=ChIJs4qd8seAj4ARb3eN_3SNMCU) — 1734 reviews (4.3★) · `movie_theater`
+- [Cinemark Century Bayfair Mall 16](https://www.google.com/maps/search/?api=1&query=37.6994585%2C-122.12328210000001&query_place_id=ChIJTfwbsNORj4ARcXtMg5DVvkQ) — 1705 reviews (4.3★) · `movie_theater`
+- [Cinemark Century Downtown Pleasant Hill 16 and XD](https://www.google.com/maps/search/?api=1&query=37.944426%2C-122.061977&query_place_id=ChIJUa2SQ0dhhYARKs0JuKQbbTU) — 1702 reviews (4.5★) · `movie_theater`
+- [Cinemark Century at Tanforan and XD](https://www.google.com/maps/search/?api=1&query=37.6379832%2C-122.4178457&query_place_id=ChIJEcWqrt97j4ARU72up5USkXA) — 1582 reviews (4.2★) · `movie_theater`
+- [The New Parkway Theater](https://www.google.com/maps/search/?api=1&query=37.813967%2C-122.267471&query_place_id=ChIJFxykYquAj4ARmQ9p6V3m2LQ) — 1504 reviews (4.7★) · `movie_theater`
+- [CineLux Almaden Café & Lounge](https://www.google.com/maps/search/?api=1&query=37.2903915%2C-121.88030619999999&query_place_id=ChIJi1d6FnMzjoARXoYg2ubnp34) — 1461 reviews (4.5★) · `movie_theater`
+- [Cinemark Century Walnut Creek 14 and XD](https://www.google.com/maps/search/?api=1&query=37.8964573%2C-122.0618657&query_place_id=ChIJO8sbDOphhYARVa8Vge9SfdA) — 1165 reviews (4.4★) · `movie_theater`
+- [Cinépolis Luxury Cinemas San Mateo](https://www.google.com/maps/search/?api=1&query=37.5393591%2C-122.3010707&query_place_id=ChIJ1afTrWmfj4ARwm1KRh3G_E0) — 1124 reviews (3.9★) · `movie_theater`
+- [Pruneyard Cinemas](https://www.google.com/maps/search/?api=1&query=37.2879776%2C-121.933875&query_place_id=ChIJnRtemsI0joAR9yOwAlQNT3k) — 1111 reviews (4.5★) · `movie_theater`
+- [Roxie Theater](https://www.google.com/maps/search/?api=1&query=37.76462%2C-122.42242499999999&query_place_id=ChIJX6glQiJ-j4ARd6LdFTPBmJs) — 929 reviews (4.6★) · `movie_theater`
+- [CineLux Plaza Theatre](https://www.google.com/maps/search/?api=1&query=37.2781587%2C-121.9509983&query_place_id=ChIJJwI-kh41joARZ1enEasXEyg) — 828 reviews (4.6★) · `movie_theater`
+- [Regal Stonestown Galleria](https://www.google.com/maps/search/?api=1&query=37.729008%2C-122.47640999999999&query_place_id=ChIJy48x48t9j4ARDHFEMa367wc) — 738 reviews (4.5★) · `movie_theater`
+- [Rialto Cinemas Cerrito](https://www.google.com/maps/search/?api=1&query=37.9018896%2C-122.30291199999999&query_place_id=ChIJkUF1XSJ5hYARzfZH7HFT2II) — 700 reviews (4.6★) · `movie_theater`
+- [Stanford Theatre](https://www.google.com/maps/search/?api=1&query=37.4452083%2C-122.1626659&query_place_id=ChIJQViY5Tm7j4ARi8P0xr1zR2g) — 697 reviews (4.9★) · `movie_theater`
+- [1000 Van Ness](https://www.google.com/maps/search/?api=1&query=37.785154899999995%2C-122.42038499999998&query_place_id=ChIJV05OkpaAhYAREvO2JfkoQa0) — 636 reviews (4.2★) · `movie_theater`
+- [Balboa Theatre](https://www.google.com/maps/search/?api=1&query=37.7758592%2C-122.49797269999999&query_place_id=ChIJD9qE-6WHhYARYDtpvads6FQ) — 518 reviews (4.6★) · `movie_theater`
+- [The Chabot](https://www.google.com/maps/search/?api=1&query=37.6950936%2C-122.08317960000001&query_place_id=ChIJOSt1jyeSj4AR_evEEfBB17Y) — 461 reviews (4.5★) · `movie_theater`
+- [Landmark's Piedmont Theatre](https://www.google.com/maps/search/?api=1&query=37.827337%2C-122.25101300000001&query_place_id=ChIJZ14e3vZ9hYARIduXinkyNew) — 453 reviews (4.5★) · `movie_theater`
+- [IMAX at AMC Metreon 16](https://www.google.com/maps/search/?api=1&query=37.7843726%2C-122.4034442&query_place_id=ChIJYwdnpoeAhYARqLu3Z0r9p68) — 443 reviews (4.6★) · `movie_theater`
+- [Apple Cinemas Van Ness IMAX](https://www.google.com/maps/search/?api=1&query=37.785190199999995%2C-122.42094379999999&query_place_id=ChIJp0ynta-BhYARI2wou04immo) — 398 reviews (4.4★) · `movie_theater`
+- [Alamo Drafthouse Cinema Mountain View](https://www.google.com/maps/search/?api=1&query=37.404860299999996%2C-122.1093955&query_place_id=ChIJ_-QZ7vyxj4AR-mu-TuDKYyw) — 356 reviews (3.7★) · `movie_theater`
+- [Alameda Cinema Grill](https://www.google.com/maps/search/?api=1&query=37.7648504%2C-122.24399509999999&query_place_id=ChIJWSC5Eb6Gj4ARfq0YWcrpgnw) — 353 reviews (4.2★) · `movie_theater`
+- [Rialto Cinemas Elmwood](https://www.google.com/maps/search/?api=1&query=37.8567116%2C-122.25316459999998&query_place_id=ChIJwX1X4819hYAR5oAMIfO68MY) — 353 reviews (4.5★) · `movie_theater`
+- [Landmark's Opera Plaza Cinema](https://www.google.com/maps/search/?api=1&query=37.7811784%2C-122.42144259999998&query_place_id=ChIJZ76fAGGAhYARK8Iv1jccbNM) — 343 reviews (4.2★) · `movie_theater`
+- [Landmark's Aquarius Theatre](https://www.google.com/maps/search/?api=1&query=37.4449368%2C-122.1637395&query_place_id=ChIJ_0_6XTe7j4ARq4KfwoQ9S4Q) — 333 reviews (4.5★) · `movie_theater`
+- [Orinda Theatre](https://www.google.com/maps/search/?api=1&query=37.8787003%2C-122.18217720000001&query_place_id=ChIJL1nBZrdihYARn0mxaTKg5ik) — 311 reviews (4.6★) · `movie_theater`
+- [Presidio Movie Theater](https://www.google.com/maps/search/?api=1&query=37.8002215%2C-122.44196489999997&query_place_id=ChIJe15ZOtSAhYARiatsgofrEEQ) — 281 reviews (4.3★) · `movie_theater`
+- [3Below Theaters](https://www.google.com/maps/search/?api=1&query=37.332437999999996%2C-121.8860278&query_place_id=ChIJher2OLrMj4ARbciF0TRDi2s) — 244 reviews (4.5★) · `movie_theater`
+- [4 Star Theater](https://www.google.com/maps/search/?api=1&query=37.7822418%2C-122.48293070000001&query_place_id=ChIJETvrcgWHhYARprNARB3Chko) — 216 reviews (4.4★) · `movie_theater`
+- [Vogue Theatre](https://www.google.com/maps/search/?api=1&query=37.7884253%2C-122.4467412&query_place_id=ChIJUYTcTDOHhYAR43PddjOzrCI) — 176 reviews (4.6★) · `movie_theater`
+- [Marina Theater](https://www.google.com/maps/search/?api=1&query=37.8003111%2C-122.4385389&query_place_id=ChIJsRQL3NaAhYARCEfpBS90A70) — 171 reviews (4.2★) · `movie_theater`
+- [IMAX Dome Theater](https://www.google.com/maps/search/?api=1&query=37.331657199999995%2C-121.88998079999998&query_place_id=ChIJSTpYe8zNj4AR7SmGHtcFRN8) — 103 reviews (4.3★) · `movie_theater`
+- [Proxy Walk-In Theater](https://www.google.com/maps/search/?api=1&query=37.7764861%2C-122.4241392&query_place_id=ChIJf8mkCqKAhYAR3s_fGy2o21M) — 41 reviews (4.7★) · `movie_theater`
+- [Phyllis Wattis Theater](https://www.google.com/maps/search/?api=1&query=37.7859403%2C-122.4011282&query_place_id=ChIJkdxKYn2AhYARmbuIGEY6XfE) — 31 reviews (4.5★) · `movie_theater`
+- [Peephole Cinema](https://www.google.com/maps/search/?api=1&query=37.749272399999995%2C-122.4199003&query_place_id=ChIJlY62akF-j4AR7FZU3d9Iz9k) — 25 reviews (4.2★) · `movie_theater`
+- [Brenden Cinema Cafe](https://www.google.com/maps/search/?api=1&query=37.9765642%2C-122.03622820000001&query_place_id=ChIJ3ao_uCdnhYARN-BV5krD7-Q) — 24 reviews (4.8★) · `movie_theater`
+- [The Cut Outdoor Cinema](https://www.google.com/maps/search/?api=1&query=37.789818%2C-122.39289180000002&query_place_id=ChIJ3b1YpUmBhYARaKRXI4MofrE) — 22 reviews (4.5★) · `event_venue`
+- [Delancey Street Screening Room](https://www.google.com/maps/search/?api=1&query=37.7842728%2C-122.38837590000001&query_place_id=ChIJF2jWo3eAhYARJFLuamU37YU) — 20 reviews (4.4★) · `movie_theater`
+- [Chill Theaters - World's First Mobile Movie Theater](https://www.google.com/maps/search/?api=1&query=37.3651629%2C-121.9063745&query_place_id=ChIJV_zoYZTLj4AR98oZeCYGPm0) — 13 reviews (5★) · `movie_theater`
+- [Coppola Theater](https://www.google.com/maps/search/?api=1&query=37.7221172%2C-122.479294&query_place_id=ChIJm0Ezz7F9j4ARmjFxghp6JhE) — 13 reviews (4.6★) · `movie_theater`
+- [Shapeshifters Cinema](https://www.google.com/maps/search/?api=1&query=37.7990822%2C-122.27808259999999&query_place_id=ChIJmz956VGBj4AReBaFqU8y2AQ) — 10 reviews (5★) · `movie_theater`
+- [Other Cinema](https://www.google.com/maps/search/?api=1&query=37.7570899%2C-122.4214705&query_place_id=ChIJNV8Sfz5-j4ARZC_zyRsLd0s) — 8 reviews (4.5★) · `movie_theater`
+- [Starlight Cinema](https://www.google.com/maps/search/?api=1&query=37.3367515%2C-121.89056069999998&query_place_id=ChIJBYmQG5jMj4AR3vSdFMs6zr0) — 6 reviews (5★) · `event_venue`
+
+</details>
+
+
+<details><summary>Dropped: 10 with &lt;5 reviews</summary>
+
+- Cine — 1 reviews
+- Cresent village theater — 1 reviews
+- Kabuki Japantown parking garage — 0 reviews
+- Lee Neighborhood Theatres, Inc. — 0 reviews
+- Pleasantown Motion Picture Co — 1 reviews
+- San Francisco Cinematheque — 1 reviews
+- Sunsetscreenings — 0 reviews
+- The Guild Theatre — 0 reviews
+- The Park Theater — 2 reviews
+- YBCA Galleries and Forum Building — 4 reviews
+
+</details>
+
+
+## Hospitals  (within 1 mi, 194 legitimate)
+
+
+<details><summary>All 194 legitimate places</summary>
+
+- [Kaiser Permanente Oakland Medical Center](https://www.google.com/maps/search/?api=1&query=37.8236091%2C-122.25821690000001&query_place_id=ChIJ-2PEM_p9hYARHW91UOyZODw) — 2319 reviews (4.5★) · `medical_center`
+- [Kaiser Permanente San Jose Medical Center](https://www.google.com/maps/search/?api=1&query=37.2395632%2C-121.8012245&query_place_id=ChIJLzjiwC8ujoAR50z-X7tCEW0) — 2123 reviews (4.5★) · `medical_center`
+- [Regional Medical Center](https://www.google.com/maps/search/?api=1&query=37.3627557%2C-121.84981030000002&query_place_id=ChIJ_3X2kATNj4ARJq22N-TR2io) — 1733 reviews (3.8★) · `hospital`
+- [Dignity Health - Sequoia Hospital](https://www.google.com/maps/search/?api=1&query=37.4801316%2C-122.25426279999999&query_place_id=ChIJu9XeYC2ij4ARYHlMycBCb64) — 1593 reviews (4.6★) · `general_hospital`
+- [Kaiser Permanente San Leandro Medical Center](https://www.google.com/maps/search/?api=1&query=37.7064867%2C-122.16470520000001&query_place_id=ChIJvaCZovqPj4ARVpsklstSVhc) — 1430 reviews (4.2★) · `medical_center`
+- [Kaiser Permanente Walnut Creek Medical Center](https://www.google.com/maps/search/?api=1&query=37.8924284%2C-122.0590049&query_place_id=ChIJM2FDSt1hhYARHuO3LqVcfzs) — 1355 reviews (4.4★) · `medical_center`
+- [Kaiser Permanente Redwood City Medical Center](https://www.google.com/maps/search/?api=1&query=37.4888897%2C-122.2241739&query_place_id=ChIJ72rH3FSij4AReB-jZ2NK3Xc) — 1278 reviews (4.6★) · `medical_center`
+- [Kaiser Permanente San Francisco Medical Center](https://www.google.com/maps/search/?api=1&query=37.7826471%2C-122.4432378&query_place_id=ChIJ0d8NvLWAhYARyhkR_BPz5Y0) — 1265 reviews (4.6★) · `medical_center`
+- [Kaiser Permanente Fremont Medical Center](https://www.google.com/maps/search/?api=1&query=37.5526637%2C-121.97514369999999&query_place_id=ChIJEQMOPJLAj4ARfBCK_DyEt2k) — 1155 reviews (4.4★) · `medical_center`
+- [Santa Clara Valley Medical Center](https://www.google.com/maps/search/?api=1&query=37.3139499%2C-121.9340007&query_place_id=ChIJ54JcoTHLj4ARwKWou-_AueA) — 1036 reviews (2.9★) · `hospital`
+- [Kaiser Permanente South San Francisco Medical Center](https://www.google.com/maps/search/?api=1&query=37.660202399999996%2C-122.43991159999999&query_place_id=ChIJ_fZFEnt5j4ARZvfXfYgrHkI) — 955 reviews (4.5★) · `medical_center`
+- [Kaiser Permanente Richmond Medical Center](https://www.google.com/maps/search/?api=1&query=37.9375573%2C-122.36110489999999&query_place_id=ChIJSyc1RamChYARiOyVm944TuE) — 940 reviews (4.4★) · `medical_center`
+- [UCSF Health Hyde Hospital](https://www.google.com/maps/search/?api=1&query=37.7895567%2C-122.416863&query_place_id=ChIJGTLadJOAhYARng57neGhjk0) — 823 reviews (4.1★) · `medical_center`
+- [UCSF Benioff Children's Hospital - Oakland](https://www.google.com/maps/search/?api=1&query=37.8371901%2C-122.2670282&query_place_id=ChIJH6MLwQp-hYAREF-jlarFMzc) — 738 reviews (4.2★) · `hospital`
+- [Zuckerberg San Francisco General Hospital and Trauma Center](https://www.google.com/maps/search/?api=1&query=37.7553498%2C-122.4054036&query_place_id=ChIJG9bTskt-j4ARBhzzHMYn48c) — 694 reviews (3.4★) · `general_hospital`
+- [UCSF Health Stanyan Hospital](https://www.google.com/maps/search/?api=1&query=37.7739514%2C-122.4538523&query_place_id=ChIJ82h8706HhYARtqUYN1WhsYU) — 496 reviews (4.1★) · `general_hospital`
+- [Lucile Packard Children's Hospital Stanford](https://www.google.com/maps/search/?api=1&query=37.436029399999995%2C-122.17453919999998&query_place_id=ChIJhx8-Ts2kj4ARSjW_bZorKCw) — 458 reviews (4.1★) · `hospital`
+- [Stanford Medicine](https://www.google.com/maps/search/?api=1&query=37.4332074%2C-122.1755453&query_place_id=ChIJO7mRHM6kj4ARMgmBqbzv4KE) — 427 reviews (3.7★) · `general_hospital`
+- [Washington Health](https://www.google.com/maps/search/?api=1&query=37.5573072%2C-121.9792659&query_place_id=ChIJvwpYqIjAj4ARoEXXBQD9pRs) — 383 reviews (2.6★) · `general_hospital`
+- [UCSF Medical Center](https://www.google.com/maps/search/?api=1&query=37.763104399999996%2C-122.4578806&query_place_id=ChIJg2PL2lmHhYARLICti5gT40s) — 360 reviews (3.5★) · `hospital`
+- [Sutter Eden Medical Center](https://www.google.com/maps/search/?api=1&query=37.6982813%2C-122.08968959999999&query_place_id=ChIJZ3cnuIuRj4ARydD6tT2Jt0k) — 323 reviews (3.3★) · `hospital`
+- [San Mateo Medical Center](https://www.google.com/maps/search/?api=1&query=37.53126820000001%2C-122.2992982&query_place_id=ChIJO4ju5Q-fj4ARvFQIymk0t3Y) — 309 reviews (2.9★) · `medical_center`
+- [UCSF Benioff Children's Hospital - San Francisco](https://www.google.com/maps/search/?api=1&query=37.764940100000004%2C-122.3900471&query_place_id=ChIJJegV7zOHhYARcLDU3eS58jE) — 302 reviews (4.5★) · `hospital`
+- [John Muir Health, Walnut Creek Medical Center](https://www.google.com/maps/search/?api=1&query=37.9132083%2C-122.04062419999998&query_place_id=ChIJVVVVCrNhhYAROwS_bQAOD4Y) — 299 reviews (3.3★) · `medical_center`
+- [Alta Bates Summit Medical Center | Alta Bates Campus](https://www.google.com/maps/search/?api=1&query=37.8556313%2C-122.2572029&query_place_id=ChIJKfuLztN9hYARmakdGNOP-20) — 288 reviews (3.3★) · `hospital`
+- [Mills-Peninsula Medical Center - Burlingame Campus](https://www.google.com/maps/search/?api=1&query=37.592304899999995%2C-122.3824274&query_place_id=ChIJgTwO-7R3j4ARps7tRNK2Nfk) — 283 reviews (3.4★) · `hospital`
+- [CPMC Van Ness Campus](https://www.google.com/maps/search/?api=1&query=37.785997%2C-122.42230199999999&query_place_id=ChIJkRbB3r2AhYARWgtBJ-WjAyQ) — 279 reviews (3.6★) · `hospital`
+- [UCSF Medical Center at Mission Bay](https://www.google.com/maps/search/?api=1&query=37.767785599999996%2C-122.3921137&query_place_id=ChIJt1j-Tc9_j4ARe2o9F0u2daw) — 273 reviews (4.3★) · `hospital`
+- [Mountain View Center](https://www.google.com/maps/search/?api=1&query=37.3764152%2C-122.06524&query_place_id=ChIJM3LcrR-3j4ARZrVZjOKobFY) — 268 reviews (2.8★) · `medical_center`
+- [AHMC Seton Medical Center](https://www.google.com/maps/search/?api=1&query=37.68097530000001%2C-122.47434580000001&query_place_id=ChIJJdKG5XV8j4ARIJn-R_Zmc2Q) — 260 reviews (2.5★) · `medical_center`
+- [CPMC Davies Campus](https://www.google.com/maps/search/?api=1&query=37.7682937%2C-122.43449950000002&query_place_id=ChIJs-pIpq2BhYARS5Nli9dVPOY) — 224 reviews (3.8★) · `hospital`
+- [Fremont Center](https://www.google.com/maps/search/?api=1&query=37.5483749%2C-121.9742673&query_place_id=ChIJ1XhDb5TAj4ARqutRVae9AvY) — 206 reviews (2.2★) · `medical_center`
+- [Alta Bates Summit Medical Center | Summit Campus](https://www.google.com/maps/search/?api=1&query=37.8211583%2C-122.2630429&query_place_id=ChIJ70f5qP99hYARZpxL5qGysD0) — 204 reviews (3.3★) · `hospital`
+- [Stanford Health Care Tri-Valley](https://www.google.com/maps/search/?api=1&query=37.6933946%2C-121.88034169999999&query_place_id=ChIJK53MQEfpj4ARskCAa3lpJlo) — 203 reviews (2.9★) · `hospital`
+- [San Leandro Hospital](https://www.google.com/maps/search/?api=1&query=37.7124156%2C-122.14356520000001&query_place_id=ChIJiw7z0dqPj4ARguN6HXfvOYA) — 201 reviews (3★) · `general_hospital`
+- [John Muir, Concord Medical Center](https://www.google.com/maps/search/?api=1&query=37.983343999999995%2C-122.0336759&query_place_id=ChIJ6xHyeCFnhYARVyAFaZgFGhc) — 196 reviews (3★) · `medical_center`
+- [California Pet Hospital](https://www.google.com/maps/search/?api=1&query=37.681557%2C-122.48747449999999&query_place_id=ChIJu9_WEWd9j4ARKVplAaUBTvk) — 171 reviews (4.2★) · `hospital`
+- [Kindred Hospital San Francisco Bay Area](https://www.google.com/maps/search/?api=1&query=37.7161792%2C-122.1307582&query_place_id=ChIJSyt6vdKPj4ARUUIAEiFG1QM) — 166 reviews (3.7★) · `hospital`
+- [Inview Medical Imaging Fremont](https://www.google.com/maps/search/?api=1&query=37.5540199%2C-121.9767632&query_place_id=ChIJVYukYJHAj4ARgDZ9ZS7ICjY) — 149 reviews (4.7★) · `medical_center`
+- [John George Psychiatric Hospital](https://www.google.com/maps/search/?api=1&query=37.7108396%2C-122.12021449999999&query_place_id=ChIJL9Fk0NeRj4ARYFm5oeK3BAU) — 145 reviews (2★) · `hospital`
+- [Pacific Health Clinic](https://www.google.com/maps/search/?api=1&query=37.7222595%2C-122.16677089999999&query_place_id=ChIJSda9guOPj4ARvLMvG5FJZHo) — 126 reviews (4.6★) · `medical_center`
+- [UCSF Medical Center at Mount Zion](https://www.google.com/maps/search/?api=1&query=37.7849743%2C-122.43911329999999&query_place_id=ChIJGQRYJraAhYARg8e-TXQ5BT0) — 118 reviews (3.9★) · `hospital`
+- [Sutter Health](https://www.google.com/maps/search/?api=1&query=37.5922986%2C-122.38287050000001&query_place_id=ChIJKbgZsbR3j4ARDn-9FDdP_gw) — 111 reviews (4.1★) · `hospital`
+- [University Health Services, Tang Center](https://www.google.com/maps/search/?api=1&query=37.8678683%2C-122.26440059999999&query_place_id=ChIJ6WgT7yd8hYAR2p5f5p4md2w) — 105 reviews (2.9★) · `hospital`
+- [UCSF Sports Medicine Center for Young Athletes](https://www.google.com/maps/search/?api=1&query=37.5237536%2C-122.2525153&query_place_id=ChIJcZuCYd-Zj4AR93dFtUmDfGI) — 103 reviews (4.9★) · `hospital`
+- [John Muir Health Psychiatric Hospital](https://www.google.com/maps/search/?api=1&query=37.985906199999995%2C-122.03685700000001&query_place_id=ChIJ58wd6x9nhYARwNrRWE1ICh0) — 97 reviews (2.7★) · `hospital`
+- [CPMC Mission Bernal Campus & Orthopedic Institute](https://www.google.com/maps/search/?api=1&query=37.7471003%2C-122.4208842&query_place_id=ChIJF44O2EN-j4ARxRa0y_8juwY) — 93 reviews (3.2★) · `hospital`
+- [Landmark Health](https://www.google.com/maps/search/?api=1&query=37.6676844%2C-122.3830972&query_place_id=ChIJt8_YEGnHyIkRXqV7x2VDJl4) — 93 reviews (4.9★) · `medical_center`
+- [Chinese Hospital](https://www.google.com/maps/search/?api=1&query=37.795415%2C-122.4091375&query_place_id=ChIJjzSzPfOAhYARkWftX44ynf0) — 91 reviews (3.4★) · `hospital`
+- [Menlo Park VA Medical Center](https://www.google.com/maps/search/?api=1&query=37.465371999999995%2C-122.16085600000001&query_place_id=ChIJyQF0r1m7j4ARnoJU9meS3X0) — 89 reviews (4.3★) · `hospital`
+- [Stanford Hospital](https://www.google.com/maps/search/?api=1&query=37.4357495%2C-122.176299&query_place_id=ChIJg0sXGHWlj4ARdbvX84fLolI) — 86 reviews (2.7★) · `medical_center`
+- [Stanford Hospital](https://www.google.com/maps/search/?api=1&query=37.4334275%2C-122.1769112&query_place_id=ChIJFdwgzzOlj4AR3P3AUEUGIqM) — 83 reviews (3.9★) · `hospital`
+- [Bay Health Center - Immigration Doctor](https://www.google.com/maps/search/?api=1&query=37.6667243%2C-122.46681849999999&query_place_id=ChIJ975BUYF7j4ARaWp5VqY2JUk) — 78 reviews (5★) · `medical_center`
+- [Menlo Medical Clinic in Menlo Park - 1300 Crane](https://www.google.com/maps/search/?api=1&query=37.4530816%2C-122.1875736&query_place_id=ChIJtRJJDKWkj4AR0iNWYoH4lyM) — 74 reviews (3.9★) · `medical_center`
+- [Kaiser Permanente Fabiola Building](https://www.google.com/maps/search/?api=1&query=37.8252179%2C-122.256149&query_place_id=ChIJUSMjsPl9hYAReD-UXda_vuw) — 71 reviews (4.1★) · `medical_center`
+- [Children's Hospital Oakland](https://www.google.com/maps/search/?api=1&query=37.8371901%2C-122.2670282&query_place_id=ChIJVVVFxgp-hYARvE1lP6rbvGc) — 70 reviews (2.6★) · `hospital`
+- [Palo Alto Medical Foundation Los Altos Center](https://www.google.com/maps/search/?api=1&query=37.3955116%2C-122.1053237&query_place_id=ChIJe5wrk72wj4ARySBeYnWOsgY) — 69 reviews (3.1★) · `medical_center`
+- [Sutter Health](https://www.google.com/maps/search/?api=1&query=37.705138399999996%2C-121.8726594&query_place_id=ChIJEaOx5TPpj4ARvMTMhiHmLIY) — 69 reviews (3.5★) · `medical_center`
+- [Kentfield Hospital San Francisco](https://www.google.com/maps/search/?api=1&query=37.774181899999995%2C-122.4536946&query_place_id=ChIJbyx6jU6HhYARXyU1Ylsnw8k) — 61 reviews (3.3★) · `hospital`
+- [Kaiser Permanente San Francisco Medical Center](https://www.google.com/maps/search/?api=1&query=37.7802961%2C-122.46401759999998&query_place_id=ChIJVVUl0j6HhYARiW7a6ed6Tb8) — 60 reviews (4★) · `medical_center`
+- [Alta Bates Summit Medical Center | Herrick Campus](https://www.google.com/maps/search/?api=1&query=37.8642168%2C-122.2688043&query_place_id=ChIJ6XCdcYN-hYARDHvfc_e069s) — 57 reviews (3.4★) · `hospital`
+- [Concord Health Center](https://www.google.com/maps/search/?api=1&query=37.9805486%2C-122.0211043&query_place_id=ChIJCwWR9TlnhYARZShYM4fzHXE) — 55 reviews (2.2★) · `medical_center`
+- [CPMC Pacific Heights Outpatient Center | 2333 Buchanan Street](https://www.google.com/maps/search/?api=1&query=37.790738000000005%2C-122.43169449999999&query_place_id=ChIJE5AkSmNhhYAR6ZgGDkXntRw) — 52 reviews (4.2★) · `medical_center`
+- [Stanford Medical Center](https://www.google.com/maps/search/?api=1&query=37.4330425%2C-122.17505790000001&query_place_id=ChIJ927hZQ-lj4ARRLEGZPt35ZE) — 48 reviews (3.2★) · `medical_center`
+- [Milvia Care Center](https://www.google.com/maps/search/?api=1&query=37.8632922%2C-122.2700357&query_place_id=ChIJKfuLztN9hYARAudMi9hUjZE) — 47 reviews (2.3★) · `medical_center`
+- [Oakland VA Clinic](https://www.google.com/maps/search/?api=1&query=37.811980999999996%2C-122.27322369999999&query_place_id=ChIJFxwONKmAj4AReuW3DfTkOmQ) — 45 reviews (3.2★) · `hospital`
+- [McAuley Adolescent Psychiatric Unit](https://www.google.com/maps/search/?api=1&query=37.7736124%2C-122.4529458&query_place_id=ChIJ81lqd06HhYARtoXUFtCdlQ0) — 43 reviews (3.4★) · `hospital`
+- [San Carlos Center](https://www.google.com/maps/search/?api=1&query=37.5150886%2C-122.25989299999999&query_place_id=ChIJUwf_swCij4ARuB4f0GZyqwE) — 42 reviews (3.2★) · `medical_center`
+- [Premise Google Health and Wellness Center](https://www.google.com/maps/search/?api=1&query=37.387503699999996%2C-122.03793410000002&query_place_id=ChIJZRYqUwC3j4ARzdFHnjAjDy8) — 40 reviews (4★) · `medical_center`
+- [UCSF Langley Porter Psychiatric Hospital and Clinics](https://www.google.com/maps/search/?api=1&query=37.784695%2C-122.43922740000001&query_place_id=ChIJYxVpxFmHhYARNJDRI_RRLc4) — 39 reviews (3.2★) · `hospital`
+- [Dr. Yung C. Chen, MD](https://www.google.com/maps/search/?api=1&query=37.571793299999996%2C-122.33167669999999&query_place_id=ChIJf-rxHHGej4ARWjLgFDTLbCA) — 38 reviews (4.2★) · `medical_center`
+- [Mills-Peninsula Medical Center - San Mateo Campus](https://www.google.com/maps/search/?api=1&query=37.5650427%2C-122.32620779999999&query_place_id=ChIJVVWFEnGej4ARHyu_wM7FeG4) — 37 reviews (3.2★) · `hospital`
+- [Santa Clara Valley Medical Center](https://www.google.com/maps/search/?api=1&query=37.3439729%2C-121.8747038&query_place_id=ChIJUVXSderMj4ARpN2D5ZcZMp4) — 37 reviews (3.5★) · `medical_center`
+- [Don Lowe Pavilion](https://www.google.com/maps/search/?api=1&query=37.3114905%2C-121.93429490000001&query_place_id=ChIJyXKfKDLLj4ARyZoQpd_j4ac) — 35 reviews (1.8★) · `hospital`
+- [Sutter East Bay Medical Foundation Care Center](https://www.google.com/maps/search/?api=1&query=37.8977437%2C-122.30189060000001&query_place_id=ChIJYU9rjCR5hYARmbomCSkOeYE) — 33 reviews (2.6★) · `medical_center`
+- [899 Valencia Street Care Center](https://www.google.com/maps/search/?api=1&query=37.7586372%2C-122.42113549999999&query_place_id=ChIJRe8kSzx-j4AResQdQSOlxZM) — 32 reviews (2.7★) · `medical_center`
+- [Sunnyvale Center (401)](https://www.google.com/maps/search/?api=1&query=37.368096699999995%2C-122.02744129999999&query_place_id=ChIJXaA6hWW2j4ART6xtO7XER4U) — 28 reviews (2.4★) · `medical_center`
+- [Los Altos Center](https://www.google.com/maps/search/?api=1&query=37.3955434%2C-122.10549049999997&query_place_id=ChIJkeojObmxj4ARxWEsgpg0B1Q) — 26 reviews (2.2★) · `medical_center`
+- [San Jose Blossom Hill Center](https://www.google.com/maps/search/?api=1&query=37.251720899999995%2C-121.8742281&query_place_id=ChIJXz1guN4zjoAR6ezFjwitlEE) — 26 reviews (2.4★) · `medical_center`
+- [Pediatrics: Sunnyvale Center | PAMF](https://www.google.com/maps/search/?api=1&query=37.3683772%2C-122.02971760000001&query_place_id=ChIJSaOOImS2j4ARMWZ1wsPrlH8) — 25 reviews (3.1★) · `hospital`
+- [Silver Avenue Family Health Center](https://www.google.com/maps/search/?api=1&query=37.7323999%2C-122.4064432&query_place_id=ChIJZTtuFPx-j4ARD-qX0mW3L5k) — 24 reviews (3.3★) · `medical_center`
+- [SFGH Building 80](https://www.google.com/maps/search/?api=1&query=37.7571912%2C-122.40573&query_place_id=ChIJX8IE9zV-j4ARmnakHxzAzjY) — 23 reviews (3.5★) · `hospital`
+- [Vision Care Center PAMF](https://www.google.com/maps/search/?api=1&query=37.372748099999995%2C-122.0508062&query_place_id=ChIJF_HIC-62j4ARdUu4jONhSLo) — 23 reviews (2.4★) · `medical_center`
+- [Bella Primary Care](https://www.google.com/maps/search/?api=1&query=37.794173%2C-122.42266199999999&query_place_id=ChIJV5f7Lzp_j4ARDju5edg8AZ8) — 22 reviews (4.3★) · `medical_center`
+- [Stanford Medical Center](https://www.google.com/maps/search/?api=1&query=37.4355331%2C-122.17738790000001&query_place_id=ChIJVbwSS7ylj4AR5MQU0AlKP_E) — 22 reviews (3.1★) · `hospital`
+- [Dialysis Access Center – Oakland](https://www.google.com/maps/search/?api=1&query=37.8193121%2C-122.26417330000001&query_place_id=ChIJZf-TWlWHj4ARqgSPnZrHUnA) — 21 reviews (4.8★) · `medical_center`
+- [Palo Alto Center](https://www.google.com/maps/search/?api=1&query=37.4402979%2C-122.1617019&query_place_id=ChIJhYWBgQW7j4AR9ybigx7N4N8) — 21 reviews (2★) · `medical_center`
+- [Sunnyvale Center (301)](https://www.google.com/maps/search/?api=1&query=37.3683444%2C-122.02972229999997&query_place_id=ChIJtxx3iE63j4ARkE7N4aFQFDE) — 21 reviews (2.3★) · `medical_center`
+- [WelbeHealth](https://www.google.com/maps/search/?api=1&query=37.2947191%2C-121.9179325&query_place_id=ChIJdzqnf0Y1joARWCO-ppJE1xk) — 21 reviews (3.7★) · `medical_center`
+- [Asian Health Services Chenming & Margaret Hu Medical Center](https://www.google.com/maps/search/?api=1&query=37.7993366%2C-122.27113949999999&query_place_id=ChIJB_UACraAj4ARSj8MYUEGWeA) — 20 reviews (3.5★) · `medical_center`
+- [Kaiser Permanente Member Services Willow Bldg](https://www.google.com/maps/search/?api=1&query=37.4892386%2C-122.22419329999998&query_place_id=ChIJn2YXyKqjj4AR24ifyXcH2Cg) — 20 reviews (1.6★) · `medical_center`
+- [UCSF Medical Records](https://www.google.com/maps/search/?api=1&query=37.7639012%2C-122.45727110000001&query_place_id=ChIJc6JmaFeHhYARPkovz6Ol8yg) — 20 reviews (1.5★) · `medical_center`
+- [Stanford General Cardiology at Boswell Building](https://www.google.com/maps/search/?api=1&query=37.4332602%2C-122.17558020000001&query_place_id=ChIJVV-F2NKkj4AR5yOtleJMems) — 19 reviews (2.8★) · `hospital`
+- [Mission Valley Eye Medical Center](https://www.google.com/maps/search/?api=1&query=37.5625323%2C-121.9596258&query_place_id=ChIJE496uvDAj4AR_4K9dTEVvtA) — 18 reviews (3.1★) · `medical_center`
+- [Excelsior Health Services](https://www.google.com/maps/search/?api=1&query=37.716058499999995%2C-122.43946739999998&query_place_id=ChIJsb9HCpt-j4AR9JrOAHsSxoI) — 17 reviews (2.9★) · `medical_center`
+- [Oakland Twenty-First Street VA Clinic](https://www.google.com/maps/search/?api=1&query=37.809993299999995%2C-122.27063550000001&query_place_id=ChIJk3ys0a2Aj4ARIPA8wJ_7C3E) — 17 reviews (3.2★) · `hospital`
+- [Telecare Willow Rock Center](https://www.google.com/maps/search/?api=1&query=37.7097589%2C-122.118491&query_place_id=ChIJ1U3EDU2Rj4ARHRQ4ArwnI0Q) — 17 reviews (3★) · `hospital`
+- [Neurology: Sutter East Bay Medical Foundation: Telegraph Ave](https://www.google.com/maps/search/?api=1&query=37.8582896%2C-122.2596215&query_place_id=ChIJjfnJoNR9hYAR5OmohOZn-Z0) — 16 reviews (2.4★) · `hospital`
+- [UCSF Mission Bay Hospitals](https://www.google.com/maps/search/?api=1&query=37.7688306%2C-122.3957518&query_place_id=ChIJFXFOI2J_j4ARNb5oUGH3dA4) — 16 reviews (3.6★) · `hospital`
+- [Building Q](https://www.google.com/maps/search/?api=1&query=37.315021099999996%2C-121.9328238&query_place_id=ChIJ0yWOLF3Lj4AR8tBZ2_IwCDg) — 15 reviews (2.7★) · `hospital`
+- [East Bay Advanced Care (EBAC)](https://www.google.com/maps/search/?api=1&query=37.8201507%2C-122.2639466&query_place_id=ChIJjQTQ8v99hYAR8kDhsQWUiF0) — 15 reviews (3.7★) · `medical_center`
+- [East Bay Pediatrics](https://www.google.com/maps/search/?api=1&query=37.8804698%2C-122.18096969999998&query_place_id=ChIJuzfueSl9hYARXT6M1dC3PqY) — 15 reviews (5★) · `hospital`
+- [UCSF Helen Diller Medical Center at Parnassus Heights](https://www.google.com/maps/search/?api=1&query=37.7642229%2C-122.4573276&query_place_id=ChIJYTTv-PiHhYARTHm7Y7ebCPQ) — 15 reviews (4.2★) · `hospital`
+- [Urgent care (Express care)](https://www.google.com/maps/search/?api=1&query=37.3134893%2C-121.93333960000001&query_place_id=ChIJkTQRTADLj4ARkZLOqyj1KXY) — 15 reviews (3.3★) · `hospital`
+- [Chinatown Public Health Center](https://www.google.com/maps/search/?api=1&query=37.7972081%2C-122.4114951&query_place_id=ChIJ4wsME_KAhYARIGrIle5TZ2w) — 14 reviews (3.8★) · `medical_center`
+- [Comprehensive Wellness](https://www.google.com/maps/search/?api=1&query=37.8770859%2C-122.180764&query_place_id=ChIJj0Z3-rNhhYARtqpuecmC5_c) — 14 reviews (5★) · `medical_center`
+- [Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.3766062%2C-122.06500969999999&query_place_id=ChIJ08aX4Zewj4ARmLfgZV1hcJI) — 14 reviews (3.2★) · `hospital`
+- [5700 Telegraph Care Center](https://www.google.com/maps/search/?api=1&query=37.8432503%2C-122.2610907&query_place_id=ChIJYS5i6t59hYARP3cZYLRsMYU) — 13 reviews (3.2★) · `medical_center`
+- [Aaftab Medical Center](https://www.google.com/maps/search/?api=1&query=37.6995429%2C-122.1207809&query_place_id=ChIJF3y2U86Rj4ARBrDPvg_jlhQ) — 13 reviews (4.3★) · `medical_center`
+- [Daly City Center](https://www.google.com/maps/search/?api=1&query=37.665239899999996%2C-122.47558989999999&query_place_id=ChIJ4yEyXpF7j4ARf4gx1TKUfzg) — 13 reviews (2.2★) · `medical_center`
+- [Eden Medical Building](https://www.google.com/maps/search/?api=1&query=37.6963181%2C-122.0861892&query_place_id=ChIJQbM4mYmRj4ARIGY2VramtbY) — 13 reviews (4.3★) · `medical_center`
+- [Kaiser Foundation Hospital-San Leandro Medical Ctr](https://www.google.com/maps/search/?api=1&query=37.706011%2C-122.16559879999998&query_place_id=ChIJ58ecovqPj4ARmhYUH10EBTk) — 13 reviews (2.9★) · `hospital`
+- [875 Blake Wilbur Drive](https://www.google.com/maps/search/?api=1&query=37.4357319%2C-122.1762866&query_place_id=ChIJzVGo9EClj4ARmmhdVTAHrQU) — 12 reviews (4.3★) · `medical_center`
+- [Awesome Health Center](https://www.google.com/maps/search/?api=1&query=37.3055243%2C-121.9513865&query_place_id=ChIJr7XADqfLj4ARREcAIgIatVY) — 12 reviews (5★) · `medical_center`
+- [Cenegenics San Francisco](https://www.google.com/maps/search/?api=1&query=37.8982665%2C-122.06378090000001&query_place_id=ChIJHa4Kw4qAhYAR2XAinq85oBQ) — 12 reviews (5★) · `medical_center`
+- [I693 Civil Surgeon LLC, Dr Vinit Agrawal](https://www.google.com/maps/search/?api=1&query=37.3979916%2C-121.98446890000001&query_place_id=ChIJN4vyVh7Jj4ARixBt4H422Jg) — 12 reviews (4.3★) · `medical_center`
+- [Kaiser - Rancho Ohlone Building](https://www.google.com/maps/search/?api=1&query=37.5522196%2C-121.9769332&query_place_id=ChIJU2rS2J_Bj4ARheOOiS1EkWQ) — 12 reviews (4.5★) · `medical_center`
+- [McKee Medical Center](https://www.google.com/maps/search/?api=1&query=37.3664086%2C-121.84775789999999&query_place_id=ChIJcysUgAbNj4ARuRnvzcAWcvk) — 12 reviews (4★) · `medical_center`
+- [Merritt Peralta Institute (MPI) Addiction Care Services](https://www.google.com/maps/search/?api=1&query=37.819484100000004%2C-122.26416520000001&query_place_id=ChIJZf-TWlWHj4ARubi3beEhpdI) — 12 reviews (3.1★) · `medical_center`
+- [Valley Health Center San Jose (formerly Bascom)](https://www.google.com/maps/search/?api=1&query=37.314247099999996%2C-121.9312672&query_place_id=ChIJ31G4SQDLj4ARJQevRXsH-3w) — 12 reviews (2.9★) · `hospital`
+- [Family House: UCSF Benioff Children's Hospital Oakland](https://www.google.com/maps/search/?api=1&query=37.837959%2C-122.266472&query_place_id=ChIJ76SctAp-hYAR1NT6zaLlyBI) — 11 reviews (5★) · `hospital`
+- [Health Care Center: California Pacific Medical Center: St Luke's Campus](https://www.google.com/maps/search/?api=1&query=37.746724199999996%2C-122.42063390000001&query_place_id=ChIJh4IhyEN-j4AR54uvfLMkpyI) — 11 reviews (2.5★) · `hospital`
+- [Kaiser Permanente Emergency Care San Jose](https://www.google.com/maps/search/?api=1&query=37.2401176%2C-121.80103000000001&query_place_id=ChIJES7E4OsvjoARm0w9QywNN8g) — 11 reviews (3.5★) · `hospital`
+- [Park Bridge Nursing Home](https://www.google.com/maps/search/?api=1&query=37.77061%2C-122.2369586&query_place_id=ChIJTxiOVJOGj4ARooRMMOaIL8I) — 11 reviews (1.9★) · `hospital`
+- [UCSF Nancy Friend Pritzker Psychiatry Building](https://www.google.com/maps/search/?api=1&query=37.762803399999996%2C-122.3891806&query_place_id=ChIJseTkkU1_j4ARR1xKsa7xIMw) — 11 reviews (3.7★) · `hospital`
+- [2645 Ocean Avenue Care Center](https://www.google.com/maps/search/?api=1&query=37.731799699999996%2C-122.4741329&query_place_id=ChIJUXHsGWV9j4ARF74jrI0saN8) — 10 reviews (2.1★) · `medical_center`
+- [Munnerlyn Eye Institute](https://www.google.com/maps/search/?api=1&query=37.3728195%2C-122.05092040000001&query_place_id=ChIJVVXFC-62j4ARrt4rfhxoA9k) — 10 reviews (2★) · `medical_center`
+- [San Mateo Pediatrics (123 South San Mateo Drive)](https://www.google.com/maps/search/?api=1&query=37.565469199999995%2C-122.32496529999999&query_place_id=ChIJx75E_XCej4AR6nkri4BHf2Y) — 10 reviews (3.6★) · `medical_center`
+- [Hacienda Lakes](https://www.google.com/maps/search/?api=1&query=37.687866199999995%2C-121.8959045&query_place_id=ChIJdXIa71vpj4ARLH9sg3i5k9g) — 9 reviews (4.7★) · `medical_center`
+- [Kaiser building 4 Ophthalmology, Physical Therapy)](https://www.google.com/maps/search/?api=1&query=37.9287705%2C-122.0289789&query_place_id=ChIJWcIsoVdghYARDPC1vv2Rr3U) — 9 reviews (4.1★) · `medical_center`
+- [Kaiser lab](https://www.google.com/maps/search/?api=1&query=37.691406199999996%2C-121.9266981&query_place_id=ChIJCX5SU_Lrj4ARyeU3MDsPgrw) — 9 reviews (3.1★) · `hospital`
+- [Kidney Transplant, California Pacific Medical Center: Pacific Campus](https://www.google.com/maps/search/?api=1&query=37.791198%2C-122.43176799999999&query_place_id=ChIJs5YiksaAhYARw5ig9aebI-0) — 9 reviews (4.6★) · `hospital`
+- [North County Health Center](https://www.google.com/maps/search/?api=1&query=37.6914367%2C-122.47386549999999&query_place_id=ChIJ-6XhNmx8j4AR3my1YcLpa-g) — 9 reviews (2★) · `medical_center`
+- [On Time COVID Testing](https://www.google.com/maps/search/?api=1&query=37.2519376%2C-121.86302119999999&query_place_id=ChIJCxx-g7wzjoARHoywNN_cLrU) — 9 reviews (4.7★) · `medical_center`
+- [Pediatrics: Sullivan Office: Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.66513940000001%2C-122.4756996&query_place_id=ChIJbdCnT3R8j4ARtKseE0fg6yE) — 9 reviews (3.7★) · `hospital`
+- [UCSF Wayne and Gladys Valley Center for Vision](https://www.google.com/maps/search/?api=1&query=37.7660896%2C-122.38840529999999&query_place_id=ChIJfWhA15F_j4ARugoTASeeiao) — 9 reviews (4.4★) · `hospital`
+- [Allergy & Immunology: Mountain View Center: Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.3766062%2C-122.06500969999999&query_place_id=ChIJaR_sa9y2j4ARdYau-8PLG1s) — 8 reviews (3.9★) · `medical_center`
+- [CPMC Coming Home Hospice](https://www.google.com/maps/search/?api=1&query=37.760419899999995%2C-122.43688149999998&query_place_id=ChIJQ-fY6wR-j4ARw-T95ns8jh4) — 8 reviews (4.4★) · `medical_center`
+- [Inspire Behavioral Health](https://www.google.com/maps/search/?api=1&query=37.3780991%2C-121.83563660000002&query_place_id=ChIJfdoso6HNj4ARppiRAsck15k) — 8 reviews (3.9★) · `hospital`
+- [Kaiser hospital](https://www.google.com/maps/search/?api=1&query=37.5524397%2C-121.9747474&query_place_id=ChIJI3T70G3Bj4ARrZxyeMLu1WM) — 8 reviews (3.3★) · `hospital`
+- [Orinda Care Center](https://www.google.com/maps/search/?api=1&query=37.8766426%2C-122.18034039999999&query_place_id=ChIJmaleoNR9hYARtyjeC6CVXh4) — 8 reviews (4.3★) · `medical_center`
+- [PTR Sports](https://www.google.com/maps/search/?api=1&query=37.2687594%2C-121.9541545&query_place_id=ChIJeYs_1dXLj4ARfsGAvdGlaI0) — 8 reviews (5★) · `medical_center`
+- [Pacific Heights Care Center](https://www.google.com/maps/search/?api=1&query=37.7894729%2C-122.4324576&query_place_id=ChIJOxIgAMeAhYAR_C49J2x4iZ8) — 8 reviews (4.6★) · `medical_center`
+- [Redwood City Women's Health Center](https://www.google.com/maps/search/?api=1&query=37.478516%2C-122.25525259999999&query_place_id=ChIJS00ESy2ij4ARlGztd7ugavA) — 8 reviews (3.5★) · `medical_center`
+- [San Mateo Care Center](https://www.google.com/maps/search/?api=1&query=37.56603450000001%2C-122.32638499999997&query_place_id=ChIJk89UEXGej4ARw4kZzRGKffQ) — 8 reviews (3★) · `medical_center`
+- [Behring Pavilion](https://www.google.com/maps/search/?api=1&query=37.9116305%2C-122.03952079999999&query_place_id=ChIJMXJamrRhhYARPiSqRqU_084) — 7 reviews (4.7★) · `medical_center`
+- [Children's Hospital & Research Center](https://www.google.com/maps/search/?api=1&query=37.8385276%2C-122.2609602&query_place_id=ChIJK8_Bv-B9hYARsT3xZ-KJk_A) — 7 reviews (4.4★) · `hospital`
+- [Fremont Sleep Medicine](https://www.google.com/maps/search/?api=1&query=37.5473442%2C-121.97335809999998&query_place_id=ChIJY7wGbZTAj4ARu3dqh6tR-oo) — 7 reviews (3★) · `medical_center`
+- [Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto](https://www.google.com/maps/search/?api=1&query=37.435374599999996%2C-122.1772525&query_place_id=ChIJbZGDgs2kj4ARSwRxtaDmWy0) — 7 reviews (3.6★) · `hospital`
+- [John Muir Primary Care](https://www.google.com/maps/search/?api=1&query=37.9867547%2C-121.78059419999998&query_place_id=ChIJawhL6rhXhYAR4g398CHM_xc) — 7 reviews (2.7★) · `hospital`
+- [Morris Hyman Critical Care Pavillion](https://www.google.com/maps/search/?api=1&query=37.5562439%2C-121.97913140000001&query_place_id=ChIJGTWiqoPBj4ARllpgo7gK3dA) — 7 reviews (2.1★) · `hospital`
+- [Pacific Heights Medical Group](https://www.google.com/maps/search/?api=1&query=37.791278%2C-122.43181399999999&query_place_id=ChIJB70QYMaAhYARD8_GNvpfMns) — 7 reviews (2.6★) · `medical_center`
+- [SFGH Building 30](https://www.google.com/maps/search/?api=1&query=37.755092%2C-122.40559909999999&query_place_id=ChIJefrRNUp-j4ARLW1dYbXG13Y) — 7 reviews (4.9★) · `hospital`
+- [San Francisco General Hospital Gastroenterology](https://www.google.com/maps/search/?api=1&query=37.7558047%2C-122.4044432&query_place_id=ChIJG9bTskt-j4ARpe1wOM0888Y) — 7 reviews (4.9★) · `hospital`
+- [Sollis Health - San Francisco](https://www.google.com/maps/search/?api=1&query=37.7850863%2C-122.42195969999999&query_place_id=ChIJk2Xt_6CBhYARdjltBBFaiog) — 7 reviews (4.3★) · `medical_center`
+- [South Pavilion (3100 Summit Street Entrance)](https://www.google.com/maps/search/?api=1&query=37.8201507%2C-122.2639466&query_place_id=ChIJZf-TWlWHj4ARRLG64dYVtPM) — 7 reviews (4★) · `medical_center`
+- [Sutter East Bay Medical Foundation: Castro Valley](https://www.google.com/maps/search/?api=1&query=37.698534099999996%2C-122.08899260000001&query_place_id=ChIJF74lE4uRj4ARJO5cgboG6ro) — 7 reviews (2.1★) · `medical_center`
+- [Sutter Pacific Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.7467671%2C-122.4206842&query_place_id=ChIJ8-BJyEN-j4ARb1leZb52oKs) — 7 reviews (1.6★) · `general_hospital`
+- [UCSF Benioff Children's Hospital Primary Care Clinic](https://www.google.com/maps/search/?api=1&query=37.8385118%2C-122.26100199999999&query_place_id=ChIJfyx2v-B9hYARO1CxZGp-oCg) — 7 reviews (4.4★) · `hospital`
+- [UCSF Peninsula Outpatient Center](https://www.google.com/maps/search/?api=1&query=37.5790588%2C-122.3445133&query_place_id=ChIJORBP0G-dj4ARjYuNo2VroJg) — 7 reviews (4★) · `medical_center`
+- [ZSFG Building 9](https://www.google.com/maps/search/?api=1&query=37.7546045%2C-122.40548229999999&query_place_id=ChIJybCKtkt-j4ARFNNyD4edZCE) — 7 reviews (4.3★) · `medical_center`
+- [Asian Health Services Rolland & Kathryn Lowe Medical Center](https://www.google.com/maps/search/?api=1&query=37.7998529%2C-122.27128509999999&query_place_id=ChIJK-1FdLaAj4ARAprkqYVehds) — 6 reviews (4.2★) · `medical_center`
+- [Barbara Arons Pavilion](https://www.google.com/maps/search/?api=1&query=37.312264%2C-121.93364679999999&query_place_id=ChIJD90zhTHLj4ARtignbSSEdjw) — 6 reviews (3.7★) · `hospital`
+- [CHONC Pediatric Hospital](https://www.google.com/maps/search/?api=1&query=37.2597939%2C-121.94757429999999&query_place_id=ChIJUdXiUqs1joARHPEKGMQ5bmk) — 6 reviews (4.8★) · `hospital`
+- [CPMC Department of Ophthalmology](https://www.google.com/maps/search/?api=1&query=37.7821484%2C-122.4211843&query_place_id=ChIJPcnfPkSBhYARMDebl-LDvfQ) — 6 reviews (2.3★) · `medical_center`
+- [California Pacific Medical Center](https://www.google.com/maps/search/?api=1&query=37.7477047%2C-122.4206925&query_place_id=ChIJG6AD10N-j4ARVQYxUPHn7pU) — 6 reviews (3.8★) · `medical_center`
+- [Fremont Psychiatry](https://www.google.com/maps/search/?api=1&query=37.5473709%2C-121.97339629999998&query_place_id=ChIJY7wGbZTAj4ARub7XbK8dwDo) — 6 reviews (3.8★) · `medical_center`
+- [Heart of the Valley Pediatric Cardiology](https://www.google.com/maps/search/?api=1&query=37.6840662%2C-121.90074070000001&query_place_id=ChIJx7ENd1_pj4ART6_R3WAYYG4) — 6 reviews (4.3★) · `hospital`
+- [Jiva Health - Oakland](https://www.google.com/maps/search/?api=1&query=37.8418962%2C-122.2747528&query_place_id=ChIJNWF7CgB_hYARVx3k8-YsFrw) — 6 reviews (3★) · `medical_center`
+- [John Muir Health](https://www.google.com/maps/search/?api=1&query=37.8822269%2C-122.1856468&query_place_id=ChIJN8N5-dd8hYARQmqkMAD0Mfw) — 6 reviews (1.8★) · `medical_center`
+- [Kaiser Permanente Building 2 Surgery Center](https://www.google.com/maps/search/?api=1&query=37.240811099999995%2C-121.80275510000001&query_place_id=ChIJiYI4SwwvjoARjrAZpUU9Ij8) — 6 reviews (3.8★) · `medical_center`
+- [Kaiser Permanente Building 3](https://www.google.com/maps/search/?api=1&query=37.240671999999996%2C-121.80052780000001&query_place_id=ChIJMQet9S8ujoARiq2nRYi4VLI) — 6 reviews (4.5★) · `medical_center`
+- [Kaiser Permanente Walnut Creek: Chemical Dependency Services](https://www.google.com/maps/search/?api=1&query=37.8972559%2C-122.05642919999998&query_place_id=ChIJzVef4cNhhYARcdHjKLM2kcU) — 6 reviews (3.2★) · `hospital`
+- [Palo Alto Medical Foundation Burlingame Center](https://www.google.com/maps/search/?api=1&query=37.5929526%2C-122.38258060000001&query_place_id=ChIJyfwXyrR3j4ARVqNfj1QDej4) — 6 reviews (2.3★) · `medical_center`
+- [SFGH Bldg 25](https://www.google.com/maps/search/?api=1&query=37.7555823%2C-122.40575419999999&query_place_id=ChIJPSEBPc1_j4ARsgn_FJxBZTY) — 6 reviews (4.7★) · `hospital`
+- [Sound Pediatrics](https://www.google.com/maps/search/?api=1&query=37.6666886%2C-122.4668657&query_place_id=ChIJE6LMfut7j4ARD62umoLMKdQ) — 6 reviews (3.7★) · `hospital`
+- [Stanford Health Care - Tri-Valley Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.693424%2C-121.88048599999999&query_place_id=ChIJhdogTUfpj4ARAM_COSGyiy8) — 6 reviews (4.7★) · `hospital`
+- [Stanford Health Care Menlo Park Office](https://www.google.com/maps/search/?api=1&query=37.458452099999995%2C-122.1761222&query_place_id=ChIJQbJ_mKykj4ARBH_VuhTSlSQ) — 6 reviews (3.5★) · `hospital`
+- [Sutter Health East Santa Clara Diagnostic Imaging](https://www.google.com/maps/search/?api=1&query=37.3911393%2C-121.9716162&query_place_id=ChIJ_V32UADJj4AR_x-6Xp57mUE) — 6 reviews (3.7★) · `medical_center`
+- [Broadway Webster Medical Plaza](https://www.google.com/maps/search/?api=1&query=37.8212656%2C-122.26205089999999&query_place_id=ChIJ32-Ycf99hYARXysu2BP4KjI) — 5 reviews (2.6★) · `medical_center`
+- [East Bay Health](https://www.google.com/maps/search/?api=1&query=37.8875612%2C-122.11850690000001&query_place_id=ChIJWXgcBlVjhYARTn50KlplbSw) — 5 reviews (5★) · `medical_center`
+- [Health and Healing Store: California Pacific Medical Center: Pacific Campus](https://www.google.com/maps/search/?api=1&query=37.7894058%2C-122.43246450000001&query_place_id=ChIJHVEBAMeAhYARv9yDszkoIx4) — 5 reviews (3.4★) · `medical_center`
+- [Helixa Labs](https://www.google.com/maps/search/?api=1&query=37.795332699999996%2C-122.42149680000001&query_place_id=ChIJIe9j_LKBhYARIDh7XZImthM) — 5 reviews (5★) · `medical_center`
+- [Kaiser Fremont member services](https://www.google.com/maps/search/?api=1&query=37.5524523%2C-121.97453999999998&query_place_id=ChIJQQ4puPDBj4ARjaucZX5a_yc) — 5 reviews (1★) · `medical_center`
+- [Kaiser Permanente Med Center Sn](https://www.google.com/maps/search/?api=1&query=37.7845763%2C-122.44008309999998&query_place_id=ChIJT0U1_cmAhYARdKAmEZBaOjU) — 5 reviews (3.4★) · `medical_center`
+- [Kaiser building 4 - 1 North](https://www.google.com/maps/search/?api=1&query=37.2409925%2C-121.7995633&query_place_id=ChIJP0kX_y8ujoARPHKYcZRevtY) — 5 reviews (1.6★) · `hospital`
+- [Pediatrics: PAMF Sutter Health | Sunnyvale](https://www.google.com/maps/search/?api=1&query=37.368463999999996%2C-122.0311515&query_place_id=ChIJaZNvImS2j4ARVWKyXMmWIYs) — 5 reviews (2.2★) · `hospital`
+- [Providence Hospital](https://www.google.com/maps/search/?api=1&query=37.8199797%2C-122.2639622&query_place_id=ChIJ-1AJZ1WHj4ARBaaNPNIdMl0) — 5 reviews (4.6★) · `hospital`
+- [Supira Medical](https://www.google.com/maps/search/?api=1&query=37.2608983%2C-121.95919049999999&query_place_id=ChIJlYyOWAg1joARhUgT0Dr5I0s) — 5 reviews (3.4★) · `medical_center`
+- [Sutter Pacific Medical Foundation: Clay Street](https://www.google.com/maps/search/?api=1&query=37.791198%2C-122.43176799999999&query_place_id=ChIJB70QYMaAhYARTUxYaw_Az3o) — 5 reviews (1.6★) · `hospital`
+- [UCSF Medical Center at Mission Bay](https://www.google.com/maps/search/?api=1&query=37.7664112%2C-122.38846719999998&query_place_id=ChIJ_XSjKgB_j4ARIaSiGP88QcA) — 5 reviews (5★) · `medical_center`
+- [UCSF Mt Zion](https://www.google.com/maps/search/?api=1&query=37.7844285%2C-122.440381&query_place_id=ChIJtw7iFZqBhYARacchhxRxhww) — 5 reviews (2.6★) · `hospital`
+- [UCSF at San Francisco General Hospital](https://www.google.com/maps/search/?api=1&query=37.7563142%2C-122.40448749999999&query_place_id=ChIJoZqZYUp-j4ARE1_GSIBHgkA) — 5 reviews (3.6★) · `general_hospital`
+- [Vitality Testosterone Replacement Therapy](https://www.google.com/maps/search/?api=1&query=37.8047762%2C-122.2710631&query_place_id=ChIJjxzoWKCBj4ARtrZOxozSof8) — 5 reviews (5★) · `medical_center`
+
+</details>
+
+
+<details><summary>Dropped: 564 with &lt;5 reviews</summary>
+
+- 1500 Owens — 0 reviews
+- 1500 Owens — 1 reviews
+- 1625 Van Ness Avenue Care Center — 3 reviews
+- 1700 Owens — 0 reviews
+- 2324 Sacramento Street Care Center — 2 reviews
+- 3100 Telegraph Avenue Care Center — 1 reviews
+- 365 Hawthorne Avenue Care Center — 1 reviews
+- 3838 California Street Primary Care — 0 reviews
+- 39650 Liberty Street Fremont Center — 0 reviews
+- 45 Castro Street Care Center — 4 reviews
+- 5095 Telegraph Avenue Care Center — 0 reviews
+- 900 Blake Wilbur Drive — 0 reviews
+- Abraza Medical Corporation — 0 reviews
+- Adeline Care Center — 0 reviews
+- Adler Lauren R — 0 reviews
+- Adult Cystic Fibrosis Center: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Adult Injections department l Kaiser Permanente Fremont Medical Center and Offices — 2 reviews
+- Advanced Treatment Options For Heart Failure — 0 reviews
+- African American Health Centers LLC 675 Hegenberger Rd Oakland Ca — 0 reviews
+- Agacelink Partners, LLC — 0 reviews
+- Aholichewi Partners, LLC — 0 reviews
+- Alameda County Public Health Nurses Division/Kimberly Wesley RN,PHN — 0 reviews
+- Albany Care Center — 4 reviews
+- Alexandra Yamnik — 0 reviews
+- Align Health — 0 reviews
+- Aloha Health Network 3rd Floor @ Wework 1111Broadway Oakland, CA. USA. — 0 reviews
+- Alta Bates ER — 4 reviews
+- Alta Bates Herrick Campus Infusion Center — 0 reviews
+- Alta Bates High Risk Infant Follow Up Clinic — 0 reviews
+- Alta Bates Summit Health Match — 0 reviews
+- Alta Bates Summit Medical Center - Alta Bates — 3 reviews
+- Alta Bates Summit Medical Center: Clark Robert A MD — 0 reviews
+- AmeriMed (CPAP Specialist) — 1 reviews
+- Anthony J Puentes Center — 0 reviews
+- Aparajita Singh — 0 reviews
+- Apheresis Program: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Artemis Healthcare Solutions LLC — 0 reviews
+- Asian American Medical Services — 1 reviews
+- Atrial Fibrillation and Arrhythmia Center: California Pacific Medical Center — 0 reviews
+- BASS Medical Group — 0 reviews
+- Bariatric Surgery: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Bariatric Surgery: Mills-Peninsula Medical Center — 0 reviews
+- Bart — 0 reviews
+- Bay Area GI Docs | San Francisco Bay Area Gastroenterology — 0 reviews
+- Bebe Appointments — 0 reviews
+- Berkeley Center For Natural Medicine — 1 reviews
+- Bestshafe Partners, LLC — 0 reviews
+- Bldg. O, Renal care center, valley medical center — 2 reviews
+- Blue Med RCM — 0 reviews
+- Boston Men's Health Center — 0 reviews
+- Bovet Building | Kaiser Permanente Redwood City Medical Center — 0 reviews
+- Breast Health Center: San Carlos Center: Palo Alto Medical Foundation — 1 reviews
+- BudTrader San Francisco — 0 reviews
+- Building 1 - Sequoia — 0 reviews
+- Building E Fairmont Hospital — 0 reviews
+- Building H — 1 reviews
+- Burlingame Center — 1 reviews
+- CB doc — 0 reviews
+- CCCMA — 0 reviews
+- CIEE — 0 reviews
+- CPMC Davies Ambulance Bay — 0 reviews
+- CPMC Davies Campus Infusion Center — 0 reviews
+- CPMC Mission Bernal Campus Infusion Center — 0 reviews
+- CPMC Pacific Campus | Brian Hemming Cancer Center | Buchanan Street — 0 reviews
+- CPMC Pacific Campus | Brian Hemming Cancer Center | Clay Street — 0 reviews
+- CPMC Radiation Oncology, Pacific Campus | 2333 Buchanan Street — 0 reviews
+- CPMC Van Ness Ambulance Bay — 0 reviews
+- Calaveras Dental Center — 2 reviews
+- California Emergency Physicians Medical Group — 2 reviews
+- California Endocurietherapy — 0 reviews
+- California Pacific Med Center — 0 reviews
+- California Pacific Medical Center; Guedel Memorial Anesthesia Center — 1 reviews
+- Calvascular — 1 reviews
+- Cardiac Catheterization Laboratory: California Pacific Medical Center — 0 reviews
+- Cardiac REHAB — 1 reviews
+- Cardinal Medical Carrier — 0 reviews
+- Cardiology: Fremont Center: Palo Alto Medical Foundation — 1 reviews
+- Cardiothoracic Surgery: Mountain View Center: Palo Alto Medical Foundation — 0 reviews
+- Cardiovascular & Thoracic Surgery: Palo Alto Center: Palo Alto Med Foundation — 0 reviews
+- Cardiovascular & Thoracic: San Carlos Center: Palo Alto Medical — 0 reviews
+- Cardiovascular Physiology & Biophysics: PAMF Research Institute — 0 reviews
+- Cardiovascular Services, Mills Health Center — 0 reviews
+- Care Management Institute — 0 reviews
+- Carlmont Medical center — 0 reviews
+- Carr Auditorium; Building 3 — 4 reviews
+- Castro Therapy Unit — 0 reviews
+- Castro Valley Care Center — 1 reviews
+- Castro Valley Health Center — 3 reviews
+- Castro-Mission Health Center Temporary Clinic — 0 reviews
+- Center For Health Design — 0 reviews
+- Center for Adults w/ Congenital Heart DiseaseCalifornia Pacific Medical Center — 0 reviews
+- Center for Advanced Lung Therapies: California Pacific Medical Center — 0 reviews
+- Center for Child Protection: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Center for Inherited Cardiovascular Disease at Stanford — 0 reviews
+- Children's Health Initiative/Valley Care Program — 0 reviews
+- Children's Hospital & Research Callard Elizabeth H — 0 reviews
+- Children's Hospital & Research Center Oakland: Newborn Services-Neonatology — 3 reviews
+- Children's Renal Center — 0 reviews
+- Children's Renal Center — 0 reviews
+- Children's Teen Clinic Chappell Hayes Health Center — 0 reviews
+- Childrens Hospital And Rearch Center — 0 reviews
+- Children’s Outpatient Center Oakland — 1 reviews
+- Circulatory Support Systems: California Pacific Medical Center: Pacific Campus — 0 reviews
+- City of Alameda Health Care District — 0 reviews
+- Civic Center Place — 1 reviews
+- Clay Medical Center — 2 reviews
+- Clay Street Care Center — 0 reviews
+- Clinica la Luna y el Sol — 1 reviews
+- Comite Center for Precision Medicine & Healthy Longevity — 1 reviews
+- Compassionate Pinnacle — 0 reviews
+- Complex Head & Neck Surgery Program — 2 reviews
+- Comprehensive Epilepsy Program in Emeryville — 0 reviews
+- Concord Outreach Clinic — 0 reviews
+- Congenital Heart Surgery Program: California Pacific Medical Center — 0 reviews
+- Cops Care Cancer Foundation (CCCF) — 0 reviews
+- Critical Care Medicine: UCSF Benioff Children's Hospital Oakland — 2 reviews
+- Cystic Fibrosis Program: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- DC Kaiser 🏩 — 0 reviews
+- Davies Medical Center — 0 reviews
+- Debbie Kuo, M.D. — 0 reviews
+- Developmental & Behavioral Pediatrics: UCSF Benioff Children's Hospital Oakland — 1 reviews
+- Diabetes Clinic: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Diabetes Education: Mountain View Center: Palo Alto Medical Foundation — 0 reviews
+- Diablo Medical Plaza — 3 reviews
+- Disabled Community Health Clinic (DCHC) — 1 reviews
+- Dorothy Schneider Cancer Center — 1 reviews
+- Dr Jesse Jung Pleasanton Office — 2 reviews
+- Dr Navid Asat Cardiologist — 0 reviews
+- Dr Satthea Khay D.0 — 1 reviews
+- Dr. Dearborn Garden Clinic — 0 reviews
+- Dr. Hai Nguyen-Immigration USCIS San Jose — 0 reviews
+- Dr. Haroon — 0 reviews
+- Dr. Jonathan Noble M.D. — 0 reviews
+- Dr. Kevin Yen, D.C. — 1 reviews
+- Dr. Zachary Reed — 0 reviews
+- Dublin Center — 2 reviews
+- Dublin Center (4000) — 0 reviews
+- Dublin Infusion Center — 0 reviews
+- Dublin Outreach Clinic — 0 reviews
+- Early Pregnancy Clinic | Stanford Health Care — 0 reviews
+- East Bay Animal Shelter — 4 reviews
+- East Bay Osteopathic Medical Center — 4 reviews
+- East Santa Clara Care Center — 0 reviews
+- Easy Bay Nephrology Medical group — 0 reviews
+- Eden Medical Center Ambulance Bay — 0 reviews
+- EdenFit — 0 reviews
+- Elcamino medical — 0 reviews
+- Electrophysiology: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Elvisle — 0 reviews
+- Engineering Building — 0 reviews
+- Ergonomic Consultation Program: California Pacific Medical Center — 0 reviews
+- Evergreen Health Center — 0 reviews
+- Extended Care (MPEC): Mills Health Center: Sutter Health Affiliate — 3 reviews
+- Fairmont Hospital - Human Resources — 1 reviews
+- Family Medicine: Sutter Pacific Medical Foundation: Rhode Island Street — 0 reviews
+- Fellow Health — 0 reviews
+- Fen Fang Health Center — 0 reviews
+- Field Kent Hospital — 0 reviews
+- Focus Wellness Consultant — 0 reviews
+- Foothill Medical Building — 0 reviews
+- For a New Start LLC — 0 reviews
+- For a New Start LLC — 2 reviews
+- For a New Start LLC — 0 reviews
+- Fremont Infusion Center — 0 reviews
+- Fremont Outreach Clinic — 0 reviews
+- Fresenius Medical Care at California Pacific Medical Center - — 0 reviews
+- Fresenius Medical Care at Kaiser - South San Francisco — 0 reviews
+- Friedman Building — 0 reviews
+- Frontier Medicine — 0 reviews
+- GHS MEDICAL CENTER — 0 reviews
+- Gastroenterology Services: California Pacific Medical Center: St Luke's Campus — 0 reviews
+- Gastroenterology: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Gemma’s Dentist — 0 reviews
+- Geneva Pharmacy — 0 reviews
+- Genitourinary and Prostate Cancer Clinic: California Pacific Medical Center — 0 reviews
+- Geriatric Medicine: Palo Alto Center: Palo Alto Medical Foundation — 0 reviews
+- Go4Vigor — 0 reviews
+- Golden Gate Stem Cell — 1 reviews
+- Golden gate medical center — 0 reviews
+- Goldman Brian — 0 reviews
+- Good Samaritan Medical plaza — 0 reviews
+- Grace Carlson, M.D., MBA — 0 reviews
+- HEDCO Health Sciences Center — 1 reviews
+- Habitat Health — 0 reviews
+- Hacienda Medical Center — 4 reviews
+- Hayward Residential Treatment — 0 reviews
+- HeCares Integrative Medicine Center, Maude Office — 2 reviews
+- Health Psychology: California Pacific Medical Center: Pacific Campus — 0 reviews
+- HealthFirst: A Center for Prevention & Education: California Pacific Med Center — 0 reviews
+- Heart Disease Reversal Nutrition Program: California Pacific Medical Center — 0 reviews
+- Heart and Vascular Center: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Hematology Oncology & Infusion Therapy Center: Mountain View Center — 2 reviews
+- Hemoglobinopathy Laboratory: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Ho Cheryl J MD — 2 reviews
+- Holistic Institute — 1 reviews
+- Hoover medical campus — 3 reviews
+- Hospital — 0 reviews
+- Hospital — 0 reviews
+- Hospital delivery — 1 reviews
+- Human Longevity, Inc. — 2 reviews
+- Humane Society Silicon Valley Medical Center (Temp) — 0 reviews
+- IOA Parking — 0 reviews
+- Indian health center — 0 reviews
+- Infectious Diseases: UCSF Benioff Children's Hospital Oakland — 2 reviews
+- Infusion Center: Palo Alto Center: Palo Alto Medical Foundation — 3 reviews
+- Infusion for Health - Oakland — 0 reviews
+- Infusion for Health- San Francisco — 4 reviews
+- Infusion for Health- Santa Clara — 1 reviews
+- Internal Medicine Sutter Pacific Medical Foundation Rhode Island Street — 0 reviews
+- Internal Medicine: Family Medicine: Fremont Center: Palo Alto Medical Foundation — 3 reviews
+- Internal Medicine: Sutter East Bay Medical Foundation: Orinda — 0 reviews
+- J Muir medical — 0 reviews
+- Jennifer Y. O'Neill-Cha, M.D. — 0 reviews
+- Jhansi Menon, MD: Hospitalist, Sutter East Bay Medical Foundation — 3 reviews
+- Jiva Health - Milpitas — 0 reviews
+- Jiva Health - Orinda — 0 reviews
+- Jiva Health - San Leandro — 0 reviews
+- John Muir Concord Ambulance bay — 0 reviews
+- John Muir Medical Center — 1 reviews
+- John Muir Walnut Creek Ambulance Bay — 3 reviews
+- John muir — 0 reviews
+- JohnMuir UltraSound — 0 reviews
+- KPMB — 0 reviews
+- Kaiser — 0 reviews
+- Kaiser - Argonaut Building — 0 reviews
+- Kaiser - Mission Building — 1 reviews
+- Kaiser Acupuncture — 1 reviews
+- Kaiser Bldg A - Parking — 0 reviews
+- Kaiser Geary Ambulance Bay — 2 reviews
+- Kaiser Hospital Walnut Creek Ambulance Bay — 3 reviews
+- Kaiser Hospital pickup — 0 reviews
+- Kaiser MRI Suite 110 — 0 reviews
+- Kaiser Medical — 0 reviews
+- Kaiser Medical Office & Laboratory — 0 reviews
+- Kaiser Medical, Santa Clara, Ca — 0 reviews
+- Kaiser Nc - San Leandro Main — 0 reviews
+- Kaiser Oakland — 0 reviews
+- Kaiser Oakland IFT Ambulance Parking — 0 reviews
+- Kaiser Permanente 24-hour pharmacy — 1 reviews
+- Kaiser Permanente Clinic — 2 reviews
+- Kaiser Permanente Northern California Regional Genomics Laboratory — 0 reviews
+- Kaiser Permanente Psychiatry — 4 reviews
+- Kaiser Permanente San Jose Family Medicine Residency — 2 reviews
+- Kaiser Permanente San Jose Medical Center — 3 reviews
+- Kaiser Permanente San Jose Medical Center Surgical Services — 0 reviews
+- Kaiser Permanente San Jose Medical Offices Building A — 3 reviews
+- Kaiser Permanente San Jose Medical Offices Building B — 3 reviews
+- Kaiser Permanente San Jose Medical Offices Building C — 0 reviews
+- Kaiser Permanente San Jose Medical Offices Building D — 0 reviews
+- Kaiser Permanente South Milpitas Medical Offices — 1 reviews
+- Kaiser San Jose Ambulance Bay — 0 reviews
+- Kaiser San Jose Employee Health — 2 reviews
+- Kaiser San Leandro Ambulance Bay — 0 reviews
+- Kaiser permanente — 0 reviews
+- Kaiser permanente Santa Clara — 0 reviews
+- Kayakameena — 0 reviews
+- Kidzdds kids dental — 0 reviews
+- Kim髖關節開刀 — 0 reviews
+- La Clínica — 1 reviews
+- Labor and Delivery Entrance — 0 reviews
+- Laboratorio — 0 reviews
+- Laboratorio de adultos — 0 reviews
+- Lake Chabot Medical Building — 1 reviews
+- Laurel Grove Medical Plaza — 0 reviews
+- Learning Wellness Center — 0 reviews
+- Licona eye foundation — 0 reviews
+- Lifeline Hospital & Research Center — 0 reviews
+- Liver Disease Management and Transplant: Sutter Pacific Med Foundation: Oakland — 0 reviews
+- LookDeep — 0 reviews
+- Lorena Terapeuta — 0 reviews
+- Los Portales Medical and Dental Center — 4 reviews
+- Los gatos creek trail endpoint — 0 reviews
+- Lung Nodule Evaluation Clinic: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Lymphedema Clinic — 0 reviews
+- MC COVID Testing — 3 reviews
+- MDCaregiving — 1 reviews
+- MDHC — 0 reviews
+- MVRx — 0 reviews
+- Magnolia Recovery — 0 reviews
+- Mak Medical Building — 0 reviews
+- Mamography dept — 0 reviews
+- Maternal Fetal Medicine: San Carlos Center: Palo Alto Medical Foundation — 1 reviews
+- Med-Vantage Inc — 0 reviews
+- Medical House Doctors — 0 reviews
+- Medical and Dental Offices — 0 reviews
+- Medical building — 0 reviews
+- Medpixels Inc — 1 reviews
+- Memory Assessment Clinic — 0 reviews
+- Memory Clinic: Sutter Pacific Medical Foundation Webster Street — 0 reviews
+- Memory Disorders Program in Emeryville — 0 reviews
+- Methadone Clinic Actual Building — 3 reviews
+- Metro Infusion Center — 0 reviews
+- Metro Infusion Center — 0 reviews
+- Middlefield Medical Suites — 1 reviews
+- Migraine Laser Center of Walnut Creek — 0 reviews
+- Mills Medical Arts — 2 reviews
+- Mills Peninsula Medical Center Infusion Center — 0 reviews
+- Mills-Peninsula Senior Focus — 1 reviews
+- Milpitas Care Center — 4 reviews
+- Mission Bay Medical Center — 0 reviews
+- Mission Bernal Care Center — 0 reviews
+- Mission Medical Building — 0 reviews
+- Mission Pain Treatment Center — 3 reviews
+- Mobile Clinic — 0 reviews
+- Mountain View Infusion Center — 0 reviews
+- Mountain View Outreach Clinic — 0 reviews
+- Mountain View kórház — 0 reviews
+- Movement Discoveries Inc — 0 reviews
+- Mri scan — 0 reviews
+- Muir Medical Office Building — 0 reviews
+- MuirLab — 0 reviews
+- Multiple Sclerosis Center in Tri-Valley — 0 reviews
+- Musculoskeletal Medical Center — 0 reviews
+- Music Therapy: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- NATIONAL CENTER FOR PELVIC PAIN RESEARCH — 0 reviews
+- Native American health Center — 0 reviews
+- Neonatal Intensive Care Unit (NICU): Mills-Peninsula Medical Center — 0 reviews
+- Neonatal Intensive Care: UCSF Benioff Children's Hospital Oakland — 2 reviews
+- Nephrology: Dublin Center Palo Alto Medical Foundation — 0 reviews
+- Nephrology: San Carlos Center: Palo Alto Medical Foundation — 0 reviews
+- Neurogastroenterology and Motility: Sutter Pacific Med Foundation: Clay Street — 0 reviews
+- Neurology: Fremont Center: Palo Alto Medical Foundation — 3 reviews
+- Neuromuscular Program in Emeryville — 0 reviews
+- Neuromuscular Program in the Tri-Valley — 0 reviews
+- Neurosurgery: Burlingame Center: Palo Alto Medical Foundation — 0 reviews
+- New Healthcare Media — 0 reviews
+- Niles East Building — 1 reviews
+- Noe Integrative Health — 0 reviews
+- North East Medical Services - 998 Geneva Clinic — 0 reviews
+- North East Medical Services - My Chart — 1 reviews
+- North East Medical Services - Pharmacy — 0 reviews
+- Nutrition Services: Dublin Center: Palo Alto Medical Foundation — 0 reviews
+- OakRidge Medical/Dental Center — 1 reviews
+- Oakland (Webster Street) Outreach Clinic — 1 reviews
+- Oakland Care Center — 4 reviews
+- Oakland Professional Building — 0 reviews
+- Oakland Webster Street Care Center — 1 reviews
+- Oaktree Plaza — 0 reviews
+- Oncology/Hematology California Pacific Medical Center Pacific Campus — 1 reviews
+- Onestop Medical Center — 2 reviews
+- Op.Dr. Burçin DEMİREL Resmi — 0 reviews
+- Opthamology — 0 reviews
+- Organ Transplantation: California Pacific Medical Center: Pacific Campus — 1 reviews
+- Orthopedic Surgery: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Orthopedic Trauma Clinic: California Pacific Medical Center: St Luke's Campus — 0 reviews
+- Osher Collaborative for Integrative Medicine — 0 reviews
+- Over Sixty Health Center Reif Stephanie A — 0 reviews
+- PAMF Sunnyvale — 2 reviews
+- Pacific Clear Mind Center — 0 reviews
+- Pacific Health Clinic — 3 reviews
+- Pacific Medical Center — 0 reviews
+- Packard Children's Health — 1 reviews
+- Palliative Care Program: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Palliative Medicine Sutter Pacific Medical Foundation — 0 reviews
+- Palo Alto - 49 Wells Building (Druker Building) — 1 reviews
+- Palo Alto - 87 Encina Building (LeVett Building) — 2 reviews
+- Palo Alto Encina Family Concierge — 0 reviews
+- Palo Alto Medical Foundation Laboratory, Suite 211 — 0 reviews
+- Palo Alto Outreach Clinic — 0 reviews
+- Pathology: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Patient Registration Services: California Pacific Medical Center — 0 reviews
+- Patient Registration Services: California Pacific Medical Center: Davies Campus — 0 reviews
+- Patient Registration Services: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Pediatric Cardiography: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Pediatric Center for Inflammatory Bowel Disorders California Pacific Med Center — 0 reviews
+- Pediatric Gastroenterology Group - Emeryville — 0 reviews
+- Pediatric General Surgery: California Pacific Medical Center: California Campus — 0 reviews
+- Pediatric Hematology/Oncology: Sutter Pacific Medical Foundation: San Mateo — 0 reviews
+- Pediatric Neonatology: Newborn ICU California Pacific Medical Cente — 0 reviews
+- Pediatric Neurosurgery: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Pediatric Otolaryngology: California Pacific Medical Center: California Campus — 0 reviews
+- Pediatric Stem Cell Transplantation at Stanford Children's Health — 0 reviews
+- Pediatrics department — 0 reviews
+- Peralta Medical Office Building — 0 reviews
+- Pleasanton Family Medical Center: Lei Calvin MD — 0 reviews
+- Podiatry: Dublin Center: Palo Alto Medical Foundation — 2 reviews
+- Podiatry: San Mateo: Palo Alto Medical Foundation — 0 reviews
+- Polymath Medical Hospital medicine — 0 reviews
+- Pooyan Sadeghi — 0 reviews
+- Potrero Hill Care Center — 3 reviews
+- Power Clinical Trials — 0 reviews
+- Pr3vent — 0 reviews
+- Praising Hands, LLC — 0 reviews
+- Presidio Heights Care Center — 2 reviews
+- Progressions Developmental and Behavioral Pediatrics — 0 reviews
+- Prospero Vascular & Interventional — 4 reviews
+- Pulmonary: Fremont Center: Palo Alto Medical Foundation — 0 reviews
+- Qianfang Acupuncture — 0 reviews
+- RPAC — 0 reviews
+- Radiology — 0 reviews
+- Ramchandani M D — 3 reviews
+- Redwood City Sleep Center — 0 reviews
+- Redwood City Vascular Surgery — 1 reviews
+- Redwood Shores Pediatric Specialty Clinic | UCSF Benioff Children's Hospitals — 0 reviews
+- Redwood city — 0 reviews
+- Regent Street Care Center — 0 reviews
+- Regional Medical Center Breast Care Center — 0 reviews
+- Regional Recruitment Services: Sutter East Bay Medical Foundation — 0 reviews
+- Rehabilitation Program: Sutter Alta Bates Summit Medical Center: Herrick Campus — 3 reviews
+- Remedy Medical Group — 1 reviews
+- Responsible Telemedicine — 0 reviews
+- Rheumatology: San Carlos Center: Palo Alto Medical Foundation — 0 reviews
+- Rising Phoenix Integrative — 0 reviews
+- S.N.A.C Heritage Center — 3 reviews
+- SF GENERAL ED — 0 reviews
+- SF General Ambulance Bay — 0 reviews
+- SFGH Bldg 10 — 1 reviews
+- SFGH Bldg 4 — 0 reviews
+- SFGH Dialysis Parking Lot — 0 reviews
+- SFGH.OTOP — 3 reviews
+- SHC — 0 reviews
+- SHCE — 0 reviews
+- SHCS Mission Bay — 1 reviews
+- SHIVANI HOSPITAL & IVF — 0 reviews
+- SPMF Health Care Center, Mission Bernal Campus — 0 reviews
+- San Carlos Outreach Clinic — 0 reviews
+- San Francisco Adult Concierge — 0 reviews
+- San Jose Disability Services — 0 reviews
+- San Jose Regional Ambulance Bay — 0 reviews
+- San Mateo Medical Center Ambulance Bay — 0 reviews
+- San Mateo Pediatric Primary Care Clinic | UCSF Benioff Children's Hospitals — 0 reviews
+- San Mateo Respite — 0 reviews
+- San Mateo hospital — 0 reviews
+- San Mateo medical center — 0 reviews
+- Santa Clara Valley Ambulance Bay — 2 reviews
+- Santa Clara Valley Health Center at Alexian — 4 reviews
+- Santa Clara Valley Regional Medical Center — 1 reviews
+- Saunders Court — 0 reviews
+- Scoliosis Center: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Selexis — 0 reviews
+- Shadelands Endovascular — 1 reviews
+- Sinus Center in Palo Alto — 0 reviews
+- Skeletal Dysplasia Clinic: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Sleep Disorders Center — 0 reviews
+- Smith Medical Clinic — 0 reviews
+- Solano Center — 0 reviews
+- Sollis Health - Palo Alto — 4 reviews
+- South Pavilion (3012 Summit Street Entrance) — 0 reviews
+- Spa 28 Aesthetic Medical Center — 0 reviews
+- Spasticity Management Sutter Alta Bates Summit Medical Center: Herrick Campus — 0 reviews
+- Spine Center: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Sports Therapy — 0 reviews
+- Sri Chakra Hospitals — 0 reviews
+- St. Francis Ambulance Parking — 0 reviews
+- Standard ICT Clinic — 1 reviews
+- Stanford Cancer Center — 0 reviews
+- Stanford Center for Academic Medicine — 4 reviews
+- Stanford Center for Advanced Lung Disease — 1 reviews
+- Stanford Clinic — 0 reviews
+- Stanford Health Care Hoover Pavilion — 1 reviews
+- Stanford Health Care, Patient Care Unit at Sequoia — 1 reviews
+- Stanford Hospital — 0 reviews
+- Stanford Hospital Y Clinics — 2 reviews
+- Stanford Tri-Valley, Ambulance Bay — 1 reviews
+- Stanford University School of Medicine — 3 reviews
+- Stanford Warehouse — 0 reviews
+- Stroke Care Center: California Pacific Medical Center: Pacific Campus — 0 reviews
+- Summit ENT Medical Associates — 1 reviews
+- Summit Garage — 0 reviews
+- Summit Hospital — 2 reviews
+- Summit Inpatient Services — 1 reviews
+- Summit Radiology Dept — 0 reviews
+- Sunnyvale Care Center — 0 reviews
+- Sunnyvale Center (201) — 0 reviews
+- Sunnyvale Infusion Center — 0 reviews
+- Surgical Exchange — 0 reviews
+- Surgical Services: California Pacific Medical Center: Pacific Campus — 1 reviews
+- Sutter Alta Bates Berkeley - Ambulance Bay — 0 reviews
+- Sutter Clinics — 0 reviews
+- Sutter Delta Ambulace Bay — 1 reviews
+- Sutter East Bay Medical Foundation: Berkeley/Dwight Way — 1 reviews
+- Sutter Eden Medical Center Infusion Center — 0 reviews
+- Sutter Eden Radiation Oncology Center — 2 reviews
+- Sutter El Camino Real Care Center — 4 reviews
+- Sutter Family Medicine - Milpitas — 1 reviews
+- Sutter Health — 0 reviews
+- Sutter Health Alta Bates Summit Medical Center — 2 reviews
+- Sutter Health Pac — 2 reviews
+- Sutter Health Parking Garage — 0 reviews
+- Sutter Heart and Vascular Services - Mountain View Rengstorff — 0 reviews
+- Sutter Pacific Medical Foundation — 0 reviews
+- Sutter Pacific Medical Foundation — 2 reviews
+- Sutter San Bruno Care Center — 0 reviews
+- Sutter Santa Teresa Care Center — 0 reviews
+- Synagis Clinic: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- Synergex Med — 0 reviews
+- Team Health West — 2 reviews
+- Telegraph Care Center — 0 reviews
+- Terapia Física - Pisttburt — 3 reviews
+- Tercica Medica Inc — 2 reviews
+- Thayer Medical Management Inc — 0 reviews
+- The Arthur H. Coleman Medical Center — 2 reviews
+- The Dennis A.Le Vett Cardiovascular Care Center — 2 reviews
+- The Golden Gate Institute for Integrative Medicine-GGIIM — 0 reviews
+- The Medical Center at Stoneridge — 3 reviews
+- The ROM Clinic — 0 reviews
+- Tho L Ngo, M.D. — 0 reviews
+- Tidal Medical Technologies — 0 reviews
+- Total Female Medical Center — 0 reviews
+- Trans Time Inc — 0 reviews
+- Transitional Cardiac Care Unit: California Pacific Medical Center — 0 reviews
+- Transplant Nephrology: Sutter Pacific Medical Foundation: San Jose — 0 reviews
+- Transplant clinic 7fl — 0 reviews
+- Tri Valley Medical Park — 0 reviews
+- Tri-Valley Neurosurgical Med — 0 reviews
+- Tuberculosis Program: UCSF Benioff Children's Hospital Oakland — 0 reviews
+- UCFS Breast clinic — 2 reviews
+- UCSF — 1 reviews
+- UCSF Child Trauma Research Program — 0 reviews
+- UCSF Children’s Ambulance Bay — 0 reviews
+- UCSF Department of Psychiatry — 1 reviews
+- UCSF Department of Radiation Oncology — 0 reviews
+- UCSF Emergency Services — 4 reviews
+- UCSF Health Stanyan Hospital Cardiac Care — 0 reviews
+- UCSF Medical Center — 2 reviews
+- UCSF Medical Center - Huntington's Disease Clinic — 0 reviews
+- UCSF Medical Center Anesthesia — 0 reviews
+- UCSF Medical Group — 0 reviews
+- UCSF Oakland — 2 reviews
+- UCSF Outpatient Health Center — 1 reviews
+- UCSF Parnassus Ambulance Bay — 1 reviews
+- UCSF Parnassus Medical Office Building 2 — 1 reviews
+- UCSF Pediatric Epilepsy Clinic — 0 reviews
+- UCSF San Francisco CA — 0 reviews
+- UCSF Transplant Medical Center — 1 reviews
+- UCSF china basin — 3 reviews
+- UCSF lab MRI — 1 reviews
+- UCSF mission bay — 0 reviews
+- UCSF: physical therapy office — 0 reviews
+- USF — 0 reviews
+- Ucsf — 0 reviews
+- University Square Care Center — 0 reviews
+- University of California San Francisco Medical Center — 4 reviews
+- Urology: Sutter East Bay Medical Foundation: Orinda — 0 reviews
+- Valley Medical Art — 0 reviews
+- Vascular Neurology: Sutter Pacific Medical Foundation: Castro and Duboce Streets — 0 reviews
+- Walnut Creek - Labor & Delivery — 4 reviews
+- Washington Hospital IJRR — 1 reviews
+- Washington/Morris Hyman Ambulance Bay — 0 reviews
+- WebMD, LLC — 0 reviews
+- Webster Street Care Center — 4 reviews
+- Webster Surgery Center, LLC — 0 reviews
+- Weitz Medical Management — 0 reviews
+- Wheelchair Tech — 1 reviews
+- Willow Building | Kaiser Permanente Redwood City Medical Center — 0 reviews
+- Willow Glen Psychic — 0 reviews
+- Women's Health Center in Lafayette — 0 reviews
+- Ygnacio Kaiser — 0 reviews
+- York Liver Clinic — 0 reviews
+- ZSFGH - Social Workers — 2 reviews
+- eVillage Care Inc. — 1 reviews
+- hilltop professional building — 0 reviews
+- hospital 2 — 0 reviews
+- kaiser Lee — 0 reviews
+- migraine surgery san francisco — 0 reviews
+- mission bay benioff children hospital — 0 reviews
+- mt zion medical — 0 reviews
+- oyster point — 0 reviews
+- Кардиология джонн муир — 0 reviews
+- مستشفى — 0 reviews
+- مستشفى عام — 0 reviews
+- 中医诊所 — 0 reviews
+- 医院 — 0 reviews
+- 白卡 — 2 reviews
+
+</details>
+
+
+## Zoos  (within 15 mi, 16 legitimate)
+
+
+**Possible exceptions to eyeball (5) — pass the >=5-review rule but look like a sub-area of a bigger attraction or a mis-tag; kept per rule, remove only if you (the players) agree:**
+
+- [African Savanna](https://www.google.com/maps/search/?api=1&query=37.750972%2C-122.14631289999998&query_place_id=ChIJD12PBQ6Pj4ARKWA3e3z3D18) — 8 reviews, `zoo` — _nested in bigger same-category attraction_
+- [Condor and Jaguar Pavilion](https://www.google.com/maps/search/?api=1&query=37.7532669%2C-122.1383878&query_place_id=ChIJp7GDtPqPj4ARdwWkK8JZ7WY) — 6 reviews, `zoo` — _nested in bigger same-category attraction_
+- [Giraffe Enclosure](https://www.google.com/maps/search/?api=1&query=37.750287199999995%2C-122.14577409999998&query_place_id=ChIJ9zatEwCPj4ARoG4L5AMN_OE) — 6 reviews, `zoo` — _nested in bigger same-category attraction_
+- [House of Bugs](https://www.google.com/maps/search/?api=1&query=37.7503738%2C-122.14758889999999&query_place_id=ChIJR2hhS7KPj4ARAxbe2wRGwVU) — 6 reviews, `zoo` — _nested in bigger same-category attraction_
+- [Reptile and Amphibian Discovery Room](https://www.google.com/maps/search/?api=1&query=37.7496916%2C-122.1479343&query_place_id=ChIJVbo3APWPj4ARkneWMbUiLiQ) — 5 reviews, `zoo` — _nested in bigger same-category attraction_
+
+<details><summary>All 16 legitimate places</summary>
+
+- [San Francisco Zoo](https://www.google.com/maps/search/?api=1&query=37.7329394%2C-122.50283479999999&query_place_id=ChIJjaIC83F9j4AR1z3B225I_XU) — 14180 reviews (4.4★) · `zoo`
+- [Oakland Zoo](https://www.google.com/maps/search/?api=1&query=37.748663199999996%2C-122.1454124&query_place_id=ChIJ34F_-Q2Pj4ARqvhP11SiAQI) — 14120 reviews (4.6★) · `zoo`
+- [Happy Hollow Park & Zoo](https://www.google.com/maps/search/?api=1&query=37.3259432%2C-121.86078559999999&query_place_id=ChIJ36tnEywzjoARhS4v9dlu5EU) — 5368 reviews (4.5★) · `zoo`
+- [Bison Paddock](https://www.google.com/maps/search/?api=1&query=37.7696864%2C-122.49823250000001&query_place_id=ChIJn0gOF7uHhYARlc2snZDbu1w) — 1417 reviews (4.5★) · `zoo`
+- [California Trail at Oakland Zoo](https://www.google.com/maps/search/?api=1&query=37.7517852%2C-122.1391754&query_place_id=ChIJC388kGOPj4ARuyHK1BU9lNA) — 1158 reviews (4.8★) · `zoo`
+- [Barron Park Donkeys](https://www.google.com/maps/search/?api=1&query=37.4081306%2C-122.1385795&query_place_id=ChIJVXMziI-6j4ARsS-VijqrJcY) — 163 reviews (4.8★) · `zoo`
+- [Little Explorers Mobile Petting Zoo](https://www.google.com/maps/search/?api=1&query=37.710623%2C-122.166868&query_place_id=ChIJHxC-i1qFj4ARQo-P62bDWNs) — 30 reviews (3.5★) · `zoo`
+- [Tava's Jungleland](https://www.google.com/maps/search/?api=1&query=38.1401192%2C-122.23691330000001&query_place_id=ChIJQ-0TLc8MhYARfi3KZUyBxQg) — 28 reviews (4.4★) · `zoo`
+- [Wolves](https://www.google.com/maps/search/?api=1&query=38.1406974%2C-122.237867&query_place_id=ChIJ27C6ucgMhYAR7LG6_euy8m8) — 16 reviews (4.3★) · `zoo`
+- [African Savanna](https://www.google.com/maps/search/?api=1&query=37.750972%2C-122.14631289999998&query_place_id=ChIJD12PBQ6Pj4ARKWA3e3z3D18) — 8 reviews (4★) · `zoo`
+- [Discovery Theater](https://www.google.com/maps/search/?api=1&query=38.1402785%2C-122.237671&query_place_id=ChIJeWOzyMgMhYARzS177BVH8F8) — 8 reviews (4.3★) · `zoo`
+- [Lions](https://www.google.com/maps/search/?api=1&query=38.140505%2C-122.2381897&query_place_id=ChIJraqTFAANhYARypGo-7mrQVk) — 7 reviews (5★) · `zoo`
+- [Condor and Jaguar Pavilion](https://www.google.com/maps/search/?api=1&query=37.7532669%2C-122.1383878&query_place_id=ChIJp7GDtPqPj4ARdwWkK8JZ7WY) — 6 reviews (4.3★) · `zoo`
+- [Giraffe Enclosure](https://www.google.com/maps/search/?api=1&query=37.750287199999995%2C-122.14577409999998&query_place_id=ChIJ9zatEwCPj4ARoG4L5AMN_OE) — 6 reviews (5★) · `zoo`
+- [House of Bugs](https://www.google.com/maps/search/?api=1&query=37.7503738%2C-122.14758889999999&query_place_id=ChIJR2hhS7KPj4ARAxbe2wRGwVU) — 6 reviews (4.2★) · `zoo`
+- [Reptile and Amphibian Discovery Room](https://www.google.com/maps/search/?api=1&query=37.7496916%2C-122.1479343&query_place_id=ChIJVbo3APWPj4ARkneWMbUiLiQ) — 5 reviews (4.2★) · `zoo`
+
+</details>
+
+
+<details><summary>Dropped: 17 with &lt;5 reviews</summary>
+
+- Antech — 1 reviews
+- Asian Rhino — 2 reviews
+- BlueCopperFarmPettingZoo — 3 reviews
+- California Conservation Habitarium — 2 reviews
+- California Trail Visitor Center — 2 reviews
+- Camels — 3 reviews
+- Chimpanzees — 2 reviews
+- Education Center — 2 reviews
+- Exhibit Hall — 1 reviews
+- Flamingo Plaza — 0 reviews
+- Flamingo Pond — 3 reviews
+- Goldman Bat Exhibit — 3 reviews
+- Outback Trail — 0 reviews
+- Petting Yard — 1 reviews
+- Sun Bear Canyon — 3 reviews
+- Vika — 0 reviews
+- Wild Australia — 2 reviews
+
+</details>
+
+
+## Aquariums  (within 15 mi, 4 legitimate)
+
+
+<details><summary>All 4 legitimate places</summary>
+
+- [Aquarium of the Bay](https://www.google.com/maps/search/?api=1&query=37.8086487%2C-122.40932989999999&query_place_id=ChIJr6OmefyAhYAR-h8_vW9p5GQ) — 6308 reviews (4.1★) · `aquarium`
+- [Steinhart Aquarium](https://www.google.com/maps/search/?api=1&query=37.7695812%2C-122.46613449999998&query_place_id=ChIJd2zwL62HhYARC0YDVdQVje4) — 182 reviews (4.7★) · `aquarium`
+- [Shark Experience](https://www.google.com/maps/search/?api=1&query=38.136574599999996%2C-122.2345089&query_place_id=ChIJyQxjtM0MhYARBR-5ANm-C8U) — 82 reviews (4.2★) · `aquarium`
+- [Aquatic Experts](https://www.google.com/maps/search/?api=1&query=37.9440861%2C-122.07696580000001&query_place_id=ChIJW1Z9kIlhhYARBx-Y_JVEepI) — 19 reviews (5★) · `aquarium`
+
+</details>
+
+
+<details><summary>Dropped: 7 with &lt;5 reviews</summary>
+
+- Bluefish Aquarium Services — 0 reviews
+- Factory Fish Tanks — 4 reviews
+- Graceful Goodbye Pet Cremation — 0 reviews
+- Gulf of the Farallones Aquarium — 4 reviews
+- Norcal Aquaticz — 0 reviews
+- Smokey Spot — 4 reviews
+- The Art Aquatic — 1 reviews
+
+</details>
+
+
+## Amusement Parks  (within 15 mi, 29 legitimate)
+
+
+**Possible exceptions to eyeball (8) — pass the >=5-review rule but look like a sub-area of a bigger attraction or a mis-tag; kept per rule, remove only if you (the players) agree:**
+
+- [South Bay Shores](https://www.google.com/maps/search/?api=1&query=37.3957386%2C-121.9718967&query_place_id=ChIJVxExp8DJj4ARp1MKDNlJH7c) — 1255 reviews, `water_park` — _nested in bigger same-category attraction_
+- [Planet Snoopy](https://www.google.com/maps/search/?api=1&query=37.3949269%2C-121.9718436&query_place_id=ChIJDQuOmsDJj4ARGlVd8LNzcRU) — 339 reviews, `amusement_park` — _nested in bigger same-category attraction_
+- [NorCal County Fair](https://www.google.com/maps/search/?api=1&query=37.3935818%2C-121.9719714&query_place_id=ChIJr4QAVsDJj4ARkTENSw4Oywg) — 74 reviews, `amusement_park` — _nested in bigger same-category attraction_
+- [Great Barrier Reef](https://www.google.com/maps/search/?api=1&query=37.395520399999995%2C-121.9689317&query_place_id=ChIJQyb2cr_Jj4ARWxbXMtKN2Ec) — 36 reviews, `water_park` — _nested in bigger same-category attraction_
+- [County Fair Picnic Grove](https://www.google.com/maps/search/?api=1&query=37.3923767%2C-121.97059490000001&query_place_id=ChIJ9ww7EMDJj4ARjt2dQUjRiIc) — 34 reviews, `amusement_park` — _nested in bigger same-category attraction_
+- [Water Play Area](https://www.google.com/maps/search/?api=1&query=37.7104275%2C-121.8737401&query_place_id=ChIJP1ac2jjvj4ARvtrevse0Rbk) — 21 reviews, `water_park` — _nested in bigger same-category attraction_
+- [DC Universe](https://www.google.com/maps/search/?api=1&query=38.1376341%2C-122.23167749999999&query_place_id=ChIJTT25ZJYNhYARSnrrMp3WLwk) — 13 reviews, `amusement_center` — _nested in bigger same-category attraction_
+- [Voodoo](https://www.google.com/maps/search/?api=1&query=38.139764199999995%2C-122.23686800000002&query_place_id=ChIJcZH-Ks8MhYARObpf7efXjr0) — 7 reviews, `amusement_center` — _nested in bigger same-category attraction_
+
+<details><summary>All 29 legitimate places</summary>
+
+- [Six Flags Discovery Kingdom](https://www.google.com/maps/search/?api=1&query=38.139074199999996%2C-122.2325352&query_place_id=ChIJZXKKhc4MhYAR5O3pJUMuiUk) — 22053 reviews (4.1★) · `amusement_center`
+- [California's Great America](https://www.google.com/maps/search/?api=1&query=37.3973529%2C-121.9744083&query_place_id=ChIJq7iF28bJj4ARdWUD6DQUr3I) — 16176 reviews (4.4★) · `amusement_park`
+- [Six Flags Hurricane Harbor Concord](https://www.google.com/maps/search/?api=1&query=37.9738464%2C-122.0514098&query_place_id=ChIJ8Z1Z68RmhYARYnEA66topsQ) — 3579 reviews (3.8★) · `water_park`
+- [Boomers Livermore](https://www.google.com/maps/search/?api=1&query=37.699542099999995%2C-121.80995779999999&query_place_id=ChIJ4-Sh-yfmj4ARVTfWj7c-nHA) — 2330 reviews (4.2★) · `amusement_park`
+- [Children's Fairyland](https://www.google.com/maps/search/?api=1&query=37.8092247%2C-122.2598407&query_place_id=ChIJ5S01LEyHj4AROY5z2F3sksU) — 1484 reviews (4.5★) · `amusement_center`
+- [South Bay Shores](https://www.google.com/maps/search/?api=1&query=37.3957386%2C-121.9718967&query_place_id=ChIJVxExp8DJj4ARp1MKDNlJH7c) — 1255 reviews (4.5★) · `water_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.5303161%2C-121.99874179999999&query_place_id=ChIJ9WSW11u_j4AR3ZSDfqLXmZ4) — 1066 reviews (3.9★) · `amusement_park`
+- [Aqua Adventure Water Park](https://www.google.com/maps/search/?api=1&query=37.5431516%2C-121.96057479999999&query_place_id=ChIJCX8rl8TAj4ARxDDimeZ-LBk) — 814 reviews (4.2★) · `water_park`
+- [Pixieland Amusement Park](https://www.google.com/maps/search/?api=1&query=37.989475%2C-122.0219923&query_place_id=ChIJq_JL4D1nhYARqWGv2dGR5IU) — 666 reviews (4.3★) · `amusement_park`
+- [The Dublin Wave Waterpark and Aquatic Center](https://www.google.com/maps/search/?api=1&query=37.710554099999996%2C-121.8753988&query_place_id=ChIJ0_ghQMvuj4ARL3sUUE7dCzQ) — 535 reviews (4.3★) · `water_park`
+- [Urban Air Trampoline and Adventure Park](https://www.google.com/maps/search/?api=1&query=37.9749322%2C-122.0424457&query_place_id=ChIJpbdS8-dnhYARkWU69PfCjSw) — 430 reviews (4.3★) · `amusement_park`
+- [Planet Snoopy](https://www.google.com/maps/search/?api=1&query=37.3949269%2C-121.9718436&query_place_id=ChIJDQuOmsDJj4ARGlVd8LNzcRU) — 339 reviews (4.6★) · `amusement_park`
+- [Antioch Water Park](https://www.google.com/maps/search/?api=1&query=37.9655397%2C-121.7727429&query_place_id=ChIJnZL5WXj4j4ARJkfrMy6Fw4Q) — 270 reviews (4.1★) · `water_park`
+- [California's Great America Passenger Drop Off Area](https://www.google.com/maps/search/?api=1&query=37.4005684%2C-121.9773816&query_place_id=ChIJR81ua8_Jj4ARHSaAk12y10s) — 204 reviews (4.3★) · `amusement_park`
+- [NorCal County Fair](https://www.google.com/maps/search/?api=1&query=37.3935818%2C-121.9719714&query_place_id=ChIJr4QAVsDJj4ARkTENSw4Oywg) — 74 reviews (4.4★) · `amusement_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=38.1317296%2C-122.2166375&query_place_id=ChIJgdTRYu9zhYARLT4MecJCP58) — 61 reviews (4.8★) · `amusement_park`
+- [FUNBOX SAN JOSE](https://www.google.com/maps/search/?api=1&query=37.301665%2C-121.8522536&query_place_id=ChIJa7wBTJIzjoARZH3UjsKCnzA) — 43 reviews (4.3★) · `amusement_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.26824740000001%2C-121.9052631&query_place_id=ChIJNQGdZFs1joARVWiyJUvgKYM) — 38 reviews (4.2★) · `amusement_park`
+- [Great Barrier Reef](https://www.google.com/maps/search/?api=1&query=37.395520399999995%2C-121.9689317&query_place_id=ChIJQyb2cr_Jj4ARWxbXMtKN2Ec) — 36 reviews (4★) · `water_park`
+- [County Fair Picnic Grove](https://www.google.com/maps/search/?api=1&query=37.3923767%2C-121.97059490000001&query_place_id=ChIJ9ww7EMDJj4ARjt2dQUjRiIc) — 34 reviews (3.9★) · `amusement_park`
+- [FB OUTDOOR (PERM CLOSED)](https://www.google.com/maps/search/?api=1&query=37.694714999999995%2C-121.9311699&query_place_id=ChIJ5y0B3yntj4ARGyJsVbiJqVw) — 34 reviews (4.5★) · `amusement_park`
+- [Water Play Area](https://www.google.com/maps/search/?api=1&query=37.7104275%2C-121.8737401&query_place_id=ChIJP1ac2jjvj4ARvtrevse0Rbk) — 21 reviews (4.5★) · `water_park`
+- [ABC Tree Farms & Pick of the Patch Pumpkins ECR](https://www.google.com/maps/search/?api=1&query=37.351489%2C-121.99795999999999&query_place_id=ChIJM_cLzE-1j4ARf11v_UV0D00) — 20 reviews (3.9★) · `water_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.2910215%2C-121.9895361&query_place_id=ChIJrfaOrFXLj4AREJyMvz2XTCY) — 19 reviews (1.7★) · `amusement_park`
+- [Ortega park splash park](https://www.google.com/maps/search/?api=1&query=37.342545%2C-122.02506670000001&query_place_id=ChIJo-HF0ti1j4ARqgvnS7T6fV8) — 18 reviews (4.8★) · `water_park`
+- [DC Universe](https://www.google.com/maps/search/?api=1&query=38.1376341%2C-122.23167749999999&query_place_id=ChIJTT25ZJYNhYARSnrrMp3WLwk) — 13 reviews (4.5★) · `amusement_center`
+- [Voodoo](https://www.google.com/maps/search/?api=1&query=38.139764199999995%2C-122.23686800000002&query_place_id=ChIJcZH-Ks8MhYARObpf7efXjr0) — 7 reviews (4.4★) · `amusement_center`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.927506%2C-122.0178401&query_place_id=ChIJ6Y8pOWhhhYARYVv2_aQbCLA) — 5 reviews (1.8★) · `amusement_park`
+- [Water Light Public Plaza](https://www.google.com/maps/search/?api=1&query=37.899879899999995%2C-122.0626649&query_place_id=ChIJLTCOyGJhhYAR0TobSbRsYSg) — 5 reviews (4.8★) · `water_park`
+
+</details>
+
+
+<details><summary>Dropped: 15 with &lt;5 reviews</summary>
+
+- Churros for Breakfast — 0 reviews
+- Coastal Cruz — 3 reviews
+- Cottonwood Creek — 0 reviews
+- Cottonwood Creek — 0 reviews
+- Cottonwood Creek — 0 reviews
+- Cottonwood Creek — 0 reviews
+- Cottonwood Creek — 0 reviews
+- Cottonwood Creek — 0 reviews
+- Downtown Splash Spray Pad — 0 reviews
+- Future Circus — 4 reviews
+- Hometown Square — 2 reviews
+- Mission Falls — 2 reviews
+- Pup's Pier — 2 reviews
+- Splash Pad — 0 reviews
+- Vortex Splashpad — 2 reviews
+
+</details>
