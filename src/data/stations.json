@@ -5878,7 +5878,7 @@
   ],
   "aka": [
    "Ocean Ave & Jules Ave",
-   "Ocean Ave & Dorado Terrace"
+   "Ocean Ave & Dorado Ter"
   ],
   "service": {
    "wd": {
@@ -6016,46 +6016,6 @@
    "SFO": 14550.3,
    "OAK": 22000.3,
    "SJC": 62712.7
-  },
-  "nearestAirport": "SFO",
-  "headwayMin": {
-   "wd": 12,
-   "we": 12
-  }
- },
- {
-  "name": "Ocean Ave & Westgate Dr",
-  "lat": 37.727248,
-  "lon": -122.466696,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni K"
-  ],
-  "aka": [
-   "Ocean Ave & Westgate Dr",
-   "Ocean Ave & Cerritos Ave"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s154",
-  "nameLength": 23,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 84.8,
-  "airportDist": {
-   "SFO": 14168.8,
-   "OAK": 21752.4,
-   "SJC": 62337.9
   },
   "nearestAirport": "SFO",
   "headwayMin": {
@@ -6304,7 +6264,7 @@
   }
  },
  {
-  "name": "Saint Francis Circle",
+  "name": "West Portal Ave & Sloat Blvd (Saint Francis Cir)",
   "lat": 37.735513,
   "lon": -122.471244,
   "systems": [
@@ -6315,6 +6275,7 @@
    "Muni M"
   ],
   "aka": [
+   "West Portal Ave & Sloat Blvd (Saint Francis Cir)",
    "Saint Francis Circle"
   ],
   "service": {
@@ -6328,7 +6289,7 @@
    }
   },
   "id": "s164",
-  "nameLength": 20,
+  "nameLength": 48,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 86.0,
