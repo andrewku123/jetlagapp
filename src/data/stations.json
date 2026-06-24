@@ -4694,9 +4694,9 @@
   }
  },
  {
-  "name": "Church St & Day St",
-  "lat": 37.742764,
-  "lon": -122.42655,
+  "name": "Church St & 30th St",
+  "lat": 37.74219,
+  "lon": -122.42642,
   "systems": [
    "Muni"
   ],
@@ -4704,10 +4704,9 @@
    "Muni J"
   ],
   "aka": [
-   "30th Street & Church Street",
-   "Church St & Day St",
-   "Church Street & 29th Street",
+   "Church St & 30th St",
    "Church Street & 30th Street",
+   "Church St & Day St",
    "Church Street & Day Street"
   ],
   "service": {
@@ -4721,14 +4720,14 @@
    }
   },
   "id": "s103",
-  "nameLength": 18,
+  "nameLength": 19,
   "county": "San Francisco",
   "city": "San Francisco city",
-  "elevation": 40.4,
+  "elevation": 42.9,
   "airportDist": {
-   "SFO": 14310.4,
-   "OAK": 18390.9,
-   "SJC": 60867.8
+   "SFO": 14245.9,
+   "OAK": 18370.6,
+   "SJC": 60815.5
   },
   "nearestAirport": "SFO",
   "headwayMin": {
@@ -10488,6 +10487,46 @@
    "SFO": 15883.2,
    "OAK": 18723.9,
    "SJC": 62023.1
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
+  }
+ },
+ {
+  "name": "Church St & 29th St",
+  "lat": 37.74359,
+  "lon": -122.42659,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Church St & 29th St",
+   "Church Street & 29th Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s261",
+  "nameLength": 19,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 39.2,
+  "airportDist": {
+   "SFO": 14399.6,
+   "OAK": 18407.7,
+   "SJC": 60933.9
   },
   "nearestAirport": "SFO",
   "headwayMin": {
