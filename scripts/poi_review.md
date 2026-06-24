@@ -1,0 +1,3575 @@
+# Full-area POI dataset — icon + >=5-review rule
+
+Coverage = the 5-county play-area polygon. Coordinates are the Google pin.
+
+| Category | Raw in play | >=5 reviews | nested removed | **final** |
+|---|---|---|---|---|
+| Museums | 302 | 214 | 0 | **214** |
+| Libraries | 717 | 237 | 0 | **237** |
+| Movie Theaters | 96 | 85 | 0 | **85** |
+| Hospitals | 1009 | 254 | 0 | **254** |
+| Zoos | 30 | 13 | 6 | **7** |
+| Aquariums | 10 | 3 | 0 | **3** |
+| Amusement Parks | 44 | 27 | 8 | **19** |
+| Parks | 4429 | 2554 | 0 | **2554** |
+| Golf Courses | 99 | 77 | 0 | **77** |
+
+
+
+## Museums — 214 legitimate (tentacle 1mi; matching/measuring)
+
+
+<details><summary>All 214 kept</summary>
+
+- [San Francisco Museum of Modern Art](https://www.google.com/maps/search/?api=1&query=37.7857182%2C-122.40105080000001&query_place_id=ChIJ53I1Yn2AhYAR_Vl1vNygfMg) — 16494 reviews (4.6★) · `art_museum`
+- [Winchester Mystery House](https://www.google.com/maps/search/?api=1&query=37.3183318%2C-121.95104909999999&query_place_id=ChIJjzp2WN7Kj4ARZu9lBAGmS2Q) — 16081 reviews (4.5★) · `museum`
+- [de Young Museum](https://www.google.com/maps/search/?api=1&query=37.771468999999996%2C-122.46867549999997&query_place_id=ChIJI7NivpmAhYARSuRPlbbn_2w) — 9655 reviews (4.6★) · `art_museum`
+- [Exploratorium](https://www.google.com/maps/search/?api=1&query=37.8016649%2C-122.397348&query_place_id=ChIJk2vl5NSGhYARwPGvs_ubIws) — 8529 reviews (4.7★) · `museum`
+- [Musée Mécanique](https://www.google.com/maps/search/?api=1&query=37.8093037%2C-122.4159684&query_place_id=ChIJCQAzVOKAhYARuOpiALmomu0) — 8279 reviews (4.7★) · `museum`
+- [Computer History Museum](https://www.google.com/maps/search/?api=1&query=37.4142744%2C-122.077409&query_place_id=ChIJm7NJkla3j4AR8vR-HWRxgOo) — 7620 reviews (4.7★) · `history_museum`
+- [Cable Car Museum](https://www.google.com/maps/search/?api=1&query=37.7946366%2C-122.41150739999999&query_place_id=ChIJX1oMlvKAhYARNZquwetszd8) — 6982 reviews (4.7★) · `museum`
+- [Filoli Historic House & World-Class Garden](https://www.google.com/maps/search/?api=1&query=37.4697361%2C-122.31062469999999&query_place_id=ChIJ1RXyM62hj4ARp0jUvcR7yzw) — 6588 reviews (4.7★) · `museum`
+- [California Academy of Sciences](https://www.google.com/maps/search/?api=1&query=37.7698646%2C-122.4660947&query_place_id=ChIJIUT7rEOHhYARucp3wM-HhBs) — 6088 reviews (4.6★) · `museum`
+- [Legion of Honor](https://www.google.com/maps/search/?api=1&query=37.784466099999996%2C-122.50084190000001&query_place_id=ChIJabri1qyHhYARLE0Vd4zY_7k) — 5120 reviews (4.8★) · `art_museum`
+- [Asian Art Museum](https://www.google.com/maps/search/?api=1&query=37.7802772%2C-122.41616049999999&query_place_id=ChIJkQQVTZqAhYARHxPt2iJkm1Q) — 4302 reviews (4.6★) · `art_museum`
+- [The Walt Disney Family Museum](https://www.google.com/maps/search/?api=1&query=37.801378299999996%2C-122.45864309999999&query_place_id=ChIJ5f7ZKtiGhYAR9WaYFS6bH1U) — 4149 reviews (4.6★) · `museum`
+- [The Tech Interactive](https://www.google.com/maps/search/?api=1&query=37.3314903%2C-121.8902357&query_place_id=ChIJR8HI1brMj4ARBnFq5rlvpx4) — 4112 reviews (4.4★) · `museum`
+- [Children's Discovery Museum of San Jose](https://www.google.com/maps/search/?api=1&query=37.3269922%2C-121.8920824&query_place_id=ChIJHyD5sa_Mj4ARURwnBwmTwTU) — 3888 reviews (4.6★) · `museum`
+- [Rosicrucian Egyptian Museum](https://www.google.com/maps/search/?api=1&query=37.333486%2C-121.922884&query_place_id=ChIJ1UbraGvLj4ARkgVRgqtwO4E) — 3692 reviews (4.6★) · `museum`
+- [Oakland Museum of California](https://www.google.com/maps/search/?api=1&query=37.7987496%2C-122.2633654&query_place_id=ChIJD9KbIzWHj4AR1Mp5x7ZVBWs) — 3673 reviews (4.7★) · `museum`
+- [USS Hornet - Sea, Air and Space Museum](https://www.google.com/maps/search/?api=1&query=37.7726482%2C-122.30253219999999&query_place_id=ChIJQWTfqv2Aj4ARLl_3_ILxITE) — 3250 reviews (4.8★) · `history_museum`
+- [Intel Museum](https://www.google.com/maps/search/?api=1&query=37.387853199999995%2C-121.96350259999998&query_place_id=ChIJi0P5bJHJj4ARlze0BLmnRHY) — 3146 reviews (4.5★) · `museum`
+- [Cantor Arts Center at Stanford University](https://www.google.com/maps/search/?api=1&query=37.4329672%2C-122.17052659999999&query_place_id=ChIJOfekbSy7j4ARlnP73s9MMBw) — 2478 reviews (4.8★) · `museum`
+- [USS Pampanito Museum and Memorial](https://www.google.com/maps/search/?api=1&query=37.8099899%2C-122.41643810000001&query_place_id=ChIJ60RjV-KAhYARZTyNwVT1AWo) — 2443 reviews (4.6★) · `museum`
+- [CuriOdyssey](https://www.google.com/maps/search/?api=1&query=37.5907%2C-122.3196&query_place_id=ChIJiQpTUcidj4ARTGD_teiggkI) — 2068 reviews (4.6★) · `museum`
+- [Hiller Aviation Museum](https://www.google.com/maps/search/?api=1&query=37.512718%2C-122.25300899999999&query_place_id=ChIJ77MvtQiij4ARUN77J8sg2Zk) — 2061 reviews (4.6★) · `museum`
+- [Palo Alto Junior Museum and Zoo](https://www.google.com/maps/search/?api=1&query=37.4436634%2C-122.14462549999999&query_place_id=ChIJ59OJRxq7j4ARx5SvEGmwmJg) — 1693 reviews (4.7★) · `museum`
+- [San Jose Museum of Art](https://www.google.com/maps/search/?api=1&query=37.3337262%2C-121.88992449999999&query_place_id=ChIJVx91TrvMj4ARzWqeIcRwuXs) — 1501 reviews (4.2★) · `art_museum`
+- [SS Jeremiah O'Brien](https://www.google.com/maps/search/?api=1&query=37.8086539%2C-122.40687439999999&query_place_id=ChIJR3tgUOKAhYARqS7NZ7xDM44) — 1491 reviews (4.7★) · `museum`
+- [Lindsay Wildlife Experience](https://www.google.com/maps/search/?api=1&query=37.9237909%2C-122.0754247&query_place_id=ChIJlxXuGHthhYAR3CnS6Chu_Hk) — 1410 reviews (4.6★) · `museum`
+- [Blackhawk Museum](https://www.google.com/maps/search/?api=1&query=37.8013522%2C-121.91718719999999&query_place_id=ChIJZXnooamMj4AR50a24b0fbFo) — 1166 reviews (4.8★) · `museum`
+- [Rodin Sculpture Garden](https://www.google.com/maps/search/?api=1&query=37.4322972%2C-122.1708556&query_place_id=ChIJ74QFdyy7j4ARyfQrfMs4jlk) — 1084 reviews (4.8★) · `art_museum`
+- [Pacific Pinball Museum](https://www.google.com/maps/search/?api=1&query=37.773797699999996%2C-122.2766427&query_place_id=ChIJEX6JHSaBj4ARLhJJOBNQzQE) — 1021 reviews (4.8★) · `museum`
+- [Berkeley Art Museum and Pacific Film Archive](https://www.google.com/maps/search/?api=1&query=37.870735599999996%2C-122.26648409999999&query_place_id=ChIJB8EriZ1-hYAReKDxrhGFK-o) — 911 reviews (4.5★) · `art_museum`
+- [Mount Diablo Summit Visitor Center](https://www.google.com/maps/search/?api=1&query=37.8817969%2C-121.9142302&query_place_id=ChIJKd3yK3xfhYARA1PcSEcmbrk) — 876 reviews (4.7★) · `museum`
+- [Niles Canyon Railway](https://www.google.com/maps/search/?api=1&query=37.594239699999996%2C-121.88898850000001&query_place_id=ChIJY5haEI_Bj4ARPLhrOPHCmsE) — 731 reviews (4.7★) · `museum`
+- [The Contemporary Jewish Museum](https://www.google.com/maps/search/?api=1&query=37.786002599999996%2C-122.40367200000001&query_place_id=ChIJQ4ofxYeAhYARnLQjgdsj76k) — 721 reviews (4.2★) · `art_museum`
+- [Children's Creativity Museum](https://www.google.com/maps/search/?api=1&query=37.7833445%2C-122.4023038&query_place_id=ChIJt1SMQ4eAhYAR-8dkWSoHKZI) — 712 reviews (4.5★) · `museum`
+- [Museum of 3D Illusions](https://www.google.com/maps/search/?api=1&query=37.808447799999996%2C-122.41321610000001&query_place_id=ChIJgZJSZ1GBhYARfsSZ-RTNCwo) — 652 reviews (4.4★) · `museum`
+- [Moffett Field Museum](https://www.google.com/maps/search/?api=1&query=37.411155799999996%2C-122.0542111&query_place_id=ChIJAQAAANWwj4ARwi4IwGaw3pM) — 645 reviews (4.6★) · `museum`
+- [Randall Museum](https://www.google.com/maps/search/?api=1&query=37.764426%2C-122.43831920000001&query_place_id=ChIJ3dPu2zl-j4ARe9aRil_Yrmk) — 566 reviews (4.7★) · `museum`
+- [The Lawrence Hall of Science](https://www.google.com/maps/search/?api=1&query=37.879205000000006%2C-122.246517&query_place_id=ChIJVVbd7z58hYARmsbuevROjI0) — 564 reviews (4.6★) · `museum`
+- [Chabot Space & Science Center](https://www.google.com/maps/search/?api=1&query=37.8187474%2C-122.18072169999999&query_place_id=ChIJMyjumCuGj4ARA0zS-YtL_tU) — 561 reviews (4.5★) · `museum`
+- [Museum of the African Diaspora](https://www.google.com/maps/search/?api=1&query=37.786376%2C-122.40138710000001&query_place_id=ChIJrV7u94eAhYARVQN3mR8cQGM) — 519 reviews (4.5★) · `art_museum`
+- [GLBT Historical Society Museum](https://www.google.com/maps/search/?api=1&query=37.760714899999996%2C-122.43563569999999&query_place_id=ChIJiaELzAR-j4ARq0FRvpCYv1Q) — 516 reviews (4.6★) · `museum`
+- [Oakland Aviation Museum](https://www.google.com/maps/search/?api=1&query=37.733178099999996%2C-122.21264470000001&query_place_id=ChIJ6ZC_dLGFj4ARMmRNGVuy3As) — 465 reviews (4.6★) · `museum`
+- [San Mateo County History Museum](https://www.google.com/maps/search/?api=1&query=37.487035899999995%2C-122.22968030000001&query_place_id=ChIJ1QLjxlKij4ARAwbv3Pf7wn8) — 442 reviews (4.6★) · `history_museum`
+- [International Art Museum of America](https://www.google.com/maps/search/?api=1&query=37.781380299999995%2C-122.4106676&query_place_id=ChIJyQNK-4SAhYARO2DZaJleWRc) — 434 reviews (4.5★) · `art_museum`
+- [Cartoon Art Museum](https://www.google.com/maps/search/?api=1&query=37.8063311%2C-122.42179290000001&query_place_id=ChIJWwSkVn2AhYARUQfWE_EJ9ZQ) — 421 reviews (4.2★) · `art_museum`
+- [San Francisco Railway Museum](https://www.google.com/maps/search/?api=1&query=37.7938256%2C-122.3935533&query_place_id=ChIJ_f7xMWSAhYARThFhbatwJak) — 413 reviews (4.4★) · `museum`
+- [Presidio Officers' Club](https://www.google.com/maps/search/?api=1&query=37.7975737%2C-122.45888250000002&query_place_id=ChIJH1we8CeHhYARDYzY3dZ-21k) — 409 reviews (4.7★) · `museum`
+- [Triton Museum of Art](https://www.google.com/maps/search/?api=1&query=37.3561353%2C-121.95490950000001&query_place_id=ChIJGWxtr0nKj4ARGHKbY2HbPUw) — 407 reviews (4.5★) · `art_museum`
+- [History Park (operated by History San Jose)](https://www.google.com/maps/search/?api=1&query=37.320169299999996%2C-121.8586549&query_place_id=ChIJj67qoGUzjoARpofMbag2H7o) — 389 reviews (4.7★) · `museum`
+- [Dublin Historic Park and Museums](https://www.google.com/maps/search/?api=1&query=37.7006096%2C-121.93854299999998&query_place_id=ChIJTRLdHGXsj4ARrLyh0ASH8_0) — 319 reviews (4.5★) · `museum`
+- [Museum of Craft and Design](https://www.google.com/maps/search/?api=1&query=37.7568398%2C-122.3877893&query_place_id=ChIJn8w1go6AhYARdfFGEuY4mIc) — 305 reviews (4.1★) · `art_museum`
+- [Niles Essanay Silent Film Museum](https://www.google.com/maps/search/?api=1&query=37.5769082%2C-121.98021369999998&query_place_id=ChIJZXJ46W3Aj4AR5cVsJNpaDAA) — 295 reviews (4.7★) · `museum`
+- [The Beat Museum](https://www.google.com/maps/search/?api=1&query=37.7980878%2C-122.40619509999999&query_place_id=ChIJY6qvZfSAhYARE-zWxUt9vxE) — 285 reviews (4.5★) · `museum`
+- [Museum of Art and Digital Entertainment - (MADE)](https://www.google.com/maps/search/?api=1&query=37.8019902%2C-122.2743559&query_place_id=ChIJfTK51q-Aj4ARI5bIG6D0BKQ) — 273 reviews (4.8★) · `museum`
+- [Maritime Museum](https://www.google.com/maps/search/?api=1&query=37.8063433%2C-122.42389310000002&query_place_id=ChIJ7bPtqOGAhYAR0PehdroyYdw) — 261 reviews (4.5★) · `museum`
+- [Los Altos History Museum](https://www.google.com/maps/search/?api=1&query=37.3808028%2C-122.11199719999999&query_place_id=ChIJy5mL7u6wj4ARzGdVAc90mqE) — 257 reviews (4.6★) · `museum`
+- [Tenderloin Museum](https://www.google.com/maps/search/?api=1&query=37.7838761%2C-122.4141613&query_place_id=ChIJG_lNbZCAhYARgMivyuFP_yQ) — 257 reviews (4.5★) · `museum`
+- [Japanese American Museum of San Jose](https://www.google.com/maps/search/?api=1&query=37.347495599999995%2C-121.89360370000001&query_place_id=ChIJrS08KpvMj4ARG-szUj-5o9s) — 242 reviews (4.8★) · `museum`
+- [Chinese Historical Society of America Museum](https://www.google.com/maps/search/?api=1&query=37.793836299999995%2C-122.40878699999998&query_place_id=ChIJQS4IxoyAhYARBylg5_xO8TE) — 237 reviews (4.5★) · `museum`
+- [San Jose Museum of Quilts & Textiles](https://www.google.com/maps/search/?api=1&query=37.3281515%2C-121.88435539999999&query_place_id=ChIJtTFOzrbMj4ARqza0OELfESI) — 229 reviews (4.5★) · `art_museum`
+- [Papua New Guinea Sculpture Garden (PAPU)](https://www.google.com/maps/search/?api=1&query=37.4248288%2C-122.1736717&query_place_id=ChIJ3Wk4O9W6j4AR-QT7imrUuY0) — 226 reviews (4.7★) · `art_museum`
+- [Golden State Model Railroad Museum](https://www.google.com/maps/search/?api=1&query=37.9152949%2C-122.38349559999999&query_place_id=ChIJW8rxBeqChYARWfqbXOI2lAk) — 203 reviews (4.7★) · `museum`
+- [The Gregangelo Museum](https://www.google.com/maps/search/?api=1&query=37.732698%2C-122.468418&query_place_id=ChIJq6qqqsZ9j4ARlcJgnPlyHL0) — 200 reviews (4.8★) · `art_museum`
+- [South Bay Historical Railroad Society](https://www.google.com/maps/search/?api=1&query=37.353108299999995%2C-121.9362194&query_place_id=ChIJg9cO86_Lj4ARCJ7sBmMkLtU) — 198 reviews (4.8★) · `museum`
+- [SFO Museum Louis A. Turpen Aviation Museum and Library](https://www.google.com/maps/search/?api=1&query=37.615014099999996%2C-122.388899&query_place_id=ChIJsUM6Mpd3j4ARMQf5LGgx9fw) — 195 reviews (4.4★) · `museum`
+- [New Almaden Quicksilver Mining Museum](https://www.google.com/maps/search/?api=1&query=37.1784183%2C-121.81947849999999&query_place_id=ChIJb0FTNK46joAR2CdhOHnN2-g) — 192 reviews (4.7★) · `museum`
+- [Lucasfilm Lobby](https://www.google.com/maps/search/?api=1&query=37.798921%2C-122.45073529999999&query_place_id=ChIJWw1ZRiqHhYARMvzK-KRKl9E) — 188 reviews (4.6★) · `art_museum`
+- [Haas-Lilienthal House](https://www.google.com/maps/search/?api=1&query=37.7933576%2C-122.4247784&query_place_id=ChIJDwAg6cGAhYARwU2X5hTMK_s) — 187 reviews (4.6★) · `museum`
+- [The Foster Museum](https://www.google.com/maps/search/?api=1&query=37.4235876%2C-122.0996787&query_place_id=ChIJ3Q3UaxG6j4ARXxHdJBjn1tQ) — 180 reviews (4.8★) · `art_museum`
+- [Hayward Area Historical Society](https://www.google.com/maps/search/?api=1&query=37.676826%2C-122.0826719&query_place_id=ChIJdaRK7tiTj4ARadPgI6vryjM) — 178 reviews (4.6★) · `history_museum`
+- [The Museum of American Heritage](https://www.google.com/maps/search/?api=1&query=37.4445267%2C-122.15747599999997&query_place_id=ChIJcy4OdTy7j4AReY5i-WOiVkc) — 171 reviews (4.7★) · `museum`
+- [Red Oak Victory](https://www.google.com/maps/search/?api=1&query=37.905663%2C-122.36568319999999&query_place_id=ChIJM5ZqjJaChYAR6fZye1y4fy8) — 168 reviews (4.7★) · `museum`
+- [History San Jose](https://www.google.com/maps/search/?api=1&query=37.3192403%2C-121.85762659999999&query_place_id=ChIJafwXwCgzjoARwzNzqjE6mkY) — 165 reviews (4.5★) · `history_museum`
+- [Lacis Museum of Lace and Textiles](https://www.google.com/maps/search/?api=1&query=37.854949399999995%2C-122.26951269999999&query_place_id=ChIJi_jJRn5-hYARJLmnH4TDgb0) — 153 reviews (4.9★) · `museum`
+- [Visitor Gallery](https://www.google.com/maps/search/?api=1&query=37.3430167%2C-121.63718709999999&query_place_id=ChIJj4dng3EqjoARcQj0ZrPEyYg) — 149 reviews (4.8★) · `museum`
+- [Piazza Piccola Italia](https://www.google.com/maps/search/?api=1&query=37.3358227%2C-121.89877829999999&query_place_id=ChIJMQ2_0qHMj4ARwoForAC-llI) — 140 reviews (4.3★) · `museum`
+- [Sunnyvale Heritage Park Museum](https://www.google.com/maps/search/?api=1&query=37.356472%2C-122.0255147&query_place_id=ChIJE0UC3ne2j4ARQ7X0LtfATDU) — 132 reviews (4.6★) · `history_museum`
+- [The American Bookbinders Museum](https://www.google.com/maps/search/?api=1&query=37.7814153%2C-122.4028766&query_place_id=ChIJ6yvxeCV-j4AR0CoeO_roGfs) — 132 reviews (4.6★) · `museum`
+- [Anderson Collection at Stanford University](https://www.google.com/maps/search/?api=1&query=37.4336382%2C-122.1705781&query_place_id=ChIJqWfDDCy7j4ARgIS8gwuKMV4) — 113 reviews (4.8★) · `art_museum`
+- [Niles Depot Museum](https://www.google.com/maps/search/?api=1&query=37.5774571%2C-121.97833820000001&query_place_id=ChIJqUFNwHLAj4ARk_U3nqzPh8g) — 113 reviews (4.6★) · `museum`
+- [Wings of History Air Museum](https://www.google.com/maps/search/?api=1&query=37.0783357%2C-121.6013437&query_place_id=ChIJH3mpcmrgkYARUiRHqJhlx_A) — 113 reviews (4.6★) · `museum`
+- [Shadelands Ranch Museum](https://www.google.com/maps/search/?api=1&query=37.9258457%2C-122.02019549999999&query_place_id=ChIJM1ZJZ1xghYARHQsde-HsksM) — 112 reviews (4.6★) · `museum`
+- [Antique Vibrator Museum](https://www.google.com/maps/search/?api=1&query=37.7918775%2C-122.42083379999998&query_place_id=ChIJheOWIuuAhYARowpyvdOYGS0) — 110 reviews (4.6★) · `museum`
+- [Alameda Naval Air Museum](https://www.google.com/maps/search/?api=1&query=37.7814206%2C-122.29917&query_place_id=ChIJFUnRuO-Aj4ARLLeKI3ybVEc) — 107 reviews (4.5★) · `museum`
+- [Museum on Main](https://www.google.com/maps/search/?api=1&query=37.6617652%2C-121.87562750000001&query_place_id=ChIJ-Wr3PKPpj4ARg92WRpSafXg) — 107 reviews (4.5★) · `museum`
+- [The 49ers Museum](https://www.google.com/maps/search/?api=1&query=37.4041654%2C-121.9709552&query_place_id=ChIJUQECmPfJj4AROgbZ06JAZFQ) — 107 reviews (4.3★) · `museum`
+- [Treasure Island Museum](https://www.google.com/maps/search/?api=1&query=37.8171193%2C-122.37068459999999&query_place_id=ChIJdzvE8zCAhYARFvbhj2smGd0) — 107 reviews (4.1★) · `history_museum`
+- [African American Museum and Library at Oakland](https://www.google.com/maps/search/?api=1&query=37.8061667%2C-122.27635279999998&query_place_id=ChIJ6yRLAbCAj4ARMG4GjbyYjQg) — 106 reviews (4.6★) · `museum`
+- [Ainsley House](https://www.google.com/maps/search/?api=1&query=37.2887365%2C-121.94359509999998&query_place_id=ChIJnxGdxt40joARCw6vT6cVsYY) — 102 reviews (4.7★) · `history_museum`
+- [Institute of Contemporary Art San Jose](https://www.google.com/maps/search/?api=1&query=37.327841%2C-121.88392100000002&query_place_id=ChIJ3U_ft7bMj4ARDcNsTlh79zo) — 96 reviews (4.5★) · `art_museum`
+- [Osher Rainforest at the California Academy of Sciences](https://www.google.com/maps/search/?api=1&query=37.7696903%2C-122.46641229999999&query_place_id=ChIJc31tqUOHhYARE-nCDOi4clw) — 92 reviews (4.8★) · `museum`
+- [Antioch Historical Society Museum](https://www.google.com/maps/search/?api=1&query=38.0163716%2C-121.82661999999999&query_place_id=ChIJR6oPk-5ZhYARI-zvIzIAcs8) — 91 reviews (4.7★) · `museum`
+- [ICA SF](https://www.google.com/maps/search/?api=1&query=37.79524240000001%2C-122.40308109999998&query_place_id=ChIJzcTTQW9_j4ARoUrZADzZOzM) — 89 reviews (4.8★) · `museum`
+- [Aftel Archive of Curious Scents](https://www.google.com/maps/search/?api=1&query=37.879433899999995%2C-122.26844039999999&query_place_id=ChIJffjTJqF-hYARCQd9uRkMYiE) — 86 reviews (4.9★) · `museum`
+- [The Museum @ The Mural House](https://www.google.com/maps/search/?api=1&query=37.8071121%2C-122.2945623&query_place_id=ChIJ3zgSyqiBj4ARtY82ZQVFCWY) — 84 reviews (4.9★) · `museum`
+- [New Museum Los Gatos (NUMU)](https://www.google.com/maps/search/?api=1&query=37.2207187%2C-121.97927089999999&query_place_id=ChIJHxmvm-Q1joARhNLInbf5Khw) — 82 reviews (4.5★) · `museum`
+- [Pacific Bus Museum](https://www.google.com/maps/search/?api=1&query=37.56672830000001%2C-121.9839175&query_place_id=ChIJGZEhpXvAj4ARId0Q1am15ys) — 82 reviews (4.5★) · `museum`
+- [Sam's Castle](https://www.google.com/maps/search/?api=1&query=37.6348273%2C-122.488388&query_place_id=ChIJ-QMB71R6j4ARXxK5GCBdI8I) — 82 reviews (4.3★) · `museum`
+- [Black Panther Party Museum](https://www.google.com/maps/search/?api=1&query=37.8048283%2C-122.27111239999999&query_place_id=ChIJ5SN_GQCBj4ARxGOP091Z9UI) — 81 reviews (4.9★) · `museum`
+- [Hyde St. Pier Historic Ships](https://www.google.com/maps/search/?api=1&query=37.809057599999996%2C-122.42125650000001&query_place_id=ChIJeQBULeCAhYAR7iBgEb0gMPE) — 81 reviews (4.6★) · `museum`
+- [Camron-Stanford House](https://www.google.com/maps/search/?api=1&query=37.801460299999995%2C-122.26227920000001&query_place_id=ChIJX8jOfUqHj4AReW4snLhyAK0) — 78 reviews (4.5★) · `museum`
+- [Museum of Children's Art [MOCHA]](https://www.google.com/maps/search/?api=1&query=37.8035674%2C-122.2723613&query_place_id=ChIJyVbt27GAj4ARBnLCZhTLscI) — 78 reviews (4.5★) · `museum`
+- [California Historical Radio Society](https://www.google.com/maps/search/?api=1&query=37.766115%2C-122.248133&query_place_id=ChIJ5fn8Nb-Gj4ARKifz3Vgxi6I) — 76 reviews (4.8★) · `history_museum`
+- [Children's Natural History Museum](https://www.google.com/maps/search/?api=1&query=37.552022199999996%2C-121.99645&query_place_id=ChIJ8eqdJ3y_j4ARjRFZ7uDZGF4) — 73 reviews (4.7★) · `museum`
+- [Museum of the San Ramon Valley](https://www.google.com/maps/search/?api=1&query=37.820862399999996%2C-122.00056509999999&query_place_id=ChIJD6YZDqmMj4ARNnnVENGYhuo) — 71 reviews (4.4★) · `museum`
+- [McElroy Octagon House](https://www.google.com/maps/search/?api=1&query=37.7977932%2C-122.42744769999999&query_place_id=ChIJqZL4LsOAhYARelXz1lpKDTQ) — 70 reviews (4.5★) · `museum`
+- [Truhlsen-Marmor Museum of the Eye](https://www.google.com/maps/search/?api=1&query=37.806586599999996%2C-122.41999450000002&query_place_id=ChIJQZeIFuGAhYARMhMjtO1mHd0) — 70 reviews (4.8★) · `museum`
+- [Academy of Art University Automobile Museum](https://www.google.com/maps/search/?api=1&query=37.792798%2C-122.423476&query_place_id=ChIJEyrOeuqAhYARTVmNd_tGbn0) — 69 reviews (4.5★) · `museum`
+- [De Saisset Museum](https://www.google.com/maps/search/?api=1&query=37.349953899999996%2C-121.9405869&query_place_id=ChIJUVuaM6zLj4ARoQSjNyb1ebQ) — 69 reviews (4.4★) · `art_museum`
+- [SFO Museum Gallery Harvey Milk Terminal 1](https://www.google.com/maps/search/?api=1&query=37.6145318%2C-122.3853714&query_place_id=ChIJMVLxukF3j4ARSPlx4pF6uwE) — 69 reviews (4.7★) · `museum`
+- [Saint Mary's College Museum of Art](https://www.google.com/maps/search/?api=1&query=37.840741699999995%2C-122.10811400000001&query_place_id=ChIJq9ZkDL2Jj4ARCFdY8upQEI8) — 69 reviews (4.6★) · `art_museum`
+- [Discovery Center LLNL](https://www.google.com/maps/search/?api=1&query=37.6863861%2C-121.6975734&query_place_id=ChIJx0ltbx_mj4ARq-dq4ynutDg) — 65 reviews (4.6★) · `museum`
+- [Niles Canyon Railway - Fremont/Niles Station Entrance](https://www.google.com/maps/search/?api=1&query=37.5787615%2C-121.9826791&query_place_id=ChIJsypilXLAj4ARfoSlGa7a1R0) — 64 reviews (4.7★) · `museum`
+- [Federal Court](https://www.google.com/maps/search/?api=1&query=37.332203799999995%2C-121.8869098&query_place_id=ChIJzZrZWrrMj4ARtVgqrnZDZuA) — 63 reviews (4.2★) · `museum`
+- [Pittsburg Historical Museum](https://www.google.com/maps/search/?api=1&query=38.031562199999996%2C-121.88361869999999&query_place_id=ChIJn96DuJRbhYARyv8xeZCh2As) — 55 reviews (4.6★) · `museum`
+- [Pardee Home Museum](https://www.google.com/maps/search/?api=1&query=37.8047477%2C-122.27789229999998&query_place_id=ChIJM46_krqAj4ARRSedqCrOgT0) — 53 reviews (4.8★) · `museum`
+- [The Cobra Experience - Museum & Event Space](https://www.google.com/maps/search/?api=1&query=37.9981976%2C-122.1164507&query_place_id=ChIJY4PV35dlhYARf7kq33EIyOI) — 53 reviews (4.8★) · `museum`
+- [WWII Pacific War Memorial Hall](https://www.google.com/maps/search/?api=1&query=37.793210099999996%2C-122.4063607&query_place_id=ChIJDZ14eouAhYARQSdz_CDre44) — 52 reviews (4.8★) · `museum`
+- [Stanford Mausoleum](https://www.google.com/maps/search/?api=1&query=37.4365275%2C-122.16993819999999&query_place_id=ChIJ1wFl7i27j4ARNiHRlLttzdg) — 51 reviews (4.7★) · `museum`
+- [Guardians of the City Museum & Safety Learning Center](https://www.google.com/maps/search/?api=1&query=37.785631699999996%2C-122.4468123&query_place_id=ChIJFe6ALcuAhYARzveAYJBhgwQ) — 49 reviews (4.8★) · `museum`
+- [Three Gems by James Turrell](https://www.google.com/maps/search/?api=1&query=37.7709141%2C-122.4697028&query_place_id=ChIJJ7sLAGqHhYARWReEYuSI1AI) — 49 reviews (4.4★) · `museum`
+- [East Contra Costa Historical Society](https://www.google.com/maps/search/?api=1&query=37.9522031%2C-121.6763135&query_place_id=ChIJueK7-Pj-j4ARevw6QfHBww4) — 48 reviews (4.8★) · `museum`
+- [Campbell Historical Museum](https://www.google.com/maps/search/?api=1&query=37.2877449%2C-121.94390449999997&query_place_id=ChIJrX3s7940joARk_4y4We6zys) — 47 reviews (4.4★) · `museum`
+- [Tilden Nature Area Environmental Education Center](https://www.google.com/maps/search/?api=1&query=37.9098854%2C-122.2652961&query_place_id=ChIJw6EQAOJ7hYARyEu-37j-KUg) — 47 reviews (4.8★) · `museum`
+- [Veterans Memorial Building of San Ramon Valley](https://www.google.com/maps/search/?api=1&query=37.821618199999996%2C-121.99952889999999&query_place_id=ChIJ_7FInKmMj4ARsMBl0qHoVmE) — 43 reviews (4.8★) · `museum`
+- [Martin Lawrence Galleries](https://www.google.com/maps/search/?api=1&query=37.7873917%2C-122.40940499999998&query_place_id=ChIJfa30_I6AhYARX_6xMsL4QdE) — 42 reviews (4.5★) · `art_museum`
+- [Mills College Art Museum](https://www.google.com/maps/search/?api=1&query=37.782934%2C-122.18189149999999&query_place_id=ChIJ2XBRzRuGj4ARLZXTJxUI6Vo) — 42 reviews (4.7★) · `art_museum`
+- [Richmond Museum of History & Culture](https://www.google.com/maps/search/?api=1&query=37.936541999999996%2C-122.36530700000002&query_place_id=ChIJbzUV2q2ChYARsBbdOsxr8fo) — 39 reviews (4.5★) · `museum`
+- [Viet Museum](https://www.google.com/maps/search/?api=1&query=37.320297499999995%2C-121.8600105&query_place_id=ChIJPf3SkygzjoARe7JZJQFuAhI) — 39 reviews (4.2★) · `museum`
+- [Washington Township Museum of Local History](https://www.google.com/maps/search/?api=1&query=37.5300285%2C-121.92028130000001&query_place_id=ChIJz3GqornGj4ARQX-4qzWcgOw) — 39 reviews (4.7★) · `museum`
+- [Pacifica Coastside Museum at the Little Brown Church](https://www.google.com/maps/search/?api=1&query=37.6347885%2C-122.4904479&query_place_id=ChIJ84nYPVV6j4ARwm4qrOB2tfs) — 38 reviews (4.5★) · `museum`
+- [Cohen Bray House](https://www.google.com/maps/search/?api=1&query=37.7797948%2C-122.2281414&query_place_id=ChIJl0SyDfGGj4AR2HCv3GVmxdk) — 37 reviews (4.5★) · `museum`
+- [San Francisco Historical Society](https://www.google.com/maps/search/?api=1&query=37.794208%2C-122.40364740000001&query_place_id=ChIJO8s-hIaAhYARa1YTyBrckZY) — 37 reviews (4.2★) · `museum`
+- [Graffiti MUSEUM](https://www.google.com/maps/search/?api=1&query=37.763040499999995%2C-122.420227&query_place_id=ChIJLWhrJCN-j4ARCXa7QdqT38M) — 36 reviews (4.3★) · `museum`
+- [Berkeley Natural History Museums](https://www.google.com/maps/search/?api=1&query=37.8716124%2C-122.26215689999998&query_place_id=ChIJ_THm3SZ8hYARIVwtyJiq2V0) — 35 reviews (3.9★) · `museum`
+- [Letterform Archive](https://www.google.com/maps/search/?api=1&query=37.7601343%2C-122.38826089999999&query_place_id=ChIJ-wTvDcl_j4AR6aTm9O_DUII) — 35 reviews (4★) · `art_museum`
+- [The Lace Museum](https://www.google.com/maps/search/?api=1&query=37.494751699999995%2C-121.9255503&query_place_id=ChIJn1yLyma2j4ARJwBPAHBASEA) — 34 reviews (4.6★) · `museum`
+- [History Of Golden Gate Bridge](https://www.google.com/maps/search/?api=1&query=37.8080521%2C-122.47575289999999&query_place_id=ChIJbQfcBCWHhYAR5lLXDYK2VNc) — 32 reviews (4.7★) · `museum`
+- [Gilroy Museum](https://www.google.com/maps/search/?api=1&query=37.007950799999996%2C-121.57168989999998&query_place_id=ChIJ6ZaRjLfjkYARxSDEQrSf4bw) — 29 reviews (4.7★) · `museum`
+- [Mission Science Workshop - Excelsior Site](https://www.google.com/maps/search/?api=1&query=37.7264251%2C-122.43386839999998&query_place_id=ChIJM3OgCIZ-j4AR34GnIqoSJc0) — 29 reviews (4.7★) · `museum`
+- [Counterculture Museum](https://www.google.com/maps/search/?api=1&query=37.7699372%2C-122.44674920000001&query_place_id=ChIJXX78PQCHhYARxIh8fPDW0cw) — 28 reviews (5★) · `museum`
+- [Museo Italo Americano](https://www.google.com/maps/search/?api=1&query=37.806757999999995%2C-122.43144799999999&query_place_id=ChIJRdUWXd6AhYARLksoyE6b01E) — 27 reviews (4.4★) · `museum`
+- [Museum of Russian Culture](https://www.google.com/maps/search/?api=1&query=37.7852415%2C-122.44091560000001&query_place_id=ChIJ8cUX98mAhYAR9gpEbO077dE) — 26 reviews (4.3★) · `museum`
+- [Museum of Vertebrate Zoology](https://www.google.com/maps/search/?api=1&query=37.871373%2C-122.26217299999999&query_place_id=ChIJz_Rh4CZ8hYAR4N0-olz6FOQ) — 26 reviews (4.5★) · `museum`
+- [San Jose Fire Museum](https://www.google.com/maps/search/?api=1&query=37.338400799999995%2C-121.89463749999997&query_place_id=ChIJAQAAOyYzjoARZTM8JFb-Mpo) — 26 reviews (4.8★) · `museum`
+- [Martinez Museum](https://www.google.com/maps/search/?api=1&query=38.0192018%2C-122.13485439999998&query_place_id=ChIJQWWcfYNvhYAR50TQEd1usUw) — 25 reviews (4.8★) · `museum`
+- [Mission Science Workshop](https://www.google.com/maps/search/?api=1&query=37.762014%2C-122.42822899999999&query_place_id=ChIJJ7ZlURh-j4AR-evfCEXiSHE) — 25 reviews (4.8★) · `museum`
+- [Portuguese Historical Museum](https://www.google.com/maps/search/?api=1&query=37.3195249%2C-121.8582457&query_place_id=ChIJafwXwCgzjoARjOhcNBoZark) — 25 reviews (4.7★) · `history_museum`
+- [Los Vaqueros Interpretive Center | Los Vaqueros Reservoir](https://www.google.com/maps/search/?api=1&query=37.8401308%2C-121.7270725&query_place_id=ChIJpWDtaVr7j4ARph7l8nidiqI) — 24 reviews (4.6★) · `museum`
+- [Harris Lass House Museum](https://www.google.com/maps/search/?api=1&query=37.3423392%2C-121.95356509999999&query_place_id=ChIJ-aZQhFbKj4ARDDqQVHPU_w8) — 23 reviews (4.7★) · `museum`
+- [The Magnes Collection of Jewish Art and Life](https://www.google.com/maps/search/?api=1&query=37.869794999999996%2C-122.26687&query_place_id=ChIJMzhl88t9hYARd1_SfZe3Aoo) — 23 reviews (4.5★) · `museum`
+- [Dr. Sun Yat-Sen Memorial Hall of San Francisco](https://www.google.com/maps/search/?api=1&query=37.7937544%2C-122.4076507&query_place_id=ChIJa5sEo4yAhYARKZOjw4sOZU4) — 22 reviews (3.6★) · `museum`
+- [Eames Institute](https://www.google.com/maps/search/?api=1&query=37.913201%2C-122.32595280000001&query_place_id=ChIJS0ytO7J5hYAR4EultrUTF0o) — 22 reviews (4.8★) · `museum`
+- [Bill's Backyard](https://www.google.com/maps/search/?api=1&query=37.326420999999996%2C-121.89140819999999&query_place_id=ChIJ-R7Mr6_Mj4ARTt_i4kd0XHU) — 21 reviews (5★) · `museum`
+- [Crockett Historical Museum](https://www.google.com/maps/search/?api=1&query=38.0558799%2C-122.22040199999999&query_place_id=ChIJmxRAoXhxhYARrOmnYC68Mok) — 21 reviews (4.4★) · `museum`
+- [Euphrat Museum Of Art](https://www.google.com/maps/search/?api=1&query=37.3218961%2C-122.0439116&query_place_id=ChIJU4TO_020j4ARvqD2nbrJ9F4) — 20 reviews (4.5★) · `museum`
+- [San Leandro History Museum](https://www.google.com/maps/search/?api=1&query=37.7243328%2C-122.15785360000001&query_place_id=ChIJO8JCS5GPj4ARY6-jdia-rn8) — 20 reviews (4.8★) · `museum`
+- [Aléna Museum](https://www.google.com/maps/search/?api=1&query=37.84512970000001%2C-122.27624890000001&query_place_id=ChIJqySbOGZ_hYARAhSt1ffB0Rs) — 19 reviews (4.6★) · `museum`
+- [Domini Hoskins Black History Museum and Learning Center](https://www.google.com/maps/search/?api=1&query=37.484997899999996%2C-122.2282517&query_place_id=ChIJ6fnwBwCjj4AR6i7rx7ASTi0) — 19 reviews (4.8★) · `museum`
+- [Galindo Home Museum & Gardens](https://www.google.com/maps/search/?api=1&query=37.973402199999995%2C-122.03476119999998&query_place_id=ChIJe2Ay-yhnhYARo7q4iG8simA) — 19 reviews (4.4★) · `museum`
+- [Cesar Chavez Memorial Solar Calendar](https://www.google.com/maps/search/?api=1&query=37.8730853%2C-122.3214307&query_place_id=ChIJ91JvBS5_hYARS4Areocu0Tk) — 18 reviews (4.7★) · `museum`
+- [Millbrae Train Museum](https://www.google.com/maps/search/?api=1&query=37.598453%2C-122.38555330000001&query_place_id=ChIJ26Vaq7F3j4ARvyJff1DUVUs) — 18 reviews (4.9★) · `museum`
+- [Sneaker Museum Oakland](https://www.google.com/maps/search/?api=1&query=37.8014751%2C-122.27429520000001&query_place_id=ChIJ6-wtTxmBj4ARHiSwdamvCnc) — 18 reviews (4.9★) · `museum`
+- [Bank of Italy Replica at History Park](https://www.google.com/maps/search/?api=1&query=37.3202476%2C-121.8578142&query_place_id=ChIJqxOSdCgzjoARVpVnxTV7Alw) — 17 reviews (4.4★) · `museum`
+- [Chinese American Historical Museum at the Ng Shing Gung](https://www.google.com/maps/search/?api=1&query=37.3197587%2C-121.8582231&query_place_id=ChIJb_VD2CczjoARHf309OroGMA) — 17 reviews (4.6★) · `museum`
+- [Duarte Garage & Lincoln Highway Museum](https://www.google.com/maps/search/?api=1&query=37.6907418%2C-121.77558229999998&query_place_id=ChIJdY8A56_nj4ARh0o4gdaSksU) — 17 reviews (4.2★) · `museum`
+- [San Carlos Museum of History](https://www.google.com/maps/search/?api=1&query=37.507536099999996%2C-122.2620579&query_place_id=ChIJ74esAAOij4ARHEv-ZttAYf8) — 17 reviews (4.3★) · `museum`
+- [Chinese Railroad Workers History Center](https://www.google.com/maps/search/?api=1&query=37.7943332%2C-122.40499069999998&query_place_id=ChIJdwZOLV2BhYARD518MhfEKtE) — 16 reviews (4.5★) · `museum`
+- [The Spirit Of The Old West](https://www.google.com/maps/search/?api=1&query=37.8015087%2C-121.91725629999998&query_place_id=ChIJw47MmTDyj4ARkHHelvc0Kxw) — 16 reviews (4.5★) · `museum`
+- [Gadar Memorial](https://www.google.com/maps/search/?api=1&query=37.783634899999996%2C-122.44967799999999&query_place_id=ChIJmdF3qDWHhYAR9X_ZtrB31H4) — 15 reviews (4.5★) · `museum`
+- [Old Mission Dolores Museum](https://www.google.com/maps/search/?api=1&query=37.7641637%2C-122.4269497&query_place_id=ChIJ8wUtmwt_j4AR5JKY0QK6LsU) — 15 reviews (4.5★) · `museum`
+- [Saratoga Historical Park](https://www.google.com/maps/search/?api=1&query=37.2576635%2C-122.03119939999999&query_place_id=ChIJTy9wZ-dKjoARJfKl3rSpKmY) — 15 reviews (4.7★) · `museum`
+- [Agnews Historic Cemetery](https://www.google.com/maps/search/?api=1&query=37.4010258%2C-121.95319699999999&query_place_id=ChIJj6mJ5qPJj4ARtQyoZ61jbn4) — 14 reviews (4.6★) · `museum`
+- [Essig Museum of Entomology Research](https://www.google.com/maps/search/?api=1&query=37.8714176%2C-122.2628623&query_place_id=ChIJ__9v1yB8hYARoSPEC_Z6krk) — 14 reviews (4.9★) · `museum`
+- [SFO Museum International Terminal ( FLY & EXPLORE VIDEO ARTS )](https://www.google.com/maps/search/?api=1&query=37.6161769%2C-122.39012229999999&query_place_id=ChIJVaOQJt53j4ARNeTBYsgfDD4) — 14 reviews (4.3★) · `art_museum`
+- [San Jose Trolley Barn](https://www.google.com/maps/search/?api=1&query=37.3195269%2C-121.857284&query_place_id=ChIJ0xUOwCczjoARoZKQyZDmvUw) — 14 reviews (4.6★) · `museum`
+- [Daly City History Museum](https://www.google.com/maps/search/?api=1&query=37.7052618%2C-122.4617456&query_place_id=ChIJXeFlQjx8j4ARpxyzprgYkS8) — 12 reviews (4.6★) · `museum`
+- [Fisher Bay Observatory Gallery](https://www.google.com/maps/search/?api=1&query=37.8023284%2C-122.39693729999999&query_place_id=ChIJp3USt16AhYARYvwOJld3Owo) — 12 reviews (4.4★) · `museum`
+- [Fort McDowell (East Garrison)](https://www.google.com/maps/search/?api=1&query=37.8615685%2C-122.41989249999999&query_place_id=ChIJW_Xu18ODhYARQQDLxCdBHEc) — 12 reviews (4.4★) · `museum`
+- [Hiller Aviation Museum Gift Shop](https://www.google.com/maps/search/?api=1&query=37.5126961%2C-122.2532916&query_place_id=ChIJr3iJsgiij4ARLEZFpgQ2588) — 12 reviews (4.5★) · `museum`
+- [Morgan Hill Historical Society](https://www.google.com/maps/search/?api=1&query=37.1348286%2C-121.6572707&query_place_id=ChIJVXrSidEZLhURZZ52dJvBHhw) — 12 reviews (4.9★) · `museum`
+- [Pacific Hotel](https://www.google.com/maps/search/?api=1&query=37.3201362%2C-121.85792780000001&query_place_id=ChIJU7C-dSgzjoARM-TubgOy2lk) — 12 reviews (4.3★) · `museum`
+- [California History Center](https://www.google.com/maps/search/?api=1&query=37.3208196%2C-122.0472947&query_place_id=ChIJodiFT060j4ARpabhAwsgDmU) — 11 reviews (4.2★) · `history_museum`
+- [Coastside History Museum](https://www.google.com/maps/search/?api=1&query=37.4632443%2C-122.42821339999999&query_place_id=ChIJfeEINksLj4ARmSfB6KnO4H8) — 11 reviews (4.4★) · `history_museum`
+- [Derby Street Diorama Museum](https://www.google.com/maps/search/?api=1&query=37.8613876%2C-122.260655&query_place_id=ChIJ0b83qul9hYARAmihO1cca5A) — 11 reviews (5★) · `art_museum`
+- [Dublin Camp Parks Military History Center](https://www.google.com/maps/search/?api=1&query=37.715712499999995%2C-121.90931139999999&query_place_id=ChIJi4Gp8Rjsj4ART1_lS6KE-qI) — 11 reviews (4.3★) · `museum`
+- [Maker Faire](https://www.google.com/maps/search/?api=1&query=37.5463977%2C-122.30367210000001&query_place_id=ChIJkaRzWdyfj4ARHn5Gvc4JwhY) — 11 reviews (4.7★) · `museum`
+- [Pigeon Point Lighthouse Museum](https://www.google.com/maps/search/?api=1&query=37.1816586%2C-122.39439770000001&query_place_id=ChIJjSvEbMoBj4ARrvNosBOpEHY) — 11 reviews (5★) · `museum`
+- [Berkeley Historical Society & Museum](https://www.google.com/maps/search/?api=1&query=37.8700781%2C-122.27181569999999&query_place_id=ChIJr-DIWZl-hYARBCWbfKTysbE) — 10 reviews (4.7★) · `museum`
+- [Colma Historical Association](https://www.google.com/maps/search/?api=1&query=37.6823443%2C-122.4565874&query_place_id=ChIJ5xP0Sfh7j4ARaNFVZi4t4pI) — 10 reviews (4.7★) · `museum`
+- [Cupertino Historical Society & Museum](https://www.google.com/maps/search/?api=1&query=37.3257943%2C-122.04243450000001&query_place_id=ChIJY64uQEy0j4ARt0rHpLye4cw) — 10 reviews (4.6★) · `history_museum`
+- [Eric Joyner Art Studio](https://www.google.com/maps/search/?api=1&query=37.727862699999996%2C-122.3647728&query_place_id=ChIJpyh2iVx_j4AROMtP1MZ_jcI) — 9 reviews (4.4★) · `museum`
+- [Shell Alumni Museum](https://www.google.com/maps/search/?api=1&query=38.0155305%2C-122.1253142&query_place_id=ChIJ6T3PMo1lhYARMncRcDKYHpM) — 9 reviews (4.3★) · `museum`
+- [Museum of San Francisco](https://www.google.com/maps/search/?api=1&query=37.7943305%2C-122.4032987&query_place_id=ChIJhcb0qLGBhYARDMRdlLqXfXo) — 8 reviews (4.9★) · `museum`
+- [Plymire-Schwarz House Museum](https://www.google.com/maps/search/?api=1&query=37.6564656%2C-122.4169464&query_place_id=ChIJOfqkGKd5j4ARgY2pNYyrG14) — 8 reviews (5★) · `museum`
+- [Tusher African Hall](https://www.google.com/maps/search/?api=1&query=37.7702957%2C-122.4660034&query_place_id=ChIJ2TD_xK6HhYARtPRkAHwCuSI) — 8 reviews (4.6★) · `museum`
+- [Örly Museum of Hungarian Culture](https://www.google.com/maps/search/?api=1&query=37.8770811%2C-122.26456900000001&query_place_id=ChIJg8qDNUN9hYARCldRT10MssU) — 8 reviews (4.9★) · `museum`
+- [Point Richmond History Association Museum](https://www.google.com/maps/search/?api=1&query=37.9264194%2C-122.3855043&query_place_id=ChIJN2eQRs-ChYARRShmC0SH3o8) — 7 reviews (4.9★) · `museum`
+- [Angler's Lodge - Golden Gate Park](https://www.google.com/maps/search/?api=1&query=37.7680143%2C-122.49665499999999&query_place_id=ChIJP1yQs4KHhYAR7XvP8AoLBEs) — 6 reviews (4.8★) · `museum`
+- [Bob Mizer Museum and Photographic Archives](https://www.google.com/maps/search/?api=1&query=37.7865014%2C-122.41806659999999&query_place_id=ChIJ0Vb-U5GAhYARjUu_r2QiTFM) — 6 reviews (4.7★) · `museum`
+- [Glass House Museum](https://www.google.com/maps/search/?api=1&query=37.7341918%2C-121.9498862&query_place_id=ChIJqQDroUftj4ARWIBxgYXEdhk) — 6 reviews (4.3★) · `museum`
+- [Muir-Strentzel Hanna Cemetery](https://www.google.com/maps/search/?api=1&query=37.978587499999996%2C-122.12383709999999&query_place_id=ChIJ59ZdY6tlhYARvy8AG5sGvkU) — 6 reviews (3.3★) · `museum`
+- [Showgirl Magic Museum](https://www.google.com/maps/search/?api=1&query=37.7934275%2C-122.4065857&query_place_id=ChIJFXHLifeBhYARYSO0sXhOJa8) — 6 reviews (4.8★) · `museum`
+- [University of California Museum of Paleontology](https://www.google.com/maps/search/?api=1&query=37.871181299999996%2C-122.2620198&query_place_id=ChIJfZ2s5SZ8hYARosaEQVcRqEs) — 6 reviews (4.7★) · `museum`
+- [World Wildlife & Heritage Museum](https://www.google.com/maps/search/?api=1&query=38.01494040000001%2C-122.00145320000001&query_place_id=ChIJqWCdMABnhYARpQwKkeWzKiY) — 6 reviews (1.8★) · `museum`
+- [Chiang Kai-shek Pavilion](https://www.google.com/maps/search/?api=1&query=37.3653032%2C-121.85410820000001&query_place_id=ChIJX1zR_uDNj4ARZnuWz2BiLgQ) — 5 reviews (4.2★) · `museum`
+- [Cooperstown S. F. Baseball Hall Of Fame Exhibit](https://www.google.com/maps/search/?api=1&query=37.7796853%2C-122.3901858&query_place_id=ChIJhWNNidd_j4ARXRiIZ-99Je8) — 5 reviews (4★) · `museum`
+- [Environmental Education Center](https://www.google.com/maps/search/?api=1&query=37.3131991%2C-122.06281109999999&query_place_id=ChIJ9d8MDzi1j4ARgBhaDmhaG6o) — 5 reviews (5★) · `museum`
+- [Fashion District](https://www.google.com/maps/search/?api=1&query=37.8194261%2C-122.27498979999999&query_place_id=ChIJXWf-n19_hYARh0mBnLSuZ_0) — 5 reviews (4.8★) · `museum`
+- [Headen-Inman House](https://www.google.com/maps/search/?api=1&query=37.356791799999996%2C-121.9556153&query_place_id=ChIJX713yknKj4ARLCNoF8cXX_s) — 5 reviews (4.6★) · `museum`
+- [Little Italy San Jose Italian Cultural Center & Museum](https://www.google.com/maps/search/?api=1&query=37.3351618%2C-121.8985166&query_place_id=ChIJLRQqt6HMj4ARN8zCQ8gjayw) — 5 reviews (3.8★) · `museum`
+- [Meek mansion](https://www.google.com/maps/search/?api=1&query=37.6845277%2C-122.1134465&query_place_id=ChIJ932Mc4WRj4AR2dZUE-9zMrU) — 5 reviews (5★) · `museum`
+- [Rituals of Life](https://www.google.com/maps/search/?api=1&query=37.769301299999995%2C-122.45148249999998&query_place_id=ChIJiyaTYACHhYARPdFVUJozy7Q) — 5 reviews (5★) · `museum`
+- [The Poetry Center](https://www.google.com/maps/search/?api=1&query=37.722077399999996%2C-122.4814181&query_place_id=ChIJcbu70q99j4ARSU_DJE2piMw) — 5 reviews (5★) · `museum`
+
+</details>
+
+
+## Libraries — 237 legitimate (tentacle 1mi; matching/measuring)
+
+
+<details><summary>All 237 kept</summary>
+
+- [Main Library - San Francisco Public Library](https://www.google.com/maps/search/?api=1&query=37.7790819%2C-122.41579610000001&query_place_id=ChIJd2spnJuAhYARhkuvhLCp3us) — 936 reviews (4.5★) · `library`
+- [Sunnyvale Public Library](https://www.google.com/maps/search/?api=1&query=37.372005099999996%2C-122.03890729999999&query_place_id=ChIJScWuUvW2j4ARdZnELFy2HM4) — 646 reviews (4.7★) · `library`
+- [Milpitas Library](https://www.google.com/maps/search/?api=1&query=37.4323653%2C-121.9070968&query_place_id=ChIJndQ-LdTIj4ARBgBr-nlY0eY) — 640 reviews (4.7★) · `library`
+- [Mountain View Public Library](https://www.google.com/maps/search/?api=1&query=37.3904084%2C-122.0836156&query_place_id=ChIJiVyFzMywj4ARPLuAlYVzhmE) — 588 reviews (4.7★) · `library`
+- [Cupertino Library](https://www.google.com/maps/search/?api=1&query=37.3181045%2C-122.0287427&query_place_id=ChIJw0A7R6i1j4ARPMVjDPvu6mM) — 557 reviews (4.7★) · `library`
+- [Central Park Library](https://www.google.com/maps/search/?api=1&query=37.3404221%2C-121.97343199999997&query_place_id=ChIJA5nt2n61j4AR_PaZL8-UEog) — 537 reviews (4.7★) · `library`
+- [Dr. Martin Luther King, Jr. Library](https://www.google.com/maps/search/?api=1&query=37.3354825%2C-121.88499949999999&query_place_id=ChIJgbAiC7zMj4ARf9VjyD-BcOM) — 510 reviews (4.4★) · `library`
+- [Fremont Main Library](https://www.google.com/maps/search/?api=1&query=37.5508224%2C-121.9709789&query_place_id=ChIJq5MEbpPAj4AR8_aqX4v_HA8) — 507 reviews (4.5★) · `library`
+- [Hayward Public Library](https://www.google.com/maps/search/?api=1&query=37.6711205%2C-122.083445&query_place_id=ChIJSzixutiTj4ARvgg30CwF5AQ) — 322 reviews (4.7★) · `library`
+- [Saratoga Library](https://www.google.com/maps/search/?api=1&query=37.2701224%2C-122.0151327&query_place_id=ChIJ9cJggsdKjoARoiQXrLqm_dM) — 305 reviews (4.8★) · `library`
+- [Mitchell Park Library](https://www.google.com/maps/search/?api=1&query=37.4222037%2C-122.11283580000001&query_place_id=ChIJ87Nodmm6j4ARiEJRRlTJ9fQ) — 288 reviews (4.8★) · `library`
+- [San Mateo Public Library](https://www.google.com/maps/search/?api=1&query=37.5622306%2C-122.32682749999998&query_place_id=ChIJ1fLw5HGej4ARrQaNChl0Atk) — 271 reviews (4.6★) · `library`
+- [Livermore Public Library - Civic Center](https://www.google.com/maps/search/?api=1&query=37.6739331%2C-121.75432119999999&query_place_id=ChIJUeMqG3vnj4AR3gVN17J_ISU) — 261 reviews (4.8★) · `library`
+- [City of Pleasanton Library](https://www.google.com/maps/search/?api=1&query=37.6572853%2C-121.88091369999998&query_place_id=ChIJXVP8hv-nXYYRRDoyQfCklqs) — 255 reviews (4.7★) · `library`
+- [Redwood City Public Library](https://www.google.com/maps/search/?api=1&query=37.4840501%2C-122.22733539999999&query_place_id=ChIJcy9sW6yjj4ARjJ-jcqUsICY) — 254 reviews (4.6★) · `library`
+- [Los Altos Library](https://www.google.com/maps/search/?api=1&query=37.3808892%2C-122.11336359999999&query_place_id=ChIJIz10w-6wj4ARxi32a6iumfw) — 236 reviews (4.7★) · `library`
+- [Los Gatos Library](https://www.google.com/maps/search/?api=1&query=37.2202111%2C-121.9782556&query_place_id=ChIJx19Am-Q1joARnpTnb_ydkN8) — 232 reviews (4.8★) · `library`
+- [Northside Branch Library](https://www.google.com/maps/search/?api=1&query=37.3957452%2C-121.94697079999999&query_place_id=ChIJzUhUiXXJj4AR4feVBEeCXkg) — 226 reviews (4.5★) · `library`
+- [Dublin Library](https://www.google.com/maps/search/?api=1&query=37.7027825%2C-121.9186798&query_place_id=ChIJ58H2bQ7sj4ARXrFGvAvPK9E) — 216 reviews (4.7★) · `library`
+- [San Leandro Public Library](https://www.google.com/maps/search/?api=1&query=37.72603%2C-122.1540461&query_place_id=ChIJzwDBRJaPj4ARhD-JBeOkjxo) — 212 reviews (4.6★) · `library`
+- [Berkeley Public Library](https://www.google.com/maps/search/?api=1&query=37.8681512%2C-122.26846300000001&query_place_id=ChIJx9e2_px-hYARsVoF7Q_SXrY) — 211 reviews (4.5★) · `library`
+- [Alameda Free Library](https://www.google.com/maps/search/?api=1&query=37.76681%2C-122.2423415&query_place_id=ChIJR2vWGL-Gj4ARRzEiBGui5tE) — 208 reviews (4.7★) · `library`
+- [Castro Valley Library](https://www.google.com/maps/search/?api=1&query=37.692941%2C-122.071&query_place_id=ChIJyTr8jCSSj4ARsAda-fdLYE0) — 207 reviews (4.7★) · `library`
+- [Newark Library](https://www.google.com/maps/search/?api=1&query=37.536293799999996%2C-122.0302849&query_place_id=ChIJFzsuqhu_j4ARApubzTkTjK8) — 202 reviews (4.7★) · `library`
+- [Oakland Public Library](https://www.google.com/maps/search/?api=1&query=37.800951399999995%2C-122.26368079999999&query_place_id=ChIJE5sbf7aAj4ARypE-AKq0n90) — 199 reviews (4.5★) · `library`
+- [Burlingame Public Library](https://www.google.com/maps/search/?api=1&query=37.579288399999996%2C-122.34922630000001&query_place_id=ChIJYTTl5vOdj4ARyFydCg6C0_4) — 195 reviews (4.8★) · `library`
+- [Walnut Creek Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9012275%2C-122.06019590000001&query_place_id=ChIJ4-YH179hhYARoFgpB1qJopk) — 195 reviews (4.6★) · `library`
+- [Gilroy Library](https://www.google.com/maps/search/?api=1&query=37.0051296%2C-121.5727007&query_place_id=ChIJe2wbQbfjkYAR3sEWtFeopCM) — 194 reviews (4.8★) · `library`
+- [South San Francisco Public Library](https://www.google.com/maps/search/?api=1&query=37.6563383%2C-122.43540069999999&query_place_id=ChIJx1bYEHh5j4ARTWMy84XOi8o) — 194 reviews (4.7★) · `library`
+- [Foster City Library](https://www.google.com/maps/search/?api=1&query=37.55858550000001%2C-122.2703625&query_place_id=ChIJRa3GH9Kej4ARhoJ4JGkayiw) — 189 reviews (4.7★) · `library`
+- [Pleasant Hill Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.933869%2C-122.0673655&query_place_id=ChIJ1UtuDmlhhYARSJdOU5nCfsI) — 180 reviews (4.5★) · `library`
+- [Morgan Hill Library](https://www.google.com/maps/search/?api=1&query=37.1243352%2C-121.66290329999998&query_place_id=ChIJcWQwevogjoARGAuMOfOgX-Q) — 177 reviews (4.8★) · `library`
+- [Campbell Library](https://www.google.com/maps/search/?api=1&query=37.2882269%2C-121.94324829999998&query_place_id=ChIJyRG-iN40joAR9cs0lcE1os4) — 174 reviews (4.4★) · `library`
+- [Berryessa Branch Library](https://www.google.com/maps/search/?api=1&query=37.3939483%2C-121.8407935&query_place_id=ChIJRUOyYpXNj4AR2iSjcJvg4Fo) — 158 reviews (4.6★) · `library`
+- [West Valley Branch Library](https://www.google.com/maps/search/?api=1&query=37.3023684%2C-121.97939179999999&query_place_id=ChIJaeW5mrDKj4ARX2xrRty9ZFI) — 147 reviews (4.6★) · `library`
+- [Brentwood Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9336518%2C-121.69273620000001&query_place_id=ChIJ-w-A65T-j4AR6r3ZUlQqJig) — 141 reviews (4.4★) · `library`
+- [Evergreen Branch Library](https://www.google.com/maps/search/?api=1&query=37.3137532%2C-121.79586409999999&query_place_id=ChIJy79J3HYtjoARWrwEA_MiRuQ) — 139 reviews (4.6★) · `library`
+- [Millbrae Library](https://www.google.com/maps/search/?api=1&query=37.602291699999995%2C-122.39698329999999&query_place_id=ChIJ_8FHUKF3j4AR5vSJXCyJiAs) — 133 reviews (4.4★) · `library`
+- [San Lorenzo Library](https://www.google.com/maps/search/?api=1&query=37.6809764%2C-122.1260754&query_place_id=ChIJVyQWjbKRj4AR1Iekdbzim2A) — 133 reviews (4.4★) · `library`
+- [San Pablo Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9579069%2C-122.33992799999999&query_place_id=ChIJocksNuh3hYARmcuw_78gLCg) — 131 reviews (4.5★) · `library`
+- [Belmont Public Library](https://www.google.com/maps/search/?api=1&query=37.508882%2C-122.293139&query_place_id=ChIJ-wwPXWGfj4ARdsO2xllckJo) — 130 reviews (4.6★) · `library`
+- [Menlo Park Library](https://www.google.com/maps/search/?api=1&query=37.453925%2C-122.1797114&query_place_id=ChIJ4yNha7Kkj4ARdOB3TPqdsOE) — 128 reviews (4.6★) · `library`
+- [San Ramon Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.764374499999995%2C-121.9532807&query_place_id=ChIJsQlgKoLyj4ARmGGMl08ZRg0) — 128 reviews (4.6★) · `library`
+- [Half Moon Bay Library](https://www.google.com/maps/search/?api=1&query=37.4614962%2C-122.4309788&query_place_id=ChIJI2ESlEwLj4ARVA9cr25wW_E) — 126 reviews (4.7★) · `library`
+- [Concord Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9815924%2C-122.02518610000001&query_place_id=ChIJsWkuFDtnhYARkKZQ6yo1idA) — 125 reviews (4.2★) · `library`
+- [Santa Teresa Branch Library](https://www.google.com/maps/search/?api=1&query=37.237400099999995%2C-121.79976169999999&query_place_id=ChIJw_1wJC4ujoARsEMtIHCY7-U) — 124 reviews (4.8★) · `library`
+- [Willow Glen Branch Library](https://www.google.com/maps/search/?api=1&query=37.3029407%2C-121.9000616&query_place_id=ChIJqxLnzFgzjoARojjJwYYgy_s) — 121 reviews (4.6★) · `library`
+- [Mission Bay Branch Library](https://www.google.com/maps/search/?api=1&query=37.7754291%2C-122.3931303&query_place_id=ChIJTw5KKtF_j4ARZxO_eQ6ysBw) — 119 reviews (4.3★) · `library`
+- [San Carlos Library](https://www.google.com/maps/search/?api=1&query=37.5036152%2C-122.2623124&query_place_id=ChIJkQvU4Ryij4ARJaFew7KkIBw) — 118 reviews (4.7★) · `library`
+- [Santa Clara University Library](https://www.google.com/maps/search/?api=1&query=37.3482069%2C-121.93785&query_place_id=ChIJ96u7xajLj4ARSaF7XJ2vE3Y) — 115 reviews (4.8★) · `library`
+- [Edenvale Branch Library](https://www.google.com/maps/search/?api=1&query=37.267635%2C-121.82125029999997&query_place_id=ChIJWUfZXAMyjoARjaqTCdc1G3w) — 113 reviews (4.5★) · `library`
+- [Albany Library](https://www.google.com/maps/search/?api=1&query=37.8879693%2C-122.2929898&query_place_id=ChIJ4YrCpDR5hYAR4L3NMDT7iGE) — 112 reviews (4.4★) · `library`
+- [Cambrian Branch Library](https://www.google.com/maps/search/?api=1&query=37.2644881%2C-121.9150257&query_place_id=ChIJwQKwYmU0joARZ4El7LIGHcI) — 111 reviews (4.6★) · `library`
+- [Vineland Branch Library](https://www.google.com/maps/search/?api=1&query=37.240184899999996%2C-121.89248799999999&query_place_id=ChIJp7yTpVcxjoAR5p0CGEuS02U) — 111 reviews (4.8★) · `library`
+- [Rinconada Library](https://www.google.com/maps/search/?api=1&query=37.4450052%2C-122.1390158&query_place_id=ChIJ44hkHAW7j4ARgHyd2BdSyN8) — 110 reviews (4.6★) · `library`
+- [Bascom Branch Library](https://www.google.com/maps/search/?api=1&query=37.3073905%2C-121.9311176&query_place_id=ChIJxxkKssw0joARnAZ9TB0hJcI) — 109 reviews (4.5★) · `library`
+- [Danville Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.820862999999996%2C-121.9956077&query_place_id=ChIJWTTigquMj4ARjRudgE9z0rA) — 104 reviews (4.3★) · `library`
+- [Village Square Branch Library](https://www.google.com/maps/search/?api=1&query=37.3134503%2C-121.7742876&query_place_id=ChIJS8jN_qgtjoARKsCW08cKTYg) — 104 reviews (4.5★) · `library`
+- [Antioch Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.0046247%2C-121.81261780000001&query_place_id=ChIJNxNnIdhZhYARYwuVv_9aHgU) — 103 reviews (4.7★) · `library`
+- [Union City Library](https://www.google.com/maps/search/?api=1&query=37.58792%2C-122.0271514&query_place_id=ChIJ706YNH2Vj4ARxbxxKKbobEs) — 102 reviews (4.4★) · `library`
+- [Park Branch Library](https://www.google.com/maps/search/?api=1&query=37.7701548%2C-122.4510289&query_place_id=ChIJgSgwP1KHhYARg5fpG_CfGYM) — 101 reviews (4.6★) · `library`
+- [Richmond / Senator Milton Marks Branch Library](https://www.google.com/maps/search/?api=1&query=37.7818632%2C-122.46816020000001&query_place_id=ChIJBUvIwz2HhYARiB874NqVsBY) — 101 reviews (4.7★) · `library`
+- [Dr. Roberto Cruz Alum Rock Branch Library](https://www.google.com/maps/search/?api=1&query=37.365214%2C-121.82798600000001&query_place_id=ChIJ768M2m3Nj4AR9e9x6wTRhZM) — 99 reviews (4.5★) · `library`
+- [Lafayette Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.8919322%2C-122.11566909999998&query_place_id=ChIJBYwuMVtihYARffszT-0XSBg) — 98 reviews (4.5★) · `library`
+- [Bernal Heights Branch Library](https://www.google.com/maps/search/?api=1&query=37.738817999999995%2C-122.41609999999999&query_place_id=ChIJC-gtDVl-j4ARWaj-8baki0Q) — 97 reviews (4.8★) · `library`
+- [Excelsior Branch Library](https://www.google.com/maps/search/?api=1&query=37.7271332%2C-122.4333545&query_place_id=ChIJKatO-Yh-j4ARTkDLxHym40k) — 96 reviews (4.6★) · `library`
+- [Ortega Branch Library](https://www.google.com/maps/search/?api=1&query=37.7511957%2C-122.4980659&query_place_id=ChIJ6yn7j3-HhYAR5JY2CkywIsg) — 95 reviews (4.7★) · `library`
+- [Chinatown / Him Mark Lai Branch Library](https://www.google.com/maps/search/?api=1&query=37.7952365%2C-122.41023229999999&query_place_id=ChIJydAUIPOAhYARnIYNiNpW_Gw) — 94 reviews (4.2★) · `library`
+- [Potrero Branch Library](https://www.google.com/maps/search/?api=1&query=37.7601333%2C-122.3976556&query_place_id=ChIJqQ2Vdsp_j4ARehdK_aeN0dk) — 93 reviews (4.7★) · `library`
+- [Tully Community Branch Library](https://www.google.com/maps/search/?api=1&query=37.3114172%2C-121.8409157&query_place_id=ChIJn8liFekyjoAREBK0lPtL4eA) — 93 reviews (4.4★) · `library`
+- [North Beach Branch Library](https://www.google.com/maps/search/?api=1&query=37.8026243%2C-122.41319209999999&query_place_id=ChIJx4aX_e-AhYARCeCy-L30FYc) — 88 reviews (4.4★) · `library`
+- [Oakland Public Library: Rockridge Branch](https://www.google.com/maps/search/?api=1&query=37.8399084%2C-122.25107589999999&query_place_id=ChIJL1NC_uh9hYARrjQVdqaJxk8) — 86 reviews (4.6★) · `library`
+- [Pittsburg Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.0186452%2C-121.89099519999999&query_place_id=ChIJYYDBp_pbhYARlLDcvEuc3WM) — 86 reviews (4.5★) · `library`
+- [El Cerrito Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9084062%2C-122.303975&query_place_id=ChIJY3K7lVF4hYARwZss3v5l0B8) — 84 reviews (4.9★) · `library`
+- [Centerville Library](https://www.google.com/maps/search/?api=1&query=37.5680343%2C-122.02222030000001&query_place_id=ChIJafe6pri_j4ARJpGEv1W87xg) — 83 reviews (4.4★) · `library`
+- [Eureka Valley / Harvey Milk Memorial Branch Library](https://www.google.com/maps/search/?api=1&query=37.764074799999996%2C-122.4319259&query_place_id=ChIJ8Y-lehx-j4ARel4hMV6Zo20) — 83 reviews (4.4★) · `library`
+- [Hercules Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.0095652%2C-122.2651672&query_place_id=ChIJ82ubqyp3hYARr1rT54dDhwg) — 83 reviews (4.6★) · `library`
+- [J. Paul Leonard Library](https://www.google.com/maps/search/?api=1&query=37.721365299999995%2C-122.47813639999998&query_place_id=ChIJo5P3nLF9j4ARwdRBcNUbtoI) — 81 reviews (4.6★) · `library`
+- [Redwood Shores Branch Library](https://www.google.com/maps/search/?api=1&query=37.530423%2C-122.258643&query_place_id=ChIJVfO2t7aYj4ARIPik0Lc3hpw) — 81 reviews (4.6★) · `library`
+- [Rose Garden Branch Library](https://www.google.com/maps/search/?api=1&query=37.331780099999996%2C-121.926357&query_place_id=ChIJ_5VVkhTLj4AR5vkGtQN-Olc) — 80 reviews (4.5★) · `library`
+- [Sunset Branch Library](https://www.google.com/maps/search/?api=1&query=37.7633703%2C-122.47627310000001&query_place_id=ChIJHc3-7GWHhYARYP-cCRdqnTg) — 80 reviews (4.5★) · `library`
+- [Doe Library](https://www.google.com/maps/search/?api=1&query=37.8722202%2C-122.25923949999999&query_place_id=ChIJHQXpIiR8hYARqKk0ptub3CM) — 79 reviews (4.8★) · `library`
+- [Atherton Library](https://www.google.com/maps/search/?api=1&query=37.463196599999996%2C-122.1969398&query_place_id=ChIJ5_kz912jj4ARnFxe36Rr0q0) — 78 reviews (4.7★) · `library`
+- [Cecil H Green Library](https://www.google.com/maps/search/?api=1&query=37.4268182%2C-122.16714&query_place_id=ChIJh_57W9a6j4ARj1Z0pGMtNIk) — 78 reviews (4.4★) · `library`
+- [Mission Branch Library (City of Santa Clara Library System)](https://www.google.com/maps/search/?api=1&query=37.3472746%2C-121.94497059999999&query_place_id=ChIJzVB_gKzLj4ARZxZTMX21Fcc) — 78 reviews (4.5★) · `library`
+- [Bayview / Linda Brooks-Burton Branch Library](https://www.google.com/maps/search/?api=1&query=37.7325783%2C-122.3912975&query_place_id=ChIJ47yEtxp_j4ARMMcf0MuzvB4) — 77 reviews (4.6★) · `library`
+- [Educational Park Branch Library](https://www.google.com/maps/search/?api=1&query=37.3656305%2C-121.85766729999999&query_place_id=ChIJs8FINP7Mj4ARTIb7E8jrPsk) — 77 reviews (4.3★) · `library`
+- [Noe Valley / Sally Brunn Branch Library](https://www.google.com/maps/search/?api=1&query=37.7502639%2C-122.4350361&query_place_id=ChIJF9ySgxJ-j4ARSRdKY7jGLy0) — 76 reviews (4.5★) · `library`
+- [Pearl Avenue Branch Library](https://www.google.com/maps/search/?api=1&query=37.2677896%2C-121.86639799999999&query_place_id=ChIJn7JWbsgzjoARLxd7jcF5jNM) — 76 reviews (4.5★) · `library`
+- [San Bruno Library](https://www.google.com/maps/search/?api=1&query=37.625308%2C-122.414854&query_place_id=ChIJFdOYidl5j4ARr21IX7CJ5Mw) — 74 reviews (4.4★) · `library`
+- [Clayton Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9425521%2C-121.9354705&query_place_id=ChIJyTIKDhJfhYARYMkB19jtO40) — 73 reviews (4.8★) · `library`
+- [Oakland Public Library: César E. Chávez Branch](https://www.google.com/maps/search/?api=1&query=37.7760604%2C-122.22500559999999&query_place_id=ChIJX3zpvfSGj4ARQHsmjgmSzJg) — 73 reviews (4.6★) · `library`
+- [Oakland Public Library: 81st Avenue Branch](https://www.google.com/maps/search/?api=1&query=37.75352000000001%2C-122.18553620000002&query_place_id=ChIJU1RI-vGFj4AR62U7lyzdpqo) — 72 reviews (4.7★) · `library`
+- [West Oakland Branch | Oakland Public Library:](https://www.google.com/maps/search/?api=1&query=37.812834699999996%2C-122.28515610000001&query_place_id=ChIJs70hiqCAj4ARmKwi54Agmn4) — 72 reviews (4.2★) · `library`
+- [West Portal Branch Library](https://www.google.com/maps/search/?api=1&query=37.7413787%2C-122.46620670000001&query_place_id=ChIJfYQerOt9j4ARW3HQCGMPSeo) — 72 reviews (4.6★) · `library`
+- [Hillview Branch Library](https://www.google.com/maps/search/?api=1&query=37.337804399999996%2C-121.83114719999998&query_place_id=ChIJ8YZy0krNj4AR3Jm9qQTtZgA) — 70 reviews (4.4★) · `library`
+- [Mission Branch Library](https://www.google.com/maps/search/?api=1&query=37.7531165%2C-122.4210433&query_place_id=ChIJhco-vEB-j4AR4SK7rNtShM0) — 69 reviews (4.3★) · `library`
+- [Presidio Branch Library](https://www.google.com/maps/search/?api=1&query=37.7888519%2C-122.444892&query_place_id=ChIJ9Ta-m8yAhYARB6A8Efv-3eA) — 69 reviews (4.6★) · `library`
+- [Almaden Branch Library](https://www.google.com/maps/search/?api=1&query=37.2213584%2C-121.86986809999999&query_place_id=ChIJpaYDGRAxjoARVmKI8t2ch1o) — 67 reviews (4.6★) · `library`
+- [Oakland Public Library: Dimond Branch](https://www.google.com/maps/search/?api=1&query=37.8014556%2C-122.2160799&query_place_id=ChIJZaeIZqmHj4ARETuuqrCA8gM) — 67 reviews (4.8★) · `library`
+- [Oakland Public Library: Golden Gate Branch](https://www.google.com/maps/search/?api=1&query=37.83921600000001%2C-122.28225300000001&query_place_id=ChIJBzRMtW5-hYAR32tjh4LHmpQ) — 67 reviews (4.7★) · `library`
+- [Berkeley Public Library - Claremont Branch](https://www.google.com/maps/search/?api=1&query=37.8566126%2C-122.25435680000001&query_place_id=ChIJi8YnBtJ9hYAR_xFnV0yZxxs) — 66 reviews (4.8★) · `library`
+- [Berkeley Public Library - North Branch](https://www.google.com/maps/search/?api=1&query=37.8854563%2C-122.27545429999998&query_place_id=ChIJo1_CNa5-hYARKmcoHNh3qao) — 66 reviews (4.7★) · `library`
+- [East Palo Alto Library](https://www.google.com/maps/search/?api=1&query=37.4723162%2C-122.13982120000001&query_place_id=ChIJ_49s0Xy7j4ARvJtJ6-su85M) — 66 reviews (4.5★) · `library`
+- [Joyce Ellington Branch Library](https://www.google.com/maps/search/?api=1&query=37.3498412%2C-121.8869455&query_place_id=ChIJq8za15HMj4ARrJHg1r0c4X4) — 66 reviews (4.7★) · `library`
+- [Mechanics' Institute](https://www.google.com/maps/search/?api=1&query=37.7888534%2C-122.4030107&query_place_id=ChIJO-j0NYiAhYARqxk-_uyhU3Y) — 66 reviews (4.7★) · `library`
+- [Merced Branch Library](https://www.google.com/maps/search/?api=1&query=37.7266575%2C-122.47450979999999&query_place_id=ChIJDeyn_rl9j4ARhOar37HzMLw) — 66 reviews (4.4★) · `library`
+- [Visitacion Valley Branch Library](https://www.google.com/maps/search/?api=1&query=37.712455%2C-122.40788599999998&query_place_id=ChIJgXItsdl-j4AR6ddjjd7sHgo) — 65 reviews (4.7★) · `library`
+- [Western Addition Branch Library](https://www.google.com/maps/search/?api=1&query=37.7841709%2C-122.4376376&query_place_id=ChIJOzjFtbeAhYARXA7J4xSdE0A) — 65 reviews (4.5★) · `library`
+- [Dougherty Station Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.7538347%2C-121.9097656&query_place_id=ChIJa0R6o93tj4ARHg3egpNcVI0) — 64 reviews (4.2★) · `library`
+- [Marina Branch Library](https://www.google.com/maps/search/?api=1&query=37.8013195%2C-122.4341471&query_place_id=ChIJo4XD9tmAhYARpvfo5tgNXdc) — 64 reviews (4.4★) · `library`
+- [Downtown Library](https://www.google.com/maps/search/?api=1&query=37.4438889%2C-122.1591667&query_place_id=ChIJp2xbvzu7j4ARbE0Yv7Tx68g) — 63 reviews (4.4★) · `library`
+- [Glen Park Branch Library](https://www.google.com/maps/search/?api=1&query=37.7339585%2C-122.43374899999998&query_place_id=ChIJe7MgZGN-j4ARekk-kVpXnY8) — 63 reviews (4.7★) · `library`
+- [Moffitt Library](https://www.google.com/maps/search/?api=1&query=37.8725327%2C-122.26083659999999&query_place_id=ChIJxWEsuCZ8hYAR48_Sst45khU) — 63 reviews (4.2★) · `library`
+- [Seven Trees Branch Library](https://www.google.com/maps/search/?api=1&query=37.284904399999995%2C-121.83342739999999&query_place_id=ChIJNbLp9mkyjoARhDwL9JvprV0) — 63 reviews (4.3★) · `library`
+- [Anza Branch Library](https://www.google.com/maps/search/?api=1&query=37.7785234%2C-122.49721749999999&query_place_id=ChIJz_EtRJ2AhYARHEJlyPJLliM) — 62 reviews (4.6★) · `library`
+- [Orinda Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.8824618%2C-122.1876739&query_place_id=ChIJvY6hQdh8hYARkSmjplqIjFc) — 62 reviews (4.8★) · `library`
+- [Serramonte Main Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.6628945%2C-122.47042119999999&query_place_id=ChIJ0zynJJV7j4ARpnHwN0fjaRE) — 62 reviews (4.5★) · `library`
+- [Ygnacio Valley Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.924154099999996%2C-122.01235769999998&query_place_id=ChIJjzZJiWhghYAR9Ef5wf2ClZE) — 62 reviews (4.6★) · `library`
+- [Berkeley Tool Lending Library](https://www.google.com/maps/search/?api=1&query=37.856362%2C-122.2711192&query_place_id=ChIJ_2K_soB-hYARumqRRkVlzpI) — 61 reviews (4.6★) · `library`
+- [Portola Branch Library](https://www.google.com/maps/search/?api=1&query=37.7270374%2C-122.406509&query_place_id=ChIJo09-aON-j4ARLn6OLNNg2vM) — 61 reviews (4.3★) · `library`
+- [Berkeley Public Library - Tarea Hall Pittman South Branch](https://www.google.com/maps/search/?api=1&query=37.856408%2C-122.27103679999999&query_place_id=ChIJ_2K_soB-hYARHmgdRdpFdyo) — 60 reviews (4.6★) · `library`
+- [Weekes Branch Library](https://www.google.com/maps/search/?api=1&query=37.633361%2C-122.0789123&query_place_id=ChIJT1M7FRyUj4AR28q7HKSZXEg) — 60 reviews (3.8★) · `library`
+- [Calabazas Branch Library](https://www.google.com/maps/search/?api=1&query=37.302635099999996%2C-122.02342220000001&query_place_id=ChIJ16Wb5xa1j4AR6dQbbvSVqHM) — 59 reviews (4.4★) · `library`
+- [Oakland Public Library: Oakland Tool Lending Library](https://www.google.com/maps/search/?api=1&query=37.838221600000004%2C-122.26249940000001&query_place_id=ChIJQaHVYeB9hYARyNqd6kuQld8) — 59 reviews (4.6★) · `library`
+- [UCSF Kalmanovitz Library](https://www.google.com/maps/search/?api=1&query=37.7633027%2C-122.4590156&query_place_id=ChIJc_qHxFmHhYARDbn6qECUMAk) — 59 reviews (4.6★) · `library`
+- [Woodland Branch Library](https://www.google.com/maps/search/?api=1&query=37.344206299999996%2C-122.0753913&query_place_id=ChIJtY1wPam2j4ARaX9Hr4PUUdw) — 58 reviews (4.8★) · `library`
+- [El Sobrante Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9674094%2C-122.30969719999999&query_place_id=ChIJH5JtInh3hYARKLs3xZa0DCk) — 56 reviews (4.7★) · `library`
+- [Ingleside Branch Library](https://www.google.com/maps/search/?api=1&query=37.7240421%2C-122.4562952&query_place_id=ChIJE02zo819j4ARGP-V7I3bWLs) — 56 reviews (4.6★) · `library`
+- [Parkside Branch Library](https://www.google.com/maps/search/?api=1&query=37.7431595%2C-122.47937019999999&query_place_id=ChIJBUvIwz2HhYAR10tn1XruUUk) — 56 reviews (4.5★) · `library`
+- [Pacifica Sharp Park Library](https://www.google.com/maps/search/?api=1&query=37.6321728%2C-122.4919388&query_place_id=ChIJeZgGY_96j4ARRBGypGpOqGI) — 55 reviews (4.6★) · `library`
+- [Richmond Public Library - Auditorium Temporary Branch](https://www.google.com/maps/search/?api=1&query=37.9366664%2C-122.3441131&query_place_id=ChIJZZpLMhB4hYAR-IMsVWEpcxI) — 55 reviews (4.5★) · `library`
+- [Golden Gate Valley Branch Library](https://www.google.com/maps/search/?api=1&query=37.7968098%2C-122.4290512&query_place_id=ChIJW2IRRMOAhYARXhey6sF1bX8) — 54 reviews (4.6★) · `library`
+- [Manor Branch Library](https://www.google.com/maps/search/?api=1&query=37.691403799999996%2C-122.1526586&query_place_id=ChIJm6dIVj2Qj4AROMoUgwyFJLw) — 54 reviews (4.6★) · `library`
+- [Internet Archive](https://www.google.com/maps/search/?api=1&query=37.782320999999996%2C-122.471637&query_place_id=ChIJAeBSOgCHhYARdadXQDhc1jY) — 53 reviews (4.9★) · `library`
+- [Oakland Public Library: Lakeview Branch](https://www.google.com/maps/search/?api=1&query=37.8092001%2C-122.2489488&query_place_id=ChIJb3krt0aHj4ARnoV27t9Dni8) — 52 reviews (4.7★) · `library`
+- [Oakland Public Library: Montclair Branch](https://www.google.com/maps/search/?api=1&query=37.831980699999995%2C-122.2141442&query_place_id=ChIJ1ZlxzYaHj4AR0wLxbeZ7vm0) — 52 reviews (4.7★) · `library`
+- [Alviso Branch Library](https://www.google.com/maps/search/?api=1&query=37.4245818%2C-121.9691237&query_place_id=ChIJUd79B0fIj4AR3C7IVa5KV1I) — 51 reviews (4.6★) · `library`
+- [Biblioteca Latinoamericana Branch Library](https://www.google.com/maps/search/?api=1&query=37.3222431%2C-121.88041509999998&query_place_id=ChIJFwHhuUozjoARtQNA_O_Jdz4) — 49 reviews (4.7★) · `library`
+- [Martinez Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.017952699999995%2C-122.13418639999999&query_place_id=ChIJ27dllYNvhYARbHitxi5hA2w) — 49 reviews (4.6★) · `library`
+- [The CORE - University Libraries](https://www.google.com/maps/search/?api=1&query=37.6551435%2C-122.0548007&query_place_id=ChIJjbzlMfOTj4ARjz9LD6q_kxc) — 48 reviews (4.6★) · `library`
+- [East San Jose Carnegie Library](https://www.google.com/maps/search/?api=1&query=37.3464422%2C-121.8682711&query_place_id=ChIJy3jsEejMj4AR2d7I_X2GLJo) — 45 reviews (4.6★) · `library`
+- [Westlake Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.697223%2C-122.4854045&query_place_id=ChIJFXfqNFx8j4ARcjc6jk0lt58) — 44 reviews (4.3★) · `library`
+- [Oakland Public Library: Melrose Branch](https://www.google.com/maps/search/?api=1&query=37.772436%2C-122.2076209&query_place_id=ChIJ9Yuid2aGj4AReJY6m70EpN0) — 42 reviews (4.6★) · `library`
+- [South San Francisco - Grand Avenue Library](https://www.google.com/maps/search/?api=1&query=37.656497300000005%2C-122.41399399999999&query_place_id=ChIJ7SD-NqZ5j4ARrEAQZR7HITA) — 42 reviews (4.5★) · `library`
+- [Children's Library](https://www.google.com/maps/search/?api=1&query=37.4447937%2C-122.1451991&query_place_id=ChIJgbmTChq7j4ARpD7cQgKJBvM) — 41 reviews (4.5★) · `library`
+- [John Daly Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.7020567%2C-122.46280549999997&query_place_id=ChIJaxKC9D18j4AR7PbIY3KORJ8) — 41 reviews (4.5★) · `library`
+- [Oakland Public Library: Brookfield Branch](https://www.google.com/maps/search/?api=1&query=37.7376116%2C-122.1884853&query_place_id=ChIJh_-ef5CFj4ARYJvacu-cqnc) — 41 reviews (4.8★) · `library`
+- [Ocean View Branch Library](https://www.google.com/maps/search/?api=1&query=37.714138299999995%2C-122.465995&query_place_id=ChIJsfS9jzZ8j4AR0qe5bZT4rZo) — 40 reviews (4.6★) · `library`
+- [Oakland Public Library - Martin Luther King Jr. Branch](https://www.google.com/maps/search/?api=1&query=37.76069%2C-122.190677&query_place_id=ChIJVwgYCOSFj4ARGzMC7VRU2Eo) — 39 reviews (4.8★) · `library`
+- [Hillsdale Branch - San Mateo Public Library](https://www.google.com/maps/search/?api=1&query=37.5334301%2C-122.30467870000001&query_place_id=ChIJd7AbIQSfj4ARAsz_e1iC20I) — 38 reviews (4.3★) · `library`
+- [The Bancroft Library](https://www.google.com/maps/search/?api=1&query=37.8723046%2C-122.2586503&query_place_id=ChIJoZpCSCV8hYARAEbWLD-SHhk) — 38 reviews (4.8★) · `library`
+- [West End Library, Alameda Free Library](https://www.google.com/maps/search/?api=1&query=37.773089999999996%2C-122.27304359999998&query_place_id=ChIJEVEKwy6Bj4AR-ay2jZ8N4og) — 38 reviews (4.4★) · `library`
+- [Oakland Public Library: Eastmont Branch](https://www.google.com/maps/search/?api=1&query=37.7684972%2C-122.1763547&query_place_id=ChIJ15nqyf-Fj4ARUUJDE0EXlII) — 37 reviews (4.6★) · `library`
+- [Oakland Public Library: Piedmont Avenue Branch](https://www.google.com/maps/search/?api=1&query=37.827837099999996%2C-122.24817789999997&query_place_id=ChIJJV6KofZ9hYARX1m08tpzzIs) — 37 reviews (4.6★) · `library`
+- [Oakland Public Library, Asian Branch](https://www.google.com/maps/search/?api=1&query=37.800767500000006%2C-122.2711403&query_place_id=ChIJawFMfraAj4ARXrPa08HcCxg) — 36 reviews (4.5★) · `library`
+- [Portola Valley Library](https://www.google.com/maps/search/?api=1&query=37.3819328%2C-122.22996649999999&query_place_id=ChIJ36NeIpulj4ARA7weq2Ii-ss) — 35 reviews (4.9★) · `library`
+- [Berkeley Public Library West Branch](https://www.google.com/maps/search/?api=1&query=37.869561999999995%2C-122.290914&query_place_id=ChIJUxStzMF-hYARGe-wjWOhUEs) — 33 reviews (4.6★) · `library`
+- [Marina Branch - San Mateo Public Library](https://www.google.com/maps/search/?api=1&query=37.55641%2C-122.29307759999999&query_place_id=ChIJQ5YQM-mej4AR1vJHuJwsFwE) — 33 reviews (4.3★) · `library`
+- [North Fair Oaks Library](https://www.google.com/maps/search/?api=1&query=37.4774765%2C-122.213846&query_place_id=ChIJX0E2xg6jj4AR1RiIgIV8a5g) — 33 reviews (4★) · `library`
+- [Oakland Public Library: Temescal Branch](https://www.google.com/maps/search/?api=1&query=37.8382302%2C-122.2625023&query_place_id=ChIJ7aGBiuB9hYARc_fkY4xQ2XA) — 33 reviews (4.3★) · `library`
+- [Brisbane Library](https://www.google.com/maps/search/?api=1&query=37.6832946%2C-122.4030193&query_place_id=ChIJH1XPSSB5j4AR4YE0haklNtA) — 31 reviews (4.9★) · `library`
+- [C.V. Starr East Asian Library](https://www.google.com/maps/search/?api=1&query=37.873575699999996%2C-122.25997960000001&query_place_id=ChIJAQCwhiZ8hYARhe-BsmCY4VI) — 31 reviews (4.8★) · `library`
+- [Gleeson Library | Geschke Center](https://www.google.com/maps/search/?api=1&query=37.7765524%2C-122.45195129999999&query_place_id=ChIJC0DK_kuHhYARZQIRNNzw5NQ) — 31 reviews (4.1★) · `library`
+- [Rosenberg Library](https://www.google.com/maps/search/?api=1&query=37.7247007%2C-122.4493828&query_place_id=ChIJwwfA1Cp8j4ARPiDVj1iyB7w) — 30 reviews (4.6★) · `library`
+- [Oakley Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.96933%2C-121.7199689&query_place_id=ChIJI5c0ubT4j4AR0OhpsOlQ-2w) — 29 reviews (4.6★) · `library`
+- [Burlingame Library Easton Branch](https://www.google.com/maps/search/?api=1&query=37.5839341%2C-122.37158260000001&query_place_id=ChIJB6W-szt2j4AR6QJH6K6l8PI) — 28 reviews (4.6★) · `library`
+- [Woodside Library](https://www.google.com/maps/search/?api=1&query=37.4290506%2C-122.25792369999999&query_place_id=ChIJI9HdNhukj4ARMXCHbditk9E) — 28 reviews (4.5★) · `library`
+- [Lathrop Library](https://www.google.com/maps/search/?api=1&query=37.4291471%2C-122.16742579999999&query_place_id=ChIJVVUVwim7j4AR79mh7iy3fX0) — 27 reviews (4.4★) · `library`
+- [Pacifica Sanchez Library](https://www.google.com/maps/search/?api=1&query=37.5844538%2C-122.47634839999999&query_place_id=ChIJbxIjuZNwj4ARzGwJhlVcyXc) — 27 reviews (4.7★) · `library`
+- [Pinole Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.992393299999996%2C-122.28501759999997&query_place_id=ChIJQQQ4Aj13hYAR2JS_2mFYgMM) — 27 reviews (4.4★) · `library`
+- [College Terrace Library](https://www.google.com/maps/search/?api=1&query=37.4233725%2C-122.1486523&query_place_id=ChIJ_RRg9ui6j4ARBSGMtCmv98U) — 26 reviews (4.3★) · `library`
+- [Prewett Library: Antioch - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9662637%2C-121.7741665&query_place_id=ChIJewx2VXj4j4ARTL9HKEFKE0s) — 26 reviews (4.5★) · `library`
+- [Santa Clara County Law Library](https://www.google.com/maps/search/?api=1&query=37.341533999999996%2C-121.894086&query_place_id=ChIJu0lxaZnMj4ARBTD5O-CftCM) — 24 reviews (4.4★) · `library`
+- [Diablo Valley College Library](https://www.google.com/maps/search/?api=1&query=37.9683765%2C-122.07242850000002&query_place_id=ChIJxQBhSrtmhYAR6scldOU_EHQ) — 22 reviews (4.5★) · `library`
+- [Moraga Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.8408418%2C-122.12259440000001&query_place_id=ChIJwfJck7KJj4AR4wi99GC0tX4) — 22 reviews (4.5★) · `library`
+- [Bay Farm Island Library](https://www.google.com/maps/search/?api=1&query=37.7369513%2C-122.2415746&query_place_id=ChIJgf6_6z2Ej4ARUEqZIjpxAag) — 21 reviews (4.6★) · `library`
+- [Kensington Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=37.9129819%2C-122.28102870000001&query_place_id=ChIJy6TJa2l5hYARtR26NhbIGgk) — 21 reviews (4.8★) · `library`
+- [Oakland Public Library: Elmhurst Branch](https://www.google.com/maps/search/?api=1&query=37.7515679%2C-122.17491539999999&query_place_id=ChIJnS5Lq4qFj4ARsyJ_0188nKc) — 21 reviews (4.8★) · `library`
+- [Helen Crocker Russell Library](https://www.google.com/maps/search/?api=1&query=37.7668714%2C-122.46745360000001&query_place_id=ChIJpxPh31yHhYARY3HE8X5-ni0) — 20 reviews (4.9★) · `library`
+- [Prelinger Library](https://www.google.com/maps/search/?api=1&query=37.7748604%2C-122.40963680000002&query_place_id=ChIJ-Yt01Cl-j4ARmNcclXlWB6Y) — 20 reviews (5★) · `library`
+- [Library | Mission College](https://www.google.com/maps/search/?api=1&query=37.3919688%2C-121.98074869999999&query_place_id=ChIJJ-WjOsPJj4AR00gGp3XTIBk) — 19 reviews (4.4★) · `library`
+- [Schaberg Branch Library](https://www.google.com/maps/search/?api=1&query=37.4664888%2C-122.24309889999999&query_place_id=ChIJ_7YFosCjj4ARzltxVvaZehY) — 19 reviews (4.8★) · `library`
+- [Bay Point Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.033541299999996%2C-121.96609659999999&query_place_id=ChIJvaRRTA5dhYAR9v5Ka1k6FnU) — 18 reviews (4.6★) · `library`
+- [Library | Foothill College](https://www.google.com/maps/search/?api=1&query=37.361861%2C-122.12936189999998&query_place_id=ChIJUQ6nn6qxj4AREhBa0TggDUo) — 18 reviews (4.7★) · `library`
+- [Earth Science & Map Library](https://www.google.com/maps/search/?api=1&query=37.8739719%2C-122.2596097&query_place_id=ChIJAQBA_SN8hYARtaE4ZpOzXcA) — 17 reviews (4.5★) · `library`
+- [Kresge Engineering Library](https://www.google.com/maps/search/?api=1&query=37.8738211%2C-122.2583076&query_place_id=ChIJF4BsiyN8hYARLZ1vIPraljI) — 17 reviews (4.7★) · `library`
+- [Jean Gray Hargrove Music Library](https://www.google.com/maps/search/?api=1&query=37.8704442%2C-122.2561865&query_place_id=ChIJ__-_ciV8hYARxgPm1ycRiEQ) — 16 reviews (4.6★) · `library`
+- [Lane Medical Library](https://www.google.com/maps/search/?api=1&query=37.432701699999996%2C-122.17554069999998&query_place_id=ChIJ77t1StOkj4ARm475_u6K4Lk) — 16 reviews (4.4★) · `library`
+- [Livermore Public Library - Rincon Branch](https://www.google.com/maps/search/?api=1&query=37.686852699999996%2C-121.7848916&query_place_id=ChIJIRheyrnnj4ARbPkyLh6LRAA) — 16 reviews (4.5★) · `library`
+- [San Francisco Law Library](https://www.google.com/maps/search/?api=1&query=37.7795419%2C-122.4134156&query_place_id=ChIJ5cCAsJmAhYARbI_oLz5bPdA) — 16 reviews (4.6★) · `library`
+- [Alameda County Law Library](https://www.google.com/maps/search/?api=1&query=37.7998577%2C-122.26450179999999&query_place_id=ChIJVc03QTWHj4ARCa_4JF7J3ZA) — 15 reviews (4.9★) · `library`
+- [Belle Haven Library](https://www.google.com/maps/search/?api=1&query=37.478901799999996%2C-122.168162&query_place_id=ChIJwZDJqaW8j4ARLgwiZjKY-xE) — 15 reviews (4.4★) · `library`
+- [Richmond Public Library - West Side Branch](https://www.google.com/maps/search/?api=1&query=37.9265495%2C-122.38525650000001&query_place_id=ChIJ1dShQM-ChYARkS67QdnVuwU) — 15 reviews (4.4★) · `library`
+- [César E. Chávez Library](https://www.google.com/maps/search/?api=1&query=37.3157999%2C-121.9263063&query_place_id=ChIJe-iBSDbLj4ARHfZ-VxnkhSU) — 13 reviews (4.7★) · `library`
+- [Evergreen Valley College Library](https://www.google.com/maps/search/?api=1&query=37.301930399999996%2C-121.76559309999999&query_place_id=ChIJO8DobI8tjoARwGnjCMXQOOk) — 13 reviews (4.3★) · `library`
+- [Main (Gardner) Stacks](https://www.google.com/maps/search/?api=1&query=37.8727881%2C-122.25908629999999&query_place_id=ChIJQ5poxV59hYARuD-jFIiXHP8) — 13 reviews (4.7★) · `library`
+- [Laney College Library](https://www.google.com/maps/search/?api=1&query=37.7967004%2C-122.2626145&query_place_id=ChIJM1ImhTSHj4AR6wbWSy4D3I8) — 12 reviews (4.7★) · `library`
+- [Livermore Public Library - Springtown](https://www.google.com/maps/search/?api=1&query=37.7068862%2C-121.7373991&query_place_id=ChIJ6yO5WSHnj4ARNV-qE_LdOcs) — 12 reviews (4.3★) · `library`
+- [Richmond Public Library - Bayview Branch](https://www.google.com/maps/search/?api=1&query=37.9151837%2C-122.3238432&query_place_id=ChIJrTepNxB4hYARNvlXatdGiBE) — 12 reviews (4.8★) · `library`
+- [San Mateo County Law Library](https://www.google.com/maps/search/?api=1&query=37.487283%2C-122.2305436&query_place_id=ChIJiweHl1Kij4ARzQY_iPTvNro) — 12 reviews (4.3★) · `library`
+- [West Valley College Library](https://www.google.com/maps/search/?api=1&query=37.2639395%2C-122.0085006&query_place_id=ChIJXUieP5ZKjoARjXuYt4wyreU) — 12 reviews (4.6★) · `library`
+- [Little Free Library](https://www.google.com/maps/search/?api=1&query=37.787869199999996%2C-122.4362179&query_place_id=ChIJocrjGt2BhYAR2sQP8_mk58w) — 10 reviews (5★) · `library`
+- [Rodeo Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.0352446%2C-122.26843720000001&query_place_id=ChIJR-1R_7J2hYARg7xgtPdhpag) — 10 reviews (4.6★) · `library`
+- [San Francisco Museum of Modern Art - Library](https://www.google.com/maps/search/?api=1&query=37.7858686%2C-122.40066700000001&query_place_id=ChIJZRx2OtyBhYARtXhXFXeA6MI) — 10 reviews (4.3★) · `library`
+- [Bayshore Branch - Daly City Public Library](https://www.google.com/maps/search/?api=1&query=37.7016011%2C-122.4190304&query_place_id=ChIJx85YGMl-j4AREl3gsnZD_hY) — 9 reviews (4.7★) · `library`
+- [Crockett Library - Contra Costa County Library](https://www.google.com/maps/search/?api=1&query=38.0553966%2C-122.22073449999999&query_place_id=ChIJH-jzl3hxhYARNNoLwiNrLp8) — 9 reviews (5★) · `library`
+- [Las Positas College Library](https://www.google.com/maps/search/?api=1&query=37.7116884%2C-121.7998295&query_place_id=ChIJ_d_idjzmj4ARWooVVgtG24c) — 9 reviews (4.7★) · `library`
+- [Stanford Business Library](https://www.google.com/maps/search/?api=1&query=37.4284828%2C-122.16220930000001&query_place_id=ChIJG8XsPti6j4AR7yc0x77lq-8) — 9 reviews (4.9★) · `library`
+- [The International Library of Young Authors](https://www.google.com/maps/search/?api=1&query=37.7592535%2C-122.4210652&query_place_id=ChIJ3_QMYQB_j4ARy9AOAEh9VBc) — 9 reviews (4.9★) · `library`
+- [Amador Valley High School Library](https://www.google.com/maps/search/?api=1&query=37.6678066%2C-121.875095&query_place_id=ChIJaWyC16Dpj4ARp_8iLy1y3hU) — 8 reviews (1.4★) · `library`
+- [Bowes Art & Architecture Library](https://www.google.com/maps/search/?api=1&query=37.4327906%2C-122.17169220000001&query_place_id=ChIJC4r4Fta6j4ARZhnmxbveO_Q) — 8 reviews (4.5★) · `library`
+- [Contra Costa County Law Library](https://www.google.com/maps/search/?api=1&query=38.0193355%2C-122.1339244&query_place_id=ChIJ27dllYNvhYARNhgoAKGCHMM) — 8 reviews (2.9★) · `library`
+- [David Rumsey Map Center](https://www.google.com/maps/search/?api=1&query=37.4266949%2C-122.1674928&query_place_id=ChIJj5-eQta6j4ARKlWkGfNgPgM) — 8 reviews (4.5★) · `library`
+- [De Anza College Library](https://www.google.com/maps/search/?api=1&query=37.3203381%2C-122.046827&query_place_id=ChIJWWtz0lG0j4ARqnrxWG_Ovp8) — 8 reviews (5★) · `library`
+- [Environmental Design Library](https://www.google.com/maps/search/?api=1&query=37.8707352%2C-122.25489350000001&query_place_id=ChIJLVUAUCV8hYARvXQnG_cbi4w) — 8 reviews (4.9★) · `library`
+- [F. W. Olin Library](https://www.google.com/maps/search/?api=1&query=37.781266099999996%2C-122.1822691&query_place_id=ChIJxQHIuRuGj4ARdBJpfBmN0eQ) — 8 reviews (4.4★) · `library`
+- [Mulford-Marina Branch Library](https://www.google.com/maps/search/?api=1&query=37.6978474%2C-122.1822938&query_place_id=ChIJgVZfaVGFj4AR9X3oqUERku0) — 8 reviews (4.8★) · `library`
+- [Skyline College Library](https://www.google.com/maps/search/?api=1&query=37.6303206%2C-122.4673344&query_place_id=ChIJWctF8Dh6j4AReW4H_B8dzIA) — 8 reviews (4.9★) · `library`
+- [Green Library, East Wing entrance](https://www.google.com/maps/search/?api=1&query=37.4266308%2C-122.16708639999997&query_place_id=ChIJvf077hi7j4ARMqYIHLXY5yA) — 7 reviews (3.4★) · `library`
+- [Long Business Library](https://www.google.com/maps/search/?api=1&query=37.871465%2C-122.25344500000001&query_place_id=ChIJmY7BsDp8hYARfG23CBRdZdU) — 7 reviews (4.6★) · `library`
+- [Niles Library](https://www.google.com/maps/search/?api=1&query=37.5760565%2C-121.97816999999999&query_place_id=ChIJlcnhjm7Aj4ARqZTk-CHV3qw) — 7 reviews (4.9★) · `library`
+- [Northern Regional Library Facility (NRLF)](https://www.google.com/maps/search/?api=1&query=37.9174313%2C-122.33543300000001&query_place_id=ChIJfaEr8F54hYARTaAjFURNejA) — 7 reviews (4.3★) · `library`
+- [Science Library (Li and Ma)](https://www.google.com/maps/search/?api=1&query=37.4306507%2C-122.17141339999999&query_place_id=ChIJ49t_oSu7j4ARrcKxrqb-wGk) — 7 reviews (4.4★) · `library`
+- [Sutro Library](https://www.google.com/maps/search/?api=1&query=37.7214457%2C-122.4780362&query_place_id=ChIJLwt8nbF9j4ARYILNL0GwzxI) — 7 reviews (4.4★) · `library`
+- [Terman Engineering Library](https://www.google.com/maps/search/?api=1&query=37.4280737%2C-122.17421689999999&query_place_id=ChIJpfoMziq7j4ARQj5mJsVr8wY) — 7 reviews (5★) · `library`
+- [UCLSF Library](https://www.google.com/maps/search/?api=1&query=37.7811659%2C-122.41584449999999&query_place_id=ChIJOxXbXpqAhYARw8_DY2Jxudk) — 7 reviews (4.9★) · `library`
+- [Cañada College Library](https://www.google.com/maps/search/?api=1&query=37.4489242%2C-122.2655304&query_place_id=ChIJZaMLf1ihj4AR1JkaxyKiuDY) — 6 reviews (5★) · `library`
+- [East Asia Library](https://www.google.com/maps/search/?api=1&query=37.4294684%2C-122.1672722&query_place_id=ChIJw9DEC2W7j4AReHwSguLp2DQ) — 6 reviews (4.3★) · `library`
+- [Marian Koshland Bioscience & Natural Resources Library](https://www.google.com/maps/search/?api=1&query=37.8714896%2C-122.2621408&query_place_id=ChIJ_____-B-hYARkH8qFkVlQZA) — 6 reviews (5★) · `library`
+- [Niebyl-Proctor Marxist Library](https://www.google.com/maps/search/?api=1&query=37.8511108%2C-122.26073620000001&query_place_id=ChIJPdyUOtd9hYARxyvEOMR2dqQ) — 6 reviews (5★) · `library`
+- [South Branch Library](https://www.google.com/maps/search/?api=1&query=37.7086882%2C-122.1339814&query_place_id=ChIJi2IbyNWPj4ARu6zQ6krqYaM) — 6 reviews (4.3★) · `library`
+- [Chabot College Library](https://www.google.com/maps/search/?api=1&query=37.641831499999995%2C-122.10565500000001&query_place_id=ChIJZWYhhpiRj4ARb-_-yW9Td9c) — 5 reviews (4★) · `library`
+- [City College of San Francisco Downtown Center Library](https://www.google.com/maps/search/?api=1&query=37.7845051%2C-122.40468680000001&query_place_id=ChIJUc9gToaAhYAR3ylgci0CdGQ) — 5 reviews (4.6★) · `library`
+- [Jewish Community Library](https://www.google.com/maps/search/?api=1&query=37.781447799999995%2C-122.43654269999999&query_place_id=ChIJDxYg5RSHhYAR2JrRf_Biwwc) — 5 reviews (4.8★) · `library`
+- [NASA Life Sciences Library](https://www.google.com/maps/search/?api=1&query=37.4145123%2C-122.0581667&query_place_id=ChIJZUGCqmW3j4ARKFsb5_oVdpk) — 5 reviews (5★) · `library`
+- [Robert Crown Law Library](https://www.google.com/maps/search/?api=1&query=37.424098%2C-122.1675664&query_place_id=ChIJJ1XBu9a6j4ARkgoTD8JaHNA) — 5 reviews (4★) · `library`
+
+</details>
+
+
+## Movie Theaters — 85 legitimate (tentacle 1mi; matching/measuring)
+
+
+<details><summary>All 85 kept</summary>
+
+- [Cinemark Century Mountain View 16](https://www.google.com/maps/search/?api=1&query=37.4144292%2C-122.08115539999999&query_place_id=ChIJOYvCo1W3j4AR1LAifgk13rs) — 8195 reviews (4.6★) · `movie_theater`
+- [AMC Mercado 20](https://www.google.com/maps/search/?api=1&query=37.3891813%2C-121.98301989999997&query_place_id=ChIJRxpmaN3Jj4AR8UKnsvpVnoE) — 7644 reviews (4.2★) · `movie_theater`
+- [Alamo Drafthouse Cinema New Mission](https://www.google.com/maps/search/?api=1&query=37.7562178%2C-122.4191225&query_place_id=ChIJFyM_zj5-j4ARVy4Crc6cSdM) — 4794 reviews (4.6★) · `movie_theater`
+- [West Wind Capitol Drive-In](https://www.google.com/maps/search/?api=1&query=37.280252499999996%2C-121.84033830000001&query_place_id=ChIJrZFSwkYyjoARm94DpIT6ylM) — 4534 reviews (4.4★) · `movie_theater`
+- [Cinemark Century Daly City 20 XD and IMAX](https://www.google.com/maps/search/?api=1&query=37.7022745%2C-122.470544&query_place_id=ChIJbzxsjEB8j4ARMzaEAY4Sn8M) — 4163 reviews (4.3★) · `movie_theater`
+- [Cinemark Century Great Mall 20 XD and SCREENX](https://www.google.com/maps/search/?api=1&query=37.4182504%2C-121.89917079999998&query_place_id=ChIJx1qYeMvOj4ARFI_EBvRG0Rw) — 4131 reviews (4.4★) · `movie_theater`
+- [AMC Metreon 16](https://www.google.com/maps/search/?api=1&query=37.7843985%2C-122.4034217&query_place_id=ChIJ-zhtDYeAhYARu4ew7BWOoo4) — 3967 reviews (4.4★) · `movie_theater`
+- [West Wind Solano Drive-In](https://www.google.com/maps/search/?api=1&query=37.999718699999995%2C-122.04972269999999&query_place_id=ChIJ9-WA_ldmhYARAlc777QLpAY) — 3922 reviews (4.5★) · `movie_theater`
+- [Regal Hacienda Crossings](https://www.google.com/maps/search/?api=1&query=37.70312%2C-121.88530999999998&query_place_id=ChIJl8w4ZEvpj4AR96jUNf7rAsQ) — 3471 reviews (4.3★) · `movie_theater`
+- [AMC Bay Street 16](https://www.google.com/maps/search/?api=1&query=37.8329817%2C-122.29204680000001&query_place_id=ChIJ22DWFkF-hYARcdrN1YSJF4w) — 3183 reviews (4.2★) · `movie_theater`
+- [Cinemark Century Union Landing 25 and XD](https://www.google.com/maps/search/?api=1&query=37.5993043%2C-122.067616&query_place_id=ChIJOeUFBL6Vj4ARKkjcqjtYBj4) — 3146 reviews (4.3★) · `movie_theater`
+- [Alameda Theatre & Cineplex](https://www.google.com/maps/search/?api=1&query=37.7645866%2C-122.2433868&query_place_id=ChIJ3YmMD76Gj4ARRTRo5mzDWHs) — 3049 reviews (4.7★) · `movie_theater`
+- [Cinemark Century Redwood Downtown 20 and XD](https://www.google.com/maps/search/?api=1&query=37.486259499999996%2C-122.2286872&query_place_id=ChIJW0q6La2jj4ARfAm-rgZ5HoY) — 2938 reviews (4.4★) · `movie_theater`
+- [AMC Saratoga 14](https://www.google.com/maps/search/?api=1&query=37.288731899999995%2C-121.99000009999999&query_place_id=ChIJXx27OFW1j4AReI1x51i06uU) — 2858 reviews (3.9★) · `movie_theater`
+- [CinemaWest Veranda LUXE IMAX, 4DX, ScreenX & Giant Screen](https://www.google.com/maps/search/?api=1&query=37.9706793%2C-122.0587431&query_place_id=ChIJEfvkLsFmhYARFov5YqKmryc) — 2819 reviews (4.1★) · `movie_theater`
+- [Grand Lake Theatre](https://www.google.com/maps/search/?api=1&query=37.8115054%2C-122.2477279&query_place_id=ChIJFQpx8kOHj4ARPedZK4hrPtE) — 2736 reviews (4.7★) · `movie_theater`
+- [AMC Eastridge 15](https://www.google.com/maps/search/?api=1&query=37.3248609%2C-121.81491829999997&query_place_id=ChIJQ38IW6AyjoARRDqG9vcwuEw) — 2704 reviews (4.2★) · `movie_theater`
+- [The Castro Theatre](https://www.google.com/maps/search/?api=1&query=37.7620333%2C-122.43475910000001&query_place_id=ChIJeWH4Txt-j4ARJZQ5pivU-hQ) — 2655 reviews (4.7★) · `movie_theater`
+- [Cinemark Century at Pacific Commons and XD](https://www.google.com/maps/search/?api=1&query=37.4997399%2C-121.97098639999999&query_place_id=ChIJy6JluGzHj4ARydjwq5xGijo) — 2406 reviews (4.5★) · `movie_theater`
+- [AMC Kabuki 8](https://www.google.com/maps/search/?api=1&query=37.7849354%2C-122.43252319999999&query_place_id=ChIJmf0AV7iAhYARylK9tmGaQvM) — 2365 reviews (4.1★) · `movie_theater`
+- [AMC NewPark 12](https://www.google.com/maps/search/?api=1&query=37.5272735%2C-122.00194669999999&query_place_id=ChIJc-HJYlq_j4AR3LsTqyvE9Jk) — 2352 reviews (4.4★) · `movie_theater`
+- [Cinemark Century Oakridge 20 XD and SCREENX](https://www.google.com/maps/search/?api=1&query=37.251377999999995%2C-121.86277799999999&query_place_id=ChIJYQ8MAtYzjoARKhr5uuWZyX0) — 2219 reviews (4.5★) · `movie_theater`
+- [CineLux Morgan Hill](https://www.google.com/maps/search/?api=1&query=37.113551799999996%2C-121.6379452&query_place_id=ChIJww5YSHAgjoARXbMMBaGO6Y4) — 2147 reviews (4.3★) · `movie_theater`
+- [Brenden Theatres](https://www.google.com/maps/search/?api=1&query=37.976181%2C-122.0362548&query_place_id=ChIJh3-QySdnhYARXqJljNgJPzI) — 2056 reviews (4.5★) · `movie_theater`
+- [AMC Brentwood 14](https://www.google.com/maps/search/?api=1&query=37.9457938%2C-121.7407856&query_place_id=ChIJK4oGXN74j4ARQ5yUjrFljnU) — 2033 reviews (4.2★) · `movie_theater`
+- [Cinemark Century at Hayward](https://www.google.com/maps/search/?api=1&query=37.6734647%2C-122.0812889&query_place_id=ChIJacHnN9iTj4ARdWeCdGi6wYU) — 1959 reviews (4.3★) · `movie_theater`
+- [Cinemark Century San Mateo 12](https://www.google.com/maps/search/?api=1&query=37.5663339%2C-122.32235319999998&query_place_id=ChIJd3dEm3Cej4ARl8USef836uE) — 1878 reviews (4.4★) · `movie_theater`
+- [AMC Sunnyvale 12](https://www.google.com/maps/search/?api=1&query=37.3740182%2C-122.0308701&query_place_id=ChIJvQ9808q3j4ARcxdonur6Mlk) — 1861 reviews (4.5★) · `movie_theater`
+- [CinemaWest Livermore & Giant Screen](https://www.google.com/maps/search/?api=1&query=37.6835135%2C-121.76696609999999&query_place_id=ChIJLejCJqDnj4ARE8vd-IHvrdc) — 1825 reviews (4.5★) · `movie_theater`
+- [Ciné Lounge Fremont 7 Cinemas](https://www.google.com/maps/search/?api=1&query=37.5540583%2C-121.97961110000001&query_place_id=ChIJC_OOcmnBj4AR8_gJ-Bz5Ssk) — 1760 reviews (4.2★) · `movie_theater`
+- [Regal Jack London](https://www.google.com/maps/search/?api=1&query=37.79614%2C-122.27762999999999&query_place_id=ChIJs4qd8seAj4ARb3eN_3SNMCU) — 1734 reviews (4.3★) · `movie_theater`
+- [Cinemark Century Bayfair Mall 16](https://www.google.com/maps/search/?api=1&query=37.6994585%2C-122.12328210000001&query_place_id=ChIJTfwbsNORj4ARcXtMg5DVvkQ) — 1705 reviews (4.3★) · `movie_theater`
+- [Cinemark Century Downtown Pleasant Hill 16 and XD](https://www.google.com/maps/search/?api=1&query=37.944426%2C-122.061977&query_place_id=ChIJUa2SQ0dhhYARKs0JuKQbbTU) — 1702 reviews (4.5★) · `movie_theater`
+- [Cinemark Century Hilltop 16](https://www.google.com/maps/search/?api=1&query=37.9818468%2C-122.31978389999999&query_place_id=ChIJTTwySKV3hYARFeX7E6UvRVY) — 1596 reviews (4.3★) · `movie_theater`
+- [Cinemark Century at Tanforan and XD](https://www.google.com/maps/search/?api=1&query=37.6379832%2C-122.4178457&query_place_id=ChIJEcWqrt97j4ARU72up5USkXA) — 1582 reviews (4.2★) · `movie_theater`
+- [Maya Cinemas Pittsburg](https://www.google.com/maps/search/?api=1&query=38.0084527%2C-121.84437059999999&query_place_id=ChIJmVxgWpdZhYARxziiyNJeaUk) — 1548 reviews (4.3★) · `movie_theater`
+- [The New Parkway Theater](https://www.google.com/maps/search/?api=1&query=37.813967%2C-122.267471&query_place_id=ChIJFxykYquAj4ARmQ9p6V3m2LQ) — 1504 reviews (4.7★) · `movie_theater`
+- [CineLux Almaden Café & Lounge](https://www.google.com/maps/search/?api=1&query=37.2903915%2C-121.88030619999999&query_place_id=ChIJi1d6FnMzjoARXoYg2ubnp34) — 1461 reviews (4.5★) · `movie_theater`
+- [Contra Costa Cinema](https://www.google.com/maps/search/?api=1&query=37.9938913%2C-122.1187849&query_place_id=ChIJzTzjR6NlhYARFwlEfdOk7QM) — 1315 reviews (4.6★) · `movie_theater`
+- [THE LOT City Center](https://www.google.com/maps/search/?api=1&query=37.763107%2C-121.9601484&query_place_id=ChIJT-xDF5_zj4ARCw58zASw22Q) — 1182 reviews (4★) · `movie_theater`
+- [Cinemark Century Walnut Creek 14 and XD](https://www.google.com/maps/search/?api=1&query=37.8964573%2C-122.0618657&query_place_id=ChIJO8sbDOphhYARVa8Vge9SfdA) — 1165 reviews (4.4★) · `movie_theater`
+- [Cinépolis Luxury Cinemas San Mateo](https://www.google.com/maps/search/?api=1&query=37.5393591%2C-122.3010707&query_place_id=ChIJ1afTrWmfj4ARwm1KRh3G_E0) — 1124 reviews (3.9★) · `movie_theater`
+- [Pruneyard Cinemas](https://www.google.com/maps/search/?api=1&query=37.2879776%2C-121.933875&query_place_id=ChIJnRtemsI0joAR9yOwAlQNT3k) — 1111 reviews (4.5★) · `movie_theater`
+- [Cinemark CinéArts Santana Row](https://www.google.com/maps/search/?api=1&query=37.318978099999995%2C-121.94833219999998&query_place_id=ChIJNUS3dt_Kj4ARPWm4OftVdWo) — 1104 reviews (4.5★) · `movie_theater`
+- [Roxie Theater](https://www.google.com/maps/search/?api=1&query=37.76462%2C-122.42242499999999&query_place_id=ChIJX6glQiJ-j4ARd6LdFTPBmJs) — 929 reviews (4.6★) · `movie_theater`
+- [CineLux Plaza Theatre](https://www.google.com/maps/search/?api=1&query=37.2781587%2C-121.9509983&query_place_id=ChIJJwI-kh41joARZ1enEasXEyg) — 828 reviews (4.6★) · `movie_theater`
+- [Regal Stonestown Galleria](https://www.google.com/maps/search/?api=1&query=37.729008%2C-122.47640999999999&query_place_id=ChIJy48x48t9j4ARDHFEMa367wc) — 738 reviews (4.5★) · `movie_theater`
+- [Rialto Cinemas Cerrito](https://www.google.com/maps/search/?api=1&query=37.9018896%2C-122.30291199999999&query_place_id=ChIJkUF1XSJ5hYARzfZH7HFT2II) — 700 reviews (4.6★) · `movie_theater`
+- [Stanford Theatre](https://www.google.com/maps/search/?api=1&query=37.4452083%2C-122.1626659&query_place_id=ChIJQViY5Tm7j4ARi8P0xr1zR2g) — 697 reviews (4.9★) · `movie_theater`
+- [1000 Van Ness](https://www.google.com/maps/search/?api=1&query=37.785154899999995%2C-122.42038499999998&query_place_id=ChIJV05OkpaAhYAREvO2JfkoQa0) — 636 reviews (4.2★) · `movie_theater`
+- [Cinemark Century Southland Mall](https://www.google.com/maps/search/?api=1&query=37.6510318%2C-122.101953&query_place_id=ChIJDUWCc36Rj4ARiatVWYox6os) — 562 reviews (4.5★) · `movie_theater`
+- [Balboa Theatre](https://www.google.com/maps/search/?api=1&query=37.7758592%2C-122.49797269999999&query_place_id=ChIJD9qE-6WHhYARYDtpvads6FQ) — 518 reviews (4.6★) · `movie_theater`
+- [The Chabot](https://www.google.com/maps/search/?api=1&query=37.6950936%2C-122.08317960000001&query_place_id=ChIJOSt1jyeSj4AR_evEEfBB17Y) — 461 reviews (4.5★) · `movie_theater`
+- [Landmark's Piedmont Theatre](https://www.google.com/maps/search/?api=1&query=37.827337%2C-122.25101300000001&query_place_id=ChIJZ14e3vZ9hYARIduXinkyNew) — 453 reviews (4.5★) · `movie_theater`
+- [IMAX at AMC Metreon 16](https://www.google.com/maps/search/?api=1&query=37.7843726%2C-122.4034442&query_place_id=ChIJYwdnpoeAhYARqLu3Z0r9p68) — 443 reviews (4.6★) · `movie_theater`
+- [Apple Cinemas Van Ness IMAX](https://www.google.com/maps/search/?api=1&query=37.785190199999995%2C-122.42094379999999&query_place_id=ChIJp0ynta-BhYARI2wou04immo) — 398 reviews (4.4★) · `movie_theater`
+- [CineLux Gilroy Café & Lounge](https://www.google.com/maps/search/?api=1&query=36.997737199999996%2C-121.56609639999999&query_place_id=ChIJCaFnKP7jkYAR5Xxk1G53VLs) — 384 reviews (4.4★) · `movie_theater`
+- [CineLux Los Gatos Theatre](https://www.google.com/maps/search/?api=1&query=37.2238895%2C-121.98354359999999&query_place_id=ChIJubtckPo1joARyCosTmX1lus) — 373 reviews (4.6★) · `movie_theater`
+- [Alamo Drafthouse Cinema Mountain View](https://www.google.com/maps/search/?api=1&query=37.404860299999996%2C-122.1093955&query_place_id=ChIJ_-QZ7vyxj4AR-mu-TuDKYyw) — 356 reviews (3.7★) · `movie_theater`
+- [Alameda Cinema Grill](https://www.google.com/maps/search/?api=1&query=37.7648504%2C-122.24399509999999&query_place_id=ChIJWSC5Eb6Gj4ARfq0YWcrpgnw) — 353 reviews (4.2★) · `movie_theater`
+- [Rialto Cinemas Elmwood](https://www.google.com/maps/search/?api=1&query=37.8567116%2C-122.25316459999998&query_place_id=ChIJwX1X4819hYAR5oAMIfO68MY) — 353 reviews (4.5★) · `movie_theater`
+- [Landmark's Opera Plaza Cinema](https://www.google.com/maps/search/?api=1&query=37.7811784%2C-122.42144259999998&query_place_id=ChIJZ76fAGGAhYARK8Iv1jccbNM) — 343 reviews (4.2★) · `movie_theater`
+- [The Delta](https://www.google.com/maps/search/?api=1&query=37.932001299999996%2C-121.6947876&query_place_id=ChIJcS6wr5X-j4ARuiUm0EC8Cck) — 334 reviews (4.6★) · `movie_theater`
+- [Landmark's Aquarius Theatre](https://www.google.com/maps/search/?api=1&query=37.4449368%2C-122.1637395&query_place_id=ChIJ_0_6XTe7j4ARq4KfwoQ9S4Q) — 333 reviews (4.5★) · `movie_theater`
+- [Orinda Theatre](https://www.google.com/maps/search/?api=1&query=37.8787003%2C-122.18217720000001&query_place_id=ChIJL1nBZrdihYARn0mxaTKg5ik) — 311 reviews (4.6★) · `movie_theater`
+- [Alamo Drafthouse Cinema Valley Fair](https://www.google.com/maps/search/?api=1&query=37.325316799999996%2C-121.9475777&query_place_id=ChIJPWPCTQDLj4ARGpNxxHP-v88) — 284 reviews (3.1★) · `movie_theater`
+- [Presidio Movie Theater](https://www.google.com/maps/search/?api=1&query=37.8002215%2C-122.44196489999997&query_place_id=ChIJe15ZOtSAhYARiatsgofrEEQ) — 281 reviews (4.3★) · `movie_theater`
+- [3Below Theaters](https://www.google.com/maps/search/?api=1&query=37.332437999999996%2C-121.8860278&query_place_id=ChIJher2OLrMj4ARbciF0TRDi2s) — 244 reviews (4.5★) · `movie_theater`
+- [4 Star Theater](https://www.google.com/maps/search/?api=1&query=37.7822418%2C-122.48293070000001&query_place_id=ChIJETvrcgWHhYARprNARB3Chko) — 216 reviews (4.4★) · `movie_theater`
+- [CinemaWest Rheem Theatre & Giant Screen](https://www.google.com/maps/search/?api=1&query=37.8604305%2C-122.12689429999999&query_place_id=ChIJz4f6XtWJj4AR2-h10P2TjTw) — 176 reviews (4.6★) · `movie_theater`
+- [Vogue Theatre](https://www.google.com/maps/search/?api=1&query=37.7884253%2C-122.4467412&query_place_id=ChIJUYTcTDOHhYAR43PddjOzrCI) — 176 reviews (4.6★) · `movie_theater`
+- [Marina Theater](https://www.google.com/maps/search/?api=1&query=37.8003111%2C-122.4385389&query_place_id=ChIJsRQL3NaAhYARCEfpBS90A70) — 171 reviews (4.2★) · `movie_theater`
+- [IMAX Dome Theater](https://www.google.com/maps/search/?api=1&query=37.331657199999995%2C-121.88998079999998&query_place_id=ChIJSTpYe8zNj4AR7SmGHtcFRN8) — 103 reviews (4.3★) · `movie_theater`
+- [Proxy Walk-In Theater](https://www.google.com/maps/search/?api=1&query=37.7764861%2C-122.4241392&query_place_id=ChIJf8mkCqKAhYAR3s_fGy2o21M) — 41 reviews (4.7★) · `movie_theater`
+- [Phyllis Wattis Theater](https://www.google.com/maps/search/?api=1&query=37.7859403%2C-122.4011282&query_place_id=ChIJkdxKYn2AhYARmbuIGEY6XfE) — 31 reviews (4.5★) · `movie_theater`
+- [Peephole Cinema](https://www.google.com/maps/search/?api=1&query=37.749272399999995%2C-122.4199003&query_place_id=ChIJlY62akF-j4AR7FZU3d9Iz9k) — 25 reviews (4.2★) · `movie_theater`
+- [Brenden Cinema Cafe](https://www.google.com/maps/search/?api=1&query=37.9765642%2C-122.03622820000001&query_place_id=ChIJ3ao_uCdnhYARN-BV5krD7-Q) — 24 reviews (4.8★) · `movie_theater`
+- [The Cut Outdoor Cinema](https://www.google.com/maps/search/?api=1&query=37.789818%2C-122.39289180000002&query_place_id=ChIJ3b1YpUmBhYARaKRXI4MofrE) — 22 reviews (4.5★) · `event_venue`
+- [Delancey Street Screening Room](https://www.google.com/maps/search/?api=1&query=37.7842728%2C-122.38837590000001&query_place_id=ChIJF2jWo3eAhYARJFLuamU37YU) — 20 reviews (4.4★) · `movie_theater`
+- [Chill Theaters - World's First Mobile Movie Theater](https://www.google.com/maps/search/?api=1&query=37.3651629%2C-121.9063745&query_place_id=ChIJV_zoYZTLj4AR98oZeCYGPm0) — 13 reviews (5★) · `movie_theater`
+- [Coppola Theater](https://www.google.com/maps/search/?api=1&query=37.7221172%2C-122.479294&query_place_id=ChIJm0Ezz7F9j4ARmjFxghp6JhE) — 13 reviews (4.6★) · `movie_theater`
+- [Peacock Hall](https://www.google.com/maps/search/?api=1&query=37.8700669%2C-122.0734532&query_place_id=ChIJ9bb_bQWKj4AR7Q44w4EeJxk) — 13 reviews (4.2★) · `movie_theater`
+- [Shapeshifters Cinema](https://www.google.com/maps/search/?api=1&query=37.7990822%2C-122.27808259999999&query_place_id=ChIJmz956VGBj4AReBaFqU8y2AQ) — 10 reviews (5★) · `movie_theater`
+- [Other Cinema](https://www.google.com/maps/search/?api=1&query=37.7570899%2C-122.4214705&query_place_id=ChIJNV8Sfz5-j4ARZC_zyRsLd0s) — 8 reviews (4.5★) · `movie_theater`
+- [Starlight Cinema](https://www.google.com/maps/search/?api=1&query=37.3367515%2C-121.89056069999998&query_place_id=ChIJBYmQG5jMj4AR3vSdFMs6zr0) — 6 reviews (5★) · `event_venue`
+
+</details>
+
+
+## Hospitals — 254 legitimate (tentacle 1mi; matching/measuring)
+
+
+<details><summary>All 254 kept</summary>
+
+- [Good Samaritan Hospital](https://www.google.com/maps/search/?api=1&query=37.251696599999995%2C-121.9466929&query_place_id=ChIJO1VC0bI1joAR5C8qGDrCSZ4) — 5517 reviews (4.5★) · `general_hospital`
+- [Kaiser Permanente Santa Clara Medical Center](https://www.google.com/maps/search/?api=1&query=37.335927999999996%2C-121.9994844&query_place_id=ChIJzT2XUo-1j4AR5A4nV_KVdUg) — 2360 reviews (4.4★) · `medical_center`
+- [Kaiser Permanente Oakland Medical Center](https://www.google.com/maps/search/?api=1&query=37.8236091%2C-122.25821690000001&query_place_id=ChIJ-2PEM_p9hYARHW91UOyZODw) — 2319 reviews (4.5★) · `medical_center`
+- [Kaiser Permanente San Jose Medical Center](https://www.google.com/maps/search/?api=1&query=37.2395632%2C-121.8012245&query_place_id=ChIJLzjiwC8ujoAR50z-X7tCEW0) — 2123 reviews (4.5★) · `medical_center`
+- [Regional Medical Center](https://www.google.com/maps/search/?api=1&query=37.3627557%2C-121.84981030000002&query_place_id=ChIJ_3X2kATNj4ARJq22N-TR2io) — 1733 reviews (3.8★) · `hospital`
+- [Dignity Health - Sequoia Hospital](https://www.google.com/maps/search/?api=1&query=37.4801316%2C-122.25426279999999&query_place_id=ChIJu9XeYC2ij4ARYHlMycBCb64) — 1593 reviews (4.6★) · `general_hospital`
+- [Kaiser Permanente San Leandro Medical Center](https://www.google.com/maps/search/?api=1&query=37.7064867%2C-122.16470520000001&query_place_id=ChIJvaCZovqPj4ARVpsklstSVhc) — 1430 reviews (4.2★) · `medical_center`
+- [Kaiser Permanente Walnut Creek Medical Center](https://www.google.com/maps/search/?api=1&query=37.8924284%2C-122.0590049&query_place_id=ChIJM2FDSt1hhYARHuO3LqVcfzs) — 1355 reviews (4.4★) · `medical_center`
+- [Kaiser Permanente Redwood City Medical Center](https://www.google.com/maps/search/?api=1&query=37.4888897%2C-122.2241739&query_place_id=ChIJ72rH3FSij4AReB-jZ2NK3Xc) — 1278 reviews (4.6★) · `medical_center`
+- [Kaiser Permanente San Francisco Medical Center](https://www.google.com/maps/search/?api=1&query=37.7826471%2C-122.4432378&query_place_id=ChIJ0d8NvLWAhYARyhkR_BPz5Y0) — 1265 reviews (4.6★) · `medical_center`
+- [Kaiser Permanente Fremont Medical Center](https://www.google.com/maps/search/?api=1&query=37.5526637%2C-121.97514369999999&query_place_id=ChIJEQMOPJLAj4ARfBCK_DyEt2k) — 1155 reviews (4.4★) · `medical_center`
+- [Santa Clara Valley Medical Center](https://www.google.com/maps/search/?api=1&query=37.3139499%2C-121.9340007&query_place_id=ChIJ54JcoTHLj4ARwKWou-_AueA) — 1036 reviews (2.9★) · `hospital`
+- [Kaiser Permanente South San Francisco Medical Center](https://www.google.com/maps/search/?api=1&query=37.660202399999996%2C-122.43991159999999&query_place_id=ChIJ_fZFEnt5j4ARZvfXfYgrHkI) — 955 reviews (4.5★) · `medical_center`
+- [Kaiser Permanente Richmond Medical Center](https://www.google.com/maps/search/?api=1&query=37.9375573%2C-122.36110489999999&query_place_id=ChIJSyc1RamChYARiOyVm944TuE) — 940 reviews (4.4★) · `medical_center`
+- [Kaiser Permanente Antioch Medical Center](https://www.google.com/maps/search/?api=1&query=37.9508418%2C-121.7749286&query_place_id=ChIJZ9Uuumf4j4AR3w6FFC6OGcc) — 826 reviews (4.2★) · `medical_center`
+- [UCSF Health Hyde Hospital](https://www.google.com/maps/search/?api=1&query=37.7895567%2C-122.416863&query_place_id=ChIJGTLadJOAhYARng57neGhjk0) — 823 reviews (4.1★) · `medical_center`
+- [UCSF Benioff Children's Hospital - Oakland](https://www.google.com/maps/search/?api=1&query=37.8371901%2C-122.2670282&query_place_id=ChIJH6MLwQp-hYAREF-jlarFMzc) — 738 reviews (4.2★) · `hospital`
+- [Zuckerberg San Francisco General Hospital and Trauma Center](https://www.google.com/maps/search/?api=1&query=37.7553498%2C-122.4054036&query_place_id=ChIJG9bTskt-j4ARBhzzHMYn48c) — 694 reviews (3.4★) · `general_hospital`
+- [El Camino Health - Mountain View Hospital](https://www.google.com/maps/search/?api=1&query=37.36913%2C-122.079557&query_place_id=ChIJxYu-ZtK2j4ARpLis1OcKNDM) — 675 reviews (3.4★) · `general_hospital`
+- [Highland Hospital](https://www.google.com/maps/search/?api=1&query=37.7987496%2C-122.23088670000001&query_place_id=ChIJN-IMKhuHj4ARfyLob5nZMo4) — 581 reviews (3.2★) · `general_hospital`
+- [UCSF Health Stanyan Hospital](https://www.google.com/maps/search/?api=1&query=37.7739514%2C-122.4538523&query_place_id=ChIJ82h8706HhYARtqUYN1WhsYU) — 496 reviews (4.1★) · `general_hospital`
+- [Lucile Packard Children's Hospital Stanford](https://www.google.com/maps/search/?api=1&query=37.436029399999995%2C-122.17453919999998&query_place_id=ChIJhx8-Ts2kj4ARSjW_bZorKCw) — 458 reviews (4.1★) · `hospital`
+- [San Francisco VA Medical Center](https://www.google.com/maps/search/?api=1&query=37.782336199999996%2C-122.50528999999999&query_place_id=ChIJa_d9WbKHhYARdNmJEtzGc48) — 451 reviews (4.3★) · `hospital`
+- [Stanford Medicine](https://www.google.com/maps/search/?api=1&query=37.4332074%2C-122.1755453&query_place_id=ChIJO7mRHM6kj4ARMgmBqbzv4KE) — 427 reviews (3.7★) · `general_hospital`
+- [Washington Health](https://www.google.com/maps/search/?api=1&query=37.5573072%2C-121.9792659&query_place_id=ChIJvwpYqIjAj4ARoEXXBQD9pRs) — 383 reviews (2.6★) · `general_hospital`
+- [UCSF Medical Center](https://www.google.com/maps/search/?api=1&query=37.763104399999996%2C-122.4578806&query_place_id=ChIJg2PL2lmHhYARLICti5gT40s) — 360 reviews (3.5★) · `hospital`
+- [Sutter Eden Medical Center](https://www.google.com/maps/search/?api=1&query=37.6982813%2C-122.08968959999999&query_place_id=ChIJZ3cnuIuRj4ARydD6tT2Jt0k) — 323 reviews (3.3★) · `hospital`
+- [San Mateo Medical Center](https://www.google.com/maps/search/?api=1&query=37.53126820000001%2C-122.2992982&query_place_id=ChIJO4ju5Q-fj4ARvFQIymk0t3Y) — 309 reviews (2.9★) · `medical_center`
+- [O'Connor Hospital](https://www.google.com/maps/search/?api=1&query=37.3282354%2C-121.9384647&query_place_id=ChIJe2mDoRnLj4ARcPZDNq1NLCo) — 305 reviews (3★) · `general_hospital`
+- [Palo Alto VA Medical Center](https://www.google.com/maps/search/?api=1&query=37.405063%2C-122.14025240000001&query_place_id=ChIJBcl2apu6j4ARoMchLKG57ts) — 303 reviews (4.3★) · `hospital`
+- [UCSF Benioff Children's Hospital - San Francisco](https://www.google.com/maps/search/?api=1&query=37.764940100000004%2C-122.3900471&query_place_id=ChIJJegV7zOHhYARcLDU3eS58jE) — 302 reviews (4.5★) · `hospital`
+- [John Muir Health, Walnut Creek Medical Center](https://www.google.com/maps/search/?api=1&query=37.9132083%2C-122.04062419999998&query_place_id=ChIJVVVVCrNhhYAROwS_bQAOD4Y) — 299 reviews (3.3★) · `medical_center`
+- [Alta Bates Summit Medical Center | Alta Bates Campus](https://www.google.com/maps/search/?api=1&query=37.8556313%2C-122.2572029&query_place_id=ChIJKfuLztN9hYARmakdGNOP-20) — 288 reviews (3.3★) · `hospital`
+- [Mills-Peninsula Medical Center - Burlingame Campus](https://www.google.com/maps/search/?api=1&query=37.592304899999995%2C-122.3824274&query_place_id=ChIJgTwO-7R3j4ARps7tRNK2Nfk) — 283 reviews (3.4★) · `hospital`
+- [CPMC Van Ness Campus](https://www.google.com/maps/search/?api=1&query=37.785997%2C-122.42230199999999&query_place_id=ChIJkRbB3r2AhYARWgtBJ-WjAyQ) — 279 reviews (3.6★) · `hospital`
+- [UCSF Medical Center at Mission Bay](https://www.google.com/maps/search/?api=1&query=37.767785599999996%2C-122.3921137&query_place_id=ChIJt1j-Tc9_j4ARe2o9F0u2daw) — 273 reviews (4.3★) · `hospital`
+- [Mountain View Center](https://www.google.com/maps/search/?api=1&query=37.3764152%2C-122.06524&query_place_id=ChIJM3LcrR-3j4ARZrVZjOKobFY) — 268 reviews (2.8★) · `medical_center`
+- [St. Rose Hospital](https://www.google.com/maps/search/?api=1&query=37.6330807%2C-122.0879288&query_place_id=ChIJG3wdQqaWj4ARv5-8tdzrec0) — 267 reviews (2.6★) · `hospital`
+- [AHMC Seton Medical Center](https://www.google.com/maps/search/?api=1&query=37.68097530000001%2C-122.47434580000001&query_place_id=ChIJJdKG5XV8j4ARIJn-R_Zmc2Q) — 260 reviews (2.5★) · `medical_center`
+- [Sutter Delta Medical Center](https://www.google.com/maps/search/?api=1&query=37.9826963%2C-121.80297549999997&query_place_id=ChIJ_ZqWFYxXhYARmLG-GUH0wS8) — 246 reviews (2.5★) · `hospital`
+- [CPMC Davies Campus](https://www.google.com/maps/search/?api=1&query=37.7682937%2C-122.43449950000002&query_place_id=ChIJs-pIpq2BhYARS5Nli9dVPOY) — 224 reviews (3.8★) · `hospital`
+- [Foster City Medical Center - Primary Care Urgent Care & Allergy](https://www.google.com/maps/search/?api=1&query=37.567958%2C-122.2675861&query_place_id=ChIJ_xWvAsuej4ARbE7iZeub4Hg) — 222 reviews (4★) · `medical_center`
+- [Fremont Center](https://www.google.com/maps/search/?api=1&query=37.5483749%2C-121.9742673&query_place_id=ChIJ1XhDb5TAj4ARqutRVae9AvY) — 206 reviews (2.2★) · `medical_center`
+- [Alta Bates Summit Medical Center | Summit Campus](https://www.google.com/maps/search/?api=1&query=37.8211583%2C-122.2630429&query_place_id=ChIJ70f5qP99hYARZpxL5qGysD0) — 204 reviews (3.3★) · `hospital`
+- [Stanford Health Care Tri-Valley](https://www.google.com/maps/search/?api=1&query=37.6933946%2C-121.88034169999999&query_place_id=ChIJK53MQEfpj4ARskCAa3lpJlo) — 203 reviews (2.9★) · `hospital`
+- [San Leandro Hospital](https://www.google.com/maps/search/?api=1&query=37.7124156%2C-122.14356520000001&query_place_id=ChIJiw7z0dqPj4ARguN6HXfvOYA) — 201 reviews (3★) · `general_hospital`
+- [John Muir, Concord Medical Center](https://www.google.com/maps/search/?api=1&query=37.983343999999995%2C-122.0336759&query_place_id=ChIJ6xHyeCFnhYARVyAFaZgFGhc) — 196 reviews (3★) · `medical_center`
+- [Martinez Health Center](https://www.google.com/maps/search/?api=1&query=38.006764%2C-122.1327937&query_place_id=ChIJXXFnOXllhYARqtzCj5IhsW0) — 194 reviews (3.3★) · `general_hospital`
+- [El Camino Health - Los Gatos Hospital](https://www.google.com/maps/search/?api=1&query=37.2623874%2C-121.96969259999999&query_place_id=ChIJIcxylQs1joARim8WD0JxZYA) — 192 reviews (3.3★) · `general_hospital`
+- [San Ramon Regional Medical Center](https://www.google.com/maps/search/?api=1&query=37.7761012%2C-121.95874649999999&query_place_id=ChIJB6x8g43yj4ARnOxyV0DOnYk) — 192 reviews (2.9★) · `medical_center`
+- [California Pet Hospital](https://www.google.com/maps/search/?api=1&query=37.681557%2C-122.48747449999999&query_place_id=ChIJu9_WEWd9j4ARKVplAaUBTvk) — 171 reviews (4.2★) · `hospital`
+- [Kindred Hospital San Francisco Bay Area](https://www.google.com/maps/search/?api=1&query=37.7161792%2C-122.1307582&query_place_id=ChIJSyt6vdKPj4ARUUIAEiFG1QM) — 166 reviews (3.7★) · `hospital`
+- [St. Louise Regional Hospital](https://www.google.com/maps/search/?api=1&query=37.0367167%2C-121.57116080000002&query_place_id=ChIJHRX-0mThkYARqcg-9Y_nrGg) — 157 reviews (3.2★) · `general_hospital`
+- [Inview Medical Imaging Fremont](https://www.google.com/maps/search/?api=1&query=37.5540199%2C-121.9767632&query_place_id=ChIJVYukYJHAj4ARgDZ9ZS7ICjY) — 149 reviews (4.7★) · `medical_center`
+- [John George Psychiatric Hospital](https://www.google.com/maps/search/?api=1&query=37.7108396%2C-122.12021449999999&query_place_id=ChIJL9Fk0NeRj4ARYFm5oeK3BAU) — 145 reviews (2★) · `hospital`
+- [Alameda Hospital](https://www.google.com/maps/search/?api=1&query=37.762677%2C-122.2541547&query_place_id=ChIJZ0iY17mGj4ARoGuoSYkhO-Y) — 135 reviews (2.6★) · `general_hospital`
+- [Pacific Health Clinic](https://www.google.com/maps/search/?api=1&query=37.7222595%2C-122.16677089999999&query_place_id=ChIJSda9guOPj4ARvLMvG5FJZHo) — 126 reviews (4.6★) · `medical_center`
+- [Contra Costa Regional Medical Center](https://www.google.com/maps/search/?api=1&query=38.0066858%2C-122.1328513&query_place_id=ChIJJX-DcINvhYARipDxGZQweng) — 122 reviews (3.3★) · `hospital`
+- [UCSF Medical Center at Mount Zion](https://www.google.com/maps/search/?api=1&query=37.7849743%2C-122.43911329999999&query_place_id=ChIJGQRYJraAhYARg8e-TXQ5BT0) — 118 reviews (3.9★) · `hospital`
+- [Livermore Division - VA Palo Alto Health Care System](https://www.google.com/maps/search/?api=1&query=37.62552%2C-121.763119&query_place_id=ChIJwRHAv1Pcj4ARFTi87T-bpSU) — 111 reviews (4.5★) · `hospital`
+- [Sutter Health](https://www.google.com/maps/search/?api=1&query=37.5922986%2C-122.38287050000001&query_place_id=ChIJKbgZsbR3j4ARDn-9FDdP_gw) — 111 reviews (4.1★) · `hospital`
+- [University Health Services, Tang Center](https://www.google.com/maps/search/?api=1&query=37.8678683%2C-122.26440059999999&query_place_id=ChIJ6WgT7yd8hYAR2p5f5p4md2w) — 105 reviews (2.9★) · `hospital`
+- [UCSF Sports Medicine Center for Young Athletes](https://www.google.com/maps/search/?api=1&query=37.5237536%2C-122.2525153&query_place_id=ChIJcZuCYd-Zj4AR93dFtUmDfGI) — 103 reviews (4.9★) · `hospital`
+- [John Muir Health Psychiatric Hospital](https://www.google.com/maps/search/?api=1&query=37.985906199999995%2C-122.03685700000001&query_place_id=ChIJ58wd6x9nhYARwNrRWE1ICh0) — 97 reviews (2.7★) · `hospital`
+- [CPMC Mission Bernal Campus & Orthopedic Institute](https://www.google.com/maps/search/?api=1&query=37.7471003%2C-122.4208842&query_place_id=ChIJF44O2EN-j4ARxRa0y_8juwY) — 93 reviews (3.2★) · `hospital`
+- [Landmark Health](https://www.google.com/maps/search/?api=1&query=37.6676844%2C-122.3830972&query_place_id=ChIJt8_YEGnHyIkRXqV7x2VDJl4) — 93 reviews (4.9★) · `medical_center`
+- [Chinese Hospital](https://www.google.com/maps/search/?api=1&query=37.795415%2C-122.4091375&query_place_id=ChIJjzSzPfOAhYARkWftX44ynf0) — 91 reviews (3.4★) · `hospital`
+- [Menlo Park VA Medical Center](https://www.google.com/maps/search/?api=1&query=37.465371999999995%2C-122.16085600000001&query_place_id=ChIJyQF0r1m7j4ARnoJU9meS3X0) — 89 reviews (4.3★) · `hospital`
+- [Los Gatos Center](https://www.google.com/maps/search/?api=1&query=37.245633399999996%2C-121.95733560000001&query_place_id=ChIJdRUSarc1joARFSkEEWD4DSQ) — 87 reviews (3.5★) · `medical_center`
+- [Stanford Hospital](https://www.google.com/maps/search/?api=1&query=37.4357495%2C-122.176299&query_place_id=ChIJg0sXGHWlj4ARdbvX84fLolI) — 86 reviews (2.7★) · `medical_center`
+- [Stanford Hospital](https://www.google.com/maps/search/?api=1&query=37.4334275%2C-122.1769112&query_place_id=ChIJFdwgzzOlj4AR3P3AUEUGIqM) — 83 reviews (3.9★) · `hospital`
+- [Bay Health Center - Immigration Doctor](https://www.google.com/maps/search/?api=1&query=37.6667243%2C-122.46681849999999&query_place_id=ChIJ975BUYF7j4ARaWp5VqY2JUk) — 78 reviews (5★) · `medical_center`
+- [Menlo Medical Clinic in Menlo Park - 1300 Crane](https://www.google.com/maps/search/?api=1&query=37.4530816%2C-122.1875736&query_place_id=ChIJtRJJDKWkj4AR0iNWYoH4lyM) — 74 reviews (3.9★) · `medical_center`
+- [Kaiser Permanente Fabiola Building](https://www.google.com/maps/search/?api=1&query=37.8252179%2C-122.256149&query_place_id=ChIJUSMjsPl9hYAReD-UXda_vuw) — 71 reviews (4.1★) · `medical_center`
+- [Children's Hospital Oakland](https://www.google.com/maps/search/?api=1&query=37.8371901%2C-122.2670282&query_place_id=ChIJVVVFxgp-hYARvE1lP6rbvGc) — 70 reviews (2.6★) · `hospital`
+- [Palo Alto Medical Foundation Los Altos Center](https://www.google.com/maps/search/?api=1&query=37.3955116%2C-122.1053237&query_place_id=ChIJe5wrk72wj4ARySBeYnWOsgY) — 69 reviews (3.1★) · `medical_center`
+- [Sutter Health](https://www.google.com/maps/search/?api=1&query=37.705138399999996%2C-121.8726594&query_place_id=ChIJEaOx5TPpj4ARvMTMhiHmLIY) — 69 reviews (3.5★) · `medical_center`
+- [Kentfield Hospital San Francisco](https://www.google.com/maps/search/?api=1&query=37.774181899999995%2C-122.4536946&query_place_id=ChIJbyx6jU6HhYARXyU1Ylsnw8k) — 61 reviews (3.3★) · `hospital`
+- [Kaiser Permanente San Francisco Medical Center](https://www.google.com/maps/search/?api=1&query=37.7802961%2C-122.46401759999998&query_place_id=ChIJVVUl0j6HhYARiW7a6ed6Tb8) — 60 reviews (4★) · `medical_center`
+- [Alta Bates Summit Medical Center | Herrick Campus](https://www.google.com/maps/search/?api=1&query=37.8642168%2C-122.2688043&query_place_id=ChIJ6XCdcYN-hYARDHvfc_e069s) — 57 reviews (3.4★) · `hospital`
+- [Concord Health Center](https://www.google.com/maps/search/?api=1&query=37.9805486%2C-122.0211043&query_place_id=ChIJCwWR9TlnhYARZShYM4fzHXE) — 55 reviews (2.2★) · `medical_center`
+- [Sunnyvale Sleep Center](https://www.google.com/maps/search/?api=1&query=37.348907499999996%2C-122.05088980000001&query_place_id=ChIJg1D8QZ22j4ARJxoMUiQR_1k) — 55 reviews (2.1★) · `medical_center`
+- [Twin Health, Inc.](https://www.google.com/maps/search/?api=1&query=37.4803494%2C-122.1771313&query_place_id=ChIJZ-MvzhG6j4ARG_9trAn9i3o) — 55 reviews (3.9★) · `medical_center`
+- [CPMC Pacific Heights Outpatient Center | 2333 Buchanan Street](https://www.google.com/maps/search/?api=1&query=37.790738000000005%2C-122.43169449999999&query_place_id=ChIJE5AkSmNhhYAR6ZgGDkXntRw) — 52 reviews (4.2★) · `medical_center`
+- [Golden State Medical Center](https://www.google.com/maps/search/?api=1&query=37.7711823%2C-121.97446029999999&query_place_id=ChIJJVVDbTXzj4ARM1B5kbWzzBg) — 49 reviews (5★) · `medical_center`
+- [Stanford Medical Center](https://www.google.com/maps/search/?api=1&query=37.4330425%2C-122.17505790000001&query_place_id=ChIJ927hZQ-lj4ARRLEGZPt35ZE) — 48 reviews (3.2★) · `medical_center`
+- [Milvia Care Center](https://www.google.com/maps/search/?api=1&query=37.8632922%2C-122.2700357&query_place_id=ChIJKfuLztN9hYARAudMi9hUjZE) — 47 reviews (2.3★) · `medical_center`
+- [Oakland VA Clinic](https://www.google.com/maps/search/?api=1&query=37.811980999999996%2C-122.27322369999999&query_place_id=ChIJFxwONKmAj4AReuW3DfTkOmQ) — 45 reviews (3.2★) · `hospital`
+- [McAuley Adolescent Psychiatric Unit](https://www.google.com/maps/search/?api=1&query=37.7736124%2C-122.4529458&query_place_id=ChIJ81lqd06HhYARtoXUFtCdlQ0) — 43 reviews (3.4★) · `hospital`
+- [San Carlos Center](https://www.google.com/maps/search/?api=1&query=37.5150886%2C-122.25989299999999&query_place_id=ChIJUwf_swCij4ARuB4f0GZyqwE) — 42 reviews (3.2★) · `medical_center`
+- [Premise Google Health and Wellness Center](https://www.google.com/maps/search/?api=1&query=37.387503699999996%2C-122.03793410000002&query_place_id=ChIJZRYqUwC3j4ARzdFHnjAjDy8) — 40 reviews (4★) · `medical_center`
+- [UCSF Langley Porter Psychiatric Hospital and Clinics](https://www.google.com/maps/search/?api=1&query=37.784695%2C-122.43922740000001&query_place_id=ChIJYxVpxFmHhYARNJDRI_RRLc4) — 39 reviews (3.2★) · `hospital`
+- [Dr. Yung C. Chen, MD](https://www.google.com/maps/search/?api=1&query=37.571793299999996%2C-122.33167669999999&query_place_id=ChIJf-rxHHGej4ARWjLgFDTLbCA) — 38 reviews (4.2★) · `medical_center`
+- [Mills-Peninsula Medical Center - San Mateo Campus](https://www.google.com/maps/search/?api=1&query=37.5650427%2C-122.32620779999999&query_place_id=ChIJVVWFEnGej4ARHyu_wM7FeG4) — 37 reviews (3.2★) · `hospital`
+- [National Center For Equine Facilitated Therapy (NCEFT)](https://www.google.com/maps/search/?api=1&query=37.4470976%2C-122.2777056&query_place_id=ChIJp1nKCxCkj4ARtM0kcwZQ2Vg) — 37 reviews (4.7★) · `medical_center`
+- [Santa Clara Valley Medical Center](https://www.google.com/maps/search/?api=1&query=37.3439729%2C-121.8747038&query_place_id=ChIJUVXSderMj4ARpN2D5ZcZMp4) — 37 reviews (3.5★) · `medical_center`
+- [Good Samaritan Hospital - Mission Oaks Campus](https://www.google.com/maps/search/?api=1&query=37.2447534%2C-121.9479332&query_place_id=ChIJ3x4jpMo1joARoedXWUDiE-8) — 36 reviews (3.6★) · `hospital`
+- [Don Lowe Pavilion](https://www.google.com/maps/search/?api=1&query=37.3114905%2C-121.93429490000001&query_place_id=ChIJyXKfKDLLj4ARyZoQpd_j4ac) — 35 reviews (1.8★) · `hospital`
+- [Stanford Primary Care in Portola Valley](https://www.google.com/maps/search/?api=1&query=37.399094399999996%2C-122.19299269999999&query_place_id=ChIJL7GS30Clj4ARAsXXmYRBcC8) — 35 reviews (3.8★) · `medical_center`
+- [Sutter East Bay Medical Foundation Care Center](https://www.google.com/maps/search/?api=1&query=37.8977437%2C-122.30189060000001&query_place_id=ChIJYU9rjCR5hYARmbomCSkOeYE) — 33 reviews (2.6★) · `medical_center`
+- [899 Valencia Street Care Center](https://www.google.com/maps/search/?api=1&query=37.7586372%2C-122.42113549999999&query_place_id=ChIJRe8kSzx-j4AResQdQSOlxZM) — 32 reviews (2.7★) · `medical_center`
+- [Sunnyvale Center (401)](https://www.google.com/maps/search/?api=1&query=37.368096699999995%2C-122.02744129999999&query_place_id=ChIJXaA6hWW2j4ART6xtO7XER4U) — 28 reviews (2.4★) · `medical_center`
+- [VA Martinez](https://www.google.com/maps/search/?api=1&query=37.994351699999996%2C-122.11560599999999&query_place_id=ChIJkS-tfGJlhYARcYR8fM1jOyY) — 27 reviews (3.5★) · `hospital`
+- [Los Altos Center](https://www.google.com/maps/search/?api=1&query=37.3955434%2C-122.10549049999997&query_place_id=ChIJkeojObmxj4ARxWEsgpg0B1Q) — 26 reviews (2.2★) · `medical_center`
+- [O'Connor Hospital Nuclear Medical Dept](https://www.google.com/maps/search/?api=1&query=37.3276322%2C-121.9379256&query_place_id=ChIJn43dqhnLj4ARaHaMv8hRGmY) — 26 reviews (3.7★) · `medical_center`
+- [San Jose Blossom Hill Center](https://www.google.com/maps/search/?api=1&query=37.251720899999995%2C-121.8742281&query_place_id=ChIJXz1guN4zjoAR6ezFjwitlEE) — 26 reviews (2.4★) · `medical_center`
+- [Pediatrics: Sunnyvale Center | PAMF](https://www.google.com/maps/search/?api=1&query=37.3683772%2C-122.02971760000001&query_place_id=ChIJSaOOImS2j4ARMWZ1wsPrlH8) — 25 reviews (3.1★) · `hospital`
+- [West Valley Center](https://www.google.com/maps/search/?api=1&query=37.3015179%2C-122.0312254&query_place_id=ChIJ5UMF4Bu1j4ARTCCPZaTrZGo) — 25 reviews (3.2★) · `medical_center`
+- [Coastside Clinic](https://www.google.com/maps/search/?api=1&query=37.464832%2C-122.43281949999998&query_place_id=ChIJ9zRuCud1j4AR7xNa4FN12h4) — 24 reviews (2.9★) · `hospital`
+- [Silver Avenue Family Health Center](https://www.google.com/maps/search/?api=1&query=37.7323999%2C-122.4064432&query_place_id=ChIJZTtuFPx-j4ARD-qX0mW3L5k) — 24 reviews (3.3★) · `medical_center`
+- [SFGH Building 80](https://www.google.com/maps/search/?api=1&query=37.7571912%2C-122.40573&query_place_id=ChIJX8IE9zV-j4ARmnakHxzAzjY) — 23 reviews (3.5★) · `hospital`
+- [Vision Care Center PAMF](https://www.google.com/maps/search/?api=1&query=37.372748099999995%2C-122.0508062&query_place_id=ChIJF_HIC-62j4ARdUu4jONhSLo) — 23 reviews (2.4★) · `medical_center`
+- [Bella Primary Care](https://www.google.com/maps/search/?api=1&query=37.794173%2C-122.42266199999999&query_place_id=ChIJV5f7Lzp_j4ARDju5edg8AZ8) — 22 reviews (4.3★) · `medical_center`
+- [John Muir Health Medical Imaging, Walnut Creek](https://www.google.com/maps/search/?api=1&query=37.911802699999996%2C-122.0380747&query_place_id=ChIJEY9NobNhhYARPKmscjBF2dA) — 22 reviews (2.7★) · `hospital`
+- [Stanford Medical Center](https://www.google.com/maps/search/?api=1&query=37.4355331%2C-122.17738790000001&query_place_id=ChIJVbwSS7ylj4AR5MQU0AlKP_E) — 22 reviews (3.1★) · `hospital`
+- [Danville Center](https://www.google.com/maps/search/?api=1&query=37.8074386%2C-121.99251629999999&query_place_id=ChIJU2ArU7WMj4ARTB5Udk0hyKQ) — 21 reviews (3.1★) · `medical_center`
+- [Dialysis Access Center – Oakland](https://www.google.com/maps/search/?api=1&query=37.8193121%2C-122.26417330000001&query_place_id=ChIJZf-TWlWHj4ARqgSPnZrHUnA) — 21 reviews (4.8★) · `medical_center`
+- [Palo Alto Center](https://www.google.com/maps/search/?api=1&query=37.4402979%2C-122.1617019&query_place_id=ChIJhYWBgQW7j4AR9ybigx7N4N8) — 21 reviews (2★) · `medical_center`
+- [Sunnyvale Center (301)](https://www.google.com/maps/search/?api=1&query=37.3683444%2C-122.02972229999997&query_place_id=ChIJtxx3iE63j4ARkE7N4aFQFDE) — 21 reviews (2.3★) · `medical_center`
+- [WelbeHealth](https://www.google.com/maps/search/?api=1&query=37.2947191%2C-121.9179325&query_place_id=ChIJdzqnf0Y1joARWCO-ppJE1xk) — 21 reviews (3.7★) · `medical_center`
+- [Asian Health Services Chenming & Margaret Hu Medical Center](https://www.google.com/maps/search/?api=1&query=37.7993366%2C-122.27113949999999&query_place_id=ChIJB_UACraAj4ARSj8MYUEGWeA) — 20 reviews (3.5★) · `medical_center`
+- [Kaiser Permanente Member Services Willow Bldg](https://www.google.com/maps/search/?api=1&query=37.4892386%2C-122.22419329999998&query_place_id=ChIJn2YXyKqjj4AR24ifyXcH2Cg) — 20 reviews (1.6★) · `medical_center`
+- [UCSF Medical Records](https://www.google.com/maps/search/?api=1&query=37.7639012%2C-122.45727110000001&query_place_id=ChIJc6JmaFeHhYARPkovz6Ol8yg) — 20 reviews (1.5★) · `medical_center`
+- [Stanford General Cardiology at Boswell Building](https://www.google.com/maps/search/?api=1&query=37.4332602%2C-122.17558020000001&query_place_id=ChIJVV-F2NKkj4AR5yOtleJMems) — 19 reviews (2.8★) · `hospital`
+- [Stanford Medicine Partners Primary Care Danville](https://www.google.com/maps/search/?api=1&query=37.822673699999996%2C-121.99667350000001&query_place_id=ChIJzXbuN6qMj4ARUZpKVPKmFgo) — 19 reviews (2.9★) · `medical_center`
+- [Mission Valley Eye Medical Center](https://www.google.com/maps/search/?api=1&query=37.5625323%2C-121.9596258&query_place_id=ChIJE496uvDAj4AR_4K9dTEVvtA) — 18 reviews (3.1★) · `medical_center`
+- [Excelsior Health Services](https://www.google.com/maps/search/?api=1&query=37.716058499999995%2C-122.43946739999998&query_place_id=ChIJsb9HCpt-j4AR9JrOAHsSxoI) — 17 reviews (2.9★) · `medical_center`
+- [Highland Emergency Medicine Residency Program](https://www.google.com/maps/search/?api=1&query=37.7980303%2C-122.23077629999999&query_place_id=ChIJeYo6KhuHj4AR60ZkiP0NY1U) — 17 reviews (3★) · `hospital`
+- [Oakland Twenty-First Street VA Clinic](https://www.google.com/maps/search/?api=1&query=37.809993299999995%2C-122.27063550000001&query_place_id=ChIJk3ys0a2Aj4ARIPA8wJ_7C3E) — 17 reviews (3.2★) · `hospital`
+- [Telecare Willow Rock Center](https://www.google.com/maps/search/?api=1&query=37.7097589%2C-122.118491&query_place_id=ChIJ1U3EDU2Rj4ARHRQ4ArwnI0Q) — 17 reviews (3★) · `hospital`
+- [Center for Integrated Health - Carol Banyas MD](https://www.google.com/maps/search/?api=1&query=37.7777016%2C-121.98259469999998&query_place_id=ChIJHxLiZpzzj4AROhfu7gOl6y4) — 16 reviews (5★) · `medical_center`
+- [Mountain View Maternal & Fetal Medicine](https://www.google.com/maps/search/?api=1&query=37.3686497%2C-122.08153000000001&query_place_id=ChIJRZo07tK2j4ARVG6H5GHW9Y0) — 16 reviews (2.9★) · `medical_center`
+- [Neurology: Sutter East Bay Medical Foundation: Telegraph Ave](https://www.google.com/maps/search/?api=1&query=37.8582896%2C-122.2596215&query_place_id=ChIJjfnJoNR9hYAR5OmohOZn-Z0) — 16 reviews (2.4★) · `hospital`
+- [Psynergy Nueva Vista](https://www.google.com/maps/search/?api=1&query=37.1373862%2C-121.66696710000001&query_place_id=ChIJeVshx90gjoARNQNZ2_whyV0) — 16 reviews (2.8★) · `hospital`
+- [Seton Coastside](https://www.google.com/maps/search/?api=1&query=37.5263377%2C-122.50729270000001&query_place_id=ChIJ37ULw5Fxj4ARWZ8VEgjHIRY) — 16 reviews (3.3★) · `medical_center`
+- [UCSF Mission Bay Hospitals](https://www.google.com/maps/search/?api=1&query=37.7688306%2C-122.3957518&query_place_id=ChIJFXFOI2J_j4ARNb5oUGH3dA4) — 16 reviews (3.6★) · `hospital`
+- [Building Q](https://www.google.com/maps/search/?api=1&query=37.315021099999996%2C-121.9328238&query_place_id=ChIJ0yWOLF3Lj4AR8tBZ2_IwCDg) — 15 reviews (2.7★) · `hospital`
+- [East Bay Advanced Care (EBAC)](https://www.google.com/maps/search/?api=1&query=37.8201507%2C-122.2639466&query_place_id=ChIJjQTQ8v99hYAR8kDhsQWUiF0) — 15 reviews (3.7★) · `medical_center`
+- [East Bay Pediatrics](https://www.google.com/maps/search/?api=1&query=37.8804698%2C-122.18096969999998&query_place_id=ChIJuzfueSl9hYARXT6M1dC3PqY) — 15 reviews (5★) · `hospital`
+- [UCSF Helen Diller Medical Center at Parnassus Heights](https://www.google.com/maps/search/?api=1&query=37.7642229%2C-122.4573276&query_place_id=ChIJYTTv-PiHhYARTHm7Y7ebCPQ) — 15 reviews (4.2★) · `hospital`
+- [Urgent care (Express care)](https://www.google.com/maps/search/?api=1&query=37.3134893%2C-121.93333960000001&query_place_id=ChIJkTQRTADLj4ARkZLOqyj1KXY) — 15 reviews (3.3★) · `hospital`
+- [Chinatown Public Health Center](https://www.google.com/maps/search/?api=1&query=37.7972081%2C-122.4114951&query_place_id=ChIJ4wsME_KAhYARIGrIle5TZ2w) — 14 reviews (3.8★) · `medical_center`
+- [Comprehensive Wellness](https://www.google.com/maps/search/?api=1&query=37.8770859%2C-122.180764&query_place_id=ChIJj0Z3-rNhhYARtqpuecmC5_c) — 14 reviews (5★) · `medical_center`
+- [Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.3766062%2C-122.06500969999999&query_place_id=ChIJ08aX4Zewj4ARmLfgZV1hcJI) — 14 reviews (3.2★) · `hospital`
+- [5700 Telegraph Care Center](https://www.google.com/maps/search/?api=1&query=37.8432503%2C-122.2610907&query_place_id=ChIJYS5i6t59hYARP3cZYLRsMYU) — 13 reviews (3.2★) · `medical_center`
+- [Aaftab Medical Center](https://www.google.com/maps/search/?api=1&query=37.6995429%2C-122.1207809&query_place_id=ChIJF3y2U86Rj4ARBrDPvg_jlhQ) — 13 reviews (4.3★) · `medical_center`
+- [Alameda Health System - Hayward Wellness Center](https://www.google.com/maps/search/?api=1&query=37.6506969%2C-122.1041884&query_place_id=ChIJq4K7r0eRj4AR9kziCUT1PJc) — 13 reviews (3.2★) · `medical_center`
+- [BASS Medical Group (Brentwood) - General Surgery](https://www.google.com/maps/search/?api=1&query=37.9623436%2C-121.730622&query_place_id=ChIJ2QAqu7r5j4AR6mzwuWslgjg) — 13 reviews (2.5★) · `medical_center`
+- [Daly City Center](https://www.google.com/maps/search/?api=1&query=37.665239899999996%2C-122.47558989999999&query_place_id=ChIJ4yEyXpF7j4ARf4gx1TKUfzg) — 13 reviews (2.2★) · `medical_center`
+- [Eden Medical Building](https://www.google.com/maps/search/?api=1&query=37.6963181%2C-122.0861892&query_place_id=ChIJQbM4mYmRj4ARIGY2VramtbY) — 13 reviews (4.3★) · `medical_center`
+- [Kaiser Foundation Hospital-San Leandro Medical Ctr](https://www.google.com/maps/search/?api=1&query=37.706011%2C-122.16559879999998&query_place_id=ChIJ58ecovqPj4ARmhYUH10EBTk) — 13 reviews (2.9★) · `hospital`
+- [875 Blake Wilbur Drive](https://www.google.com/maps/search/?api=1&query=37.4357319%2C-122.1762866&query_place_id=ChIJzVGo9EClj4ARmmhdVTAHrQU) — 12 reviews (4.3★) · `medical_center`
+- [Awesome Health Center](https://www.google.com/maps/search/?api=1&query=37.3055243%2C-121.9513865&query_place_id=ChIJr7XADqfLj4ARREcAIgIatVY) — 12 reviews (5★) · `medical_center`
+- [Cenegenics San Francisco](https://www.google.com/maps/search/?api=1&query=37.8982665%2C-122.06378090000001&query_place_id=ChIJHa4Kw4qAhYAR2XAinq85oBQ) — 12 reviews (5★) · `medical_center`
+- [Herculean Babies Pediatrics](https://www.google.com/maps/search/?api=1&query=38.017493%2C-122.27380850000002&query_place_id=ChIJ7yHWy892hYARDakoagNB40c) — 12 reviews (3.7★) · `hospital`
+- [I693 Civil Surgeon LLC, Dr Vinit Agrawal](https://www.google.com/maps/search/?api=1&query=37.3979916%2C-121.98446890000001&query_place_id=ChIJN4vyVh7Jj4ARixBt4H422Jg) — 12 reviews (4.3★) · `medical_center`
+- [Kaiser - Rancho Ohlone Building](https://www.google.com/maps/search/?api=1&query=37.5522196%2C-121.9769332&query_place_id=ChIJU2rS2J_Bj4ARheOOiS1EkWQ) — 12 reviews (4.5★) · `medical_center`
+- [McKee Medical Center](https://www.google.com/maps/search/?api=1&query=37.3664086%2C-121.84775789999999&query_place_id=ChIJcysUgAbNj4ARuRnvzcAWcvk) — 12 reviews (4★) · `medical_center`
+- [Merritt Peralta Institute (MPI) Addiction Care Services](https://www.google.com/maps/search/?api=1&query=37.819484100000004%2C-122.26416520000001&query_place_id=ChIJZf-TWlWHj4ARubi3beEhpdI) — 12 reviews (3.1★) · `medical_center`
+- [Valley Health Center San Jose (formerly Bascom)](https://www.google.com/maps/search/?api=1&query=37.314247099999996%2C-121.9312672&query_place_id=ChIJ31G4SQDLj4ARJQevRXsH-3w) — 12 reviews (2.9★) · `hospital`
+- [Evergreen Medical Center](https://www.google.com/maps/search/?api=1&query=37.3250579%2C-121.80944059999999&query_place_id=ChIJB-im518tjoARoWtCjboi_y8) — 11 reviews (3.4★) · `medical_center`
+- [Family House: UCSF Benioff Children's Hospital Oakland](https://www.google.com/maps/search/?api=1&query=37.837959%2C-122.266472&query_place_id=ChIJ76SctAp-hYAR1NT6zaLlyBI) — 11 reviews (5★) · `hospital`
+- [Health Care Center: California Pacific Medical Center: St Luke's Campus](https://www.google.com/maps/search/?api=1&query=37.746724199999996%2C-122.42063390000001&query_place_id=ChIJh4IhyEN-j4AR54uvfLMkpyI) — 11 reviews (2.5★) · `hospital`
+- [Kaiser Permanenete Child/ado Psy](https://www.google.com/maps/search/?api=1&query=37.3371469%2C-122.00436309999999&query_place_id=ChIJ5Z5yHo61j4ARyFVvBkeVQgM) — 11 reviews (4.4★) · `hospital`
+- [Kaiser Permanente Emergency Care San Jose](https://www.google.com/maps/search/?api=1&query=37.2401176%2C-121.80103000000001&query_place_id=ChIJES7E4OsvjoARm0w9QywNN8g) — 11 reviews (3.5★) · `hospital`
+- [Mission Oaks Los Gatos](https://www.google.com/maps/search/?api=1&query=37.244427699999996%2C-121.9481519&query_place_id=ChIJP8xtTzo1joARlohK9E7Jq4o) — 11 reviews (4.5★) · `hospital`
+- [Park Bridge Nursing Home](https://www.google.com/maps/search/?api=1&query=37.77061%2C-122.2369586&query_place_id=ChIJTxiOVJOGj4ARooRMMOaIL8I) — 11 reviews (1.9★) · `hospital`
+- [Saratoga Pediatric Sub-Acute](https://www.google.com/maps/search/?api=1&query=37.2730731%2C-121.99617029999999&query_place_id=ChIJDc7GJaFKjoAR5rbZf5VWOf4) — 11 reviews (4.3★) · `hospital`
+- [UCSF Nancy Friend Pritzker Psychiatry Building](https://www.google.com/maps/search/?api=1&query=37.762803399999996%2C-122.3891806&query_place_id=ChIJseTkkU1_j4ARR1xKsa7xIMw) — 11 reviews (3.7★) · `hospital`
+- [2645 Ocean Avenue Care Center](https://www.google.com/maps/search/?api=1&query=37.731799699999996%2C-122.4741329&query_place_id=ChIJUXHsGWV9j4ARF74jrI0saN8) — 10 reviews (2.1★) · `medical_center`
+- [Crossover San Tomas](https://www.google.com/maps/search/?api=1&query=37.376411999999995%2C-121.96788470000001&query_place_id=ChIJQ6Ey_yPJj4ARew5Pjuzu3k8) — 10 reviews (3.3★) · `medical_center`
+- [Munnerlyn Eye Institute](https://www.google.com/maps/search/?api=1&query=37.3728195%2C-122.05092040000001&query_place_id=ChIJVVXFC-62j4ARrt4rfhxoA9k) — 10 reviews (2★) · `medical_center`
+- [San Mateo Pediatrics (123 South San Mateo Drive)](https://www.google.com/maps/search/?api=1&query=37.565469199999995%2C-122.32496529999999&query_place_id=ChIJx75E_XCej4AR6nkri4BHf2Y) — 10 reviews (3.6★) · `medical_center`
+- [Sutter Health](https://www.google.com/maps/search/?api=1&query=37.7148298%2C-121.70323119999999&query_place_id=ChIJiQ3icgDhj4AR_Xy7BZ2CnUM) — 10 reviews (3.6★) · `medical_center`
+- [Hacienda Lakes](https://www.google.com/maps/search/?api=1&query=37.687866199999995%2C-121.8959045&query_place_id=ChIJdXIa71vpj4ARLH9sg3i5k9g) — 9 reviews (4.7★) · `medical_center`
+- [Kaiser Union City Building B](https://www.google.com/maps/search/?api=1&query=37.6072906%2C-122.08392169999998&query_place_id=ChIJbyskAkOVj4ARsWnZD0Z2Bh8) — 9 reviews (3.7★) · `medical_center`
+- [Kaiser building 4 Ophthalmology, Physical Therapy)](https://www.google.com/maps/search/?api=1&query=37.9287705%2C-122.0289789&query_place_id=ChIJWcIsoVdghYARDPC1vv2Rr3U) — 9 reviews (4.1★) · `medical_center`
+- [Kaiser lab](https://www.google.com/maps/search/?api=1&query=37.691406199999996%2C-121.9266981&query_place_id=ChIJCX5SU_Lrj4ARyeU3MDsPgrw) — 9 reviews (3.1★) · `hospital`
+- [Kidney Transplant, California Pacific Medical Center: Pacific Campus](https://www.google.com/maps/search/?api=1&query=37.791198%2C-122.43176799999999&query_place_id=ChIJs5YiksaAhYARw5ig9aebI-0) — 9 reviews (4.6★) · `hospital`
+- [North County Health Center](https://www.google.com/maps/search/?api=1&query=37.6914367%2C-122.47386549999999&query_place_id=ChIJ-6XhNmx8j4AR3my1YcLpa-g) — 9 reviews (2★) · `medical_center`
+- [On Time COVID Testing](https://www.google.com/maps/search/?api=1&query=37.2519376%2C-121.86302119999999&query_place_id=ChIJCxx-g7wzjoARHoywNN_cLrU) — 9 reviews (4.7★) · `medical_center`
+- [Pediatrics: Sullivan Office: Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.66513940000001%2C-122.4756996&query_place_id=ChIJbdCnT3R8j4ARtKseE0fg6yE) — 9 reviews (3.7★) · `hospital`
+- [UCSF Wayne and Gladys Valley Center for Vision](https://www.google.com/maps/search/?api=1&query=37.7660896%2C-122.38840529999999&query_place_id=ChIJfWhA15F_j4ARugoTASeeiao) — 9 reviews (4.4★) · `hospital`
+- [Allergy & Immunology: Mountain View Center: Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.3766062%2C-122.06500969999999&query_place_id=ChIJaR_sa9y2j4ARdYau-8PLG1s) — 8 reviews (3.9★) · `medical_center`
+- [CPMC Coming Home Hospice](https://www.google.com/maps/search/?api=1&query=37.760419899999995%2C-122.43688149999998&query_place_id=ChIJQ-fY6wR-j4ARw-T95ns8jh4) — 8 reviews (4.4★) · `medical_center`
+- [I693 Civil Surgeon LLC, Dr Vinit Agrawal](https://www.google.com/maps/search/?api=1&query=37.653162900000005%2C-122.1052271&query_place_id=ChIJqZjNprmRj4ARjepJ7iKH0z0) — 8 reviews (5★) · `medical_center`
+- [Inspire Behavioral Health](https://www.google.com/maps/search/?api=1&query=37.3780991%2C-121.83563660000002&query_place_id=ChIJfdoso6HNj4ARppiRAsck15k) — 8 reviews (3.9★) · `hospital`
+- [Kaiser Permanente Laboratory Services](https://www.google.com/maps/search/?api=1&query=37.3364495%2C-121.9969746&query_place_id=ChIJo8qFQgC1j4ARNZpKuACLLhA) — 8 reviews (4.1★) · `medical_center`
+- [Kaiser hospital](https://www.google.com/maps/search/?api=1&query=37.5524397%2C-121.9747474&query_place_id=ChIJI3T70G3Bj4ARrZxyeMLu1WM) — 8 reviews (3.3★) · `hospital`
+- [MC](https://www.google.com/maps/search/?api=1&query=37.332448899999996%2C-121.85736320000001&query_place_id=ChIJ66uBmdXMj4AR77AHkv4fsY0) — 8 reviews (3.6★) · `medical_center`
+- [Morgan Hill Care Center](https://www.google.com/maps/search/?api=1&query=37.120121499999996%2C-121.6294419&query_place_id=ChIJBeJTVgAhjoARoAU8fzNZxE4) — 8 reviews (3.8★) · `medical_center`
+- [Orinda Care Center](https://www.google.com/maps/search/?api=1&query=37.8766426%2C-122.18034039999999&query_place_id=ChIJmaleoNR9hYARtyjeC6CVXh4) — 8 reviews (4.3★) · `medical_center`
+- [PTR Sports](https://www.google.com/maps/search/?api=1&query=37.2687594%2C-121.9541545&query_place_id=ChIJeYs_1dXLj4ARfsGAvdGlaI0) — 8 reviews (5★) · `medical_center`
+- [Pacific Heights Care Center](https://www.google.com/maps/search/?api=1&query=37.7894729%2C-122.4324576&query_place_id=ChIJOxIgAMeAhYAR_C49J2x4iZ8) — 8 reviews (4.6★) · `medical_center`
+- [Redwood City Women's Health Center](https://www.google.com/maps/search/?api=1&query=37.478516%2C-122.25525259999999&query_place_id=ChIJS00ESy2ij4ARlGztd7ugavA) — 8 reviews (3.5★) · `medical_center`
+- [San Mateo Care Center](https://www.google.com/maps/search/?api=1&query=37.56603450000001%2C-122.32638499999997&query_place_id=ChIJk89UEXGej4ARw4kZzRGKffQ) — 8 reviews (3★) · `medical_center`
+- [Behring Pavilion](https://www.google.com/maps/search/?api=1&query=37.9116305%2C-122.03952079999999&query_place_id=ChIJMXJamrRhhYARPiSqRqU_084) — 7 reviews (4.7★) · `medical_center`
+- [Children's Hospital & Research Center](https://www.google.com/maps/search/?api=1&query=37.8385276%2C-122.2609602&query_place_id=ChIJK8_Bv-B9hYARsT3xZ-KJk_A) — 7 reviews (4.4★) · `hospital`
+- [Fremont Sleep Medicine](https://www.google.com/maps/search/?api=1&query=37.5473442%2C-121.97335809999998&query_place_id=ChIJY7wGbZTAj4ARu3dqh6tR-oo) — 7 reviews (3★) · `medical_center`
+- [Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto](https://www.google.com/maps/search/?api=1&query=37.435374599999996%2C-122.1772525&query_place_id=ChIJbZGDgs2kj4ARSwRxtaDmWy0) — 7 reviews (3.6★) · `hospital`
+- [John Muir Primary Care](https://www.google.com/maps/search/?api=1&query=37.9867547%2C-121.78059419999998&query_place_id=ChIJawhL6rhXhYAR4g398CHM_xc) — 7 reviews (2.7★) · `hospital`
+- [Morris Hyman Critical Care Pavillion](https://www.google.com/maps/search/?api=1&query=37.5562439%2C-121.97913140000001&query_place_id=ChIJGTWiqoPBj4ARllpgo7gK3dA) — 7 reviews (2.1★) · `hospital`
+- [Pacific Heights Medical Group](https://www.google.com/maps/search/?api=1&query=37.791278%2C-122.43181399999999&query_place_id=ChIJB70QYMaAhYARD8_GNvpfMns) — 7 reviews (2.6★) · `medical_center`
+- [SFGH Building 30](https://www.google.com/maps/search/?api=1&query=37.755092%2C-122.40559909999999&query_place_id=ChIJefrRNUp-j4ARLW1dYbXG13Y) — 7 reviews (4.9★) · `hospital`
+- [San Francisco General Hospital Gastroenterology](https://www.google.com/maps/search/?api=1&query=37.7558047%2C-122.4044432&query_place_id=ChIJG9bTskt-j4ARpe1wOM0888Y) — 7 reviews (4.9★) · `hospital`
+- [Sollis Health - San Francisco](https://www.google.com/maps/search/?api=1&query=37.7850863%2C-122.42195969999999&query_place_id=ChIJk2Xt_6CBhYARdjltBBFaiog) — 7 reviews (4.3★) · `medical_center`
+- [South Pavilion (3100 Summit Street Entrance)](https://www.google.com/maps/search/?api=1&query=37.8201507%2C-122.2639466&query_place_id=ChIJZf-TWlWHj4ARRLG64dYVtPM) — 7 reviews (4★) · `medical_center`
+- [Sutter East Bay Medical Foundation: Castro Valley](https://www.google.com/maps/search/?api=1&query=37.698534099999996%2C-122.08899260000001&query_place_id=ChIJF74lE4uRj4ARJO5cgboG6ro) — 7 reviews (2.1★) · `medical_center`
+- [Sutter Pacific Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.7467671%2C-122.4206842&query_place_id=ChIJ8-BJyEN-j4ARb1leZb52oKs) — 7 reviews (1.6★) · `general_hospital`
+- [UCSF Benioff Children's Hospital Primary Care Clinic](https://www.google.com/maps/search/?api=1&query=37.8385118%2C-122.26100199999999&query_place_id=ChIJfyx2v-B9hYARO1CxZGp-oCg) — 7 reviews (4.4★) · `hospital`
+- [UCSF Peninsula Outpatient Center](https://www.google.com/maps/search/?api=1&query=37.5790588%2C-122.3445133&query_place_id=ChIJORBP0G-dj4ARjYuNo2VroJg) — 7 reviews (4★) · `medical_center`
+- [ZSFG Building 9](https://www.google.com/maps/search/?api=1&query=37.7546045%2C-122.40548229999999&query_place_id=ChIJybCKtkt-j4ARFNNyD4edZCE) — 7 reviews (4.3★) · `medical_center`
+- [Asian Health Services Rolland & Kathryn Lowe Medical Center](https://www.google.com/maps/search/?api=1&query=37.7998529%2C-122.27128509999999&query_place_id=ChIJK-1FdLaAj4ARAprkqYVehds) — 6 reviews (4.2★) · `medical_center`
+- [Barbara Arons Pavilion](https://www.google.com/maps/search/?api=1&query=37.312264%2C-121.93364679999999&query_place_id=ChIJD90zhTHLj4ARtignbSSEdjw) — 6 reviews (3.7★) · `hospital`
+- [Brentwood Care Center](https://www.google.com/maps/search/?api=1&query=37.9199852%2C-121.7337536&query_place_id=ChIJu3zf90b5j4ARlX29fKBozzw) — 6 reviews (3.2★) · `medical_center`
+- [CHONC Pediatric Hospital](https://www.google.com/maps/search/?api=1&query=37.2597939%2C-121.94757429999999&query_place_id=ChIJUdXiUqs1joARHPEKGMQ5bmk) — 6 reviews (4.8★) · `hospital`
+- [CPMC Department of Ophthalmology](https://www.google.com/maps/search/?api=1&query=37.7821484%2C-122.4211843&query_place_id=ChIJPcnfPkSBhYARMDebl-LDvfQ) — 6 reviews (2.3★) · `medical_center`
+- [California Pacific Medical Center](https://www.google.com/maps/search/?api=1&query=37.7477047%2C-122.4206925&query_place_id=ChIJG6AD10N-j4ARVQYxUPHn7pU) — 6 reviews (3.8★) · `medical_center`
+- [Fremont Psychiatry](https://www.google.com/maps/search/?api=1&query=37.5473709%2C-121.97339629999998&query_place_id=ChIJY7wGbZTAj4ARub7XbK8dwDo) — 6 reviews (3.8★) · `medical_center`
+- [Heart of the Valley Pediatric Cardiology](https://www.google.com/maps/search/?api=1&query=37.6840662%2C-121.90074070000001&query_place_id=ChIJx7ENd1_pj4ART6_R3WAYYG4) — 6 reviews (4.3★) · `hospital`
+- [Jiva Health - Oakland](https://www.google.com/maps/search/?api=1&query=37.8418962%2C-122.2747528&query_place_id=ChIJNWF7CgB_hYARVx3k8-YsFrw) — 6 reviews (3★) · `medical_center`
+- [John Muir Health](https://www.google.com/maps/search/?api=1&query=37.8822269%2C-122.1856468&query_place_id=ChIJN8N5-dd8hYARQmqkMAD0Mfw) — 6 reviews (1.8★) · `medical_center`
+- [Kaiser Permanente Building 2 Surgery Center](https://www.google.com/maps/search/?api=1&query=37.240811099999995%2C-121.80275510000001&query_place_id=ChIJiYI4SwwvjoARjrAZpUU9Ij8) — 6 reviews (3.8★) · `medical_center`
+- [Kaiser Permanente Building 3](https://www.google.com/maps/search/?api=1&query=37.240671999999996%2C-121.80052780000001&query_place_id=ChIJMQet9S8ujoARiq2nRYi4VLI) — 6 reviews (4.5★) · `medical_center`
+- [Kaiser Permanente Walnut Creek: Chemical Dependency Services](https://www.google.com/maps/search/?api=1&query=37.8972559%2C-122.05642919999998&query_place_id=ChIJzVef4cNhhYARcdHjKLM2kcU) — 6 reviews (3.2★) · `hospital`
+- [Palo Alto Medical Foundation Burlingame Center](https://www.google.com/maps/search/?api=1&query=37.5929526%2C-122.38258060000001&query_place_id=ChIJyfwXyrR3j4ARVqNfj1QDej4) — 6 reviews (2.3★) · `medical_center`
+- [SFGH Bldg 25](https://www.google.com/maps/search/?api=1&query=37.7555823%2C-122.40575419999999&query_place_id=ChIJPSEBPc1_j4ARsgn_FJxBZTY) — 6 reviews (4.7★) · `hospital`
+- [Sound Pediatrics](https://www.google.com/maps/search/?api=1&query=37.6666886%2C-122.4668657&query_place_id=ChIJE6LMfut7j4ARD62umoLMKdQ) — 6 reviews (3.7★) · `hospital`
+- [Sports Medicine Center Walnut Creek: Children's Hospital Oakland](https://www.google.com/maps/search/?api=1&query=37.925324499999995%2C-122.02677639999999&query_place_id=ChIJr6QEBVpghYARscPHC2vxiJg) — 6 reviews (3.2★) · `hospital`
+- [Stanford Health Care - Tri-Valley Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.693424%2C-121.88048599999999&query_place_id=ChIJhdogTUfpj4ARAM_COSGyiy8) — 6 reviews (4.7★) · `hospital`
+- [Stanford Health Care Menlo Park Office](https://www.google.com/maps/search/?api=1&query=37.458452099999995%2C-122.1761222&query_place_id=ChIJQbJ_mKykj4ARBH_VuhTSlSQ) — 6 reviews (3.5★) · `hospital`
+- [Sutter Health East Santa Clara Diagnostic Imaging](https://www.google.com/maps/search/?api=1&query=37.3911393%2C-121.9716162&query_place_id=ChIJ_V32UADJj4AR_x-6Xp57mUE) — 6 reviews (3.7★) · `medical_center`
+- [Telecare Hope House](https://www.google.com/maps/search/?api=1&query=38.0079882%2C-122.13382639999999&query_place_id=ChIJf4kUv35lhYARNDqeDVGiTy0) — 6 reviews (4.2★) · `hospital`
+- [Alameda Health System : Emergency Room](https://www.google.com/maps/search/?api=1&query=37.7988454%2C-122.2321812&query_place_id=ChIJ____LxuHj4ARTtXO3y93pbY) — 5 reviews (2.6★) · `medical_center`
+- [Broadway Webster Medical Plaza](https://www.google.com/maps/search/?api=1&query=37.8212656%2C-122.26205089999999&query_place_id=ChIJ32-Ycf99hYARXysu2BP4KjI) — 5 reviews (2.6★) · `medical_center`
+- [Contra Costa Health Services](https://www.google.com/maps/search/?api=1&query=38.006764%2C-122.1327936&query_place_id=ChIJnV7EOnllhYARdly0BYyGPGY) — 5 reviews (2.8★) · `general_hospital`
+- [East Bay Health](https://www.google.com/maps/search/?api=1&query=37.8875612%2C-122.11850690000001&query_place_id=ChIJWXgcBlVjhYARTn50KlplbSw) — 5 reviews (5★) · `medical_center`
+- [Health and Healing Store: California Pacific Medical Center: Pacific Campus](https://www.google.com/maps/search/?api=1&query=37.7894058%2C-122.43246450000001&query_place_id=ChIJHVEBAMeAhYARv9yDszkoIx4) — 5 reviews (3.4★) · `medical_center`
+- [Helixa Labs](https://www.google.com/maps/search/?api=1&query=37.795332699999996%2C-122.42149680000001&query_place_id=ChIJIe9j_LKBhYARIDh7XZImthM) — 5 reviews (5★) · `medical_center`
+- [Internal Medicine West Valley Center Palo Alto Medical Foundation](https://www.google.com/maps/search/?api=1&query=37.3016524%2C-122.0313259&query_place_id=ChIJz3_6Xxm1j4ARLmKezBmjVbE) — 5 reviews (3.4★) · `medical_center`
+- [Kaiser Fremont member services](https://www.google.com/maps/search/?api=1&query=37.5524523%2C-121.97453999999998&query_place_id=ChIJQQ4puPDBj4ARjaucZX5a_yc) — 5 reviews (1★) · `medical_center`
+- [Kaiser Hospital](https://www.google.com/maps/search/?api=1&query=37.950921199999996%2C-121.77495359999999&query_place_id=ChIJOzHd0Bn5j4ARVIFpB7FAkUI) — 5 reviews (4.2★) · `hospital`
+- [Kaiser Permanente Med Center Sn](https://www.google.com/maps/search/?api=1&query=37.7845763%2C-122.44008309999998&query_place_id=ChIJT0U1_cmAhYARdKAmEZBaOjU) — 5 reviews (3.4★) · `medical_center`
+- [Kaiser building 4 - 1 North](https://www.google.com/maps/search/?api=1&query=37.2409925%2C-121.7995633&query_place_id=ChIJP0kX_y8ujoARPHKYcZRevtY) — 5 reviews (1.6★) · `hospital`
+- [Pediatrics: PAMF Sutter Health | Sunnyvale](https://www.google.com/maps/search/?api=1&query=37.368463999999996%2C-122.0311515&query_place_id=ChIJaZNvImS2j4ARVWKyXMmWIYs) — 5 reviews (2.2★) · `hospital`
+- [Pediatrics: Sutter East Bay Medical Foundation: Antioch](https://www.google.com/maps/search/?api=1&query=37.976549%2C-121.799639&query_place_id=ChIJ3ycvd_JXhYAR-oSqAKXY9oc) — 5 reviews (3.4★) · `medical_center`
+- [Providence Hospital](https://www.google.com/maps/search/?api=1&query=37.8199797%2C-122.2639622&query_place_id=ChIJ-1AJZ1WHj4ARBaaNPNIdMl0) — 5 reviews (4.6★) · `hospital`
+- [Stanford Children's Health](https://www.google.com/maps/search/?api=1&query=37.6762388%2C-121.7810671&query_place_id=ChIJgaKFjZbnj4ARnvqSlL1E484) — 5 reviews (3.6★) · `hospital`
+- [Supira Medical](https://www.google.com/maps/search/?api=1&query=37.2608983%2C-121.95919049999999&query_place_id=ChIJlYyOWAg1joARhUgT0Dr5I0s) — 5 reviews (3.4★) · `medical_center`
+- [Sutter Pacific Medical Foundation: Clay Street](https://www.google.com/maps/search/?api=1&query=37.791198%2C-122.43176799999999&query_place_id=ChIJB70QYMaAhYARTUxYaw_Az3o) — 5 reviews (1.6★) · `hospital`
+- [UCSF Medical Center at Mission Bay](https://www.google.com/maps/search/?api=1&query=37.7664112%2C-122.38846719999998&query_place_id=ChIJ_XSjKgB_j4ARIaSiGP88QcA) — 5 reviews (5★) · `medical_center`
+- [UCSF Mt Zion](https://www.google.com/maps/search/?api=1&query=37.7844285%2C-122.440381&query_place_id=ChIJtw7iFZqBhYARacchhxRxhww) — 5 reviews (2.6★) · `hospital`
+- [UCSF at San Francisco General Hospital](https://www.google.com/maps/search/?api=1&query=37.7563142%2C-122.40448749999999&query_place_id=ChIJoZqZYUp-j4ARE1_GSIBHgkA) — 5 reviews (3.6★) · `general_hospital`
+- [Vitality Testosterone Replacement Therapy](https://www.google.com/maps/search/?api=1&query=37.8047762%2C-122.2710631&query_place_id=ChIJjxzoWKCBj4ARtrZOxozSof8) — 5 reviews (5★) · `medical_center`
+
+</details>
+
+
+## Zoos — 7 legitimate (tentacle 15mi; matching/measuring)
+
+
+**Removed as nested sub-areas (6):** [African Savanna](https://www.google.com/maps/search/?api=1&query=37.750972%2C-122.14631289999998&query_place_id=ChIJD12PBQ6Pj4ARKWA3e3z3D18), [California Trail at Oakland Zoo](https://www.google.com/maps/search/?api=1&query=37.7517852%2C-122.1391754&query_place_id=ChIJC388kGOPj4ARuyHK1BU9lNA), [Condor and Jaguar Pavilion](https://www.google.com/maps/search/?api=1&query=37.7532669%2C-122.1383878&query_place_id=ChIJp7GDtPqPj4ARdwWkK8JZ7WY), [Giraffe Enclosure](https://www.google.com/maps/search/?api=1&query=37.750287199999995%2C-122.14577409999998&query_place_id=ChIJ9zatEwCPj4ARoG4L5AMN_OE), [House of Bugs](https://www.google.com/maps/search/?api=1&query=37.7503738%2C-122.14758889999999&query_place_id=ChIJR2hhS7KPj4ARAxbe2wRGwVU), [Reptile and Amphibian Discovery Room](https://www.google.com/maps/search/?api=1&query=37.7496916%2C-122.1479343&query_place_id=ChIJVbo3APWPj4ARkneWMbUiLiQ)
+
+
+<details><summary>All 7 kept</summary>
+
+- [San Francisco Zoo](https://www.google.com/maps/search/?api=1&query=37.7329394%2C-122.50283479999999&query_place_id=ChIJjaIC83F9j4AR1z3B225I_XU) — 14181 reviews (4.4★) · `zoo`
+- [Oakland Zoo](https://www.google.com/maps/search/?api=1&query=37.748663199999996%2C-122.1454124&query_place_id=ChIJ34F_-Q2Pj4ARqvhP11SiAQI) — 14120 reviews (4.6★) · `zoo`
+- [Happy Hollow Park & Zoo](https://www.google.com/maps/search/?api=1&query=37.3259432%2C-121.86078559999999&query_place_id=ChIJ36tnEywzjoARhS4v9dlu5EU) — 5368 reviews (4.5★) · `zoo`
+- [Bison Paddock](https://www.google.com/maps/search/?api=1&query=37.7696864%2C-122.49823250000001&query_place_id=ChIJn0gOF7uHhYARlc2snZDbu1w) — 1417 reviews (4.5★) · `zoo`
+- [Gilroy Ostrich Farm](https://www.google.com/maps/search/?api=1&query=36.972062300000005%2C-121.42202759999999&query_place_id=ChIJW7WmiEHwkYARwBcj9VLdA0w) — 396 reviews (4.4★) · `zoo`
+- [Barron Park Donkeys](https://www.google.com/maps/search/?api=1&query=37.4081306%2C-122.1385795&query_place_id=ChIJVXMziI-6j4ARsS-VijqrJcY) — 163 reviews (4.8★) · `zoo`
+- [Little Explorers Mobile Petting Zoo](https://www.google.com/maps/search/?api=1&query=37.710623%2C-122.166868&query_place_id=ChIJHxC-i1qFj4ARQo-P62bDWNs) — 30 reviews (3.5★) · `zoo`
+
+</details>
+
+
+## Aquariums — 3 legitimate (tentacle 15mi; matching/measuring)
+
+
+**Flagged to eyeball (1) — kept per rule, drop if you disagree:**
+
+- [Aquatic Experts](https://www.google.com/maps/search/?api=1&query=37.9440861%2C-122.07696580000001&query_place_id=ChIJW1Z9kIlhhYARBx-Y_JVEepI) — 19 reviews, `aquarium` — _possible mis-tag / driving range_
+
+<details><summary>All 3 kept</summary>
+
+- [Aquarium of the Bay](https://www.google.com/maps/search/?api=1&query=37.8086487%2C-122.40932989999999&query_place_id=ChIJr6OmefyAhYAR-h8_vW9p5GQ) — 6308 reviews (4.1★) · `aquarium`
+- [Steinhart Aquarium](https://www.google.com/maps/search/?api=1&query=37.7695812%2C-122.46613449999998&query_place_id=ChIJd2zwL62HhYARC0YDVdQVje4) — 182 reviews (4.7★) · `aquarium`
+- [Aquatic Experts](https://www.google.com/maps/search/?api=1&query=37.9440861%2C-122.07696580000001&query_place_id=ChIJW1Z9kIlhhYARBx-Y_JVEepI) — 19 reviews (5★) · `aquarium`
+
+</details>
+
+
+## Amusement Parks — 19 legitimate (tentacle 15mi; matching/measuring)
+
+
+**Removed as nested sub-areas (8):** [California's Great America Passenger Drop Off Area](https://www.google.com/maps/search/?api=1&query=37.4005684%2C-121.9773816&query_place_id=ChIJR81ua8_Jj4ARHSaAk12y10s), [County Fair Picnic Grove](https://www.google.com/maps/search/?api=1&query=37.3923767%2C-121.97059490000001&query_place_id=ChIJ9ww7EMDJj4ARjt2dQUjRiIc), [Great Barrier Reef](https://www.google.com/maps/search/?api=1&query=37.395520399999995%2C-121.9689317&query_place_id=ChIJQyb2cr_Jj4ARWxbXMtKN2Ec), [NorCal County Fair](https://www.google.com/maps/search/?api=1&query=37.3935818%2C-121.9719714&query_place_id=ChIJr4QAVsDJj4ARkTENSw4Oywg), [Planet Snoopy](https://www.google.com/maps/search/?api=1&query=37.3949269%2C-121.9718436&query_place_id=ChIJDQuOmsDJj4ARGlVd8LNzcRU), [South Bay Shores](https://www.google.com/maps/search/?api=1&query=37.3957386%2C-121.9718967&query_place_id=ChIJVxExp8DJj4ARp1MKDNlJH7c), [Water Oasis](https://www.google.com/maps/search/?api=1&query=37.0038716%2C-121.62834149999999&query_place_id=ChIJ8cJtgiwdjoARxPPXq6ggeXA), [Water Play Area](https://www.google.com/maps/search/?api=1&query=37.7104275%2C-121.8737401&query_place_id=ChIJP1ac2jjvj4ARvtrevse0Rbk)
+
+
+**Flagged to eyeball (4) — kept per rule, drop if you disagree:**
+
+- [Urban Air Trampoline and Adventure Park](https://www.google.com/maps/search/?api=1&query=37.9749322%2C-122.0424457&query_place_id=ChIJpbdS8-dnhYARkWU69PfCjSw) — 430 reviews, `amusement_park` — _nested near Six Flags Hurricane Harbor Concord_
+- [ABC Tree Farms & Pick of the Patch Pumpkins ECR](https://www.google.com/maps/search/?api=1&query=37.351489%2C-121.99795999999999&query_place_id=ChIJM_cLzE-1j4ARf11v_UV0D00) — 20 reviews, `water_park` — _possible mis-tag / driving range_
+- [Ortega park splash park](https://www.google.com/maps/search/?api=1&query=37.342545%2C-122.02506670000001&query_place_id=ChIJo-HF0ti1j4ARqgvnS7T6fV8) — 18 reviews, `water_park` — _possible mis-tag / driving range_
+- [Water Light Public Plaza](https://www.google.com/maps/search/?api=1&query=37.899879899999995%2C-122.0626649&query_place_id=ChIJLTCOyGJhhYAR0TobSbRsYSg) — 5 reviews, `water_park` — _possible mis-tag / driving range_
+
+<details><summary>All 19 kept</summary>
+
+- [California's Great America](https://www.google.com/maps/search/?api=1&query=37.3973529%2C-121.9744083&query_place_id=ChIJq7iF28bJj4ARdWUD6DQUr3I) — 16176 reviews (4.4★) · `amusement_park`
+- [Gilroy Gardens Family Theme Park](https://www.google.com/maps/search/?api=1&query=37.0049962%2C-121.6290606&query_place_id=ChIJ4UOMnfgdjoAR_5R6LAojZzY) — 6421 reviews (4.5★) · `amusement_center`
+- [Six Flags Hurricane Harbor Concord](https://www.google.com/maps/search/?api=1&query=37.9738464%2C-122.0514098&query_place_id=ChIJ8Z1Z68RmhYARYnEA66topsQ) — 3579 reviews (3.8★) · `water_park`
+- [Boomers Livermore](https://www.google.com/maps/search/?api=1&query=37.699542099999995%2C-121.80995779999999&query_place_id=ChIJ4-Sh-yfmj4ARVTfWj7c-nHA) — 2330 reviews (4.2★) · `amusement_park`
+- [Children's Fairyland](https://www.google.com/maps/search/?api=1&query=37.8092247%2C-122.2598407&query_place_id=ChIJ5S01LEyHj4AROY5z2F3sksU) — 1484 reviews (4.5★) · `amusement_center`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.5303161%2C-121.99874179999999&query_place_id=ChIJ9WSW11u_j4AR3ZSDfqLXmZ4) — 1066 reviews (3.9★) · `amusement_park`
+- [Aqua Adventure Water Park](https://www.google.com/maps/search/?api=1&query=37.5431516%2C-121.96057479999999&query_place_id=ChIJCX8rl8TAj4ARxDDimeZ-LBk) — 814 reviews (4.2★) · `water_park`
+- [Pixieland Amusement Park](https://www.google.com/maps/search/?api=1&query=37.989475%2C-122.0219923&query_place_id=ChIJq_JL4D1nhYARqWGv2dGR5IU) — 666 reviews (4.3★) · `amusement_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.028106699999995%2C-121.56828360000002&query_place_id=ChIJDX2oWNjjkYARIXWPHHjLBn8) — 536 reviews (4.1★) · `amusement_park`
+- [The Dublin Wave Waterpark and Aquatic Center](https://www.google.com/maps/search/?api=1&query=37.710554099999996%2C-121.8753988&query_place_id=ChIJ0_ghQMvuj4ARL3sUUE7dCzQ) — 535 reviews (4.3★) · `water_park`
+- [Urban Air Trampoline and Adventure Park](https://www.google.com/maps/search/?api=1&query=37.9749322%2C-122.0424457&query_place_id=ChIJpbdS8-dnhYARkWU69PfCjSw) — 430 reviews (4.3★) · `amusement_park`
+- [Antioch Water Park](https://www.google.com/maps/search/?api=1&query=37.9655397%2C-121.7727429&query_place_id=ChIJnZL5WXj4j4ARJkfrMy6Fw4Q) — 270 reviews (4.1★) · `water_park`
+- [FUNBOX SAN JOSE](https://www.google.com/maps/search/?api=1&query=37.301665%2C-121.8522536&query_place_id=ChIJa7wBTJIzjoARZH3UjsKCnzA) — 43 reviews (4.3★) · `amusement_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.26824740000001%2C-121.9052631&query_place_id=ChIJNQGdZFs1joARVWiyJUvgKYM) — 38 reviews (4.2★) · `amusement_park`
+- [ABC Tree Farms & Pick of the Patch Pumpkins ECR](https://www.google.com/maps/search/?api=1&query=37.351489%2C-121.99795999999999&query_place_id=ChIJM_cLzE-1j4ARf11v_UV0D00) — 20 reviews (3.9★) · `water_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.2910215%2C-121.9895361&query_place_id=ChIJrfaOrFXLj4AREJyMvz2XTCY) — 19 reviews (1.7★) · `amusement_park`
+- [Ortega park splash park](https://www.google.com/maps/search/?api=1&query=37.342545%2C-122.02506670000001&query_place_id=ChIJo-HF0ti1j4ARqgvnS7T6fV8) — 18 reviews (4.8★) · `water_park`
+- [Sky Zone Trampoline Park](https://www.google.com/maps/search/?api=1&query=37.927506%2C-122.0178401&query_place_id=ChIJ6Y8pOWhhhYARYVv2_aQbCLA) — 5 reviews (1.8★) · `amusement_park`
+- [Water Light Public Plaza](https://www.google.com/maps/search/?api=1&query=37.899879899999995%2C-122.0626649&query_place_id=ChIJLTCOyGJhhYAR0TobSbRsYSg) — 5 reviews (4.8★) · `water_park`
+
+</details>
+
+
+## Parks — 2554 legitimate (matching/measuring)
+
+
+<details><summary>All 2554 kept</summary>
+
+- [Golden Gate Park](https://www.google.com/maps/search/?api=1&query=37.7689203%2C-122.482977&query_place_id=ChIJY_dFYHKHhYARMKc772iLvnE) — 44418 reviews (4.8★) · `park`
+- [Japanese Tea Garden](https://www.google.com/maps/search/?api=1&query=37.7700913%2C-122.47043590000001&query_place_id=ChIJhVvouY-AhYARt6oYQBabsr8) — 16712 reviews (4.5★) · `garden`
+- [Mission Dolores Park](https://www.google.com/maps/search/?api=1&query=37.7602015%2C-122.4267959&query_place_id=ChIJp3CqeRd-j4ARYI0i8e_kGKY) — 16402 reviews (4.7★) · `park`
+- [Twin Peaks](https://www.google.com/maps/search/?api=1&query=37.7529149%2C-122.44741309999999&query_place_id=ChIJt3HwrOJ9j4ARbW6uAcmhz7I) — 13741 reviews (4.7★) · `park`
+- [San Francisco Botanical Garden](https://www.google.com/maps/search/?api=1&query=37.767709599999996%2C-122.4693109&query_place_id=ChIJW5w2V2iHhYARQoOl_ZsQlOg) — 8001 reviews (4.8★) · `botanical_garden`
+- [Municipal Rose Garden](https://www.google.com/maps/search/?api=1&query=37.3318809%2C-121.92861189999998&query_place_id=ChIJb5KWbRTLj4AR1iYBl5vpNf8) — 7805 reviews (4.7★) · `garden`
+- [Presidio of San Francisco](https://www.google.com/maps/search/?api=1&query=37.79685%2C-122.4668172&query_place_id=ChIJP43ood-GhYAR-hXQ02Q3Z-U) — 7324 reviews (4.8★) · `park`
+- [Central Park](https://www.google.com/maps/search/?api=1&query=37.5477609%2C-121.96543839999998&query_place_id=ChIJYeekm8HAj4ARIKRiHNeanFg) — 7166 reviews (4.6★) · `park`
+- [Pioneer Park](https://www.google.com/maps/search/?api=1&query=37.8031199%2C-122.4058782&query_place_id=ChIJI859IfeAhYARQ03LHCc3ilQ) — 6204 reviews (4.6★) · `city_park`
+- [Vasona Lake County Park](https://www.google.com/maps/search/?api=1&query=37.2361375%2C-121.97243610000001&query_place_id=ChIJ24fHtb81joARJByKotZNf3k) — 6198 reviews (4.7★) · `park`
+- [Crissy Field](https://www.google.com/maps/search/?api=1&query=37.8040257%2C-122.46501649999999&query_place_id=ChIJVbMlhdyGhYARADaqASKRFVs) — 6082 reviews (4.7★) · `park`
+- [USS San Francisco Memorial](https://www.google.com/maps/search/?api=1&query=37.782835999999996%2C-122.51161809999999&query_place_id=ChIJR760Uk2GhYARqZOGfcMz31U) — 5673 reviews (4.7★) · `park`
+- [Washington Square](https://www.google.com/maps/search/?api=1&query=37.8007752%2C-122.41024639999999&query_place_id=ChIJoYiOqfGAhYAR8J-KiogVyCQ) — 5376 reviews (4.5★) · `city_park`
+- [Salesforce Park](https://www.google.com/maps/search/?api=1&query=37.789739499999996%2C-122.39616559999999&query_place_id=ChIJC9y2SGOAhYARSaejL5ecgmg) — 4875 reviews (4.8★) · `park`
+- [Marina Park](https://www.google.com/maps/search/?api=1&query=37.6926164%2C-122.1851602&query_place_id=ChIJR7kpoU2Fj4ARrSFhCFNMOTw) — 4859 reviews (4.7★) · `park`
+- [Pigeon Point Light Station State Historic Park](https://www.google.com/maps/search/?api=1&query=37.1817324%2C-122.3939522&query_place_id=ChIJ3yaQIEoAj4AR1QyIVVR1a_M) — 4624 reviews (4.7★) · `state_park`
+- [Rancho San Antonio County Park & Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.3332482%2C-122.1089714&query_place_id=ChIJ2dQVnHexj4ARXlmGG7n0BsQ) — 4524 reviews (4.7★) · `park`
+- [Mission Peak Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.5053082%2C-121.8768889&query_place_id=ChIJXzSb3tLFj4ARjxdUyyLOob0) — 4512 reviews (4.7★) · `nature_preserve`
+- [Yerba Buena Gardens](https://www.google.com/maps/search/?api=1&query=37.784988399999996%2C-122.4023514&query_place_id=ChIJCUsDnIeAhYARWCBpPTrHJpQ) — 4474 reviews (4.6★) · `city_park`
+- [Alamo Square Park](https://www.google.com/maps/search/?api=1&query=37.7763694%2C-122.43481899999999&query_place_id=ChIJ5RdoUKWAhYARFfoSJGdFS5c) — 4412 reviews (4.7★) · `city_park`
+- [Alviso Marina County Park](https://www.google.com/maps/search/?api=1&query=37.4304232%2C-121.97947819999999&query_place_id=ChIJKUdSthfIj4ARrf3yOILpb8c) — 4295 reviews (4.5★) · `park`
+- [Lake Chabot Regional Park](https://www.google.com/maps/search/?api=1&query=37.7151183%2C-122.1022667&query_place_id=ChIJjx6nRiOOj4AR58kCP5VegyA) — 4131 reviews (4.7★) · `park`
+- [Conservatory of Flowers](https://www.google.com/maps/search/?api=1&query=37.772618699999995%2C-122.46025579999998&query_place_id=ChIJ5abCmkWHhYARH3zgiLVc_Ew) — 4091 reviews (4.7★) · `botanical_garden`
+- [Fort Funston](https://www.google.com/maps/search/?api=1&query=37.7195436%2C-122.50280520000001&query_place_id=ChIJazyNlAR9j4ARzE6pzUtJWyw) — 4037 reviews (4.8★) · `park`
+- [Tilden Regional Park](https://www.google.com/maps/search/?api=1&query=37.8976908%2C-122.24524679999999&query_place_id=ChIJlR5fQ_F7hYARO9bet3eMP3s) — 3966 reviews (4.8★) · `park`
+- [Alum Rock Park](https://www.google.com/maps/search/?api=1&query=37.395408499999995%2C-121.82531120000002&query_place_id=ChIJ-ZogKrvMj4ARKrML-5D1a88) — 3587 reviews (4.7★) · `park`
+- [Central Park](https://www.google.com/maps/search/?api=1&query=37.3417257%2C-121.9751511&query_place_id=ChIJZQ5MDmbKj4AR6lFAdgsJeOc) — 3576 reviews (4.6★) · `park`
+- [Reinhardt Redwood Regional Park](https://www.google.com/maps/search/?api=1&query=37.8115064%2C-122.1629595&query_place_id=ChIJQRWV0WKIj4AREtwLqNxJxs4) — 3520 reviews (4.8★) · `park`
+- [Del Valle Regional Park](https://www.google.com/maps/search/?api=1&query=37.5919909%2C-121.7095484&query_place_id=ChIJq8zbUVfZj4ARXnnY8B4eaEo) — 3418 reviews (4.6★) · `state_park`
+- [Coyote Hills Regional Park](https://www.google.com/maps/search/?api=1&query=37.556628499999995%2C-122.0940598&query_place_id=ChIJRT7ghwq-j4ARQ68X9Fox0kE) — 3381 reviews (4.7★) · `park`
+- [Plaza de Cesar Chavez](https://www.google.com/maps/search/?api=1&query=37.3324858%2C-121.88984210000001&query_place_id=ChIJkTeUJ7vMj4ARXZyxTRC6iOc) — 3366 reviews (4.4★) · `park`
+- [Mount Diablo State Park](https://www.google.com/maps/search/?api=1&query=37.8808335%2C-121.9173287&query_place_id=ChIJd-5S93_1j4ARh-CL00D3VG0) — 3304 reviews (4.8★) · `state_park`
+- [Hellyer County Park](https://www.google.com/maps/search/?api=1&query=37.2824665%2C-121.81248029999999&query_place_id=ChIJgYjw7goyjoARCs5VeUygEzs) — 3146 reviews (4.6★) · `park`
+- [Almaden Lake Park](https://www.google.com/maps/search/?api=1&query=37.2407967%2C-121.87159519999999&query_place_id=ChIJ-ZogKrvMj4ARfjcGfUkMHxY) — 3138 reviews (4.6★) · `park`
+- [Kelley Park](https://www.google.com/maps/search/?api=1&query=37.3228222%2C-121.85812800000001&query_place_id=ChIJnwKWPCwzjoARmYIzOuWZLuk) — 3054 reviews (4.4★) · `park`
+- [Sierra Vista Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.4092165%2C-121.80169&query_place_id=ChIJKUycKxLSj4AR0gmKsUg3QOI) — 3054 reviews (4.8★) · `nature_preserve`
+- [Rincon Park](https://www.google.com/maps/search/?api=1&query=37.7916129%2C-122.38995059999999&query_place_id=ChIJkZyW-2-AhYARzCwWSe3qHMQ) — 2995 reviews (4.6★) · `park`
+- [Shoreline Park](https://www.google.com/maps/search/?api=1&query=37.4324443%2C-122.0862392&query_place_id=ChIJoTYXIyK6j4ARXJNLdHVtPaY) — 2819 reviews (4.7★) · `city_park`
+- [Ed R. Levin County Park](https://www.google.com/maps/search/?api=1&query=37.4471677%2C-121.84780950000001&query_place_id=ChIJrY0JMwbPj4AR2EP1nd_AO9U) — 2818 reviews (4.7★) · `park`
+- [Emma Prusch Farm Park](https://www.google.com/maps/search/?api=1&query=37.3399959%2C-121.84552420000001&query_place_id=ChIJrytoZyXNj4AR8BLmODffC7I) — 2744 reviews (4.6★) · `park`
+- [Lafayette Park](https://www.google.com/maps/search/?api=1&query=37.79165%2C-122.4275889&query_place_id=ChIJC3O0GsGAhYAR4JK4ut4xPsM) — 2706 reviews (4.7★) · `city_park`
+- [Cuesta Park](https://www.google.com/maps/search/?api=1&query=37.373140899999996%2C-122.0794703&query_place_id=ChIJ8QmpntO2j4ARX1iGIbLixxY) — 2701 reviews (4.7★) · `park`
+- [Joaquin Miller Park](https://www.google.com/maps/search/?api=1&query=37.8142056%2C-122.18453819999998&query_place_id=ChIJSRIDtc-Hj4ARhI8iNlxKWks) — 2699 reviews (4.7★) · `park`
+- [Todos Santos Plaza](https://www.google.com/maps/search/?api=1&query=37.977195%2C-122.0336677&query_place_id=ChIJx5z-aCZnhYARDsb5RRpphqY) — 2669 reviews (4.6★) · `park`
+- [Sunnyvale Baylands Park](https://www.google.com/maps/search/?api=1&query=37.412456899999995%2C-121.99795759999999&query_place_id=ChIJj2eM_1-2j4AR172LuG72T9Y) — 2608 reviews (4.5★) · `park`
+- [Las Palmas Park](https://www.google.com/maps/search/?api=1&query=37.364074099999996%2C-122.0380295&query_place_id=ChIJ1ROtZmK2j4AREbn8_zB9NRc) — 2564 reviews (4.7★) · `park`
+- [Marina Green](https://www.google.com/maps/search/?api=1&query=37.806696099999996%2C-122.439016&query_place_id=ChIJUcPSXayBhYAR4nNIFJdniHE) — 2464 reviews (4.7★) · `park`
+- [Sanborn County Park](https://www.google.com/maps/search/?api=1&query=37.235352%2C-122.06272000000001&query_place_id=ChIJcxose6JMjoARhmLeeh9SfpM) — 2462 reviews (4.7★) · `park`
+- [Hayward Japanese Gardens](https://www.google.com/maps/search/?api=1&query=37.6800527%2C-122.0800443&query_place_id=ChIJT2KGJtSTj4ARuUJiLGdH9Y4) — 2429 reviews (4.6★) · `botanical_garden`
+- [Heather Farm Park](https://www.google.com/maps/search/?api=1&query=37.9199875%2C-122.04361390000001&query_place_id=ChIJ7VzzWpVhhYART_alZ8qDXE4) — 2420 reviews (4.7★) · `park`
+- [Japanese Friendship Garden](https://www.google.com/maps/search/?api=1&query=37.3212316%2C-121.86087429999999&query_place_id=ChIJnwKWPCwzjoARY4_zZxCFY5k) — 2406 reviews (4★) · `garden`
+- [Leo J. Ryan Park](https://www.google.com/maps/search/?api=1&query=37.5571037%2C-122.2698426&query_place_id=ChIJTUGEaNGej4ARrYwhj3foElQ) — 2368 reviews (4.8★) · `park`
+- [Buena Vista Park](https://www.google.com/maps/search/?api=1&query=37.7703713%2C-122.44317840000001&query_place_id=ChIJc-fv16uAhYARQNxL3WZRYHw) — 2332 reviews (4.6★) · `city_park`
+- [Emerald Glen Park](https://www.google.com/maps/search/?api=1&query=37.7111829%2C-121.8755319&query_place_id=ChIJSeT1Icruj4AR5EVB6BpMg7M) — 2315 reviews (4.7★) · `park`
+- [San Gregorio State Beach](https://www.google.com/maps/search/?api=1&query=37.323367399999995%2C-122.40197069999998&query_place_id=ChIJv1ArrYAIj4ARmx8mqgUB1YU) — 2212 reviews (4.6★) · `state_park`
+- [University of California Botanical Garden](https://www.google.com/maps/search/?api=1&query=37.875144999999996%2C-122.2387194&query_place_id=ChIJB-0ytkh8hYARLPEQsVn-oo4) — 2212 reviews (4.8★) · `botanical_garden`
+- [Mitchell Park](https://www.google.com/maps/search/?api=1&query=37.421475%2C-122.11482500000001&query_place_id=ChIJ8SC5IWm6j4ARafLVLcgZwVI) — 2207 reviews (4.7★) · `park`
+- [Ortega Park](https://www.google.com/maps/search/?api=1&query=37.342226%2C-122.0256165&query_place_id=ChIJhStl58W1j4ARuFmsbFGoLfM) — 2204 reviews (4.7★) · `park`
+- [Sunol Regional Wilderness](https://www.google.com/maps/search/?api=1&query=37.5149918%2C-121.8310722&query_place_id=ChIJyyOUphDFj4AR-PyTiLitD6c) — 2197 reviews (4.7★) · `park`
+- [Alta Plaza Park](https://www.google.com/maps/search/?api=1&query=37.791208999999995%2C-122.43770470000001&query_place_id=ChIJnS-EJM-AhYARYX4zAkEVsP8) — 2188 reviews (4.7★) · `city_park`
+- [San Mateo Central Park](https://www.google.com/maps/search/?api=1&query=37.56159480000001%2C-122.32333709999999&query_place_id=ChIJs-PUwm-ej4ARnRbSM15f7Z4) — 2181 reviews (4.7★) · `park`
+- [Civic Center Plaza](https://www.google.com/maps/search/?api=1&query=37.77949290000001%2C-122.4176986&query_place_id=ChIJE_PHY3yAhYAR5uBdYH1Racs) — 2129 reviews (4.4★) · `park`
+- [John McLaren Park](https://www.google.com/maps/search/?api=1&query=37.7192874%2C-122.41831549999999&query_place_id=ChIJ67-gn-5-j4ARcyjzTqE8ZdU) — 2117 reviews (4.6★) · `park`
+- [Miller/Knox Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.9162533%2C-122.38395639999997&query_place_id=ChIJ1_riXuqChYARyPS7ewYWKeM) — 2067 reviews (4.6★) · `park`
+- [Point Isabel Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.900962799999995%2C-122.32473110000001&query_place_id=ChIJLfv5yuh4hYARF56bPJEMHOQ) — 2051 reviews (4.8★) · `park`
+- [Quarry Lakes Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.579516399999996%2C-122.00730779999999&query_place_id=ChIJ2zWtA-y_j4ARZ-RaMV7bXI8) — 2044 reviews (4.6★) · `park`
+- [Hakone Estate and Gardens](https://www.google.com/maps/search/?api=1&query=37.252226%2C-122.04171710000001&query_place_id=ChIJjZdKxh9LjoARQsCEXVAnDx4) — 2040 reviews (4.4★) · `park`
+- [Los Gatos Creek County Park](https://www.google.com/maps/search/?api=1&query=37.270230999999995%2C-121.94986199999998&query_place_id=ChIJPZlzwgI1joAR_zB11wmlaEI) — 2038 reviews (4.6★) · `park`
+- [Berkeley Rose Garden](https://www.google.com/maps/search/?api=1&query=37.8852994%2C-122.26288939999999&query_place_id=ChIJAXUZGh18hYARe7Uug71u2io) — 2012 reviews (4.7★) · `garden`
+- [Lafayette Reservoir Recreation](https://www.google.com/maps/search/?api=1&query=37.8847926%2C-122.145527&query_place_id=ChIJd9qeu-1ihYAR447rYG0Eo8M) — 1990 reviews (4.7★) · `park`
+- [Año Nuevo State Park](https://www.google.com/maps/search/?api=1&query=37.1393634%2C-122.3362598&query_place_id=ChIJS_4zM5xVjoARpD4uK_ltJ7w) — 1963 reviews (4.8★) · `state_park`
+- [Seven Seas Park](https://www.google.com/maps/search/?api=1&query=37.3987848%2C-122.0160135&query_place_id=ChIJX0TFaLW3j4ARlEQykkLoSfM) — 1960 reviews (4.7★) · `park`
+- [Don Edwards San Francisco Bay National Wildlife Refuge](https://www.google.com/maps/search/?api=1&query=37.5321533%2C-122.0715483&query_place_id=ChIJneSLzs-9j4ARlOjYqHKYGV4) — 1940 reviews (4.5★) · `wildlife_refuge`
+- [Almaden Quicksilver County Park](https://www.google.com/maps/search/?api=1&query=37.1889444%2C-121.85793559999999&query_place_id=ChIJE4UnrYkwjoARhpo16MRSmdc) — 1930 reviews (4.7★) · `park`
+- [Campbell Park](https://www.google.com/maps/search/?api=1&query=37.286217799999996%2C-121.93989750000001&query_place_id=ChIJd5FJfOc0joARqOxHbZeLSqQ) — 1927 reviews (4.6★) · `park`
+- [McLaughlin Eastshore State Park State Seashore](https://www.google.com/maps/search/?api=1&query=37.868040799999996%2C-122.3088705&query_place_id=ChIJkVraKd9-hYARCNcBxhC6irU) — 1913 reviews (4.5★) · `state_park`
+- [John D. Morgan Park](https://www.google.com/maps/search/?api=1&query=37.284517699999995%2C-121.9589875&query_place_id=ChIJs-gu2iI1joARCxytA2j2PBg) — 1911 reviews (4.6★) · `park`
+- [Point Pinole Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.9914335%2C-122.35570260000001&query_place_id=ChIJx_EuTyJ2hYARefWSH6M4Z7A) — 1900 reviews (4.7★) · `park`
+- [Contra Loma Regional Park](https://www.google.com/maps/search/?api=1&query=37.9727433%2C-121.82167709999999&query_place_id=ChIJOY9ViD1YhYARZUYH6Hh5ReU) — 1896 reviews (4.6★) · `park`
+- [César E. Chávez Park](https://www.google.com/maps/search/?api=1&query=37.872075599999995%2C-122.3189663&query_place_id=ChIJFTWqXi5_hYARimk-cK6Tl_g) — 1885 reviews (4.7★) · `park`
+- [Lake Merced Park](https://www.google.com/maps/search/?api=1&query=37.721170199999996%2C-122.49191109999998&query_place_id=ChIJw07uwQd9j4ARllTw5yJevH4) — 1865 reviews (4.5★) · `park`
+- [Sutro Heights](https://www.google.com/maps/search/?api=1&query=37.7774816%2C-122.5105772&query_place_id=ChIJ-U68LrSHhYARWgGKnK3Bc14) — 1845 reviews (4.7★) · `park`
+- [Purisima Creek Redwoods Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.423076%2C-122.36036860000002&query_place_id=ChIJqaPiirygj4ARf3q2r4_-mpE) — 1837 reviews (4.8★) · `nature_preserve`
+- [Mussel Rock Park](https://www.google.com/maps/search/?api=1&query=37.668425%2C-122.49421419999999&query_place_id=ChIJd84D5n97j4ARKGlD0g-GSu8) — 1730 reviews (4.7★) · `city_park`
+- [J V Fitzgerald Marine Reserve](https://www.google.com/maps/search/?api=1&query=37.523765%2C-122.5175189&query_place_id=ChIJEX0UEu1xj4ARlyKBlfv0QVM) — 1712 reviews (4.7★) · `nature_preserve`
+- [Seal Point Park](https://www.google.com/maps/search/?api=1&query=37.5740543%2C-122.30211569999997&query_place_id=ChIJ2z1kfJuej4ARyBP0JwQ91s4) — 1699 reviews (4.7★) · `park`
+- [Santa Teresa County Park](https://www.google.com/maps/search/?api=1&query=37.213916999999995%2C-121.78763540000001&query_place_id=ChIJgWcGgcEvjoARutvVE2KfBsc) — 1667 reviews (4.6★) · `park`
+- [Ina Coolbrith Park](https://www.google.com/maps/search/?api=1&query=37.7982745%2C-122.4134592&query_place_id=ChIJdx6kBe6AhYARsPFmpUAvvcY) — 1656 reviews (4.8★) · `city_park`
+- [Shadow Cliffs Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.6711786%2C-121.84496&query_place_id=ChIJP40E40Toj4ARde_vhOcsrRY) — 1653 reviews (4.4★) · `park`
+- [Guadalupe River Park](https://www.google.com/maps/search/?api=1&query=37.3433081%2C-121.90343779999999&query_place_id=ChIJAbdJa2LLj4ARkimX9gu_Edg) — 1636 reviews (4★) · `city_park`
+- [The Stanford Oval](https://www.google.com/maps/search/?api=1&query=37.4301554%2C-122.1693704&query_place_id=ChIJqfC_LCq7j4AR_znllQn__5g) — 1625 reviews (4.8★) · `park`
+- [Glen Canyon Park](https://www.google.com/maps/search/?api=1&query=37.7415588%2C-122.4431851&query_place_id=ChIJ9SlCdnZ-j4AR86EzE6c9NY8) — 1607 reviews (4.7★) · `city_park`
+- [Chabot Park](https://www.google.com/maps/search/?api=1&query=37.731454899999996%2C-122.1257893&query_place_id=ChIJHeFcnbSPj4ARp47fbUX5M3s) — 1604 reviews (4.7★) · `park`
+- [Tilden Nature Area](https://www.google.com/maps/search/?api=1&query=37.9098854%2C-122.2652961&query_place_id=ChIJEYhNGOJ7hYARbLwMRZiTIIk) — 1602 reviews (4.8★) · `nature_preserve`
+- [Duboce Park](https://www.google.com/maps/search/?api=1&query=37.7695967%2C-122.43333439999999&query_place_id=ChIJwXCwC6eAhYARQoWxmx9XoRk) — 1585 reviews (4.6★) · `city_park`
+- [Indian Rock Park](https://www.google.com/maps/search/?api=1&query=37.892185%2C-122.27269829999997&query_place_id=ChIJAcK7wax-hYARYxSnYWfJjTA) — 1578 reviews (4.8★) · `park`
+- [Alameda Creek Regional Trail - Isherwood Staging Area](https://www.google.com/maps/search/?api=1&query=37.575209799999996%2C-122.010852&query_place_id=ChIJH3ZT60PAj4ARPbVK_Xh3aI4) — 1570 reviews (4.6★) · `park`
+- [Corona Heights Park](https://www.google.com/maps/search/?api=1&query=37.7653137%2C-122.43857960000001&query_place_id=ChIJX3DWQgJ-j4ARxWqSTDOy_CU) — 1570 reviews (4.8★) · `park`
+- [Foothills Nature Preserve](https://www.google.com/maps/search/?api=1&query=37.3630227%2C-122.17205320000001&query_place_id=ChIJQUKteNGvj4ARbVUR7hhftw8) — 1533 reviews (4.6★) · `nature_preserve`
+- [Garin Regional Park](https://www.google.com/maps/search/?api=1&query=37.6289215%2C-122.02993079999997&query_place_id=ChIJq_YCtfOUj4AR_0u7MWxA0-M) — 1479 reviews (4.7★) · `park`
+- [Uvas Canyon County Park](https://www.google.com/maps/search/?api=1&query=37.0850335%2C-121.79227619999999&query_place_id=ChIJW3R95SMjjoAR82Saa4DLRFs) — 1475 reviews (4.7★) · `park`
+- [Black Diamond Mines Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.9564166%2C-121.8496605&query_place_id=ChIJL_uklYlYhYARvn-qbtZlcDA) — 1430 reviews (4.7★) · `park`
+- [Coyote Lake-Harvey Bear Ranch County Park](https://www.google.com/maps/search/?api=1&query=37.078149499999995%2C-121.5281104&query_place_id=ChIJfYBicUrnkYAR2cbDbyHxfro) — 1428 reviews (4.6★) · `park`
+- [St James Park](https://www.google.com/maps/search/?api=1&query=37.3388897%2C-121.8911568&query_place_id=ChIJU_8CCJjMj4ARfFaS4nEundw) — 1423 reviews (3.5★) · `park`
+- [San Mateo Japanese Garden](https://www.google.com/maps/search/?api=1&query=37.561975%2C-122.32159879999999&query_place_id=ChIJE47cZmWej4ARKTviV3qYJLQ) — 1416 reviews (4.7★) · `garden`
+- [Sibley Volcanic Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8541078%2C-122.20389420000001&query_place_id=ChIJhQxGvGd9hYARDYpVyN6Y_BM) — 1412 reviews (4.7★) · `nature_preserve`
+- [Don Castro Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.6900902%2C-122.05557309999999&query_place_id=ChIJx-huV7KTj4ARt8SE-dyulXk) — 1387 reviews (4.4★) · `park`
+- [Temescal Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.847859299999996%2C-122.233447&query_place_id=ChIJnZjC6pl9hYARrekcAH6CTP4) — 1386 reviews (4.6★) · `park`
+- [Edgewood Park & Natural Preserve](https://www.google.com/maps/search/?api=1&query=37.4739803%2C-122.27845429999999&query_place_id=ChIJoz5YrHahj4AR65gli6tpga0) — 1381 reviews (4.7★) · `park`
+- [Crocker Amazon Playground Park](https://www.google.com/maps/search/?api=1&query=37.7144528%2C-122.43054719999999&query_place_id=ChIJrW0PhpZ-j4ARuS1A2RkoHQM) — 1373 reviews (4.4★) · `city_park`
+- [Orange Memorial Park](https://www.google.com/maps/search/?api=1&query=37.6533641%2C-122.4270409&query_place_id=ChIJ891vs595j4ARd3_fPE9Ykw4) — 1364 reviews (4.5★) · `park`
+- [Stevens Creek County Park](https://www.google.com/maps/search/?api=1&query=37.3053619%2C-122.07387670000001&query_place_id=ChIJaRyA1GKzj4ARrxehTNbkYUI) — 1364 reviews (4.6★) · `park`
+- [Civic Park](https://www.google.com/maps/search/?api=1&query=37.9039831%2C-122.0592109&query_place_id=ChIJ5yx2sr9hhYARNDdL0Znpn8s) — 1362 reviews (4.6★) · `park`
+- [Kennedy Park](https://www.google.com/maps/search/?api=1&query=37.6684255%2C-122.12109280000001&query_place_id=ChIJj5QyiQaRj4ARmzpXHtQHkPg) — 1352 reviews (4.5★) · `park`
+- [Willow Street Frank Bramhall Park](https://www.google.com/maps/search/?api=1&query=37.3037189%2C-121.9093621&query_place_id=ChIJJzxzkaU0joAR24MjQ2xvmnk) — 1350 reviews (4.6★) · `park`
+- [Point Isabel Dog Park](https://www.google.com/maps/search/?api=1&query=37.8988333%2C-122.32472209999999&query_place_id=ChIJQ7z0zeV4hYARO0zxw2JejRk) — 1343 reviews (4.8★) · `dog_park`
+- [Serra Park](https://www.google.com/maps/search/?api=1&query=37.3436819%2C-122.0426344&query_place_id=ChIJ9-CtyS20j4ARoqI6KQ8tnuk) — 1334 reviews (4.6★) · `park`
+- [Presidio Tunnel Tops](https://www.google.com/maps/search/?api=1&query=37.8028724%2C-122.45632880000001&query_place_id=ChIJXfbP6YmAhYARX1lrFe54-tY) — 1330 reviews (4.9★) · `park`
+- [Emeryville Marina Park](https://www.google.com/maps/search/?api=1&query=37.838862899999995%2C-122.3152083&query_place_id=ChIJR_fvTap_hYARFQi1Hm81Tqk) — 1327 reviews (4.7★) · `park`
+- [Pleasant Hill Park](https://www.google.com/maps/search/?api=1&query=37.9492574%2C-122.06584769999999&query_place_id=ChIJ3TdJ2UhhhYARO_LvHughIkA) — 1320 reviews (4.6★) · `city_park`
+- [Windy Hill Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.362544799999995%2C-122.2314744&query_place_id=ChIJiVoW-m-vj4ARN2HooK4a1po) — 1320 reviews (4.8★) · `nature_preserve`
+- [Martin Luther King Jr. Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.730526499999996%2C-122.20759139999998&query_place_id=ChIJ_1biw7mFj4ARgry4eL6ECGo) — 1316 reviews (4.5★) · `park`
+- [Huddart Park](https://www.google.com/maps/search/?api=1&query=37.4404701%2C-122.29173379999999&query_place_id=ChIJbxHK_i-hj4ARsuIi3YGxk7E) — 1312 reviews (4.8★) · `park`
+- [Briones Regional Park](https://www.google.com/maps/search/?api=1&query=37.9432088%2C-122.14054130000001&query_place_id=ChIJ-bUwPX9jhYAR4s9gC3keN8Y) — 1294 reviews (4.7★) · `park`
+- [Central Park](https://www.google.com/maps/search/?api=1&query=37.766115899999996%2C-121.95445950000001&query_place_id=ChIJ_Y7qD4Tyj4ARb_WFwxQvm4Q) — 1286 reviews (4.7★) · `park`
+- [Cupertino Memorial Park](https://www.google.com/maps/search/?api=1&query=37.323841699999996%2C-122.0447373&query_place_id=ChIJM4B-bk60j4ARH6rQJUdCiXY) — 1281 reviews (4.6★) · `park`
+- [Cataldi Park](https://www.google.com/maps/search/?api=1&query=37.4019952%2C-121.87013679999998&query_place_id=ChIJWXTTdSfMj4ARx9M8DV0ECNI) — 1272 reviews (4.4★) · `park`
+- [Wildcat Canyon Regional Park](https://www.google.com/maps/search/?api=1&query=37.9515158%2C-122.32242889999999&query_place_id=ChIJBR-rWaN5hYARshK4fXyhIlM) — 1264 reviews (4.7★) · `park`
+- [Lexington Reservoir County Park](https://www.google.com/maps/search/?api=1&query=37.1987922%2C-121.98517120000001&query_place_id=ChIJW2wZjS42joARSMmYJbwy1wk) — 1249 reviews (4.5★) · `park`
+- [Lakeside Park](https://www.google.com/maps/search/?api=1&query=37.8071279%2C-122.2587736&query_place_id=ChIJC1ALR0mHj4ARIKKNtKaMNeE) — 1221 reviews (4.5★) · `park`
+- [Dimond Park](https://www.google.com/maps/search/?api=1&query=37.8053434%2C-122.2152264&query_place_id=ChIJVxwEKamHj4ARstmb8KaGdOQ) — 1215 reviews (4.5★) · `park`
+- [San Bruno City Park](https://www.google.com/maps/search/?api=1&query=37.6149389%2C-122.4153741&query_place_id=ChIJ740zp2Z3j4AR0HItV6PDyBg) — 1206 reviews (4.6★) · `park`
+- [Coyote Point Recreation Area](https://www.google.com/maps/search/?api=1&query=37.5872676%2C-122.3191012&query_place_id=ChIJa9nd2M6dj4ARQDIEYjXhp7E) — 1201 reviews (4.6★) · `park`
+- [Elizabeth F. Gamble Garden](https://www.google.com/maps/search/?api=1&query=37.4400122%2C-122.14822550000001&query_place_id=ChIJ0yK_PBm7j4ARbWeM5E9YaJA) — 1200 reviews (4.7★) · `garden`
+- [San Lorenzo Community Park](https://www.google.com/maps/search/?api=1&query=37.6652643%2C-122.1428624&query_place_id=ChIJfQtukveQj4ARuo-e-rx3wd8) — 1197 reviews (4.6★) · `park`
+- [Bayfront Park](https://www.google.com/maps/search/?api=1&query=37.6049946%2C-122.3764138&query_place_id=ChIJh4JT0sd3j4ARRUs8pfcWYVY) — 1184 reviews (4.6★) · `park`
+- [San Pablo Park](https://www.google.com/maps/search/?api=1&query=37.8558502%2C-122.2839784&query_place_id=ChIJya2rk4t-hYARwuNUSMel3ww) — 1183 reviews (4.5★) · `park`
+- [Precita Park](https://www.google.com/maps/search/?api=1&query=37.747060499999996%2C-122.4122163&query_place_id=ChIJh6mckk9-j4ARNgSUccMhbjk) — 1181 reviews (4.6★) · `city_park`
+- [Anthony Chabot Regional Park](https://www.google.com/maps/search/?api=1&query=37.750038599999996%2C-122.1046897&query_place_id=ChIJAbrOKvKOj4ARVv3zYBvxB2g) — 1173 reviews (4.7★) · `park`
+- [Marina Bay Park](https://www.google.com/maps/search/?api=1&query=37.9148011%2C-122.34724059999999&query_place_id=ChIJI2YsCHt4hYAR-J9mXOc4L-o) — 1166 reviews (4.7★) · `park`
+- [Candlestick Point State Recreation Area](https://www.google.com/maps/search/?api=1&query=37.712680999999996%2C-122.3807581&query_place_id=ChIJf89D-Dt_j4AREb5FKjLZnYg) — 1163 reviews (4.3★) · `state_park`
+- [Ponderosa Park](https://www.google.com/maps/search/?api=1&query=37.3621932%2C-122.00618159999999&query_place_id=ChIJMTcO0gm2j4ARjqxwR8LpLnA) — 1156 reviews (4.6★) · `park`
+- [Penitencia Creek Park](https://www.google.com/maps/search/?api=1&query=37.3907952%2C-121.84837050000002&query_place_id=ChIJexsCbsnNj4ARQTVUH_6d6Lg) — 1155 reviews (4.5★) · `park`
+- [Fremont Older Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.289077999999996%2C-122.0640914&query_place_id=ChIJe6KVX5S0j4ARvnbvWutH4Bk) — 1146 reviews (4.7★) · `nature_preserve`
+- [Huntington Park](https://www.google.com/maps/search/?api=1&query=37.7922657%2C-122.4121403&query_place_id=ChIJzYeZZ42AhYAR7fxkTExkME4) — 1146 reviews (4.6★) · `city_park`
+- [Middle Harbor Shoreline Park](https://www.google.com/maps/search/?api=1&query=37.8045767%2C-122.32329610000001&query_place_id=ChIJRaUOndl_hYARZR5ltuPAbwY) — 1140 reviews (4.4★) · `park`
+- [Joseph D. Grant County Park](https://www.google.com/maps/search/?api=1&query=37.34146500000001%2C-121.71967099999998&query_place_id=ChIJEXwxJnMrjoAR2dHPC873H8M) — 1130 reviews (4.6★) · `park`
+- [Red Morton Park](https://www.google.com/maps/search/?api=1&query=37.4716062%2C-122.2387476&query_place_id=ChIJ0bH5Qcajj4ARLzePCIyEbDE) — 1124 reviews (4.7★) · `park`
+- [Newhall Community Park](https://www.google.com/maps/search/?api=1&query=37.95391%2C-121.97699539999999&query_place_id=ChIJ--16iCRehYARTvGBYdyZzrA) — 1118 reviews (4.6★) · `park`
+- [Picchetti Ranch](https://www.google.com/maps/search/?api=1&query=37.289656699999995%2C-122.08492639999999&query_place_id=ChIJl5cKjWKzj4ARbA5Knh-gMPw) — 1106 reviews (4.7★) · `nature_preserve`
+- [Pearson-Arastradero Preserve](https://www.google.com/maps/search/?api=1&query=37.3871226%2C-122.17383740000001&query_place_id=ChIJiwrUvPuvj4ARtvdqGMRZrO0) — 1105 reviews (4.6★) · `nature_preserve`
+- [Backesto Park](https://www.google.com/maps/search/?api=1&query=37.3522568%2C-121.88450250000001&query_place_id=ChIJTb2U2Y3Mj4ARz4g0qvQkriE) — 1104 reviews (4.2★) · `park`
+- [Knowland Park](https://www.google.com/maps/search/?api=1&query=37.7559541%2C-122.13160419999998&query_place_id=ChIJ_VesygSPj4ARzyPnBCullXY) — 1104 reviews (4.7★) · `park`
+- [Redwood Grove Nature Preserve](https://www.google.com/maps/search/?api=1&query=37.374148999999996%2C-122.11937390000001&query_place_id=ChIJwepN6Pqwj4ARI_6k2K2hwnU) — 1096 reviews (4.6★) · `nature_preserve`
+- [Calabazas Park](https://www.google.com/maps/search/?api=1&query=37.3022425%2C-122.0247816&query_place_id=ChIJR0LQOxe1j4ARYQ0rr3VhIYw) — 1067 reviews (4.6★) · `park`
+- [Wunderlich County Park](https://www.google.com/maps/search/?api=1&query=37.4097789%2C-122.261658&query_place_id=ChIJk-_cQyakj4ARNa9PH0Hq80I) — 1053 reviews (4.7★) · `park`
+- [Grandview Park](https://www.google.com/maps/search/?api=1&query=37.756422199999996%2C-122.4717361&query_place_id=ChIJFS16LmCHhYAR9-5CGavbV2k) — 1051 reviews (4.8★) · `park`
+- [Butcher Dog Park](https://www.google.com/maps/search/?api=1&query=37.259991899999996%2C-121.91725829999999&query_place_id=ChIJL_bFi240joARmwA70n2h3_k) — 1050 reviews (4.4★) · `dog_park`
+- [Queen Wilhelmina Garden](https://www.google.com/maps/search/?api=1&query=37.770120399999996%2C-122.50926840000001&query_place_id=ChIJl9BKfLmHhYARtbJoLQTkHA8) — 1049 reviews (4.7★) · `botanical_garden`
+- [Main Parade Lawn](https://www.google.com/maps/search/?api=1&query=37.800622%2C-122.458337&query_place_id=ChIJ5Y5MK9iGhYARlv2o4nvWKlY) — 1038 reviews (4.8★) · `park`
+- [Eagle Park](https://www.google.com/maps/search/?api=1&query=37.389145500000005%2C-122.08622999999999&query_place_id=ChIJ-Wl58sywj4ARs-TZYmXDoDc) — 1034 reviews (4.5★) · `park`
+- [Washington Park](https://www.google.com/maps/search/?api=1&query=37.5821355%2C-122.3441037&query_place_id=ChIJr2gIuO2dj4ARWG92dKWpsX0) — 1024 reviews (4.7★) · `park`
+- [Fallon Sports Park](https://www.google.com/maps/search/?api=1&query=37.7115868%2C-121.85443029999998&query_place_id=ChIJi9DbctXoj4ARpxXIpGGbiEY) — 1023 reviews (4.7★) · `park`
+- [Rancho San Ramon Community Park](https://www.google.com/maps/search/?api=1&query=37.7497384%2C-121.91918839999998&query_place_id=ChIJAQBAqSLmj4ARa88WAyIpX1Y) — 1020 reviews (4.7★) · `park`
+- [Oak Meadow Park](https://www.google.com/maps/search/?api=1&query=37.234794099999995%2C-121.9745409&query_place_id=ChIJuburXOs1joARLtAF5vVitTc) — 1018 reviews (4.7★) · `park`
+- [Niles Community Park](https://www.google.com/maps/search/?api=1&query=37.5740158%2C-121.98082099999998&query_place_id=ChIJ28Ye4HDAj4ARGH-sYZ9sEa4) — 1005 reviews (4.5★) · `park`
+- [Antioch/Oakley Regional Shoreline](https://www.google.com/maps/search/?api=1&query=38.0185277%2C-121.75107170000001&query_place_id=ChIJs7o29VhWhYARRPBK1YKwkQo) — 990 reviews (4.4★) · `park`
+- [Las Trampas Wilderness Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8158101%2C-122.04077579999999&query_place_id=ChIJ_4RrMYGLj4ARO60ZV_k5s_I) — 988 reviews (4.7★) · `park`
+- [Morcom Rose Garden](https://www.google.com/maps/search/?api=1&query=37.8200167%2C-122.2465611&query_place_id=ChIJF5M8PVyHj4AR01WEkaDYSGc) — 985 reviews (4.7★) · `garden`
+- [Anderson Lake County Park](https://www.google.com/maps/search/?api=1&query=37.1633481%2C-121.63023030000001&query_place_id=ChIJzYfnkafYkYARKRaRzaudHeE) — 981 reviews (4.4★) · `park`
+- [Vargas Plateau Regional Park](https://www.google.com/maps/search/?api=1&query=37.5752619%2C-121.93217580000001&query_place_id=ChIJvcCgugnBj4ARhnJYSp5rONk) — 981 reviews (4.7★) · `park`
+- [Washington Park](https://www.google.com/maps/search/?api=1&query=37.377324099999996%2C-122.0403197&query_place_id=ChIJ4d9sW_a2j4AR5SgeRl4PIPU) — 981 reviews (4.5★) · `park`
+- [Pleasanton Ridge Regional Park](https://www.google.com/maps/search/?api=1&query=37.6177144%2C-121.88970359999999&query_place_id=ChIJv7gIgxzCj4ARjA4yZfkfLyA) — 971 reviews (4.7★) · `park`
+- [Lake Cunningham Regional Park](https://www.google.com/maps/search/?api=1&query=37.3372708%2C-121.8086744&query_place_id=ChIJdR_EjVotjoARXqra-Sgdi4k) — 965 reviews (4.5★) · `park`
+- [Keller Beach Park](https://www.google.com/maps/search/?api=1&query=37.9207646%2C-122.38637239999998&query_place_id=ChIJFXNzesSChYARbwpAkhdBEhM) — 962 reviews (4.5★) · `park`
+- [San Bruno Mountain State Park](https://www.google.com/maps/search/?api=1&query=37.696872899999995%2C-122.43393469999998&query_place_id=ChIJve7kRTh5j4AR2P1mn_UlQso) — 958 reviews (4.7★) · `state_park`
+- [Pulgas Ridge Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.4787095%2C-122.29223250000001&query_place_id=ChIJrUxV07yhj4ARwWZ1t9ko58o) — 956 reviews (4.6★) · `nature_preserve`
+- [Shoup Park](https://www.google.com/maps/search/?api=1&query=37.375662%2C-122.119321&query_place_id=ChIJh-I4lxp9mYARP-DaZprpX9g) — 955 reviews (4.7★) · `park`
+- [Doerr Park](https://www.google.com/maps/search/?api=1&query=37.2736251%2C-121.9159709&query_place_id=ChIJCaFB24k0joARUZcJGP99rFA) — 939 reviews (4.6★) · `park`
+- [The Panhandle](https://www.google.com/maps/search/?api=1&query=37.772444799999995%2C-122.44636999999999&query_place_id=ChIJExp0sFKHhYARJuAx1sqfD0Y) — 937 reviews (4.5★) · `city_park`
+- [Roberts Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.8123964%2C-122.17470390000001&query_place_id=ChIJpWOH5tWHj4ARSdxsJ0uiqe0) — 935 reviews (4.8★) · `park`
+- [Braly Park](https://www.google.com/maps/search/?api=1&query=37.3640847%2C-122.0201089&query_place_id=ChIJWWsNlnO2j4ARI0pdiKPjf0A) — 923 reviews (4.6★) · `park`
+- [Concord Community Park](https://www.google.com/maps/search/?api=1&query=37.965227399999996%2C-122.0138868&query_place_id=ChIJn_8SSbZghYARWz1r5ZtsriY) — 922 reviews (4.5★) · `park`
+- [Snow Park](https://www.google.com/maps/search/?api=1&query=37.8071141%2C-122.2642898&query_place_id=ChIJ5eZWxEyHj4ARkj0vDjpoRqU) — 922 reviews (4.4★) · `park`
+- [Big Break Regional Shoreline](https://www.google.com/maps/search/?api=1&query=38.010852%2C-121.7290251&query_place_id=ChIJCbfy8W9WhYARqPGzRkXbHlc) — 921 reviews (4.6★) · `park`
+- [The Gardens at Lake Merritt](https://www.google.com/maps/search/?api=1&query=37.8062142%2C-122.25842379999999&query_place_id=ChIJIXE5rk6Hj4ARqHfzUIk5l00) — 921 reviews (4.6★) · `garden`
+- [Rotary PlayGarden](https://www.google.com/maps/search/?api=1&query=37.3418533%2C-121.9048182&query_place_id=ChIJzR4-U2LLj4ARjiMp-x3X-Po) — 920 reviews (4.6★) · `park`
+- [Castro Valley Community Park](https://www.google.com/maps/search/?api=1&query=37.708862499999995%2C-122.088749&query_place_id=ChIJ4XkbLfeRj4ARvX0UbFQ8NiY) — 902 reviews (4.6★) · `park`
+- [Sylvan Park](https://www.google.com/maps/search/?api=1&query=37.3817546%2C-122.0631265&query_place_id=ChIJ_4l7o9-2j4AR_9ph4wcv6L0) — 902 reviews (4.6★) · `park`
+- [Bedwell Bayfront Park](https://www.google.com/maps/search/?api=1&query=37.491121299999996%2C-122.1723874&query_place_id=ChIJKd3b4cy8j4ARoYmzezJVPko) — 897 reviews (4.5★) · `park`
+- [Codornices Park](https://www.google.com/maps/search/?api=1&query=37.8859497%2C-122.2619433&query_place_id=ChIJGxW97Rx8hYARrmWBykD0ryE) — 892 reviews (4.7★) · `park`
+- [Meek Park](https://www.google.com/maps/search/?api=1&query=37.684528199999995%2C-122.1134307&query_place_id=ChIJjWQAULuRj4ARXzxNDZHHpWg) — 879 reviews (4.6★) · `park`
+- [Buchanan Park](https://www.google.com/maps/search/?api=1&query=37.9992485%2C-121.8885116&query_place_id=ChIJGWZBRkVZhYARhytHM39uXrA) — 867 reviews (4.3★) · `park`
+- [Dry Creek Pioneer Regional Park](https://www.google.com/maps/search/?api=1&query=37.61375700000001%2C-122.0125415&query_place_id=ChIJ4aj0jDyVj4ARHai6ERMpoOc) — 865 reviews (4.7★) · `park`
+- [Central Park Dog Park](https://www.google.com/maps/search/?api=1&query=37.552280800000005%2C-121.966785&query_place_id=ChIJ8U7bX-zAj4AR2Ew0XFrGYBg) — 860 reviews (4.6★) · `dog_park`
+- [Lakeshore Park](https://www.google.com/maps/search/?api=1&query=37.5535322%2C-122.03291519999999&query_place_id=ChIJ10BpfK2_j4ARtp9Fu69V67U) — 859 reviews (4.6★) · `park`
+- [Mosswood Park](https://www.google.com/maps/search/?api=1&query=37.8239404%2C-122.2605625&query_place_id=ChIJCZk-5f59hYARPyoxocqrbHM) — 856 reviews (4.1★) · `park`
+- [Mt. Madonna County Park](https://www.google.com/maps/search/?api=1&query=37.0029592%2C-121.7085492&query_place_id=ChIJYxXYUsoejoARXiU0IKIU3pc) — 855 reviews (4.8★) · `park`
+- [Jean Sweeney Open Space Park](https://www.google.com/maps/search/?api=1&query=37.779614699999996%2C-122.263559&query_place_id=ChIJVVVVYSqBj4ARBkn4DIsMukc) — 854 reviews (4.8★) · `park`
+- [Villa Montalvo](https://www.google.com/maps/search/?api=1&query=37.2422736%2C-122.03092109999999&query_place_id=ChIJe94dsPhKjoARpRcmXHCvlGw) — 849 reviews (4.8★) · `park`
+- [Arizona Garden](https://www.google.com/maps/search/?api=1&query=37.435893300000004%2C-122.17102829999999&query_place_id=ChIJicDPmS27j4ARo1YjhvARFkg) — 845 reviews (4.8★) · `garden`
+- [Cull Canyon Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.70953%2C-122.05538500000002&query_place_id=ChIJOZhLD3SSj4AR3VKaGrB0YvI) — 845 reviews (4.5★) · `park`
+- [Jefferson Square Park](https://www.google.com/maps/search/?api=1&query=37.78185%2C-122.4256783&query_place_id=ChIJLa5_C72AhYAR7bHgmgQWrQo) — 840 reviews (4.3★) · `city_park`
+- [Cardoza Park](https://www.google.com/maps/search/?api=1&query=37.4418984%2C-121.8856676&query_place_id=ChIJ__7JOyHPj4AREmwXyz7VNSQ) — 834 reviews (4.4★) · `park`
+- [Fowler Creek Park](https://www.google.com/maps/search/?api=1&query=37.313995399999996%2C-121.76441959999998&query_place_id=ChIJr3WAc1MsjoAR8AvfLWma7BE) — 833 reviews (4.6★) · `park`
+- [Gellert Park](https://www.google.com/maps/search/?api=1&query=37.664023199999995%2C-122.4716742&query_place_id=ChIJ44PZ9pR7j4ARqNFmG5AHXUs) — 831 reviews (4.6★) · `park`
+- [Radke Martinez Regional Shoreline Park](https://www.google.com/maps/search/?api=1&query=38.0249781%2C-122.14128779999999&query_place_id=ChIJsQu3cm1vhYARk82plDfgVP8) — 824 reviews (4.6★) · `park`
+- [Del Monte Park](https://www.google.com/maps/search/?api=1&query=37.3206336%2C-121.90515689999998&query_place_id=ChIJJZ6y2lXLj4AR54sIIVIYQ2U) — 817 reviews (4.5★) · `park`
+- [Laurelwood Park](https://www.google.com/maps/search/?api=1&query=37.5260495%2C-122.32323310000001&query_place_id=ChIJ_dYyJ6Wfj4AR4MWNtemvnD4) — 814 reviews (4.7★) · `park`
+- [Watson Park](https://www.google.com/maps/search/?api=1&query=37.3595633%2C-121.87543300000002&query_place_id=ChIJ35Ir9_TMj4ARAIanMkLhgfY) — 814 reviews (4.1★) · `park`
+- [Piedmont Park](https://www.google.com/maps/search/?api=1&query=37.8217444%2C-122.23312680000001&query_place_id=ChIJy1J05GSHj4ARTvUR7hHkajg) — 809 reviews (4.7★) · `park`
+- [Bear Creek Redwoods Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.1768821%2C-122.00755649999999&query_place_id=ChIJv28Gxc5JjoARiDLPZyNpzqQ) — 802 reviews (4.6★) · `nature_preserve`
+- [Sue Bierman Park](https://www.google.com/maps/search/?api=1&query=37.7961171%2C-122.39601599999999&query_place_id=ChIJJdhU9k2HhYARiq91XhmsfX8) — 801 reviews (4.4★) · `city_park`
+- [Christmas Hill Park](https://www.google.com/maps/search/?api=1&query=36.9976936%2C-121.58547019999999&query_place_id=ChIJG9eXQ03ikYAR1dAQ_PaBbcs) — 799 reviews (4.5★) · `park`
+- [Tank Hill Park](https://www.google.com/maps/search/?api=1&query=37.7599053%2C-122.44770700000001&query_place_id=ChIJGTDJF_59j4ARUraPc7mH_cI) — 798 reviews (4.8★) · `city_park`
+- [John Mise Park](https://www.google.com/maps/search/?api=1&query=37.3170097%2C-121.98983330000002&query_place_id=ChIJe8FcHZ3Kj4ARh_Xz6NlqFGI) — 796 reviews (4.6★) · `park`
+- [Alameda Dog Park](https://www.google.com/maps/search/?api=1&query=37.7680085%2C-122.27332289999998&query_place_id=ChIJB1rGlzGBj4ARPWpVXAE44F4) — 795 reviews (4.6★) · `dog_park`
+- [Henry W. Coe State Park](https://www.google.com/maps/search/?api=1&query=37.1867545%2C-121.54716469999998&query_place_id=ChIJD3r_pQTokYARcj_jz7B8VPs) — 795 reviews (4.6★) · `state_park`
+- [Pacifica Esplanade Beach](https://www.google.com/maps/search/?api=1&query=37.6542938%2C-122.4931061&query_place_id=ChIJ6eFs7Qp7j4ARA0Fd-ME1RQI) — 793 reviews (4.7★) · `dog_park`
+- [McNee Ranch State Park](https://www.google.com/maps/search/?api=1&query=37.5537522%2C-122.5122439&query_place_id=ChIJxcVJ9FBwj4ARLDoObEZQkWU) — 789 reviews (4.7★) · `state_park`
+- [Lakewood Park](https://www.google.com/maps/search/?api=1&query=37.3973179%2C-122.0008455&query_place_id=ChIJPQzhKyy2j4ARnq-JVn43kMk) — 787 reviews (4.5★) · `park`
+- [Charleston Park](https://www.google.com/maps/search/?api=1&query=37.422099599999996%2C-122.0819686&query_place_id=ChIJo4za6vi5j4ARMua093RgGGA) — 786 reviews (4.4★) · `park`
+- [Paul Moore Park](https://www.google.com/maps/search/?api=1&query=37.271529%2C-121.89005789999997&query_place_id=ChIJ8UR9A5AzjoAR6sU03ZeKF4I) — 782 reviews (4.4★) · `park`
+- [Osage Station Park](https://www.google.com/maps/search/?api=1&query=37.8034428%2C-121.9795381&query_place_id=ChIJS2F94zrzj4ARj3Di1-Z54sk) — 780 reviews (4.8★) · `park`
+- [Morgan Hill Community Park](https://www.google.com/maps/search/?api=1&query=37.1147016%2C-121.64799819999999&query_place_id=ChIJR-qnrGcgjoARxw6jtX6VWpY) — 779 reviews (4.6★) · `park`
+- [Refugio Valley Park](https://www.google.com/maps/search/?api=1&query=38.008483%2C-122.26857889999998&query_place_id=ChIJaTj9iSp3hYARagafFxdPWIs) — 779 reviews (4.5★) · `park`
+- [Hayward Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.6468409%2C-122.1458273&query_place_id=ChIJRxOwBPWQj4ARwX7zUcIp_Ng) — 777 reviews (4.6★) · `park`
+- [The Urban Arborist](https://www.google.com/maps/search/?api=1&query=37.745342099999995%2C-122.39052249999999&query_place_id=ChIJKSuEmbJ_j4ARg9m7basvyHc) — 776 reviews (4.9★) · `garden`
+- [Shorebird Park](https://www.google.com/maps/search/?api=1&query=37.8616235%2C-122.3162801&query_place_id=ChIJ6x6F-SF_hYARZwzBYuu1Bvs) — 775 reviews (4.6★) · `nature_preserve`
+- [Oyster Bay Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.7081251%2C-122.19780379999997&query_place_id=ChIJd8qq0mqFj4ARy9AiP_E50wo) — 774 reviews (4.4★) · `park`
+- [Strawberry Creek Park](https://www.google.com/maps/search/?api=1&query=37.867077099999996%2C-122.28621450000001&query_place_id=ChIJ20e56JR-hYARezDFlleSt_s) — 769 reviews (4.7★) · `park`
+- [Siempre Verde Park](https://www.google.com/maps/search/?api=1&query=37.729255699999996%2C-122.16626389999999&query_place_id=ChIJl2_BY4SPj4ARsAFW1K1Y4cw) — 755 reviews (4.5★) · `park`
+- [Ulistac Natural Area](https://www.google.com/maps/search/?api=1&query=37.4038071%2C-121.95440859999998&query_place_id=ChIJv6nJp6XJj4AR-Tcwmk2rF9o) — 755 reviews (4.5★) · `park`
+- [Portola Redwoods State Park](https://www.google.com/maps/search/?api=1&query=37.262140200000005%2C-122.195833&query_place_id=ChIJOWFU0gqtj4ARovVyFe-WbWA) — 754 reviews (4.7★) · `state_park`
+- [Stanford Dish](https://www.google.com/maps/search/?api=1&query=37.408577799999996%2C-122.1796028&query_place_id=ChIJwT8AMDSlj4ARyEVnAFJFNEQ) — 754 reviews (4.7★) · `park`
+- [San Antonio Park](https://www.google.com/maps/search/?api=1&query=37.7902215%2C-122.2407466&query_place_id=ChIJywHUux-Hj4ARwZE_Ep6_jko) — 749 reviews (4.1★) · `park`
+- [Frank H. Ogawa Plaza](https://www.google.com/maps/search/?api=1&query=37.8051197%2C-122.27183489999999&query_place_id=ChIJp04_d7GAj4AR_y_dUHlPR_M) — 744 reviews (4.2★) · `city_park`
+- [Tennyson Park](https://www.google.com/maps/search/?api=1&query=37.6319539%2C-122.06515530000001&query_place_id=ChIJJ-aW9RWUj4ARYHjyCWQ3vEI) — 741 reviews (4.5★) · `park`
+- [Mt. Davidson Park](https://www.google.com/maps/search/?api=1&query=37.7389274%2C-122.4538594&query_place_id=ChIJhZVqXNx9j4ARvuYowECMdiA) — 740 reviews (4.7★) · `park`
+- [Stulsaft Park](https://www.google.com/maps/search/?api=1&query=37.4557515%2C-122.24875739999999&query_place_id=ChIJK79pr-6jj4ARYVS55fZ5gL0) — 740 reviews (4.7★) · `park`
+- [Twin Pines Park](https://www.google.com/maps/search/?api=1&query=37.517277899999996%2C-122.27755909999999&query_place_id=ChIJ2V-CNVqfj4ARuxHY63vFFWg) — 738 reviews (4.6★) · `park`
+- [Holly Park](https://www.google.com/maps/search/?api=1&query=37.7372115%2C-122.41993529999998&query_place_id=ChIJa8VE6l5-j4ARbpOdYYKv888) — 737 reviews (4.6★) · `city_park`
+- [Calero County Park](https://www.google.com/maps/search/?api=1&query=37.1758664%2C-121.76195240000001&query_place_id=ChIJPTNNuw8ljoARaDqda7jeD3k) — 734 reviews (4.6★) · `park`
+- [Fair Oaks Park](https://www.google.com/maps/search/?api=1&query=37.3860927%2C-122.01513249999999&query_place_id=ChIJRaCnjji2j4ARbFX38mLs8e8) — 734 reviews (4.4★) · `park`
+- [Mount Sutro Open Space Reserve](https://www.google.com/maps/search/?api=1&query=37.7592201%2C-122.4572304&query_place_id=ChIJDTzwSPh9j4ARGgKkwhdYqc0) — 734 reviews (4.7★) · `nature_preserve`
+- [Sierra Azul Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.1622245%2C-121.8990568&query_place_id=ChIJETa0tbowjoARb-HJhLi863E) — 734 reviews (4.7★) · `nature_preserve`
+- [Las Animas Park - Veterans Park](https://www.google.com/maps/search/?api=1&query=37.0221386%2C-121.5833776&query_place_id=ChIJI0e4MyvikYARCJdUHO1ssPU) — 724 reviews (4.4★) · `city_park`
+- [Parkside Aquatic Park](https://www.google.com/maps/search/?api=1&query=37.5607123%2C-122.2921323&query_place_id=ChIJLWtACuuej4ARHsA6LAM_aD0) — 724 reviews (4.5★) · `park`
+- [McClellan Ranch Preserve](https://www.google.com/maps/search/?api=1&query=37.3134602%2C-122.0628024&query_place_id=ChIJS5XZAme0j4ARo7EI4nXxk1Y) — 723 reviews (4.7★) · `nature_preserve`
+- [Raymond Kimbell Playground Park](https://www.google.com/maps/search/?api=1&query=37.7834855%2C-122.43496760000001&query_place_id=ChIJ6QW73rmAhYARNfD_XpgHsU4) — 721 reviews (4.4★) · `city_park`
+- [Washington Manor Park](https://www.google.com/maps/search/?api=1&query=37.694159299999995%2C-122.14633930000001&query_place_id=ChIJ4c0TXyOQj4ARu_ULirJpEGI) — 718 reviews (4.5★) · `park`
+- [Palo Alto Byxbee Park](https://www.google.com/maps/search/?api=1&query=37.448055599999996%2C-122.10625359999999&query_place_id=ChIJnVaUnce7j4AR9jYacpYcqVA) — 713 reviews (4.7★) · `park`
+- [Lime Ridge Open Space](https://www.google.com/maps/search/?api=1&query=37.9406737%2C-122.0012773&query_place_id=ChIJ0-BqC4dghYAR8CrdImAimSU) — 711 reviews (4.6★) · `park`
+- [Mountain Lake Park](https://www.google.com/maps/search/?api=1&query=37.7872822%2C-122.4697225&query_place_id=ChIJqfCTeBiHhYARt_0t7D65SWU) — 710 reviews (4.7★) · `city_park`
+- [Willow Pass Community Park](https://www.google.com/maps/search/?api=1&query=37.987030499999996%2C-122.0208784&query_place_id=ChIJY93HXD5nhYARCfEAYphRZ28) — 708 reviews (4.4★) · `park`
+- [San Pedro Valley Park](https://www.google.com/maps/search/?api=1&query=37.5779394%2C-122.47573070000001&query_place_id=ChIJIXmQLeZwj4ARRn--TGlhC4k) — 707 reviews (4.8★) · `park`
+- [Kennedy Grove Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.9507354%2C-122.26088170000001&query_place_id=ChIJPc6ynSZ6hYARyRU8FL1aaBo) — 702 reviews (4.7★) · `park`
+- [Martial Cottle Park](https://www.google.com/maps/search/?api=1&query=37.2636604%2C-121.8314266&query_place_id=ChIJexw11B8yjoAR0QCnB36H8Nc) — 702 reviews (4.7★) · `park`
+- [Live Oak Park](https://www.google.com/maps/search/?api=1&query=37.396665899999995%2C-121.9471066&query_place_id=ChIJ_cuOKp7Jj4ARFfGvZC4XC74) — 700 reviews (4.6★) · `park`
+- [Creekside Park](https://www.google.com/maps/search/?api=1&query=37.3164508%2C-122.01517999999999&query_place_id=ChIJbdltqXS1j4ARseQtaG4cCMk) — 699 reviews (4.5★) · `city_park`
+- [Veterans Park](https://www.google.com/maps/search/?api=1&query=37.9265462%2C-121.7075299&query_place_id=ChIJw-vq-Ln-j4AR005eslo8s-I) — 698 reviews (4.7★) · `park`
+- [El Corte de Madera Creek Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.396530899999995%2C-122.316364&query_place_id=ChIJh9HkRxunj4ARBMsqMlVpbro) — 695 reviews (4.7★) · `nature_preserve`
+- [Burgess Park](https://www.google.com/maps/search/?api=1&query=37.4523216%2C-122.17686679999998&query_place_id=ChIJDWcc4LKkj4ARpSwFeCCXidg) — 694 reviews (4.6★) · `park`
+- [Murphy Park](https://www.google.com/maps/search/?api=1&query=37.3822061%2C-122.02584590000001&query_place_id=ChIJIQ7I0ES2j4ARI_TIYQCqf2Q) — 694 reviews (4.4★) · `park`
+- [Coyote Creek Parkway](https://www.google.com/maps/search/?api=1&query=37.218063199999996%2C-121.73518209999999&query_place_id=ChIJGUu4VggujoARlJfy0BbU808) — 692 reviews (4.5★) · `park`
+- [Brushy Peak Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.746710199999995%2C-121.7090427&query_place_id=ChIJEyBfyxXhj4ARcgikqI1AymQ) — 690 reviews (4.6★) · `nature_preserve`
+- [Sycamore Grove Park](https://www.google.com/maps/search/?api=1&query=37.6449479%2C-121.78239579999999&query_place_id=ChIJU-NialPcj4ARguqX0YrZC1s) — 687 reviews (4.7★) · `park`
+- [Alvarado Park](https://www.google.com/maps/search/?api=1&query=37.9524322%2C-122.32212870000001&query_place_id=ChIJV-OQWCh4hYAR1lVX1XaiUgg) — 684 reviews (4.7★) · `park`
+- [Washington Park](https://www.google.com/maps/search/?api=1&query=37.7696572%2C-122.2737461&query_place_id=ChIJiafTLS6Bj4ARhJ52LompjCM) — 679 reviews (4.6★) · `park`
+- [Hidden Lakes Park](https://www.google.com/maps/search/?api=1&query=37.9781139%2C-122.09032950000001&query_place_id=ChIJHfcGXC9khYARXWc3VhaIq_E) — 677 reviews (4.6★) · `park`
+- [Hillcrest Community Park](https://www.google.com/maps/search/?api=1&query=37.9971976%2C-122.0449615&query_place_id=ChIJNyqGvP5mhYARd1kRlazdEEc) — 677 reviews (4.3★) · `park`
+- [De Anza Park](https://www.google.com/maps/search/?api=1&query=37.357441099999996%2C-122.0538704&query_place_id=ChIJz6pooJC2j4ARCNBeQTaJ5o0) — 675 reviews (4.6★) · `park`
+- [Baylands Nature Preserve](https://www.google.com/maps/search/?api=1&query=37.4577446%2C-122.10653819999999&query_place_id=ChIJvxDunke6j4ARORduHKhLIiU) — 672 reviews (4.7★) · `nature_preserve`
+- [Embarcadero Plaza](https://www.google.com/maps/search/?api=1&query=37.7951195%2C-122.39520069999998&query_place_id=ChIJWS0hyGaAhYARrci3Bdxh0fI) — 672 reviews (4.4★) · `park`
+- [Moraga Commons Park](https://www.google.com/maps/search/?api=1&query=37.8409136%2C-122.12574239999998&query_place_id=ChIJpT0PQLaJj4ARj2kbP5ar8VY) — 671 reviews (4.7★) · `park`
+- [Yerba Buena Public Square](https://www.google.com/maps/search/?api=1&query=37.7832024%2C-122.40109749999999&query_place_id=ChIJGTlgMYeAhYARp7VbHgNQ4XE) — 671 reviews (4.4★) · `park`
+- [Encinal Park](https://www.google.com/maps/search/?api=1&query=37.3914578%2C-122.0430519&query_place_id=ChIJ0_dyPQG3j4ARNe-ww1YCHH8) — 664 reviews (4.6★) · `park`
+- [Jollyman Park](https://www.google.com/maps/search/?api=1&query=37.3106071%2C-122.04101860000002&query_place_id=ChIJr-IuOP60j4ARbI5UYcgEVLg) — 660 reviews (4.6★) · `park`
+- [Hidden Valley Park](https://www.google.com/maps/search/?api=1&query=37.9823503%2C-122.09112040000001&query_place_id=ChIJJ2SERCxkhYAR-THcA3AT_yo) — 654 reviews (4.6★) · `park`
+- [Stafford Park](https://www.google.com/maps/search/?api=1&query=37.4820037%2C-122.24747900000001&query_place_id=ChIJU0rNlzSij4ARnEY6IVWCPJU) — 653 reviews (4.7★) · `park`
+- [Reed Street Dog Park](https://www.google.com/maps/search/?api=1&query=37.358765399999996%2C-121.94710560000001&query_place_id=ChIJ44-eLbXLj4ARZqkcGONPP5M) — 648 reviews (4.6★) · `dog_park`
+- [De Fremery Park](https://www.google.com/maps/search/?api=1&query=37.812239%2C-122.2868316&query_place_id=ChIJ95wKEqCAj4ARo8x3GrzGs_Y) — 647 reviews (4.3★) · `park`
+- [Burton Park](https://www.google.com/maps/search/?api=1&query=37.497859%2C-122.2587048&query_place_id=ChIJU30n0R6ij4AR9nCH31uU4Sk) — 646 reviews (4.7★) · `park`
+- [Lands End Trail Eagles Point](https://www.google.com/maps/search/?api=1&query=37.786700499999995%2C-122.4948301&query_place_id=ChIJF0vT1aqHhYARd3eXfOZLYYI) — 645 reviews (4.8★) · `park`
+- [Mission Bay Kids Park](https://www.google.com/maps/search/?api=1&query=37.772168199999996%2C-122.39259570000002&query_place_id=ChIJW_cCS9B_j4ARigbJMyKq_x8) — 645 reviews (4.7★) · `city_park`
+- [Patricia’s Green In Hayes Valley Park](https://www.google.com/maps/search/?api=1&query=37.7762229%2C-122.42444049999997&query_place_id=ChIJ2XVVCaKAhYARg4v2LEG2hbw) — 645 reviews (4.5★) · `city_park`
+- [Lincoln Park](https://www.google.com/maps/search/?api=1&query=37.7587988%2C-122.2311736&query_place_id=ChIJb8mSa4OGj4ARp-C_jAc2ru0) — 644 reviews (4.6★) · `park`
+- [Hidden Lake Park](https://www.google.com/maps/search/?api=1&query=37.4409207%2C-121.90485709999999&query_place_id=ChIJ_54NdNLIj4ARy4v1x7Ut6Ts) — 642 reviews (4.3★) · `park`
+- [Nealon Park](https://www.google.com/maps/search/?api=1&query=37.4479335%2C-122.17971399999999&query_place_id=ChIJcxADqbakj4ARF55yRHFLJVY) — 642 reviews (4.7★) · `park`
+- [Ramac Park](https://www.google.com/maps/search/?api=1&query=37.2507285%2C-121.8005111&query_place_id=ChIJZfuLDhgujoARk3u8iuhkcpc) — 639 reviews (4.3★) · `park`
+- [Ohlone Park](https://www.google.com/maps/search/?api=1&query=37.8737618%2C-122.27160760000001&query_place_id=ChIJcQOdXb1-hYARoCqold8JN0A) — 636 reviews (4.5★) · `park`
+- [Mission Peak Summit](https://www.google.com/maps/search/?api=1&query=37.5125051%2C-121.88083019999999&query_place_id=ChIJeyu0WMrFj4ARZl_3UHa52JE) — 632 reviews (4.8★) · `park`
+- [Sycamore Valley Park](https://www.google.com/maps/search/?api=1&query=37.8076955%2C-121.9462468&query_place_id=ChIJ11zG4Knzj4AROjPaLWD_nNM) — 630 reviews (4.7★) · `park`
+- [Monte Bello Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.3258319%2C-122.17859999999999&query_place_id=ChIJoVU_theyj4ARkqIEMjCnqFU) — 624 reviews (4.7★) · `nature_preserve`
+- [Shinn Historical Park and Arboretum](https://www.google.com/maps/search/?api=1&query=37.565193%2C-121.98017340000001&query_place_id=ChIJb8iHRmPAj4ARu4I6DUNEYyE) — 618 reviews (4.6★) · `botanical_garden`
+- [Jack Fischer Park](https://www.google.com/maps/search/?api=1&query=37.266010099999995%2C-121.9760426&query_place_id=ChIJd0a82G01joAR9XnpMAPql0w) — 611 reviews (4.7★) · `park`
+- [Waterfront Park](https://www.google.com/maps/search/?api=1&query=38.0220652%2C-122.13471459999998&query_place_id=ChIJ8zJjXptvhYAR0c7fpkkrQyk) — 605 reviews (4.5★) · `park`
+- [Cannery Park](https://www.google.com/maps/search/?api=1&query=37.665933599999995%2C-122.09716639999999&query_place_id=ChIJnWhlMG-Rj4ARN_dX4AxL4qs) — 603 reviews (4.3★) · `park`
+- [Willard Park](https://www.google.com/maps/search/?api=1&query=37.8610841%2C-122.25661939999999&query_place_id=ChIJG5e13yx8hYARtyq-Kr8-lcQ) — 603 reviews (4.5★) · `park`
+- [Charles F Kennedy Park](https://www.google.com/maps/search/?api=1&query=37.5916667%2C-122.0216667&query_place_id=ChIJ9UrqVmGVj4AR9hIOy8Fu5pU) — 602 reviews (4.5★) · `park`
+- [Nicholl Park](https://www.google.com/maps/search/?api=1&query=37.934378099999996%2C-122.34002570000001&query_place_id=ChIJTUB3bRR4hYARYP3z6T28ZT8) — 602 reviews (4.4★) · `city_park`
+- [Palo Alto - Greer Park](https://www.google.com/maps/search/?api=1&query=37.4430769%2C-122.119174&query_place_id=ChIJibyOolK6j4AR-55R-4OxMwo) — 601 reviews (4.5★) · `park`
+- [Lake Cunningham Action Sports Park](https://www.google.com/maps/search/?api=1&query=37.336148%2C-121.80325800000001&query_place_id=ChIJmSs8dFotjoAR9vkFy_jJ7S8) — 596 reviews (4.6★) · `park`
+- [Houge Park](https://www.google.com/maps/search/?api=1&query=37.2560879%2C-121.94234129999998&query_place_id=ChIJk96pBVI0joAR1yIPoms5vdk) — 595 reviews (4.6★) · `park`
+- [Hap Magee Ranch Park](https://www.google.com/maps/search/?api=1&query=37.840344099999996%2C-122.0199026&query_place_id=ChIJeTe9FxSLj4AR_tMg3spm6P8) — 594 reviews (4.6★) · `park`
+- [Sulphur Creek Nature Center](https://www.google.com/maps/search/?api=1&query=37.676627499999995%2C-122.06330369999998&query_place_id=ChIJH9TSOseTj4ARhP-2QCV3JDA) — 592 reviews (4.7★) · `wildlife_refuge`
+- [Warm Springs Community Park](https://www.google.com/maps/search/?api=1&query=37.4851659%2C-121.9217121&query_place_id=ChIJC10aG2vGj4AR8rdeCh0SUJI) — 590 reviews (4.5★) · `park`
+- [William Street Park](https://www.google.com/maps/search/?api=1&query=37.335065799999995%2C-121.86777579999999&query_place_id=ChIJl8-I_M_Mj4ARDiNVyjGZdx8) — 590 reviews (4.3★) · `park`
+- [San Ramon Athan Downs](https://www.google.com/maps/search/?api=1&query=37.749387999999996%2C-121.9560323&query_place_id=ChIJL43mQXDtj4ARNbStHiKPc2k) — 588 reviews (4.6★) · `park`
+- [Dog Park | Pine Lake Park](https://www.google.com/maps/search/?api=1&query=37.736504%2C-122.48323789999999&query_place_id=ChIJ6cpmppl9j4ARDpJW1T7RZ7s) — 586 reviews (4.7★) · `dog_park`
+- [Franklin Square](https://www.google.com/maps/search/?api=1&query=37.7650937%2C-122.4093828&query_place_id=ChIJv225NzB-j4ARVlS1BRuKM7o) — 585 reviews (4.4★) · `city_park`
+- [Aquatic Park](https://www.google.com/maps/search/?api=1&query=37.8064162%2C-122.42356629999999&query_place_id=ChIJZw_x9-CAhYARRIiXhmiD7Hw) — 584 reviews (4.7★) · `park`
+- [Live Oak Park](https://www.google.com/maps/search/?api=1&query=37.884103%2C-122.26918889999997&query_place_id=ChIJbfm6JqZ-hYARKlvdO13O1Lo) — 584 reviews (4.6★) · `park`
+- [Rose Garden](https://www.google.com/maps/search/?api=1&query=37.7718863%2C-122.47133950000001&query_place_id=ChIJ38PBV2qHhYARQNvZBtima_M) — 583 reviews (4.7★) · `garden`
+- [Henry Schmidt Park](https://www.google.com/maps/search/?api=1&query=37.3364689%2C-121.9603614&query_place_id=ChIJT-2NwPfKj4AR50o3LpK2T8E) — 581 reviews (4.4★) · `park`
+- [Rinconada Cultural Park](https://www.google.com/maps/search/?api=1&query=37.443744599999995%2C-122.1413291&query_place_id=ChIJL1Si4Bq7j4ARgpybwXpd9kg) — 580 reviews (4.6★) · `park`
+- [Ken Mercer Sports Park](https://www.google.com/maps/search/?api=1&query=37.681145699999995%2C-121.8918728&query_place_id=ChIJhaYW-2bpj4ARehetMcg7QUw) — 577 reviews (4.7★) · `park`
+- [Flickinger Park](https://www.google.com/maps/search/?api=1&query=37.3884614%2C-121.87390210000001&query_place_id=ChIJ_U3XETzMj4ARCaWmfg8Bbp4) — 572 reviews (4.3★) · `park`
+- [Foster City Dog Park](https://www.google.com/maps/search/?api=1&query=37.556038%2C-122.26038659999999&query_place_id=ChIJgU-NziuZj4AR4RMkuHoXZ8o) — 568 reviews (4.5★) · `dog_park`
+- [Rengstorff Park](https://www.google.com/maps/search/?api=1&query=37.400866%2C-122.0964243&query_place_id=ChIJ2UXd6rqwj4AROvLUGSVBF9M) — 563 reviews (4.4★) · `park`
+- [Victoria Manalo Draves Park](https://www.google.com/maps/search/?api=1&query=37.7770921%2C-122.4060738&query_place_id=ChIJMb8k6YGAhYARcSOLWWOsvoI) — 563 reviews (4.2★) · `city_park`
+- [Regional Parks Botanic Garden](https://www.google.com/maps/search/?api=1&query=37.8936432%2C-122.24334920000001&query_place_id=ChIJ3YjYqhJ8hYARXNbly3BB8vw) — 562 reviews (4.8★) · `botanical_garden`
+- [Memorial County Park](https://www.google.com/maps/search/?api=1&query=37.2756906%2C-122.29108049999999&query_place_id=ChIJv9BpOGKpj4ARUf_o2TxomSo) — 557 reviews (4.8★) · `park`
+- [Memorial Park](https://www.google.com/maps/search/?api=1&query=37.8958946%2C-122.2905534&query_place_id=ChIJlQO0qTd5hYARCUIaFVMVxP8) — 555 reviews (4.5★) · `park`
+- [Raynor Park](https://www.google.com/maps/search/?api=1&query=37.3439221%2C-122.0065366&query_place_id=ChIJtfaYHu21j4ARnxxj4OP2eE8) — 553 reviews (4.5★) · `park`
+- [Cahalan Park](https://www.google.com/maps/search/?api=1&query=37.2460976%2C-121.8498594&query_place_id=ChIJ9RJEpIQxjoARyxfF9K1QuRY) — 552 reviews (4.4★) · `park`
+- [Garfield Square Park & Recreation Center](https://www.google.com/maps/search/?api=1&query=37.750200899999996%2C-122.41223600000001&query_place_id=ChIJ4YHTU09-j4ARQw8Xk1gAMLg) — 552 reviews (4.4★) · `city_park`
+- [Huckleberry Botanic Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8428628%2C-122.1949799&query_place_id=ChIJZxIOoFh9hYARZkJTNcyX4Is) — 551 reviews (4.7★) · `nature_preserve`
+- [Arbolado Park](https://www.google.com/maps/search/?api=1&query=37.9192338%2C-122.0008027&query_place_id=ChIJT-HUKXNghYAR2dnpWXYgby8) — 550 reviews (4.7★) · `park`
+- [Pioneer Memorial Park](https://www.google.com/maps/search/?api=1&query=37.389574499999995%2C-122.08326559999999&query_place_id=ChIJ8e4ELDO3j4ARWKnyezbvlhY) — 548 reviews (4.6★) · `park`
+- [Ryder Park](https://www.google.com/maps/search/?api=1&query=37.5748453%2C-122.30767879999999&query_place_id=ChIJ7dL6VYCej4ARyuhV4XLGrbM) — 544 reviews (4.6★) · `park`
+- [Railroad Park](https://www.google.com/maps/search/?api=1&query=37.129004099999996%2C-121.65033550000001&query_place_id=ChIJrXjr2IwgjoAR2UBQeU2hf4o) — 540 reviews (4.7★) · `park`
+- [Riverview Park](https://www.google.com/maps/search/?api=1&query=37.4014636%2C-121.9420959&query_place_id=ChIJXzdpXAvJj4AR1VhVBlZ6nsk) — 538 reviews (4.6★) · `park`
+- [Heather Farm Dog Park](https://www.google.com/maps/search/?api=1&query=37.9231149%2C-122.0451297&query_place_id=ChIJRaBCvalhhYARQgrxRQ5pNj8) — 534 reviews (4.5★) · `dog_park`
+- [River Oaks Park](https://www.google.com/maps/search/?api=1&query=37.403435%2C-121.9307683&query_place_id=ChIJNQ0wrGzJj4ARxaKyhKjsSbk) — 534 reviews (4.5★) · `city_park`
+- [Grizzly Peak Blvd Overlook](https://www.google.com/maps/search/?api=1&query=37.8722273%2C-122.22054559999998&query_place_id=ChIJ1y13Z1V8hYAR_DhjWDllNuE) — 533 reviews (4.7★) · `park`
+- [Belgatos Park](https://www.google.com/maps/search/?api=1&query=37.2309846%2C-121.9193487&query_place_id=ChIJKVnSRqE2joARDagyVK0gF8E) — 531 reviews (4.5★) · `park`
+- [Flood Park](https://www.google.com/maps/search/?api=1&query=37.475010999999995%2C-122.171509&query_place_id=ChIJE1WPgbK8j4AR1UVrkZmVftk) — 530 reviews (4.3★) · `park`
+- [Cayuga Playground Park](https://www.google.com/maps/search/?api=1&query=37.713822199999996%2C-122.45052120000001&query_place_id=ChIJHWNyyyd8j4AReVyUjlIqcxk) — 525 reviews (4.5★) · `city_park`
+- [May Nissen Park](https://www.google.com/maps/search/?api=1&query=37.686513%2C-121.78488089999999&query_place_id=ChIJuWAKNrjnj4ARcv0WyFfjfI0) — 521 reviews (4.6★) · `park`
+- [Catamaran Park](https://www.google.com/maps/search/?api=1&query=37.553007099999995%2C-122.26521050000001&query_place_id=ChIJH3eqtSqZj4AR38vOBUSHtps) — 520 reviews (4.7★) · `park`
+- [Crane Cove Park](https://www.google.com/maps/search/?api=1&query=37.7632701%2C-122.38737080000001&query_place_id=ChIJs9iLbUV_j4ARVIOAOxAM04w) — 520 reviews (4.7★) · `park`
+- [Blue Goose Park](https://www.google.com/maps/search/?api=1&query=37.950365%2C-121.7077072&query_place_id=ChIJ0U6W-yf_j4ARRyDr3wfRTvE) — 519 reviews (4.6★) · `park`
+- [Carquinez Strait Regional Shoreline](https://www.google.com/maps/search/?api=1&query=38.0204488%2C-122.16041310000001&query_place_id=ChIJY4NJjvRvhYARASPCQQkLwKs) — 509 reviews (4.6★) · `park`
+- [Groesbeck Hill Park](https://www.google.com/maps/search/?api=1&query=37.3364584%2C-121.77858119999999&query_place_id=ChIJM401WjwtjoARP56fI4jnleg) — 509 reviews (4.6★) · `park`
+- [Golden Gate Park Polo Field](https://www.google.com/maps/search/?api=1&query=37.768211699999995%2C-122.4932246&query_place_id=ChIJd-UpaaCHhYARATTB9Q5e4xk) — 505 reviews (4.6★) · `park`
+- [Wildwood Park](https://www.google.com/maps/search/?api=1&query=37.2579935%2C-122.0356214&query_place_id=ChIJ061Gtd9KjoAROYSwrEav4t8) — 504 reviews (4.6★) · `park`
+- [Portsmouth Square Park](https://www.google.com/maps/search/?api=1&query=37.7948896%2C-122.4052341&query_place_id=ChIJ-RJFNouAhYARHU0SXkyCGn8) — 502 reviews (4.1★) · `city_park`
+- [Shimada Friendship Park](https://www.google.com/maps/search/?api=1&query=37.908459199999996%2C-122.34462639999998&query_place_id=ChIJN-4eC4h4hYARgg_InZDKZDI) — 502 reviews (4.7★) · `park`
+- [Aquatic Park](https://www.google.com/maps/search/?api=1&query=37.8596806%2C-122.29875650000001&query_place_id=ChIJicH48-9-hYARI-frQdm5OBs) — 500 reviews (4.3★) · `park`
+- [Dixon Landing Park](https://www.google.com/maps/search/?api=1&query=37.452473499999996%2C-121.91585219999997&query_place_id=ChIJIexkM7rIj4ARrA3NrwUgsNE) — 500 reviews (4.4★) · `park`
+- [Fernandez Park](https://www.google.com/maps/search/?api=1&query=38.007473399999995%2C-122.2912621&query_place_id=ChIJd1Nm2uZ2hYARx9fiLxdrSe8) — 498 reviews (4.5★) · `park`
+- [Karl Nordvik Park](https://www.google.com/maps/search/?api=1&query=37.556145%2C-122.06050199999999&query_place_id=ChIJbQlMF0C-j4ARVQWuP253fyg) — 498 reviews (4.6★) · `park`
+- [Claremont Canyon Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8664817%2C-122.2355778&query_place_id=ChIJkSKtNE18hYAR7xmyHnHitrg) — 497 reviews (4.8★) · `park`
+- [Brigadoon Park](https://www.google.com/maps/search/?api=1&query=37.30626470000001%2C-121.80279599999999&query_place_id=ChIJsVvXRYItjoAR-UoZLZ2-VoA) — 496 reviews (4.4★) · `park`
+- [River Glen Park](https://www.google.com/maps/search/?api=1&query=37.3018694%2C-121.8872122&query_place_id=ChIJV5vlfUIzjoARZPdXwA8ZYaA) — 495 reviews (4.4★) · `park`
+- [Cedar Rose Park](https://www.google.com/maps/search/?api=1&query=37.876678999999996%2C-122.28817&query_place_id=ChIJLe7Ygbh-hYARjUO_bVoDEXo) — 492 reviews (4.5★) · `park`
+- [Russian Ridge Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.3190166%2C-122.2182684&query_place_id=ChIJVftj2fWuj4ARmIusrLWAG3Q) — 492 reviews (4.7★) · `nature_preserve`
+- [Earl R. Carmichael Park](https://www.google.com/maps/search/?api=1&query=37.345818799999996%2C-121.9908298&query_place_id=ChIJ-8jmFXXKj4ARoORI1pNVoC4) — 491 reviews (4.5★) · `park`
+- [Niles Town Plaza](https://www.google.com/maps/search/?api=1&query=37.577162099999995%2C-121.9784144&query_place_id=ChIJMUxdLWzAj4ARVfAsh-iwaQM) — 491 reviews (4.6★) · `park`
+- [Pinewood Park](https://www.google.com/maps/search/?api=1&query=37.408699899999995%2C-121.9078416&query_place_id=ChIJw3tNkknJj4ARkiCOeKImBTY) — 490 reviews (4.5★) · `city_park`
+- [Edenvale Gardens Regional Park](https://www.google.com/maps/search/?api=1&query=37.264592799999996%2C-121.82068699999999&query_place_id=ChIJnQOOlwIyjoARAkt2jEbtra0) — 488 reviews (4.5★) · `park`
+- [Rockridge-Temescal Greenbelt](https://www.google.com/maps/search/?api=1&query=37.8420415%2C-122.25761740000002&query_place_id=ChIJWVZkwN19hYARWn6o-6FMTik) — 488 reviews (4.4★) · `park`
+- [Sharon Park](https://www.google.com/maps/search/?api=1&query=37.423956600000004%2C-122.20895929999998&query_place_id=ChIJv-0Fxvqkj4ARwaYeAxq0dsg) — 486 reviews (4.6★) · `park`
+- [Val Vista Park](https://www.google.com/maps/search/?api=1&query=37.6860019%2C-121.9128205&query_place_id=ChIJpWdkWOXrj4AR4LOMNhnz2tg) — 486 reviews (4.4★) · `park`
+- [Rock City Park](https://www.google.com/maps/search/?api=1&query=37.8484166%2C-121.931872&query_place_id=ChIJWRDm1XD0j4AR6JgV0-aEIQc) — 485 reviews (4.8★) · `state_park`
+- [Martin Luther King Jr. Civic Center Park](https://www.google.com/maps/search/?api=1&query=37.8693887%2C-122.2716234&query_place_id=ChIJj3ZE5Jt-hYAReY-WppHyVDw) — 484 reviews (4.2★) · `park`
+- [Peers Park](https://www.google.com/maps/search/?api=1&query=37.431506999999996%2C-122.14765100000001&query_place_id=ChIJn6yiduG6j4ARBP9ci2gGMws) — 481 reviews (4.6★) · `park`
+- [Bowers Park](https://www.google.com/maps/search/?api=1&query=37.358543499999996%2C-121.9736049&query_place_id=ChIJteuOmRbKj4ARglPlGqcPbMg) — 480 reviews (4.4★) · `park`
+- [Centennial Dog Park](https://www.google.com/maps/search/?api=1&query=37.6533182%2C-122.4297711&query_place_id=ChIJV4up9p15j4ARBmynzOUmNLs) — 480 reviews (4.5★) · `dog_park`
+- [Newark Community Center Park](https://www.google.com/maps/search/?api=1&query=37.5486256%2C-122.0416266&query_place_id=ChIJ_7oMhFO-j4ARSnWlYzO-gPc) — 480 reviews (4.4★) · `park`
+- [Bushrod Park](https://www.google.com/maps/search/?api=1&query=37.8455947%2C-122.26365419999999&query_place_id=ChIJ5VvX8Nh9hYARkIMJqZ1C0DU) — 478 reviews (4.4★) · `park`
+- [Northgate Community Park](https://www.google.com/maps/search/?api=1&query=37.5791259%2C-122.0407338&query_place_id=ChIJifJQDiu-j4ARmTI0qx99NXY) — 476 reviews (4.4★) · `park`
+- [Rankin Park](https://www.google.com/maps/search/?api=1&query=38.0157941%2C-122.1436828&query_place_id=ChIJJWFdF4xvhYARqosw_SSs2Qo) — 474 reviews (4.6★) · `park`
+- [Montara State Beach](https://www.google.com/maps/search/?api=1&query=37.545848299999996%2C-122.5153004&query_place_id=ChIJJWmf_7Vxj4AR448y6XRxn5o) — 472 reviews (4.7★) · `state_park`
+- [Murdock Park](https://www.google.com/maps/search/?api=1&query=37.3028713%2C-121.99866259999999&query_place_id=ChIJe0ihp161j4ARfK-GXDOo0wo) — 470 reviews (4.6★) · `park`
+- [Alden E. Oliver Sports Park](https://www.google.com/maps/search/?api=1&query=37.6102376%2C-122.0872952&query_place_id=ChIJE8owxIOWj4AR82FjiSwFQL0) — 465 reviews (4.4★) · `park`
+- [Shell Ridge Open Space](https://www.google.com/maps/search/?api=1&query=37.8985741%2C-122.00140100000002&query_place_id=ChIJhcrxrZ-Kj4AROO9_X6YIl4M) — 465 reviews (4.8★) · `park`
+- [Billy Goat Hill](https://www.google.com/maps/search/?api=1&query=37.741346199999995%2C-122.43313179999998&query_place_id=ChIJKfERrm9-j4AROcxSCHx2gE0) — 462 reviews (4.5★) · `city_park`
+- [Kevin Moran Park](https://www.google.com/maps/search/?api=1&query=37.2881023%2C-122.01968889999999&query_place_id=ChIJBZWK2za1j4ARInYdV9f2n38) — 462 reviews (4.7★) · `park`
+- [Rainbow Park](https://www.google.com/maps/search/?api=1&query=37.2999997%2C-122.00722270000001&query_place_id=ChIJPeZUsUO1j4ARBSSrYS-quQk) — 462 reviews (4.4★) · `park`
+- [Guadalupe Oak Grove Park](https://www.google.com/maps/search/?api=1&query=37.2362%2C-121.87795020000002&query_place_id=ChIJPwa7FWgxjoARC7XH49A0dAo) — 461 reviews (4.7★) · `park`
+- [The Ruth Bancroft Garden & Nursery](https://www.google.com/maps/search/?api=1&query=37.923494999999996%2C-122.036327&query_place_id=ChIJK0JTklRghYARXmVRpGgMdFU) — 460 reviews (4.7★) · `garden`
+- [Antioch City Park](https://www.google.com/maps/search/?api=1&query=38.01056%2C-121.80715789999999&query_place_id=ChIJwYO92WNXhYARNyhKouGxLF8) — 459 reviews (3.8★) · `park`
+- [Cerrito Vista Park](https://www.google.com/maps/search/?api=1&query=37.9143695%2C-122.3000887&query_place_id=ChIJQ6lfQwV5hYARvyVbpeFZsfw) — 459 reviews (4.5★) · `park`
+- [Creekside Park](https://www.google.com/maps/search/?api=1&query=37.6915116%2C-121.88471299999999&query_place_id=ChIJsxKnOEHpj4AR0jgXM6lkq4Y) — 459 reviews (4.5★) · `park`
+- [Commodore Park](https://www.google.com/maps/search/?api=1&query=37.377218%2C-121.86249669999998&query_place_id=ChIJk0ggD07Mj4ARz-kA1vzr-HM) — 458 reviews (4.4★) · `park`
+- [Butano State Park](https://www.google.com/maps/search/?api=1&query=37.212764799999995%2C-122.30536439999997&query_place_id=ChIJkUstqiWrj4AR54MBSm2OUQM) — 457 reviews (4.7★) · `state_park`
+- [Montgomery Hill Park](https://www.google.com/maps/search/?api=1&query=37.3020843%2C-121.76001849999999&query_place_id=ChIJjzdijUksjoARjNbdO-Md3F4) — 455 reviews (4.6★) · `park`
+- [Saratoga Creek Park](https://www.google.com/maps/search/?api=1&query=37.3022136%2C-121.99563649999997&query_place_id=ChIJC2vOt1m1j4ARz3gLtPcFySQ) — 455 reviews (4.6★) · `park`
+- [Francisco Park](https://www.google.com/maps/search/?api=1&query=37.804385599999996%2C-122.42100429999999&query_place_id=ChIJraufRSeBhYARt-3p5SCli4A) — 453 reviews (4.7★) · `city_park`
+- [Mission Hills Park](https://www.google.com/maps/search/?api=1&query=37.649318099999995%2C-121.8715679&query_place_id=ChIJ_2mH4Mbpj4ARXWPztOKr5jc) — 453 reviews (4.7★) · `park`
+- [Junipero Serra Park](https://www.google.com/maps/search/?api=1&query=37.6091553%2C-122.4226242&query_place_id=ChIJFwwY3Gd3j4ARh5l6_72OPWI) — 451 reviews (4.5★) · `park`
+- [Old Mission Community Park](https://www.google.com/maps/search/?api=1&query=37.5221309%2C-121.92482539999999&query_place_id=ChIJYyeG17_Gj4AR8jRc72W9F3g) — 451 reviews (4.5★) · `park`
+- [Thamien Park](https://www.google.com/maps/search/?api=1&query=37.4004147%2C-121.94717079999998&query_place_id=ChIJAbyaogrJj4ARv5atqWV9JL8) — 450 reviews (4.5★) · `park`
+- [Ygnacio Valley Park](https://www.google.com/maps/search/?api=1&query=37.9445792%2C-122.02846449999998&query_place_id=ChIJA9P1cuZghYARNay6eGmAGos) — 450 reviews (4.3★) · `park`
+- [India Basin Shoreline Park](https://www.google.com/maps/search/?api=1&query=37.73415380000001%2C-122.37594179999998&query_place_id=ChIJuxIN_2t_j4ARProX9pmqB-o) — 449 reviews (4.4★) · `city_park`
+- [Treasure Island Dog Park](https://www.google.com/maps/search/?api=1&query=37.823019099999996%2C-122.37608469999999&query_place_id=ChIJLxUhPiyBhYAROpmV29IsCTA) — 447 reviews (4.5★) · `dog_park`
+- [Cherry Grove Park](https://www.google.com/maps/search/?api=1&query=37.71552580000001%2C-122.17143729999998&query_place_id=ChIJ6bScIYuPj4ARXy9LgUvfokw) — 446 reviews (4.5★) · `park`
+- [Jackson Playground Park](https://www.google.com/maps/search/?api=1&query=37.764314999999996%2C-122.39960699999999&query_place_id=ChIJnf3sn8x_j4ARZ2gNoDGp3wk) — 446 reviews (4.4★) · `city_park`
+- [Potrero del Sol Park](https://www.google.com/maps/search/?api=1&query=37.750583299999995%2C-122.405084&query_place_id=ChIJI-kHTUx-j4ARXZWVjoYDkIQ) — 446 reviews (4.6★) · `city_park`
+- [Meadow Homes Park](https://www.google.com/maps/search/?api=1&query=37.9637232%2C-122.04077219999999&query_place_id=ChIJ92g5yiphhYAR4JzA7NQYt78) — 443 reviews (4.4★) · `park`
+- [Franklin Park](https://www.google.com/maps/search/?api=1&query=37.7684709%2C-122.26146209999997&query_place_id=ChIJwzaMc8yGj4AREf0k0HtcNdQ) — 442 reviews (4.7★) · `park`
+- [Hillview Park](https://www.google.com/maps/search/?api=1&query=37.339068499999996%2C-121.8253012&query_place_id=ChIJIc6zKLMyjoAR3BGgbwN02yQ) — 442 reviews (4.3★) · `park`
+- [Marijane Hamann Park](https://www.google.com/maps/search/?api=1&query=37.3049271%2C-121.9423004&query_place_id=ChIJD0l3q9Q0joARk-2uw-7YEUs) — 441 reviews (4.3★) · `park`
+- [Albany Hill Park](https://www.google.com/maps/search/?api=1&query=37.8949333%2C-122.3043737&query_place_id=ChIJV5hU1CV5hYARtqb_zChVHt8) — 440 reviews (4.6★) · `park`
+- [Balboa Park](https://www.google.com/maps/search/?api=1&query=37.725631799999995%2C-122.4446006&query_place_id=ChIJIXNeXIB-j4AR0LyBza5fJmk) — 440 reviews (4.5★) · `city_park`
+- [Dog Park | Los Gatos Creek](https://www.google.com/maps/search/?api=1&query=37.2718475%2C-121.9494562&query_place_id=ChIJ9VwC5gI1joARNTNIxzUxG-0) — 440 reviews (4.5★) · `dog_park`
+- [Pleasanton Tennis and Community Park](https://www.google.com/maps/search/?api=1&query=37.6748895%2C-121.89856110000001&query_place_id=ChIJZ5KyRmLpj4AR6aW7UD0lwjc) — 439 reviews (4.6★) · `park`
+- [Lafayette Park Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.791031%2C-122.4273372&query_place_id=ChIJN4fq_cCAhYARUInVlpXJFZA) — 437 reviews (4.6★) · `dog_park`
+- [Juana Briones Park](https://www.google.com/maps/search/?api=1&query=37.4073183%2C-122.1268617&query_place_id=ChIJjStv1n26j4ARWboj_Q7xOd0) — 436 reviews (4.7★) · `park`
+- [Penitencia Creek County Park](https://www.google.com/maps/search/?api=1&query=37.3740188%2C-121.8596011&query_place_id=ChIJq3ERUFDMj4ARsmQFJZDYFCc) — 435 reviews (4.2★) · `park`
+- [Sea Cloud Park](https://www.google.com/maps/search/?api=1&query=37.5441435%2C-122.25823039999999&query_place_id=ChIJW64ROM6Yj4ARqA1pm5DLyXw) — 435 reviews (4.7★) · `park`
+- [Hoover Park](https://www.google.com/maps/search/?api=1&query=37.483597499999995%2C-122.21574319999999&query_place_id=ChIJnxKyZgajj4ARtQ4oePDAi1Y) — 433 reviews (4.3★) · `park`
+- [St. Joseph's Hill Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.205507499999996%2C-121.98368269999999&query_place_id=ChIJcZCMBQU2joARxqPJsjJWUro) — 433 reviews (4.7★) · `nature_preserve`
+- [Brentwood City Park](https://www.google.com/maps/search/?api=1&query=37.9337008%2C-121.6935939&query_place_id=ChIJxdDqF_H_j4AROpFnrSUTZZc) — 432 reviews (4.6★) · `park`
+- [Skyline Ridge Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.303165299999996%2C-122.1883725&query_place_id=ChIJT9qE2OStj4ARzqvhxWXosbg) — 430 reviews (4.7★) · `nature_preserve`
+- [Golden Gate Park - East](https://www.google.com/maps/search/?api=1&query=37.7691071%2C-122.4580175&query_place_id=ChIJOVObBVCHhYAREYUH1plPZwo) — 429 reviews (4.7★) · `park`
+- [Paso Nogal Park](https://www.google.com/maps/search/?api=1&query=37.967093%2C-122.08891899999999&query_place_id=ChIJwZIgYR5khYAR3BbfCnQ3dMo) — 428 reviews (4.6★) · `park`
+- [Presidio Wall Playground Park](https://www.google.com/maps/search/?api=1&query=37.791427399999996%2C-122.4534308&query_place_id=ChIJ-5VzQC6HhYARcutXwB4MICM) — 427 reviews (4.6★) · `city_park`
+- [Laurie Meadows Park](https://www.google.com/maps/search/?api=1&query=37.5327859%2C-122.28169620000001&query_place_id=ChIJb0Vc4zufj4AR-xpEMGOixO8) — 424 reviews (4.6★) · `park`
+- [Mount Eden Park](https://www.google.com/maps/search/?api=1&query=37.6306831%2C-122.0993528&query_place_id=ChIJcQApbLqWj4ARkTsm99UA50s) — 424 reviews (4.4★) · `park`
+- [Ohlone Dog Park](https://www.google.com/maps/search/?api=1&query=37.8734252%2C-122.27424429999998&query_place_id=ChIJC8Xuc5h-hYARBrdsjlMaX8U) — 424 reviews (4.5★) · `dog_park`
+- [Mezes Park](https://www.google.com/maps/search/?api=1&query=37.4919812%2C-122.2361299&query_place_id=ChIJJemsJU-ij4ARuBuzeLsjZqY) — 423 reviews (4.4★) · `park`
+- [Round Valley Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8593587%2C-121.77083370000001&query_place_id=ChIJbVMD9ff6j4ARLsmfQNKZ0C8) — 419 reviews (4.6★) · `park`
+- [Halcyon Park](https://www.google.com/maps/search/?api=1&query=37.7068599%2C-122.1382432&query_place_id=ChIJdaewsNePj4ARTQPMkUHV5T0) — 418 reviews (4.5★) · `park`
+- [Krusi Park](https://www.google.com/maps/search/?api=1&query=37.753170399999995%2C-122.2385729&query_place_id=ChIJfchz_56Gj4ARtBMMJjJOlpk) — 416 reviews (4.6★) · `park`
+- [Dracena Quarry Park](https://www.google.com/maps/search/?api=1&query=37.8270682%2C-122.2386212&query_place_id=ChIJR5M332GHj4ARdenBhc4pcEM) — 415 reviews (4.6★) · `park`
+- [St. Mary's Square](https://www.google.com/maps/search/?api=1&query=37.7920418%2C-122.40523959999999&query_place_id=ChIJB0Z9x4uAhYAR2rmxctOAnNA) — 415 reviews (4.5★) · `city_park`
+- [Earl Warren Dog Park](https://www.google.com/maps/search/?api=1&query=37.6990732%2C-122.0558595&query_place_id=ChIJFQUGJEmSj4ARFFnU14ozPTs) — 412 reviews (4.4★) · `dog_park`
+- [Moitozo Park](https://www.google.com/maps/search/?api=1&query=37.4063699%2C-121.940472&query_place_id=ChIJIdXfvA7Jj4ARKkR3PN2FqN0) — 412 reviews (4.3★) · `park`
+- [Upper Douglass Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7464231%2C-122.43844340000001&query_place_id=ChIJ53coJHN-j4ARIX3hoaKeun0) — 412 reviews (4.7★) · `dog_park`
+- [Lincoln Glen Park](https://www.google.com/maps/search/?api=1&query=37.2896278%2C-121.8896309&query_place_id=ChIJAeBraXAzjoARMkAPuxEkLAc) — 411 reviews (4.6★) · `park`
+- [Robertson Park](https://www.google.com/maps/search/?api=1&query=37.669365%2C-121.75587720000001&query_place_id=ChIJeU-ClX7nj4ARi9-qfMPs0eM) — 411 reviews (4.5★) · `park`
+- [Hathaway Park](https://www.google.com/maps/search/?api=1&query=37.2965415%2C-121.97957550000001&query_place_id=ChIJxQKCR7LKj4ARGK4CLtJR6Wg) — 410 reviews (4.3★) · `park`
+- [Village Green Dog Park](https://www.google.com/maps/search/?api=1&query=37.4032592%2C-122.1104508&query_place_id=ChIJ97kix56wj4ARfeEWXuLgb-o) — 410 reviews (4.4★) · `dog_park`
+- [Oyster Point Marina/Park](https://www.google.com/maps/search/?api=1&query=37.6614645%2C-122.3751939&query_place_id=ChIJXWDoGlx4j4AReUY2Jrwp-bU) — 409 reviews (4.4★) · `park`
+- [Columbia Park](https://www.google.com/maps/search/?api=1&query=37.3944207%2C-122.0208888&query_place_id=ChIJgVkXcku2j4ARAEP7-fEA97Q) — 408 reviews (4.4★) · `park`
+- [Vieira Park](https://www.google.com/maps/search/?api=1&query=37.287020999999996%2C-121.8614271&query_place_id=ChIJ8SaZ26szjoARjT1OeHZsRyE) — 408 reviews (4.6★) · `park`
+- [National AIDS Memorial Grove](https://www.google.com/maps/search/?api=1&query=37.7697139%2C-122.4620104&query_place_id=ChIJA5OA_YWAhYARhmsqNSUugxY) — 406 reviews (4.8★) · `park`
+- [City Park](https://www.google.com/maps/search/?api=1&query=38.0225247%2C-121.88969159999999&query_place_id=ChIJ641DI-5bhYARq2AjIJTBHac) — 405 reviews (4.2★) · `park`
+- [Doyle Hollis Park](https://www.google.com/maps/search/?api=1&query=37.8431397%2C-122.289313&query_place_id=ChIJNSq9n11-hYARzNZebgDiRPI) — 405 reviews (4.4★) · `park`
+- [Walter Haas Playground Park](https://www.google.com/maps/search/?api=1&query=37.7405024%2C-122.4345147&query_place_id=ChIJo3rpxW9-j4ARFcEn-d_g5to) — 404 reviews (4.5★) · `city_park`
+- [Baldwin Dog Park](https://www.google.com/maps/search/?api=1&query=37.984133899999996%2C-122.0276589&query_place_id=ChIJlwGVJSNnhYARDVTLcjv5DW4) — 401 reviews (4.4★) · `dog_park`
+- [Starbird Park](https://www.google.com/maps/search/?api=1&query=37.3074566%2C-121.96473&query_place_id=ChIJibMNBcbKj4ARAIQ2NsL2nI4) — 398 reviews (4★) · `park`
+- [Margaret S. Hayward Playground Park](https://www.google.com/maps/search/?api=1&query=37.7810018%2C-122.4256583&query_place_id=ChIJeVFrGL2AhYARY6_S6u9DguU) — 396 reviews (4.5★) · `city_park`
+- [San Felipe Community Park](https://www.google.com/maps/search/?api=1&query=37.6794%2C-122.06212199999999&query_place_id=ChIJn5em7MeTj4ARB7IqL7joURk) — 395 reviews (4.5★) · `park`
+- [Frontierland Park](https://www.google.com/maps/search/?api=1&query=37.586259999999996%2C-122.46409340000001&query_place_id=ChIJh4ORu8Bwj4ARWCkHO72JGBQ) — 394 reviews (4.7★) · `park`
+- [Peter Gill Memorial Park](https://www.google.com/maps/search/?api=1&query=37.437553199999996%2C-121.89568149999998&query_place_id=ChIJvYhmZi7Pj4ARYw1wwq2rAeI) — 394 reviews (4.4★) · `park`
+- [Ravenswood Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.4817676%2C-122.1254115&query_place_id=ChIJnxMMqX-8j4ARG6HeFlKKKLs) — 393 reviews (4.4★) · `nature_preserve`
+- [Angelo J. Rossi Playground](https://www.google.com/maps/search/?api=1&query=37.7784297%2C-122.4582257&query_place_id=ChIJcYyU_keHhYARhP_hQ_uAvc4) — 392 reviews (4.5★) · `city_park`
+- [Worth Shaw Community Park](https://www.google.com/maps/search/?api=1&query=37.9789125%2C-121.8199624&query_place_id=ChIJO-DplzpYhYAR_Bm9T9MjGF8) — 392 reviews (4.4★) · `park`
+- [Gilman Playground Park](https://www.google.com/maps/search/?api=1&query=37.7166558%2C-122.38791320000001&query_place_id=ChIJN2kj4zp_j4ARqiONDaNoCzY) — 389 reviews (4.4★) · `city_park`
+- [Eleanor Pardee Park](https://www.google.com/maps/search/?api=1&query=37.449476499999996%2C-122.14215779999999&query_place_id=ChIJkWIDjBG7j4AR6AKY0vIk4Yg) — 387 reviews (4.5★) · `park`
+- [Blossom Hill Park](https://www.google.com/maps/search/?api=1&query=37.234771699999996%2C-121.95446769999998&query_place_id=ChIJT70MKM41joARaeQkTouRyys) — 385 reviews (4.7★) · `park`
+- [Memorial Glade](https://www.google.com/maps/search/?api=1&query=37.873186499999996%2C-122.2593917&query_place_id=ChIJWx1rAyR8hYAR9HgAZILJJHc) — 384 reviews (4.8★) · `park`
+- [Small World Park](https://www.google.com/maps/search/?api=1&query=38.009028799999996%2C-121.88598950000001&query_place_id=ChIJZ6cT1FhZhYARN43oq8jmYMY) — 384 reviews (4.4★) · `park`
+- [Raimondi Park](https://www.google.com/maps/search/?api=1&query=37.8160534%2C-122.2938148&query_place_id=ChIJC_wRCCR-hYARV0tMpYKm_ts) — 382 reviews (4★) · `park`
+- [Seward Mini Park](https://www.google.com/maps/search/?api=1&query=37.7577409%2C-122.4399193&query_place_id=ChIJDXbCwwV-j4ARQMfqfHS_h6o) — 382 reviews (4.5★) · `park`
+- [Maywood Park](https://www.google.com/maps/search/?api=1&query=37.3306159%2C-121.9883526&query_place_id=ChIJCZkyEX7Kj4AR6wSZobg1qDI) — 381 reviews (4.4★) · `park`
+- [Union Point Park](https://www.google.com/maps/search/?api=1&query=37.7767921%2C-122.2414697&query_place_id=ChIJP65EMeiGj4ARz5QxP8ak3qs) — 381 reviews (3.4★) · `park`
+- [El Quito Park](https://www.google.com/maps/search/?api=1&query=37.2818621%2C-121.99869450000001&query_place_id=ChIJt_Y_rq5KjoARIcAzgRbRL7Y) — 379 reviews (4.6★) · `park`
+- [Bair Island Wildlife Refuge & Trail](https://www.google.com/maps/search/?api=1&query=37.498947699999995%2C-122.2245801&query_place_id=ChIJww_Xllmij4ARPBmFF-KrKSs) — 377 reviews (4.5★) · `wildlife_refuge`
+- [Castle Rock Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.8921188%2C-121.9938739&query_place_id=ChIJdc8tM7OKj4ARl9cpQQZiGwM) — 376 reviews (4.8★) · `park`
+- [Marlin Park](https://www.google.com/maps/search/?api=1&query=37.5308166%2C-122.248789&query_place_id=ChIJZzOSCruYj4ARw-tuj1KR3co) — 376 reviews (4.4★) · `park`
+- [Portal Park](https://www.google.com/maps/search/?api=1&query=37.3260175%2C-122.02050750000001&query_place_id=ChIJ3eLKhKO1j4ARxllLMAs6roY) — 376 reviews (4.6★) · `park`
+- [Bayside Park](https://www.google.com/maps/search/?api=1&query=37.5899424%2C-122.35828009999999&query_place_id=ChIJC_lvQ4idj4ARfXdNlVb62UQ) — 374 reviews (4.5★) · `park`
+- [Gilroy Sports Park](https://www.google.com/maps/search/?api=1&query=36.988285%2C-121.56369899999999&query_place_id=ChIJT6JtnQvjkYARsDlvlwW9_vI) — 374 reviews (4.5★) · `park`
+- [Golden Gate Park Dog Training Area](https://www.google.com/maps/search/?api=1&query=37.771041%2C-122.4993131&query_place_id=ChIJZa6z86OHhYARdZs451KURS0) — 373 reviews (4.5★) · `dog_park`
+- [Cornelis Bol Park](https://www.google.com/maps/search/?api=1&query=37.410038%2C-122.13879699999998&query_place_id=ChIJfx7_to-6j4ARHbG6lNdTsrk) — 370 reviews (4.7★) · `park`
+- [Dougherty Hills Dog Park](https://www.google.com/maps/search/?api=1&query=37.7175891%2C-121.9144992&query_place_id=ChIJFehiIj3sj4ARowklci8yLOE) — 370 reviews (4.3★) · `dog_park`
+- [Fort Mason Park](https://www.google.com/maps/search/?api=1&query=37.8047706%2C-122.43040049999999&query_place_id=ChIJK-Cx0NiAhYAReUbTO5cbg18) — 370 reviews (4.7★) · `park`
+- [Central Park](https://www.google.com/maps/search/?api=1&query=37.6000614%2C-122.40057850000001&query_place_id=ChIJXQbgF6d3j4ARMpREynQF210) — 368 reviews (4.5★) · `park`
+- [Chinese Cultural Garden](https://www.google.com/maps/search/?api=1&query=37.365048%2C-121.85649269999999&query_place_id=ChIJAfUjxwPNj4AROAEeCo8rC3Y) — 368 reviews (4.2★) · `garden`
+- [Nancy Boyd Park](https://www.google.com/maps/search/?api=1&query=37.9861974%2C-122.1213845&query_place_id=ChIJo4E5Xq9lhYARTY6cLexceqw) — 368 reviews (4.7★) · `city_park`
+- [George Sterling Park](https://www.google.com/maps/search/?api=1&query=37.801396499999996%2C-122.42045900000001&query_place_id=ChIJv2XFGeaAhYARR0dmTGoXhvE) — 366 reviews (4.6★) · `city_park`
+- [Los Prados Park](https://www.google.com/maps/search/?api=1&query=37.542077299999995%2C-122.28206519999999&query_place_id=ChIJw3I4qiafj4ARM_2PGFnEU_U) — 366 reviews (4.4★) · `park`
+- [Amador Valley Community Park](https://www.google.com/maps/search/?api=1&query=37.673499199999995%2C-121.87531820000001&query_place_id=ChIJ6d4ouQvpj4ARz35rdt7R5Vk) — 365 reviews (4.5★) · `park`
+- [Bernal-Gulnac-Joice Ranch](https://www.google.com/maps/search/?api=1&query=37.2263131%2C-121.7983405&query_place_id=ChIJOTf4IdIvjoARbBrDwix86Jg) — 365 reviews (4.7★) · `park`
+- [Montclair Park](https://www.google.com/maps/search/?api=1&query=37.828797%2C-122.21199000000001&query_place_id=ChIJ7zstUYSHj4AR8VhzahtpZPs) — 365 reviews (4.4★) · `park`
+- [Highlands Ranch Park](https://www.google.com/maps/search/?api=1&query=37.9971373%2C-121.86519009999999&query_place_id=ChIJR7vMGw1ZhYARBuZ8L6DAQWE) — 364 reviews (4.4★) · `park`
+- [Waterdog Lake & Open Space](https://www.google.com/maps/search/?api=1&query=37.5050398%2C-122.30449410000001&query_place_id=ChIJh9tpCnifj4ARONkn-6iuLgM) — 364 reviews (4.5★) · `nature_preserve`
+- [John F. Baldwin Park](https://www.google.com/maps/search/?api=1&query=37.984023%2C-122.02746289999999&query_place_id=ChIJO0sPBiNnhYARUvXCQK7Z31w) — 362 reviews (4.2★) · `park`
+- [Weekes Community Center Park](https://www.google.com/maps/search/?api=1&query=37.6342068%2C-122.0783716&query_place_id=ChIJ7aTfjhuUj4ARrIxfMF7EVYc) — 362 reviews (4.2★) · `park`
+- [Dog Park at Hellyer County Park](https://www.google.com/maps/search/?api=1&query=37.287896599999996%2C-121.81033109999998&query_place_id=ChIJEcsfnIotjoARJh78BpegYGs) — 357 reviews (4.5★) · `dog_park`
+- [Pine Lake Park](https://www.google.com/maps/search/?api=1&query=37.735916499999995%2C-122.48597590000001&query_place_id=ChIJBzCF1Z19j4ARfcwtSvHn65I) — 355 reviews (4.6★) · `city_park`
+- [San Tomas Park](https://www.google.com/maps/search/?api=1&query=37.279367199999996%2C-121.975665&query_place_id=ChIJ78jxUEE1joARnKyIY1tW5PU) — 355 reviews (4.4★) · `park`
+- [Pillar Point Bluff](https://www.google.com/maps/search/?api=1&query=37.511591599999996%2C-122.5052838&query_place_id=ChIJnxyD2SVyj4ARaSeu-nF1Q-Y) — 354 reviews (4.8★) · `park`
+- [Lincoln Square Park](https://www.google.com/maps/search/?api=1&query=37.800278%2C-122.26851599999999&query_place_id=ChIJwfMsmbWAj4ARASWjviWC_rQ) — 352 reviews (4.4★) · `park`
+- [Pinole Shores Park](https://www.google.com/maps/search/?api=1&query=38.0083226%2C-122.3188976&query_place_id=ChIJO6vMflx2hYARD3fr1oi9RRM) — 352 reviews (4.6★) · `park`
+- [Bayfront Park](https://www.google.com/maps/search/?api=1&query=38.0114589%2C-122.29764089999999&query_place_id=ChIJj70_yu92hYAR-h56IXJhtNU) — 351 reviews (4.5★) · `park`
+- [Crockett Hills Regional Park](https://www.google.com/maps/search/?api=1&query=38.0298958%2C-122.21466119999998&query_place_id=ChIJ1WZnkK1xhYARHjaxPKKOFIM) — 351 reviews (4.5★) · `park`
+- [Estuary Park](https://www.google.com/maps/search/?api=1&query=37.7899815%2C-122.2673383&query_place_id=ChIJSUPunNKAj4ARKB_V2Ha6eXE) — 351 reviews (4.3★) · `park`
+- [Lands End - Golden Gate National Recreation Area](https://www.google.com/maps/search/?api=1&query=37.77977560000001%2C-122.5116272&query_place_id=ChIJgwPVLBqHhYARDxgRIgP6Zko) — 351 reviews (4.9★) · `park`
+- [Sabercat Creek Trail](https://www.google.com/maps/search/?api=1&query=37.5273214%2C-121.93512109999999&query_place_id=ChIJt_IFwsXGj4ARHYBkg_9XgbU) — 351 reviews (4.6★) · `park`
+- [Willie “Woo Woo” Wong Playground Park](https://www.google.com/maps/search/?api=1&query=37.7935241%2C-122.40713259999998&query_place_id=ChIJlRvon4yAhYARMw91ij6m610) — 350 reviews (4.4★) · `city_park`
+- [Fitzgerald Marine Ranger Station & Parking](https://www.google.com/maps/search/?api=1&query=37.524091399999996%2C-122.51614789999999&query_place_id=ChIJQYE4Fe1xj4ARHN6UhR0yhgY) — 349 reviews (4.7★) · `state_park`
+- [Townsend Park](https://www.google.com/maps/search/?api=1&query=37.380978299999995%2C-121.88267409999999&query_place_id=ChIJlXP9uxTMj4ARW6NLSsEUDjs) — 347 reviews (4.4★) · `park`
+- [Saratoga Creek Dog Park, San Jose, CA](https://www.google.com/maps/search/?api=1&query=37.2957751%2C-121.99690820000001&query_place_id=ChIJZabqHle1j4AR0FxTJlgWbnI) — 346 reviews (4.4★) · `dog_park`
+- [Shorty Garcia Park](https://www.google.com/maps/search/?api=1&query=37.5985981%2C-122.01669419999999&query_place_id=ChIJ_2M86GeVj4ARtImrzM-f06k) — 346 reviews (4.5★) · `park`
+- [Metcalf Motorcycle County Park](https://www.google.com/maps/search/?api=1&query=37.236253399999995%2C-121.72014809999999&query_place_id=ChIJQ-BaRTUvjoAR6lA_ztzPcS0) — 345 reviews (4.7★) · `park`
+- [Plata Arroyo Park](https://www.google.com/maps/search/?api=1&query=37.357319%2C-121.85875170000001&query_place_id=ChIJqT2F3eLMj4AR12Gv9chMzTI) — 345 reviews (4.2★) · `park`
+- [San Tomas Aquino Creek Trailhead](https://www.google.com/maps/search/?api=1&query=37.3637711%2C-121.9683601&query_place_id=ChIJn1yHtiLKj4AR-rNI4Jq93CE) — 345 reviews (4.4★) · `park`
+- [Brisbane Community Park](https://www.google.com/maps/search/?api=1&query=37.6849481%2C-122.40091840000001&query_place_id=ChIJJwGKAOB4j4ARAIdUN4jeiF0) — 344 reviews (4.6★) · `park`
+- [Overfelt Gardens](https://www.google.com/maps/search/?api=1&query=37.3628216%2C-121.85401549999999&query_place_id=ChIJE8038wHNj4ARk03J7CEnbv0) — 344 reviews (4.2★) · `park`
+- [Dog Park | Seal Point Harbor](https://www.google.com/maps/search/?api=1&query=37.5734466%2C-122.300039&query_place_id=ChIJm-mKyISej4ARBDX39bCc7D0) — 343 reviews (4.6★) · `dog_park`
+- [Mount Umunhum](https://www.google.com/maps/search/?api=1&query=37.16039%2C-121.8981922&query_place_id=ChIJ6YPYLxI6joARbJUtv52U13k) — 341 reviews (4.8★) · `park`
+- [Fremont Park](https://www.google.com/maps/search/?api=1&query=37.350782099999996%2C-121.9498887&query_place_id=ChIJAaPmkU3Kj4ARXeHg8vYx9lI) — 340 reviews (4.5★) · `park`
+- [Coyote Valley Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.171298199999995%2C-121.7282377&query_place_id=ChIJvw7bfTEkjoARjUor0E0KW5U) — 339 reviews (4.8★) · `nature_preserve`
+- [Pinole Valley Park](https://www.google.com/maps/search/?api=1&query=37.9809397%2C-122.26799&query_place_id=ChIJKfSfVVJ3hYARuKDUn_arbL4) — 339 reviews (4.6★) · `park`
+- [Lone Hill Park](https://www.google.com/maps/search/?api=1&query=37.245574399999995%2C-121.9108645&query_place_id=ChIJ3Q0KcgU0joARHc4WYUY63rw) — 338 reviews (4.5★) · `park`
+- [Louis Sutter Playground Park](https://www.google.com/maps/search/?api=1&query=37.722907299999996%2C-122.41398769999999&query_place_id=ChIJ-zBUE-9-j4ARb0H6RqkWYgQ) — 338 reviews (4.5★) · `city_park`
+- [Muirwood Community Park](https://www.google.com/maps/search/?api=1&query=37.6848623%2C-121.9175668&query_place_id=ChIJC__68-7rj4ARuEhtCQVw0_I) — 338 reviews (4.6★) · `park`
+- [Port View Park](https://www.google.com/maps/search/?api=1&query=37.8055566%2C-122.3332487&query_place_id=ChIJOZ-ygd1_hYARqKy_gKoK8dQ) — 338 reviews (4.4★) · `park`
+- [Hall Memorial Park](https://www.google.com/maps/search/?api=1&query=37.4419257%2C-121.9127668&query_place_id=ChIJXSsLXM_Ij4ARrxWNl_vhGhE) — 332 reviews (4.4★) · `park`
+- [Discovery Meadow](https://www.google.com/maps/search/?api=1&query=37.3277419%2C-121.8923366&query_place_id=ChIJKeJjva_Mj4ARvAMWCS-JfGg) — 330 reviews (4.5★) · `park`
+- [Oak Hill Park](https://www.google.com/maps/search/?api=1&query=37.8440995%2C-121.98632889999999&query_place_id=ChIJWeDYkbb0j4AR56TwjGugQ_Q) — 330 reviews (4.5★) · `park`
+- [John Herbert Davis Park](https://www.google.com/maps/search/?api=1&query=37.9613339%2C-122.35279129999998&query_place_id=ChIJ50fhJOF3hYARfZTgl311vsc) — 329 reviews (4.2★) · `park`
+- [Los Gatos Town Plaza Park](https://www.google.com/maps/search/?api=1&query=37.2216944%2C-121.98390769999999&query_place_id=ChIJr2Dl_fo1joAR2-PsSg7998M) — 328 reviews (4.6★) · `park`
+- [Mission Playground Park](https://www.google.com/maps/search/?api=1&query=37.7595005%2C-122.4222906&query_place_id=ChIJZ0zooD1-j4ARzVFrHova9O4) — 328 reviews (4.5★) · `city_park`
+- [Bridgeview Park](https://www.google.com/maps/search/?api=1&query=37.572505199999995%2C-122.2620212&query_place_id=ChIJ36h3fEqZj4ARgRyrY8MtO9E) — 327 reviews (4.4★) · `park`
+- [Thornewood Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.3972312%2C-122.25580819999999&query_place_id=ChIJp25MBtClj4ARA49KWctvJgQ) — 326 reviews (4.6★) · `nature_preserve`
+- [Esprit Park](https://www.google.com/maps/search/?api=1&query=37.7609832%2C-122.3910594&query_place_id=ChIJtU7x7rd_j4ARaHZtto2FX5E) — 325 reviews (4.4★) · `city_park`
+- [Kelly Park](https://www.google.com/maps/search/?api=1&query=37.4785264%2C-122.1696581&query_place_id=ChIJq8lDuLO8j4AR0OQehFz2fzk) — 322 reviews (4.5★) · `park`
+- [Pine Knoll Park](https://www.google.com/maps/search/?api=1&query=37.802031%2C-122.25392360000001&query_place_id=ChIJH7iBKDiHj4AReaJWVQeyqe4) — 322 reviews (4.5★) · `park`
+- [Westborough Park](https://www.google.com/maps/search/?api=1&query=37.6452222%2C-122.457184&query_place_id=ChIJxdCgZi16j4ARNEJ-P-fa2QE) — 322 reviews (4.4★) · `park`
+- [Rancho Cañada del Oro Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.1477776%2C-121.77464110000001&query_place_id=ChIJXyAIi_EkjoARX1M5D1bSEIw) — 321 reviews (4.8★) · `nature_preserve`
+- [Grant Park](https://www.google.com/maps/search/?api=1&query=37.345552999999995%2C-122.070073&query_place_id=ChIJCcdzWqa2j4ARZfvlwn5S0s8) — 320 reviews (4.5★) · `park`
+- [Morgan Territory Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.834787899999995%2C-121.8146522&query_place_id=ChIJT6A7hHvwj4ARAd3C12Lh__4) — 320 reviews (4.8★) · `park`
+- [Orloff Park](https://www.google.com/maps/search/?api=1&query=37.6779254%2C-121.87122739999998&query_place_id=ChIJ77IY8w7pj4AReXsrbKrm7wM) — 320 reviews (4.7★) · `park`
+- [Carlos Bee Park](https://www.google.com/maps/search/?api=1&query=37.682738799999996%2C-122.081611&query_place_id=ChIJX2i7BdWTj4ARqS2PcKMqZeI) — 319 reviews (4★) · `park`
+- [Commodore Park](https://www.google.com/maps/search/?api=1&query=37.6308112%2C-122.42563510000001&query_place_id=ChIJyzBc6Ol5j4ARbrGmdGG72pE) — 319 reviews (4.4★) · `city_park`
+- [Crestview Park](https://www.google.com/maps/search/?api=1&query=37.4841535%2C-122.28552540000001&query_place_id=ChIJ53790ZWhj4AR9CaMcWrSQL8) — 319 reviews (4.7★) · `park`
+- [In Chan Kaajal Park](https://www.google.com/maps/search/?api=1&query=37.7639631%2C-122.41574759999999&query_place_id=ChIJT3zcKiV-j4AR94UAdVxse5M) — 319 reviews (4.5★) · `city_park`
+- [Boggini Park](https://www.google.com/maps/search/?api=1&query=37.322649399999996%2C-121.78833479999999&query_place_id=ChIJOQpfSm0tjoARmrl1KnnCwkY) — 318 reviews (4.4★) · `park`
+- [Diablo Foothills Regional Park](https://www.google.com/maps/search/?api=1&query=37.884722%2C-121.9956507&query_place_id=ChIJE2wenbaKj4AROFrPAhSltek) — 318 reviews (4.8★) · `park`
+- [Dry Creek Staging Area](https://www.google.com/maps/search/?api=1&query=37.6074311%2C-122.0178945&query_place_id=ChIJpdTcJGuVj4AR_Jo5QzfkvhI) — 317 reviews (4.7★) · `park`
+- [Jose Higuera Adobe Park](https://www.google.com/maps/search/?api=1&query=37.4584502%2C-121.89687160000001&query_place_id=ChIJucacF0zPj4ARPQhZj9-9E6o) — 316 reviews (4.6★) · `park`
+- [Willow Oaks Park](https://www.google.com/maps/search/?api=1&query=37.4607263%2C-122.1588853&query_place_id=ChIJvxcVPlu7j4ARt7v9MM7m3Kk) — 316 reviews (4.5★) · `park`
+- [Hilltop Park (Sundial park)](https://www.google.com/maps/search/?api=1&query=37.7328291%2C-122.38336280000001&query_place_id=ChIJA-xazBN_j4ARuoVQ_3vR7g8) — 315 reviews (4.5★) · `city_park`
+- [Sign Hill Park](https://www.google.com/maps/search/?api=1&query=37.6661661%2C-122.41876289999999&query_place_id=ChIJGbVufg55j4ARQWfh-3Tkc-Y) — 314 reviews (4.6★) · `park`
+- [Selma Olinder Park](https://www.google.com/maps/search/?api=1&query=37.334175099999996%2C-121.8661022&query_place_id=ChIJqyvKtNHMj4ARJm0cSFLXe4U) — 313 reviews (4.2★) · `park`
+- [Everett Alvarez Junior Park](https://www.google.com/maps/search/?api=1&query=37.3334902%2C-121.9565389&query_place_id=ChIJxQJ0JvrKj4ARnBYDGjVErAE) — 312 reviews (4.6★) · `park`
+- [Mary Gomez Park and Pool](https://www.google.com/maps/search/?api=1&query=37.336043%2C-121.96859269999999&query_place_id=ChIJZ26GwF_Kj4ARChsenMVxMgA) — 312 reviews (4.3★) · `park`
+- [Pacheco State Park](https://www.google.com/maps/search/?api=1&query=37.0650751%2C-121.21163879999999&query_place_id=ChIJL3ZY4mKFkYAReb6bm2-wJnc) — 311 reviews (4.5★) · `state_park`
+- [Saratoga Quarry Park](https://www.google.com/maps/search/?api=1&query=37.2517796%2C-122.0476422&query_place_id=ChIJJ16aRBhLjoAR5sPQlXt4EIw) — 311 reviews (4.6★) · `park`
+- [Alta Loma Park](https://www.google.com/maps/search/?api=1&query=37.6607053%2C-122.44850939999999&query_place_id=ChIJ8-uMkth7j4ARdWUvUTPpjlM) — 310 reviews (4.4★) · `park`
+- [Cahill Park](https://www.google.com/maps/search/?api=1&query=37.3293144%2C-121.9049929&query_place_id=ChIJKQwyO1nLj4ARts9D32AJiso) — 310 reviews (4.4★) · `park`
+- [Point Molate Beach Park](https://www.google.com/maps/search/?api=1&query=37.941385499999996%2C-122.41066169999999&query_place_id=ChIJB0MtftuchYARvxcPGK1FgQ0) — 310 reviews (4.5★) · `park`
+- [Creekside Park](https://www.google.com/maps/search/?api=1&query=37.982088%2C-121.6904708&query_place_id=ChIJDTpPMG__j4ARBse7Dh0Ln-k) — 309 reviews (4.4★) · `park`
+- [Diablo Vista Park](https://www.google.com/maps/search/?api=1&query=37.792834%2C-121.921883&query_place_id=ChIJo0PjtD_yj4ARsAh3Xz2d0rI) — 309 reviews (4.6★) · `park`
+- [Long Ridge Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.2754984%2C-122.15713710000001&query_place_id=ChIJqZT-Vu2yj4ARx4EnK6K6zgc) — 309 reviews (4.7★) · `nature_preserve`
+- [Riverview Park](https://www.google.com/maps/search/?api=1&query=38.0411679%2C-121.88956569999999&query_place_id=ChIJR29EL5tbhYARDKTWF2u9w0o) — 309 reviews (4.4★) · `park`
+- [Shannon Park](https://www.google.com/maps/search/?api=1&query=37.7145726%2C-121.94110739999999&query_place_id=ChIJLUWW0Vvsj4ARLmT07bdJleI) — 309 reviews (4.5★) · `park`
+- [Eastshore Park](https://www.google.com/maps/search/?api=1&query=37.809542%2C-122.24819540000001&query_place_id=ChIJ_RD9TEGHj4AROahtxHHzAWU) — 306 reviews (4.4★) · `park`
+- [Johnson Park](https://www.google.com/maps/search/?api=1&query=37.4493795%2C-122.16315629999998&query_place_id=ChIJoxJh_Ue7j4AR2256AbvEuKQ) — 306 reviews (4.5★) · `park`
+- [Whisman Park](https://www.google.com/maps/search/?api=1&query=37.4009724%2C-122.06735169999999&query_place_id=ChIJH6xsrTi3j4AR2rEcB3hIt5w) — 306 reviews (4.6★) · `park`
+- [Ellis Lake Park](https://www.google.com/maps/search/?api=1&query=37.9720562%2C-122.03745909999999&query_place_id=ChIJ2wU7wSlnhYARWioEEdRKJ7Y) — 305 reviews (3.7★) · `park`
+- [Thrasher Park](https://www.google.com/maps/search/?api=1&query=37.721862%2C-122.16481170000002&query_place_id=ChIJfYOiEo6Pj4ARjDYkHVrMLXk) — 305 reviews (4.3★) · `park`
+- [Fay Park](https://www.google.com/maps/search/?api=1&query=37.8028579%2C-122.41791660000001&query_place_id=ChIJRZR42uWAhYARD6Y7IiIdGEc) — 304 reviews (4.6★) · `city_park`
+- [Blake Garden UC Berkeley](https://www.google.com/maps/search/?api=1&query=37.9135852%2C-122.28479099999998&query_place_id=ChIJ1W4sfmx5hYARGVP6gSvBQpI) — 303 reviews (4.8★) · `botanical_garden`
+- [Bay Meadows Park](https://www.google.com/maps/search/?api=1&query=37.5455337%2C-122.29848080000001&query_place_id=ChIJZ_QbR-Oej4ARWTLb5ZDMlwU) — 302 reviews (4.5★) · `park`
+- [Cayetano Park](https://www.google.com/maps/search/?api=1&query=37.7063584%2C-121.79294519999999&query_place_id=ChIJiTeDKzrmj4ARF8sMf2LBZk8) — 301 reviews (4.5★) · `park`
+- [Kirk Park](https://www.google.com/maps/search/?api=1&query=37.2720209%2C-121.90204879999999&query_place_id=ChIJ--a2s3g0joAREW8V-SDX4LI) — 301 reviews (4.5★) · `park`
+- [Kite Hill](https://www.google.com/maps/search/?api=1&query=37.758283299999995%2C-122.44156669999998&query_place_id=ChIJ8eYJfQZ-j4ARwZ1uy0rpLLc) — 301 reviews (4.7★) · `city_park`
+- [Shoreline Park](https://www.google.com/maps/search/?api=1&query=37.7382887%2C-122.25776440000001&query_place_id=ChIJk88WPgSEj4AR-D-GwcKdB3s) — 299 reviews (4.7★) · `park`
+- [Sunset Park Athletic Complex](https://www.google.com/maps/search/?api=1&query=37.956279699999996%2C-121.68462830000001&query_place_id=ChIJHcsjUP3-j4AR_VvgjvqqRt8) — 299 reviews (4.6★) · `park`
+- [Eden Landing Ecological Reserve](https://www.google.com/maps/search/?api=1&query=37.5983629%2C-122.1019958&query_place_id=ChIJ_1RkdlyWj4ARjLUxXC9pnL8) — 298 reviews (4.5★) · `nature_preserve`
+- [Leona Heights Park](https://www.google.com/maps/search/?api=1&query=37.7926936%2C-122.1764638&query_place_id=ChIJIWrswaCIj4ARz_G6ypr_dTs) — 298 reviews (4.6★) · `park`
+- [Dahlia Garden](https://www.google.com/maps/search/?api=1&query=37.7724708%2C-122.45928049999998&query_place_id=ChIJhU0PekWHhYAR6u7KjevOSmg) — 295 reviews (4.8★) · `garden`
+- [Paddock Park](https://www.google.com/maps/search/?api=1&query=37.5428186%2C-122.29702309999998&query_place_id=ChIJS-M0dx2fj4ARVzHNeSjrkcA) — 295 reviews (4.6★) · `park`
+- [Transamerica Redwood Park](https://www.google.com/maps/search/?api=1&query=37.795166699999996%2C-122.40228059999998&query_place_id=ChIJYXDDl4qAhYAReRkaZFbsSzo) — 294 reviews (4.6★) · `park`
+- [Shoreline Park Area Picnic](https://www.google.com/maps/search/?api=1&query=38.0301519%2C-122.27409839999999&query_place_id=ChIJnenMJ7d2hYARWOvaARAmERY) — 292 reviews (4.6★) · `park`
+- [Shakespeare Garden](https://www.google.com/maps/search/?api=1&query=37.768895799999996%2C-122.4672329&query_place_id=ChIJ76Wd13OHhYARorpaY79_m6U) — 290 reviews (4.7★) · `garden`
+- [Boothbay Park](https://www.google.com/maps/search/?api=1&query=37.5394532%2C-122.27295029999998&query_place_id=ChIJYyf8xDGfj4AR52O2cN_RpA4) — 289 reviews (4.6★) · `park`
+- [Sam McDonald Park](https://www.google.com/maps/search/?api=1&query=37.2970318%2C-122.26528160000001&query_place_id=ChIJVSb0I7Ouj4ARGF7Ff9Mdec4) — 289 reviews (4.8★) · `park`
+- [William "Bill" Patterson Park](https://www.google.com/maps/search/?api=1&query=37.737021%2C-122.1899991&query_place_id=ChIJqYmIcpqFj4AR0P2cfiynF0Y) — 288 reviews (4.3★) · `park`
+- [California Nursery Historical Park](https://www.google.com/maps/search/?api=1&query=37.579262899999996%2C-121.9907422&query_place_id=ChIJlda4wHTAj4ARhDU5yqkDqt4) — 287 reviews (4.6★) · `garden`
+- [Stenzel Park](https://www.google.com/maps/search/?api=1&query=37.6871216%2C-122.1603404&query_place_id=ChIJ90T1WBCQj4AR_2PtF28P4bY) — 286 reviews (4.4★) · `park`
+- [Chochenyo Park](https://www.google.com/maps/search/?api=1&query=37.7611444%2C-122.2438177&query_place_id=ChIJsfDFc72Gj4ARdqhOKtw1VZE) — 284 reviews (4.4★) · `park`
+- [Grove Park](https://www.google.com/maps/search/?api=1&query=37.8563865%2C-122.2723007&query_place_id=ChIJ1cV6QId-hYARtyz1gUKRa-U) — 283 reviews (4.4★) · `park`
+- [Linda Vista Park](https://www.google.com/maps/search/?api=1&query=37.3079424%2C-122.0616475&query_place_id=ChIJGYBXRWC0j4ARaB5lSioFKAY) — 283 reviews (4.7★) · `park`
+- [Preservation Park](https://www.google.com/maps/search/?api=1&query=37.805566899999995%2C-122.2769751&query_place_id=ChIJYeW0pLqAj4ARlSH44v25rsI) — 282 reviews (4.5★) · `park`
+- [Birch Grove Park](https://www.google.com/maps/search/?api=1&query=37.5311005%2C-122.01641489999999&query_place_id=ChIJaZbhVxW_j4ARx-HgrVBzhRs) — 281 reviews (4.5★) · `park`
+- [Raymond Bernal Jr. Memorial Park](https://www.google.com/maps/search/?api=1&query=37.355632799999995%2C-121.89564720000001&query_place_id=ChIJva7uSYfMj4ARfULTyG3FmXI) — 281 reviews (4.1★) · `city_park`
+- [Burg Park](https://www.google.com/maps/search/?api=1&query=37.9425005%2C-122.3388808&query_place_id=ChIJ0Qpl1xt4hYARVdfTidniDrM) — 280 reviews (4.5★) · `park`
+- [Creekside Park](https://www.google.com/maps/search/?api=1&query=37.9216587%2C-121.71348950000001&query_place_id=ChIJg7pNirH-j4ARzLFpNXxKUr4) — 278 reviews (4.6★) · `park`
+- [Pleasant Oaks Park](https://www.google.com/maps/search/?api=1&query=37.9371072%2C-122.06915109999998&query_place_id=ChIJJz_Ke0JhhYAROzVdUmzw3aE) — 278 reviews (4.6★) · `park`
+- [Marina Dog Park](https://www.google.com/maps/search/?api=1&query=37.6897251%2C-122.18267329999999&query_place_id=ChIJywdo-ayaj4ARdnsUZdkc8hY) — 277 reviews (4.5★) · `dog_park`
+- [Martin Luther King Jr. Park](https://www.google.com/maps/search/?api=1&query=37.9263239%2C-122.35929600000001&query_place_id=ChIJq2F4GqGChYARRlL778t6Sbw) — 277 reviews (4.2★) · `park`
+- [Ambrose Park & Aquatic Center](https://www.google.com/maps/search/?api=1&query=38.0171526%2C-121.9391338&query_place_id=ChIJ02Ii4khchYARXHLVGZFgzmo) — 276 reviews (4.2★) · `park`
+- [Wilson Park](https://www.google.com/maps/search/?api=1&query=37.319002499999996%2C-122.01959529999999&query_place_id=ChIJw6w8CQq1j4ARqgaJarpA6wg) — 275 reviews (4.6★) · `park`
+- [Chichibu Park](https://www.google.com/maps/search/?api=1&query=37.985489699999995%2C-121.8144211&query_place_id=ChIJKyn-gChYhYARveEbfkj6Wxw) — 274 reviews (4.2★) · `park`
+- [Fenced Dog Park | Rengstorff Park](https://www.google.com/maps/search/?api=1&query=37.3990116%2C-122.0960913&query_place_id=ChIJxVZ7abqwj4ARCfMirrzjfFI) — 274 reviews (4.5★) · `dog_park`
+- [Morgan Hill Dog Park](https://www.google.com/maps/search/?api=1&query=37.112977%2C-121.64720589999999&query_place_id=ChIJmxopmWggjoARyL6iHTY0oY0) — 274 reviews (4.7★) · `dog_park`
+- [Tamien Park](https://www.google.com/maps/search/?api=1&query=37.3146238%2C-121.884697&query_place_id=ChIJESK7Kk8zjoARu73s9fBPiNk) — 274 reviews (4.4★) · `park`
+- [Hillside Natural Area](https://www.google.com/maps/search/?api=1&query=37.9225778%2C-122.30139489999999&query_place_id=ChIJi7R2fwh5hYAR_TN65DkigXU) — 273 reviews (4.7★) · `park`
+- [Parkway Park](https://www.google.com/maps/search/?api=1&query=37.326745599999995%2C-121.96426269999999&query_place_id=ChIJxw8IB_LKj4ARjGqYhyxRoLY) — 273 reviews (4.5★) · `park`
+- [McCoppin Square Park](https://www.google.com/maps/search/?api=1&query=37.7438648%2C-122.4799609&query_place_id=ChIJAanDApB9j4ARXMyW6xMs2_I) — 272 reviews (4.3★) · `city_park`
+- [Barbara and Jay Vincent Park](https://www.google.com/maps/search/?api=1&query=37.908488%2C-122.3511459&query_place_id=ChIJZbiYb354hYARV2tons6jvto) — 270 reviews (4.6★) · `park`
+- [Drigon Dog Park](https://www.google.com/maps/search/?api=1&query=37.5907547%2C-122.0051394&query_place_id=ChIJNw422-K_j4ARhd08l21G2-I) — 270 reviews (4.2★) · `dog_park`
+- [Independence Park](https://www.google.com/maps/search/?api=1&query=37.649425099999995%2C-121.78266699999999&query_place_id=ChIJEW_8XG_dj4ARGVHyhoUqXdE) — 270 reviews (4.5★) · `park`
+- [Newbark Dog Park](https://www.google.com/maps/search/?api=1&query=37.549070799999996%2C-122.04230559999998&query_place_id=ChIJL7bbHtK_j4ARnFE3mUQEAM8) — 270 reviews (4.6★) · `dog_park`
+- [Arlington Park & Clubhouse](https://www.google.com/maps/search/?api=1&query=37.92362%2C-122.29236420000001&query_place_id=ChIJN9MMPwp5hYARKye0qrm0meQ) — 268 reviews (4.7★) · `park`
+- [Bonaire Park](https://www.google.com/maps/search/?api=1&query=37.6933649%2C-122.16133099999998&query_place_id=ChIJvTxWYhuQj4ARLuWOneISnYw) — 268 reviews (4.5★) · `park`
+- [Village Park](https://www.google.com/maps/search/?api=1&query=37.5916504%2C-122.3744646&query_place_id=ChIJG7ADQzR2j4ARi6gU0_WOOfo) — 268 reviews (4.7★) · `park`
+- [Don Biddle Community Park](https://www.google.com/maps/search/?api=1&query=37.7080299%2C-121.90497169999999&query_place_id=ChIJJQMvC6zvj4ARz7QwPJaNCDM) — 266 reviews (4.8★) · `park`
+- [McKenzie Park](https://www.google.com/maps/search/?api=1&query=37.358528299999996%2C-122.09178519999999&query_place_id=ChIJcfxZ5Daxj4ARF7uKRKdXm5A) — 266 reviews (4.7★) · `park`
+- [Koda Dog Park](https://www.google.com/maps/search/?api=1&query=37.9817849%2C-121.72483889999998&query_place_id=ChIJoxE36iP5j4AR2dhp_nmiWu4) — 265 reviews (4.6★) · `dog_park`
+- [Kolb Park](https://www.google.com/maps/search/?api=1&query=37.718202399999996%2C-121.9299158&query_place_id=ChIJD98fh0bsj4ARIXjd8BD6rnM) — 265 reviews (4.6★) · `park`
+- [Los Paseos Park](https://www.google.com/maps/search/?api=1&query=37.225955299999995%2C-121.7698062&query_place_id=ChIJXdj9qqYvjoARrNbwQJzxh8U) — 264 reviews (4.5★) · `park`
+- [Mercy-Bush Park](https://www.google.com/maps/search/?api=1&query=37.388458299999996%2C-122.0777806&query_place_id=ChIJfUoI_jG3j4ARGcri8sJkrS0) — 264 reviews (4.6★) · `park`
+- [Ryland Park](https://www.google.com/maps/search/?api=1&query=37.3423267%2C-121.89687789999999&query_place_id=ChIJw0lUA5zMj4AROdAIDE_DOic) — 264 reviews (4.3★) · `park`
+- [Frank M. Santana Park](https://www.google.com/maps/search/?api=1&query=37.3178486%2C-121.944768&query_place_id=ChIJFfuI1SbLj4ARY0qe5UdZ7AU) — 263 reviews (4.1★) · `park`
+- [San Ysidro Park](https://www.google.com/maps/search/?api=1&query=37.0127118%2C-121.56304519999999&query_place_id=ChIJ03TZjcDjkYARv5_mfdQSVmw) — 263 reviews (4.3★) · `park`
+- [Vista Montaña Park](https://www.google.com/maps/search/?api=1&query=37.413961%2C-121.95363139999999&query_place_id=ChIJYX_Ih6zJj4ARKhWoWzEEO54) — 263 reviews (4.6★) · `park`
+- [Hap Magee Ranch Dog Park](https://www.google.com/maps/search/?api=1&query=37.840053%2C-122.01876320000001&query_place_id=ChIJ26GLURSLj4ARXUG1ziLFpXQ) — 262 reviews (4.7★) · `dog_park`
+- [Markham Nature Area](https://www.google.com/maps/search/?api=1&query=37.962491%2C-122.0050674&query_place_id=ChIJIfmGJLtghYAR0OxCoWnDCY8) — 262 reviews (4.7★) · `park`
+- [Quarry Park](https://www.google.com/maps/search/?api=1&query=37.5040581%2C-122.45875459999999&query_place_id=ChIJpZ8OjpBzj4ARrCLfvps3ZjY) — 262 reviews (4.7★) · `park`
+- [City of Milpitas Dog Park at Ed R. Levin](https://www.google.com/maps/search/?api=1&query=37.4571963%2C-121.8628433&query_place_id=ChIJOzASuw7Pj4ARHuFzvYRwX3A) — 260 reviews (4.6★) · `dog_park`
+- [Heritage Park](https://www.google.com/maps/search/?api=1&query=37.4444161%2C-122.15672629999999&query_place_id=ChIJidxjYzy7j4ARjmx_IFf8MAA) — 260 reviews (4.6★) · `park`
+- [Walden Park](https://www.google.com/maps/search/?api=1&query=37.9212634%2C-122.0578085&query_place_id=ChIJtfETcAphhYARk3MjJleQI-4) — 259 reviews (4.5★) · `park`
+- [Wallenberg Park](https://www.google.com/maps/search/?api=1&query=37.2870615%2C-121.89646029999999&query_place_id=ChIJwUEPfHszjoARxOCPQhLEN80) — 259 reviews (4.3★) · `park`
+- [Andrew Spinas Park](https://www.google.com/maps/search/?api=1&query=37.4833946%2C-122.20132439999999&query_place_id=ChIJNSxTFxejj4ARSmsWH-XuMSU) — 257 reviews (4.4★) · `park`
+- [James Rolph Jr. Playground](https://www.google.com/maps/search/?api=1&query=37.750450799999996%2C-122.40628770000001&query_place_id=ChIJawsFzU1-j4ARPrjczQy4kXY) — 257 reviews (4.2★) · `city_park`
+- [Bonsai Garden](https://www.google.com/maps/search/?api=1&query=37.806039999999996%2C-122.25850940000001&query_place_id=ChIJxdOwQUmHj4AROo-_Dhl3tjQ) — 256 reviews (4.8★) · `botanical_garden`
+- [Ray Giacomelli Park](https://www.google.com/maps/search/?api=1&query=38.0186838%2C-121.9640776&query_place_id=ChIJ14pGqqRdhYARgiDl5tQuFRs) — 256 reviews (4.5★) · `park`
+- [Highlands Ranch Dog Park](https://www.google.com/maps/search/?api=1&query=37.9971577%2C-121.86437219999998&query_place_id=ChIJ-cfz3QxZhYARR6Iv8oK2xUQ) — 255 reviews (4.3★) · `dog_park`
+- [John Henry Johnson Park](https://www.google.com/maps/search/?api=1&query=38.013722699999995%2C-121.91721000000001&query_place_id=ChIJuWi5ujhchYARacKob7W_O0Y) — 255 reviews (4.4★) · `park`
+- [Parque Niños Unidos](https://www.google.com/maps/search/?api=1&query=37.7543948%2C-122.41350399999997&query_place_id=ChIJL3M88Ud-j4ARKOu_oLmUWiE) — 254 reviews (4.6★) · `city_park`
+- [China Beach San Francisco](https://www.google.com/maps/search/?api=1&query=37.787500699999995%2C-122.49040459999999&query_place_id=ChIJeY74uwGHhYARVpmDMh5-H90) — 253 reviews (4.8★) · `park`
+- [Joaquin Miller Dog Park](https://www.google.com/maps/search/?api=1&query=37.8109841%2C-122.1875078&query_place_id=ChIJW-M5QM6Hj4ARg7K0lyjswhw) — 253 reviews (4.6★) · `dog_park`
+- [La Colina Park](https://www.google.com/maps/search/?api=1&query=37.2337574%2C-121.8122664&query_place_id=ChIJ-a1uHtYxjoARftdpMByK2Og) — 253 reviews (4.4★) · `park`
+- [Guadalupe Gardens Heritage Rose Garden](https://www.google.com/maps/search/?api=1&query=37.343894999999996%2C-121.90727779999997&query_place_id=ChIJdd3BFWPLj4ARLGGrI7lTbg0) — 252 reviews (3.9★) · `park`
+- [Gull Park](https://www.google.com/maps/search/?api=1&query=37.566874399999996%2C-122.2598146&query_place_id=ChIJGTJp4DOZj4ARxqhgsc68VyQ) — 252 reviews (4.5★) · `park`
+- [Lowell Park](https://www.google.com/maps/search/?api=1&query=37.808433099999995%2C-122.2845643&query_place_id=ChIJ-VVu26OAj4AR0lqReKQvygA) — 252 reviews (4★) · `park`
+- [Alamo Creek Park](https://www.google.com/maps/search/?api=1&query=37.7248692%2C-121.912201&query_place_id=ChIJKRHlECXsj4ARgu_T9WvAIE8) — 251 reviews (4.7★) · `park`
+- [Dublin Sports Grounds](https://www.google.com/maps/search/?api=1&query=37.7030696%2C-121.91516410000001&query_place_id=ChIJT4AfDg_sj4AROGPH3in7mao) — 251 reviews (4.6★) · `park`
+- [Fairwood Park](https://www.google.com/maps/search/?api=1&query=37.3956692%2C-121.989639&query_place_id=ChIJwb0ZyNnJj4ARnvypJv1Pyvo) — 251 reviews (4.5★) · `park`
+- [Golden Gate Heights Park](https://www.google.com/maps/search/?api=1&query=37.7504047%2C-122.46888840000001&query_place_id=ChIJ6YUZ04x9j4ARgwsb1H5HdnE) — 251 reviews (4.7★) · `park`
+- [Lick Mill Park](https://www.google.com/maps/search/?api=1&query=37.4036426%2C-121.95664099999999&query_place_id=ChIJ60JmAaXJj4ARZII2n2p3ycs) — 251 reviews (4.6★) · `park`
+- [Toyon Park](https://www.google.com/maps/search/?api=1&query=37.7116171%2C-122.13431639999999&query_place_id=ChIJx7mD-dOPj4AR9iz9xdqZKYg) — 250 reviews (4.3★) · `park`
+- [Gentrytown Park](https://www.google.com/maps/search/?api=1&query=37.9937307%2C-121.8331309&query_place_id=ChIJLSNr_8lZhYAR2vXVjqsompY) — 249 reviews (4.2★) · `park`
+- [McKinley Square](https://www.google.com/maps/search/?api=1&query=37.758986799999995%2C-122.40442840000001&query_place_id=ChIJdZA0ojV-j4AR3fv2Vtt5yO8) — 249 reviews (4.6★) · `park`
+- [Sorensdale Park](https://www.google.com/maps/search/?api=1&query=37.6434011%2C-122.07115470000001&query_place_id=ChIJZR5eXg-Uj4ARu9RPx5FrBuY) — 249 reviews (4.3★) · `park`
+- [Berry Street Dog Park](https://www.google.com/maps/search/?api=1&query=37.7707804%2C-122.3992753&query_place_id=ChIJ46nz-tJ_j4ARoc-hwA2wr4k) — 248 reviews (4.3★) · `dog_park`
+- [Blue Heron Lake](https://www.google.com/maps/search/?api=1&query=37.768728599999996%2C-122.47344450000001&query_place_id=ChIJ_aOxME6HhYARYRaTOEP1dEA) — 245 reviews (4.7★) · `park`
+- [Rudgear Park](https://www.google.com/maps/search/?api=1&query=37.877673099999996%2C-122.028844&query_place_id=ChIJV5CwdI6Kj4ARDHtZ13-GNfM) — 245 reviews (4.6★) · `park`
+- [Sunnyhills Albert Augustine Jr. Memorial Park](https://www.google.com/maps/search/?api=1&query=37.4569927%2C-121.90320210000002&query_place_id=ChIJg7et_rLIj4ARSQO3S9GvSWg) — 245 reviews (4.5★) · `park`
+- [Balboa Natural Area](https://www.google.com/maps/search/?api=1&query=37.7756168%2C-122.51093069999999&query_place_id=ChIJ70erkraHhYARAXZhjFQQ2pM) — 244 reviews (4.7★) · `nature_preserve`
+- [Machado Park](https://www.google.com/maps/search/?api=1&query=37.359520599999996%2C-121.9890752&query_place_id=ChIJcUYTWwbKj4ARdYSZSngyLpY) — 244 reviews (4.4★) · `park`
+- [Chitactac-Adams Heritage County Park](https://www.google.com/maps/search/?api=1&query=37.030443%2C-121.65691470000002&query_place_id=ChIJR6OpSrcejoARZl0860CQps4) — 243 reviews (4.5★) · `park`
+- [Cubby's Dog Park](https://www.google.com/maps/search/?api=1&query=37.6545811%2C-121.90435919999997&query_place_id=ChIJJ1YIpovpj4ARX8ua7y-Lb-o) — 243 reviews (4.7★) · `dog_park`
+- [Leona Canyon Regional Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.78192070000001%2C-122.1513478&query_place_id=ChIJI60lBraIj4ARWj8OWgVCDUI) — 241 reviews (4.5★) · `nature_preserve`
+- [Sugarloaf Open Space](https://www.google.com/maps/search/?api=1&query=37.8753835%2C-122.0374525&query_place_id=ChIJrZofhIqKj4ARyh6StIENfqI) — 241 reviews (4.7★) · `park`
+- [Peralta Hacienda Historical Park](https://www.google.com/maps/search/?api=1&query=37.787174799999995%2C-122.2169921&query_place_id=ChIJr4FcdleGj4ARMXjj_Ri-C_Y) — 240 reviews (4.2★) · `park`
+- [Bayside/Joinville Park](https://www.google.com/maps/search/?api=1&query=37.5669433%2C-122.29398359999999&query_place_id=ChIJLQgHBpSej4AR8JC9f-dZuYs) — 239 reviews (4.5★) · `park`
+- [Cimarrón Park](https://www.google.com/maps/search/?api=1&query=37.385468599999996%2C-121.8389001&query_place_id=ChIJXZzLg7zNj4ARxn2utgG8utQ) — 239 reviews (4.3★) · `park`
+- [Edith Morley Park](https://www.google.com/maps/search/?api=1&query=37.2793821%2C-121.94160269999998&query_place_id=ChIJXc_n9eM0joARn3nf-XimxCk) — 239 reviews (4.6★) · `park`
+- [Harborview Park](https://www.google.com/maps/search/?api=1&query=37.580604199999996%2C-122.31417059999998&query_place_id=ChIJnxO7kNOdj4ARjWWstsVsuvU) — 239 reviews (4.6★) · `park`
+- [Tassajara Park](https://www.google.com/maps/search/?api=1&query=37.935246500000005%2C-122.31031889999998&query_place_id=ChIJmfbNzLR5hYAR0isjj8KHkgg) — 239 reviews (4.6★) · `park`
+- [Silver Creek Linear Park](https://www.google.com/maps/search/?api=1&query=37.2988174%2C-121.80018909999998&query_place_id=ChIJn05vtpUtjoAR7FMeF7gI9KU) — 237 reviews (4.3★) · `park`
+- [Verdese Carter Park](https://www.google.com/maps/search/?api=1&query=37.749124300000005%2C-122.1635245&query_place_id=ChIJD1DDY2-Pj4ARy4583NhUG5k) — 237 reviews (4.2★) · `park`
+- [Monopoly in the Park](https://www.google.com/maps/search/?api=1&query=37.3282543%2C-121.8931994&query_place_id=ChIJe6jlga_Mj4ARpuVbYqbTIP4) — 236 reviews (4.2★) · `park`
+- [Cooper Park](https://www.google.com/maps/search/?api=1&query=37.3677229%2C-122.07210649999999&query_place_id=ChIJM4wIeM-2j4ARWhvmMzqCjZo) — 235 reviews (4.6★) · `park`
+- [Mango Park](https://www.google.com/maps/search/?api=1&query=37.360643499999995%2C-122.05142800000002&query_place_id=ChIJkYszppG2j4ARE4BFajNalk4) — 235 reviews (4.5★) · `park`
+- [Memorial Court](https://www.google.com/maps/search/?api=1&query=37.428182199999995%2C-122.17000929999999&query_place_id=ChIJpaTjDSq7j4ARRu_Qy4s-usc) — 234 reviews (4.7★) · `park`
+- [Montague Park](https://www.google.com/maps/search/?api=1&query=37.3877163%2C-121.94556279999999&query_place_id=ChIJfa7yXHjJj4ARYBzJlAeuKy8) — 234 reviews (4.4★) · `park`
+- [Silver Leaf Park](https://www.google.com/maps/search/?api=1&query=37.247262%2C-121.783474&query_place_id=ChIJzyoraEYujoARnkp3o3PMnkU) — 234 reviews (4.5★) · `park`
+- [Bishop Ranch Open Space Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.751704600000004%2C-121.9770397&query_place_id=ChIJp6lxjWXtj4AR7sJMohbiZG0) — 233 reviews (4.6★) · `park`
+- [Herbert Hoover Park](https://www.google.com/maps/search/?api=1&query=37.4302084%2C-122.12911820000001&query_place_id=ChIJK55CAVi6j4AR22GEuaGSQb8) — 230 reviews (4.6★) · `park`
+- [Heritage Oaks Park](https://www.google.com/maps/search/?api=1&query=37.358584199999996%2C-122.0866039&query_place_id=ChIJRyZNpjWxj4ARBfj0dvEJymY) — 230 reviews (4.6★) · `park`
+- [Shady Oaks Park](https://www.google.com/maps/search/?api=1&query=37.2641396%2C-121.7947101&query_place_id=ChIJ4SCdew4ujoARCUbBJ3QWySA) — 230 reviews (4.5★) · `park`
+- [Murphy Park](https://www.google.com/maps/search/?api=1&query=37.426248199999996%2C-121.8754867&query_place_id=ChIJLwkQcenOj4AR3wuklUOjwnk) — 229 reviews (4.5★) · `park`
+- [Heintz Open Space](https://www.google.com/maps/search/?api=1&query=37.229737799999995%2C-121.9286096&query_place_id=ChIJTeZsmaM2joARUU7jVa0-FyI) — 228 reviews (4.6★) · `park`
+- [Laureola Park](https://www.google.com/maps/search/?api=1&query=37.5097222%2C-122.25944439999998&query_place_id=ChIJ68AJCwSij4AR27OwPvMLjD8) — 228 reviews (4.6★) · `park`
+- [St. Mary's Dog Park](https://www.google.com/maps/search/?api=1&query=37.7327656%2C-122.42079609999999&query_place_id=ChIJrXmvgfV-j4AR4jnhPAiVpaI) — 228 reviews (4.5★) · `dog_park`
+- [Martin Luther King Jr. Park](https://www.google.com/maps/search/?api=1&query=37.5743499%2C-122.32545499999999&query_place_id=ChIJechoAtmdj4ARwGA6sJa-VPk) — 227 reviews (4.3★) · `park`
+- [Orinda Parks & Recreation Department](https://www.google.com/maps/search/?api=1&query=37.8837908%2C-122.1888061&query_place_id=ChIJt8HuB9l8hYARmkod8tJV0cc) — 227 reviews (4.6★) · `park`
+- [Sylvester P. Harvey Community Park](https://www.google.com/maps/search/?api=1&query=37.5879018%2C-122.0595151&query_place_id=ChIJ_W7L4ZKVj4ARll5f84qSn4s) — 227 reviews (4.3★) · `park`
+- [Maddux Park](https://www.google.com/maps/search/?api=1&query=37.4573306%2C-122.2359882&query_place_id=ChIJl5qqkJGjj4AREFd6Ezogcv8) — 226 reviews (4.6★) · `park`
+- [Pinole Valley Dog Park](https://www.google.com/maps/search/?api=1&query=37.979571299999996%2C-122.269569&query_place_id=ChIJM2k_c1J3hYARb2zlstOTu2k) — 226 reviews (4.3★) · `dog_park`
+- [Homeridge Park](https://www.google.com/maps/search/?api=1&query=37.335354099999996%2C-121.9822187&query_place_id=ChIJmVZkRXvKj4ARQOSiwEWmEXs) — 225 reviews (4.6★) · `park`
+- [Mariposa Park](https://www.google.com/maps/search/?api=1&query=37.3957781%2C-122.08844659999998&query_place_id=ChIJs0EJ6bWwj4ARxvjdxFUehMM) — 225 reviews (4.5★) · `park`
+- [Los Cerritos Park - A](https://www.google.com/maps/search/?api=1&query=37.5674681%2C-122.0131868&query_place_id=ChIJ54c5tpW_j4AR_G72V5v0AVU) — 224 reviews (4.4★) · `park`
+- [Old Alvarado Park](https://www.google.com/maps/search/?api=1&query=37.5965941%2C-122.07832309999999&query_place_id=ChIJGWu8LtqVj4ARqG-KTBm7xyg) — 224 reviews (4.4★) · `park`
+- [Dublin Hills Regional Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.700011599999996%2C-121.97488519999999&query_place_id=ChIJVaWuJ8Hsj4ARyOJUgs1ml8Q) — 223 reviews (4.6★) · `park`
+- [Great Oaks Park](https://www.google.com/maps/search/?api=1&query=37.2679809%2C-121.8053685&query_place_id=ChIJe64jHf4tjoARdKdbfOvu7kQ) — 223 reviews (4.3★) · `park`
+- [Brookdale Park](https://www.google.com/maps/search/?api=1&query=37.7825858%2C-122.2055282&query_place_id=ChIJo-nbUUKGj4ARnl4fs4EDhQw) — 222 reviews (4.1★) · `park`
+- [Kite Lot](https://www.google.com/maps/search/?api=1&query=37.4302226%2C-122.07679739999999&query_place_id=ChIJv5VAO_G5j4ARQpu7x_Fmx48) — 222 reviews (4.6★) · `park`
+- [Dusterberry Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.553534299999995%2C-122.00895159999997&query_place_id=ChIJrcxqRhO_j4ARK5dvthqZ2Zo) — 220 reviews (4.6★) · `park`
+- [Jeffrey Fontana Park](https://www.google.com/maps/search/?api=1&query=37.2325132%2C-121.8803232&query_place_id=ChIJxTdxAxUxjoAR6Tur3zP_vTI) — 219 reviews (4.5★) · `park`
+- [Sellick Park](https://www.google.com/maps/search/?api=1&query=37.6434296%2C-122.44920079999999&query_place_id=ChIJl_WChSl6j4ARiiAo0tqLkDQ) — 218 reviews (4.4★) · `park`
+- [Splash Pad Park](https://www.google.com/maps/search/?api=1&query=37.8106789%2C-122.24779059999997&query_place_id=ChIJf_1B4kOHj4ARx2nqDeX8pkE) — 218 reviews (4.5★) · `park`
+- [Hippie Hill](https://www.google.com/maps/search/?api=1&query=37.7699219%2C-122.4578806&query_place_id=ChIJT2MgBFCHhYARTNn-AYuwQFA) — 217 reviews (4.8★) · `park`
+- [Knowland Park Open Space](https://www.google.com/maps/search/?api=1&query=37.7575267%2C-122.1377781&query_place_id=ChIJMxqZQAWPj4ARW4z4-3YFIJs) — 217 reviews (4.7★) · `park`
+- [Ocean View Park](https://www.google.com/maps/search/?api=1&query=37.8868471%2C-122.30260190000001&query_place_id=ChIJu50sVCx5hYARN5kQerQ-9ys) — 217 reviews (4.4★) · `park`
+- [Bernal Community Park](https://www.google.com/maps/search/?api=1&query=37.6541461%2C-121.8888794&query_place_id=ChIJUWA4zJHpj4ARcsKiLNiCYrA) — 216 reviews (4.7★) · `park`
+- [Boone Acres Park](https://www.google.com/maps/search/?api=1&query=37.7365505%2C-121.94553339999999&query_place_id=ChIJOQ-ZS6btj4ARt2Mba_R0Hko) — 216 reviews (4.7★) · `park`
+- [Southgate Park](https://www.google.com/maps/search/?api=1&query=37.6364934%2C-122.0943746&query_place_id=ChIJPV7Wcq6Wj4ARx7LpLyGUwQs) — 216 reviews (4.3★) · `park`
+- [Port Royal Park](https://www.google.com/maps/search/?api=1&query=37.5352617%2C-122.2666153&query_place_id=ChIJXVUF3TSfj4ARg3JRhjvmKHA) — 215 reviews (4.6★) · `park`
+- [Bachman Park](https://www.google.com/maps/search/?api=1&query=37.2292413%2C-121.9867663&query_place_id=ChIJKceX9vM1joAR44tobM4g7tM) — 214 reviews (4.7★) · `park`
+- [Sunrise Park](https://www.google.com/maps/search/?api=1&query=37.0311351%2C-121.60513269999998&query_place_id=ChIJO8LaJ5PhkYARAsod_wIOuwE) — 214 reviews (4.5★) · `park`
+- [Sunset Dunes](https://www.google.com/maps/search/?api=1&query=37.752821399999995%2C-122.5089339&query_place_id=ChIJjQ3rDQCHhYARPKfKhQMle6E) — 214 reviews (4.4★) · `park`
+- [Greystone Park](https://www.google.com/maps/search/?api=1&query=37.2204165%2C-121.85102819999999&query_place_id=ChIJ3Qp2-6sxjoARoWPFJY_YfqQ) — 213 reviews (4.7★) · `park`
+- [Seabreeze Park](https://www.google.com/maps/search/?api=1&query=37.5778225%2C-122.0833718&query_place_id=ChIJy19WV_2Vj4AR-WM9L0FTKm4) — 212 reviews (4.4★) · `park`
+- [Larry J. Marsalli Park](https://www.google.com/maps/search/?api=1&query=37.354655099999995%2C-121.94509190000001&query_place_id=ChIJwUKSp7PLj4AREGzLc3a724A) — 211 reviews (4.4★) · `park`
+- [Unity Park](https://www.google.com/maps/search/?api=1&query=37.931138%2C-122.354169&query_place_id=ChIJlzLXlgl4hYARrUVBf1VEFt4) — 211 reviews (4.3★) · `park`
+- [Arroyo Park](https://www.google.com/maps/search/?api=1&query=37.5813093%2C-122.01377260000001&query_place_id=ChIJSxC9w-e_j4ARdUgNtdQHRNM) — 210 reviews (4.1★) · `park`
+- [High Meadow Vista Point](https://www.google.com/maps/search/?api=1&query=37.3342478%2C-122.11041340000001&query_place_id=ChIJf27vPGGxj4ARVZ-LiX5zCRA) — 210 reviews (4.7★) · `park`
+- [Los Trancos](https://www.google.com/maps/search/?api=1&query=37.331351999999995%2C-122.1788036&query_place_id=ChIJ7xhfNyGuj4ARXj8lO_Zu6bU) — 210 reviews (4.6★) · `nature_preserve`
+- [Ramblewood Park](https://www.google.com/maps/search/?api=1&query=37.295512699999996%2C-121.8126573&query_place_id=ChIJj0YuKHgyjoARk9gDwLQBXS8) — 210 reviews (4.4★) · `park`
+- [Rodgers-Smith Park](https://www.google.com/maps/search/?api=1&query=37.9469229%2C-122.0867626&query_place_id=ChIJscqR9_5jhYARcCGuVOQ4UCo) — 210 reviews (4.4★) · `city_park`
+- [Uvas Reservoir County Park](https://www.google.com/maps/search/?api=1&query=37.0747414%2C-121.69139600000001&query_place_id=ChIJvaMPrGEfjoARJdBbw33kJTM) — 210 reviews (4.6★) · `park`
+- [Alviso Park](https://www.google.com/maps/search/?api=1&query=37.425358599999996%2C-121.96842769999999&query_place_id=ChIJ1Yd7TkfIj4ARcDlOnJRjeMQ) — 209 reviews (4.3★) · `park`
+- [Corona Heights Dog Run](https://www.google.com/maps/search/?api=1&query=37.7653491%2C-122.44018249999999&query_place_id=ChIJhWcgDwJ-j4ARsu9KTNccuqg) — 209 reviews (4.7★) · `dog_park`
+- [China Basin Park](https://www.google.com/maps/search/?api=1&query=37.7764193%2C-122.38795479999997&query_place_id=ChIJ-VUxItp_j4ARBgyteXdSZ-g) — 207 reviews (4.7★) · `park`
+- [Crockett Park](https://www.google.com/maps/search/?api=1&query=37.986229099999996%2C-121.7335987&query_place_id=ChIJ333hchtWhYARRBpZ71-HzXc) — 207 reviews (4.5★) · `park`
+- [Holiday Highlands Park](https://www.google.com/maps/search/?api=1&query=37.9951474%2C-122.09583040000001&query_place_id=ChIJy4HBWcVlhYARiJrEeCrohdo) — 206 reviews (4.6★) · `city_park`
+- [Gomes Park](https://www.google.com/maps/search/?api=1&query=37.5499507%2C-121.9509837&query_place_id=ChIJWR6BRt7Aj4AROu0vdmtHs3I) — 205 reviews (4.7★) · `park`
+- [King Park](https://www.google.com/maps/search/?api=1&query=37.945799099999995%2C-121.72061459999999&query_place_id=ChIJO0FlrSr5j4ARUWwlaZDizcU) — 205 reviews (4.4★) · `park`
+- [Miller Park](https://www.google.com/maps/search/?api=1&query=37.0115951%2C-121.57963240000001&query_place_id=ChIJQRj6f8zjkYAR69Bl_fg7Oto) — 205 reviews (4★) · `park`
+- [Bob McGuire Park](https://www.google.com/maps/search/?api=1&query=37.413925500000005%2C-121.8900685&query_place_id=ChIJAaCrKLjOj4AR1bFjSfTOrUU) — 204 reviews (4.5★) · `park`
+- [Calero Park](https://www.google.com/maps/search/?api=1&query=37.2407046%2C-121.81781169999998&query_place_id=ChIJ1ZjSdNwxjoARiFlj60NSusU) — 203 reviews (4.3★) · `park`
+- [Holdener Park](https://www.google.com/maps/search/?api=1&query=37.647602%2C-121.75240099999999&query_place_id=ChIJfW2bMb3dj4AR1TUCFnJ1ybc) — 203 reviews (4.6★) · `park`
+- [Vista Park](https://www.google.com/maps/search/?api=1&query=37.262641599999995%2C-121.8493646&query_place_id=ChIJu7Fx3y0yjoAR9FiPr8rl6zo) — 203 reviews (4.3★) · `park`
+- [Edgewater Park](https://www.google.com/maps/search/?api=1&query=37.5490639%2C-122.27492400000001&query_place_id=ChIJl_mHICifj4ARV4bdYOIwkb4) — 202 reviews (4.5★) · `park`
+- [Steve Carli Park](https://www.google.com/maps/search/?api=1&query=37.345707399999995%2C-121.96417849999999&query_place_id=ChIJ3amjWVvKj4ARDG5rwjAlpng) — 202 reviews (4.5★) · `park`
+- [Greenridge Park](https://www.google.com/maps/search/?api=1&query=37.7194802%2C-122.0457824&query_place_id=ChIJf0YcBmSSj4AR0MATIVFX93U) — 201 reviews (4.6★) · `park`
+- [Memorial Park](https://www.google.com/maps/search/?api=1&query=37.728048%2C-122.14959049999999&query_place_id=ChIJr-p1q72Pj4ARuQVp6yKN1-A) — 201 reviews (4.2★) · `park`
+- [Nestldown](https://www.google.com/maps/search/?api=1&query=37.146186799999995%2C-121.96894830000001&query_place_id=ChIJO5QzoIw3joARoyaJyboIjHI) — 199 reviews (4.3★) · `garden`
+- [Congress Springs Park](https://www.google.com/maps/search/?api=1&query=37.2806652%2C-122.01377260000001&query_place_id=ChIJedq7TbRKjoARHPR9Kw_HKaM) — 198 reviews (4.5★) · `park`
+- [Dallas Ranch Park](https://www.google.com/maps/search/?api=1&query=37.960372899999996%2C-121.8018891&query_place_id=ChIJwzJ2ef1XhYARy3acWtSuqQg) — 198 reviews (4.4★) · `park`
+- [Metcalf Park](https://www.google.com/maps/search/?api=1&query=37.2338726%2C-121.7617552&query_place_id=ChIJKbjXOgYvjoARbAMpfX5_v4s) — 198 reviews (4.5★) · `park`
+- [Bracher Park](https://www.google.com/maps/search/?api=1&query=37.3691575%2C-121.97600299999999&query_place_id=ChIJQWcF2R3Kj4ARIBdMSooYoEU) — 197 reviews (4.5★) · `park`
+- [Dolphin Park](https://www.google.com/maps/search/?api=1&query=37.9567471%2C-121.7075957&query_place_id=ChIJi_kkciX_j4AR3Gugi5KnAOw) — 197 reviews (4.6★) · `park`
+- [Half Moon Bay State Beach](https://www.google.com/maps/search/?api=1&query=37.480803699999996%2C-122.45168379999998&query_place_id=ChIJvXB09yFzj4ARVpKu59_l40g) — 197 reviews (4.7★) · `state_park`
+- [Sergeant John Macaulay Park](https://www.google.com/maps/search/?api=1&query=37.7853715%2C-122.4181453&query_place_id=ChIJ42c_NJGAhYARM2H6TLpooJs) — 197 reviews (4.1★) · `park`
+- [Veterans Park](https://www.google.com/maps/search/?api=1&query=37.584164699999995%2C-122.0755775&query_place_id=ChIJ2cQxT-SVj4ARGz25LqtFzac) — 196 reviews (4.4★) · `park`
+- [Bethany Reservoir State Recreation Area](https://www.google.com/maps/search/?api=1&query=37.782938699999995%2C-121.61700499999998&query_place_id=ChIJEQuC1EMekIAR-iEvZPhetwc) — 195 reviews (4.4★) · `state_park`
+- [Concordia Park](https://www.google.com/maps/search/?api=1&query=37.7727131%2C-122.18341840000001&query_place_id=ChIJyXPafgaGj4ARkisMTPnToSI) — 195 reviews (3.9★) · `park`
+- [Waterbird Regional Preserve](https://www.google.com/maps/search/?api=1&query=38.024947399999995%2C-122.0977322&query_place_id=ChIJgXwz0vllhYARFyGQSJtBeTY) — 195 reviews (4.1★) · `nature_preserve`
+- [Mission Gardens](https://www.google.com/maps/search/?api=1&query=37.34876330000001%2C-121.9415566&query_place_id=ChIJGy6oqK7Lj4ARiXx6DxqavQ4) — 194 reviews (4.7★) · `park`
+- [Centennial Park](https://www.google.com/maps/search/?api=1&query=37.661828199999995%2C-122.09597819999998&query_place_id=ChIJPVHda2iRj4ARgAu0hZlxBbE) — 193 reviews (4.2★) · `park`
+- [Marymeade Park](https://www.google.com/maps/search/?api=1&query=37.3525827%2C-122.07920069999999&query_place_id=ChIJr6IZxrO2j4ARZpk2bXhsYcE) — 193 reviews (4.6★) · `park`
+- [Sydney G. Walton Square](https://www.google.com/maps/search/?api=1&query=37.7974393%2C-122.3991004&query_place_id=ChIJndMZ1l-AhYARyvIc5cEw8gM) — 193 reviews (4.4★) · `city_park`
+- [Augustin Bernal Park](https://www.google.com/maps/search/?api=1&query=37.6379636%2C-121.91033100000001&query_place_id=ChIJmWjFVBjqj4ARqSWD8xLMx90) — 192 reviews (4.6★) · `park`
+- [Siesta Valley Recreation Area](https://www.google.com/maps/search/?api=1&query=37.873279%2C-122.20582060000001&query_place_id=ChIJZXWqoR19hYARdyQqpNmfyUQ) — 192 reviews (4.5★) · `park`
+- [Josie de la Cruz Park](https://www.google.com/maps/search/?api=1&query=37.7807724%2C-122.2252944&query_place_id=ChIJOXQoz_aGj4ARx0uolhJQcds) — 191 reviews (4★) · `park`
+- [Bollinger Canyon Fountain](https://www.google.com/maps/search/?api=1&query=37.771521799999995%2C-121.9422613&query_place_id=ChIJE798fHzyj4ARQvwvaw6gu7Q) — 190 reviews (4.6★) · `park`
+- [Cesar Chavez Park](https://www.google.com/maps/search/?api=1&query=37.7793615%2C-122.21780090000001&query_place_id=ChIJCajmCF-Gj4ARs7h7dEP-EQ8) — 190 reviews (4★) · `park`
+- [Frank Fisher Park](https://www.google.com/maps/search/?api=1&query=37.562353%2C-122.05071769999999&query_place_id=ChIJQc17yDm-j4ARcWWJPChxBwA) — 190 reviews (4.6★) · `park`
+- [Marshall Park](https://www.google.com/maps/search/?api=1&query=37.5214603%2C-121.98179080000001&query_place_id=ChIJ__KPYU3Hj4ARI7qy2NlN4C4) — 188 reviews (4.4★) · `park`
+- [Monta Loma School Field](https://www.google.com/maps/search/?api=1&query=37.408641700000004%2C-122.09958889999999&query_place_id=ChIJ4aj4Iaewj4ARqpLx16u4HWQ) — 188 reviews (4.5★) · `city_park`
+- [Mountain View Park](https://www.google.com/maps/search/?api=1&query=38.002460299999996%2C-122.11551890000001&query_place_id=ChIJyY5c35ZlhYARt2QuIPErRR4) — 188 reviews (4.3★) · `city_park`
+- [Rincon Hill Dog Park](https://www.google.com/maps/search/?api=1&query=37.7862337%2C-122.39007609999999&query_place_id=ChIJNXceAXqAhYARVkO4Q2orXd0) — 188 reviews (3.9★) · `dog_park`
+- [Stevens Creek Shoreline Nature Study Area Preserve](https://www.google.com/maps/search/?api=1&query=37.4309113%2C-122.06599249999998&query_place_id=ChIJIU4Sm-i5j4ARIrS-LNstA4Q) — 188 reviews (4.7★) · `nature_preserve`
+- [Crandall Creek Park](https://www.google.com/maps/search/?api=1&query=37.570224499999995%2C-122.03754699999999&query_place_id=ChIJR2sL0My_j4ARDAkTZMzj0H0) — 187 reviews (4.5★) · `park`
+- [Eagle Rock](https://www.google.com/maps/search/?api=1&query=37.39594350000001%2C-121.81595759999999&query_place_id=ChIJedZp8YvNj4AR-dUbddoeINo) — 187 reviews (4.7★) · `park`
+- [Foxboro Park](https://www.google.com/maps/search/?api=1&query=38.0146264%2C-122.25947629999999&query_place_id=ChIJVSEufSlxhYAR0Fk5OLjEPvs) — 187 reviews (4.5★) · `park`
+- [George Christopher Playground Park](https://www.google.com/maps/search/?api=1&query=37.7439508%2C-122.44029769999997&query_place_id=ChIJ7cJqhXN-j4ARpwxfrGRNo5g) — 187 reviews (4.6★) · `city_park`
+- [Robert E. Woolley State Park](https://www.google.com/maps/search/?api=1&query=37.591818499999995%2C-122.34452349999998&query_place_id=ChIJPWZE-I6dj4ARmWgEdE3q3so) — 187 reviews (4.5★) · `state_park`
+- [Civic Center Park](https://www.google.com/maps/search/?api=1&query=37.3528222%2C-121.95419439999998&query_place_id=ChIJ54mwuU7Kj4ARdRYtmEjOZSQ) — 186 reviews (4.3★) · `park`
+- [Excelsior Playground Park](https://www.google.com/maps/search/?api=1&query=37.7204291%2C-122.4332757&query_place_id=ChIJlYCE149-j4ARnz1_LFtpOVU) — 186 reviews (4.3★) · `city_park`
+- [Jack Farrell Park](https://www.google.com/maps/search/?api=1&query=37.474652899999995%2C-122.1369024&query_place_id=ChIJrx4vuX27j4AR32H1QbWGOw0) — 186 reviews (4.2★) · `park`
+- [Almondridge Park](https://www.google.com/maps/search/?api=1&query=38.001462599999996%2C-121.76302149999998&query_place_id=ChIJmRwsjFJWhYAR1KpIZt4FmdU) — 184 reviews (4.4★) · `park`
+- [La Honda Creek Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.344115099999996%2C-122.28610669999998&query_place_id=ChIJof_QiRamj4AR8tvFvsAkvp8) — 184 reviews (4.6★) · `nature_preserve`
+- [Starlite Park](https://www.google.com/maps/search/?api=1&query=37.4306833%2C-121.91513200000001&query_place_id=ChIJL-HZr9nIj4ARwrNboN_laaU) — 184 reviews (4.3★) · `park`
+- [Stojanovich Family Park](https://www.google.com/maps/search/?api=1&query=37.282199299999995%2C-121.9349561&query_place_id=ChIJmZgTTO80joAR7Co1K6gWinw) — 184 reviews (4.6★) · `park`
+- [Tunnel Top Park](https://www.google.com/maps/search/?api=1&query=37.7522811%2C-122.3929017&query_place_id=ChIJWaGWM7B_j4AR2Uxd-Z5abIY) — 184 reviews (4.5★) · `park`
+- [Shepherd Canyon Park](https://www.google.com/maps/search/?api=1&query=37.826096%2C-122.2022738&query_place_id=ChIJv3EtMpKHj4ARHu0o1jK3yVA) — 183 reviews (4.4★) · `park`
+- [Waterford Park](https://www.google.com/maps/search/?api=1&query=37.278461899999996%2C-121.85537149999999&query_place_id=ChIJ_0RHuEwyjoARtiPnw5VTs_4) — 183 reviews (4.3★) · `park`
+- [Alexander Park](https://www.google.com/maps/search/?api=1&query=38.0527022%2C-122.21863230000001&query_place_id=ChIJPy9GuoJxhYARUBbI8Ycl3dM) — 182 reviews (4.4★) · `park`
+- [Frog Pad Park](https://www.google.com/maps/search/?api=1&query=38.017088%2C-122.28364249999998&query_place_id=ChIJVchBlcN2hYAR_4-81H0Fd9M) — 182 reviews (4.6★) · `park`
+- [Purissima Park](https://www.google.com/maps/search/?api=1&query=37.377053599999996%2C-122.14746129999999&query_place_id=ChIJxyteCmqwj4ARp0gRisBYT2M) — 182 reviews (4.5★) · `park`
+- [Biebrach Park](https://www.google.com/maps/search/?api=1&query=37.3196179%2C-121.89412899999999&query_place_id=ChIJd_2PxKzMj4ARY38YVfkvGdo) — 181 reviews (4.3★) · `park`
+- [Leydecker Park](https://www.google.com/maps/search/?api=1&query=37.736713699999996%2C-122.24150519999999&query_place_id=ChIJBRSzIRaEj4ARtc3wlpUeDWc) — 181 reviews (4.4★) · `park`
+- [Memorial Park](https://www.google.com/maps/search/?api=1&query=37.758379999999995%2C-121.9710607&query_place_id=ChIJQ5RHK6Dyj4ARjEgopHi0BXg) — 181 reviews (4.5★) · `city_park`
+- [John Hinkel Park](https://www.google.com/maps/search/?api=1&query=37.895369099999996%2C-122.2728324&query_place_id=ChIJ4yc_D1N5hYAR2Yjc_SvNnoM) — 180 reviews (4.6★) · `park`
+- [Lester J Knott Park](https://www.google.com/maps/search/?api=1&query=37.6965201%2C-121.7526396&query_place_id=ChIJEVDmExDnj4ARpuQcQO7ztPg) — 180 reviews (4.5★) · `park`
+- [Central Park](https://www.google.com/maps/search/?api=1&query=38.0199145%2C-121.8715852&query_place_id=ChIJXxUMWdlbhYARdMyZoFh6BaA) — 179 reviews (4.2★) · `park`
+- [Hidden Canyon Park](https://www.google.com/maps/search/?api=1&query=37.503427699999996%2C-122.2987105&query_place_id=ChIJd9c5sGKfj4ARTc0CAkzyx4Q) — 179 reviews (4.7★) · `park`
+- [Mission San José Community Park](https://www.google.com/maps/search/?api=1&query=37.546512%2C-121.9363333&query_place_id=ChIJG5hDiS_Bj4ARkXQlRtXYkRw) — 179 reviews (4.3★) · `park`
+- [Walter Haas Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.740274299999996%2C-122.435505&query_place_id=ChIJQR_tlFd_j4AR4lnTTnvmO3Q) — 179 reviews (4.6★) · `dog_park`
+- [Booker T. Anderson Jr. Park](https://www.google.com/maps/search/?api=1&query=37.9189673%2C-122.32413729999999&query_place_id=ChIJ9cWfDFl4hYARSd4ggdsN4fU) — 178 reviews (4.4★) · `park`
+- [Rix Park](https://www.google.com/maps/search/?api=1&query=37.516871099999996%2C-121.9716613&query_place_id=ChIJxT-LCUjHj4ARHemKmFGev3I) — 178 reviews (4.3★) · `park`
+- [Knoll Park](https://www.google.com/maps/search/?api=1&query=37.9653773%2C-121.7647801&query_place_id=ChIJKYBYXIf4j4ARW7AYRkMoAQI) — 177 reviews (4.2★) · `park`
+- [William Lewis Manly Park](https://www.google.com/maps/search/?api=1&query=37.2843705%2C-121.85288159999999&query_place_id=ChIJ2Va3OwszjoARYqVZ9B85ex4) — 177 reviews (4.5★) · `park`
+- [Chesbro Reservoir County Park](https://www.google.com/maps/search/?api=1&query=37.1187155%2C-121.69604549999998&query_place_id=ChIJMa8zoxIhjoAR87zx4QqPHaQ) — 176 reviews (4.4★) · `park`
+- [East Avenue Park](https://www.google.com/maps/search/?api=1&query=37.667229899999995%2C-122.04433449999999&query_place_id=ChIJqflUUZuTj4ARA5IEk2RSwfM) — 176 reviews (4.7★) · `park`
+- [Grundy Park](https://www.google.com/maps/search/?api=1&query=37.6219295%2C-122.42148030000001&query_place_id=ChIJl7mq-t55j4AR_FYCDNExs_8) — 176 reviews (4.5★) · `park`
+- [Alviso Adobe Community Park](https://www.google.com/maps/search/?api=1&query=37.661003%2C-121.91305299999999&query_place_id=ChIJT9Uym9Lrj4ARxyvQ3mYp8QE) — 175 reviews (4.6★) · `park`
+- [Aptos Park](https://www.google.com/maps/search/?api=1&query=37.7291206%2C-122.4664418&query_place_id=ChIJqfFWfch9j4ARt0Ip6Y5y1Ow) — 175 reviews (4.4★) · `city_park`
+- [Eden Greenway Dog Park](https://www.google.com/maps/search/?api=1&query=37.6344281%2C-122.0973554&query_place_id=ChIJg9WotrGWj4ARdfazfeL5YDQ) — 175 reviews (4.3★) · `park`
+- [Arroyo Agua Caliente Park](https://www.google.com/maps/search/?api=1&query=37.5090979%2C-121.93077819999999&query_place_id=ChIJP9AW8fHGj4ARMxd42crq1ac) — 174 reviews (4.2★) · `park`
+- [Corteva Wetlands Preserve](https://www.google.com/maps/search/?api=1&query=38.021173999999995%2C-121.83206330000002&query_place_id=ChIJj85LYfNZhYARTO0WhDzT4K4) — 174 reviews (4.6★) · `nature_preserve`
+- [Cragmont Rock Park](https://www.google.com/maps/search/?api=1&query=37.8920762%2C-122.2637155&query_place_id=ChIJNY6tkwF8hYARbk-Crt8jBjQ) — 174 reviews (4.7★) · `park`
+- [Jack W. Lyle Park](https://www.google.com/maps/search/?api=1&query=37.4445522%2C-122.18343340000001&query_place_id=ChIJESlpr7ekj4AR2ibcYdHcN9E) — 174 reviews (4.6★) · `park`
+- [Bayview Park](https://www.google.com/maps/search/?api=1&query=37.7154342%2C-122.3929115&query_place_id=ChIJQxrthSZ_j4ARARM_L6KFeNE) — 173 reviews (4.5★) · `city_park`
+- [Hillcrest Park](https://www.google.com/maps/search/?api=1&query=37.9914007%2C-121.77546269999999&query_place_id=ChIJvZsRSbdXhYARAQI8gtOexaw) — 173 reviews (4.2★) · `park`
+- [Hillside Park](https://www.google.com/maps/search/?api=1&query=37.694836699999996%2C-122.45921379999999&query_place_id=ChIJccC_YRB8j4ARyWSw9hD_IkI) — 173 reviews (4.3★) · `park`
+- [Irvington Park](https://www.google.com/maps/search/?api=1&query=37.5222735%2C-121.96412720000001&query_place_id=ChIJq58dOrzHj4ARo2e_bXEyFug) — 173 reviews (4.6★) · `park`
+- [The Grove](https://www.google.com/maps/search/?api=1&query=37.9407983%2C-121.93397829999999&query_place_id=ChIJIesi7hJfhYARWp-TDWoXZ5w) — 173 reviews (4.7★) · `park`
+- [Dog Park | Moscone Park](https://www.google.com/maps/search/?api=1&query=37.801655800000006%2C-122.4345389&query_place_id=ChIJ_3lG6NmAhYARpvJdn10AS-0) — 172 reviews (4.5★) · `dog_park`
+- [Channel Street Dog Park](https://www.google.com/maps/search/?api=1&query=37.7723459%2C-122.39350119999999&query_place_id=ChIJp65MkfN_j4ARCco37oj0H2I) — 171 reviews (4.6★) · `dog_park`
+- [Frank Salﬁngere Park](https://www.google.com/maps/search/?api=1&query=37.9619571%2C-122.0670736&query_place_id=ChIJrYiID7FmhYARAZY-OMLB-5o) — 171 reviews (4.6★) · `park`
+- [Mills Canyon Park](https://www.google.com/maps/search/?api=1&query=37.579906799999996%2C-122.39078180000001&query_place_id=ChIJNT0OqFp2j4ARIv9MWHHb_lQ) — 171 reviews (4.5★) · `park`
+- [Giants Promenade](https://www.google.com/maps/search/?api=1&query=37.7783727%2C-122.3877444&query_place_id=ChIJI7ES6tl_j4ARXdMklSPsJl4) — 170 reviews (4.7★) · `park`
+- [Max Baer Park](https://www.google.com/maps/search/?api=1&query=37.6634074%2C-121.7957568&query_place_id=ChIJodzetPHnj4ARRpwB9uo3K2Y) — 170 reviews (4.5★) · `park`
+- [Monarch Park](https://www.google.com/maps/search/?api=1&query=37.775587%2C-121.90926410000002&query_place_id=ChIJly4Qbwfyj4AR-UQXDQG1neA) — 170 reviews (4.6★) · `park`
+- [Capitol Park](https://www.google.com/maps/search/?api=1&query=37.3512671%2C-121.83395429999999&query_place_id=ChIJ8yutVEfNj4ARG-s989BMjP0) — 169 reviews (4.2★) · `park`
+- [Jose Coronado Playground Park](https://www.google.com/maps/search/?api=1&query=37.757550599999995%2C-122.4151489&query_place_id=ChIJ_UhPpDl-j4AR1s2Kg2SAcdY) — 169 reviews (4.2★) · `city_park`
+- [Robles Park](https://www.google.com/maps/search/?api=1&query=37.4153936%2C-122.122288&query_place_id=ChIJ0V57jGS6j4ARQbPO2sFaXUY) — 169 reviews (4.5★) · `park`
+- [T J Martin Park](https://www.google.com/maps/search/?api=1&query=37.232694599999995%2C-121.88922289999998&query_place_id=ChIJJbhvRkUxjoARqMI8wIq6dIc) — 169 reviews (4.5★) · `park`
+- [Estuary Park/Challenger Field, Alameda](https://www.google.com/maps/search/?api=1&query=37.7896748%2C-122.28689869999998&query_place_id=ChIJF0eB88GAj4ARK7EcyG0E-28) — 168 reviews (4.4★) · `park`
+- [Newark Sportsfield Park](https://www.google.com/maps/search/?api=1&query=37.5185692%2C-122.00940899999999&query_place_id=ChIJ5bF2eEy_j4ARBpsbB8uxARI) — 168 reviews (4.6★) · `park`
+- [Town Estates Park](https://www.google.com/maps/search/?api=1&query=37.59926370000001%2C-122.05481169999999&query_place_id=ChIJLXSCpL2Vj4ARpdC4Wab7-6k) — 168 reviews (4.5★) · `park`
+- [Bayview K.C. Jones Playground Park](https://www.google.com/maps/search/?api=1&query=37.7261984%2C-122.39322100000001&query_place_id=ChIJucWjCBl_j4ARmKgeRmxde6Y) — 167 reviews (4.1★) · `city_park`
+- [Shore Dogs Park](https://www.google.com/maps/search/?api=1&query=37.5424599%2C-122.23100170000001&query_place_id=ChIJATEYV42Yj4ARA8KuZv_sMS4) — 167 reviews (4.2★) · `dog_park`
+- [Sierra Vista Park](https://www.google.com/maps/search/?api=1&query=37.4166167%2C-122.08947089999998&query_place_id=ChIJX2_9MgG6j4ARRXd8FZNKIyw) — 167 reviews (4.3★) · `park`
+- [Bruno Canziani Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.674548%2C-121.72636440000001&query_place_id=ChIJN9Bov_jdj4ARYjyCLKgLf84) — 166 reviews (4.6★) · `park`
+- [Casanova Park](https://www.google.com/maps/search/?api=1&query=37.5342635%2C-122.281516&query_place_id=ChIJT_0ukTufj4ARlyqRrZgLosA) — 166 reviews (4.6★) · `park`
+- [Nelson Ranch Park](https://www.google.com/maps/search/?api=1&query=37.9834514%2C-121.75385829999999&query_place_id=ChIJFX6wAzBWhYAR3T6NGybuIDE) — 166 reviews (4.4★) · `park`
+- [Old Creek Dog Park of Cherryland](https://www.google.com/maps/search/?api=1&query=37.684095299999996%2C-122.11033609999998&query_place_id=ChIJF1z0F6ORj4AR79QOy6l774c) — 166 reviews (4.1★) · `dog_park`
+- [Souyen Park](https://www.google.com/maps/search/?api=1&query=37.763296%2C-121.9077555&query_place_id=ChIJbYBGgeTtj4ARhY-o-Am6pqQ) — 166 reviews (4.6★) · `park`
+- [Sunset Reservoir Park](https://www.google.com/maps/search/?api=1&query=37.751755599999996%2C-122.48586110000001&query_place_id=ChIJMyry-H2HhYARlUXZS7M30D0) — 166 reviews (4.6★) · `park`
+- [Eaton Park](https://www.google.com/maps/search/?api=1&query=37.4843037%2C-122.27318299999999&query_place_id=ChIJKdUcNI6hj4AR-J4TwC9JCE4) — 164 reviews (4.6★) · `park`
+- [Henry W. Seale Park](https://www.google.com/maps/search/?api=1&query=37.4359979%2C-122.1187504&query_place_id=ChIJpWk3MFC6j4ARsQT8kEKIiJc) — 164 reviews (4.6★) · `park`
+- [Linda Ave Dog Park](https://www.google.com/maps/search/?api=1&query=37.822344300000005%2C-122.2459184&query_place_id=ChIJc0ob-l6Hj4AR7m44DiuPp3Q) — 164 reviews (4.1★) · `dog_park`
+- [Bubb Park](https://www.google.com/maps/search/?api=1&query=37.3773214%2C-122.08384830000001&query_place_id=ChIJSzL1tCq3j4ARq4BTFW8LuzY) — 163 reviews (4.6★) · `park`
+- [Gordon E. Oliver Eden Shores Park](https://www.google.com/maps/search/?api=1&query=37.6102077%2C-122.0965918&query_place_id=ChIJ-Tc_c4-Wj4ARHVJZ7S0jKII) — 163 reviews (4.5★) · `park`
+- [Koret Quad](https://www.google.com/maps/search/?api=1&query=37.7681555%2C-122.3920374&query_place_id=ChIJE2vPDc9_j4ARmKskAVGXw-4) — 163 reviews (4.4★) · `park`
+- [City of Mountain View Dog Park](https://www.google.com/maps/search/?api=1&query=37.4283578%2C-122.07737540000001&query_place_id=ChIJx849xvC5j4AR8tx7wdHJb4Y) — 162 reviews (4.2★) · `dog_park`
+- [Coyote Crossing](https://www.google.com/maps/search/?api=1&query=37.7759334%2C-121.9406358&query_place_id=ChIJz2jjmWTyj4ARKNl6111KNKQ) — 162 reviews (4.5★) · `park`
+- [Jewel's Terrace Park](https://www.google.com/maps/search/?api=1&query=37.885086199999996%2C-122.28699199999998&query_place_id=ChIJC-7-67V-hYARP9V24yFXbbg) — 162 reviews (4.6★) · `park`
+- [Parkside Square Park](https://www.google.com/maps/search/?api=1&query=37.7383458%2C-122.48434979999999&query_place_id=ChIJzdh50Zt9j4ARTlW4V9KsdrI) — 162 reviews (4.5★) · `city_park`
+- [Ruus Park](https://www.google.com/maps/search/?api=1&query=37.6247569%2C-122.0745759&query_place_id=ChIJWQLtbCOUj4ARnwfy6waA7cM) — 162 reviews (4★) · `park`
+- [Klein Park](https://www.google.com/maps/search/?api=1&query=37.4006712%2C-122.10415929999999&query_place_id=ChIJDf1c36Kwj4ARbQKV3j00m-k) — 161 reviews (4.4★) · `park`
+- [Robert Livermore Park](https://www.google.com/maps/search/?api=1&query=37.682281499999995%2C-121.7398681&query_place_id=ChIJwYMXzELnj4ARe-Gwram3xXU) — 161 reviews (4.5★) · `park`
+- [South Sunset Playground Park](https://www.google.com/maps/search/?api=1&query=37.7380668%2C-122.49859319999999&query_place_id=ChIJjfYDunB9j4ARfGSX-AlqDoA) — 161 reviews (4.2★) · `city_park`
+- [Dog Park | Las Palmas](https://www.google.com/maps/search/?api=1&query=37.3646646%2C-122.03707700000001&query_place_id=ChIJU6jRaiW3j4ARS93xfiVY6QI) — 160 reviews (4.5★) · `dog_park`
+- [Five Canyons Park](https://www.google.com/maps/search/?api=1&query=37.676498699999996%2C-122.0304705&query_place_id=ChIJyw1Ix3OTj4ARrxEjPQV3u74) — 160 reviews (4.4★) · `park`
+- [Jerry Raber Ash Street Park](https://www.google.com/maps/search/?api=1&query=37.5244736%2C-122.0384355&query_place_id=ChIJEdis99--j4ARjYXuItoNjm8) — 160 reviews (4.2★) · `park`
+- [Branham Park](https://www.google.com/maps/search/?api=1&query=37.2527775%2C-121.90641900000001&query_place_id=ChIJOxjn8Qs0joART_A7300-rLo) — 159 reviews (4.3★) · `park`
+- [Cherryland Park](https://www.google.com/maps/search/?api=1&query=37.6761103%2C-122.1063363&query_place_id=ChIJZ5mqTXWRj4AR17y1KTkE1GQ) — 159 reviews (4.2★) · `park`
+- [Country Manor Park](https://www.google.com/maps/search/?api=1&query=37.9766002%2C-121.77683760000001&query_place_id=ChIJL0GlmsVXhYART875nAANJYY) — 159 reviews (4.4★) · `park`
+- [Coy Park](https://www.google.com/maps/search/?api=1&query=37.2563483%2C-121.8243717&query_place_id=ChIJTYW45fAxjoAR3Et19mGTybE) — 159 reviews (4.2★) · `park`
+- [Grizzly Peak Vista Point](https://www.google.com/maps/search/?api=1&query=37.8812272%2C-122.23146100000001&query_place_id=ChIJuxOetER8hYARFHXn1_nizYA) — 159 reviews (4.8★) · `park`
+- [Hecker Pass Park](https://www.google.com/maps/search/?api=1&query=37.0068469%2C-121.6083347&query_place_id=ChIJb2EYMhvjkYARwXNqJ13kD28) — 159 reviews (4.4★) · `park`
+- [John Buckley Square](https://www.google.com/maps/search/?api=1&query=38.031770699999996%2C-121.88448000000001&query_place_id=ChIJ05zQuZRbhYARhUxIzLKn8hs) — 158 reviews (4.5★) · `city_park`
+- [Mount Olympus Park](https://www.google.com/maps/search/?api=1&query=37.763384699999996%2C-122.4455737&query_place_id=ChIJ_-jjFgB-j4AR9oV0wqezERM) — 158 reviews (4.6★) · `city_park`
+- [Freedom Basin Park](https://www.google.com/maps/search/?api=1&query=37.9691359%2C-121.71430629999999&query_place_id=ChIJ0xuXLkr_j4ARaGpP30FgnCU) — 157 reviews (4.4★) · `park`
+- [Main Street Dog Park](https://www.google.com/maps/search/?api=1&query=37.790036%2C-122.29595609999998&query_place_id=ChIJHQRe2-yAj4ARmPlk74phFoc) — 157 reviews (4.2★) · `dog_park`
+- [Parma Park](https://www.google.com/maps/search/?api=1&query=37.221590299999995%2C-121.8708719&query_place_id=ChIJv5wmixAxjoAR80bQxWeN3aI) — 157 reviews (4.5★) · `park`
+- [Ray Park](https://www.google.com/maps/search/?api=1&query=37.5888308%2C-122.37772319999999&query_place_id=ChIJv___DjZ2j4ARrrDdZSRphhw) — 157 reviews (4.7★) · `park`
+- [Stevens Creek Reservoir](https://www.google.com/maps/search/?api=1&query=37.298352099999995%2C-122.07930900000001&query_place_id=ChIJjWlPJYG0j4ARGkPt2QIIVEk) — 157 reviews (4.4★) · `nature_preserve`
+- [Baywinds Park](https://www.google.com/maps/search/?api=1&query=37.572902%2C-122.28248119999999&query_place_id=ChIJNcAQNbqej4ARI-pjwVCabhw) — 156 reviews (4.6★) · `park`
+- [Bray Commons](https://www.google.com/maps/search/?api=1&query=37.7067238%2C-121.8609429&query_place_id=ChIJ89xBPynpj4ARTG6IYnVEnys) — 156 reviews (4.4★) · `park`
+- [Cuernavaca Park](https://www.google.com/maps/search/?api=1&query=37.5793125%2C-122.39752499999997&query_place_id=ChIJXaVIbFd2j4ARLCRSZQMIgJ4) — 156 reviews (4.4★) · `park`
+- [Nunn-Wilson Family Park](https://www.google.com/maps/search/?api=1&query=37.9825707%2C-121.7259856&query_place_id=ChIJVx7U7qn4j4ARmR2Zr5xIsWw) — 156 reviews (4.6★) · `park`
+- [Seven Hills Park](https://www.google.com/maps/search/?api=1&query=37.5929538%2C-121.9992068&query_place_id=ChIJT9J-2f2_j4ARActNPchmG9U) — 156 reviews (4.5★) · `park`
+- [Sunnyside Conservatory](https://www.google.com/maps/search/?api=1&query=37.7319046%2C-122.44079339999999&query_place_id=ChIJ4UgiAXx-j4ARnRtO69jSOF4) — 156 reviews (4.6★) · `park`
+- [Rancho San Antonio Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.335970499999995%2C-122.0911929&query_place_id=ChIJNSew23mxj4ARO9AiW3h6kZQ) — 155 reviews (4.7★) · `nature_preserve`
+- [Grove Shafter Park](https://www.google.com/maps/search/?api=1&query=37.825336%2C-122.26903360000001&query_place_id=ChIJIYUt7gZ-hYARYC12xB13rfQ) — 154 reviews (3.8★) · `park`
+- [West Sunset Playground Park](https://www.google.com/maps/search/?api=1&query=37.7506273%2C-122.49806790000001&query_place_id=ChIJzylD0YaHhYAR592dujYe9t4) — 154 reviews (4.6★) · `city_park`
+- [Bernal Heights Park](https://www.google.com/maps/search/?api=1&query=37.7430272%2C-122.4136408&query_place_id=ChIJXfZJOaB_j4ARqpK7DW1C0JE) — 153 reviews (4.8★) · `city_park`
+- [The Gardens at Heather Farm](https://www.google.com/maps/search/?api=1&query=37.918889899999996%2C-122.04406449999999&query_place_id=ChIJxc8xjq5hhYAR2zuK9RuTX-M) — 153 reviews (4.8★) · `garden`
+- [Raleigh Linear Park](https://www.google.com/maps/search/?api=1&query=37.241439899999996%2C-121.79412119999999&query_place_id=ChIJEf_QCjoujoARR-_H-4InfVc) — 152 reviews (4.1★) · `park`
+- [Godfrey Park](https://www.google.com/maps/search/?api=1&query=37.733950799999995%2C-122.232571&query_place_id=ChIJJ2pQCDiEj4ARbEZOGgYQGDs) — 151 reviews (4.4★) · `park`
+- [Lincoln Park](https://www.google.com/maps/search/?api=1&query=37.706942399999996%2C-122.45256239999999&query_place_id=ChIJ-exWKyJ8j4AR1GsgySa8PKI) — 151 reviews (4.3★) · `park`
+- [Discovery Dog Park](https://www.google.com/maps/search/?api=1&query=37.3287814%2C-121.8963488&query_place_id=ChIJl4PdCqbMj4ARK3GsLEx9XgA) — 150 reviews (3.6★) · `dog_park`
+- [Kelloch & Velasco Mini Park](https://www.google.com/maps/search/?api=1&query=37.7085827%2C-122.41331299999999&query_place_id=ChIJ1SQONsV-j4ARMzfZIQqvkcQ) — 150 reviews (4.3★) · `city_park`
+- [Northwood Park](https://www.google.com/maps/search/?api=1&query=37.406215599999996%2C-121.8802749&query_place_id=ChIJPU5iZ6LOj4ARLB_pNc-yoSU) — 150 reviews (4.4★) · `park`
+- [Orchard Park](https://www.google.com/maps/search/?api=1&query=37.9190979%2C-121.7042465&query_place_id=ChIJl8fAQaT-j4ARQROE1n86G0c) — 150 reviews (4.5★) · `park`
+- [Almaden Meadows Park](https://www.google.com/maps/search/?api=1&query=37.2218133%2C-121.8844138&query_place_id=ChIJG0vjyT4xjoARDNhrir_FT6Y) — 149 reviews (4.5★) · `park`
+- [City Hall Dog Park](https://www.google.com/maps/search/?api=1&query=37.5047426%2C-122.2629923&query_place_id=ChIJ9aUN0QKij4ARJ3QOTFVjWzU) — 149 reviews (4.1★) · `dog_park`
+- [Blacow Park](https://www.google.com/maps/search/?api=1&query=37.527277%2C-121.97444599999999&query_place_id=ChIJbVFyWrTAj4ARQITgIL4RJ3o) — 148 reviews (4.3★) · `park`
+- [San Ramon Hidden Valley Park](https://www.google.com/maps/search/?api=1&query=37.766047%2C-121.8893465&query_place_id=ChIJ-18VGxLuj4ARl8cONP4llcQ) — 148 reviews (4.6★) · `park`
+- [Tiller Park](https://www.google.com/maps/search/?api=1&query=37.9390196%2C-122.3240379&query_place_id=ChIJWeAriTl4hYAR90aLOhzJ_mk) — 148 reviews (4.2★) · `park`
+- [Booster Park](https://www.google.com/maps/search/?api=1&query=37.4790308%2C-121.9183037&query_place_id=ChIJQ4S2UxHGj4ARY-Vhr7QQ2dE) — 147 reviews (4.3★) · `park`
+- [Azule Walking Park](https://www.google.com/maps/search/?api=1&query=37.288759299999995%2C-122.02266809999998&query_place_id=ChIJ7ZeBuzC1j4AR19s9K9-fpuQ) — 146 reviews (4.5★) · `park`
+- [Golden Hills Park](https://www.google.com/maps/search/?api=1&query=37.9614663%2C-122.1095769&query_place_id=ChIJHYSqZGpkhYARl75mo_FITqU) — 146 reviews (4.4★) · `park`
+- [Hansen Park](https://www.google.com/maps/search/?api=1&query=37.6706341%2C-121.89379269999999&query_place_id=ChIJNyXmt3vpj4AR3xtdkLEnFOY) — 146 reviews (4.7★) · `park`
+- [Rancho San Vicente Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.193236%2C-121.80709999999999&query_place_id=ChIJAWzp1wEwjoARf8m724HmGsg) — 146 reviews (4.7★) · `nature_preserve`
+- [Solari Park](https://www.google.com/maps/search/?api=1&query=37.284586999999995%2C-121.83260329999999&query_place_id=ChIJbbppeEIyjoARKGyAco72_ZU) — 146 reviews (4.2★) · `park`
+- [Varian Park](https://www.google.com/maps/search/?api=1&query=37.326736000000004%2C-122.06307389999998&query_place_id=ChIJVX9Fy2q0j4AR05JjV42IkNE) — 146 reviews (4.5★) · `park`
+- [Esmeralda Slide Park](https://www.google.com/maps/search/?api=1&query=37.7435283%2C-122.418211&query_place_id=ChIJOU3EUFt-j4ARwCY7h7ubF9I) — 145 reviews (4.7★) · `city_park`
+- [Shorebird Park Emeryville](https://www.google.com/maps/search/?api=1&query=37.8402238%2C-122.29813589999999&query_place_id=ChIJTwiNilp-hYARVlF-bqC50EE) — 145 reviews (4.6★) · `park`
+- [Vallejo Steps](https://www.google.com/maps/search/?api=1&query=37.7991483%2C-122.40440079999999&query_place_id=ChIJAcAOS_SAhYARaNQR8wJrF6k) — 145 reviews (4.7★) · `garden`
+- [Canyon Trail Park](https://www.google.com/maps/search/?api=1&query=37.9301034%2C-122.31386540000001&query_place_id=ChIJpdpfOkx4hYARK_fXuYofyns) — 144 reviews (4.6★) · `park`
+- [Casa Verde Park](https://www.google.com/maps/search/?api=1&query=37.5955247%2C-122.06724709999999&query_place_id=ChIJndPL48GVj4ARjnWke4G7Jrw) — 144 reviews (4.5★) · `park`
+- [Six Pillars Park](https://www.google.com/maps/search/?api=1&query=37.7449158%2C-121.88952429999999&query_place_id=ChIJC8-fKGPuj4AR2fvcqcSP93E) — 144 reviews (4.5★) · `park`
+- [Brooks Park](https://www.google.com/maps/search/?api=1&query=37.717256899999995%2C-122.46678820000001&query_place_id=ChIJIQACBDV8j4ARwxS0LNmo7BA) — 143 reviews (4.5★) · `park`
+- [Burlingame Dog Exercise Park](https://www.google.com/maps/search/?api=1&query=37.591628199999995%2C-122.3560919&query_place_id=ChIJp3d1-Iedj4ARnsiBAUHnk0E) — 143 reviews (4.4★) · `dog_park`
+- [Hilltop Green Park](https://www.google.com/maps/search/?api=1&query=37.9806422%2C-122.31095719999999&query_place_id=ChIJhzQKpKB3hYARgjd8XTSEtw8) — 143 reviews (4.1★) · `park`
+- [Piccadilly Park](https://www.google.com/maps/search/?api=1&query=37.7772243%2C-121.8978831&query_place_id=ChIJlbt4vwHuj4ARH2yUBOVGkLg) — 143 reviews (4.7★) · `park`
+- [Rainbow Park](https://www.google.com/maps/search/?api=1&query=37.020998299999995%2C-121.59392640000002&query_place_id=ChIJZWlG8SfikYARhWb7Y5bE5Yg) — 143 reviews (4.3★) · `park`
+- [Westwood Oaks Park](https://www.google.com/maps/search/?api=1&query=37.331075299999995%2C-122.0003491&query_place_id=ChIJyz9jaYS1j4ARHSu-2IHZqnw) — 143 reviews (4.4★) · `park`
+- [Bay Point Regional Shoreline](https://www.google.com/maps/search/?api=1&query=38.0398973%2C-121.9632274&query_place_id=ChIJcRGWrD9dhYARiMSNiAzCgSs) — 142 reviews (4.3★) · `park`
+- [Big Canyon Park](https://www.google.com/maps/search/?api=1&query=37.4851769%2C-122.2815949&query_place_id=ChIJkfJzpJOhj4ARw3u1cVHR7gQ) — 142 reviews (4.6★) · `park`
+- [Carnegie Park](https://www.google.com/maps/search/?api=1&query=37.6796338%2C-121.76882029999999&query_place_id=ChIJrU8r8p7nj4AR1yach0ceDRQ) — 142 reviews (4.5★) · `park`
+- [Parc Metro East](https://www.google.com/maps/search/?api=1&query=37.4204635%2C-121.8976567&query_place_id=ChIJS0dqTMzOj4AR9hVdZIUpQ5Q) — 142 reviews (4.2★) · `park`
+- [Progress Park](https://www.google.com/maps/search/?api=1&query=37.7536322%2C-122.39094779999998&query_place_id=ChIJiURQbLB_j4ARj5e6cvXElnw) — 142 reviews (4.4★) · `park`
+- [Bayport Park](https://www.google.com/maps/search/?api=1&query=37.7824987%2C-122.2874333&query_place_id=ChIJ8URRb92Aj4ARbSarmT8zyeM) — 141 reviews (4.3★) · `park`
+- [Deep Creek Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.5732546%2C-122.0542694&query_place_id=ChIJX1i5nya-j4AR9DQ4wS5DME4) — 141 reviews (4.5★) · `park`
+- [Martin Luther King Park](https://www.google.com/maps/search/?api=1&query=37.4633658%2C-122.1265909&query_place_id=ChIJG9IaX567j4ARQoTDPRjVra8) — 141 reviews (4.2★) · `park`
+- [Ben Rodgers Park](https://www.google.com/maps/search/?api=1&query=37.428150599999995%2C-121.8677115&query_place_id=ChIJY11iAPLOj4ARcyNq4eynxR0) — 140 reviews (4.4★) · `park`
+- [Dover Park](https://www.google.com/maps/search/?api=1&query=37.8425845%2C-122.2681782&query_place_id=ChIJD-7mfXZ-hYARciJXzbzfeo4) — 140 reviews (4.3★) · `park`
+- [Hagemann Park](https://www.google.com/maps/search/?api=1&query=37.681584300000004%2C-121.79558589999999&query_place_id=ChIJI3auRcTnj4ARsnpLD063dao) — 140 reviews (4.4★) · `park`
+- [South Beach Park](https://www.google.com/maps/search/?api=1&query=37.7806703%2C-122.38814269999999&query_place_id=ChIJoYPdbth_j4ARM4HSFU2nvmw) — 140 reviews (4.5★) · `city_park`
+- [Dave Brubeck Park](https://www.google.com/maps/search/?api=1&query=37.9765279%2C-121.9857931&query_place_id=ChIJobBAjwZehYARcMVfko-siSU) — 139 reviews (4.3★) · `park`
+- [Lafayette Community Park](https://www.google.com/maps/search/?api=1&query=37.860748199999996%2C-122.10060509999998&query_place_id=ChIJ0ZnEAOWJj4ARfV4e-WUKego) — 139 reviews (4.5★) · `park`
+- [Lucas Park](https://www.google.com/maps/search/?api=1&query=37.9438048%2C-122.3592827&query_place_id=ChIJTRb83lSdhYARM1N_-XP2YPY) — 139 reviews (4.1★) · `park`
+- [Markley Creek Park](https://www.google.com/maps/search/?api=1&query=37.990131999999996%2C-121.8546532&query_place_id=ChIJ_0rT-KhZhYARtz81TNQPU-k) — 139 reviews (4.4★) · `park`
+- [Mayfair Park](https://www.google.com/maps/search/?api=1&query=37.3519712%2C-121.84398489999998&query_place_id=ChIJYSsXPz3Nj4AR8ap8faTzjaE) — 139 reviews (4.2★) · `park`
+- [San Ramon Sports Park](https://www.google.com/maps/search/?api=1&query=37.752002999999995%2C-121.8963455&query_place_id=ChIJ_b9j4Hbuj4ARcKSeaGu11BQ) — 139 reviews (4.6★) · `park`
+- [Stoneman Trailhead](https://www.google.com/maps/search/?api=1&query=38.0092867%2C-121.92008579999998&query_place_id=ChIJn4C8GRFchYARNbbP1Mv4C6s) — 139 reviews (4.4★) · `park`
+- [West Evergreen Park](https://www.google.com/maps/search/?api=1&query=37.3087002%2C-121.81507989999999&query_place_id=ChIJ8aqNX4EyjoARFoonRjgkmtc) — 139 reviews (3.8★) · `park`
+- [Alhambra Creek Staging Area](https://www.google.com/maps/search/?api=1&query=37.9567524%2C-122.1230578&query_place_id=ChIJE0JdNmdkhYARMsqUXB3bli4) — 137 reviews (4.6★) · `park`
+- [Rancho Laguna Park](https://www.google.com/maps/search/?api=1&query=37.809134%2C-122.112739&query_place_id=ChIJC4GDDxaJj4ARQOb4JWNV6Fc) — 137 reviews (4.6★) · `park`
+- [Berryessa Creek Park](https://www.google.com/maps/search/?api=1&query=37.4103914%2C-121.86017489999999&query_place_id=ChIJw9mHgobOj4ARHP7eN17j-Gs) — 136 reviews (4.2★) · `park`
+- [Eagleridge Park](https://www.google.com/maps/search/?api=1&query=37.977064899999995%2C-121.79277060000001&query_place_id=ChIJKegd4-tXhYARC7Jybf2gYik) — 136 reviews (4.4★) · `park`
+- [East Bay Regional Park](https://www.google.com/maps/search/?api=1&query=37.6918547%2C-122.0531394&query_place_id=ChIJD2VjP7OTj4ARNz9iHvZseSo) — 136 reviews (4.6★) · `park`
+- [La Moine Park (Cheese Park)](https://www.google.com/maps/search/?api=1&query=37.9709102%2C-122.28050180000001&query_place_id=ChIJk0pHT1l3hYARRsbGcW_FO9M) — 136 reviews (4.3★) · `park`
+- [Veggielution Community Farm](https://www.google.com/maps/search/?api=1&query=37.3410387%2C-121.8480429&query_place_id=ChIJVxxDEC_Nj4ARMF4r08iKtiQ) — 136 reviews (4.6★) · `garden`
+- [Buena Vista Park](https://www.google.com/maps/search/?api=1&query=37.3197908%2C-121.921108&query_place_id=ChIJT7g8hUjLj4AR7a3nf0SEiIA) — 135 reviews (4.2★) · `park`
+- [Creekside Park](https://www.google.com/maps/search/?api=1&query=37.396405%2C-122.067523&query_place_id=ChIJw2DeWDm3j4ARN0RRkoeXESI) — 135 reviews (4.4★) · `park`
+- [Dakota (Dog) Park](https://www.google.com/maps/search/?api=1&query=37.9511745%2C-121.6860203&query_place_id=ChIJpyrzr-T-j4ARP0izjSWc53o) — 135 reviews (4.5★) · `dog_park`
+- [Koshland Park](https://www.google.com/maps/search/?api=1&query=37.7732968%2C-122.4267984&query_place_id=ChIJwZ5aoKGAhYAR9Ig2tJo88Yg) — 135 reviews (4.5★) · `city_park`
+- [Ramos Park](https://www.google.com/maps/search/?api=1&query=37.4258483%2C-122.10966169999998&query_place_id=ChIJPYgNY2q6j4ARGlY7GVgzJNU) — 135 reviews (4.4★) · `park`
+- [Balfour-Guthrie Park](https://www.google.com/maps/search/?api=1&query=37.926223%2C-121.75472300000001&query_place_id=ChIJTf62WAX5j4ARqaS0wQbniQA) — 134 reviews (4.6★) · `park`
+- [Del Valle Lake Trail](https://www.google.com/maps/search/?api=1&query=37.619499999999995%2C-121.7531111&query_place_id=ChIJjz-4SEXcj4ARotrwKCKoNms) — 134 reviews (4.8★) · `park`
+- [Lower Bottoms Park](https://www.google.com/maps/search/?api=1&query=37.8028967%2C-122.29815959999999&query_place_id=ChIJ5QNOTl2Bj4AR2CNYTAxTI8A) — 134 reviews (4.3★) · `dog_park`
+- [Richard Fahey Village Green Park](https://www.google.com/maps/search/?api=1&query=37.7279963%2C-121.92991990000002&query_place_id=ChIJD0h3fkvsj4ARc3C4QWfh0ik) — 134 reviews (4.4★) · `park`
+- [Byrne Preserve](https://www.google.com/maps/search/?api=1&query=37.3655101%2C-122.15909300000001&query_place_id=ChIJ4Z7IFTqwj4ARCmVX4Jr-IhI) — 133 reviews (4.8★) · `nature_preserve`
+- [Elaine Richardson Park](https://www.google.com/maps/search/?api=1&query=37.29235570000001%2C-121.85218660000001&query_place_id=ChIJC0mrjVUyjoARgge0B1ORRIE) — 133 reviews (4.3★) · `park`
+- [Indian Springs Park](https://www.google.com/maps/search/?api=1&query=37.528495899999996%2C-122.3029669&query_place_id=ChIJNZgUAw-fj4ARklrv0B6LyN4) — 133 reviews (4.5★) · `park`
+- [Orchard Gardens Park](https://www.google.com/maps/search/?api=1&query=37.399749799999995%2C-122.02450560000001&query_place_id=ChIJgdsy1LO3j4ARPIZR0XmeMA0) — 133 reviews (4.3★) · `park`
+- [Canyon Creek Park](https://www.google.com/maps/search/?api=1&query=37.290059899999996%2C-121.76805809999999&query_place_id=ChIJ-fuRdc0tjoAReF3uXmqmfak) — 132 reviews (4.5★) · `park`
+- [Holly Creek Park](https://www.google.com/maps/search/?api=1&query=37.994600399999996%2C-121.73691059999999&query_place_id=ChIJMwDMEhRWhYARhI22buqrKRY) — 132 reviews (4.5★) · `park`
+- [Moller Park](https://www.google.com/maps/search/?api=1&query=37.686591%2C-121.9290449&query_place_id=ChIJAzqFC4zrj4ARl6lJFYiEfW0) — 132 reviews (4.5★) · `park`
+- [Panama Park](https://www.google.com/maps/search/?api=1&query=37.34785490000001%2C-122.0186394&query_place_id=ChIJlefNJsO1j4ARXA79xap1UIQ) — 132 reviews (4.1★) · `park`
+- [Agnew Park](https://www.google.com/maps/search/?api=1&query=37.392807499999996%2C-121.961828&query_place_id=ChIJrTjcTZbJj4ARGxP7yZr1Okk) — 131 reviews (4.4★) · `park`
+- [Cabrillo Playground Park](https://www.google.com/maps/search/?api=1&query=37.772907%2C-122.49850199999999&query_place_id=ChIJff8mPKSHhYAR-2myWZYUoHM) — 130 reviews (4.6★) · `city_park`
+- [Crissy Field Marsh](https://www.google.com/maps/search/?api=1&query=37.804570999999996%2C-122.45688&query_place_id=ChIJJ4tQjdCGhYARLTYulcGRM20) — 130 reviews (4.8★) · `park`
+- [Hansen Park](https://www.google.com/maps/search/?api=1&query=37.963015899999995%2C-121.810352&query_place_id=ChIJV03vCgJYhYARoHsEtB_UV-s) — 130 reviews (4.5★) · `park`
+- [Helen Wills Playground Park](https://www.google.com/maps/search/?api=1&query=37.7958311%2C-122.4206364&query_place_id=ChIJBWm8fOmAhYARdSpDfT2vt0w) — 130 reviews (4.3★) · `city_park`
+- [Mount Pleasant Park](https://www.google.com/maps/search/?api=1&query=37.355883399999996%2C-121.8098181&query_place_id=ChIJIycKnafSj4AR2-D1iaMbdMI) — 130 reviews (4.3★) · `park`
+- [Contempo Park](https://www.google.com/maps/search/?api=1&query=37.584046799999996%2C-122.0695379&query_place_id=ChIJ_7VfNe6Vj4ARN58sH5ctAnk) — 129 reviews (4.2★) · `park`
+- [Melody Park](https://www.google.com/maps/search/?api=1&query=37.2817109%2C-121.8183608&query_place_id=ChIJEW-Z8QwyjoARNWa6U_TwkAw) — 129 reviews (4.2★) · `park`
+- [Miyuki Dog Park](https://www.google.com/maps/search/?api=1&query=37.239567%2C-121.7937858&query_place_id=ChIJQZnrMjEujoARgpsllrspUJ8) — 129 reviews (4★) · `dog_park`
+- [Warburton Swim Center](https://www.google.com/maps/search/?api=1&query=37.3567245%2C-121.96420130000001&query_place_id=ChIJrZYCyzjKj4ARm35uGunId-w) — 129 reviews (4.3★) · `park`
+- [Berkeley Waterfront](https://www.google.com/maps/search/?api=1&query=37.8725685%2C-122.3190102&query_place_id=ChIJvxH_xy5_hYARFVuiR5WTSGI) — 128 reviews (4.7★) · `park`
+- [Shoreview Park](https://www.google.com/maps/search/?api=1&query=37.568940999999995%2C-122.3039839&query_place_id=ChIJhVftYI-ej4ARMtbipO_Vn5I) — 128 reviews (4.6★) · `park`
+- [Stevenson School Field](https://www.google.com/maps/search/?api=1&query=37.4041806%2C-122.0846322&query_place_id=ChIJbfREz7Kwj4ARJl-cgQiWmOE) — 128 reviews (4.4★) · `park`
+- [Evergreen Village Square](https://www.google.com/maps/search/?api=1&query=37.3138545%2C-121.77394389999998&query_place_id=ChIJ-4LiEdUtjoAR9si5d8IOQVs) — 127 reviews (4.7★) · `park`
+- [Owens Plaza Park](https://www.google.com/maps/search/?api=1&query=37.6950918%2C-121.88810149999999&query_place_id=ChIJvz_RgE_pj4ARxRjru9NxIwQ) — 127 reviews (4.4★) · `park`
+- [Palma Ceia Park](https://www.google.com/maps/search/?api=1&query=37.6283927%2C-122.0864963&query_place_id=ChIJaXXTHKGWj4ARBaYvWyRKyvI) — 127 reviews (4.3★) · `park`
+- [Presidio Heights Playground Park](https://www.google.com/maps/search/?api=1&query=37.7884976%2C-122.44960839999999&query_place_id=ChIJAxA7qDOHhYARiiPusPUhqG0) — 127 reviews (4.6★) · `city_park`
+- [Sunset Parkway](https://www.google.com/maps/search/?api=1&query=37.744521299999995%2C-122.4944847&query_place_id=ChIJbb8erH99j4ARH8g_p3-zyQM) — 127 reviews (4.4★) · `park`
+- [Burckhalter Park](https://www.google.com/maps/search/?api=1&query=37.775788999999996%2C-122.16405900000001&query_place_id=ChIJB68_cK2Ij4ARNLmzE3v5Wpc) — 126 reviews (4.1★) · `park`
+- [Del Valle East Beach](https://www.google.com/maps/search/?api=1&query=37.585147299999996%2C-121.69977739999999&query_place_id=ChIJx_gg9gzZj4ARyBunkseswK0) — 126 reviews (4.3★) · `park`
+- [Jack Early Park](https://www.google.com/maps/search/?api=1&query=37.804870199999996%2C-122.40816749999999&query_place_id=ChIJD84pEvqAhYARt--bV8TsP-U) — 126 reviews (4.3★) · `city_park`
+- [Round Valley Regional Preserve Parking Lot](https://www.google.com/maps/search/?api=1&query=37.8689034%2C-121.75019890000002&query_place_id=ChIJQ8U5n-P7j4AR67CZtQBX8t0) — 126 reviews (4.6★) · `park`
+- [Saratoga Gap Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.2634328%2C-122.1154965&query_place_id=ChIJmZ8yDi-zj4ARQIHKxm97hcQ) — 126 reviews (4.7★) · `nature_preserve`
+- [SoMa West Dog Park](https://www.google.com/maps/search/?api=1&query=37.7702841%2C-122.42199999999998&query_place_id=ChIJHbyLaCB-j4ARmerFoUdLCag) — 125 reviews (4.3★) · `dog_park`
+- [Adobe Park](https://www.google.com/maps/search/?api=1&query=37.6968475%2C-122.0815071&query_place_id=ChIJBbo-BSeSj4ARDpI59uqyfDo) — 124 reviews (4★) · `park`
+- [Cambridge Park](https://www.google.com/maps/search/?api=1&query=37.9524847%2C-122.0482649&query_place_id=ChIJZwAohS9hhYARt3btViGLXek) — 124 reviews (4.2★) · `park`
+- [Jefferson Square Park](https://www.google.com/maps/search/?api=1&query=37.8008175%2C-122.2786163&query_place_id=ChIJM-VsibmAj4ARnZGk3EE6CuI) — 124 reviews (3.7★) · `park`
+- [Jordan Ranch Park](https://www.google.com/maps/search/?api=1&query=37.7144289%2C-121.8462153&query_place_id=ChIJES4WXtLoj4AR_o_9gONCD-k) — 124 reviews (4.6★) · `park`
+- [Meadowfair Park](https://www.google.com/maps/search/?api=1&query=37.316561199999995%2C-121.8137395&query_place_id=ChIJHfBm45wyjoARdDB5poA8-5g) — 124 reviews (4.2★) · `park`
+- [Saratoga Gap Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.266102599999996%2C-122.12790799999998&query_place_id=ChIJmZnfGCOzj4ARUf5uqBmZznk) — 124 reviews (4.6★) · `nature_preserve`
+- [Wilma Chan Park (formerly Madison Square Park)](https://www.google.com/maps/search/?api=1&query=37.7979607%2C-122.2670287&query_place_id=ChIJ9zSC6MqAj4ARHMUZF-6R9Yk) — 124 reviews (3.8★) · `park`
+- [Arguello Park](https://www.google.com/maps/search/?api=1&query=37.5057729%2C-122.27671160000001&query_place_id=ChIJZecdU-Ohj4ARH3aLu359XyI) — 123 reviews (4.4★) · `park`
+- [Guadalupe Gardens](https://www.google.com/maps/search/?api=1&query=37.342979899999996%2C-121.90855280000001&query_place_id=ChIJtYvGs2TLj4ARWhk-ns3HVHA) — 123 reviews (4.2★) · `park`
+- [Markham Regional Arboretum](https://www.google.com/maps/search/?api=1&query=37.9626239%2C-122.00364599999999&query_place_id=ChIJV1w-z6RghYARkPUGMHf4pAE) — 123 reviews (4.6★) · `botanical_garden`
+- [Mary Avenue Dog Park](https://www.google.com/maps/search/?api=1&query=37.3276144%2C-122.05079620000001&query_place_id=ChIJAX8KJEa0j4ARlPB96e9uLb8) — 123 reviews (4.3★) · `dog_park`
+- [Mission Bay Commons Park](https://www.google.com/maps/search/?api=1&query=37.7709215%2C-122.38885090000001&query_place_id=ChIJm9OO4cR_j4ARUCC7psV4gyE) — 123 reviews (4.5★) · `city_park`
+- [Palomares Hills Park](https://www.google.com/maps/search/?api=1&query=37.716363%2C-122.0256745&query_place_id=ChIJ0ysm6e2Sj4ARl4Y-U7gA-TU) — 123 reviews (4.4★) · `park`
+- [Robert E. Browne Park](https://www.google.com/maps/search/?api=1&query=37.4237292%2C-121.8752952&query_place_id=ChIJ_dHYsOvOj4ARUgIJDgm0POw) — 123 reviews (4.3★) · `park`
+- [Centerville Community Park](https://www.google.com/maps/search/?api=1&query=37.5547684%2C-121.9900521&query_place_id=ChIJn5_mW57Bj4ARVNJMkGECUDM) — 122 reviews (4.4★) · `park`
+- [El Palo Alto Park](https://www.google.com/maps/search/?api=1&query=37.447325%2C-122.16981539999998&query_place_id=ChIJr9udA0q7j4ARfgDl98RcF48) — 122 reviews (4.2★) · `park`
+- [Hart's Dog Park](https://www.google.com/maps/search/?api=1&query=37.3345444%2C-121.8935049&query_place_id=ChIJIyhFn6PMj4ARiPPF3uFS0GU) — 122 reviews (4.2★) · `dog_park`
+- [Little People's Park](https://www.google.com/maps/search/?api=1&query=37.3819812%2C-122.22900059999998&query_place_id=ChIJN3WI55qlj4ARVkpODX2nkCQ) — 122 reviews (4.7★) · `park`
+- [Rotary Park](https://www.google.com/maps/search/?api=1&query=37.3576383%2C-121.9554761&query_place_id=ChIJje6-x0nKj4ARp8rgdPl2pHg) — 122 reviews (4.2★) · `park`
+- [Via Toledo Park](https://www.google.com/maps/search/?api=1&query=37.6771855%2C-122.11707179999999&query_place_id=ChIJ_ROSjraRj4ARkgmDPGW90cI) — 122 reviews (4.5★) · `park`
+- [Larry J Marsalli Dog Park](https://www.google.com/maps/search/?api=1&query=37.354921399999995%2C-121.94371699999999&query_place_id=ChIJZz4iAgTLj4ARczu5D6sdYZY) — 121 reviews (4.3★) · `dog_park`
+- [Lizzie Fountain Park](https://www.google.com/maps/search/?api=1&query=37.682007%2C-121.76874710000001&query_place_id=ChIJeYC9AA3nj4AR5yNNUW3zYtg) — 121 reviews (4.7★) · `park`
+- [Mape Memorial Park](https://www.google.com/maps/search/?api=1&query=37.706476599999995%2C-121.9396672&query_place_id=ChIJBW2oPWfsj4ARC5aNogq8EtA) — 121 reviews (4.5★) · `park`
+- [Oak Meadow Park](https://www.google.com/maps/search/?api=1&query=37.92042790000001%2C-121.73934619999999&query_place_id=ChIJya1iikD5j4AR3PoKlyU3I9M) — 121 reviews (4.5★) · `park`
+- [Old Ranch Park](https://www.google.com/maps/search/?api=1&query=37.7349588%2C-121.9195678&query_place_id=ChIJhdOtocztj4AR-53FWBIMRy4) — 121 reviews (4.6★) · `park`
+- [Rancho Corral de Tierra](https://www.google.com/maps/search/?api=1&query=37.5301408%2C-122.4666111&query_place_id=ChIJX3vuPeFzj4ARGT0Q6l00dMM) — 121 reviews (4.3★) · `park`
+- [Walking Trail Surrounded by the Water](https://www.google.com/maps/search/?api=1&query=37.8420467%2C-122.31346730000001&query_place_id=ChIJr2hEiKp_hYARkSQJWuVSAqo) — 121 reviews (4.8★) · `park`
+- [Allyne Park](https://www.google.com/maps/search/?api=1&query=37.797545%2C-122.427588&query_place_id=ChIJYT_cJMOAhYARR_9eCJUnJuE) — 120 reviews (4.4★) · `city_park`
+- [Gran Paradiso Park](https://www.google.com/maps/search/?api=1&query=37.3900897%2C-121.8910361&query_place_id=ChIJBdeIzwTMj4AR_GqMXtaQeIU) — 120 reviews (4.4★) · `park`
+- [Henry J. Kaiser Memorial Park](https://www.google.com/maps/search/?api=1&query=37.8088779%2C-122.2711639&query_place_id=ChIJJyiRCa6Aj4ARcDnCJKZjdpc) — 120 reviews (4.5★) · `park`
+- [Len Hester Park](https://www.google.com/maps/search/?api=1&query=37.941629899999995%2C-122.05125049999998&query_place_id=ChIJj3rBXj1hhYAR678GICSLltk) — 120 reviews (4.4★) · `park`
+- [Maxwell Park](https://www.google.com/maps/search/?api=1&query=37.781427%2C-122.19988040000001&query_place_id=ChIJA-t1hGqGj4AR5yaLtqDpCpI) — 120 reviews (4.5★) · `park`
+- [Alta Mesa Memorial Park](https://www.google.com/maps/search/?api=1&query=37.3994657%2C-122.12934489999999&query_place_id=ChIJYRWdgYCwj4ARF4jGRYZ6euk) — 119 reviews (3.8★) · `park`
+- [Panorama Park](https://www.google.com/maps/search/?api=1&query=37.8106065%2C-122.36943179999999&query_place_id=ChIJ5YxwCACBhYARd1WQonc5048) — 119 reviews (4.8★) · `park`
+- [Sinnott Park](https://www.google.com/maps/search/?api=1&query=37.4203682%2C-121.8729829&query_place_id=ChIJv7JiXZPOj4AR6tlvDBSHSXs) — 119 reviews (4.2★) · `park`
+- [William Payne Sports Park](https://www.google.com/maps/search/?api=1&query=37.6954087%2C-121.7199021&query_place_id=ChIJ3xFV20rnj4ARjWx9lwv-O8M) — 119 reviews (4.2★) · `park`
+- [Galvan Park](https://www.google.com/maps/search/?api=1&query=37.129274099999996%2C-121.6603988&query_place_id=ChIJQ-ptyO8gjoARbciOh2msXNQ) — 118 reviews (4.2★) · `park`
+- [Pleasure Island Park](https://www.google.com/maps/search/?api=1&query=37.673398999999996%2C-121.8011525&query_place_id=ChIJsczpY93nj4ARfXaA-BssZhA) — 118 reviews (4.7★) · `park`
+- [Point Pinole Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.9999402%2C-122.3560679&query_place_id=ChIJ6_REstF3hYARlsdcrvDCA2I) — 118 reviews (4.7★) · `park`
+- [West Portal Park](https://www.google.com/maps/search/?api=1&query=37.741922599999995%2C-122.46497509999999&query_place_id=ChIJ5UC0uet9j4ARrExeXNqgMP8) — 118 reviews (4.3★) · `city_park`
+- [Alioto Mini Park](https://www.google.com/maps/search/?api=1&query=37.758905%2C-122.418174&query_place_id=ChIJsdoT9zt-j4AREyXLfbrlaGk) — 117 reviews (4★) · `city_park`
+- [Mira Vista Park](https://www.google.com/maps/search/?api=1&query=37.9874801%2C-121.8281484&query_place_id=ChIJXWzPgjNYhYAR9OJ_sRRQ_1k) — 117 reviews (4.3★) · `park`
+- [Palmia Park](https://www.google.com/maps/search/?api=1&query=37.2407228%2C-121.80839419999998&query_place_id=ChIJYQ3TrScujoARiqjnIIz1UUc) — 117 reviews (4.3★) · `park`
+- [Railroad Park](https://www.google.com/maps/search/?api=1&query=38.0157899%2C-122.29145009999998&query_place_id=ChIJEy9heel2hYARI63EGUOkgEA) — 117 reviews (4.5★) · `park`
+- [Sunset Cove](https://www.google.com/maps/search/?api=1&query=37.8047237%2C-122.25118760000001&query_place_id=ChIJpXmGf0eHj4AR8pQsPWDqueI) — 117 reviews (4.7★) · `park`
+- [Albany Waterfront Trail](https://www.google.com/maps/search/?api=1&query=37.8895603%2C-122.31691430000001&query_place_id=ChIJLQEuWdd4hYARxmaYN-dNlYg) — 116 reviews (4.6★) · `park`
+- [Anuta Park](https://www.google.com/maps/search/?api=1&query=38.026395699999995%2C-121.93860049999999&query_place_id=ChIJtTRsGlFchYARv7dfNiCzOq0) — 116 reviews (3.9★) · `park`
+- [Briones Overlook Staging Area](https://www.google.com/maps/search/?api=1&query=37.9129637%2C-122.20238739999999&query_place_id=ChIJubH3oWF7hYARiAq5AA-FfpI) — 116 reviews (4.5★) · `park`
+- [Coliseum Gardens](https://www.google.com/maps/search/?api=1&query=37.757213199999995%2C-122.19837220000001&query_place_id=ChIJAdqOkd2Fj4ARw_8R7d8zI70) — 116 reviews (4.2★) · `park`
+- [Hummingbird Park](https://www.google.com/maps/search/?api=1&query=37.3145729%2C-121.89769989999999&query_place_id=ChIJ5XwjQ1QzjoARxHV7Rg5MSLA) — 116 reviews (4.4★) · `park`
+- [Jackson Park](https://www.google.com/maps/search/?api=1&query=37.3980311%2C-122.0785359&query_place_id=ChIJD2BJJHa3j4ARFpRS8mlluBE) — 116 reviews (4.5★) · `park`
+- [Lupe the Mammoth at Guadalupe River Trail](https://www.google.com/maps/search/?api=1&query=37.381203%2C-121.93755460000001&query_place_id=ChIJZTK-ldfLj4ARqOAl9FMD2yw) — 116 reviews (4.4★) · `park`
+- [Mariners Island Park](https://www.google.com/maps/search/?api=1&query=37.5628144%2C-122.2878954&query_place_id=ChIJ-ygEIcCej4ARWkBkX_U-DOI) — 115 reviews (4.5★) · `park`
+- [McCartney Park](https://www.google.com/maps/search/?api=1&query=37.7339238%2C-122.15775190000001&query_place_id=ChIJH9tSH5yPj4ARdP_ghMiuiU0) — 115 reviews (4.4★) · `park`
+- [Salt-Pond A8](https://www.google.com/maps/search/?api=1&query=37.4289402%2C-121.9915558&query_place_id=ChIJ19R0TBzIj4AR6avpr5i4cY0) — 115 reviews (4.7★) · `wildlife_refuge`
+- [Trinta Park](https://www.google.com/maps/search/?api=1&query=37.550938800000004%2C-122.3091572&query_place_id=ChIJDwpbSfaej4AR7J5Zucx3RNE) — 115 reviews (4.2★) · `park`
+- [Vallejo Mill Historical Park](https://www.google.com/maps/search/?api=1&query=37.5788261%2C-121.97041720000001&query_place_id=ChIJMaJJ4mnAj4AR_Uj9IQ2Rp7Q) — 115 reviews (3.9★) · `park`
+- [Bestor Art Park](https://www.google.com/maps/search/?api=1&query=37.3233417%2C-121.87423679999999&query_place_id=ChIJearmljQzjoARgqt9p7etuAM) — 114 reviews (4.3★) · `park`
+- [Communications Hill](https://www.google.com/maps/search/?api=1&query=37.282696699999995%2C-121.8565643&query_place_id=ChIJUVMaRU0yjoAR90hZucU6Qnc) — 114 reviews (4.5★) · `park`
+- [Empowerment Park](https://www.google.com/maps/search/?api=1&query=37.8077557%2C-122.25250829999999&query_place_id=ChIJ6TokQEaHj4ARfW1JdO6Vcy8) — 114 reviews (4.5★) · `park`
+- [Palo Alto Duck Pond](https://www.google.com/maps/search/?api=1&query=37.4572637%2C-122.10888339999998&query_place_id=ChIJu8RigLi7j4ARBPdqQCVnqgU) — 114 reviews (4.6★) · `nature_preserve`
+- [Wanlass Park](https://www.google.com/maps/search/?api=1&query=37.9731046%2C-122.34347629999999&query_place_id=ChIJDZdnwsR3hYARwvIQdD9opPY) — 114 reviews (4.1★) · `park`
+- [Holbrook Palmer Park](https://www.google.com/maps/search/?api=1&query=37.4638321%2C-122.19092339999999&query_place_id=ChIJDzG1CtGjj4ARsxxv3GNr2zU) — 113 reviews (4.7★) · `park`
+- [J.P. Murphy Playground Park](https://www.google.com/maps/search/?api=1&query=37.7516667%2C-122.4652778&query_place_id=ChIJbX87x_N9j4ARXr3NGyoSo6w) — 113 reviews (4.4★) · `city_park`
+- [Marlin Pound Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.7182829%2C-121.74554889999999&query_place_id=ChIJoXiN0ufmj4ARQ3xSIiw_OoI) — 113 reviews (4.4★) · `park`
+- [Tex Spruiell Park](https://www.google.com/maps/search/?api=1&query=37.6904951%2C-121.7263144&query_place_id=ChIJjbhwsU7nj4ARC39-OGeBBKo) — 113 reviews (4.5★) · `park`
+- [El Camino Park](https://www.google.com/maps/search/?api=1&query=37.444770999999996%2C-122.16786409999999&query_place_id=ChIJl7paeDa7j4AR1NIEcPb4Lfc) — 112 reviews (4.6★) · `park`
+- [San Miguel Park](https://www.google.com/maps/search/?api=1&query=37.9133993%2C-122.03785359999999&query_place_id=ChIJodkWsUxghYARcFoLM50TwGw) — 112 reviews (4.7★) · `park`
+- [Williamson Ranch Park](https://www.google.com/maps/search/?api=1&query=37.9606594%2C-121.76143610000001&query_place_id=ChIJ78cr6Ij4j4ARFvWlGnwSAsQ) — 112 reviews (4.3★) · `park`
+- [Apple Hill Park](https://www.google.com/maps/search/?api=1&query=37.929283399999996%2C-121.73093320000001&query_place_id=ChIJ29YHLSX5j4ARLxKG06IkZHY) — 111 reviews (4.3★) · `park`
+- [Bella Vista Park](https://www.google.com/maps/search/?api=1&query=37.799743299999996%2C-122.23806390000001&query_place_id=ChIJGeVUQxeHj4ARbTfet2xaOek) — 111 reviews (4.4★) · `park`
+- [Oak Glen Park](https://www.google.com/maps/search/?api=1&query=37.8205062%2C-122.25856329999999&query_place_id=ChIJrxYIPFaHj4ARwOECpXWxFfI) — 111 reviews (4.3★) · `park`
+- [Parsons Park](https://www.google.com/maps/search/?api=1&query=37.7185984%2C-122.08534229999998&query_place_id=ChIJ-Y-CDP-Rj4ARyLKoFjmqAOE) — 111 reviews (4.5★) · `park`
+- [Woodminster Cascade, Joaquin Miller Park](https://www.google.com/maps/search/?api=1&query=37.8106231%2C-122.19013849999999&query_place_id=ChIJcyM56M6Hj4ARPh3u56X68vE) — 111 reviews (4.7★) · `park`
+- [24th & York Mini Park](https://www.google.com/maps/search/?api=1&query=37.7530557%2C-122.4086024&query_place_id=ChIJuY-_FEl-j4AR8BdN97rDSY0) — 110 reviews (4.3★) · `city_park`
+- [Coyote Lake Harvey Bear Ranch County Park](https://www.google.com/maps/search/?api=1&query=37.098691099999996%2C-121.5795984&query_place_id=ChIJHStCe4bgkYARzL6vM8KxeHo) — 110 reviews (4.7★) · `park`
+- [Edendale Park](https://www.google.com/maps/search/?api=1&query=37.6938775%2C-122.1185111&query_place_id=ChIJVe3TcciRj4ARwLGRQNyg3Eg) — 110 reviews (4.3★) · `park`
+- [El Sereno Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.2190795%2C-122.02021020000001&query_place_id=ChIJb-798hVKjoARzZNbjk--ap4) — 110 reviews (4.4★) · `nature_preserve`
+- [Howe Homestead Park](https://www.google.com/maps/search/?api=1&query=37.899702%2C-122.04805390000001&query_place_id=ChIJS9L3Jc9hhYARm6b9GykBl1w) — 110 reviews (4.4★) · `park`
+- [Red Willow Park](https://www.google.com/maps/search/?api=1&query=37.787647299999996%2C-121.9227776&query_place_id=ChIJQWwEHBXyj4ARCdaBO5ADcYQ) — 110 reviews (4.6★) · `park`
+- [Starr King Open Space](https://www.google.com/maps/search/?api=1&query=37.753515799999995%2C-122.39996370000001&query_place_id=ChIJC-uUbrN_j4ARyUklO5meFko) — 110 reviews (4.6★) · `park`
+- [Christmas Hill Park Ranch Site Addition](https://www.google.com/maps/search/?api=1&query=36.999130699999995%2C-121.58957760000001&query_place_id=ChIJm3AtS0nikYAReRgfVoUTbJ8) — 109 reviews (4.5★) · `park`
+- [Jerry Bowden Park](https://www.google.com/maps/search/?api=1&query=37.429671%2C-122.14107359999998&query_place_id=ChIJOZtu0eS6j4ARpqhCqWyAtV0) — 109 reviews (4.5★) · `park`
+- [Vista Park](https://www.google.com/maps/search/?api=1&query=37.551946199999996%2C-122.3488442&query_place_id=ChIJ6wRIoxuej4ARXPdmj-tNBBs) — 109 reviews (4.6★) · `park`
+- [King School Park](https://www.google.com/maps/search/?api=1&query=37.8828441%2C-122.27829960000001&query_place_id=ChIJ26lwQbB-hYARGdm6-Xj0EwE) — 108 reviews (4.6★) · `park`
+- [Pershing Park](https://www.google.com/maps/search/?api=1&query=37.5731028%2C-122.3476606&query_place_id=ChIJjThiYPqdj4ARTu2bF4Pdoxg) — 108 reviews (4.3★) · `park`
+- [Potrero Hill Community Garden](https://www.google.com/maps/search/?api=1&query=37.759805799999995%2C-122.40528429999999&query_place_id=ChIJuXpLszV-j4ARdijvs256-9k) — 108 reviews (4.8★) · `garden`
+- [Danna Rock Park](https://www.google.com/maps/search/?api=1&query=37.272155399999995%2C-121.8234068&query_place_id=ChIJZY5nnxoyjoARCKWLoTCqGiM) — 107 reviews (4.5★) · `park`
+- [Diana Park](https://www.google.com/maps/search/?api=1&query=37.1312205%2C-121.6436569&query_place_id=ChIJdQ-BQo4gjoARBBWY2gx7Cg0) — 107 reviews (4.3★) · `park`
+- [Farragut Park](https://www.google.com/maps/search/?api=1&query=37.5461742%2C-122.26698379999999&query_place_id=ChIJLSHzniyfj4ARzNMQEtpv7Vc) — 107 reviews (4.4★) · `park`
+- [Greenwood Park](https://www.google.com/maps/search/?api=1&query=37.6477115%2C-122.11499090000001&query_place_id=ChIJ3V8n1WSRj4ARE5Ynh18LPew) — 107 reviews (4.6★) · `park`
+- [Little Hollywood Park](https://www.google.com/maps/search/?api=1&query=37.710177900000005%2C-122.39808919999999&query_place_id=ChIJ48Id-ih_j4ARDhQfbTiE-b4) — 107 reviews (4.2★) · `city_park`
+- [Meadow Park](https://www.google.com/maps/search/?api=1&query=38.0023581%2C-122.30455080000002&query_place_id=ChIJNYKjCPx2hYARk7-DquKDUBk) — 107 reviews (4.5★) · `park`
+- [Fairlands Park](https://www.google.com/maps/search/?api=1&query=37.693199299999996%2C-121.87516149999999&query_place_id=ChIJfzSmezvpj4ARKV3-zD_8emo) — 106 reviews (4.5★) · `park`
+- [Longfellow Park](https://www.google.com/maps/search/?api=1&query=37.7747259%2C-122.2811616&query_place_id=ChIJgYnLPSeBj4ARorrvCUwMmRY) — 106 reviews (4.5★) · `park`
+- [Orinda Oaks Park](https://www.google.com/maps/search/?api=1&query=37.8552629%2C-122.1531976&query_place_id=ChIJ96OUJSaIj4ARRK4o8wVxywQ) — 106 reviews (4.5★) · `park`
+- [Rancho Arroyo Park](https://www.google.com/maps/search/?api=1&query=37.5723908%2C-121.99174169999999&query_place_id=ChIJS6TpEnbAj4ARU2YjBcdyH68) — 106 reviews (4.4★) · `park`
+- [Del Prado Park](https://www.google.com/maps/search/?api=1&query=37.6693765%2C-121.90641900000001&query_place_id=ChIJqyplRtfrj4ARf1fBdBPZsbA) — 105 reviews (4.5★) · `park`
+- [Ramona Park](https://www.google.com/maps/search/?api=1&query=37.7497194%2C-121.88720180000001&query_place_id=ChIJC57VZmTuj4ARgQYJN5ZWuo4) — 105 reviews (4.6★) · `park`
+- [Thousand Oaks Park](https://www.google.com/maps/search/?api=1&query=37.2682393%2C-121.87526390000001&query_place_id=ChIJN-lqEb8zjoARt694M_YgEF0) — 105 reviews (4.3★) · `park`
+- [Brotherhood & Alemany Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.711939%2C-122.46515749999999&query_place_id=ChIJsf4iFjd8j4ARc7a6xdBSkrw) — 104 reviews (4.1★) · `dog_park`
+- [Coyote Creek](https://www.google.com/maps/search/?api=1&query=37.2988698%2C-121.8299279&query_place_id=ChIJOSC1QfQyjoARlEdYZUEOtI4) — 104 reviews (4.1★) · `park`
+- [Diablo Shadows Park](https://www.google.com/maps/search/?api=1&query=37.925362199999995%2C-122.0086206&query_place_id=ChIJB0ZCQm9ghYARbkMu3So3aqo) — 104 reviews (4.5★) · `park`
+- [Franco Park](https://www.google.com/maps/search/?api=1&query=37.3372139%2C-122.03708890000001&query_place_id=ChIJ4-H4QMu1j4ARrpxP3Qap9HE) — 104 reviews (4.2★) · `city_park`
+- [Fremont Park](https://www.google.com/maps/search/?api=1&query=37.448954400000005%2C-122.18640060000001&query_place_id=ChIJpX36fbqkj4AR0REBvsYG0DA) — 104 reviews (4.3★) · `park`
+- [Lakeridge Park](https://www.google.com/maps/search/?api=1&query=37.68372660000001%2C-122.05054009999999&query_place_id=ChIJ5bC8p7qTj4ARIsIZgE0EFfQ) — 104 reviews (4.2★) · `park`
+- [Lydia Lane Park](https://www.google.com/maps/search/?api=1&query=37.950392799999996%2C-121.94656309999999&query_place_id=ChIJnTBKuwBfhYARH9NqQLwmmns) — 104 reviews (4.4★) · `park`
+- [Marchbank Park](https://www.google.com/maps/search/?api=1&query=37.7013439%2C-122.46885200000001&query_place_id=ChIJn0ELlT98j4AR3vyFHZEBCvQ) — 104 reviews (4.2★) · `park`
+- [Birchfield Park](https://www.google.com/maps/search/?api=1&query=37.6557315%2C-122.097538&query_place_id=ChIJqdsyfEORj4AREQ-ReTSy9EM) — 103 reviews (4.4★) · `park`
+- [Chaparral Park](https://www.google.com/maps/search/?api=1&query=37.955328200000004%2C-121.7649582&query_place_id=ChIJ1znbdYr4j4ARn9HL2ptWf7o) — 103 reviews (4.4★) · `park`
+- [Children of The Rainbow Park](https://www.google.com/maps/search/?api=1&query=37.363604599999995%2C-121.84254170000001&query_place_id=ChIJPWvq0w_Nj4ARQUUl8p3tfwk) — 103 reviews (4★) · `park`
+- [Highlands Park](https://www.google.com/maps/search/?api=1&query=37.9433497%2C-121.9570873&query_place_id=ChIJ0WvRv69fhYARkNx8_qr75Vw) — 103 reviews (4.4★) · `city_park`
+- [Lakeshore Park / Marten's Field](https://www.google.com/maps/search/?api=1&query=37.5497809%2C-122.2870094&query_place_id=ChIJCYsKDd6ej4ARbROWsDYSn6I) — 103 reviews (4.4★) · `park`
+- [Millbrae Spur Trail](https://www.google.com/maps/search/?api=1&query=37.595261099999995%2C-122.3927455&query_place_id=ChIJXxIOYa53j4AR7W9YVhF9GGM) — 103 reviews (4.2★) · `park`
+- [Mocho Park](https://www.google.com/maps/search/?api=1&query=37.6734716%2C-121.7814248&query_place_id=ChIJK-zpX5Hnj4AR536W5Af10s4) — 103 reviews (4.2★) · `park`
+- [Prosserville Park (O STREET)](https://www.google.com/maps/search/?api=1&query=38.013846199999996%2C-121.82200899999998&query_place_id=ChIJzRdiguhZhYARYh5jVs2igDU) — 103 reviews (4.3★) · `city_park`
+- [Rittler Park](https://www.google.com/maps/search/?api=1&query=37.7621685%2C-122.26167349999999&query_place_id=ChIJGRHolbWGj4ARgdR5PM6dULo) — 103 reviews (4.2★) · `park`
+- [Solano Playlot](https://www.google.com/maps/search/?api=1&query=37.9425576%2C-122.33152179999999&query_place_id=ChIJYaPzxSJ4hYAROfdgvukKHik) — 103 reviews (4.4★) · `park`
+- [Hallmark Park](https://www.google.com/maps/search/?api=1&query=37.5024544%2C-122.30867329999998&query_place_id=ChIJy0Mmd3-fj4ARzuet6p_cisQ) — 102 reviews (4.4★) · `park`
+- [Silver Creek Meadows Picnic Area](https://www.google.com/maps/search/?api=1&query=37.2955323%2C-121.7904467&query_place_id=ChIJ2W_ctZUtjoAR3gIl7AdekNk) — 102 reviews (4.2★) · `park`
+- [Franks Tract State Recreation Area](https://www.google.com/maps/search/?api=1&query=38.0335787%2C-121.6212963&query_place_id=ChIJdQ-TtM-qmoARnba29V0gcM0) — 101 reviews (4.5★) · `state_park`
+- [Garin Park](https://www.google.com/maps/search/?api=1&query=37.9285407%2C-121.68801359999998&query_place_id=ChIJuZLqV5D-j4ARlALQehgwKrI) — 101 reviews (4.5★) · `park`
+- [Live Oak Manor Park](https://www.google.com/maps/search/?api=1&query=37.2452778%2C-121.95472219999999&query_place_id=ChIJ42lp9rY1joARTfhFQofMFd0) — 101 reviews (4.5★) · `park`
+- [Montalvin Park](https://www.google.com/maps/search/?api=1&query=37.9990209%2C-122.32993529999999&query_place_id=ChIJ47k37ZN3hYARr52FUOE2trA) — 101 reviews (4★) · `park`
+- [343 Sansome Rooftop Deck](https://www.google.com/maps/search/?api=1&query=37.7936973%2C-122.401618&query_place_id=ChIJ1xuVd4qAhYARvGgpdR2uXSc) — 100 reviews (4.6★) · `park`
+- [Almadén Winery Park](https://www.google.com/maps/search/?api=1&query=37.2378651%2C-121.89404270000001&query_place_id=ChIJkTfn2VYxjoAR7pj3YM2gE5w) — 100 reviews (4.4★) · `park`
+- [Dirt World Bike Skills Park](https://www.google.com/maps/search/?api=1&query=37.9313597%2C-122.34926619999999&query_place_id=ChIJjQ3UWCt5hYARTmN6svuOEjI) — 100 reviews (4.7★) · `park`
+- [Jenny Strand Park](https://www.google.com/maps/search/?api=1&query=37.3271817%2C-122.00370339999999&query_place_id=ChIJPbxpLYO1j4AR86KXTjQSwmw) — 100 reviews (4.4★) · `park`
+- [McCrea Memorial Park](https://www.google.com/maps/search/?api=1&query=37.792138%2C-122.1818902&query_place_id=ChIJJQR9jiOGj4ARvzephPlOp_k) — 100 reviews (4.4★) · `park`
+- [Avalon Park](https://www.google.com/maps/search/?api=1&query=37.641430799999995%2C-122.43501649999999&query_place_id=ChIJRzsQL5B5j4ARObCC3k9FAH4) — 99 reviews (4.4★) · `park`
+- [Bernal Heights Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.742863799999995%2C-122.41195660000001&query_place_id=ChIJNxInpKd_j4ARBcLkMYDZCyQ) — 99 reviews (4.7★) · `dog_park`
+- [El Roble Park](https://www.google.com/maps/search/?api=1&query=37.0055732%2C-121.58516089999999&query_place_id=ChIJ67YMdzXikYARNt7Mvhw7LKU) — 99 reviews (4.1★) · `park`
+- [Positano Hills Park](https://www.google.com/maps/search/?api=1&query=37.723881999999996%2C-121.845585&query_place_id=ChIJnYSrOi7vj4AR60iFdZ68xmM) — 99 reviews (4.5★) · `park`
+- [Cerano Park](https://www.google.com/maps/search/?api=1&query=37.4156586%2C-121.9245481&query_place_id=ChIJe8cHqiLJj4ARmcE0sEfJAFs) — 98 reviews (4.3★) · `park`
+- [Oakland Hills Fire Memorial Park](https://www.google.com/maps/search/?api=1&query=37.8500535%2C-122.22593489999998&query_place_id=ChIJL2ZWqJh9hYARmG_kifSxKxI) — 98 reviews (4.5★) · `park`
+- [Pogo Park #1 - Elm Playlot park Office](https://www.google.com/maps/search/?api=1&query=37.9409522%2C-122.3623464&query_place_id=ChIJlTZAn6yChYARblfcEcbrMHE) — 98 reviews (4.3★) · `park`
+- [Silver Star Veterans Park](https://www.google.com/maps/search/?api=1&query=37.6232118%2C-122.05647169999999&query_place_id=ChIJpfJYlEiUj4ARQUvgoQNs4aE) — 98 reviews (4.2★) · `park`
+- [Woodstock Park](https://www.google.com/maps/search/?api=1&query=37.777856199999995%2C-122.28621299999999&query_place_id=ChIJ5ejNRd6Aj4ARRdQXHHQmloU) — 98 reviews (4.3★) · `park`
+- [Alexander Park](https://www.google.com/maps/search/?api=1&query=37.5268118%2C-122.28045279999999&query_place_id=ChIJu_kXE0efj4ARj7Z-tiwBUSk) — 97 reviews (4.4★) · `park`
+- [Becky Temko Tot Park](https://www.google.com/maps/search/?api=1&query=37.863670899999995%2C-122.27594289999999&query_place_id=ChIJBywXTYV-hYARGABttofKXnI) — 97 reviews (4.7★) · `park`
+- [Bruce King Memorial Dog Park](https://www.google.com/maps/search/?api=1&query=37.921713%2C-122.31396470000001&query_place_id=ChIJ_4auUFR4hYARl-Q8Kz3Nzk8) — 97 reviews (4.2★) · `dog_park`
+- [De Anza Park](https://www.google.com/maps/search/?api=1&query=37.2435634%2C-121.8916258&query_place_id=ChIJ8ZERBbgzjoARlfV5i-gyvsI) — 97 reviews (4.6★) · `park`
+- [Juan Bautista Circle](https://www.google.com/maps/search/?api=1&query=37.7180821%2C-122.47802519999999&query_place_id=ChIJP-pnTrJ9j4ARtlPGUkS4-6w) — 97 reviews (4.4★) · `park`
+- [Summer Lake Park](https://www.google.com/maps/search/?api=1&query=37.9908061%2C-121.63953699999999&query_place_id=ChIJlSVV3uf_j4AR8F5gGn8OgTQ) — 97 reviews (4.5★) · `park`
+- [Amaral Park](https://www.google.com/maps/search/?api=1&query=37.691967%2C-121.861911&query_place_id=ChIJY2OdtRjpj4AR0WjCo8gJetQ) — 96 reviews (4.6★) · `park`
+- [Foothills Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.3543498%2C-122.1703974&query_place_id=ChIJB9HDGiuwj4ARgbBi0_B0edQ) — 96 reviews (4.5★) · `nature_preserve`
+- [Jardin de Ninos Park](https://www.google.com/maps/search/?api=1&query=37.4819931%2C-122.22204560000002&query_place_id=ChIJJYnhuqmjj4ARJHzxOSdMhFg) — 96 reviews (4.5★) · `park`
+- [Martinez Waterfront Dog Park](https://www.google.com/maps/search/?api=1&query=38.0241811%2C-122.1353664&query_place_id=ChIJr5LJC5xvhYARwLz_XvFxbdA) — 96 reviews (4.3★) · `dog_park`
+- [Muwékma Park](https://www.google.com/maps/search/?api=1&query=37.3868957%2C-122.00013670000001&query_place_id=ChIJG8mUu_-3j4AR21qbJHerHso) — 96 reviews (4.7★) · `park`
+- [Kottinger Village Park](https://www.google.com/maps/search/?api=1&query=37.662306%2C-121.86731059999998&query_place_id=ChIJn_WBCLDpj4ARV-KqTcnL-4g) — 95 reviews (4.5★) · `park`
+- [Reinhardt Redwood Regional Park Redwood Gate](https://www.google.com/maps/search/?api=1&query=37.8016907%2C-122.1445977&query_place_id=ChIJCYmtv-mIj4ARWUJuK0kKeH0) — 95 reviews (4.9★) · `park`
+- [White Crane Springs](https://www.google.com/maps/search/?api=1&query=37.7568407%2C-122.4632568&query_place_id=ChIJR5k9DPZ9j4ARHYnyjbW7PkM) — 95 reviews (4.5★) · `garden`
+- [Wildcat Canyon Upper Entrance](https://www.google.com/maps/search/?api=1&query=37.9570178%2C-122.3165796&query_place_id=ChIJx9gIS4d3hYAR6686-gtUp98) — 95 reviews (4.7★) · `park`
+- [George Page Park](https://www.google.com/maps/search/?api=1&query=37.238038599999996%2C-121.7946888&query_place_id=ChIJJ85DWDEujoARgyWSgO7C248) — 94 reviews (4.3★) · `park`
+- [Grattan Playground Park](https://www.google.com/maps/search/?api=1&query=37.762713%2C-122.4519982&query_place_id=ChIJx2wy-1WHhYARLqGng5riX1M) — 94 reviews (4.4★) · `city_park`
+- [Marston Campbell Park](https://www.google.com/maps/search/?api=1&query=37.8096592%2C-122.2793013&query_place_id=ChIJWR7dzaWAj4AROZL_MTPfFqw) — 94 reviews (4.2★) · `park`
+- [Nob Hill Trail Park](https://www.google.com/maps/search/?api=1&query=37.1266718%2C-121.6533444&query_place_id=ChIJp6-vcvMgjoARLQRIj6J6Cns) — 94 reviews (4.4★) · `park`
+- [Accinelli Park](https://www.google.com/maps/search/?api=1&query=37.577168%2C-122.061289&query_place_id=ChIJMWB_1_SVj4AR_hc8DuH_Nwo) — 93 reviews (4.4★) · `park`
+- [Bay Trees Park](https://www.google.com/maps/search/?api=1&query=37.702774999999995%2C-122.05482699999999&query_place_id=ChIJlez65EWSj4ARsz73uXWWDKA) — 93 reviews (4.4★) · `park`
+- [Meta Park.](https://www.google.com/maps/search/?api=1&query=37.4804672%2C-122.1615897&query_place_id=ChIJO3UQ8TW9j4ARFQ0kOXqpdSg) — 93 reviews (3.9★) · `park`
+- [Bridgeview Trailhead](https://www.google.com/maps/search/?api=1&query=37.813477899999995%2C-122.21188740000001&query_place_id=ChIJi8mcpqOHj4AR4MiIfC_WDA8) — 92 reviews (4.7★) · `park`
+- [Brooktree Park](https://www.google.com/maps/search/?api=1&query=37.3963892%2C-121.88080929999998&query_place_id=ChIJ-WbUER_Mj4AR2mFUWvIukfY) — 92 reviews (4.1★) · `park`
+- [Cannery Park](https://www.google.com/maps/search/?api=1&query=37.383670099999996%2C-122.0410386&query_place_id=ChIJd66X4fi2j4ARo5QiOQmsK1g) — 92 reviews (4.4★) · `park`
+- [Cipriani Dog Park](https://www.google.com/maps/search/?api=1&query=37.515177%2C-122.30614639999999&query_place_id=ChIJgzZvIXSfj4ARUmgBOnKjaXo) — 92 reviews (4.3★) · `dog_park`
+- [Hayward Regional Shoreline Parking](https://www.google.com/maps/search/?api=1&query=37.6697797%2C-122.1577971&query_place_id=ChIJPw1e4GWQj4ARBQYVH-ejTLU) — 92 reviews (4.6★) · `park`
+- [Hillcrest Park](https://www.google.com/maps/search/?api=1&query=37.423938899999996%2C-121.86566390000002&query_place_id=ChIJPan4zvLOj4ARnrTVXT0EhFE) — 92 reviews (4.4★) · `park`
+- [Meyer Park](https://www.google.com/maps/search/?api=1&query=37.5446905%2C-122.0031825&query_place_id=ChIJA9oUU2W_j4ARXT3P9mPPOiA) — 92 reviews (4.5★) · `park`
+- [Belding-Garcia Park](https://www.google.com/maps/search/?api=1&query=37.9470969%2C-122.3548556&query_place_id=ChIJB20YNv53hYARYk84njKYC4M) — 91 reviews (4★) · `park`
+- [Diablo West Park](https://www.google.com/maps/search/?api=1&query=37.9620154%2C-121.78739039999998&query_place_id=ChIJbTS9KXX4j4ARoDexLicdIy0) — 91 reviews (4.3★) · `park`
+- [Heidorn Park](https://www.google.com/maps/search/?api=1&query=37.959493099999996%2C-121.7560552&query_place_id=ChIJm-nid474j4AR8GfWjzICYGQ) — 91 reviews (4.3★) · `park`
+- [Los Arroyos Park](https://www.google.com/maps/search/?api=1&query=37.026216100000006%2C-121.59568219999998&query_place_id=ChIJk4X1yojhkYARwpwuywlUEAM) — 91 reviews (4.5★) · `park`
+- [Vasco Caves Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8051113%2C-121.68691450000001&query_place_id=ChIJQVlYfqfjj4ARX7WE7vr5Di0) — 91 reviews (4.2★) · `nature_preserve`
+- [Chinese Garden Park](https://www.google.com/maps/search/?api=1&query=37.7975054%2C-122.2702454&query_place_id=ChIJUekePcqAj4ARKNK0ackpdIA) — 90 reviews (3.5★) · `park`
+- [Clipper Cove Beach](https://www.google.com/maps/search/?api=1&query=37.8128829%2C-122.3694137&query_place_id=ChIJi2YF_zqAhYARBntKlydO4B0) — 90 reviews (4.5★) · `park`
+- [Eden Greenway Park](https://www.google.com/maps/search/?api=1&query=37.6484543%2C-122.084655&query_place_id=ChIJf4jRk1WRj4AR1gxHTppupwU) — 90 reviews (4.2★) · `park`
+- [Edoff Memorial Bandstand at Lake Merritt](https://www.google.com/maps/search/?api=1&query=37.8077463%2C-122.26015950000001&query_place_id=ChIJSwLAGEyHj4ARXaFd0Ix4TkA) — 90 reviews (4.6★) · `park`
+- [Emerson Ranch Park](https://www.google.com/maps/search/?api=1&query=37.9943454%2C-121.68277219999997&query_place_id=ChIJUUJsC33_j4ARo87dAQzEI4U) — 90 reviews (4.7★) · `park`
+- [Patterson Park](https://www.google.com/maps/search/?api=1&query=37.5620599%2C-122.03298739999998&query_place_id=ChIJW6vvJbS_j4AR8cK8pZ6r9Ws) — 90 reviews (4.2★) · `park`
+- [Pink Triangle Memorial](https://www.google.com/maps/search/?api=1&query=37.7623804%2C-122.4361009&query_place_id=ChIJlz8zVgN-j4ARbi11qL0djn0) — 90 reviews (4.4★) · `park`
+- [Remillard Park](https://www.google.com/maps/search/?api=1&query=37.8922592%2C-122.26086910000001&query_place_id=ChIJpUjgXgF8hYAR5hFb0_zfYgA) — 90 reviews (4.7★) · `park`
+- [Sunnybrae Park](https://www.google.com/maps/search/?api=1&query=37.559475%2C-122.30924869999998&query_place_id=ChIJma0U7oqej4ARmLhjZKzC4Fs) — 90 reviews (4.5★) · `park`
+- [Ted Fairfield Park](https://www.google.com/maps/search/?api=1&query=37.7191154%2C-121.86444440000001&query_place_id=ChIJHQRE_NDuj4ARphzpNZHxK-Y) — 90 reviews (4.4★) · `park`
+- [Cooley Landing Park](https://www.google.com/maps/search/?api=1&query=37.4763857%2C-122.12269610000001&query_place_id=ChIJVVWV0Hy7j4AR_Jj3-lZO5qA) — 89 reviews (4.7★) · `park`
+- [Fleishman Park](https://www.google.com/maps/search/?api=1&query=37.472305399999996%2C-122.22083320000002&query_place_id=ChIJdRvGiKCjj4ARDQ5r6gAri9U) — 89 reviews (4.5★) · `park`
+- [Lincoln Park](https://www.google.com/maps/search/?api=1&query=37.7821449%2C-122.4936523&query_place_id=ChIJtQ_akqmHhYARPeTRET1bCQ8) — 89 reviews (4.6★) · `city_park`
+- [Westridge Park](https://www.google.com/maps/search/?api=1&query=37.5643698%2C-122.02176659999999&query_place_id=ChIJ9VqMTrm_j4ARc8hsWNGMGa0) — 89 reviews (4.1★) · `park`
+- [Cypress Grove Park](https://www.google.com/maps/search/?api=1&query=37.9957856%2C-121.69036919999999&query_place_id=ChIJka8C_IhVhYARrlva_uPzhWQ) — 88 reviews (4.4★) · `park`
+- [Dracena Park Entrance](https://www.google.com/maps/search/?api=1&query=37.8262121%2C-122.2403931&query_place_id=ChIJXfoBMWCHj4AR_rXT04q_biU) — 88 reviews (4.7★) · `park`
+- [Morgan Territory Road Staging Area](https://www.google.com/maps/search/?api=1&query=37.8184605%2C-121.7958504&query_place_id=ChIJCQZxeLr6j4ARzrp6jF059sk) — 88 reviews (4.7★) · `park`
+- [St. Elizabeth Park](https://www.google.com/maps/search/?api=1&query=37.307750299999995%2C-121.9159323&query_place_id=ChIJCWrh1LM0joARnjHbJqVBRwc) — 88 reviews (4.4★) · `park`
+- [Creekside Park](https://www.google.com/maps/search/?api=1&query=37.7700755%2C-121.92300889999999&query_place_id=ChIJZVnaXfXtj4AR5-07OzjlEyM) — 87 reviews (4.5★) · `park`
+- [Elsie Roemer Bird Sanctuary](https://www.google.com/maps/search/?api=1&query=37.7530036%2C-122.2471087&query_place_id=ChIJ5Qi2XaGGj4ARqHjMuKhxKQg) — 87 reviews (4.6★) · `park`
+- [Fuller Street Park](https://www.google.com/maps/search/?api=1&query=37.397588%2C-121.9649715&query_place_id=ChIJMe92o77Jj4ARZqLGR6i700E) — 87 reviews (4.5★) · `park`
+- [Vista Meadows Park](https://www.google.com/maps/search/?api=1&query=37.6946505%2C-121.77019869999998&query_place_id=ChIJi0nDNqnnj4ARyrD86j1MRXs) — 87 reviews (4.5★) · `park`
+- [Fiesta Meadows Park](https://www.google.com/maps/search/?api=1&query=37.5503772%2C-122.2953375&query_place_id=ChIJf-Tvt-Wej4ARM8ZGNziQTvs) — 86 reviews (4.2★) · `park`
+- [Lions Park](https://www.google.com/maps/search/?api=1&query=37.6234957%2C-122.4053134&query_place_id=ChIJQ7gCIX53j4ARlFpgQ6KzeCY) — 86 reviews (4.4★) · `park`
+- [Mechanics Monument Plaza](https://www.google.com/maps/search/?api=1&query=37.791456%2C-122.39913630000001&query_place_id=ChIJS9KySWKAhYAREWHBxsVKrHo) — 86 reviews (4.2★) · `park`
+- [Rosita Park](https://www.google.com/maps/search/?api=1&query=37.370865099999996%2C-122.10412609999999&query_place_id=ChIJK6pa99-wj4ARwbv09F1_0J8) — 86 reviews (4.6★) · `park`
+- [Township Commons](https://www.google.com/maps/search/?api=1&query=37.786991900000004%2C-122.25707519999999&query_place_id=ChIJ26V_GkaHj4ARGfxMiuLbtVc) — 86 reviews (4.6★) · `park`
+- [Buena Vista Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7686987%2C-122.4426883&query_place_id=ChIJfWFQlKuAhYARWKzpHlmft3I) — 85 reviews (4.5★) · `dog_park`
+- [King Track and Field](https://www.google.com/maps/search/?api=1&query=37.8837219%2C-122.2772356&query_place_id=ChIJjeS3JLB-hYARco5Q8dXujdg) — 85 reviews (4.6★) · `park`
+- [Manor Beach](https://www.google.com/maps/search/?api=1&query=37.6494935%2C-122.4935031&query_place_id=ChIJDa72PAp7j4ARW8Luk3cLSdQ) — 85 reviews (4.8★) · `park`
+- [Mountaire Park](https://www.google.com/maps/search/?api=1&query=37.9892298%2C-121.80252060000001&query_place_id=ChIJHR7qdYVXhYAR__dFAsEEdSU) — 85 reviews (4.1★) · `park`
+- [Tillman Park](https://www.google.com/maps/search/?api=1&query=37.742716%2C-122.25086290000002&query_place_id=ChIJLROhgBuEj4ARfHOMrUKfq5M) — 85 reviews (4.2★) · `park`
+- [Delano Manongs Park](https://www.google.com/maps/search/?api=1&query=37.407424%2C-121.898436&query_place_id=ChIJ-acp6RfPj4AR-KcH26OpnJM) — 84 reviews (4.7★) · `park`
+- [Meyers Cottage and Dry Creek Garden](https://www.google.com/maps/search/?api=1&query=37.608111099999995%2C-122.0175434&query_place_id=ChIJmXzrMhWVj4ARKh-F_dqZNg4) — 84 reviews (4.6★) · `botanical_garden`
+- [Rosemary Gardens Park](https://www.google.com/maps/search/?api=1&query=37.3625493%2C-121.9151504&query_place_id=ChIJC7xeTpDLj4ARrbP6SE92YhM) — 84 reviews (4.3★) · `park`
+- [Fairmont Park and Recreation Center](https://www.google.com/maps/search/?api=1&query=37.6585701%2C-122.48062549999999&query_place_id=ChIJv1rp95d7j4ARoe5UeCmRb8U) — 83 reviews (4.6★) · `park`
+- [Hyde & Vallejo Mini Park](https://www.google.com/maps/search/?api=1&query=37.797664499999996%2C-122.41905340000001&query_place_id=ChIJQXaNMOmAhYARZSfqaN3bvQM) — 83 reviews (4.6★) · `city_park`
+- [Lakeview and Ashton Mini Park](https://www.google.com/maps/search/?api=1&query=37.7180274%2C-122.46258150000001&query_place_id=ChIJk7S-njN8j4ARGQ1BQpjUXpI) — 83 reviews (4.5★) · `city_park`
+- [Mosaic Park](https://www.google.com/maps/search/?api=1&query=37.766714%2C-121.915881&query_place_id=ChIJnwMJJfHtj4AR_HwHESNmCn4) — 83 reviews (4.6★) · `park`
+- [San Tomas & Monroe Neighborhood Park and Community Garden](https://www.google.com/maps/search/?api=1&query=37.363354699999995%2C-121.9678353&query_place_id=ChIJYUvnm5PLj4ARPv3izgmE5Cc) — 83 reviews (4.6★) · `garden`
+- [Bellevue Park](https://www.google.com/maps/search/?api=1&query=37.311986%2C-121.87247149999999&query_place_id=ChIJt3XEwjszjoARxVUuqswlK8o) — 82 reviews (3.4★) · `park`
+- [Creighton Park](https://www.google.com/maps/search/?api=1&query=37.4233899%2C-121.88141089999999&query_place_id=ChIJc2jinXfPj4ARVS5CIixcBgA) — 82 reviews (4.5★) · `park`
+- [Del Medio Park](https://www.google.com/maps/search/?api=1&query=37.4071187%2C-122.11369959999999&query_place_id=ChIJf7amPXa6j4ARoNgETQc8pHs) — 82 reviews (4.3★) · `park`
+- [FM Smith Park](https://www.google.com/maps/search/?api=1&query=37.800573799999995%2C-122.24871900000001&query_place_id=ChIJoe2eWTmHj4ARpSrhrGEjOi8) — 82 reviews (4.1★) · `park`
+- [Rubino Park](https://www.google.com/maps/search/?api=1&query=37.2797757%2C-121.87747619999999&query_place_id=ChIJ-646PaIzjoARhk9_-2wzSS4) — 82 reviews (4.5★) · `park`
+- [Seminary Oaks Park](https://www.google.com/maps/search/?api=1&query=37.459490599999995%2C-122.16539379999999&query_place_id=ChIJrfjQQFC7j4ARWZsfPzTNs6s) — 82 reviews (4.5★) · `park`
+- [Brook Street Park](https://www.google.com/maps/search/?api=1&query=37.8882963%2C-122.1203585&query_place_id=ChIJA42HdFtihYAR7SELrqjSKPY) — 81 reviews (4.2★) · `park`
+- [Carl Larsen Park](https://www.google.com/maps/search/?api=1&query=37.739291900000005%2C-122.4760214&query_place_id=ChIJG1N6lgV9j4ARiTfzQ6fsfnY) — 81 reviews (4.6★) · `city_park`
+- [Eureka Valley Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7597667%2C-122.43633779999999&query_place_id=ChIJz-jz2AR-j4AR7Z-RhDSkV8I) — 81 reviews (4.2★) · `dog_park`
+- [Frog Park](https://www.google.com/maps/search/?api=1&query=37.841662299999996%2C-122.25760149999999&query_place_id=ChIJS8mgsOJ9hYARCF1SBCXJOoI) — 81 reviews (4.7★) · `park`
+- [Lucretia Edwards Shoreline Park](https://www.google.com/maps/search/?api=1&query=37.9098347%2C-122.3551399&query_place_id=ChIJx-IiZn94hYARmDtgbt2gQhA) — 81 reviews (4.8★) · `park`
+- [Palos Colorados Trailhead](https://www.google.com/maps/search/?api=1&query=37.815753199999996%2C-122.20143739999997&query_place_id=ChIJH3Omx76Hj4ARsTbjpJ77bc0) — 81 reviews (4.7★) · `park`
+- [Point San Bruno Park](https://www.google.com/maps/search/?api=1&query=37.655133299999996%2C-122.3763139&query_place_id=ChIJYUsJSmp4j4ARowMOfwbkUw0) — 81 reviews (4.3★) · `park`
+- [Somerset Square Park](https://www.google.com/maps/search/?api=1&query=37.3315087%2C-122.0591529&query_place_id=ChIJJUg3dD60j4AR-7w5zhrB_kU) — 81 reviews (4.3★) · `park`
+- [Union City Skatepark](https://www.google.com/maps/search/?api=1&query=37.5865791%2C-122.0261463&query_place_id=ChIJSbBJrmKVj4ARx4cWDsICxYE) — 81 reviews (4.4★) · `park`
+- [Wendell Playground](https://www.google.com/maps/search/?api=1&query=37.9455251%2C-122.3435214&query_place_id=ChIJ_0ylJh14hYARjgHSqmSGE-c) — 81 reviews (4.1★) · `park`
+- [Almaden Quicksilver Park - Mockingbird Hill Entrance](https://www.google.com/maps/search/?api=1&query=37.193767099999995%2C-121.8374783&query_place_id=ChIJ94DgKogxjoARjgkPeylTcyU) — 80 reviews (4.9★) · `park`
+- [Bark & Ride](https://www.google.com/maps/search/?api=1&query=37.7726359%2C-121.9186752&query_place_id=ChIJJ2hG5fXtj4ARQqs0EdiFLiU) — 80 reviews (4.5★) · `dog_park`
+- [Campbell Park](https://www.google.com/maps/search/?api=1&query=37.2886812%2C-121.9521926&query_place_id=ChIJm7nfjyY1joARdEuo_zufaKg) — 80 reviews (4.6★) · `park`
+- [Colby Park](https://www.google.com/maps/search/?api=1&query=37.847532699999995%2C-122.25767869999999&query_place_id=ChIJW_YP9th9hYARRapz17FALfE) — 80 reviews (4.5★) · `park`
+- [Half Moon Bay Beach](https://www.google.com/maps/search/?api=1&query=37.4856123%2C-122.45409570000001&query_place_id=ChIJew0ESLhzj4ARgOkT1mgKsIs) — 80 reviews (4.6★) · `park`
+- [Lions Wayside Park](https://www.google.com/maps/search/?api=1&query=37.6602222%2C-121.8734276&query_place_id=ChIJc19ap7zpj4AR2uUT4s0teX4) — 80 reviews (4.6★) · `park`
+- [Three Oaks Park](https://www.google.com/maps/search/?api=1&query=37.3018621%2C-122.03751989999998&query_place_id=ChIJAQAAnB21j4ARCDX0IotFB8k) — 80 reviews (4.5★) · `park`
+- [Ardenwood Entrance and Tickets](https://www.google.com/maps/search/?api=1&query=37.5564349%2C-122.05084240000001&query_place_id=ChIJr8jIR4C_j4AR5Q0e9zsEmg0) — 79 reviews (4.6★) · `park`
+- [Community Park](https://www.google.com/maps/search/?api=1&query=37.987138%2C-122.3418943&query_place_id=ChIJe1haJzN2hYARg6nlsFnPjIY) — 79 reviews (4.4★) · `park`
+- [Coyote Creek Lagoon Trail](https://www.google.com/maps/search/?api=1&query=37.478418%2C-121.9509256&query_place_id=ChIJ4YljaLTHj4AR9QYmhXpQE3s) — 79 reviews (4.3★) · `park`
+- [Dolan Park](https://www.google.com/maps/search/?api=1&query=37.7136798%2C-121.9463009&query_place_id=ChIJpxmFY1jsj4ARTdgzIbysoEY) — 79 reviews (4.6★) · `park`
+- [Gateway Park](https://www.google.com/maps/search/?api=1&query=37.569592%2C-122.31793069999999&query_place_id=ChIJBwzIYHmej4ARrlQbKfPqZ7M) — 79 reviews (4.3★) · `park`
+- [Hawk Hill](https://www.google.com/maps/search/?api=1&query=37.746673799999996%2C-122.46936919999999&query_place_id=ChIJl9n7Re19j4ARCP0N2XAdx7Q) — 79 reviews (3.8★) · `nature_preserve`
+- [Judge George D Carroll Park](https://www.google.com/maps/search/?api=1&query=37.924855%2C-122.38279459999998&query_place_id=ChIJP5z8QMaChYARfhF4Ka9cPPs) — 79 reviews (4.3★) · `city_park`
+- [Thaddeus Park](https://www.google.com/maps/search/?api=1&query=37.411760099999995%2C-122.09750269999999&query_place_id=ChIJI8lJLgi6j4ARqeQ020_pVKs) — 79 reviews (4.2★) · `park`
+- [City of San Leandro Root Park](https://www.google.com/maps/search/?api=1&query=37.7268069%2C-122.1578406&query_place_id=ChIJ3fT2yZCPj4ARfYfEN0uGWcM) — 78 reviews (3.9★) · `park`
+- [Fulton Playground Park](https://www.google.com/maps/search/?api=1&query=37.7733795%2C-122.4869533&query_place_id=ChIJ69OPjwuHhYARO4WX8v6tLm0) — 78 reviews (4.5★) · `city_park`
+- [Juri Commons Park](https://www.google.com/maps/search/?api=1&query=37.7495407%2C-122.4219273&query_place_id=ChIJu5DesUF-j4ARvTGcExIJKlM) — 78 reviews (4.4★) · `city_park`
+- [Rosicrucian Park](https://www.google.com/maps/search/?api=1&query=37.3339723%2C-121.92301040000001&query_place_id=ChIJuSjzomzLj4ARgids95d6z5Y) — 78 reviews (4.7★) · `garden`
+- [Stony Brook Park](https://www.google.com/maps/search/?api=1&query=37.6302593%2C-122.04390019999998&query_place_id=ChIJZwWriVmUj4ARA7G4psjuwes) — 78 reviews (4.3★) · `park`
+- [Tassajara Creek Regional Park](https://www.google.com/maps/search/?api=1&query=37.7231433%2C-121.8734514&query_place_id=ChIJO5ndW5Tuj4ARqrMKa4rQmA8) — 78 reviews (4.2★) · `park`
+- [Bobby Hutton Park](https://www.google.com/maps/search/?api=1&query=37.81187920000001%2C-122.28721339999998&query_place_id=ChIJCUH7EKCAj4ARZ2MrDDdE_1w) — 77 reviews (4.6★) · `park`
+- [Chynoweth Park](https://www.google.com/maps/search/?api=1&query=37.259323200000004%2C-121.8187167&query_place_id=ChIJVVVV1vsxjoARctGR0uWcyb4) — 77 reviews (4.1★) · `park`
+- [Floresta Park](https://www.google.com/maps/search/?api=1&query=37.6982871%2C-122.1453321&query_place_id=ChIJ1WmnHSSQj4ARJYJ01F1FLcw) — 77 reviews (4.4★) · `park`
+- [Half Moon Bay Dog Park](https://www.google.com/maps/search/?api=1&query=37.44791300000001%2C-122.43533839999999&query_place_id=ChIJYb9Mb0MLj4ARzz_NUVkXEEY) — 77 reviews (4.1★) · `dog_park`
+- [Heritage Park](https://www.google.com/maps/search/?api=1&query=37.4137693%2C-122.09230769999999&query_place_id=ChIJu9wZnge6j4ARZDh2L690DcA) — 77 reviews (4.5★) · `park`
+- [Jefferson Square Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.781618%2C-122.42682789999999&query_place_id=ChIJ9zqp-LyAhYARQXzjgNONm_o) — 77 reviews (4.4★) · `dog_park`
+- [Pacifica Vista Point - Sharp Park Road](https://www.google.com/maps/search/?api=1&query=37.633222599999996%2C-122.47733640000001&query_place_id=ChIJqZdh-k56j4ARNnIRtMjBkRM) — 77 reviews (4.8★) · `park`
+- [Sun Terrace Neighborhood Park](https://www.google.com/maps/search/?api=1&query=38.0037118%2C-122.0348222&query_place_id=ChIJK2BMnQBnhYARrjjMbyrKkJ8) — 77 reviews (4.2★) · `park`
+- [Tidewater Boating Center](https://www.google.com/maps/search/?api=1&query=37.7618801%2C-122.22302709999998&query_place_id=ChIJRwDU2YaGj4ARsm_Fj0U1-E8) — 77 reviews (4.5★) · `park`
+- [Timothy Hopkins Creekside Park](https://www.google.com/maps/search/?api=1&query=37.4526726%2C-122.1649475&query_place_id=ChIJQQsaAUK7j4AReLZeVl52bHg) — 77 reviews (4.2★) · `park`
+- [Burleigh H. Murray Ranch State Park](https://www.google.com/maps/search/?api=1&query=37.4563488%2C-122.38187079999999&query_place_id=ChIJ71Xn6sUKj4ARJuD1fhIlKmI) — 76 reviews (4.5★) · `state_park`
+- [Foothill Park](https://www.google.com/maps/search/?api=1&query=37.2360744%2C-121.85163539999999&query_place_id=ChIJeW4ER58xjoARSTIJ0y9Mxvo) — 76 reviews (4.4★) · `park`
+- [Hayward Shoreline Interpretive Center](https://www.google.com/maps/search/?api=1&query=37.6233576%2C-122.13724699999999&query_place_id=ChIJFQFejC6Xj4ARTW2wcV-Biz8) — 76 reviews (4.6★) · `nature_preserve`
+- [Leif Erikson Park](https://www.google.com/maps/search/?api=1&query=37.2624845%2C-121.8647964&query_place_id=ChIJmd_xdM8zjoARyPSRfS_I3js) — 76 reviews (4.2★) · `park`
+- [Welch Dog Park](https://www.google.com/maps/search/?api=1&query=37.3261967%2C-121.823324&query_place_id=ChIJwYa8P5YzjoARqQrD37B8gP4) — 76 reviews (4.1★) · `dog_park`
+- [Brotherhood Way Open Space](https://www.google.com/maps/search/?api=1&query=37.712136%2C-122.4661846&query_place_id=ChIJbaR6VDZ8j4ARxGtcKmibb2w) — 75 reviews (4.1★) · `city_park`
+- [Castle Rock Trail Entrance](https://www.google.com/maps/search/?api=1&query=37.895547%2C-121.996457&query_place_id=ChIJF4w3b6yKj4ARoBnvzWKOVYM) — 75 reviews (4.7★) · `park`
+- [O'Donnell Garden Park](https://www.google.com/maps/search/?api=1&query=37.330702599999995%2C-121.8797858&query_place_id=ChIJm4xALXDNj4ARe04cwnhR-R4) — 75 reviews (4.3★) · `park`
+- [Ohlone Regional Wilderness](https://www.google.com/maps/search/?api=1&query=37.526997099999996%2C-121.70708520000001&query_place_id=ChIJk2goUGvaj4ARmimYDVE5I2M) — 75 reviews (4.6★) · `park`
+- [Parkview III Park](https://www.google.com/maps/search/?api=1&query=37.269185%2C-121.8385154&query_place_id=ChIJ9YylojwyjoARfE8h9jqxjjg) — 75 reviews (4.3★) · `park`
+- [Playa del Rey Park](https://www.google.com/maps/search/?api=1&query=37.2542062%2C-121.84956410000001&query_place_id=ChIJ7dkQRIcxjoARWGeA1WK821Q) — 75 reviews (4.4★) · `park`
+- [San Antonio Park](https://www.google.com/maps/search/?api=1&query=37.3503109%2C-122.05625119999999&query_place_id=ChIJR8HImZ62j4ARS1ulP6PVbIo) — 75 reviews (4.3★) · `park`
+- [Skyline Park](https://www.google.com/maps/search/?api=1&query=37.57779800000001%2C-122.40000359999999&query_place_id=ChIJFXTdwWV3j4ARvhTnoNmNH9U) — 75 reviews (4.3★) · `dog_park`
+- [Arena Green West](https://www.google.com/maps/search/?api=1&query=37.33282090000001%2C-121.8997187&query_place_id=ChIJCQYW6KDMj4AR-Vk_jjIN2wU) — 74 reviews (4★) · `park`
+- [George Florence Park](https://www.google.com/maps/search/?api=1&query=37.8667616%2C-122.2924139&query_place_id=ChIJZyWcQOp-hYARmx5esPwW5eI) — 74 reviews (4.2★) · `park`
+- [Kite Flying Area](https://www.google.com/maps/search/?api=1&query=37.4295459%2C-122.0766169&query_place_id=ChIJYwWG2Di5j4AROuxb4HPIFF0) — 74 reviews (4.6★) · `park`
+- [LL8](https://www.google.com/maps/search/?api=1&query=37.6821081%2C-121.88832389999999&query_place_id=ChIJWX1v72jpj4ARYmXZO9Fj5is) — 74 reviews (4.5★) · `park`
+- [Loma Vista Park](https://www.google.com/maps/search/?api=1&query=37.941538099999995%2C-121.7343292&query_place_id=ChIJITxpZyf5j4ARgCACKmI8qC0) — 74 reviews (4.4★) · `park`
+- [San Andreas Park](https://www.google.com/maps/search/?api=1&query=37.595749999999995%2C-122.0616738&query_place_id=ChIJHbZvDcCVj4ARb0Wn6XBNCA4) — 74 reviews (4.5★) · `park`
+- [Virginia Park](https://www.google.com/maps/search/?api=1&query=37.280578299999995%2C-121.9628666&query_place_id=ChIJKQfDxz01joAReSqtrLEicV4) — 74 reviews (4.3★) · `park`
+- [Noe Valley Town Square](https://www.google.com/maps/search/?api=1&query=37.751371999999996%2C-122.4289705&query_place_id=ChIJG99jlxR-j4AR5fLH2tgiJRg) — 73 reviews (4.5★) · `park`
+- [Point Pinole Regional Park - Dotson Family Marsh](https://www.google.com/maps/search/?api=1&query=37.9794846%2C-122.36503189999999&query_place_id=ChIJQ2EibYGdhYAR1YnUNmz-j3Q) — 73 reviews (4.6★) · `park`
+- [Stratford Village Park](https://www.google.com/maps/search/?api=1&query=37.6193512%2C-122.069642&query_place_id=ChIJf3MUXzCUj4AR9AFbT3_q5B8) — 73 reviews (4.5★) · `park`
+- [Woodland Hills Park](https://www.google.com/maps/search/?api=1&query=37.9994849%2C-121.90446289999998&query_place_id=ChIJg4UdYqxehYARXdDO-wTrsxs) — 73 reviews (4.2★) · `park`
+- [Devonshire Park](https://www.google.com/maps/search/?api=1&query=37.4037326%2C-122.0592025&query_place_id=ChIJKYeMzGq3j4AReHejRW0-b4U) — 72 reviews (4.5★) · `park`
+- [Douglass Playground Park](https://www.google.com/maps/search/?api=1&query=37.7473543%2C-122.4388663&query_place_id=ChIJFyIe0gx-j4ARwhfHjpRqdc4) — 72 reviews (4.7★) · `city_park`
+- [Dove Hill Park](https://www.google.com/maps/search/?api=1&query=37.2988053%2C-121.80942979999999&query_place_id=ChIJFTzoEIctjoARmrmR1INWduo) — 72 reviews (4.4★) · `park`
+- [Gemello Park](https://www.google.com/maps/search/?api=1&query=37.3926412%2C-122.1015685&query_place_id=ChIJoUv9Mb-wj4ARvTDMRHGcVws) — 72 reviews (4.6★) · `park`
+- [Grizzly Peak Park](https://www.google.com/maps/search/?api=1&query=37.8902565%2C-122.25586179999998&query_place_id=ChIJDalvFgV8hYARpkd98iqNeOA) — 72 reviews (4.4★) · `park`
+- [Lake Cunningham Native Garden](https://www.google.com/maps/search/?api=1&query=37.3349522%2C-121.80339789999998&query_place_id=ChIJUxqyPlotjoARHWFlAMAyDlY) — 72 reviews (4.6★) · `garden`
+- [Macedo Ranch Staging Area](https://www.google.com/maps/search/?api=1&query=37.8628387%2C-121.97890969999999&query_place_id=ChIJkc3BJdr0j4ARQQrVqYhHukw) — 72 reviews (4.6★) · `park`
+- [Ravenswood Park](https://www.google.com/maps/search/?api=1&query=37.6524071%2C-121.77185739999999&query_place_id=ChIJkwlBL3fdj4ARvmsiUMBNgYk) — 72 reviews (4.4★) · `park`
+- [Union City Pyramid](https://www.google.com/maps/search/?api=1&query=37.591581%2C-122.01590979999999&query_place_id=ChIJZ-ld1l-Vj4ARvA4JNhlUa5Y) — 72 reviews (4.3★) · `park`
+- [Alviso Education Center](https://www.google.com/maps/search/?api=1&query=37.4219061%2C-121.97564099999998&query_place_id=ChIJBcNzfjnIj4ARNqX4ZL6nLBc) — 71 reviews (4.5★) · `park`
+- [Del Mar Dog Park (Off-leash, open dawn-dusk)](https://www.google.com/maps/search/?api=1&query=37.7430969%2C-121.9389759&query_place_id=ChIJcS6VfKPtj4ARfmfkYKkXrYA) — 71 reviews (4.4★) · `dog_park`
+- [Dr. Robert Gross Ponds](https://www.google.com/maps/search/?api=1&query=37.3927888%2C-121.8369206&query_place_id=ChIJ-R8Ior_Nj4AR9ybDhQ6nCf8) — 71 reviews (4.3★) · `park`
+- [Livermore Canine Park](https://www.google.com/maps/search/?api=1&query=37.668831%2C-121.75298439999999&query_place_id=ChIJn6P8bnXnj4AR2OM6oxkLxEk) — 71 reviews (4.4★) · `dog_park`
+- [Lone Tree Point](https://www.google.com/maps/search/?api=1&query=38.037959%2C-122.26981959999999&query_place_id=ChIJ2eQe6612hYARKStgicVdeTs) — 71 reviews (4.2★) · `park`
+- [Stagecoach Park](https://www.google.com/maps/search/?api=1&query=37.7201346%2C-121.9189377&query_place_id=ChIJB6r-4Tvsj4ARmTN2ZFYUPak) — 71 reviews (4.3★) · `park`
+- [Woh Hei Yuen Park](https://www.google.com/maps/search/?api=1&query=37.7959556%2C-122.410225&query_place_id=ChIJMSWC-_KAhYAR_fXq7INc8bM) — 71 reviews (4.3★) · `city_park`
+- [Alameda Waterfront Park](https://www.google.com/maps/search/?api=1&query=37.780121699999995%2C-122.29930039999999&query_place_id=ChIJJ2HkI5OBj4ARByz4oyMtJcA) — 70 reviews (4.7★) · `park`
+- [Bay Trail Access](https://www.google.com/maps/search/?api=1&query=37.5920688%2C-122.35715529999999&query_place_id=ChIJP3rfPSh2j4ARcUCD0kHlUSw) — 70 reviews (4.6★) · `park`
+- [Karl E. Clark Park](https://www.google.com/maps/search/?api=1&query=37.4767203%2C-122.16600139999998&query_place_id=ChIJzx_I1a-8j4ARKRhMBBhJfJ0) — 70 reviews (4.5★) · `park`
+- [Leona Canyon Trail Head](https://www.google.com/maps/search/?api=1&query=37.7876757%2C-122.1636578&query_place_id=ChIJP5KLfrCIj4AR4lxkd2Qybnc) — 70 reviews (4.6★) · `park`
+- [Marchetti Park](https://www.google.com/maps/search/?api=1&query=38.0007215%2C-121.8495004&query_place_id=ChIJvQLKNqJZhYAR69bA_DjoGWI) — 70 reviews (3.9★) · `park`
+- [McKinley Park](https://www.google.com/maps/search/?api=1&query=37.7706741%2C-122.24433419999998&query_place_id=ChIJ_96T-K6Hj4ARWF316g560Zc) — 70 reviews (4.3★) · `park`
+- [Palisades Park](https://www.google.com/maps/search/?api=1&query=37.6893478%2C-122.49531119999999&query_place_id=ChIJ84vxAYt8j4ARaZSLml14MlU) — 70 reviews (4.5★) · `park`
+- [Wilcox Park](https://www.google.com/maps/search/?api=1&query=37.2940204%2C-121.8998393&query_place_id=ChIJuTwhlmEzjoARQDC6tl0H1uE) — 70 reviews (4.4★) · `park`
+- [Bair Island State Marine Park](https://www.google.com/maps/search/?api=1&query=37.5268983%2C-122.2248832&query_place_id=ChIJy9np7YGYj4ARH2OFmouueUA) — 69 reviews (4.2★) · `nature_preserve`
+- [Bellingham Square](https://www.google.com/maps/search/?api=1&query=37.7651652%2C-121.8995918&query_place_id=ChIJy_sYrgnuj4ARlv7OHaO7E8I) — 69 reviews (4.6★) · `park`
+- [Gardiner Park](https://www.google.com/maps/search/?api=1&query=37.2705775%2C-122.00409020000001&query_place_id=ChIJaaFOTaNKjoARxr5yKu7oTZU) — 69 reviews (4.2★) · `park`
+- [Hellyer County Park](https://www.google.com/maps/search/?api=1&query=37.2804423%2C-121.81238429999999&query_place_id=ChIJP0AoEKgzjoARyFIqRiFLMcQ) — 69 reviews (4.5★) · `park`
+- [Marx Event Meadow](https://www.google.com/maps/search/?api=1&query=37.7711579%2C-122.4856119&query_place_id=ChIJJRq1rgyHhYARcRwqZcp8jsU) — 69 reviews (4.6★) · `park`
+- [Michelangelo Playground Park](https://www.google.com/maps/search/?api=1&query=37.8012367%2C-122.4169803&query_place_id=ChIJtwZLZ--AhYARZf-XBpHYnFU) — 69 reviews (4.6★) · `city_park`
+- [Mission Creek Park North](https://www.google.com/maps/search/?api=1&query=37.7714406%2C-122.3983624&query_place_id=ChIJ1StHh9F_j4ARAk-gLPn330U) — 69 reviews (4.4★) · `city_park`
+- [Máyyan 'Ooyákma – Coyote Ridge Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.213357800000004%2C-121.7209542&query_place_id=ChIJKYkz4_4ljoARQWowbJnVoqk) — 69 reviews (4.6★) · `nature_preserve`
+- [Shorebird Park](https://www.google.com/maps/search/?api=1&query=37.5352199%2C-122.25386770000001&query_place_id=ChIJKwHyzbmYj4ARxsCiqQtnZNA) — 69 reviews (4.3★) · `park`
+- [Stables Staging Area | Alameda Creek](https://www.google.com/maps/search/?api=1&query=37.5663311%2C-122.07015129999999&query_place_id=ChIJc7-aGhu-j4ARfhPWk2QFT8A) — 69 reviews (4.5★) · `park`
+- [Sungold Park](https://www.google.com/maps/search/?api=1&query=37.942328499999995%2C-121.7072951&query_place_id=ChIJ70tUhdr-j4ARY9ca_4ItKr0) — 69 reviews (4.5★) · `park`
+- [Walnut Park](https://www.google.com/maps/search/?api=1&query=37.922261%2C-121.692788&query_place_id=ChIJzcaRFZn-j4ARaYXr9vRUppI) — 69 reviews (4.5★) · `park`
+- [Wellesley Crescent Park](https://www.google.com/maps/search/?api=1&query=37.490286000000005%2C-122.24323179999999&query_place_id=ChIJyau3wjeij4ARX8y4RCYIa0c) — 69 reviews (4.6★) · `park`
+- [Huntington Park](https://www.google.com/maps/search/?api=1&query=37.9078046%2C-122.30894099999999&query_place_id=ChIJC4Foux15hYARgLMwPPOpOnc) — 68 reviews (4.5★) · `park`
+- [Mortar Rock Park](https://www.google.com/maps/search/?api=1&query=37.8933471%2C-122.2723893&query_place_id=ChIJtcentax-hYARHXfEhv1l-YY) — 68 reviews (4.7★) · `park`
+- [Patrick's Park](https://www.google.com/maps/search/?api=1&query=37.804369099999995%2C-122.4276775&query_place_id=ChIJpWno7d6AhYAR1RaO0mTI8SQ) — 68 reviews (4.8★) · `dog_park`
+- [Sean Diamond Park](https://www.google.com/maps/search/?api=1&query=37.718798299999996%2C-121.84509519999999&query_place_id=ChIJx6eKYC3vj4AR52oQk2KL7NA) — 68 reviews (4.5★) · `park`
+- [Sterling Barnhart Park](https://www.google.com/maps/search/?api=1&query=37.315528%2C-121.99633659999999&query_place_id=ChIJbw8DF2O1j4ARNoe9g-v20uE) — 68 reviews (4.5★) · `park`
+- [Albany State Marine Reserve](https://www.google.com/maps/search/?api=1&query=37.8923595%2C-122.31177179999999&query_place_id=ChIJIYM-Xdd4hYARIJExmpslTMY) — 67 reviews (4.7★) · `state_park`
+- [Bark Park](https://www.google.com/maps/search/?api=1&query=37.6841851%2C-122.4629561&query_place_id=ChIJ__8PkAl8j4ARwv6Y3UR8o-Q) — 67 reviews (4★) · `dog_park`
+- [Battery Bluff Park](https://www.google.com/maps/search/?api=1&query=37.801568599999996%2C-122.46277769999999&query_place_id=ChIJGyHXpoWHhYARTUm3DqiO5HY) — 67 reviews (4.8★) · `park`
+- [Del Valle Arroyo Road Staging Area (EBRPD)](https://www.google.com/maps/search/?api=1&query=37.619661%2C-121.75292499999999&query_place_id=ChIJqRrBRUXcj4ARiwdcbE9Loyg) — 67 reviews (4.5★) · `park`
+- [Father Alfred E. Boeddeker Park](https://www.google.com/maps/search/?api=1&query=37.78432540000001%2C-122.412356&query_place_id=ChIJN-95z4iBhYARyXPbuqz2aSk) — 67 reviews (4.4★) · `city_park`
+- [Garber Park](https://www.google.com/maps/search/?api=1&query=37.8621779%2C-122.2363179&query_place_id=ChIJ_6JaFLR9hYARUcNoe6qJk3k) — 67 reviews (4.6★) · `park`
+- [Grotto Rock Park](https://www.google.com/maps/search/?api=1&query=37.893350399999996%2C-122.2688385&query_place_id=ChIJIRKiIqt-hYARK2wAZWNIL1A) — 67 reviews (4.7★) · `park`
+- [Newhall Dog Park](https://www.google.com/maps/search/?api=1&query=37.9556063%2C-121.9800022&query_place_id=ChIJ0bkR6DpehYARqLLZ8K9HQcM) — 67 reviews (4.4★) · `dog_park`
+- [Ringtail Cat Staging Area](https://www.google.com/maps/search/?api=1&query=37.8368145%2C-122.0323545&query_place_id=ChIJz8p9dAyLj4AR90Jsi_Z-MTU) — 67 reviews (4.7★) · `park`
+- [Rochambeau Playground Park](https://www.google.com/maps/search/?api=1&query=37.784766%2C-122.4846526&query_place_id=ChIJQ7TzcQSHhYAR1adGzN4abRE) — 67 reviews (4.4★) · `city_park`
+- [Victoria Park](https://www.google.com/maps/search/?api=1&query=37.5855056%2C-122.3345639&query_place_id=ChIJE4l6Yeqdj4ARThWIsAnsZcM) — 67 reviews (4.5★) · `park`
+- [West Oakland Farm Park](https://www.google.com/maps/search/?api=1&query=37.822202399999995%2C-122.28591449999999&query_place_id=ChIJJTz7JRh-hYAR4hbQgiaqmYA) — 67 reviews (4.7★) · `park`
+- [Courtland Creek Park](https://www.google.com/maps/search/?api=1&query=37.7812293%2C-122.2042246&query_place_id=ChIJay6RDEKGj4ARlorbDzlPInw) — 66 reviews (3.8★) · `park`
+- [Richmond Playground Park](https://www.google.com/maps/search/?api=1&query=37.7852403%2C-122.4781632&query_place_id=ChIJpwqhARuHhYAR8qUtoxnE9Nc) — 66 reviews (4.3★) · `city_park`
+- [Children's Park at Giuliani Plaza](https://www.google.com/maps/search/?api=1&query=37.670443%2C-122.08193150000001&query_place_id=ChIJqQ6zyNiTj4ARRZ1E_r82cPg) — 65 reviews (4.2★) · `park`
+- [Crab Cove](https://www.google.com/maps/search/?api=1&query=37.768057899999995%2C-122.27838299999999&query_place_id=ChIJOeLZVLWBj4ARahx91jCiznc) — 65 reviews (4.7★) · `park`
+- [Crystal Springs Park](https://www.google.com/maps/search/?api=1&query=37.5351773%2C-122.3705184&query_place_id=ChIJf49JypN1j4ARiDQuYD3Yamg) — 65 reviews (4.8★) · `park`
+- [Huber Park](https://www.google.com/maps/search/?api=1&query=37.9134719%2C-122.2913557&query_place_id=ChIJyca2VBJ5hYARFDEAio5-nXQ) — 65 reviews (4.3★) · `park`
+- [Fallen Bridge Park](https://www.google.com/maps/search/?api=1&query=37.762245199999995%2C-122.40606689999998&query_place_id=ChIJKRM58TN-j4ARFoXKFCtTn2k) — 64 reviews (4.3★) · `city_park`
+- [Five Canyons Open Space](https://www.google.com/maps/search/?api=1&query=37.685912099999996%2C-122.032871&query_place_id=ChIJyV6eBwmTj4ARYDSCcCjse-M) — 64 reviews (4.6★) · `park`
+- [Harding Park](https://www.google.com/maps/search/?api=1&query=37.9013693%2C-122.29401639999999&query_place_id=ChIJSWFIAzx5hYARqcFRVwPBuDw) — 64 reviews (4.3★) · `park`
+- [Hawes Park](https://www.google.com/maps/search/?api=1&query=37.4722402%2C-122.2310303&query_place_id=ChIJsyzes6Sjj4ARsAAR4thpkPk) — 64 reviews (4.5★) · `park`
+- [King Estate Open Space Park](https://www.google.com/maps/search/?api=1&query=37.7641079%2C-122.15597389999999&query_place_id=ChIJ6-cvVU-Pj4ARuOAIV-CNdvQ) — 64 reviews (4.5★) · `park`
+- [Limerick Park](https://www.google.com/maps/search/?api=1&query=37.7595526%2C-121.8893808&query_place_id=ChIJK5Vidm3uj4ARhRxNWlQUEBc) — 64 reviews (4.5★) · `park`
+- [O'Donnell Park](https://www.google.com/maps/search/?api=1&query=37.5242721%2C-122.27172429999999&query_place_id=ChIJzyCwmk6fj4ARhcqWKSuAoKo) — 64 reviews (4.6★) · `park`
+- [Sylvia Cassell Park](https://www.google.com/maps/search/?api=1&query=37.3456201%2C-121.82903820000001&query_place_id=ChIJ-fR430jNj4ARHe613O5SQIM) — 64 reviews (4.2★) · `park`
+- [Thomas Barrett Park](https://www.google.com/maps/search/?api=1&query=37.326814899999995%2C-121.954094&query_place_id=ChIJ2VbWZeTKj4ARewOl2AqJxSc) — 64 reviews (4.5★) · `park`
+- [Bay Vista Park](https://www.google.com/maps/search/?api=1&query=37.9839609%2C-122.343115&query_place_id=ChIJlUJODM13hYAR1tifn-usoHI) — 63 reviews (4.5★) · `park`
+- [Beard Staging Area, Alameda Creek Regional Trail](https://www.google.com/maps/search/?api=1&query=37.5869827%2C-122.03908530000001&query_place_id=ChIJecIU-oGVj4ARjwBEBqjVLLo) — 63 reviews (4.5★) · `nature_preserve`
+- [Beauchamps Park](https://www.google.com/maps/search/?api=1&query=37.2905631%2C-122.03958610000001&query_place_id=ChIJ_-dmRt-0j4ARsJU8aKCqi4c) — 63 reviews (4.7★) · `park`
+- [Buchanan Street Mall](https://www.google.com/maps/search/?api=1&query=37.780468%2C-122.4287636&query_place_id=ChIJDcy-ubyAhYARHgNPUjtEswE) — 63 reviews (4.1★) · `park`
+- [Garretson Point Staging (EBRPD)](https://www.google.com/maps/search/?api=1&query=37.7506657%2C-122.21105459999998&query_place_id=ChIJy3qE3u-Fj4ARBjnN3Zf5MZY) — 63 reviews (4.5★) · `nature_preserve`
+- [Harvest Park](https://www.google.com/maps/search/?api=1&query=37.6692487%2C-121.8834772&query_place_id=ChIJHx9Gx3Xpj4ARxqSs5rTGSTo) — 63 reviews (4.3★) · `park`
+- [Hoover Park](https://www.google.com/maps/search/?api=1&query=37.295982699999996%2C-122.03868480000001&query_place_id=ChIJ1XJ5JuC0j4ARTl8L_JttgT4) — 63 reviews (4.7★) · `park`
+- [John Boulware Park](https://www.google.com/maps/search/?api=1&query=37.421306799999996%2C-122.13504040000001&query_place_id=ChIJ-ZwEgvS6j4AR7d0C9wEGSpI) — 63 reviews (4.1★) · `park`
+- [Ketch Park](https://www.google.com/maps/search/?api=1&query=37.550841999999996%2C-122.2581436&query_place_id=ChIJ4dKA7daYj4ARYit3PAGRcVU) — 63 reviews (4.5★) · `park`
+- [McLaughlin Park](https://www.google.com/maps/search/?api=1&query=37.330359%2C-121.8528808&query_place_id=ChIJMUEC29QyjoARy2wcdPOmjPE) — 63 reviews (3.2★) · `park`
+- [Mira Vista Park](https://www.google.com/maps/search/?api=1&query=37.9374019%2C-122.32155789999997&query_place_id=ChIJk-8ZkDd4hYARWb1lj1I3RE4) — 63 reviews (4.5★) · `park`
+- [Palm Park](https://www.google.com/maps/search/?api=1&query=37.4707509%2C-122.22701010000002&query_place_id=ChIJY3MTyKOjj4ARPovmTLcGg8k) — 63 reviews (4.4★) · `park`
+- [Pyramid Park](https://www.google.com/maps/search/?api=1&query=37.392931%2C-122.05509269999999&query_place_id=ChIJXeNReYy3j4ARUtwoJgaopJc) — 63 reviews (4.7★) · `park`
+- [Skatepark | Beresford Park](https://www.google.com/maps/search/?api=1&query=37.5373673%2C-122.31482910000001&query_place_id=ChIJJTGNyFSej4ARgEsrbLyYh8k) — 63 reviews (4.4★) · `park`
+- [Upper Noe Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7425844%2C-122.42712309999999&query_place_id=ChIJNX7gR59_j4AReTFhMyX2qVg) — 63 reviews (4.4★) · `dog_park`
+- [Villa Montalvo Gardens](https://www.google.com/maps/search/?api=1&query=37.2457402%2C-122.0292156&query_place_id=ChIJnUD_47VLjoAR1hVyDTGYgjo) — 63 reviews (4.6★) · `garden`
+- [Watson Dog Park](https://www.google.com/maps/search/?api=1&query=37.3598904%2C-121.87553209999999&query_place_id=ChIJucZ1zNLNj4ARdEadq-c2I6o) — 63 reviews (4.3★) · `park`
+- [Worcester Park](https://www.google.com/maps/search/?api=1&query=37.2219851%2C-121.9668627&query_place_id=ChIJ-baXEN81joARz8j0SgQARGE) — 63 reviews (4.3★) · `park`
+- [Bell Street Park](https://www.google.com/maps/search/?api=1&query=37.4649168%2C-122.14245309999998&query_place_id=ChIJh_mpjm-7j4AR1afs4d9OzbU) — 62 reviews (4★) · `park`
+- [Brazil Quarry Park](https://www.google.com/maps/search/?api=1&query=37.960591%2C-121.96944300000001&query_place_id=ChIJyd1ZQkdehYARuIYN2UrkxEI) — 62 reviews (4.4★) · `park`
+- [Byington Park](https://www.google.com/maps/search/?api=1&query=37.535492%2C-122.02075&query_place_id=ChIJV7CU-hO_j4ARBoA2hHQU3vg) — 62 reviews (4.4★) · `park`
+- [Danville South Park](https://www.google.com/maps/search/?api=1&query=37.788409%2C-121.97885900000001&query_place_id=ChIJrVGaodnyj4AR33AnEqZdL5c) — 62 reviews (4.3★) · `park`
+- [Glendale La Loma Park](https://www.google.com/maps/search/?api=1&query=37.8852371%2C-122.2552167&query_place_id=ChIJKfkdNxp8hYARpgnISTJhqjE) — 62 reviews (4.6★) · `park`
+- [Ida Holm Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.6650577%2C-121.80407880000001&query_place_id=ChIJG6kiYuTnj4ARMSxq1kk1sBU) — 62 reviews (4.4★) · `park`
+- [Martin Park](https://www.google.com/maps/search/?api=1&query=37.3353014%2C-121.86349480000001&query_place_id=ChIJSyP24NDMj4ARc_4WkDrczH8) — 62 reviews (4.2★) · `park`
+- [Merced Heights Playground Park](https://www.google.com/maps/search/?api=1&query=37.7175945%2C-122.47008070000001&query_place_id=ChIJ9YA9MvF9j4ARr10qCXJ2zes) — 62 reviews (4.8★) · `city_park`
+- [Preserve Park](https://www.google.com/maps/search/?api=1&query=37.5418759%2C-122.2483997&query_place_id=ChIJZcXQT8GYj4AR4YVaIRj-lNs) — 62 reviews (4.6★) · `park`
+- [Esther Clark Park](https://www.google.com/maps/search/?api=1&query=37.3908531%2C-122.13805699999999&query_place_id=ChIJR86k33qwj4ARoqr1OAdj9pY) — 61 reviews (3.9★) · `park`
+- [Eula M. Brinson Park](https://www.google.com/maps/search/?api=1&query=37.755234900000005%2C-122.17340759999998&query_place_id=ChIJa3JobF-Pj4ARoEhEWluIZgg) — 61 reviews (4★) · `park`
+- [Garrett Park](https://www.google.com/maps/search/?api=1&query=37.4681686%2C-122.2566356&query_place_id=ChIJnX16gdqjj4ARWHy6dF4Sa7U) — 61 reviews (4.3★) · `park`
+- [Laurel Hill Playground Park](https://www.google.com/maps/search/?api=1&query=37.78402080000001%2C-122.450923&query_place_id=ChIJ9zppSjSHhYARYKwOaWR_tjw) — 61 reviews (4.3★) · `city_park`
+- [McLaren Bike Park](https://www.google.com/maps/search/?api=1&query=37.714107%2C-122.42293120000001&query_place_id=ChIJ17x0hut-j4ARREFcwXzRjV0) — 61 reviews (4.7★) · `park`
+- [Mendocino Park](https://www.google.com/maps/search/?api=1&query=37.9119022%2C-122.31137169999998&query_place_id=ChIJwXBecP14hYARt58Ru1dUHiY) — 61 reviews (4.5★) · `park`
+- [Monroe Park](https://www.google.com/maps/search/?api=1&query=37.4081951%2C-122.1168237&query_place_id=ChIJNUeacXe6j4ARKolGkDcwxjs) — 61 reviews (4.6★) · `park`
+- [Poinsett Park](https://www.google.com/maps/search/?api=1&query=37.935030999999995%2C-122.31742899999999&query_place_id=ChIJV8kdkUl4hYARegFkY0W1440) — 61 reviews (4.3★) · `park`
+- [Tarun Lake](https://www.google.com/maps/search/?api=1&query=37.3198937%2C-121.7745413&query_place_id=ChIJSzM9O-EtjoAR66X2wgaO6us) — 61 reviews (4.8★) · `park`
+- [Bohol Circle Immigrant Park](https://www.google.com/maps/search/?api=1&query=37.7917155%2C-122.2791711&query_place_id=ChIJe4YqPv-Bj4ARUxrDeQyUkFw) — 60 reviews (4.7★) · `park`
+- [Canoas Park](https://www.google.com/maps/search/?api=1&query=37.2844006%2C-121.87823050000002&query_place_id=ChIJOfYfEKAzjoARgklcdkeexIg) — 60 reviews (4.2★) · `park`
+- [Cypress Freeway Memorial Park](https://www.google.com/maps/search/?api=1&query=37.8104377%2C-122.2921431&query_place_id=ChIJEUf9PJ6Aj4ARJNwtYtBIHW8) — 60 reviews (4.4★) · `park`
+- [Dry Creek Park](https://www.google.com/maps/search/?api=1&query=37.601920799999995%2C-122.0284369&query_place_id=ChIJM11hXXKVj4ARWzzKxYK4bvY) — 60 reviews (4.6★) · `park`
+- [Marlin Park](https://www.google.com/maps/search/?api=1&query=37.5587326%2C-122.2535994&query_place_id=ChIJB9nvSWaZj4ARA3e9K2wJqmQ) — 60 reviews (4.6★) · `park`
+- [Ravenswood Park](https://www.google.com/maps/search/?api=1&query=37.908876%2C-121.6151812&query_place_id=ChIJhcXuGWUCkIARAzJeehyLqLE) — 60 reviews (4.4★) · `park`
+- [William D. Wood Park](https://www.google.com/maps/search/?api=1&query=37.7954833%2C-122.22063729999999&query_place_id=ChIJVX7fgqqHj4ARv12NqZ-EvPE) — 60 reviews (3.8★) · `park`
+- [Almond Avenue Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.675854199999996%2C-121.74055650000001&query_place_id=ChIJReTPbF7nj4ARE-Rvr_-JEUQ) — 59 reviews (4.5★) · `park`
+- [Fruitvale Bridge Park](https://www.google.com/maps/search/?api=1&query=37.7696228%2C-122.229315&query_place_id=ChIJS_RTuI2Gj4ARDgkLA0CUEoY) — 59 reviews (4★) · `park`
+- [Marina Walk Park](https://www.google.com/maps/search/?api=1&query=38.0314787%2C-121.8874686&query_place_id=ChIJ51FB_5JbhYARklUeA3TKXpw) — 59 reviews (4.3★) · `park`
+- [Mariner Park](https://www.google.com/maps/search/?api=1&query=37.5251741%2C-122.2485499&query_place_id=ChIJZ49ycKSYj4AR2B38-NaPZyc) — 59 reviews (4.2★) · `park`
+- [Marlin Park Beach](https://www.google.com/maps/search/?api=1&query=37.5302237%2C-122.2504691&query_place_id=ChIJG0DYv_qZj4ARnA7c9ZrqyYQ) — 59 reviews (4.6★) · `park`
+- [Port Chicago Naval Magazine National Memorial](https://www.google.com/maps/search/?api=1&query=38.0575024%2C-122.02973039999999&query_place_id=ChIJc9n-hGVohYAROOBvuqNmX9o) — 59 reviews (4.2★) · `park`
+- [San Mateo Garden Center](https://www.google.com/maps/search/?api=1&query=37.5392738%2C-122.31450450000001&query_place_id=ChIJP-gXFlWej4ARY0XZDw7IK94) — 59 reviews (4.4★) · `garden`
+- [Buena Vista Playground](https://www.google.com/maps/search/?api=1&query=37.555266499999995%2C-121.94574170000001&query_place_id=ChIJU-MGtR_Bj4ARfiR-hyPG5Tc) — 58 reviews (4.3★) · `park`
+- [Highlands Park](https://www.google.com/maps/search/?api=1&query=37.9963148%2C-121.88175129999999&query_place_id=ChIJFUYgp0FZhYARpAaQyxka5sA) — 58 reviews (4.1★) · `park`
+- [Iron Horse Trail](https://www.google.com/maps/search/?api=1&query=37.7522027%2C-121.94659530000001&query_place_id=ChIJ2RRtGpvtj4ARy-Ig5NsqS4U) — 58 reviews (4.7★) · `park`
+- [Jacobsen Park](https://www.google.com/maps/search/?api=1&query=38.009152199999996%2C-121.7865893&query_place_id=ChIJUXiowgxXhYARyyuthBMZdyk) — 58 reviews (4.1★) · `park`
+- [Kottinger Community Park](https://www.google.com/maps/search/?api=1&query=37.659209%2C-121.86299299999997&query_place_id=ChIJnZSFs7bpj4ARHFqU4LzF4zc) — 58 reviews (4.7★) · `park`
+- [Las Juntas Open Space](https://www.google.com/maps/search/?api=1&query=37.9586725%2C-122.07503210000002&query_place_id=ChIJr74ll65mhYARWdc0GY8Mm-4) — 58 reviews (4.4★) · `park`
+- [Markley Creek Dog Park](https://www.google.com/maps/search/?api=1&query=37.9900934%2C-121.85266600000001&query_place_id=ChIJs3F4sQBZhYARi0xdchLylrM) — 58 reviews (4.3★) · `dog_park`
+- [Peggy Thomsen Pierce Street Park](https://www.google.com/maps/search/?api=1&query=37.8909109%2C-122.3069233&query_place_id=ChIJUYAIlyh5hYAR1yK5d85oyT8) — 58 reviews (4.4★) · `park`
+- [San Pablo Reservoir Oaks Picnic Area](https://www.google.com/maps/search/?api=1&query=37.9370239%2C-122.2572578&query_place_id=ChIJPwP7oSd7hYAR9EA3JZCvTAk) — 58 reviews (4.5★) · `park`
+- [Fire Truck Park](https://www.google.com/maps/search/?api=1&query=37.7507692%2C-121.89203520000001&query_place_id=ChIJge7SmHruj4ARG7SGp_-YARc) — 57 reviews (4.5★) · `park`
+- [Mission Creek Dog Park](https://www.google.com/maps/search/?api=1&query=37.770769%2C-122.3993002&query_place_id=ChIJQ0C15NJ_j4AR6bzucrt5Zkg) — 57 reviews (4.3★) · `dog_park`
+- [Nejedly Staging Area](https://www.google.com/maps/search/?api=1&query=38.017205%2C-122.147584&query_place_id=ChIJYe77EpJvhYAR3M5bBRt4Q1Q) — 57 reviews (4.5★) · `park`
+- [Piedmont Sports Field (Hampton Field)](https://www.google.com/maps/search/?api=1&query=37.8202369%2C-122.218056&query_place_id=ChIJK7OaxJ2Hj4ARXKKc7UViaTg) — 57 reviews (4.5★) · `park`
+- [Schaefer Ranch Park](https://www.google.com/maps/search/?api=1&query=37.7045866%2C-121.98173980000001&query_place_id=ChIJEYjEZBftj4ARYC9psOo8Pms) — 57 reviews (4.8★) · `park`
+- [Adam Rogers Park](https://www.google.com/maps/search/?api=1&query=37.7310279%2C-122.38381640000001&query_place_id=ChIJmXgD-xN_j4ARjIgcFMOkH8I) — 56 reviews (4.4★) · `city_park`
+- [Coyote Lagoon at Don Edwards](https://www.google.com/maps/search/?api=1&query=37.4804445%2C-121.94842419999999&query_place_id=ChIJBfvFXrPHj4AR4uKU18tlgUY) — 56 reviews (4.3★) · `wildlife_refuge`
+- [Delta Discovery Experience](https://www.google.com/maps/search/?api=1&query=38.0116625%2C-121.72832810000001&query_place_id=ChIJq_qIi3pWhYARIGYI58DDGLg) — 56 reviews (4.7★) · `park`
+- [Dorothy Bolte Park](https://www.google.com/maps/search/?api=1&query=37.9013907%2C-122.270174&query_place_id=ChIJq_vh2FZ5hYAR5vt7FnxOyME) — 56 reviews (4.4★) · `park`
+- [El Centro Trailhead (Dimond Canyon)](https://www.google.com/maps/search/?api=1&query=37.8074955%2C-122.21580859999999&query_place_id=ChIJvZljQqaHj4ARJYFbUNt2_KM) — 56 reviews (4.6★) · `park`
+- [Elephant Seal Overlook](https://www.google.com/maps/search/?api=1&query=37.116275699999996%2C-122.33049079999998&query_place_id=ChIJad6yxd3bhYARXg6l5axSyX4) — 56 reviews (4.6★) · `park`
+- [Falls Creek Park](https://www.google.com/maps/search/?api=1&query=37.3038697%2C-121.77244099999999&query_place_id=ChIJP1dIELEtjoARyILjuuHGPp4) — 56 reviews (4.4★) · `park`
+- [Fleming Park](https://www.google.com/maps/search/?api=1&query=37.3742855%2C-121.81809439999999&query_place_id=ChIJW_ZdwXvNj4AR-k7mzJUveDU) — 56 reviews (4.2★) · `park`
+- [Stern Grove Park](https://www.google.com/maps/search/?api=1&query=37.7350772%2C-122.47558839999999&query_place_id=ChIJh2OVZgB9j4AR4HZ3mMKFhCs) — 56 reviews (4.8★) · `city_park`
+- [Altamont Creek Park and Field](https://www.google.com/maps/search/?api=1&query=37.7217094%2C-121.7163666&query_place_id=ChIJsXVznCvhj4ARNd79r0DI5_8) — 55 reviews (4.6★) · `park`
+- [Cottage Row Mini Park](https://www.google.com/maps/search/?api=1&query=37.7865655%2C-122.4323427&query_place_id=ChIJY5JqhriAhYARDjEiF9btvT0) — 55 reviews (4.6★) · `city_park`
+- [Crescent Lawn | UC Berkeley](https://www.google.com/maps/search/?api=1&query=37.8714696%2C-122.2654299&query_place_id=ChIJg1p49J1-hYARYeEI2n80T20) — 55 reviews (4.7★) · `park`
+- [East Hillsdale Park](https://www.google.com/maps/search/?api=1&query=37.5365004%2C-122.3036785&query_place_id=ChIJIw9cjAOfj4ARwCyZNSQAt7c) — 55 reviews (4.5★) · `park`
+- [Fairway Glen Park](https://www.google.com/maps/search/?api=1&query=37.404955099999995%2C-121.96141859999999&query_place_id=ChIJhSMdfLDJj4AREuJkzGiY4Ek) — 55 reviews (4.3★) · `park`
+- [Great Stoneface Park](https://www.google.com/maps/search/?api=1&query=37.8967605%2C-122.27833349999999&query_place_id=ChIJ36QTqG15hYARXDutm_nFb44) — 55 reviews (4.6★) · `park`
+- [Gwen Jackson Park](https://www.google.com/maps/search/?api=1&query=37.7929093%2C-122.21419940000001&query_place_id=ChIJwXhh9lOGj4ARISaVyQQB_1g) — 55 reviews (4.2★) · `park`
+- [Magnolia Park](https://www.google.com/maps/search/?api=1&query=37.3901508%2C-122.0593305&query_place_id=ChIJqdB8wRi3j4ARHc-LCLYHWdg) — 55 reviews (4.5★) · `park`
+- [Maritime Garden](https://www.google.com/maps/search/?api=1&query=37.8069653%2C-122.42189250000001&query_place_id=ChIJvVI6-OCAhYARAjiIKm_DOWU) — 55 reviews (4.7★) · `garden`
+- [Oak Hills Park II](https://www.google.com/maps/search/?api=1&query=38.0103984%2C-121.95367119999997&query_place_id=ChIJdSL7DbZdhYARQeV-in_Ubkc) — 55 reviews (4.4★) · `park`
+- [Oliver W. Jones Memorial Park](https://www.google.com/maps/search/?api=1&query=37.4463128%2C-121.89543330000001&query_place_id=ChIJvd6kejHPj4ARi_Xuavb2VDA) — 55 reviews (4.4★) · `park`
+- [Pacific Heights Park](https://www.google.com/maps/search/?api=1&query=37.629160299999995%2C-122.4548624&query_place_id=ChIJc9vpWiJ6j4ARCCUiukGgTo8) — 55 reviews (4.3★) · `park`
+- [Shady Oak Park](https://www.google.com/maps/search/?api=1&query=37.9781902%2C-121.7014595&query_place_id=ChIJBWhqdkP_j4ARt3QGstNT3Zs) — 55 reviews (4.5★) · `park`
+- [State Court Park](https://www.google.com/maps/search/?api=1&query=37.923485899999996%2C-122.32669489999999&query_place_id=ChIJga5uQ1t4hYARqFFrYUAYVHA) — 55 reviews (4.2★) · `park`
+- [Terman Park](https://www.google.com/maps/search/?api=1&query=37.40213870000001%2C-122.12457019999998&query_place_id=ChIJ1zG_xIGwj4ARFd3Ws7GADX8) — 55 reviews (4.3★) · `park`
+- [Azevada Park](https://www.google.com/maps/search/?api=1&query=37.5319497%2C-121.9953208&query_place_id=ChIJ0XJqk1i_j4ARMiihb03L3fg) — 54 reviews (3.9★) · `park`
+- [Bayfront Park](https://www.google.com/maps/search/?api=1&query=37.7691924%2C-122.3856652&query_place_id=ChIJ19dSSwB_j4AR-fp3QPS9Ug8) — 54 reviews (4.7★) · `city_park`
+- [Deerview Park](https://www.google.com/maps/search/?api=1&query=37.7217146%2C-122.05911470000001&query_place_id=ChIJr-Wk7nKSj4ARoXf9_8LA-Nk) — 54 reviews (4.5★) · `park`
+- [Delaney Park](https://www.google.com/maps/search/?api=1&query=37.993441%2C-121.6733326&query_place_id=ChIJiYKrLA__j4AR4HnsriBq9OM) — 54 reviews (4.9★) · `park`
+- [Fairyland Hill](https://www.google.com/maps/search/?api=1&query=37.8098488%2C-122.26102360000002&query_place_id=ChIJlV3GUHKHj4ARb9WkWH0YovE) — 54 reviews (4.6★) · `park`
+- [Kings Dog Park](https://www.google.com/maps/search/?api=1&query=37.945799099999995%2C-121.72061459999999&query_place_id=ChIJcclhyc_5j4ARzzjI7gkF2ak) — 54 reviews (4.6★) · `dog_park`
+- [Lenzen Park](https://www.google.com/maps/search/?api=1&query=37.336397600000005%2C-121.9093477&query_place_id=ChIJ9QJM72bLj4ARuCA-MhmORFE) — 54 reviews (4.4★) · `park`
+- [Rancho Higuera Historical Park](https://www.google.com/maps/search/?api=1&query=37.4912069%2C-121.9049964&query_place_id=ChIJQ6-XUXTGj4ARXZhDdgX5vu8) — 54 reviews (4.2★) · `park`
+- [Summerwood Park](https://www.google.com/maps/search/?api=1&query=37.93871010000001%2C-121.71687399999999&query_place_id=ChIJabrCidL-j4ARzXSal7QMQLU) — 54 reviews (4.5★) · `park`
+- [Tawny Park](https://www.google.com/maps/search/?api=1&query=37.6635834%2C-121.85482110000001&query_place_id=ChIJB8Ie6Ezoj4ARnW1LHnrUmcw) — 54 reviews (4.3★) · `park`
+- [Alma Park](https://www.google.com/maps/search/?api=1&query=37.894760600000005%2C-122.0633259&query_place_id=ChIJNXxvhelhhYARCPi5g_FhJHM) — 53 reviews (4.3★) · `park`
+- [Charles Street Gardens](https://www.google.com/maps/search/?api=1&query=37.372938%2C-122.03730879999999&query_place_id=ChIJl0Xrkl-2j4ARmPurARk1gR0) — 53 reviews (4.8★) · `garden`
+- [Esplanade, Yerba Buena Gardens](https://www.google.com/maps/search/?api=1&query=37.7852391%2C-122.40294349999999&query_place_id=ChIJPxhyvoeAhYAR9RYXxhMRWCg) — 53 reviews (4.6★) · `park`
+- [Fairmont Terrace Park](https://www.google.com/maps/search/?api=1&query=37.70737%2C-122.1129479&query_place_id=ChIJqSD_adSRj4ARAAjTPA4zL7o) — 53 reviews (4.5★) · `park`
+- [Hillsdale Park](https://www.google.com/maps/search/?api=1&query=38.0131608%2C-121.9272225&query_place_id=ChIJNcCjYj5chYARAAtkhKq3Aqo) — 53 reviews (4.5★) · `park`
+- [Magnolia Park](https://www.google.com/maps/search/?api=1&query=37.9731105%2C-121.7252152&query_place_id=ChIJAb_PLbD4j4ARUWgqO0hPT6I) — 53 reviews (4.6★) · `park`
+- [Rex Manor Park](https://www.google.com/maps/search/?api=1&query=37.4013448%2C-122.0899188&query_place_id=ChIJ7TkZebGwj4ARDLdMMlyHKDU) — 53 reviews (4.4★) · `park`
+- [Rose Garden Park](https://www.google.com/maps/search/?api=1&query=37.9652746%2C-121.72186149999997&query_place_id=ChIJKwKse7X4j4ARjPTePJEl0Rg) — 53 reviews (4.6★) · `park`
+- [Shorebird Park](https://www.google.com/maps/search/?api=1&query=37.553795699999995%2C-122.24862689999999&query_place_id=ChIJve94VmyZj4ARfczOK8lgGyA) — 53 reviews (4.5★) · `park`
+- [Summit Park](https://www.google.com/maps/search/?api=1&query=37.718162299999996%2C-121.72043649999999&query_place_id=ChIJp9NWO9Xmj4ARNu19DxXPNQM) — 53 reviews (4.3★) · `park`
+- [15th Avenue Steps](https://www.google.com/maps/search/?api=1&query=37.7595412%2C-122.47234329999999&query_place_id=ChIJJ6z6IGGHhYAR8s_qKsMd7tc) — 52 reviews (4.3★) · `city_park`
+- [Coal Creek Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.3328859%2C-122.2015644&query_place_id=ChIJh_toGkauj4ARRJgesX3Pzs0) — 52 reviews (4.5★) · `nature_preserve`
+- [Edible Schoolyard Berkeley](https://www.google.com/maps/search/?api=1&query=37.8825194%2C-122.27614829999997&query_place_id=ChIJ0drby7p-hYARc2vdfZgC0Hc) — 52 reviews (4.6★) · `garden`
+- [Fort Mason Community Garden](https://www.google.com/maps/search/?api=1&query=37.8059808%2C-122.42785669999999&query_place_id=ChIJS72bFN-AhYARjnZX6lu680Y) — 52 reviews (4.8★) · `garden`
+- [Green Hills Park](https://www.google.com/maps/search/?api=1&query=37.6068766%2C-122.4015963&query_place_id=ChIJrc-OXnV3j4ARWCK6xEu-eI8) — 52 reviews (4.2★) · `park`
+- [North Fair Oaks Community Park](https://www.google.com/maps/search/?api=1&query=37.476509%2C-122.19618589999999&query_place_id=ChIJAwlcEECjj4ARkLmAQMmXL0E) — 52 reviews (4.2★) · `park`
+- [Seal Point](https://www.google.com/maps/search/?api=1&query=37.5753963%2C-122.2970307&query_place_id=ChIJbSIwjpqej4AREL3fvVBwxi8) — 52 reviews (4.4★) · `park`
+- [Sunnyside Playground Park](https://www.google.com/maps/search/?api=1&query=37.733609099999995%2C-122.4479514&query_place_id=ChIJ871KDoR9j4ARPqxCc8Tbz7g) — 52 reviews (4.7★) · `city_park`
+- [Sunset Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.670566%2C-121.77393300000001&query_place_id=ChIJdZ_eIYXnj4ARbF9PW1H96A0) — 52 reviews (4.6★) · `park`
+- [University Square Park](https://www.google.com/maps/search/?api=1&query=37.4591339%2C-122.13237859999998&query_place_id=ChIJ9ZGR2XS7j4ARKw93hSHhYOc) — 52 reviews (4.3★) · `park`
+- [Heritage Grove](https://www.google.com/maps/search/?api=1&query=37.294899099999995%2C-122.255463&query_place_id=ChIJ0eJA06Ouj4AR0RoSU1Wy1D0) — 51 reviews (4.8★) · `park`
+- [Berkeley Way Mini-Park](https://www.google.com/maps/search/?api=1&query=37.8703569%2C-122.28690460000001&query_place_id=ChIJldte5r9-hYARHsn6HrSChh0) — 50 reviews (4.2★) · `park`
+- [Cogswell Plaza](https://www.google.com/maps/search/?api=1&query=37.446326899999995%2C-122.16298549999999&query_place_id=ChIJd6Aj1Dm7j4ARJHMtVmcXi5Y) — 50 reviews (4.3★) · `park`
+- [Duncan & Castro Open Space](https://www.google.com/maps/search/?api=1&query=37.7459537%2C-122.4333609&query_place_id=ChIJjxCgpW1-j4ARjkv1eyUkxOM) — 50 reviews (4.4★) · `city_park`
+- [Hemme Station Park](https://www.google.com/maps/search/?api=1&query=37.8411243%2C-122.02596859999998&query_place_id=ChIJBaCwwxGLj4ARvaHxVDOQJ5U) — 50 reviews (4.2★) · `park`
+- [Meadow Park](https://www.google.com/maps/search/?api=1&query=37.3802206%2C-121.9709664&query_place_id=ChIJe4CyxRDJj4ARhTTIhUwYbg8) — 50 reviews (4.5★) · `park`
+- [Northfront Park](https://www.google.com/maps/search/?api=1&query=37.7130711%2C-121.72043649999999&query_place_id=ChIJAStkSSvnj4ARlsH6V_19x68) — 50 reviews (4.3★) · `park`
+- [Sobrante Park](https://www.google.com/maps/search/?api=1&query=37.726363299999996%2C-122.17713889999999&query_place_id=ChIJYSOX0H2Fj4ARWf9RM0LA9W0) — 50 reviews (4.3★) · `park`
+- [Cydney Casper Park](https://www.google.com/maps/search/?api=1&query=36.9911451%2C-121.5805719&query_place_id=ChIJJ888jEzjkYARZViYf0bwQg8) — 49 reviews (4.7★) · `park`
+- [Novarina Park](https://www.google.com/maps/search/?api=1&query=37.9753393%2C-121.7226872&query_place_id=ChIJfUACQ6z4j4ARTXrRR1iVkjA) — 49 reviews (4.4★) · `park`
+- [POPOS (Public Rooftop Garden)](https://www.google.com/maps/search/?api=1&query=37.7876457%2C-122.40382689999998&query_place_id=ChIJM_LuXoiAhYARO4CPxM8h4wQ) — 49 reviews (4.4★) · `park`
+- [Presentation Park](https://www.google.com/maps/search/?api=1&query=37.8682364%2C-122.2791087&query_place_id=ChIJ6eznJZd-hYARnJM9fx2l6t8) — 49 reviews (4.3★) · `park`
+- [Ralph T Wattenburger Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.709474%2C-121.74536699999999&query_place_id=ChIJS5oH0-Hmj4ARCxuo97n_rII) — 49 reviews (4.7★) · `park`
+- [South Park](https://www.google.com/maps/search/?api=1&query=37.7815955%2C-122.39396210000001&query_place_id=ChIJC7w8g0l_j4ARngbLrlCl4GA) — 49 reviews (4.5★) · `city_park`
+- [Varsity Park](https://www.google.com/maps/search/?api=1&query=37.3750035%2C-122.08961959999999&query_place_id=ChIJNae8-Smxj4ARiFpiBVX95rE) — 49 reviews (4.1★) · `park`
+- [Vinci Park](https://www.google.com/maps/search/?api=1&query=37.3809353%2C-121.87173920000001&query_place_id=ChIJ63xBx1rNj4AR0C1Y0MGZZxo) — 49 reviews (4.2★) · `park`
+- [Brisbane Dog Park](https://www.google.com/maps/search/?api=1&query=37.686900699999995%2C-122.40387519999999&query_place_id=ChIJN0BWLyd5j4ARnh2VJCKFaRk) — 48 reviews (4★) · `dog_park`
+- [Civic Center Park](https://www.google.com/maps/search/?api=1&query=37.5340735%2C-122.02927210000001&query_place_id=ChIJGYHOTWK_j4AR6tjT_QCgi5c) — 48 reviews (4.5★) · `park`
+- [Daggett Park](https://www.google.com/maps/search/?api=1&query=37.766810299999996%2C-122.39632530000002&query_place_id=ChIJKcuvL8x_j4AR8wAf_cY38W4) — 48 reviews (4.5★) · `park`
+- [Deerfield Park](https://www.google.com/maps/search/?api=1&query=37.97332490000001%2C-121.76994900000001&query_place_id=ChIJJ1CBGdRXhYARSImArmRAJ0I) — 48 reviews (4.1★) · `park`
+- [Garden for the Environment](https://www.google.com/maps/search/?api=1&query=37.7592279%2C-122.46363170000001&query_place_id=ChIJ4ak_VV-HhYARymuDKmKSHyE) — 48 reviews (4.9★) · `garden`
+- [Mayhews Landings Park with Basketball Court](https://www.google.com/maps/search/?api=1&query=37.5379599%2C-122.04129879999999&query_place_id=ChIJiRJ_Lfy-j4ARyBLH3lC8P3k) — 48 reviews (4.3★) · `park`
+- [Monkey Island](https://www.google.com/maps/search/?api=1&query=37.8607612%2C-122.2470432&query_place_id=ChIJVboCdct9hYARjTVXCRiM_y4) — 48 reviews (4.5★) · `park`
+- [Pump Track](https://www.google.com/maps/search/?api=1&query=37.3014861%2C-122.02601949999999&query_place_id=ChIJT17-bhe1j4ARYBG1eU1ec0s) — 48 reviews (4.4★) · `park`
+- [Redwood Grove Garden](https://www.google.com/maps/search/?api=1&query=37.766597%2C-122.47181999999998&query_place_id=ChIJa04xZ2iHhYARFjq3zH0OIrA) — 48 reviews (4.7★) · `garden`
+- [Solano Street Park](https://www.google.com/maps/search/?api=1&query=37.9424363%2C-122.33155300000001&query_place_id=ChIJJdMUzyJ4hYAR56CalqgdGbQ) — 48 reviews (4.5★) · `park`
+- [Stevens Creek Trail Central Avenue Entrance](https://www.google.com/maps/search/?api=1&query=37.395022999999995%2C-122.069758&query_place_id=ChIJZ-kB-cS3j4ARjdcv44IjMR4) — 48 reviews (4.7★) · `park`
+- [Trail Head, Sabercat Creek Trail](https://www.google.com/maps/search/?api=1&query=37.524526%2C-121.9221916&query_place_id=ChIJW5YeBL_Gj4AR99OET3N9GOA) — 48 reviews (4.5★) · `park`
+- [Antioch Dunes National Wildlife Refuge](https://www.google.com/maps/search/?api=1&query=38.016031%2C-121.796036&query_place_id=ChIJTVguGmlXhYARHTxyqua_d7g) — 47 reviews (4.3★) · `wildlife_refuge`
+- [Dartmouth Tot Lot](https://www.google.com/maps/search/?api=1&query=37.8845725%2C-122.29368900000001&query_place_id=ChIJh461fct-hYAR1oJ7QYFkAqY) — 47 reviews (4.4★) · `park`
+- [De Anza Historical Park](https://www.google.com/maps/search/?api=1&query=37.5622703%2C-122.32855479999999&query_place_id=ChIJ9w3jGXKej4ARa31PsXENrVo) — 47 reviews (4.3★) · `park`
+- [Hester Park](https://www.google.com/maps/search/?api=1&query=37.331457199999996%2C-121.9254096&query_place_id=ChIJjX36_EHLj4ARK6SHUsn6390) — 47 reviews (4.4★) · `park`
+- [Iris Chang Park](https://www.google.com/maps/search/?api=1&query=37.400677%2C-121.91839959999999&query_place_id=ChIJ19fZi6rJj4ARjmSQ-ek772k) — 47 reviews (4.7★) · `park`
+- [Julpun Community Park](https://www.google.com/maps/search/?api=1&query=37.970915%2C-121.74394939999999&query_place_id=ChIJZ2DYd4r5j4ARgbSLtlhKXqA) — 47 reviews (4.7★) · `park`
+- [McCandless Park](https://www.google.com/maps/search/?api=1&query=37.4068093%2C-121.89857509999999&query_place_id=ChIJ_be5fkLPj4AR1WNu_V061PE) — 47 reviews (4.9★) · `park`
+- [Muriel Leff Mini Park](https://www.google.com/maps/search/?api=1&query=37.7799841%2C-122.46524190000001&query_place_id=ChIJDwhM3T6HhYARmj-H1q9dfQg) — 47 reviews (4.6★) · `city_park`
+- [O'Connor Park](https://www.google.com/maps/search/?api=1&query=37.320856%2C-121.91264269999999&query_place_id=ChIJDag_FNzLj4ARl52QLqODFCI) — 47 reviews (4.6★) · `park`
+- [Swegles Park](https://www.google.com/maps/search/?api=1&query=37.386686499999996%2C-122.00369320000001&query_place_id=ChIJJxg4ViO2j4ARDUyz-S4rQRM) — 47 reviews (4.6★) · `park`
+- [Tony B. Santos Park](https://www.google.com/maps/search/?api=1&query=37.72197%2C-122.1789938&query_place_id=ChIJSw9wtnyFj4ARlAAwRPxQhNI) — 47 reviews (4.3★) · `park`
+- [UC Master Gardener Martial Cottle Park Community Education Center](https://www.google.com/maps/search/?api=1&query=37.259935999999996%2C-121.83893999999998&query_place_id=ChIJQYywdxMzjoARsroa-PQPuSU) — 47 reviews (4.8★) · `garden`
+- [Venice Beach - Half Moon Bay State Beach](https://www.google.com/maps/search/?api=1&query=37.4792549%2C-122.4492714&query_place_id=ChIJtdN_6mVzj4ARpzuvtPwPAA4) — 47 reviews (4.5★) · `state_park`
+- [Vista Park](https://www.google.com/maps/search/?api=1&query=37.4947918%2C-122.29578710000001&query_place_id=ChIJZ763Mtuhj4ARTIagj_zAtYs) — 47 reviews (4.3★) · `park`
+- [Bridgepointe Park](https://www.google.com/maps/search/?api=1&query=37.5340296%2C-122.05452269999999&query_place_id=ChIJRyVXTvG-j4ARyY7__b6-DEU) — 46 reviews (4.6★) · `park`
+- [Castle Rock Youth Sports Park](https://www.google.com/maps/search/?api=1&query=37.9113377%2C-122.0111633&query_place_id=ChIJa4xEJxRghYARQ1Hv6ck96Vo) — 46 reviews (4.5★) · `park`
+- [Dorothy Erskine Park](https://www.google.com/maps/search/?api=1&query=37.7339139%2C-122.4394693&query_place_id=ChIJjfpNvnt-j4ARpHBQlkAiEko) — 46 reviews (4.4★) · `city_park`
+- [Iron Horse Park](https://www.google.com/maps/search/?api=1&query=37.9944093%2C-122.05228880000001&query_place_id=ChIJVcVKJvdmhYAR2tAJexwV77M) — 46 reviews (4.3★) · `park`
+- [Parchester Park](https://www.google.com/maps/search/?api=1&query=37.9825616%2C-122.35313079999999&query_place_id=ChIJh27U1dR3hYARqeLUp-veZzs) — 46 reviews (4.3★) · `park`
+- [Sleeper Park](https://www.google.com/maps/search/?api=1&query=37.371303999999995%2C-122.0680903&query_place_id=ChIJd2b2NrS3j4ARtYfzesVSA4s) — 46 reviews (4.4★) · `park`
+- [Audrey C. Rust Commemorative Site](https://www.google.com/maps/search/?api=1&query=37.3084893%2C-122.1990448&query_place_id=ChIJ00zwYXOuj4ARSMg8LAImEQc) — 45 reviews (4.8★) · `nature_preserve`
+- [Edendale Dog Park](https://www.google.com/maps/search/?api=1&query=37.6940589%2C-122.11879479999999&query_place_id=ChIJF_ET38eRj4AR-6i9GsAddWQ) — 45 reviews (3.9★) · `dog_park`
+- [Orchard Park](https://www.google.com/maps/search/?api=1&query=37.3783787%2C-121.89642870000002&query_place_id=ChIJQfmfzgnNj4ARnAMEbuf6uKA) — 45 reviews (4.5★) · `park`
+- [Pelican View](https://www.google.com/maps/search/?api=1&query=37.448498%2C-122.0937445&query_place_id=ChIJd9Vn9Ze7j4AR0lvhtGZqlkQ) — 45 reviews (4.6★) · `park`
+- [Santa Teresa Spring](https://www.google.com/maps/search/?api=1&query=37.2259917%2C-121.79517639999999&query_place_id=ChIJW8ZQrGIvjoARd0s6yR4iqis) — 45 reviews (4.6★) · `park`
+- [Veterans Plaza Park](https://www.google.com/maps/search/?api=1&query=37.661697%2C-121.87698510000001&query_place_id=ChIJEb2376Lpj4AR4Ef0px-ixEQ) — 45 reviews (4.3★) · `park`
+- [Al Caffodio Park](https://www.google.com/maps/search/?api=1&query=37.6924639%2C-121.78653460000001&query_place_id=ChIJsyQik7Xnj4ARrV83TJv6YHU) — 44 reviews (4.5★) · `park`
+- [Arlington Park](https://www.google.com/maps/search/?api=1&query=37.7480846%2C-121.89232719999998&query_place_id=ChIJVT7iFnvuj4ART9Apqc6iKTc) — 44 reviews (4.5★) · `park`
+- [Broadway Tunnel West Mini Park](https://www.google.com/maps/search/?api=1&query=37.796451399999995%2C-122.41742359999999&query_place_id=ChIJoYHPHeyAhYARqhdlUCSSynA) — 44 reviews (4.3★) · `city_park`
+- [Chetwood Park](https://www.google.com/maps/search/?api=1&query=37.391484999999996%2C-122.06012960000001&query_place_id=ChIJb3eAYRi3j4ARHqGDPBLJDvs) — 44 reviews (4.3★) · `park`
+- [Clayton Community Park](https://www.google.com/maps/search/?api=1&query=37.9299569%2C-121.92008840000001&query_place_id=ChIJ14ln_VtfhYARIWsTmFdsfbY) — 44 reviews (4.6★) · `park`
+- [Halcyon Commons](https://www.google.com/maps/search/?api=1&query=37.8540734%2C-122.26100199999999&query_place_id=ChIJmZnKH9R9hYARjP4ldzflV8A) — 44 reviews (4.4★) · `park`
+- [Hanna Ranch Park](https://www.google.com/maps/search/?api=1&query=37.9917136%2C-122.23568139999999&query_place_id=ChIJny9FK75whYARjgIeEW9zVdo) — 44 reviews (4.4★) · `park`
+- [John L. Carter Memorial Park](https://www.google.com/maps/search/?api=1&query=37.465883999999996%2C-122.4277903&query_place_id=ChIJO-UQ8rR0j4AR5Nqfx5qKjRw) — 44 reviews (4.1★) · `park`
+- [Killdeer Park](https://www.google.com/maps/search/?api=1&query=37.5686901%2C-122.26049219999999&query_place_id=ChIJaR1EFzSZj4ARGPtANsfA6Lk) — 44 reviews (4.5★) · `park`
+- [Korean War Memorial](https://www.google.com/maps/search/?api=1&query=37.8011689%2C-122.4610074&query_place_id=ChIJcWqpDdmGhYARoJF5AjXY1gQ) — 44 reviews (4.8★) · `park`
+- [Mount Umunhum Trailhead](https://www.google.com/maps/search/?api=1&query=37.15949%2C-121.87561&query_place_id=ChIJp1KaRls7joAR2Wk_BIA14RM) — 44 reviews (4.9★) · `park`
+- [Bateman Mall Park](https://www.google.com/maps/search/?api=1&query=37.8543972%2C-122.25719239999998&query_place_id=ChIJzVPIdtF9hYARVB9BQH5PPfU) — 43 reviews (4.5★) · `park`
+- [Bayside Manor Park](https://www.google.com/maps/search/?api=1&query=37.6044254%2C-122.38685779999999&query_place_id=ChIJgQByj7x3j4ARwhrbm19lu_o) — 43 reviews (4★) · `park`
+- [Clayton Dog Park](https://www.google.com/maps/search/?api=1&query=37.9287664%2C-121.92303619999998&query_place_id=ChIJ_ZnVwl1fhYARGKv6jsrUvS4) — 43 reviews (4★) · `park`
+- [Guerrero Park](https://www.google.com/maps/search/?api=1&query=37.745548%2C-122.42206&query_place_id=ChIJWd7zWkJ-j4ARHABsiGgFSts) — 43 reviews (4★) · `park`
+- [Luna Park Chalk Art Festival](https://www.google.com/maps/search/?api=1&query=37.3516609%2C-121.8851402&query_place_id=ChIJx_Wdc47Mj4ARVw-lPy1v9KY) — 43 reviews (4.5★) · `park`
+- [Prince Street Park](https://www.google.com/maps/search/?api=1&query=37.8521253%2C-122.27522800000001&query_place_id=ChIJ--ihH31-hYARmvC_NIS2GfY) — 43 reviews (4.2★) · `park`
+- [Roy Avenue Park](https://www.google.com/maps/search/?api=1&query=37.288371999999995%2C-121.8836183&query_place_id=ChIJ39ot9HMzjoARtarPv_lBVVo) — 43 reviews (4.4★) · `park`
+- [Terrace View Park](https://www.google.com/maps/search/?api=1&query=37.884144600000006%2C-122.25073760000001&query_place_id=ChIJ550A5RZ8hYARe0oDu0mH9Rw) — 43 reviews (4.4★) · `park`
+- [Thousand Oaks Tot Park](https://www.google.com/maps/search/?api=1&query=37.892307699999996%2C-122.28172119999998&query_place_id=ChIJcb-lmkx5hYAR22Zbc7iuaX0) — 43 reviews (4.6★) · `park`
+- [BART Linear Park](https://www.google.com/maps/search/?api=1&query=38.0013473%2C-122.025941&query_place_id=ChIJw-EhNQ9nhYARUc8S_XHeWxY) — 42 reviews (3.9★) · `park`
+- [David Jones Park](https://www.google.com/maps/search/?api=1&query=37.5788699%2C-122.05665339999997&query_place_id=ChIJ2xAsM4qVj4ARDWIMWsjCiqo) — 42 reviews (4.1★) · `park`
+- [Hillview Park](https://www.google.com/maps/search/?api=1&query=37.3798986%2C-122.1123241&query_place_id=ChIJY1WnLu-wj4AROwsBAqUA9Ik) — 42 reviews (4.3★) · `park`
+- [Livermore Skatepark](https://www.google.com/maps/search/?api=1&query=37.6760464%2C-121.7506318&query_place_id=ChIJhz4M-2Tnj4AROKnKmPFB1hw) — 42 reviews (4.4★) · `park`
+- [Mary Ellen Pleasant Memorial Park](https://www.google.com/maps/search/?api=1&query=37.787672%2C-122.42707010000001&query_place_id=ChIJycPhn7-AhYARftlCn7xlpnk) — 42 reviews (4.5★) · `park`
+- [Parque de Padre Mateo Sheedy](https://www.google.com/maps/search/?api=1&query=37.3134204%2C-121.88054249999999&query_place_id=ChIJiYeEc0gzjoARNoT9INQb0yw) — 42 reviews (4.4★) · `park`
+- [Shannon Park](https://www.google.com/maps/search/?api=1&query=37.5368613%2C-122.24180539999999&query_place_id=ChIJjc70kJWYj4ARPga0F-xq5fc) — 42 reviews (4.4★) · `park`
+- [Walnut Creek Open Space](https://www.google.com/maps/search/?api=1&query=37.9330114%2C-122.00419509999999&query_place_id=ChIJkd1PTGNghYARiVkcG9QQ-oQ) — 42 reviews (4.7★) · `park`
+- [Athens-Avalon Green Space](https://www.google.com/maps/search/?api=1&query=37.7249961%2C-122.4259563&query_place_id=ChIJHamw44x-j4ARzvGBYc_CmLQ) — 41 reviews (4.5★) · `garden`
+- [Carl Eklund Memorial Park](https://www.google.com/maps/search/?api=1&query=37.358866899999995%2C-121.998225&query_place_id=ChIJ-eaXWfm1j4ARoJN_NspSmEU) — 41 reviews (4.1★) · `park`
+- [Centennial Park](https://www.google.com/maps/search/?api=1&query=37.907402999999995%2C-122.3030759&query_place_id=ChIJrWfkZBl5hYARp2fMfvxI6Jk) — 41 reviews (4.3★) · `park`
+- [Kennelly Skatepark](https://www.google.com/maps/search/?api=1&query=37.832369799999995%2C-122.2304168&query_place_id=ChIJE4wyM4Z9hYARMaYY5iS2Uhg) — 41 reviews (2.3★) · `park`
+- [Kids Playground at ED R Levin Park](https://www.google.com/maps/search/?api=1&query=37.454321199999995%2C-121.85967939999999&query_place_id=ChIJY2bkfS_Pj4ARewcsUynMDfc) — 41 reviews (4.8★) · `park`
+- [Lamorinda Skatepark](https://www.google.com/maps/search/?api=1&query=37.8414041%2C-122.1267505&query_place_id=ChIJOQHuArWJj4ARKXiN_52l0nA) — 41 reviews (4.4★) · `park`
+- [Los Altos Hills Dog Park](https://www.google.com/maps/search/?api=1&query=37.379731299999996%2C-122.1503084&query_place_id=ChIJk6MoO22xj4ARamoaQk-F2Nc) — 41 reviews (3.3★) · `dog_park`
+- [Luna Park](https://www.google.com/maps/search/?api=1&query=37.3611676%2C-121.8898013&query_place_id=ChIJ8xDUJ2PMj4ARME91b5hu7v8) — 41 reviews (4.3★) · `park`
+- [Marion Panaretos Rose Garden](https://www.google.com/maps/search/?api=1&query=37.561116399999996%2C-122.321197&query_place_id=ChIJPXVnqy6fj4AR1nXoStWFpV4) — 41 reviews (4.8★) · `garden`
+- [Mill Creek Hollow](https://www.google.com/maps/search/?api=1&query=37.7757404%2C-121.98896089999998&query_place_id=ChIJHYtvXMzyj4ARmUkJYb9fnbQ) — 41 reviews (4.5★) · `park`
+- [Miraloma Playground Park](https://www.google.com/maps/search/?api=1&query=37.7389467%2C-122.44944109999999&query_place_id=ChIJ24wg19h9j4ARsp-LoIqDTT8) — 41 reviews (4★) · `city_park`
+- [Monte Verde Park](https://www.google.com/maps/search/?api=1&query=37.635064799999995%2C-122.4499821&query_place_id=ChIJcQPZ3SZ6j4ARS22L_O0R8dY) — 41 reviews (3.7★) · `park`
+- [Mountain Lake Park Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7873739%2C-122.4668973&query_place_id=ChIJ436J45qHhYARreClUT0Ggek) — 41 reviews (4.8★) · `dog_park`
+- [Paso Nogal Dog Park](https://www.google.com/maps/search/?api=1&query=37.9666948%2C-122.0893815&query_place_id=ChIJeWASRABlhYARuEBXd3jllBY) — 41 reviews (4.7★) · `dog_park`
+- [Towata Park City of Alameda](https://www.google.com/maps/search/?api=1&query=37.750644799999996%2C-122.2366552&query_place_id=ChIJgcmpNieEj4ARewLECv6cfj8) — 41 reviews (4.5★) · `park`
+- [(Entrance) King Estate Open Space](https://www.google.com/maps/search/?api=1&query=37.766416%2C-122.15759800000001&query_place_id=ChIJy35JVU-Pj4ARug9Y8F-18eM) — 40 reviews (4.7★) · `park`
+- [Americana Park](https://www.google.com/maps/search/?api=1&query=38.0254058%2C-121.909408&query_place_id=ChIJabj9pnNchYARNJugwF7atQc) — 40 reviews (4.2★) · `park`
+- [Anniversary Trail Picnic Tables](https://www.google.com/maps/search/?api=1&query=37.3615564%2C-122.24687859999999&query_place_id=ChIJ84RQvF6vj4AR8g-2D_FcK8M) — 40 reviews (4.7★) · `park`
+- [Briones Regional Park](https://www.google.com/maps/search/?api=1&query=37.9652216%2C-122.14024979999999&query_place_id=ChIJbyoHSuVkhYARvHo_j78Bt1Q) — 40 reviews (4.7★) · `park`
+- [Brotherhood Mini Dog Park](https://www.google.com/maps/search/?api=1&query=37.7147102%2C-122.4764974&query_place_id=ChIJw1Txh0x8j4ARNHz2IQYyQ1E) — 40 reviews (4.1★) · `dog_park`
+- [Charlie Dorr Mini Park](https://www.google.com/maps/search/?api=1&query=37.8664868%2C-122.28412109999998&query_place_id=ChIJnTQmcpR-hYARX7xT1PxNj-E) — 40 reviews (4.5★) · `park`
+- [Circle of Palms Plaza](https://www.google.com/maps/search/?api=1&query=37.3334091%2C-121.8894968&query_place_id=ChIJPcvPR7vMj4ARBVR8RqqS1wQ) — 40 reviews (4.7★) · `park`
+- [Cow Hollow Playground Park](https://www.google.com/maps/search/?api=1&query=37.7973164%2C-122.4448719&query_place_id=ChIJc52JY9OAhYARSuM4TIcnlQc) — 40 reviews (4.7★) · `city_park`
+- [Larsen Peak](https://www.google.com/maps/search/?api=1&query=37.7499561%2C-122.4698966&query_place_id=ChIJ6U8ULGCHhYAR_0-VUIshLm8) — 40 reviews (4.8★) · `park`
+- [Lila Bringhurst Community Park](https://www.google.com/maps/search/?api=1&query=37.502271199999996%2C-121.9462785&query_place_id=ChIJvR39Qm_Hj4ARxX39gtjFKCk) — 40 reviews (4.9★) · `park`
+- [Mission Hills Park](https://www.google.com/maps/search/?api=1&query=37.707642199999995%2C-122.44132719999999&query_place_id=ChIJ28_S-aF-j4AR62-JR6cgBzs) — 40 reviews (4.2★) · `park`
+- [Union Landing Park](https://www.google.com/maps/search/?api=1&query=37.571808399999995%2C-122.065723&query_place_id=ChIJcelxiR6-j4ARF-gvEbBSUM4) — 40 reviews (4.3★) · `park`
+- [Carrabelle Park](https://www.google.com/maps/search/?api=1&query=37.2114505%2C-121.83526619999998&query_place_id=ChIJ9YzDb0gwjoARcjXml5RmMcs) — 39 reviews (4.2★) · `park`
+- [Everett N. "Eddie" Souza Park](https://www.google.com/maps/search/?api=1&query=37.3628958%2C-121.9680216&query_place_id=ChIJmZAo9YTLj4ARIkxxxcCoaxY) — 39 reviews (4.7★) · `park`
+- [Humphrey Playlot](https://www.google.com/maps/search/?api=1&query=37.948316299999995%2C-122.34290150000001&query_place_id=ChIJVTzC2_d3hYARhS7QvaY_UbI) — 39 reviews (3.7★) · `park`
+- [McLaren Park Dog Play Area 2](https://www.google.com/maps/search/?api=1&query=37.7149798%2C-122.42735780000001&query_place_id=ChIJQ6S2-et-j4ARC9utNW0RGx4) — 39 reviews (4.8★) · `dog_park`
+- [Monarch Park](https://www.google.com/maps/search/?api=1&query=37.9383907%2C-121.7063502&query_place_id=ChIJl23fj4n_j4ARB31fA0MxiEQ) — 39 reviews (4.8★) · `park`
+- [Roberto Antonio Balermino Park](https://www.google.com/maps/search/?api=1&query=37.3090589%2C-121.87897279999999&query_place_id=ChIJ8YJuqjgzjoAR01zCdCCz5Jg) — 39 reviews (4.2★) · `park`
+- [Shad Park](https://www.google.com/maps/search/?api=1&query=37.561486699999996%2C-122.2518293&query_place_id=ChIJ3fbxxSWZj4ARBIRkQxtCxxI) — 39 reviews (4.5★) · `park`
+- [Sheffield Village Park](https://www.google.com/maps/search/?api=1&query=37.7350256%2C-122.1349295&query_place_id=ChIJUyA8_rGPj4ARUyaGKC6b7Jo) — 39 reviews (4.2★) · `park`
+- [Vista Point | Edgewood Park](https://www.google.com/maps/search/?api=1&query=37.4646483%2C-122.28128670000001&query_place_id=ChIJ6wgn_HShj4ARHO55_qYtzFc) — 39 reviews (4.8★) · `park`
+- [Windmill Springs Park](https://www.google.com/maps/search/?api=1&query=37.3080356%2C-121.824964&query_place_id=ChIJe9StcdIzjoAREiP_M0hw_QE) — 39 reviews (4.4★) · `park`
+- [Buri Buri Park](https://www.google.com/maps/search/?api=1&query=37.652145399999995%2C-122.4420129&query_place_id=ChIJrQQkoKd5j4ARE-NMZug4w_g) — 38 reviews (4.6★) · `park`
+- [Diablo Valley Overlook](https://www.google.com/maps/search/?api=1&query=37.876488699999996%2C-121.93108760000001&query_place_id=ChIJu1j5I5r1j4ARzNf4GYhH_xg) — 38 reviews (4.8★) · `state_park`
+- [Fairmont Dr. Linear Park](https://www.google.com/maps/search/?api=1&query=37.7047229%2C-122.1245258&query_place_id=ChIJqZvvCdSRj4ARSCXXOW_jb0I) — 38 reviews (4.1★) · `park`
+- [Meadowbrook Park](https://www.google.com/maps/search/?api=1&query=38.0021084%2C-121.78193439999998&query_place_id=ChIJ9XeVLadXhYARRSxq58Hv2HQ) — 38 reviews (4.3★) · `park`
+- [Northgate Park](https://www.google.com/maps/search/?api=1&query=37.909825999999995%2C-122.01021949999998&query_place_id=ChIJtdI61xZghYARRnm2hBC-lio) — 38 reviews (4.4★) · `park`
+- [Old Growth Redwoods in Bear Creek](https://www.google.com/maps/search/?api=1&query=37.1810207%2C-122.01293539999999&query_place_id=ChIJS431bOlJjoARg9RTH4SJcqw) — 38 reviews (4.5★) · `nature_preserve`
+- [Rincon Plaza](https://www.google.com/maps/search/?api=1&query=37.792113%2C-122.39270119999999&query_place_id=ChIJQWMlAWWAhYARAi24vZFVktI) — 38 reviews (4.6★) · `park`
+- [Washington Park](https://www.google.com/maps/search/?api=1&query=37.3422574%2C-121.94224910000001&query_place_id=ChIJIcsfuwDLj4ARR_NKjMBzppo) — 38 reviews (4.4★) · `park`
+- [Agnews Historic Park](https://www.google.com/maps/search/?api=1&query=37.3930899%2C-121.95478890000001&query_place_id=ChIJu6oPp-jJj4ARMVnPGbk_6y0) — 37 reviews (4.8★) · `park`
+- [Belameda Park](https://www.google.com/maps/search/?api=1&query=37.5091701%2C-122.2933293&query_place_id=ChIJXZ9sWmGfj4AR_gt_iyzu0H0) — 37 reviews (4.6★) · `park`
+- [Christensen Park](https://www.google.com/maps/search/?api=1&query=37.7239993%2C-121.72845170000001&query_place_id=ChIJb_rR1s_mj4ARFG6kPbXFzPU) — 37 reviews (4.4★) · `park`
+- [Davey Glen Park](https://www.google.com/maps/search/?api=1&query=37.5246967%2C-122.28613719999998&query_place_id=ChIJM49BPkCfj4ARiAOwKqY2r9g) — 37 reviews (4.1★) · `park`
+- [Dog Agility Park](https://www.google.com/maps/search/?api=1&query=37.715065599999996%2C-122.47872749999998&query_place_id=ChIJQwYviOJ9j4ARB9Epwpbw-D0) — 37 reviews (3.7★) · `dog_park`
+- [Friendship Park](https://www.google.com/maps/search/?api=1&query=37.4741054%2C-122.2095005&query_place_id=ChIJy5NupxKjj4ARGbRabOcUxC4) — 37 reviews (4.3★) · `park`
+- [Greenwood Manor Park](https://www.google.com/maps/search/?api=1&query=37.3687633%2C-122.0514179&query_place_id=ChIJX3CKE-22j4ARXscTPqC2STw) — 37 reviews (4.5★) · `park`
+- [Haskell-Mabel Mini Park](https://www.google.com/maps/search/?api=1&query=37.851223%2C-122.28354689999999&query_place_id=ChIJK_rX6GF-hYARkz0jB-xEEKw) — 37 reviews (3.9★) · `park`
+- [La Avenida Bike Trail Head](https://www.google.com/maps/search/?api=1&query=37.413022999999995%2C-122.06917599999998&query_place_id=ChIJNTAUbn-3j4ARXUjpUgzp62E) — 37 reviews (4.6★) · `park`
+- [Livermore Downs Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.6966124%2C-121.78260789999999&query_place_id=ChIJP2TJmLTnj4ARI8pwDvY8VQI) — 37 reviews (4.6★) · `park`
+- [Ohlone Park](https://www.google.com/maps/search/?api=1&query=38.0058334%2C-122.2745279&query_place_id=ChIJdZ890Cl3hYARgTrrvn3u3LM) — 37 reviews (4.3★) · `park`
+- [San Pedro Ponds](https://www.google.com/maps/search/?api=1&query=37.1358031%2C-121.61474789999998&query_place_id=ChIJzy23J3ffkYARSE9AKcGmPOA) — 37 reviews (4.2★) · `park`
+- [Vieira Park Outlook](https://www.google.com/maps/search/?api=1&query=37.286203%2C-121.86155289999999&query_place_id=ChIJRyn7-zgzjoAROgpDIO8fFBk) — 37 reviews (4.6★) · `park`
+- [Woods Yard Park](https://www.google.com/maps/search/?api=1&query=37.7576667%2C-122.3906667&query_place_id=ChIJkTVuULd_j4ARvSBtTP0XTOU) — 37 reviews (4.1★) · `park`
+- [Wyandotte Park](https://www.google.com/maps/search/?api=1&query=37.416921599999995%2C-122.09557029999999&query_place_id=ChIJB1LnPzK7j4ARijDYhJ7svr8) — 37 reviews (4.6★) · `park`
+- [Bonita Park](https://www.google.com/maps/search/?api=1&query=37.3432021%2C-121.857439&query_place_id=ChIJsV5OSz7Nj4AREPVrryGldBc) — 36 reviews (4.3★) · `park`
+- [Briones Road Staging Area, Briones Regional Park](https://www.google.com/maps/search/?api=1&query=37.9547398%2C-122.1350136&query_place_id=ChIJJZR7VvNkhYARGFRDL5PH5sk) — 36 reviews (4.8★) · `park`
+- [Butcher Park](https://www.google.com/maps/search/?api=1&query=37.26049140000001%2C-121.9160701&query_place_id=ChIJId2DArI1joARJn_eDrXnmHs) — 36 reviews (4.4★) · `park`
+- [Castro Valley Veterans Memorial](https://www.google.com/maps/search/?api=1&query=37.709116099999996%2C-122.0894763&query_place_id=ChIJ00amzPCRj4ARqpgZXi8BScI) — 36 reviews (4.9★) · `park`
+- [Fairway Greens Park](https://www.google.com/maps/search/?api=1&query=37.6253429%2C-122.03955359999999&query_place_id=ChIJuQhM4lWUj4AR1MM7R49Wcx8) — 36 reviews (4.3★) · `park`
+- [Frenchman's Park](https://www.google.com/maps/search/?api=1&query=37.4139274%2C-122.16514339999998&query_place_id=ChIJXdh81ci6j4AR9Dc5M7jmzyk) — 36 reviews (4.3★) · `park`
+- [Garfield Park](https://www.google.com/maps/search/?api=1&query=37.7858459%2C-122.23427410000001&query_place_id=ChIJERXAf-SGj4ARCxknswNND6Y) — 36 reviews (3.9★) · `park`
+- [Graham School Park](https://www.google.com/maps/search/?api=1&query=37.3809472%2C-122.0834945&query_place_id=ChIJs4FlSyu3j4ARl-t1Its1fl0) — 36 reviews (4.4★) · `park`
+- [Livorna Staging Area, Diablo Foothills Regional Park](https://www.google.com/maps/search/?api=1&query=37.8705765%2C-122.01000009999998&query_place_id=ChIJ-2dlfsOKj4AR8WNX_BepHn0) — 36 reviews (4.8★) · `park`
+- [Morgan Plaza](https://www.google.com/maps/search/?api=1&query=37.794302699999996%2C-122.2300241&query_place_id=ChIJzV_K3wKHj4ARzwMy23424KU) — 36 reviews (3.9★) · `park`
+- [Oddstad City Park](https://www.google.com/maps/search/?api=1&query=37.59138110000001%2C-122.48788549999999&query_place_id=ChIJcYJad4Zwj4ARUdjesGGtYDA) — 36 reviews (4.2★) · `park`
+- [Parque de la Amistad](https://www.google.com/maps/search/?api=1&query=37.3479575%2C-121.8452001&query_place_id=ChIJSW_aVSPNj4ARNKxqvGLZWAQ) — 36 reviews (4.1★) · `park`
+- [Poplar Park](https://www.google.com/maps/search/?api=1&query=37.823115%2C-122.28416390000001&query_place_id=ChIJaTdOYRd-hYARAZC6hTMwTeA) — 36 reviews (4★) · `park`
+- [Salesforce Plaza](https://www.google.com/maps/search/?api=1&query=37.7900232%2C-122.3965794&query_place_id=ChIJu48MAQqBhYARvvUrkq5ZuGw) — 36 reviews (4.9★) · `park`
+- [Twin Bridges Park](https://www.google.com/maps/search/?api=1&query=37.6240173%2C-122.04818519999999&query_place_id=ChIJRb21UL2Vj4ARFz8ps7E6NSY) — 36 reviews (4.4★) · `park`
+- [Waterwise Garden](https://www.google.com/maps/search/?api=1&query=37.451080999999995%2C-122.1429084&query_place_id=ChIJ43JBHxK7j4ARqj2deLh_ZmM) — 36 reviews (4.5★) · `botanical_garden`
+- [Blair Park](https://www.google.com/maps/search/?api=1&query=37.8295001%2C-122.2276451&query_place_id=ChIJHeLikH2Hj4ARsefmIeq9dbg) — 35 reviews (4.1★) · `park`
+- [Cayuga & Lamartine Mini Park](https://www.google.com/maps/search/?api=1&query=37.730365%2C-122.43296640000001&query_place_id=ChIJ2cnghWJ-j4ARg0dYQivsY9g) — 35 reviews (3.7★) · `city_park`
+- [Centennial Park](https://www.google.com/maps/search/?api=1&query=37.725817500000005%2C-121.9467995&query_place_id=ChIJ5aqopartj4ARMO1bgVcLWkQ) — 35 reviews (4.9★) · `park`
+- [Kayak Launch Area](https://www.google.com/maps/search/?api=1&query=38.0120371%2C-121.7287825&query_place_id=ChIJv7nm8XpWhYARMiVvxDs7K2A) — 35 reviews (4.6★) · `park`
+- [Letterman Digital Arts Center Recycled Water Pond at Lucas](https://www.google.com/maps/search/?api=1&query=37.800459599999996%2C-122.4487349&query_place_id=ChIJ939_miqHhYARjKxwiYjkSUo) — 35 reviews (4.6★) · `park`
+- [Morello School Park](https://www.google.com/maps/search/?api=1&query=38.0010383%2C-122.10084450000001&query_place_id=ChIJ2yMBKcJlhYARTGlazNqIHLY) — 35 reviews (4.6★) · `park`
+- [Musick Park](https://www.google.com/maps/search/?api=1&query=37.5448276%2C-122.02993760000001&query_place_id=ChIJybAyAQe_j4ARgNvIGT4Gy5M) — 35 reviews (4.2★) · `park`
+- [Rich May Memorial Field](https://www.google.com/maps/search/?api=1&query=37.4727124%2C-122.144308&query_place_id=ChIJa2cwrWO7j4ARoY6ClpQ3MTI) — 35 reviews (4.5★) · `park`
+- [Arena Green East](https://www.google.com/maps/search/?api=1&query=37.334647499999996%2C-121.8985083&query_place_id=ChIJeVqVrqHMj4AR-CKSaSqbrNQ) — 34 reviews (4.3★) · `park`
+- [Arroyo Viejo Creek](https://www.google.com/maps/search/?api=1&query=37.7623885%2C-122.1759269&query_place_id=ChIJERHKzuCFj4ARqqqh9bCx4Wk) — 34 reviews (4.6★) · `city_park`
+- [Borel Park](https://www.google.com/maps/search/?api=1&query=37.5490722%2C-122.3223551&query_place_id=ChIJk2iKVEOej4ARyCtr9HIJU68) — 34 reviews (4.6★) · `park`
+- [Edgehill Mountain Park](https://www.google.com/maps/search/?api=1&query=37.7421109%2C-122.45974330000001&query_place_id=ChIJYXaWRuh9j4ARlasNd_JI7PU) — 34 reviews (4.5★) · `city_park`
+- [Independence Park Playground](https://www.google.com/maps/search/?api=1&query=37.6501628%2C-121.77956409999999&query_place_id=ChIJ9QsHd2_dj4ARqp8Ow6aaJKc) — 34 reviews (4.4★) · `park`
+- [Kensington Park](https://www.google.com/maps/search/?api=1&query=37.9128325%2C-122.2796784&query_place_id=ChIJwahlA2l5hYARJRejcV43zv4) — 34 reviews (4.6★) · `park`
+- [Lake Del Valle](https://www.google.com/maps/search/?api=1&query=37.607775%2C-121.7336635&query_place_id=ChIJf93vMhDcj4ARNiSnuGbVBD8) — 34 reviews (4.5★) · `park`
+- [Lion Bill Mitchell Park](https://www.google.com/maps/search/?api=1&query=37.5991745%2C-122.40894189999999&query_place_id=ChIJkYg2JAx3j4ARIYNm17OtlIU) — 34 reviews (4.4★) · `park`
+- [Mission Creek Park South](https://www.google.com/maps/search/?api=1&query=37.773923499999995%2C-122.3928134&query_place_id=ChIJ7WG0CNF_j4AR6df6x-Ll97o) — 34 reviews (4.4★) · `city_park`
+- [Old Highlands Park](https://www.google.com/maps/search/?api=1&query=37.660835999999996%2C-122.04911939999998&query_place_id=ChIJ2RyV_IWTj4ARkH6AOowxlD8) — 34 reviews (4.3★) · `park`
+- [Thousand Oaks School Park](https://www.google.com/maps/search/?api=1&query=37.8923233%2C-122.2817204&query_place_id=ChIJUwm6j0x5hYARuhcn0e-4zXo) — 34 reviews (4.5★) · `park`
+- [BMX Park San Jose](https://www.google.com/maps/search/?api=1&query=37.301711499999996%2C-122.0261708&query_place_id=ChIJm0wOgYu1j4AReSz5uTOMXIA) — 33 reviews (4.5★) · `park`
+- [Brentwood park](https://www.google.com/maps/search/?api=1&query=37.6375586%2C-122.4329026&query_place_id=ChIJCZvVL1Z5j4ARYh00EotWR3o) — 33 reviews (4.1★) · `park`
+- [Cameron Park](https://www.google.com/maps/search/?api=1&query=37.424352899999995%2C-122.150681&query_place_id=ChIJAQTp5ue6j4ARxCjQfe25ps8) — 33 reviews (4.4★) · `park`
+- [Hidden Crest Park](https://www.google.com/maps/search/?api=1&query=37.7811306%2C-121.92013329999999&query_place_id=ChIJ3xW6CxLyj4ARwyp4clMnB9M) — 33 reviews (4.5★) · `park`
+- [India Basin Waterfront Park](https://www.google.com/maps/search/?api=1&query=37.7322136%2C-122.37577449999999&query_place_id=ChIJWxFX7lx_j4ARq-MI38GWC_U) — 33 reviews (4.8★) · `city_park`
+- [Lake Merritt Labyrinth](https://www.google.com/maps/search/?api=1&query=37.8072995%2C-122.25395499999999&query_place_id=ChIJ0wmio0iHj4ARIskjuB75ppc) — 33 reviews (4.7★) · `park`
+- [MacGregor Fields](https://www.google.com/maps/search/?api=1&query=37.5499595%2C-122.03911239999998&query_place_id=ChIJw78GjEu_j4ARIj8sYnL102s) — 33 reviews (4.4★) · `park`
+- [Mira Vista Field](https://www.google.com/maps/search/?api=1&query=37.9395042%2C-122.31488999999999&query_place_id=ChIJ__lDtjV4hYAR_HNDf4iBpTA) — 33 reviews (4.1★) · `park`
+- [Miwok Trail](https://www.google.com/maps/search/?api=1&query=37.9481849%2C-121.7194265&query_place_id=ChIJyTlszSr_j4AROgmDaK7YTMk) — 33 reviews (4.6★) · `park`
+- [Murphy Springs Park](https://www.google.com/maps/search/?api=1&query=37.1416721%2C-121.6720826&query_place_id=ChIJ07gfkNggjoARQ4EueR_3zYs) — 33 reviews (3.8★) · `park`
+- [Pistachio Park](https://www.google.com/maps/search/?api=1&query=37.9634183%2C-121.7172775&query_place_id=ChIJ_eUR-zT_j4ARZ5Q4NU99Zio) — 33 reviews (4.4★) · `park`
+- [Roof Garden](https://www.google.com/maps/search/?api=1&query=37.789132699999996%2C-122.39808079999999&query_place_id=ChIJ2dLLI2OAhYAR4wO-3b_RaOE) — 33 reviews (4.5★) · `park`
+- [Sobrante Ridge Regional Preserve Coach Staging Area](https://www.google.com/maps/search/?api=1&query=37.9705502%2C-122.2595171&query_place_id=ChIJv8aLyQZ6hYARN0XxRwXGOl0) — 33 reviews (4.5★) · `nature_preserve`
+- [Soft Park - Levi's Plaza](https://www.google.com/maps/search/?api=1&query=37.80278020000001%2C-122.40145319999999&query_place_id=ChIJ80BNKnWBhYARg4zPc7ljCvM) — 33 reviews (4.8★) · `park`
+- [Succulents Garden](https://www.google.com/maps/search/?api=1&query=37.723054999999995%2C-122.4772845&query_place_id=ChIJxxR-A7F9j4AR-o10omk8y7E) — 33 reviews (4.6★) · `botanical_garden`
+- [Tom Evatt Park](https://www.google.com/maps/search/?api=1&query=37.4203289%2C-121.91138799999999&query_place_id=ChIJHfTKxi_Jj4ARpkNEX6D1RDk) — 33 reviews (4.3★) · `park`
+- [Zolezzi Park](https://www.google.com/maps/search/?api=1&query=37.3467242%2C-121.85002370000001&query_place_id=ChIJH4cs-iPNj4ARJ1ptbbGsH7k) — 33 reviews (4.2★) · `park`
+- [Ashland Community Center Park](https://www.google.com/maps/search/?api=1&query=37.693249099999996%2C-122.10722120000001&query_place_id=ChIJmTlOz7-Rj4ARL55beFBIcjw) — 32 reviews (4.7★) · `park`
+- [Avenue Terrace Park](https://www.google.com/maps/search/?api=1&query=37.8003079%2C-122.1918722&query_place_id=ChIJc4kZZjSGj4ARWvMr8onUCXE) — 32 reviews (4.3★) · `park`
+- [Bancroft Middle School Sports Field](https://www.google.com/maps/search/?api=1&query=37.728601499999996%2C-122.1478743&query_place_id=ChIJFdjwT3CPj4AR-QPPH0r_lNg) — 32 reviews (4.3★) · `park`
+- [Brannan Street Wharf Park](https://www.google.com/maps/search/?api=1&query=37.783914599999996%2C-122.3877211&query_place_id=ChIJH18lqXeAhYARXoKALvobTmM) — 32 reviews (4.8★) · `park`
+- [Brickyard Cove](https://www.google.com/maps/search/?api=1&query=37.8647269%2C-122.30543&query_place_id=ChIJ7-lBL45_hYARCr7WIg21wX8) — 32 reviews (4.4★) · `park`
+- [Columbian Gardens Park](https://www.google.com/maps/search/?api=1&query=37.7292574%2C-122.1889398&query_place_id=ChIJxX3utp2Fj4ARGcFjsFlN1Co) — 32 reviews (3.7★) · `park`
+- [Florence Fang Community Farm](https://www.google.com/maps/search/?api=1&query=37.7308601%2C-122.39614650000001&query_place_id=ChIJnx4qmyp_j4AR4bhqrY3llTw) — 32 reviews (4.6★) · `garden`
+- [Happy Lot Farm and Garden](https://www.google.com/maps/search/?api=1&query=37.932215%2C-122.36898199999999&query_place_id=ChIJY8l5SLCChYARU5W1aJ5C5HY) — 32 reviews (4.5★) · `garden`
+- [Horseshoe Park](https://www.google.com/maps/search/?api=1&query=37.8647464%2C-122.3173345&query_place_id=ChIJC9q47yN_hYAR13zbmekLBv4) — 32 reviews (4.4★) · `park`
+- [Karl Wente Park](https://www.google.com/maps/search/?api=1&query=37.6636042%2C-121.77541649999999&query_place_id=ChIJZeUQwofnj4ARsblQmsDS0lM) — 32 reviews (3.6★) · `park`
+- [Mission City Memorial Park](https://www.google.com/maps/search/?api=1&query=37.3345501%2C-121.95298369999999&query_place_id=ChIJX8N1A_zKj4ARbwKAlQBFyRA) — 32 reviews (3.9★) · `park`
+- [North Valley Park](https://www.google.com/maps/search/?api=1&query=37.952093%2C-121.91910399999999&query_place_id=ChIJQX60oTxfhYARd0IrABYlmcE) — 32 reviews (4.5★) · `park`
+- [Pier 94 Wetlands](https://www.google.com/maps/search/?api=1&query=37.745607299999996%2C-122.3764632&query_place_id=ChIJx3UpeK1_j4ARrj13JyCrv4k) — 32 reviews (4.4★) · `park`
+- [Plaza de California](https://www.google.com/maps/search/?api=1&query=37.8080873%2C-122.40824080000002&query_place_id=ChIJ1yj07PuAhYAR_07zUVKDxdk) — 32 reviews (4.5★) · `park`
+- [Princeton by the Sea Park](https://www.google.com/maps/search/?api=1&query=37.5128699%2C-122.48630809999999&query_place_id=ChIJQyUaBM5zj4ARzgpvc0lrMi4) — 32 reviews (4.7★) · `park`
+- [Rosicrucian park](https://www.google.com/maps/search/?api=1&query=37.3341375%2C-121.92228809999999&query_place_id=ChIJoVfL31PLj4ARIiv-fZt15FU) — 32 reviews (4.7★) · `park`
+- [Schafer Park](https://www.google.com/maps/search/?api=1&query=37.6442163%2C-122.08578519999999&query_place_id=ChIJIz492qqWj4ARaD6cOeTt5EE) — 32 reviews (4.3★) · `park`
+- [Sixty-Third Street Mini-Park](https://www.google.com/maps/search/?api=1&query=37.8476311%2C-122.27500339999997&query_place_id=ChIJL22lHnt-hYARTygEOgoDnuo) — 32 reviews (4.3★) · `park`
+- [Terrace Green Park](https://www.google.com/maps/search/?api=1&query=37.736986699999996%2C-122.46528099999998&query_place_id=ChIJw8CWpcF9j4ARP1JltDsKdMo) — 32 reviews (4.1★) · `park`
+- [Carquinez Strait Regional Shoreline Port Costa Staging Area-](https://www.google.com/maps/search/?api=1&query=38.0373125%2C-122.1801875&query_place_id=ChIJ4Ui05fVxhYARb_Dw1wcK14g) — 31 reviews (4.6★) · `park`
+- [Coyote Hills Nectar Garden](https://www.google.com/maps/search/?api=1&query=37.5531593%2C-122.0911372&query_place_id=ChIJK_zrYBi9j4ARncuQvVsbRy0) — 31 reviews (4.4★) · `garden`
+- [HEARTWOOD PARK](https://www.google.com/maps/search/?api=1&query=37.9858555%2C-121.6999662&query_place_id=ChIJDU8ugl7_j4ARaYOU2LBWyhY) — 31 reviews (4.3★) · `park`
+- [Jasper Ridge Biological Preserve](https://www.google.com/maps/search/?api=1&query=37.4031161%2C-122.24428799999998&query_place_id=ChIJabZIULWlj4ARQyBKdLyQp04) — 31 reviews (4.8★) · `nature_preserve`
+- [Leona Trailhead](https://www.google.com/maps/search/?api=1&query=37.7755796%2C-122.14567319999999&query_place_id=ChIJKUui9jOPj4AR63vZsI35Ydw) — 31 reviews (4.4★) · `park`
+- [Montevideo School Park](https://www.google.com/maps/search/?api=1&query=37.7545499%2C-121.9502153&query_place_id=ChIJk5amsnntj4AR5RI1vbxgcXs) — 31 reviews (4.7★) · `park`
+- [Nature Reservation Bedwell](https://www.google.com/maps/search/?api=1&query=37.4884268%2C-122.1552172&query_place_id=ChIJbboT2Xe9j4ARW9TJKZO9hPk) — 31 reviews (4.5★) · `nature_preserve`
+- [Teague Hill Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.4229914%2C-122.2888715&query_place_id=ChIJF1W5K8imj4ARSMeX7xvRnUk) — 31 reviews (4.4★) · `nature_preserve`
+- [Vista Montaña Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.4127447%2C-121.95648739999999&query_place_id=ChIJBz_QC63Jj4ARXpU6iLXCjrg) — 31 reviews (4.2★) · `park`
+- [Blue Oak Ranch Reserve](https://www.google.com/maps/search/?api=1&query=37.3813076%2C-121.7367456&query_place_id=ChIJgTCN7F3Tj4ARYRPK_PGSqTo) — 30 reviews (4.8★) · `nature_preserve`
+- [Emeryville Crescent State Marine Reserve](https://www.google.com/maps/search/?api=1&query=37.8370897%2C-122.3090256&query_place_id=ChIJBTRjHlN-hYARI4ugONvexwg) — 30 reviews (4.7★) · `state_park`
+- [Joseph Conrad Square](https://www.google.com/maps/search/?api=1&query=37.8066744%2C-122.41906279999998&query_place_id=ChIJi4fEQuGAhYARvQMoTdwXR7s) — 30 reviews (4.2★) · `city_park`
+- [Nicholl Knob](https://www.google.com/maps/search/?api=1&query=37.920159%2C-122.381997&query_place_id=ChIJLZ7kG8GChYARcF-97U-7TTU) — 30 reviews (4.8★) · `park`
+- [Parkview I Park](https://www.google.com/maps/search/?api=1&query=37.2726866%2C-121.8466789&query_place_id=ChIJ8cWOCTcyjoARKulYHL4iAvE) — 30 reviews (4.1★) · `park`
+- [Pinehurst Staging Area](https://www.google.com/maps/search/?api=1&query=37.801374599999995%2C-122.13604180000002&query_place_id=ChIJOdpO9N2Ij4ARHG4kxp6bIFs) — 30 reviews (4.4★) · `park`
+- [Rainbows End Park](https://www.google.com/maps/search/?api=1&query=37.965543%2C-121.7244645&query_place_id=ChIJT7agxLX4j4ARtqJxQuZgydo) — 30 reviews (4.3★) · `park`
+- [Rosa Parks School Park](https://www.google.com/maps/search/?api=1&query=37.8654863%2C-122.293944&query_place_id=ChIJ41Cxgel-hYARD9rYxKgUNgs) — 30 reviews (4.5★) · `park`
+- [San Ramon Skatepark](https://www.google.com/maps/search/?api=1&query=37.7651164%2C-121.95421549999999&query_place_id=ChIJxQPnQyTzj4AR-fq77nkSrqg) — 30 reviews (4.3★) · `park`
+- [Santa Clara County Model Aircraft Skypark](https://www.google.com/maps/search/?api=1&query=37.172576%2C-121.6821376&query_place_id=ChIJ9UC3_-YmjoAR_1d6NDLhIlE) — 30 reviews (4.6★) · `city_park`
+- [Sports Park](https://www.google.com/maps/search/?api=1&query=37.6801058%2C-121.89332999999999&query_place_id=ChIJcT-fxHDpj4ARQBACIR3_4dY) — 30 reviews (4.5★) · `park`
+- [Windy Hills Park](https://www.google.com/maps/search/?api=1&query=37.770879099999995%2C-121.93824500000001&query_place_id=ChIJyecJK3ryj4ARYv0L-IQz7zg) — 30 reviews (4.4★) · `park`
+- [Alameda County Children's Memorial Flag and Grove Project](https://www.google.com/maps/search/?api=1&query=37.7216861%2C-122.1179618&query_place_id=ChIJbf4yCDCOj4ARbfBXNL7zJtM) — 29 reviews (4.9★) · `park`
+- [Alamo Square Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7760874%2C-122.43547849999999&query_place_id=ChIJ14TTdDyBhYARlco_svdWVj8) — 29 reviews (4.7★) · `dog_park`
+- [Big Trees Park](https://www.google.com/maps/search/?api=1&query=37.684116800000005%2C-121.72629210000001&query_place_id=ChIJMTlcNY3nj4ARq7fSy3PVcvI) — 29 reviews (4.6★) · `park`
+- [Castro Valley Park Splash Pad](https://www.google.com/maps/search/?api=1&query=37.709022499999996%2C-122.08863369999999&query_place_id=ChIJP4ZqJfeRj4ARaqcKAjKi1Sk) — 29 reviews (4.7★) · `park`
+- [Cesar Chavez Park](https://www.google.com/maps/search/?api=1&query=37.5976995%2C-122.07710530000001&query_place_id=ChIJh8OPGJuVj4ARPykqBCQTqq8) — 29 reviews (4.8★) · `park`
+- [Clayton Community Park](https://www.google.com/maps/search/?api=1&query=37.9291187%2C-121.9185223&query_place_id=ChIJ207H3EhfhYARMgODKrU_Lwk) — 29 reviews (4.8★) · `park`
+- [Evandale Park](https://www.google.com/maps/search/?api=1&query=37.4053136%2C-122.06112449999999&query_place_id=ChIJcQPSRPe3j4ARtcHMG9OdKqw) — 29 reviews (4.5★) · `park`
+- [Faculty Glade](https://www.google.com/maps/search/?api=1&query=37.8713828%2C-122.2566152&query_place_id=ChIJC9s0DyV8hYARoewsZ5b2ivo) — 29 reviews (4.6★) · `park`
+- [Frenchmans Creek Park](https://www.google.com/maps/search/?api=1&query=37.4838927%2C-122.4433612&query_place_id=ChIJNa8SdJx0j4ARtIP7C8xrKvg) — 29 reviews (4★) · `park`
+- [Harry Street Stairs](https://www.google.com/maps/search/?api=1&query=37.740074299999996%2C-122.4312253&query_place_id=ChIJ45YBwUp_j4ARaoMjF0L0skE) — 29 reviews (4.8★) · `park`
+- [Heron's Head Park - Nature Exploration Area](https://www.google.com/maps/search/?api=1&query=37.737994199999996%2C-122.37301269999999&query_place_id=ChIJE8I4CG5_j4ARmZe4qWsqrak) — 29 reviews (4.7★) · `nature_preserve`
+- [Howard & Langton Mini Park Community Garden](https://www.google.com/maps/search/?api=1&query=37.7773111%2C-122.4098516&query_place_id=ChIJQf9-VYKAhYAR92vOJywxIs8) — 29 reviews (4.4★) · `garden`
+- [Judge John Sutter Regional Shoreline](https://www.google.com/maps/search/?api=1&query=37.8208294%2C-122.3283813&query_place_id=ChIJA9oF38l_hYARuRNcXWCuqZs) — 29 reviews (4.7★) · `park`
+- [McDougal Park](https://www.google.com/maps/search/?api=1&query=37.5105524%2C-122.2849918&query_place_id=ChIJ1e5w-F6fj4ARufqbgq45t9Q) — 29 reviews (4.1★) · `park`
+- [Mt. Madonna Amphitheater](https://www.google.com/maps/search/?api=1&query=37.0112771%2C-121.7070714&query_place_id=ChIJ53qyGO4fjoARD-COM7EH3kE) — 29 reviews (4.5★) · `park`
+- [Peregrine Park](https://www.google.com/maps/search/?api=1&query=37.5777687%2C-122.05882820000001&query_place_id=ChIJu6QJ8oqVj4ARghReC3En_Gg) — 29 reviews (4.2★) · `park`
+- [Shirley Sisk Grove](https://www.google.com/maps/search/?api=1&query=37.5243056%2C-122.00341489999998&query_place_id=ChIJCynxLlC_j4ARxNYIp2vb_KY) — 29 reviews (3.8★) · `park`
+- [Stivers Lagoon Nature Area](https://www.google.com/maps/search/?api=1&query=37.5424017%2C-121.95998589999999&query_place_id=ChIJwU5u28TAj4ARWyrEOKEjzUw) — 29 reviews (4.4★) · `nature_preserve`
+- [Stockmen's Park](https://www.google.com/maps/search/?api=1&query=37.682677%2C-121.7697978&query_place_id=ChIJA8MQOP3nj4AR7PMYCzW3aK4) — 29 reviews (4.2★) · `park`
+- [Almaden Quicksilver Hacienda Entrance](https://www.google.com/maps/search/?api=1&query=37.17401600000001%2C-121.8249646&query_place_id=ChIJHb41bT47joARyeqtNfZ04i0) — 28 reviews (4.9★) · `park`
+- [Anderson Lake County Park- Live Oak Picnic Area](https://www.google.com/maps/search/?api=1&query=37.1648852%2C-121.6389215&query_place_id=ChIJh4bx0YYnjoAR4t2LCjcRVe8) — 28 reviews (4.8★) · `park`
+- [Carquinez Strait Regional Shoreline Park](https://www.google.com/maps/search/?api=1&query=38.0432573%2C-122.1825298&query_place_id=ChIJ43BZ8tBxhYARcxaGTj6daNg) — 28 reviews (4.8★) · `park`
+- [Clipper Community Garden](https://www.google.com/maps/search/?api=1&query=37.747857499999995%2C-122.44313399999999&query_place_id=ChIJS84gDwt-j4ARmlY6Zn0hUY0) — 28 reviews (4.7★) · `garden`
+- [Coyote Creek Trail](https://www.google.com/maps/search/?api=1&query=37.2501441%2C-121.7706472&query_place_id=ChIJBRgd-VkujoARU1CLzQCj0BI) — 28 reviews (4.5★) · `park`
+- [Crescent Park](https://www.google.com/maps/search/?api=1&query=37.915655199999996%2C-122.32483499999998&query_place_id=ChIJR1OngFh4hYAR54efFgQvT8I) — 28 reviews (4★) · `park`
+- [Cuesta Park Annex](https://www.google.com/maps/search/?api=1&query=37.372205099999995%2C-122.083903&query_place_id=ChIJuW_GIG23j4ARC59oi93RzN8) — 28 reviews (4.3★) · `park`
+- [Ed R. Levin County Park Entrance Booth](https://www.google.com/maps/search/?api=1&query=37.4520761%2C-121.8600039&query_place_id=ChIJ81zYr1vPj4ARe4qX7Arxmig) — 28 reviews (4.8★) · `park`
+- [Fallon Sports Park, South Parking Lot](https://www.google.com/maps/search/?api=1&query=37.7111455%2C-121.8544353&query_place_id=ChIJ3Ry0h_Ppj4ARnYwsaUvuNxY) — 28 reviews (4.8★) · `park`
+- [Guadalupe Community Garden](https://www.google.com/maps/search/?api=1&query=37.3435923%2C-121.9106832&query_place_id=ChIJS26n3nrLj4ARK-fV5wPrIqQ) — 28 reviews (3.9★) · `garden`
+- [Hillcrest Circle Park](https://www.google.com/maps/search/?api=1&query=37.505014800000005%2C-122.26977500000001&query_place_id=ChIJv5Gnn_mhj4ARf03oqqV0Lxs) — 28 reviews (4.4★) · `park`
+- [Horseshoe Lake](https://www.google.com/maps/search/?api=1&query=37.3073853%2C-122.17438169999998&query_place_id=ChIJw6LbX_-tj4ARXbbF8sTkh9o) — 28 reviews (4.8★) · `park`
+- [Lathrop Park](https://www.google.com/maps/search/?api=1&query=37.4148972%2C-122.1608648&query_place_id=ChIJrwPUc8a6j4ARI3IfR3-0WLY) — 28 reviews (4.5★) · `park`
+- [Los Capitancillos Ponds](https://www.google.com/maps/search/?api=1&query=37.2410351%2C-121.8830206&query_place_id=ChIJnXy4TVkxjoARG-kvfo48r6k) — 28 reviews (4.5★) · `park`
+- [Maritime Plaza Park](https://www.google.com/maps/search/?api=1&query=37.7955854%2C-122.3996149&query_place_id=ChIJ1855cG2BhYARSDtIa8RAsQs) — 28 reviews (3.7★) · `city_park`
+- [McLaren Park Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.7195021%2C-122.41897660000001&query_place_id=ChIJ-SESXnd_j4AR-QjPRI7msBU) — 28 reviews (4.2★) · `dog_park`
+- [Oyster Point Launch](https://www.google.com/maps/search/?api=1&query=37.6623501%2C-122.37500680000001&query_place_id=ChIJNU-H41B5j4ARDNgeu_ZQWg0) — 28 reviews (4.8★) · `park`
+- [Park](https://www.google.com/maps/search/?api=1&query=38.023087600000004%2C-122.2507984&query_place_id=ChIJwXqzT05xhYARgt_RSTwSrbQ) — 28 reviews (4.8★) · `city_park`
+- [Payne Avenue Friendship Park](https://www.google.com/maps/search/?api=1&query=37.301773%2C-121.95608519999998&query_place_id=ChIJydV4GeXLj4AR8k1CeR_LZzw) — 28 reviews (4.7★) · `park`
+- [Plaza de Valencia](https://www.google.com/maps/search/?api=1&query=37.3207672%2C-121.94916099999999&query_place_id=ChIJg6mjDQ3Lj4AR9ub41fGjXdo) — 28 reviews (4.4★) · `park`
+- [Sarah Wallis Park](https://www.google.com/maps/search/?api=1&query=37.425787199999995%2C-122.1427593&query_place_id=ChIJFZlahO-6j4ARt_GoZ35EH2I) — 28 reviews (4.5★) · `park`
+- [Shorebird Park Stage](https://www.google.com/maps/search/?api=1&query=37.8632573%2C-122.315095&query_place_id=ChIJgWCJmCF_hYARJ0wHwov9Gu0) — 28 reviews (4.5★) · `park`
+- [Bertha Port Park](https://www.google.com/maps/search/?api=1&query=37.807960300000005%2C-122.3023147&query_place_id=ChIJAQAAACd-hYARkwCQyui6d28) — 27 reviews (4.1★) · `park`
+- [Bidwell Park](https://www.google.com/maps/search/?api=1&query=37.6180194%2C-122.0415992&query_place_id=ChIJexlBG6uVj4ARpXv6b2F2yYk) — 27 reviews (4.2★) · `park`
+- [Clayton Community Park Baseball Field 2](https://www.google.com/maps/search/?api=1&query=37.9293289%2C-121.9185873&query_place_id=ChIJAWY9qF5fhYAR0au1H2n3bzk) — 27 reviews (4.5★) · `park`
+- [Dana Park](https://www.google.com/maps/search/?api=1&query=37.3944761%2C-122.08346470000001&query_place_id=ChIJCzuE1zS3j4AR3tJENOyDHew) — 27 reviews (4★) · `park`
+- [Dog Park | Heather School](https://www.google.com/maps/search/?api=1&query=37.4916148%2C-122.27553610000001&query_place_id=ChIJpdk9tPKhj4ARp4QFpASSFec) — 27 reviews (4.4★) · `dog_park`
+- [Inverness Park](https://www.google.com/maps/search/?api=1&query=37.755721%2C-121.9528214&query_place_id=ChIJFUCg63vtj4ARP7_WnvSsMtw) — 27 reviews (4.5★) · `park`
+- [Jack Williams Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.65833800000001%2C-121.78978300000001&query_place_id=ChIJc1MYbPXnj4ARxo0UKQr2cwQ) — 27 reviews (4.5★) · `park`
+- [LEAF Community Garden](https://www.google.com/maps/search/?api=1&query=37.5787523%2C-121.98882429999999&query_place_id=ChIJlfgZj_W_j4ARx15mANJNeH8) — 27 reviews (4.7★) · `garden`
+- [Monta Vista Park](https://www.google.com/maps/search/?api=1&query=37.3185192%2C-122.0692521&query_place_id=ChIJD1gTCYW1j4ARQUK587YfhLQ) — 27 reviews (4.3★) · `park`
+- [Mystery Park](https://www.google.com/maps/search/?api=1&query=37.579083%2C-122.03474179999999&query_place_id=ChIJOa_9LLS_j4ARHBcDuwOycUM) — 27 reviews (4.7★) · `park`
+- [Nuestra Tierra Community Garden](https://www.google.com/maps/search/?api=1&query=37.3089544%2C-121.8433814&query_place_id=ChIJRx9sR-8yjoAROXAA29nyFjw) — 27 reviews (4.3★) · `garden`
+- [Rosewood Community Park](https://www.google.com/maps/search/?api=1&query=37.5340679%2C-121.9742076&query_place_id=ChIJX6gxaLfAj4ARXODr65K3vig) — 27 reviews (4.5★) · `park`
+- [Upper Stevens Creek County Park](https://www.google.com/maps/search/?api=1&query=37.286173%2C-122.13881709999998&query_place_id=ChIJmVeWVGiyj4AR9i8xRyHcVpw) — 27 reviews (4.4★) · `park`
+- [Wallis Ranch Community Park](https://www.google.com/maps/search/?api=1&query=37.7288505%2C-121.87190129999998&query_place_id=ChIJVVUV6Onuj4AReJmFuUFxzIs) — 27 reviews (4.4★) · `park`
+- [25th Street Mini Park](https://www.google.com/maps/search/?api=1&query=37.814844%2C-122.2724523&query_place_id=ChIJC0Hun6mAj4ARIn736mHEbyk) — 26 reviews (3.8★) · `park`
+- [Augustus Rathbone Park](https://www.google.com/maps/search/?api=1&query=37.405568099999996%2C-121.89305200000001&query_place_id=ChIJBVZfrsXPj4ARUvnHquftGVQ) — 26 reviews (4.5★) · `park`
+- [Bechtel Park](https://www.google.com/maps/search/?api=1&query=37.6380285%2C-122.06057879999999&query_place_id=ChIJv83ZVWuUj4ARg6efJBsJ_Us) — 26 reviews (4.5★) · `park`
+- [Blacksmith Square](https://www.google.com/maps/search/?api=1&query=37.683129099999995%2C-121.76954269999999&query_place_id=ChIJz4S7GdTnj4ARoucuZJ-nDPE) — 26 reviews (4.8★) · `park`
+- [Cabrillo Park](https://www.google.com/maps/search/?api=1&query=37.551276%2C-122.02247709999999&query_place_id=ChIJzXE3IKe_j4ARM4v03RaY1nc) — 26 reviews (4★) · `park`
+- [Cabrillo Trail Park](https://www.google.com/maps/search/?api=1&query=37.5647255%2C-122.02627179999999&query_place_id=ChIJpTC_Mri_j4ARoh0vyOryirQ) — 26 reviews (4.6★) · `park`
+- [Chilpancingo Dog Park](https://www.google.com/maps/search/?api=1&query=37.9723985%2C-122.0664867&query_place_id=ChIJMcsTfdlnhYARr90QnveEWOk) — 26 reviews (4.3★) · `dog_park`
+- [Dolphin Park](https://www.google.com/maps/search/?api=1&query=37.5262269%2C-122.2546654&query_place_id=ChIJW4Zoja-Yj4AR3BWnDd7IA_A) — 26 reviews (4.5★) · `park`
+- [Fairmont Park](https://www.google.com/maps/search/?api=1&query=37.3845676%2C-122.0802825&query_place_id=ChIJybczRSy3j4AR5HQIGKkrCRQ) — 26 reviews (4.1★) · `park`
+- [Heirloom East Bay](https://www.google.com/maps/search/?api=1&query=37.7488763%2C-122.0314186&query_place_id=ChIJvQRPfYONj4ARp0lEbS3nkSs) — 26 reviews (4.9★) · `garden`
+- [Iron Horse Trail](https://www.google.com/maps/search/?api=1&query=37.9330648%2C-122.0535008&query_place_id=ChIJMZTTChFhhYAROOydXLK9qLk) — 26 reviews (4.7★) · `park`
+- [John P. McEnery Park](https://www.google.com/maps/search/?api=1&query=37.331540499999996%2C-121.894753&query_place_id=ChIJkb5GP6TMj4ARcnqV6orPMdk) — 26 reviews (4★) · `park`
+- [Lake Merritt Columns](https://www.google.com/maps/search/?api=1&query=37.808555399999996%2C-122.249747&query_place_id=ChIJwyoYwEaHj4ARfHSFhgmIqtg) — 26 reviews (4.3★) · `park`
+- [Maitland R Henry Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.695856%2C-121.79039399999999&query_place_id=ChIJnycCLDXmj4AR6MEWzGK3JKE) — 26 reviews (4★) · `park`
+- [Mariner Park](https://www.google.com/maps/search/?api=1&query=38.031493%2C-121.89148899999998&query_place_id=ChIJVbTcJqhbhYARZvVCrQ11YWY) — 26 reviews (4★) · `park`
+- [Mirabeau Park](https://www.google.com/maps/search/?api=1&query=37.5411242%2C-122.05100979999999&query_place_id=ChIJuUujb4G_j4ARXNxyRQS9-XM) — 26 reviews (4.6★) · `park`
+- [Noll Park](https://www.google.com/maps/search/?api=1&query=37.5355219%2C-121.98308909999999&query_place_id=ChIJu9aL7aTAj4ARatwzAnNDweE) — 26 reviews (3.6★) · `park`
+- [Oak Park](https://www.google.com/maps/search/?api=1&query=37.8188549%2C-122.25827720000001&query_place_id=ChIJpxRW8VaHj4ARn-AQFN36bdQ) — 26 reviews (4.3★) · `park`
+- [Palmilla Park](https://www.google.com/maps/search/?api=1&query=37.937456%2C-121.7043847&query_place_id=ChIJp9ZNpzv_j4ARgXkrZR6krA8) — 26 reviews (4.5★) · `park`
+- [Pickleweed Picnic Area](https://www.google.com/maps/search/?api=1&query=37.9132175%2C-122.3869878&query_place_id=ChIJQ7yMhWaDhYARFu8X7zyhI74) — 26 reviews (4.7★) · `park`
+- [Pogo Park #2 - Harbour-8 Park](https://www.google.com/maps/search/?api=1&query=37.9313042%2C-122.360896&query_place_id=ChIJd4x1XqaChYARwvyKjmjojaU) — 26 reviews (4.3★) · `park`
+- [Rosendin Park](https://www.google.com/maps/search/?api=1&query=37.1645058%2C-121.62259320000001&query_place_id=ChIJ8-CG9VPfkYARrOi1uAkMiV8) — 26 reviews (4.6★) · `park`
+- [San Mateo Skatepark](https://www.google.com/maps/search/?api=1&query=37.5691972%2C-122.30365409999999&query_place_id=ChIJI-tlYY-ej4ARqD4E-diwx0k) — 26 reviews (4★) · `park`
+- [Wade Johnson Park](https://www.google.com/maps/search/?api=1&query=37.8091333%2C-122.29019620000001&query_place_id=ChIJ74EdBp-Aj4ARiJ2qqrlh_VQ) — 26 reviews (3.3★) · `park`
+- [7th & Walnut Park](https://www.google.com/maps/search/?api=1&query=37.633057799999996%2C-122.4054852&query_place_id=ChIJCbqLdNJ5j4ARUcdHLOA7wTY) — 25 reviews (3.7★) · `park`
+- [Bellgrove Park](https://www.google.com/maps/search/?api=1&query=37.276345899999995%2C-122.0052049&query_place_id=ChIJYasNjIhLjoARXb7bINrCcXc) — 25 reviews (4.3★) · `city_park`
+- [Big Tree](https://www.google.com/maps/search/?api=1&query=37.8018023%2C-122.25463029999999&query_place_id=ChIJ37aTbO2Hj4ARCUtd3cGnKCU) — 25 reviews (4.6★) · `park`
+- [City of Burlingame Shorebird Sanctuary](https://www.google.com/maps/search/?api=1&query=37.5974855%2C-122.3658618&query_place_id=ChIJx5exNS12j4AROl-kdzEsAhA) — 25 reviews (4.4★) · `nature_preserve`
+- [Contra Costa Rock Park](https://www.google.com/maps/search/?api=1&query=37.892184199999996%2C-122.2760667&query_place_id=ChIJJyWPUq1-hYARfJlrGMViqfM) — 25 reviews (4.6★) · `park`
+- [Hilltop Park](https://www.google.com/maps/search/?api=1&query=37.810386799999996%2C-122.36822480000001&query_place_id=ChIJX1ygXQCBhYARSC8hZd05-Bc) — 25 reviews (4.8★) · `park`
+- [K.C. Jones Playground](https://www.google.com/maps/search/?api=1&query=37.725825%2C-122.3935067&query_place_id=ChIJg9ocqyV_j4ARbb2rhc6mlrM) — 25 reviews (3.8★) · `park`
+- [Muwékma Dog Park](https://www.google.com/maps/search/?api=1&query=37.3871241%2C-121.9990714&query_place_id=ChIJcSQOatO3j4AR6NcM606vqoE) — 25 reviews (4.2★) · `dog_park`
+- [Quad](https://www.google.com/maps/search/?api=1&query=37.7223554%2C-122.47737599999999&query_place_id=ChIJTetECbF9j4ARdqUejbLM3no) — 25 reviews (4.6★) · `park`
+- [Sabercat Historical Park](https://www.google.com/maps/search/?api=1&query=37.5279516%2C-121.9314279&query_place_id=ChIJhXZ0e8HHj4ARQIfgJ-ksVP4) — 25 reviews (4.8★) · `park`
+- [Stewart Playlot](https://www.google.com/maps/search/?api=1&query=37.9387482%2C-122.3662655&query_place_id=ChIJJV-Uc62ChYARdMMppNoYscc) — 25 reviews (3.6★) · `park`
+- [Bancroft Community Garden](https://www.google.com/maps/search/?api=1&query=37.8651081%2C-122.28596519999999&query_place_id=ChIJO6JfPCV_hYAR-Uhx5nx2jAU) — 24 reviews (4.9★) · `garden`
+- [Blackpool Park](https://www.google.com/maps/search/?api=1&query=37.273224899999995%2C-121.757907&query_place_id=ChIJP04R84UujoAR9PjDtCuYapE) — 24 reviews (4.5★) · `park`
+- [Brighton Mini Park - Pacifica](https://www.google.com/maps/search/?api=1&query=37.6309168%2C-122.48428749999998&query_place_id=ChIJBWhHG1F6j4ARRpX-7LitY0Q) — 24 reviews (4.1★) · `park`
+- [Cannery Park](https://www.google.com/maps/search/?api=1&query=37.355425%2C-121.89277840000001&query_place_id=ChIJV7ZpUbHNj4ARPU3jK9ogLjU) — 24 reviews (4.6★) · `park`
+- [Cupertino City Center](https://www.google.com/maps/search/?api=1&query=37.321003399999995%2C-122.02945069999998&query_place_id=ChIJP6uV26i1j4ARcURr7Sa-XHo) — 24 reviews (4.6★) · `park`
+- [Evergreen Park](https://www.google.com/maps/search/?api=1&query=37.2980616%2C-121.7687417&query_place_id=ChIJc7N2jX0tjoAR1yREf_DOeiY) — 24 reviews (4.9★) · `park`
+- [Linden Park](https://www.google.com/maps/search/?api=1&query=37.4726284%2C-122.21808560000001&query_place_id=ChIJZ7xn9Aqjj4ARPx1G3H85I5k) — 24 reviews (4.1★) · `park`
+- [McCormick Family Community Rose Garden | Emerald Glen Park](https://www.google.com/maps/search/?api=1&query=37.711079399999996%2C-121.87365459999998&query_place_id=ChIJ22bQfsvuj4ARfeGTdMidl_M) — 24 reviews (4.7★) · `garden`
+- [Pennsylvania Garden](https://www.google.com/maps/search/?api=1&query=37.7631642%2C-122.3933159&query_place_id=ChIJ_c6vrsl_j4ARrDHkscO8kFU) — 24 reviews (4.6★) · `garden`
+- [Smith Field Park](https://www.google.com/maps/search/?api=1&query=37.4476357%2C-122.4367825&query_place_id=ChIJPbcokUQLj4ARL0edkRFRUJ0) — 24 reviews (4.3★) · `park`
+- [The Benches Garden](https://www.google.com/maps/search/?api=1&query=37.761839099999996%2C-122.4054461&query_place_id=ChIJJXJddDR-j4ARtqnvr64vqRY) — 24 reviews (4.7★) · `garden`
+- [The Grove Park](https://www.google.com/maps/search/?api=1&query=37.688158699999995%2C-121.74379319999998&query_place_id=ChIJn4jO9Grnj4ARzD9Hr17-Gr0) — 24 reviews (4.6★) · `park`
+- [The Magic Forest](https://www.google.com/maps/search/?api=1&query=37.444345299999995%2C-122.14079330000001&query_place_id=ChIJPb2TzRq7j4ARV6zoa1SL9KA) — 24 reviews (4.2★) · `park`
+- [Tree Life Cycles Trail of Coyote Creek](https://www.google.com/maps/search/?api=1&query=37.241212999999995%2C-121.76437109999999&query_place_id=ChIJC9IyEAAvjoARn13u69w-GeY) — 24 reviews (4.3★) · `park`
+- [Werry Park](https://www.google.com/maps/search/?api=1&query=37.4200406%2C-122.1542922&query_place_id=ChIJy3AZUcK6j4ARmCZ_FEL30I0) — 24 reviews (4.5★) · `park`
+- [Wiser Park](https://www.google.com/maps/search/?api=1&query=37.388238099999995%2C-122.0041412&query_place_id=ChIJ6U7xNqu3j4ARDV0Hoqw7vyk) — 24 reviews (4.6★) · `park`
+- [Bayshores Park](https://www.google.com/maps/search/?api=1&query=37.5178459%2C-122.04991869999998&query_place_id=ChIJyTtEQSG_j4ARi0nUBjiPArk) — 23 reviews (4.6★) · `park`
+- [Black Point Historic Gardens](https://www.google.com/maps/search/?api=1&query=37.806965%2C-122.426727&query_place_id=ChIJXwjgu5-BhYARhZXgUaO8NGg) — 23 reviews (4.5★) · `garden`
+- [Bottoms Up West Oakland](https://www.google.com/maps/search/?api=1&query=37.8071078%2C-122.2971205&query_place_id=ChIJh2kN_pyAj4ARUgmGuUX-h1g) — 23 reviews (4.3★) · `garden`
+- [Cambrian Park Little League](https://www.google.com/maps/search/?api=1&query=37.2666533%2C-121.9205317&query_place_id=ChIJ7ytbr2Y0joARrmDNbbn9OEw) — 23 reviews (4.7★) · `park`
+- [Commodore Dog Park](https://www.google.com/maps/search/?api=1&query=37.631417%2C-122.4250991&query_place_id=ChIJOw_wsMd5j4ARQiA-z0bzaRQ) — 23 reviews (4.1★) · `dog_park`
+- [Corwin Street Community Garden](https://www.google.com/maps/search/?api=1&query=37.7574938%2C-122.4403276&query_place_id=ChIJbShckAV-j4ARMtmZ9vL1Hq8) — 23 reviews (4.8★) · `garden`
+- [Curry Point, Mt. Diablo State Park](https://www.google.com/maps/search/?api=1&query=37.8520709%2C-121.9255965&query_place_id=ChIJZ7wuR3P0j4AR2tRk_-QdYrE) — 23 reviews (4.8★) · `state_park`
+- [Dog Park | Fair Oaks](https://www.google.com/maps/search/?api=1&query=37.38448520000001%2C-122.01529310000001&query_place_id=ChIJEWbTkC-3j4AR9VAElX0M4bM) — 23 reviews (3.9★) · `dog_park`
+- [Dogpatch/Miller Memorial Community Garden](https://www.google.com/maps/search/?api=1&query=37.7450373%2C-122.40704530000001&query_place_id=ChIJJzWFKlJ-j4ARTr_VMlkGmVE) — 23 reviews (4.5★) · `garden`
+- [Hayward Heritage Plaza](https://www.google.com/maps/search/?api=1&query=37.6700912%2C-122.0830787&query_place_id=ChIJlY4e4KaTj4ARnRJ964jV2PM) — 23 reviews (4.3★) · `city_park`
+- [Kaiser Rooftop Garden](https://www.google.com/maps/search/?api=1&query=37.8092393%2C-122.26512659999997&query_place_id=ChIJVVWVFk2Hj4AR3fI5lPU2WkE) — 23 reviews (4.2★) · `garden`
+- [Leo J. Ryan Park Gazebo](https://www.google.com/maps/search/?api=1&query=37.5565083%2C-122.27261039999998&query_place_id=ChIJ4zT29Gufj4AR8OuZgbWUT4w) — 23 reviews (5★) · `park`
+- [Monterosso Community Park](https://www.google.com/maps/search/?api=1&query=37.792346099999996%2C-121.89228059999999&query_place_id=ChIJQeChsPHxj4AR42MxSuQ8z10) — 23 reviews (4.3★) · `park`
+- [Parks at 5M](https://www.google.com/maps/search/?api=1&query=37.781438099999995%2C-122.40662520000001&query_place_id=ChIJafL05feBhYARzoS9to3lhr4) — 23 reviews (4.1★) · `park`
+- [Presidio Amatury Park](https://www.google.com/maps/search/?api=1&query=37.795935199999995%2C-122.46892650000001&query_place_id=ChIJyWzy5t-GhYARgPInGynFfRk) — 23 reviews (4.7★) · `park`
+- [Sanborn County Park pay station](https://www.google.com/maps/search/?api=1&query=37.234910899999996%2C-122.06201299999998&query_place_id=ChIJM5XpYmFLjoARC_qd5yEbIO8) — 23 reviews (4.8★) · `park`
+- [Schaefer Park](https://www.google.com/maps/search/?api=1&query=37.387174699999996%2C-122.08952169999999&query_place_id=ChIJmzzBoiKxj4ARbQt_EMeBe2g) — 23 reviews (4.5★) · `park`
+- [Stanford University Arboretum](https://www.google.com/maps/search/?api=1&query=37.4379402%2C-122.1670854&query_place_id=ChIJ93HcJi67j4ARAm3l2f01eqA) — 23 reviews (4.6★) · `botanical_garden`
+- [Uvas park parking lot 1](https://www.google.com/maps/search/?api=1&query=37.084384899999996%2C-121.79286420000001&query_place_id=ChIJKdY55SMjjoARZqVHqbZmdBk) — 23 reviews (4.6★) · `park`
+- [Alpine Park](https://www.google.com/maps/search/?api=1&query=37.5842236%2C-122.3535115&query_place_id=ChIJHYUNf-Cdj4ARawTmCYMqokA) — 22 reviews (4.8★) · `park`
+- [Avalon Dogpatch Dog Park](https://www.google.com/maps/search/?api=1&query=37.760358599999996%2C-122.39154819999997&query_place_id=ChIJN3vs0zx_j4ARx-fgvYbCaZk) — 22 reviews (3.6★) · `dog_park`
+- [Bay Miwok Meadows Park](https://www.google.com/maps/search/?api=1&query=37.9507737%2C-121.76232759999999&query_place_id=ChIJOSADRWb5j4ARC5TA7fzyLFc) — 22 reviews (4.6★) · `park`
+- [Black Diamond Mines Regional Preserve Park Entrance](https://www.google.com/maps/search/?api=1&query=37.9852528%2C-121.853749&query_place_id=ChIJudkfX3lZhYARmf-As9NdMK8) — 22 reviews (4.7★) · `park`
+- [Carriage Hills Park](https://www.google.com/maps/search/?api=1&query=37.027385699999996%2C-121.61417379999999&query_place_id=ChIJzXDMsgzhkYAR8YQSSouLJKw) — 22 reviews (4.8★) · `park`
+- [Casabella Park](https://www.google.com/maps/search/?api=1&query=37.3226161%2C-121.7741123&query_place_id=ChIJ_57UrQUtjoARvKW6IUrFUOI) — 22 reviews (4.1★) · `park`
+- [Chabot Recreation Center](https://www.google.com/maps/search/?api=1&query=37.8503452%2C-122.2409273&query_place_id=ChIJYQMGNL99hYAR07TXMjyLcYw) — 22 reviews (4.3★) · `park`
+- [Chris Hotts Park](https://www.google.com/maps/search/?api=1&query=37.2452977%2C-121.87523979999999&query_place_id=ChIJXR0lpGExjoAR85SWcUyxpsg) — 22 reviews (4★) · `park`
+- [Clinton Park](https://www.google.com/maps/search/?api=1&query=37.794351%2C-122.25315150000002&query_place_id=ChIJRXvSlqOHj4ARfuJTRIDkDhI) — 22 reviews (3.3★) · `park`
+- [Creighton Dog Park](https://www.google.com/maps/search/?api=1&query=37.422134299999996%2C-121.88132169999999&query_place_id=ChIJZc6i-OrPj4ARuHyw3MchSKk) — 22 reviews (3.9★) · `dog_park`
+- [Evergreen Village Duck Pond](https://www.google.com/maps/search/?api=1&query=37.3142066%2C-121.7752227&query_place_id=ChIJbb-YSC4tjoAR17tNRD2o4Qs) — 22 reviews (4.1★) · `park`
+- [Fillmore & Turk Mini Park](https://www.google.com/maps/search/?api=1&query=37.7801938%2C-122.43189849999997&query_place_id=ChIJOSECCLuAhYARD9Ao4-2ASj8) — 22 reviews (4.1★) · `city_park`
+- [La Rinconada Park](https://www.google.com/maps/search/?api=1&query=37.2599871%2C-121.98066610000001&query_place_id=ChIJUTWwNrk1joARFT59aBiLepA) — 22 reviews (4★) · `park`
+- [Middle Harbor Shoreline Park Main Pavilion](https://www.google.com/maps/search/?api=1&query=37.8054949%2C-122.324749&query_place_id=ChIJ_wiayJx_hYAR60PIklav7hc) — 22 reviews (4.8★) · `park`
+- [Mulholland Ridge Open Space](https://www.google.com/maps/search/?api=1&query=37.851472199999996%2C-122.1298611&query_place_id=ChIJ8XevUC2Ij4AR0Y_TKXxOUjg) — 22 reviews (4.7★) · `park`
+- [Nob Hill](https://www.google.com/maps/search/?api=1&query=37.2797578%2C-122.0611363&query_place_id=ChIJu6Qie4O1j4AR-Qjyewjby5A) — 22 reviews (4.7★) · `nature_preserve`
+- [Osage Park Tennis Courts](https://www.google.com/maps/search/?api=1&query=37.802177%2C-121.98106589999999&query_place_id=ChIJ6Yc7O9jzj4AR0_X9qKDGVlY) — 22 reviews (4.5★) · `park`
+- [Sierra Morena Trail Access point](https://www.google.com/maps/search/?api=1&query=37.4058528%2C-122.3039744&query_place_id=ChIJ_Y_TmP2nj4AR4Kc9-y3dK2I) — 22 reviews (4.5★) · `park`
+- [Summit View Trail Park](https://www.google.com/maps/search/?api=1&query=37.737859199999995%2C-121.9215036&query_place_id=ChIJl44lecntj4ARbo1sgEM7ZLo) — 22 reviews (4.8★) · `park`
+- [Sunrise Ridge Park](https://www.google.com/maps/search/?api=1&query=37.778604099999995%2C-121.9922096&query_place_id=ChIJUfFxagDzj4ARD6Tgt7BrDZc) — 22 reviews (4.7★) · `park`
+- [View Golden Gate Bridge](https://www.google.com/maps/search/?api=1&query=37.808630099999995%2C-122.47496209999998&query_place_id=ChIJj-UsMQCHhYARqX5-uAftuaA) — 22 reviews (4.8★) · `park`
+- [West Hillsdale Park](https://www.google.com/maps/search/?api=1&query=37.534623599999996%2C-122.3071264&query_place_id=ChIJLdX1cRqfj4AR2HlcV07VTUA) — 22 reviews (4.5★) · `park`
+- [Albany Bulb](https://www.google.com/maps/search/?api=1&query=37.889455399999996%2C-122.3153598&query_place_id=ChIJ301-OQB5hYAR9y31zhvPCVk) — 21 reviews (4.1★) · `park`
+- [Arboretum Grove](https://www.google.com/maps/search/?api=1&query=37.43869%2C-122.16381270000001&query_place_id=ChIJA5cO-S-7j4ARbc8uun7XIMo) — 21 reviews (3.5★) · `park`
+- [Briarwood Park](https://www.google.com/maps/search/?api=1&query=37.988089099999996%2C-121.6892903&query_place_id=ChIJ75sYbGT_j4ARA0z6eO8AQlw) — 21 reviews (4.4★) · `park`
+- [Brisbane Lagoon](https://www.google.com/maps/search/?api=1&query=37.6832771%2C-122.39327650000001&query_place_id=ChIJQ6fZ1S55j4ARYG-JYksxeDw) — 21 reviews (4.2★) · `nature_preserve`
+- [Chabot Staging Area](https://www.google.com/maps/search/?api=1&query=37.7386457%2C-122.07517169999998&query_place_id=ChIJ2WMQMuSNj4ART2z46yQNAaI) — 21 reviews (4.3★) · `park`
+- [Crow Canyon Gardens](https://www.google.com/maps/search/?api=1&query=37.7723516%2C-121.98896049999999&query_place_id=ChIJqcJ1kGHzj4ARGzgN_-Ov5Jk) — 21 reviews (4.8★) · `garden`
+- [Daffodil Park](https://www.google.com/maps/search/?api=1&query=37.9705592%2C-121.7303633&query_place_id=ChIJ66fCcrD4j4ARd-H7EhPMYds) — 21 reviews (4.6★) · `park`
+- [Golden Gate and Steiner Mini Park](https://www.google.com/maps/search/?api=1&query=37.7795742%2C-122.433522&query_place_id=ChIJe-f39rqAhYAR7wRrQnsj-IE) — 21 reviews (3.8★) · `city_park`
+- [Guadalupe Reservoir](https://www.google.com/maps/search/?api=1&query=37.1937369%2C-121.87491929999997&query_place_id=ChIJQfP5wuswjoAR_d6-g1IPt3o) — 21 reviews (4.4★) · `park`
+- [Hayward Community Gardens](https://www.google.com/maps/search/?api=1&query=37.6567309%2C-122.0757689&query_place_id=ChIJ3c77LPuTj4ARJbZuZmvMDJM) — 21 reviews (4.2★) · `park`
+- [Las Trampas Ridge Trail](https://www.google.com/maps/search/?api=1&query=37.824669%2C-122.0567268&query_place_id=ChIJZ573jJWLj4ARfen5ZQX8lPo) — 21 reviews (4.6★) · `park`
+- [Moss beach trail head](https://www.google.com/maps/search/?api=1&query=37.5235249%2C-122.5157658&query_place_id=ChIJ-d27sXJxj4AR5C4l2tuDB6U) — 21 reviews (4.9★) · `park`
+- [Richmond Greenway](https://www.google.com/maps/search/?api=1&query=37.931337299999996%2C-122.36669669999999&query_place_id=ChIJewxUkKWChYARBlvvgaTYu_c) — 21 reviews (3.8★) · `park`
+- [San Tomas Aquino/ Saratoga Creek Trail](https://www.google.com/maps/search/?api=1&query=37.3017387%2C-121.9976569&query_place_id=ChIJU--SOFm1j4ARxyECEjzIerY) — 21 reviews (4.2★) · `park`
+- [Sharon Hills Park](https://www.google.com/maps/search/?api=1&query=37.431957%2C-122.20947489999999&query_place_id=ChIJq9NyfLelj4ARtg5dvVg8C0M) — 21 reviews (4.4★) · `park`
+- [Sisterhood Gardens](https://www.google.com/maps/search/?api=1&query=37.712697299999995%2C-122.4666253&query_place_id=ChIJ5XEDVjZ8j4ARqTZyc09k6bU) — 21 reviews (4.5★) · `garden`
+- [Sobrante Ridge Botanic Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.9675611%2C-122.26432539999999&query_place_id=ChIJfQCq9gF6hYARQZHAMOXzF3c) — 21 reviews (4.7★) · `nature_preserve`
+- [Springline - The Glade (Dog Park)](https://www.google.com/maps/search/?api=1&query=37.4561083%2C-122.1852608&query_place_id=ChIJ699Qtyulj4ARHsVunKxTkaY) — 21 reviews (4.6★) · `dog_park`
+- [States Street Playground Park](https://www.google.com/maps/search/?api=1&query=37.7637747%2C-122.43780859999998&query_place_id=ChIJIaln-nB_j4ARQm4HdypWVkk) — 21 reviews (4.2★) · `city_park`
+- [Sunflower Path](https://www.google.com/maps/search/?api=1&query=37.8401971%2C-122.227887&query_place_id=ChIJNwXXT8J9hYAR5VPhc56n4ls) — 21 reviews (4.9★) · `park`
+- [Unity Plaza](https://www.google.com/maps/search/?api=1&query=37.723532399999996%2C-122.4534426&query_place_id=ChIJN4SoTNN9j4ARgv4Xk9fCJhI) — 21 reviews (4.1★) · `park`
+- [Village Park](https://www.google.com/maps/search/?api=1&query=37.3815311%2C-122.1147652&query_place_id=ChIJqX9Qhu6wj4ARfIAFPOkUeZw) — 21 reviews (4.5★) · `park`
+- [Vintage Hills Park](https://www.google.com/maps/search/?api=1&query=37.657482699999996%2C-121.8491505&query_place_id=ChIJYbifajboj4ART55lvR3ac0g) — 21 reviews (4.6★) · `park`
+- [Westwood Park](https://www.google.com/maps/search/?api=1&query=37.4613551%2C-122.24596690000001&query_place_id=ChIJZXntZOqjj4ARnG2_Gsf4WGs) — 21 reviews (4.5★) · `park`
+- [Wild Rose Park](https://www.google.com/maps/search/?api=1&query=37.6559281%2C-121.89566010000001&query_place_id=ChIJjYrR24Xpj4ARHRFBoEoJe_g) — 21 reviews (3.9★) · `park`
+- [Bateman Park](https://www.google.com/maps/search/?api=1&query=37.8554508%2C-122.256435&query_place_id=ChIJ97bYKdJ9hYARoba7XzkJ6hU) — 20 reviews (3.9★) · `park`
+- [Bill Clark Park](https://www.google.com/maps/search/?api=1&query=37.7103068%2C-121.7297816&query_place_id=ChIJOUdIlCjnj4ARBrb1aoKjS0I) — 20 reviews (4.5★) · `park`
+- [Duck Pond Park](https://www.google.com/maps/search/?api=1&query=38.0152113%2C-122.28346529999997&query_place_id=ChIJh0dL8qR3hYAR3wZJaRXDINc) — 20 reviews (4.7★) · `park`
+- [Dunes Beach - Half Moon Bay State Beach](https://www.google.com/maps/search/?api=1&query=37.4855605%2C-122.4518258&query_place_id=ChIJQ9UUvc1zj4ARWzePY6ESfm8) — 20 reviews (4.7★) · `state_park`
+- [Franklin Canyon](https://www.google.com/maps/search/?api=1&query=37.9990928%2C-122.2048276&query_place_id=ChIJR4q-xHFwhYARvlNyWqA-x30) — 20 reviews (4.7★) · `park`
+- [Fulton Plaza](https://www.google.com/maps/search/?api=1&query=37.7795993%2C-122.41592519999999&query_place_id=ChIJ04KKZQCBhYAR8R4zEB4KDzc) — 20 reviews (4.3★) · `city_park`
+- [Kid Power Park](https://www.google.com/maps/search/?api=1&query=37.7640878%2C-122.4203337&query_place_id=ChIJz5x_R-1_j4ARqC52pq-CIA8) — 20 reviews (4.2★) · `city_park`
+- [Lafayette Rink](https://www.google.com/maps/search/?api=1&query=37.8663592%2C-122.09899609999998&query_place_id=ChIJJTd5luOJj4ARIfl9hGyA-74) — 20 reviews (4.9★) · `park`
+- [Lakeside Park](https://www.google.com/maps/search/?api=1&query=37.98621560000001%2C-121.6282352&query_place_id=ChIJ-QhBfScAkIARvg0iWevPByk) — 20 reviews (4.7★) · `city_park`
+- [Little Uvas Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.0912684%2C-121.7197884&query_place_id=ChIJO-G0ASgijoARKzL_eihb938) — 20 reviews (4.9★) · `nature_preserve`
+- [Livorna Park](https://www.google.com/maps/search/?api=1&query=37.8673919%2C-122.01867070000002&query_place_id=ChIJKUBSRgCLj4ARM_G3ITGqrvQ) — 20 reviews (4.8★) · `park`
+- [Niles Beach](https://www.google.com/maps/search/?api=1&query=37.578931%2C-122.00363650000001&query_place_id=ChIJw-Ps7RG_j4ARpmR3qxPOtpg) — 20 reviews (4.2★) · `park`
+- [Ocean Lawn](https://www.google.com/maps/search/?api=1&query=37.433340199999996%2C-122.44240499999998&query_place_id=ChIJTc-Qm2MLj4AR7AMcfZ0O4hE) — 20 reviews (4.9★) · `garden`
+- [Peralta Creek Park](https://www.google.com/maps/search/?api=1&query=37.7994578%2C-122.1975196&query_place_id=ChIJm603fkqGj4ARHyr2uxJH2Ps) — 20 reviews (4★) · `park`
+- [Portola Mini Park](https://www.google.com/maps/search/?api=1&query=37.5927965%2C-122.4985219&query_place_id=ChIJie9k2Hhwj4AR5mKU7I_cZX4) — 20 reviews (4.5★) · `park`
+- [Sycamore Valley Open Space South](https://www.google.com/maps/search/?api=1&query=37.792594099999995%2C-121.93862349999999&query_place_id=ChIJoYw7Vcbzj4AR0XHeN4COnYg) — 20 reviews (4.8★) · `park`
+- [Temescal South Entrance](https://www.google.com/maps/search/?api=1&query=37.8434664%2C-122.2273397&query_place_id=ChIJ1yNFeAl9hYARD9lDHy-q1rg) — 20 reviews (4.6★) · `park`
+- [Tompkins Stairs](https://www.google.com/maps/search/?api=1&query=37.7370051%2C-122.4113433&query_place_id=ChIJRwb351d-j4AR1qoye65fVs8) — 20 reviews (4.5★) · `park`
+- [WW II Comfort Women Monument](https://www.google.com/maps/search/?api=1&query=37.7917148%2C-122.4051266&query_place_id=ChIJl2lrVpaBhYARG6y8zJ5W6xQ) — 20 reviews (4.8★) · `park`
+- [Walt Disney School Park](https://www.google.com/maps/search/?api=1&query=37.7407457%2C-121.9371905&query_place_id=ChIJPWFSwqTtj4ARr58xFqlPphs) — 20 reviews (4.4★) · `park`
+- [Warden Park](https://www.google.com/maps/search/?api=1&query=37.7232731%2C-122.18158369999999&query_place_id=ChIJZzXbn3uFj4AR8fHQ6UXcdMQ) — 20 reviews (4.2★) · `park`
+- [Youngblood Coleman Park](https://www.google.com/maps/search/?api=1&query=37.738255699999996%2C-122.3841226&query_place_id=ChIJF_JAG5yAhYARHy66UOBu5_4) — 20 reviews (3.9★) · `city_park`
+- [555 Mission Street Public Open Space](https://www.google.com/maps/search/?api=1&query=37.788433%2C-122.3989723&query_place_id=ChIJJ8nJ0GKAhYARhlR4bTiGOWU) — 19 reviews (4.4★) · `park`
+- [Aborn Park](https://www.google.com/maps/search/?api=1&query=37.314355299999995%2C-121.7967755&query_place_id=ChIJucjJnbotjoARbIRk-liZNsI) — 19 reviews (4.4★) · `park`
+- [Avenida España Park](https://www.google.com/maps/search/?api=1&query=37.222142399999996%2C-121.7701402&query_place_id=ChIJOXFU8qEvjoARUEMhMhn27M4) — 19 reviews (4.5★) · `park`
+- [Bench with View](https://www.google.com/maps/search/?api=1&query=37.8954922%2C-122.32261279999997&query_place_id=ChIJqxaAAwB5hYAR_0pf0RYBQ9Q) — 19 reviews (4.8★) · `park`
+- [Caboose Park](https://www.google.com/maps/search/?api=1&query=37.9509231%2C-121.713155&query_place_id=ChIJFeSReSn_j4ARB2_dS9fnHKU) — 19 reviews (4.1★) · `park`
+- [Claremont Fire Trail](https://www.google.com/maps/search/?api=1&query=37.862640299999995%2C-122.24410199999998&query_place_id=ChIJN5Qy6sp9hYARHxzKEDM2gbg) — 19 reviews (4.7★) · `park`
+- [Conservatory of Flowers Golden Gate Park](https://www.google.com/maps/search/?api=1&query=37.772618699999995%2C-122.46025579999998&query_place_id=ChIJCa4MCwCHhYARW0FshBIVaio) — 19 reviews (4.8★) · `park`
+- [Corn Palace Park](https://www.google.com/maps/search/?api=1&query=37.361913699999995%2C-121.99665929999998&query_place_id=ChIJK58qSQC1j4ARKKTxRoDZPYE) — 19 reviews (4.5★) · `park`
+- [Dirt Bike Jumps](https://www.google.com/maps/search/?api=1&query=37.5550419%2C-122.24675800000001&query_place_id=ChIJeR2wcJeZj4AR6XcNe9cADMk) — 19 reviews (4.5★) · `park`
+- [Greg Brown Park](https://www.google.com/maps/search/?api=1&query=37.850018%2C-122.2694439&query_place_id=ChIJNRRYFXl-hYARkZp-xntUQO0) — 19 reviews (3.9★) · `park`
+- [Horseshoe Lake](https://www.google.com/maps/search/?api=1&query=37.5761144%2C-122.0040314&query_place_id=ChIJjWXOVkO_j4ARbeo9saEjC6Q) — 19 reviews (4.7★) · `park`
+- [Jalquin Vista Park](https://www.google.com/maps/search/?api=1&query=37.6515315%2C-122.0181624&query_place_id=ChIJjZc8opWUj4ARQPplMXXgElU) — 19 reviews (4.3★) · `park`
+- [Joel Davis Park](https://www.google.com/maps/search/?api=1&query=37.458695%2C-122.13233679999999&query_place_id=ChIJo5mNtQ27j4AREr98ATuGTCA) — 19 reviews (4.5★) · `park`
+- [Mission Dolores Dog Play Area North](https://www.google.com/maps/search/?api=1&query=37.760351299999996%2C-122.42641069999998&query_place_id=ChIJ1-ggbwB_j4ARInwrP8QLDBI) — 19 reviews (4.5★) · `dog_park`
+- [Montgomery Hill Park](https://www.google.com/maps/search/?api=1&query=37.336397600000005%2C-121.9093477&query_place_id=ChIJRd3y5WbLj4AR74gRyigwzZo) — 19 reviews (4.1★) · `park`
+- [Moon Viewing Garden](https://www.google.com/maps/search/?api=1&query=37.767847599999996%2C-122.47167800000001&query_place_id=ChIJoU4MB-GHhYARZlkRKwsEXpM) — 19 reviews (4.9★) · `garden`
+- [Pescadero Creek Park](https://www.google.com/maps/search/?api=1&query=37.2728037%2C-122.2543056&query_place_id=ChIJdY_RAA6sj4ARei_aizGnS5k) — 19 reviews (4.4★) · `park`
+- [Quintara Steps](https://www.google.com/maps/search/?api=1&query=37.7488276%2C-122.4713853&query_place_id=ChIJaTz57059j4ARTfE79g5xGYY) — 19 reviews (4.5★) · `park`
+- [Sandalwood Park](https://www.google.com/maps/search/?api=1&query=37.4498645%2C-121.8986176&query_place_id=ChIJzdsyAA3Pj4ARdszbrtwgP_I) — 19 reviews (4.4★) · `park`
+- [Succulent Garden](https://www.google.com/maps/search/?api=1&query=37.766887499999996%2C-122.47251259999999&query_place_id=ChIJ5ffz95SHhYAR9kJ53IADiz0) — 19 reviews (4.5★) · `botanical_garden`
+- [Tideway Cove](https://www.google.com/maps/search/?api=1&query=37.7691073%2C-122.2885877&query_place_id=ChIJf7H4YACBj4AR9S13_6FcZ9k) — 19 reviews (5★) · `park`
+- [Unity Park](https://www.google.com/maps/search/?api=1&query=37.6867647%2C-122.10086419999999&query_place_id=ChIJCx14fgCRj4AR-w5QdOFgbbQ) — 19 reviews (4.5★) · `park`
+- [Al's Park](https://www.google.com/maps/search/?api=1&query=37.7594486%2C-122.44563489999999&query_place_id=ChIJt2j5swB-j4ARfHzdVSl6W6o) — 18 reviews (4.2★) · `park`
+- [Bret Harte Park](https://www.google.com/maps/search/?api=1&query=37.8236942%2C-121.98756600000002&query_place_id=ChIJB2LoGVTzj4ARcJumQX16y3g) — 18 reviews (3.7★) · `park`
+- [Community Garden](https://www.google.com/maps/search/?api=1&query=37.753851%2C-122.41495200000001&query_place_id=ChIJM25IhUd-j4ARglt_U85_7kg) — 18 reviews (4.9★) · `garden`
+- [Daytona Park](https://www.google.com/maps/search/?api=1&query=37.951709199999996%2C-121.69009089999999&query_place_id=ChIJYXKCOtv_j4ARcTuu4cpzInc) — 18 reviews (4.4★) · `park`
+- [Dutch Slough](https://www.google.com/maps/search/?api=1&query=38.0118904%2C-121.64871090000001&query_place_id=ChIJ57xHf8JVhYARxwkgr_jM3FI) — 18 reviews (3.1★) · `park`
+- [Edenvale Park - Tennis and Pickleball Courts](https://www.google.com/maps/search/?api=1&query=37.2657281%2C-121.82079829999999&query_place_id=ChIJO7jmUTQzjoARD_dOEMh2MLA) — 18 reviews (4★) · `park`
+- [Fort Scott Community Garden](https://www.google.com/maps/search/?api=1&query=37.7983064%2C-122.47177049999998&query_place_id=ChIJcVC80OCGhYARc453LFrpG3I) — 18 reviews (4.7★) · `garden`
+- [Fuller Park](https://www.google.com/maps/search/?api=1&query=37.3180553%2C-121.8974663&query_place_id=ChIJrfL2SavMj4ARdPBm7dw-jGI) — 18 reviews (4.2★) · `city_park`
+- [Jane Warner Plaza](https://www.google.com/maps/search/?api=1&query=37.762557199999996%2C-122.4350884&query_place_id=ChIJ7_wcqhx-j4ARe0E7CRz_Gdc) — 18 reviews (4.3★) · `park`
+- [LEAF Urban Farm](https://www.google.com/maps/search/?api=1&query=37.572730299999996%2C-121.9691555&query_place_id=ChIJQWTnt27Aj4AR4hvv_K1mY8Q) — 18 reviews (4.6★) · `garden`
+- [Marsh Creek Trail Head Parking Lot](https://www.google.com/maps/search/?api=1&query=37.904011%2C-121.71656399999999&query_place_id=ChIJu29yj379j4ARBJO-MjQWNPA) — 18 reviews (4.9★) · `park`
+- [Mission Grove Park](https://www.google.com/maps/search/?api=1&query=37.9188647%2C-121.6864643&query_place_id=ChIJ1Y6cQ53-j4AR4cVpeFpeufs) — 18 reviews (4.7★) · `park`
+- [Montclaire Park](https://www.google.com/maps/search/?api=1&query=37.341349699999995%2C-122.0813709&query_place_id=ChIJXcXtzOiwj4ARCUmUYY3jRJA) — 18 reviews (4.1★) · `park`
+- [Old Finley Road Trailhead](https://www.google.com/maps/search/?api=1&query=37.8205437%2C-121.85713519999999&query_place_id=ChIJ550Lppfxj4ARcUYJGZCrfvA) — 18 reviews (4.6★) · `park`
+- [Peralta Community Garden](https://www.google.com/maps/search/?api=1&query=37.8786364%2C-122.28877739999999&query_place_id=ChIJreNGCch-hYARrtib3SH94CI) — 18 reviews (4.6★) · `garden`
+- [San Leandro Pickleball Courts](https://www.google.com/maps/search/?api=1&query=37.6948678%2C-122.14702000000001&query_place_id=ChIJOy5dDH-Rj4ARr0pfT67WtBQ) — 18 reviews (4.6★) · `park`
+- [The Forge Garden](https://www.google.com/maps/search/?api=1&query=37.3523217%2C-121.9393894&query_place_id=ChIJi5nMOa7Lj4ARGjkhB8KGb1o) — 18 reviews (4.8★) · `garden`
+- [The Villages Gazebo Park](https://www.google.com/maps/search/?api=1&query=37.2892943%2C-121.74490660000001&query_place_id=ChIJE2W8qCEsjoARYGfV0bAFi3I) — 18 reviews (4.4★) · `park`
+- [Tyrone Carney Park](https://www.google.com/maps/search/?api=1&query=37.7326632%2C-122.17865019999998&query_place_id=ChIJVQH7voGFj4ARFCyAmExfios) — 18 reviews (4.4★) · `park`
+- [Union Plaza Park](https://www.google.com/maps/search/?api=1&query=37.825859699999995%2C-122.2827083&query_place_id=ChIJG6Q8Khd-hYARBB-kEhkb1M4) — 18 reviews (3.8★) · `park`
+- [Urban Tilth North Richmond Farm](https://www.google.com/maps/search/?api=1&query=37.9651819%2C-122.36643420000001&query_place_id=ChIJL3I872WdhYARwxR7lvQgeIo) — 18 reviews (4.7★) · `park`
+- [Willowgate Community Gardens](https://www.google.com/maps/search/?api=1&query=37.3947636%2C-122.07335809999998&query_place_id=ChIJ59SrTje3j4ARrLYlAX_eesk) — 18 reviews (4.8★) · `garden`
+- [Windemere Dog Park](https://www.google.com/maps/search/?api=1&query=37.743274%2C-121.88359759999999&query_place_id=ChIJ9-T2E4ruj4ARUAPvVDqr50Y) — 18 reviews (4.3★) · `dog_park`
+- [Arden Park](https://www.google.com/maps/search/?api=1&query=37.7055541%2C-122.42933869999997&query_place_id=ChIJ9zT5Y7l-j4ARFMkiVjgrPnw) — 17 reviews (4.6★) · `park`
+- [Beale Street Plaza](https://www.google.com/maps/search/?api=1&query=37.7916029%2C-122.39690539999998&query_place_id=ChIJ3d4jl2OAhYAR95ipO_OulKM) — 17 reviews (4.2★) · `park`
+- [Bollinger Canyon School Park](https://www.google.com/maps/search/?api=1&query=37.760154899999996%2C-121.97133839999998&query_place_id=ChIJA4OD8qHyj4AROSvC5n5a4k8) — 17 reviews (4.6★) · `park`
+- [Castro Park Courts](https://www.google.com/maps/search/?api=1&query=37.921566399999996%2C-122.30637539999998&query_place_id=ChIJ1Wl-Avh5hYAR-xUC3dvL5YE) — 17 reviews (4.1★) · `park`
+- [Central Addition Park](https://www.google.com/maps/search/?api=1&query=38.021443399999995%2C-121.87208589999999&query_place_id=ChIJDXjEkNtbhYARcOF42480WHA) — 17 reviews (4.5★) · `park`
+- [Community Gardens LARPD](https://www.google.com/maps/search/?api=1&query=37.6810149%2C-121.73944700000001&query_place_id=ChIJz2tQ51znj4ARJFONAc0Qe6o) — 17 reviews (4.5★) · `park`
+- [Delano Manongs Park](https://www.google.com/maps/search/?api=1&query=37.3742898%2C-121.84860370000001&query_place_id=ChIJ5bsdF6nNj4ARTeLCNZDhexA) — 17 reviews (4.9★) · `park`
+- [Dog park](https://www.google.com/maps/search/?api=1&query=37.8344895%2C-122.29052109999999&query_place_id=ChIJ16I2PJV_hYAR5d9dUw1UjWc) — 17 reviews (3.8★) · `dog_park`
+- [Frank D. Harrington Park](https://www.google.com/maps/search/?api=1&query=37.5046167%2C-122.25853239999999&query_place_id=ChIJ__x2bBuij4ARvk5fj3o8qOk) — 17 reviews (3.9★) · `park`
+- [Geneva Community Garden](https://www.google.com/maps/search/?api=1&query=37.7204197%2C-122.44544099999997&query_place_id=ChIJL1dbFoJ-j4ARXy8FiO2sdJI) — 17 reviews (4.4★) · `garden`
+- [Greenbrook School Park](https://www.google.com/maps/search/?api=1&query=37.7914726%2C-121.9753933&query_place_id=ChIJn2YlNN_yj4AREYM5vxXENFE) — 17 reviews (4.7★) · `park`
+- [Harrington Park](https://www.google.com/maps/search/?api=1&query=37.7312692%2C-122.2386208&query_place_id=ChIJgz_lir-Fj4AR2HCWC1HinRQ) — 17 reviews (4.6★) · `park`
+- [Huchiun Park](https://www.google.com/maps/search/?api=1&query=37.8319512%2C-122.29007499999999&query_place_id=ChIJSYqgb0V_hYARFbbd3SfQbEI) — 17 reviews (4.9★) · `park`
+- [J.A. Lewis Park](https://www.google.com/maps/search/?api=1&query=37.6558476%2C-122.02468650000002&query_place_id=ChIJIx-REwCVj4AR7ne3dK_TaVk) — 17 reviews (4.9★) · `park`
+- [Julio Bras Portuguese Centennial Park](https://www.google.com/maps/search/?api=1&query=37.6728617%2C-122.0800008&query_place_id=ChIJ0cJRCdmTj4AR5mvpdKuO-y4) — 17 reviews (4.3★) · `park`
+- [Lessing and Sears Mini Park](https://www.google.com/maps/search/?api=1&query=37.708655199999995%2C-122.4553489&query_place_id=ChIJA_wlgCR8j4AR_opGlLbtuq0) — 17 reviews (3.4★) · `city_park`
+- [Neil Armstrong School Park](https://www.google.com/maps/search/?api=1&query=37.7421623%2C-121.94836319999999&query_place_id=ChIJszFjkQrtj4ARXgKG1jltb9c) — 17 reviews (4.5★) · `park`
+- [Oak Park](https://www.google.com/maps/search/?api=1&query=37.856876899999996%2C-122.24367500000001&query_place_id=ChIJH8p_NMh9hYARPOdN5E4qeCk) — 17 reviews (3.9★) · `park`
+- [Oakley Parks & Recreation Department](https://www.google.com/maps/search/?api=1&query=37.987403%2C-121.712531&query_place_id=ChIJ64cAXuJVhYARNLZNX093KE8) — 17 reviews (4.3★) · `park`
+- [Parc Metro Clubhouse](https://www.google.com/maps/search/?api=1&query=37.4193576%2C-121.90024299999999&query_place_id=ChIJrUUl6szOj4ARrzVjBvHF34E) — 17 reviews (4.5★) · `park`
+- [Phillip Bauer Park](https://www.google.com/maps/search/?api=1&query=37.530981499999996%2C-121.94720269999999&query_place_id=ChIJWc8ggNXGj4ARxlvRHwxTsOs) — 17 reviews (4.6★) · `park`
+- [Pullman Portal (Eastern Richmond Greenway)](https://www.google.com/maps/search/?api=1&query=37.931295999999996%2C-122.34605699999997&query_place_id=ChIJLYG4lQ14hYARLa3BoSyeagM) — 17 reviews (4.1★) · `park`
+- [San Leandro Marina - to walk](https://www.google.com/maps/search/?api=1&query=37.692985%2C-122.186078&query_place_id=ChIJMZxteraFj4ARugi04RzxdCg) — 17 reviews (4.7★) · `park`
+- [Scenic View](https://www.google.com/maps/search/?api=1&query=37.8744667%2C-122.32467399999999&query_place_id=ChIJAZ_0XXt_hYARw0EpBH5ApiA) — 17 reviews (4.8★) · `park`
+- [Shields-Reid Park](https://www.google.com/maps/search/?api=1&query=37.953793999999995%2C-122.36396449999998&query_place_id=ChIJl8o1rludhYARLfAjWcB7Qck) — 17 reviews (4.6★) · `park`
+- [The Eucalyptus Grove](https://www.google.com/maps/search/?api=1&query=37.8714742%2C-122.26405079999999&query_place_id=ChIJlc-VRyd8hYARx-uxSL9tZCA) — 17 reviews (4.6★) · `park`
+- [The Neighborhood Garden](https://www.google.com/maps/search/?api=1&query=37.7588831%2C-122.446263&query_place_id=ChIJIfbZUQd-j4ARVFPKHC0GCI0) — 17 reviews (4.9★) · `garden`
+- [The Wave Garden](https://www.google.com/maps/search/?api=1&query=37.927913499999995%2C-122.39324909999999&query_place_id=ChIJAVmSOFqDhYAR35EVZuCgp2w) — 17 reviews (4.8★) · `garden`
+- [Topaz Open Space](https://www.google.com/maps/search/?api=1&query=37.7417455%2C-122.4362843&query_place_id=ChIJs1ghw3F-j4ARo-G4zmtjosk) — 17 reviews (4.2★) · `city_park`
+- [Turtle Rock Park](https://www.google.com/maps/search/?api=1&query=37.3235751%2C-121.8401716&query_place_id=ChIJfWwZ9L8zjoARlrU3xuVv0zo) — 17 reviews (3.9★) · `city_park`
+- [Agriculture Lot of the Visitacion Valley Greenway](https://www.google.com/maps/search/?api=1&query=37.715527400000006%2C-122.4063837&query_place_id=ChIJN2k9l95-j4ARag_vWv9u4Ds) — 16 reviews (4.5★) · `garden`
+- [Ancient Plants Walk](https://www.google.com/maps/search/?api=1&query=37.768792499999996%2C-122.46959979999998&query_place_id=ChIJ3fWYERKHhYARaD8U3kw_-2w) — 16 reviews (5★) · `botanical_garden`
+- [Batten Way Park](https://www.google.com/maps/search/?api=1&query=37.3037615%2C-121.77225809999997&query_place_id=ChIJM7WqFLEtjoARu86geSYD88k) — 16 reviews (4.6★) · `park`
+- [Circle Group Area](https://www.google.com/maps/search/?api=1&query=37.2431194%2C-121.9672315&query_place_id=ChIJxaqTDL81joAR39wu_dGW154) — 16 reviews (4.8★) · `park`
+- [Civic Center Park (w/playground)](https://www.google.com/maps/search/?api=1&query=37.997409999999995%2C-121.71686980000001&query_place_id=ChIJ-Z88e-lVhYARoXiW5X_uWJk) — 16 reviews (4.9★) · `park`
+- [Clover Park](https://www.google.com/maps/search/?api=1&query=37.707431899999996%2C-121.85524459999999&query_place_id=ChIJUfqWiBnpj4AR89QPMuhEu4k) — 16 reviews (4.8★) · `park`
+- [Cornell Park](https://www.google.com/maps/search/?api=1&query=37.915258%2C-121.595214&query_place_id=ChIJDRjA_U0DkIARyexDBduJtW8) — 16 reviews (4.1★) · `park`
+- [Coyote Creek Parkway North](https://www.google.com/maps/search/?api=1&query=37.2576669%2C-121.79052159999999&query_place_id=ChIJVcONiBQujoARvFIVni3oMgk) — 16 reviews (4.8★) · `park`
+- [Coyote Creek School Park](https://www.google.com/maps/search/?api=1&query=37.7761128%2C-121.92725259999999&query_place_id=ChIJj-8uB3Pyj4ARrqsoGm-r0mQ) — 16 reviews (4.4★) · `park`
+- [El Polin Spring](https://www.google.com/maps/search/?api=1&query=37.7930639%2C-122.45519549999999&query_place_id=ChIJyc7k4BuHhYARbBhZrq_5uKQ) — 16 reviews (4.4★) · `garden`
+- [Esther Medina Park](https://www.google.com/maps/search/?api=1&query=37.3486608%2C-121.8597762&query_place_id=ChIJSQ1AQ1XNj4ARg-yNAYPFm8Q) — 16 reviews (4.3★) · `park`
+- [Greer Dog Park](https://www.google.com/maps/search/?api=1&query=37.4421825%2C-122.11767130000001&query_place_id=ChIJt5rRDyG7j4AR-OehV-v9F1g) — 16 reviews (3.3★) · `dog_park`
+- [Lower Pinehurst Trailhead](https://www.google.com/maps/search/?api=1&query=37.8407367%2C-122.1849066&query_place_id=ChIJk08mxPmHj4ARO_s-PJV3sPc) — 16 reviews (4.9★) · `nature_preserve`
+- [Main Street Park](https://www.google.com/maps/search/?api=1&query=37.454316399999996%2C-122.4292927&query_place_id=ChIJId-NrkgLj4ARZmn912kuF4I) — 16 reviews (4.4★) · `park`
+- [Memorial Court](https://www.google.com/maps/search/?api=1&query=37.7790768%2C-122.4210064&query_place_id=ChIJozNxrJmAhYARg7ldfzyVBOQ) — 16 reviews (4.4★) · `park`
+- [Mullen Peralta Mini Park](https://www.google.com/maps/search/?api=1&query=37.7461848%2C-122.4088464&query_place_id=ChIJIbqp3FF-j4ARhQ5a_lnV_Aw) — 16 reviews (4.5★) · `city_park`
+- [Nicholl Skatepark](https://www.google.com/maps/search/?api=1&query=37.934052699999995%2C-122.34094499999999&query_place_id=ChIJGwZ6EdF5hYARYhZq4Mm-roY) — 16 reviews (4.6★) · `park`
+- [Piazza Angelo Courtyard](https://www.google.com/maps/search/?api=1&query=37.7782543%2C-122.4132913&query_place_id=ChIJ-_hvpZyAhYAR8Ak2RUU_kdQ) — 16 reviews (4.5★) · `park`
+- [Pier 43 Promenade](https://www.google.com/maps/search/?api=1&query=37.809204099999995%2C-122.4129973&query_place_id=ChIJOwL8nuCBhYAR8NzYIl8Py0g) — 16 reviews (4.8★) · `park`
+- [Pleasanton Nature House](https://www.google.com/maps/search/?api=1&query=37.659856399999995%2C-121.8659009&query_place_id=ChIJRwy567Dpj4AR8neT145JpTg) — 16 reviews (4.3★) · `park`
+- [Poplar Beach](https://www.google.com/maps/search/?api=1&query=37.4562926%2C-122.4448019&query_place_id=ChIJnSqm1ccLj4ARMVUX-3Cs6BY) — 16 reviews (4.6★) · `park`
+- [Presidio](https://www.google.com/maps/search/?api=1&query=37.8034013%2C-122.4569878&query_place_id=ChIJC6HvfwCHhYARftRW8vGp79U) — 16 reviews (4.9★) · `park`
+- [Richmond Recreation & Parks](https://www.google.com/maps/search/?api=1&query=37.9337617%2C-122.33836149999999&query_place_id=ChIJTUB3bRR4hYAR_kV9ByyOJ20) — 16 reviews (3.4★) · `park`
+- [Roble Field](https://www.google.com/maps/search/?api=1&query=37.4263216%2C-122.1759804&query_place_id=ChIJNcoBbtWkj4ARSAaW-s5_-gY) — 16 reviews (4.6★) · `park`
+- [Rose Peak](https://www.google.com/maps/search/?api=1&query=37.511151399999996%2C-121.72469079999999&query_place_id=ChIJGSxU0rPQj4ARj8qhQjooD2s) — 16 reviews (4.8★) · `park`
+- [Saddle Loop Trail North Bench](https://www.google.com/maps/search/?api=1&query=37.7041819%2C-122.43097339999998&query_place_id=ChIJ950xpkx_j4ARzRmPJiJ2chw) — 16 reviews (4.8★) · `park`
+- [Signal Point Park](https://www.google.com/maps/search/?api=1&query=37.8099326%2C-122.365961&query_place_id=ChIJbXmkZACBhYARNzUdWT7B6Ls) — 16 reviews (4.8★) · `park`
+- [SoFA Pocket Park](https://www.google.com/maps/search/?api=1&query=37.3280106%2C-121.8840717&query_place_id=ChIJH3VBAj_Nj4ARIbFuB4Mkw6k) — 16 reviews (4.4★) · `park`
+- [The Cowden Rose Garden](https://www.google.com/maps/search/?api=1&query=37.9186301%2C-122.04411340000001&query_place_id=ChIJBdvSfGthhYAR2-5Vay0R8MI) — 16 reviews (4.4★) · `garden`
+- [Alta Loma Tot Lot](https://www.google.com/maps/search/?api=1&query=37.6823446%2C-122.47943300000001&query_place_id=ChIJncj0JdF9j4ARSjso2xAdZYk) — 15 reviews (4.4★) · `park`
+- [Arlington Community Garden](https://www.google.com/maps/search/?api=1&query=37.7370711%2C-122.42641879999998&query_place_id=ChIJGygHL2d-j4ARBVrNYhWBwqQ) — 15 reviews (4.1★) · `garden`
+- [Broderick Terry Duel Landmark Park](https://www.google.com/maps/search/?api=1&query=37.7078092%2C-122.48374039999999&query_place_id=ChIJ6bohD1F8j4ARkvh9xLUgvYk) — 15 reviews (4.7★) · `park`
+- [Civic Park](https://www.google.com/maps/search/?api=1&query=37.6569895%2C-121.87839550000001&query_place_id=ChIJ1Xshg73pj4AR-xNTxOOAA7U) — 15 reviews (4.3★) · `park`
+- [Francisco Terrace Playlot](https://www.google.com/maps/search/?api=1&query=37.645477%2C-122.4223629&query_place_id=ChIJV_AWEr15j4ARFKJ7xY2h0B4) — 15 reviews (4.2★) · `park`
+- [Garden of Fragrance](https://www.google.com/maps/search/?api=1&query=37.7681103%2C-122.4685314&query_place_id=ChIJ8e3vkEKHhYAR7bEb3A5gpGA) — 15 reviews (4.2★) · `garden`
+- [Green Valley Trailhead](https://www.google.com/maps/search/?api=1&query=37.8521052%2C-121.9780922&query_place_id=ChIJ2_9k_Mb0j4ARWafDHBDE0h8) — 15 reviews (4.4★) · `park`
+- [Half Moon bay trailhead parking](https://www.google.com/maps/search/?api=1&query=37.4389604%2C-122.44278029999998&query_place_id=ChIJKwQ6x6sLj4AR6f-AyBDCCeM) — 15 reviews (4.4★) · `park`
+- [Los Medanos Lake](https://www.google.com/maps/search/?api=1&query=38.0076041%2C-121.86390449999999&query_place_id=ChIJkfPk0SRZhYARb_Vao1W0dFI) — 15 reviews (4.1★) · `park`
+- [MacArthur Meadow](https://www.google.com/maps/search/?api=1&query=37.7974835%2C-122.45525589999998&query_place_id=ChIJx0Y3TSiHhYARkqkocOtsN6g) — 15 reviews (4.7★) · `park`
+- [McLaren Park Community Garden](https://www.google.com/maps/search/?api=1&query=37.714650299999995%2C-122.4156153&query_place_id=ChIJK-WHhoZ_j4ARt63qHPba-uc) — 15 reviews (4.9★) · `garden`
+- [Mirador de Oakland](https://www.google.com/maps/search/?api=1&query=37.8804278%2C-122.23027549999999&query_place_id=ChIJGw01Xl19hYAR83m08rVhj-U) — 15 reviews (4.4★) · `park`
+- [Mora Park](https://www.google.com/maps/search/?api=1&query=37.403577399999996%2C-122.1024144&query_place_id=ChIJSza-uq-xj4ARNQ-a_eLr2X4) — 15 reviews (4.5★) · `park`
+- [Oxford Street Parklet](https://www.google.com/maps/search/?api=1&query=37.8703132%2C-122.26606729999999&query_place_id=ChIJC1B3R_1_hYARZO8SEBl1WGY) — 15 reviews (4.6★) · `park`
+- [Patricia Wharton Park](https://www.google.com/maps/search/?api=1&query=37.5218349%2C-122.2880616&query_place_id=ChIJ_eNjDYCfj4ARFdDD0VmYehU) — 15 reviews (4.1★) · `park`
+- [Persimmon Park](https://www.google.com/maps/search/?api=1&query=37.542063%2C-122.29623480000001&query_place_id=ChIJtTrihB2fj4ARbuvmYm8zEsE) — 15 reviews (4.6★) · `park`
+- [Pittsburg Park Maintenance](https://www.google.com/maps/search/?api=1&query=38.0090084%2C-121.88581330000001&query_place_id=ChIJpXvd3FhZhYARrGA12A1GSCQ) — 15 reviews (5★) · `park`
+- [Richard Huerta Park](https://www.google.com/maps/search/?api=1&query=37.265300599999996%2C-121.91453550000001&query_place_id=ChIJ2f3yQmU0joARm6CSFs5oZQk) — 15 reviews (3.7★) · `park`
+- [Rinconada Community Garden](https://www.google.com/maps/search/?api=1&query=37.444838499999996%2C-122.13786669999998&query_place_id=ChIJNQSg3-G7j4AREYr7nlRvJrw) — 15 reviews (4.9★) · `garden`
+- [Shoreline Maintenance](https://www.google.com/maps/search/?api=1&query=37.428427%2C-122.07976329999998&query_place_id=ChIJ7TgZfn65j4AR0jGCF_9xYa8) — 15 reviews (3.9★) · `park`
+- [Tenderloin People's Garden](https://www.google.com/maps/search/?api=1&query=37.780803399999996%2C-122.4165333&query_place_id=ChIJ04nJR5qAhYARKg1_-EkjtwY) — 15 reviews (4.7★) · `garden`
+- [Viewpoint Drive Park](https://www.google.com/maps/search/?api=1&query=37.793226%2C-121.90805800000001&query_place_id=ChIJ6Z8ktxjyj4ARovgdGhflLTI) — 15 reviews (4.7★) · `park`
+- [Albany Dog Park](https://www.google.com/maps/search/?api=1&query=37.8963574%2C-122.2902077&query_place_id=ChIJo7AImSp5hYARBD-2miU5-NE) — 14 reviews (3.6★) · `park`
+- [Americas Garden Center](https://www.google.com/maps/search/?api=1&query=37.8576781%2C-122.12514700000001&query_place_id=ChIJ-dInsX0Y1W8Rg49m6BmhPAg) — 14 reviews (3.9★) · `garden`
+- [Arena Green Park](https://www.google.com/maps/search/?api=1&query=37.332985199999996%2C-121.8993618&query_place_id=ChIJ0SZsR6HMj4AR7Ud6fa3nxl0) — 14 reviews (4.2★) · `city_park`
+- [Baylands Grove](https://www.google.com/maps/search/?api=1&query=37.4131834%2C-121.99874080000001&query_place_id=ChIJZ_rQxYq3j4AR5h9No_ZhVFg) — 14 reviews (4.4★) · `park`
+- [Blacow Elementary Butterfly Garden](https://www.google.com/maps/search/?api=1&query=37.527597199999995%2C-121.97530689999999&query_place_id=ChIJURbXi9LBj4ARWkl4KVUcr4A) — 14 reviews (4.6★) · `garden`
+- [Bryan Osborne Nature Center](https://www.google.com/maps/search/?api=1&query=37.348396699999995%2C-122.00791&query_place_id=ChIJjcKS7e61j4AR0zyG28QyA-o) — 14 reviews (4.5★) · `nature_preserve`
+- [Butterfly Knoll Park](https://www.google.com/maps/search/?api=1&query=37.741942699999996%2C-121.8605623&query_place_id=ChIJNxHUoE3vj4ARkTkLZqeh5yI) — 14 reviews (4.5★) · `park`
+- [Central Park](https://www.google.com/maps/search/?api=1&query=37.901891899999995%2C-122.30725770000001&query_place_id=ChIJ2VUhj6x5hYARI8jor0mSOSs) — 14 reviews (3.9★) · `park`
+- [College Hill Learning Garden](https://www.google.com/maps/search/?api=1&query=37.7389279%2C-122.42021579999998&query_place_id=ChIJNwh-JFx-j4ARwTn9I1KPmAQ) — 14 reviews (4.4★) · `garden`
+- [Concord Parks & Recreation](https://www.google.com/maps/search/?api=1&query=37.986489999999996%2C-122.0199488&query_place_id=ChIJlYWWpDtnhYARLHued9E_1N4) — 14 reviews (3.6★) · `park`
+- [Dearborn Community Garden](https://www.google.com/maps/search/?api=1&query=37.762375999999996%2C-122.4227642&query_place_id=ChIJAZPruCJ-j4AR4cgtL_b9khQ) — 14 reviews (4.7★) · `garden`
+- [Devany Square](https://www.google.com/maps/search/?api=1&query=37.7076341%2C-121.86618120000001&query_place_id=ChIJw_lhlS3pj4ARqbyLBRaT3pw) — 14 reviews (4.2★) · `park`
+- [El Rancho Verde Park](https://www.google.com/maps/search/?api=1&query=37.6139417%2C-122.02624329999999&query_place_id=ChIJxVrQGRCVj4ARCOkwA5KxTCE) — 14 reviews (4★) · `park`
+- [Fayette Greenway Park](https://www.google.com/maps/search/?api=1&query=37.403129199999995%2C-122.1143705&query_place_id=ChIJ35wfMZmxj4ARYn4GnXhU2mU) — 14 reviews (4.1★) · `park`
+- [GL ARBORGARD](https://www.google.com/maps/search/?api=1&query=37.4770013%2C-122.1588237&query_place_id=ChIJV4DeERq9j4AR67skeApMp0w) — 14 reviews (4.6★) · `garden`
+- [Gavilan Hills Memorial Park](https://www.google.com/maps/search/?api=1&query=37.0124187%2C-121.5907386&query_place_id=ChIJIdkslF8gjoARDQn0C53qGwU) — 14 reviews (4.4★) · `park`
+- [Green Slide Park](https://www.google.com/maps/search/?api=1&query=37.958855%2C-122.32701940000001&query_place_id=ChIJAVOfNeN3hYAR-81Gk7TVTXc) — 14 reviews (4.7★) · `park`
+- [Hearst Mining Circle](https://www.google.com/maps/search/?api=1&query=37.8735547%2C-122.2570583&query_place_id=ChIJudbWYiR8hYARMzdQ7KTvgEY) — 14 reviews (4.8★) · `park`
+- [Los Alamitos Creek Trail](https://www.google.com/maps/search/?api=1&query=37.2309485%2C-121.86699490000001&query_place_id=ChIJ3yAWrnIxjoARqF-lilWieFw) — 14 reviews (4.9★) · `park`
+- [Miwok Park](https://www.google.com/maps/search/?api=1&query=37.951544299999995%2C-121.71867660000001&query_place_id=ChIJ-zCAUc__j4ARpBF7db2m5c4) — 14 reviews (4.9★) · `park`
+- [Mount Diablo State Park North Gate Entrance](https://www.google.com/maps/search/?api=1&query=37.9020874%2C-121.99342490000001&query_place_id=ChIJgZE8KwCLj4ARElIJIcBkYFg) — 14 reviews (4.6★) · `park`
+- [Noe & Beaver Community Garden](https://www.google.com/maps/search/?api=1&query=37.7649622%2C-122.4334403&query_place_id=ChIJFZMe5Rx-j4ARJ12lIUdLNFw) — 14 reviews (3.9★) · `garden`
+- [Oakport Field](https://www.google.com/maps/search/?api=1&query=37.757605999999996%2C-122.214761&query_place_id=ChIJjzAZ5NWFj4AR3-2Su9wpTWs) — 14 reviews (4.2★) · `park`
+- [Pacifica Gardens](https://www.google.com/maps/search/?api=1&query=37.584961299999996%2C-122.4987127&query_place_id=ChIJr2JQSHtwj4AR7TCjP3PxN2s) — 14 reviews (4.9★) · `garden`
+- [Raghbir Sawal Memorial Bench](https://www.google.com/maps/search/?api=1&query=37.492335%2C-121.9081056&query_place_id=ChIJN5J4OyDHj4ARWTq6W2GfIqE) — 14 reviews (4.8★) · `park`
+- [Rainbow Recreation Center Park](https://www.google.com/maps/search/?api=1&query=37.7659769%2C-122.1997906&query_place_id=ChIJVdwBbhuHj4ARnLZCf7cBld4) — 14 reviews (4.3★) · `park`
+- [Rancho Arroyo Park](https://www.google.com/maps/search/?api=1&query=37.639121599999996%2C-122.11019499999999&query_place_id=ChIJbdLNSdyRj4ARbFBEgt583-I) — 14 reviews (4.2★) · `park`
+- [Reservoir Baseball Diamond](https://www.google.com/maps/search/?api=1&query=37.797204%2C-122.2215942&query_place_id=ChIJz0-I9ACHj4ARZWtaTW2fKDQ) — 14 reviews (4.1★) · `park`
+- [Steeplechase Park](https://www.google.com/maps/search/?api=1&query=37.9647426%2C-121.71495469999999&query_place_id=ChIJF4ryyzX_j4ARx6nfwEywAUU) — 14 reviews (4.4★) · `park`
+- [Valley of Heart's Delight Park](https://www.google.com/maps/search/?api=1&query=37.2834009%2C-121.8493836&query_place_id=ChIJd4pmldQzjoARhyewhqZiPrI) — 14 reviews (4.6★) · `park`
+- [Whisman Dog Park](https://www.google.com/maps/search/?api=1&query=37.4016175%2C-122.0661803&query_place_id=ChIJcf08kSS3j4ARepxbL0T2fhQ) — 14 reviews (4.2★) · `dog_park`
+- [Wilsons Point](https://www.google.com/maps/search/?api=1&query=38.0115942%2C-122.3161355&query_place_id=ChIJWa_edl52hYARQZ1B-lrisfA) — 14 reviews (4.8★) · `park`
+- [Alice Street Community Gardens](https://www.google.com/maps/search/?api=1&query=37.7826112%2C-122.39900549999999&query_place_id=ChIJj_itcX6AhYAR1G4o_tAIpKU) — 13 reviews (4.7★) · `garden`
+- [Antler Point Trail Overlook](https://www.google.com/maps/search/?api=1&query=37.3800126%2C-121.70562419999999&query_place_id=ChIJ1X7TgLHUj4AR4guHPP2zTTw) — 13 reviews (4.7★) · `park`
+- [Bernal Community Park - Oak Woodlands](https://www.google.com/maps/search/?api=1&query=37.654736199999995%2C-121.89135119999999&query_place_id=ChIJvQkyNoXpj4ARHyKD6jTOfHs) — 13 reviews (4.8★) · `park`
+- [Bol Park Native Garden](https://www.google.com/maps/search/?api=1&query=37.4123048%2C-122.1401365&query_place_id=ChIJQ2RL1bq7j4ARd3dDIbdBp4E) — 13 reviews (5★) · `garden`
+- [Brookmeadow Park](https://www.google.com/maps/search/?api=1&query=37.6894849%2C-121.73679639999997&query_place_id=ChIJVVV5LUHnj4ARufLPRn_kF8k) — 13 reviews (4.2★) · `park`
+- [Cali Mill Plaza Park](https://www.google.com/maps/search/?api=1&query=37.3224608%2C-122.03170080000001&query_place_id=ChIJN__hja61j4ARFk4bwWE0eO0) — 13 reviews (5★) · `park`
+- [Civic Park Center](https://www.google.com/maps/search/?api=1&query=37.318954399999996%2C-122.02966300000001&query_place_id=ChIJzd0IAcK1j4ARWPgYLsALPfw) — 13 reviews (4.5★) · `park`
+- [Country Club School Park](https://www.google.com/maps/search/?api=1&query=37.7291763%2C-121.94041259999999&query_place_id=ChIJR3kDaKztj4ARsGTAwexWgjw) — 13 reviews (4.2★) · `park`
+- [Dog Park for Small Dogs](https://www.google.com/maps/search/?api=1&query=37.552759200000004%2C-121.96740519999999&query_place_id=ChIJPdQleADBj4ARmxKycnXOcu0) — 13 reviews (4.6★) · `dog_park`
+- [Dove Beeger Park](https://www.google.com/maps/search/?api=1&query=37.479065299999995%2C-122.25377909999999&query_place_id=ChIJt4vpqzKij4ARms9ehRn-Iek) — 13 reviews (4.6★) · `park`
+- [Fernandez Park](https://www.google.com/maps/search/?api=1&query=37.458438799999996%2C-122.43018520000001&query_place_id=ChIJC590AkwLj4ARDOMry9s8sLM) — 13 reviews (4.4★) · `park`
+- [Field Sports County Park](https://www.google.com/maps/search/?api=1&query=37.2191478%2C-121.7272691&query_place_id=ChIJo3IOzVYvjoARejC15LFIFUQ) — 13 reviews (4.9★) · `park`
+- [Friendship Park](https://www.google.com/maps/search/?api=1&query=37.263089699999995%2C-121.9924685&query_place_id=ChIJ5RDKZGI1joARqwfCGTzMGzI) — 13 reviews (4.9★) · `park`
+- [Golden Gate Park Community Garden](https://www.google.com/maps/search/?api=1&query=37.7662024%2C-122.4573627&query_place_id=ChIJ5_-Vo1CHhYARBC6GPu8W9BM) — 13 reviews (5★) · `garden`
+- [Granville Green Park](https://www.google.com/maps/search/?api=1&query=37.966603%2C-121.7169898&query_place_id=ChIJB6QTgUr_j4ARm1vhmmu8XQk) — 13 reviews (4.1★) · `park`
+- [Hollywood Triangle Park](https://www.google.com/maps/search/?api=1&query=37.8108295%2C-122.21640869999999&query_place_id=ChIJXyfoMaGHj4ARptbparKKNX0) — 13 reviews (4.2★) · `park`
+- [Lar Rieu Park](https://www.google.com/maps/search/?api=1&query=37.893595399999995%2C-122.0456122&query_place_id=ChIJ9WlCDRFhhYARBql_7wJeQFA) — 13 reviews (4.9★) · `park`
+- [Large Picnic Area](https://www.google.com/maps/search/?api=1&query=37.871012199999996%2C-122.318963&query_place_id=ChIJq8CQCy9_hYARp8g_TyCXtT0) — 13 reviews (4.4★) · `park`
+- [Levi's Park](https://www.google.com/maps/search/?api=1&query=37.802642299999995%2C-122.4013873&query_place_id=ChIJiV6ys1iAhYARhG47g_rflNM) — 13 reviews (4.5★) · `park`
+- [Levin Field, Stanford](https://www.google.com/maps/search/?api=1&query=37.4220362%2C-122.17043629999999&query_place_id=ChIJvRbektO6j4ARYMbeL6etVJc) — 13 reviews (4.7★) · `park`
+- [Lucky A's North Richmond Baseball Field](https://www.google.com/maps/search/?api=1&query=37.961221699999996%2C-122.3668526&query_place_id=ChIJzaoE22edhYARysqrdLKARDo) — 13 reviews (4★) · `park`
+- [Marshall's Beach park](https://www.google.com/maps/search/?api=1&query=37.8034458%2C-122.47654800000001&query_place_id=ChIJ440NFe-GhYARcNspc91_SqE) — 13 reviews (4.2★) · `park`
+- [Melrose/Detroit Botanical Garden](https://www.google.com/maps/search/?api=1&query=37.7337711%2C-122.44433949999998&query_place_id=ChIJ8es1UXh-j4ARGSePvZGFbC8) — 13 reviews (4.1★) · `botanical_garden`
+- [Newhall Park](https://www.google.com/maps/search/?api=1&query=37.3460981%2C-121.9249825&query_place_id=ChIJXya1yArLj4ARoagvIxOM_Ow) — 13 reviews (4.5★) · `park`
+- [Oak Creek Park](https://www.google.com/maps/search/?api=1&query=37.0946016%2C-121.64370459999999&query_place_id=ChIJ6fSpWckhjoARg9TZk1BoMTw) — 13 reviews (4.3★) · `park`
+- [Olinder Dog Park](https://www.google.com/maps/search/?api=1&query=37.331849000000005%2C-121.86598500000001&query_place_id=ChIJQTX6itHMj4ARTqygbmEGDME) — 13 reviews (4.5★) · `dog_park`
+- [Panhandle Park](https://www.google.com/maps/search/?api=1&query=37.6643049%2C-122.09481299999999&query_place_id=ChIJVRRkJmaRj4AR-nYLQqnktfo) — 13 reviews (4.3★) · `park`
+- [Perboly's Garden](https://www.google.com/maps/search/?api=1&query=37.458377%2C-122.14550799999998&query_place_id=ChIJyWHrjnW7j4ARSKAgtiUKy3M) — 13 reviews (4.9★) · `garden`
+- [Piedmont Road Dog Park](https://www.google.com/maps/search/?api=1&query=37.3914687%2C-121.84322870000001&query_place_id=ChIJFVyoJwDNj4AR0cqIH9CRIAQ) — 13 reviews (4.6★) · `park`
+- [Regatta Park](https://www.google.com/maps/search/?api=1&query=37.891231499999996%2C-121.6274543&query_place_id=ChIJoy3XbYICkIAR9uJ4McNmNXQ) — 13 reviews (4.6★) · `park`
+- [Ridge Trail Park](https://www.google.com/maps/search/?api=1&query=37.6909798%2C-122.0422824&query_place_id=ChIJ2WJdZqmTj4ARxGV1guw1tIY) — 13 reviews (4.1★) · `park`
+- [San Mateo Community Garden](https://www.google.com/maps/search/?api=1&query=37.536535199999996%2C-122.31576679999998&query_place_id=ChIJZWBOrVSej4ARbGpR6VMsCq4) — 13 reviews (4.4★) · `garden`
+- [Sutro Heights Park (main entrance)](https://www.google.com/maps/search/?api=1&query=37.7797187%2C-122.50986929999999&query_place_id=ChIJE6nLke2HhYARh9YkHgK-JG4) — 13 reviews (4.9★) · `park`
+- [Urban Oasis Dog Park](https://www.google.com/maps/search/?api=1&query=37.782767400000004%2C-122.4154947&query_place_id=ChIJmQ7Z1eyBhYARrLCKHuqoFS0) — 13 reviews (4.8★) · `dog_park`
+- [Visitacion Valley Greenway Community Garden](https://www.google.com/maps/search/?api=1&query=37.714145099999996%2C-122.40570170000001&query_place_id=ChIJAQCPUtl-j4ARquVHyMcBo7g) — 13 reviews (4.9★) · `garden`
+- [William H. Cilker Park](https://www.google.com/maps/search/?api=1&query=37.2572887%2C-121.8656006&query_place_id=ChIJ9ZEhcPEzjoAR9TDFwmPX-1U) — 13 reviews (4.4★) · `park`
+- [Yik Oi Huang Peace and Friendship Park](https://www.google.com/maps/search/?api=1&query=37.7124145%2C-122.40898549999999&query_place_id=ChIJics-h8l_j4ARpPijp3Lvi84) — 13 reviews (4.5★) · `city_park`
+- [Zellerbach Garden of Perennials](https://www.google.com/maps/search/?api=1&query=37.7684461%2C-122.47208359999999&query_place_id=ChIJp2nEp2mHhYARk86w61RHlYI) — 13 reviews (4.9★) · `garden`
+- [ALAMEDA PARK](https://www.google.com/maps/search/?api=1&query=37.3427886%2C-121.927838&query_place_id=ChIJ46aQnAvLj4ARrLLTny1Nca4) — 12 reviews (4.4★) · `park`
+- [All Wars Memorial](https://www.google.com/maps/search/?api=1&query=37.842804099999995%2C-121.98489169999998&query_place_id=ChIJSR5g1Lb0j4ARuZuYFh2_GZ8) — 12 reviews (4.8★) · `park`
+- [Benevides Trailhead](https://www.google.com/maps/search/?api=1&query=37.8091773%2C-122.21587319999999&query_place_id=ChIJAV9l7KaHj4ARNaVgPAJsZCg) — 12 reviews (4.5★) · `park`
+- [Bill Wilson Jr. Park](https://www.google.com/maps/search/?api=1&query=37.3397655%2C-121.97867669999998&query_place_id=ChIJkRUQ6R7Lj4ARzCna1e0OHlU) — 12 reviews (4.7★) · `park`
+- [Black Gold Park](https://www.google.com/maps/search/?api=1&query=37.9382715%2C-121.74657189999999&query_place_id=ChIJxXQQIB75j4ARhfl7OdAAdb0) — 12 reviews (4.2★) · `park`
+- [Bret Harte Park & Field](https://www.google.com/maps/search/?api=1&query=37.6703865%2C-122.0778529&query_place_id=ChIJ-SYUt96Tj4ARH2Ul4hyrBfk) — 12 reviews (4.1★) · `park`
+- [Bruzzone Dog Park](https://www.google.com/maps/search/?api=1&query=37.369830199999996%2C-121.88343330000001&query_place_id=ChIJRWPCRwDNj4ARv_uwhJivL7s) — 12 reviews (4.2★) · `dog_park`
+- [Burrows Pocket Park](https://www.google.com/maps/search/?api=1&query=37.7290151%2C-122.40365399999999&query_place_id=ChIJQ4L10eJ-j4ARJiaK97Fil5s) — 12 reviews (4.7★) · `park`
+- [Bush & Broderick Mini Park](https://www.google.com/maps/search/?api=1&query=37.7855906%2C-122.442544&query_place_id=ChIJ6-VI1Q-BhYARXuoL3vrEMqM) — 12 reviews (4.7★) · `city_park`
+- [Castro Park](https://www.google.com/maps/search/?api=1&query=37.921323199999996%2C-122.3067121&query_place_id=ChIJk5CbeTh5hYAR8Ned0EdbCKM) — 12 reviews (4.8★) · `park`
+- [Chestnut and Kearny Open Space](https://www.google.com/maps/search/?api=1&query=37.8049172%2C-122.4073489&query_place_id=ChIJ0cxNAvqAhYARFRn2x6Z0ta4) — 12 reviews (3.7★) · `park`
+- [Crab Cove Duck Pond](https://www.google.com/maps/search/?api=1&query=37.7678309%2C-122.274427&query_place_id=ChIJldJUNjCBj4ARYnbxSqpcZDc) — 12 reviews (4.3★) · `park`
+- [Crossroads Park](https://www.google.com/maps/search/?api=1&query=37.5556584%2C-122.3511085&query_place_id=ChIJM4nYYwOej4ARzZsImBNkUxk) — 12 reviews (4.9★) · `park`
+- [Duck Island](https://www.google.com/maps/search/?api=1&query=37.553182899999996%2C-122.0373834&query_place_id=ChIJ9497PgC_j4ARMcbenbg5Pns) — 12 reviews (4.7★) · `park`
+- [Emily Renzel Ponds](https://www.google.com/maps/search/?api=1&query=37.442006899999996%2C-122.1145327&query_place_id=ChIJycLOAYu7j4AR7_17eKAdo0w) — 12 reviews (4.6★) · `park`
+- [Fayette Park](https://www.google.com/maps/search/?api=1&query=37.4042947%2C-122.11367749999998&query_place_id=ChIJR_xDK3Kxj4AR7j3sprC1Klg) — 12 reviews (3.8★) · `park`
+- [Fox Creek Park](https://www.google.com/maps/search/?api=1&query=37.9298609%2C-122.0566748&query_place_id=ChIJ1ZUw6Q1hhYARQJQ9U3iTNzQ) — 12 reviews (4.2★) · `park`
+- [Glen Loma Ranch Dog Park](https://www.google.com/maps/search/?api=1&query=36.9889053%2C-121.5868336&query_place_id=ChIJASdu7NXjkYARBopFi08JJak) — 12 reviews (3.5★) · `dog_park`
+- [Glen Park Greenway](https://www.google.com/maps/search/?api=1&query=37.734142%2C-122.4351562&query_place_id=ChIJf-7xXVl_j4ARhiBytkeTTYs) — 12 reviews (4.7★) · `park`
+- [Golden Poppy Park](https://www.google.com/maps/search/?api=1&query=37.9271606%2C-121.70244489999999&query_place_id=ChIJhRKUB7z-j4ARaAqGxzFdWe4) — 12 reviews (4.9★) · `city_park`
+- [Hernandez’ Nursery](https://www.google.com/maps/search/?api=1&query=37.472434799999995%2C-122.15420590000001&query_place_id=ChIJK4f9cqO9j4ARTlUVWT1uIuc) — 12 reviews (5★) · `garden`
+- [Hidden Hills School Park](https://www.google.com/maps/search/?api=1&query=37.7633809%2C-121.89346880000001&query_place_id=ChIJmYyYTQzuj4ARnuMNx96UGIY) — 12 reviews (4.8★) · `park`
+- [Jackson Park](https://www.google.com/maps/search/?api=1&query=37.1363213%2C-121.60402459999999&query_place_id=ChIJ7RgQ05ffkYARxe3j0EdKXGQ) — 12 reviews (4.1★) · `park`
+- [Jensen Family Grove](https://www.google.com/maps/search/?api=1&query=37.9793155%2C-121.81868910000001&query_place_id=ChIJCwfylzpYhYARozsgJVsWb-0) — 12 reviews (4.6★) · `park`
+- [John Muir School Park](https://www.google.com/maps/search/?api=1&query=37.8576889%2C-122.24491590000001&query_place_id=ChIJ60Z0osl9hYAR6QTO2zh9JPc) — 12 reviews (4★) · `park`
+- [Josephine Waugh - Soroptimist Park](https://www.google.com/maps/search/?api=1&query=37.5946114%2C-122.3989546&query_place_id=ChIJU1EaU6h3j4ARNl44d5MGdDs) — 12 reviews (3.6★) · `park`
+- [Lafayette Community Garden and Outdoor Learning Center](https://www.google.com/maps/search/?api=1&query=37.8892375%2C-122.14152999999997&query_place_id=ChIJP_FAx-RihYARLCNN_G67_fg) — 12 reviews (4.9★) · `garden`
+- [Latham Community Garden](https://www.google.com/maps/search/?api=1&query=37.3900374%2C-122.0874099&query_place_id=ChIJ1x1RTEGxj4ARhyAlVTcoOSk) — 12 reviews (4.8★) · `garden`
+- [Madden Park](https://www.google.com/maps/search/?api=1&query=37.3617809%2C-121.8446416&query_place_id=ChIJBXgdBBDNj4AROISsltvw1XE) — 12 reviews (4.2★) · `park`
+- [Martín Murphy Trailhead](https://www.google.com/maps/search/?api=1&query=37.100510799999995%2C-121.5754441&query_place_id=ChIJG4otfNXfkYARg2bgsdlAt-U) — 12 reviews (4.9★) · `park`
+- [McKenzie Dog Park](https://www.google.com/maps/search/?api=1&query=37.358685799999996%2C-122.09457270000001&query_place_id=ChIJh5Fcgd-xj4ARAqtQfCgzF_E) — 12 reviews (4.7★) · `park`
+- [Meadow Pond](https://www.google.com/maps/search/?api=1&query=37.6201633%2C-121.89131970000001&query_place_id=ChIJvbAVZm3Dj4AR9kYTd8B2ha8) — 12 reviews (3.3★) · `park`
+- [Memorial Cross Park](https://www.google.com/maps/search/?api=1&query=37.3667612%2C-121.9411782&query_place_id=ChIJnWEcUcnLj4ARrwxIcD-5mMg) — 12 reviews (3.4★) · `park`
+- [Millbrae Community Garden](https://www.google.com/maps/search/?api=1&query=37.6009002%2C-122.39956980000001&query_place_id=ChIJcVKJAuh3j4ARxdhFIUzFneU) — 12 reviews (4.7★) · `garden`
+- [Noe Valley Park](https://www.google.com/maps/search/?api=1&query=37.751281399999996%2C-122.4391107&query_place_id=ChIJM8gbJQx-j4ARpgLTa0x3p50) — 12 reviews (4.5★) · `city_park`
+- [Ostrander Park](https://www.google.com/maps/search/?api=1&query=37.8423927%2C-122.2349492&query_place_id=ChIJ3-UEI5F9hYARzFjDcpDtiVg) — 12 reviews (4.1★) · `park`
+- [Oyster Point Dog Park](https://www.google.com/maps/search/?api=1&query=37.6616567%2C-122.377582&query_place_id=ChIJGba-GQB5j4ARkvDSZIuaNMU) — 12 reviews (4.9★) · `park`
+- [Pacific Commons Linear Park](https://www.google.com/maps/search/?api=1&query=37.495353400000006%2C-121.97560680000001&query_place_id=ChIJBasn_1bHj4ARtdgo0LNAnqs) — 12 reviews (3.8★) · `park`
+- [Pittman Green](https://www.google.com/maps/search/?api=1&query=37.79992120000001%2C-122.25595290000001&query_place_id=ChIJ1VXSFTeHj4ARpoQg8Uirt88) — 12 reviews (4.2★) · `park`
+- [Pompano Park](https://www.google.com/maps/search/?api=1&query=37.559100199999996%2C-122.2518382&query_place_id=ChIJNVLAWiaZj4ARu-D6a_HLUus) — 12 reviews (4.1★) · `park`
+- [Russo Park](https://www.google.com/maps/search/?api=1&query=37.2547201%2C-121.88197690000001&query_place_id=ChIJ689UzeczjoAR-p2j_KrrjDY) — 12 reviews (4.4★) · `park`
+- [San Bruno Mountain State Park](https://www.google.com/maps/search/?api=1&query=37.6888217%2C-122.436361&query_place_id=ChIJ14ogjlJ5j4ARVexCALfQmog) — 12 reviews (4.3★) · `park`
+- [San Francisco Bay Trail, South San Francisco, CA 94080](https://www.google.com/maps/search/?api=1&query=37.6685386%2C-122.38861629999998&query_place_id=ChIJmR_KECB5j4ARlJCdYJG8IXM) — 12 reviews (4.9★) · `park`
+- [Santa Clara Park Services Center](https://www.google.com/maps/search/?api=1&query=37.3455619%2C-121.97343839999999&query_place_id=ChIJ83YoDmnKj4ARrybMRfJapyE) — 12 reviews (4.7★) · `park`
+- [Softball Fields](https://www.google.com/maps/search/?api=1&query=37.3350745%2C-122.04858659999998&query_place_id=ChIJw0U-sjC0j4ARqs44yorUBcQ) — 12 reviews (4.8★) · `park`
+- [The Garden of Eaton](https://www.google.com/maps/search/?api=1&query=37.7392087%2C-122.42408990000001&query_place_id=ChIJTQ0LBgB_j4ARnFdatywReR8) — 12 reviews (5★) · `park`
+- [Tidewater Park](https://www.google.com/maps/search/?api=1&query=37.6013692%2C-122.0776066&query_place_id=ChIJp4gtXjGVj4ARSUGoKdq7OXo) — 12 reviews (4.3★) · `park`
+- [Weisshaar Park](https://www.google.com/maps/search/?api=1&query=37.418963399999996%2C-122.152257&query_place_id=ChIJGbOgBsK6j4AROgqTOWO2liU) — 12 reviews (4.1★) · `park`
+- [Wilbur Field](https://www.google.com/maps/search/?api=1&query=37.423083%2C-122.1642419&query_place_id=ChIJywlLkdC6j4ARNcWyKWTrLGY) — 12 reviews (4.7★) · `park`
+- [Windemere Ranch School Park](https://www.google.com/maps/search/?api=1&query=37.7518944%2C-121.90849539999999&query_place_id=ChIJ10HFFdztj4ARBAHLac7Q-oM) — 12 reviews (4.7★) · `park`
+- [8th Street Greenbelt](https://www.google.com/maps/search/?api=1&query=38.029933899999996%2C-121.8863674&query_place_id=ChIJjWl5NJNbhYARHeZtuS05d3A) — 11 reviews (4.1★) · `park`
+- [Acalanes Park](https://www.google.com/maps/search/?api=1&query=37.905736999999995%2C-122.0983015&query_place_id=ChIJJbE8NzJihYAReJSil1kOl-k) — 11 reviews (3.5★) · `park`
+- [Almaden Lake Park Playground](https://www.google.com/maps/search/?api=1&query=37.2415952%2C-121.87346149999999&query_place_id=ChIJM1PrEwAxjoARyyHefGALfnk) — 11 reviews (4.1★) · `park`
+- [Alta Park](https://www.google.com/maps/search/?api=1&query=37.900386%2C-121.73217799999999&query_place_id=ChIJSSCPT2P7j4ARxF_0WqCx5yQ) — 11 reviews (4.3★) · `park`
+- [Botanica Ile Dos Aguas](https://www.google.com/maps/search/?api=1&query=38.0044539%2C-121.8943977&query_place_id=ChIJJYCtxVZZhYARxZz8h-QvY9k) — 11 reviews (4★) · `botanical_garden`
+- [Circle Bike Park](https://www.google.com/maps/search/?api=1&query=37.7798668%2C-122.2725578&query_place_id=ChIJQzupKgCBj4ARNTXoC-v7gWA) — 11 reviews (5★) · `park`
+- [City Plaza Park](https://www.google.com/maps/search/?api=1&query=37.347476199999996%2C-121.94470960000001&query_place_id=ChIJs5nyTrPLj4ARhi_eIm4FDU8) — 11 reviews (4.5★) · `park`
+- [Cityside Park](https://www.google.com/maps/search/?api=1&query=37.8194784%2C-122.3733517&query_place_id=ChIJbTIELgCBhYARLGyX6GpvC2M) — 11 reviews (4.8★) · `park`
+- [Cypress Grove Pond](https://www.google.com/maps/search/?api=1&query=37.9960812%2C-121.6887825&query_place_id=ChIJaRvxeL1VhYARmQkhF2dsG_M) — 11 reviews (3.7★) · `park`
+- [Damon Slough](https://www.google.com/maps/search/?api=1&query=37.7524053%2C-122.21114490000001&query_place_id=ChIJKRw2i2CFj4ARua1I2OFUhaU) — 11 reviews (4.4★) · `park`
+- [Del Rey Park](https://www.google.com/maps/search/?api=1&query=37.023489500000004%2C-121.60496229999998&query_place_id=ChIJmf8c-lrhkYARtpJ6NEvD2lQ) — 11 reviews (4.4★) · `park`
+- [El Padro Park](https://www.google.com/maps/search/?api=1&query=37.664550399999996%2C-121.79344390000001&query_place_id=ChIJJ8NYO_Lnj4ARIhLfV5qWKSc) — 11 reviews (4.5★) · `park`
+- [Fair Oaks field](https://www.google.com/maps/search/?api=1&query=37.4785951%2C-122.2069845&query_place_id=ChIJ32hLsmCjj4ARlZ7BM568ktI) — 11 reviews (4.1★) · `park`
+- [Ferry Park](https://www.google.com/maps/search/?api=1&query=37.7958309%2C-122.39751640000001&query_place_id=ChIJ3aKp5mCAhYARrnj40qWp_v0) — 11 reviews (4.1★) · `city_park`
+- [Garden Nest](https://www.google.com/maps/search/?api=1&query=37.8857195%2C-122.1928078&query_place_id=ChIJ3wkyE0h9hYART_aaWEO7vew) — 11 reviews (5★) · `garden`
+- [Glassbay Park](https://www.google.com/maps/search/?api=1&query=37.522906600000006%2C-122.04821609999998&query_place_id=ChIJAaUeHC-_j4ARwb5F-ulYfTM) — 11 reviews (4.6★) · `park`
+- [Granada Native Garden](https://www.google.com/maps/search/?api=1&query=37.6760723%2C-121.78623329999999&query_place_id=ChIJfyqdEJXnj4AR3VOdg5g1X7Q) — 11 reviews (4.5★) · `garden`
+- [Grau Pond](https://www.google.com/maps/search/?api=1&query=37.5735416%2C-121.9844563&query_place_id=ChIJx0L0ehTBj4ARJleXsi08Diw) — 11 reviews (4.2★) · `park`
+- [Hamline Community Garden](https://www.google.com/maps/search/?api=1&query=37.3441851%2C-121.92540580000001&query_place_id=ChIJKfOaRwvLj4AR5SpkTkFOpWY) — 11 reviews (4.8★) · `park`
+- [Handley rock](https://www.google.com/maps/search/?api=1&query=37.4658778%2C-122.2694806&query_place_id=ChIJSbJHEJmhj4ARaOyl_0q6lbk) — 11 reviews (4.6★) · `park`
+- [Hardy Dog Park](https://www.google.com/maps/search/?api=1&query=37.8424303%2C-122.2576334&query_place_id=ChIJX1n_Xfh9hYARrm--CNv6hpw) — 11 reviews (3.6★) · `park`
+- [History Park Entrance](https://www.google.com/maps/search/?api=1&query=37.319139799999995%2C-121.8573033&query_place_id=ChIJE3Jw7CczjoARA-ahBvvfNVM) — 11 reviews (4★) · `park`
+- [Jack Brook Horse Camp](https://www.google.com/maps/search/?api=1&query=37.2916105%2C-122.2622864&query_place_id=ChIJq4m1VKyuj4ARs1QUkLs_kMA) — 11 reviews (5★) · `park`
+- [Lafayette reservoir](https://www.google.com/maps/search/?api=1&query=37.881076%2C-122.142653&query_place_id=ChIJSexfMpVihYAR7oe4HIZ9bAA) — 11 reviews (4.3★) · `nature_preserve`
+- [Levee Pedway](https://www.google.com/maps/search/?api=1&query=37.553040100000004%2C-122.2865829&query_place_id=ChIJbYAhW6ifj4ARnYsueuCgpFQ) — 11 reviews (4.7★) · `park`
+- [Levi's Plaza Fountain](https://www.google.com/maps/search/?api=1&query=37.802470899999996%2C-122.40206060000001&query_place_id=ChIJvZxTJDiBhYARrO0aScK42Uw) — 11 reviews (5★) · `park`
+- [Masters Grove](https://www.google.com/maps/search/?api=1&query=37.4327593%2C-122.1567208&query_place_id=ChIJne8luCC7j4AROUdMccllu0Y) — 11 reviews (4.7★) · `park`
+- [Minnesota Grove](https://www.google.com/maps/search/?api=1&query=37.7534111%2C-122.3897687&query_place_id=ChIJkbSbprp_j4ARPeGl-mmTDRc) — 11 reviews (4.7★) · `park`
+- [Mosta Grove](https://www.google.com/maps/search/?api=1&query=37.593502799999996%2C-122.3959045&query_place_id=ChIJXcjkZVZ3j4AROsr58SsRrRI) — 11 reviews (4.5★) · `park`
+- [Orinda Oaks Open Space, Donald Drive Entrance](https://www.google.com/maps/search/?api=1&query=37.861275%2C-122.149296&query_place_id=ChIJG11y4WdjhYAReaXFe2K2WLc) — 11 reviews (4.7★) · `park`
+- [Peralta Park](https://www.google.com/maps/search/?api=1&query=37.797231%2C-122.2601162&query_place_id=ChIJ_4bVYuuHj4AR36h1YJSnlro) — 11 reviews (2.7★) · `park`
+- [Sea view park](https://www.google.com/maps/search/?api=1&query=37.7476789%2C-122.24997589999998&query_place_id=ChIJ7RZ3MKWFj4ARmsZCZ012tm4) — 11 reviews (4.8★) · `park`
+- [Shady Trail, Portola Valley, CA](https://www.google.com/maps/search/?api=1&query=37.3912805%2C-122.21651920000001&query_place_id=ChIJadfET3Slj4ARW3G3Cu2qjkI) — 11 reviews (4.5★) · `park`
+- [Shell Cove Park](https://www.google.com/maps/search/?api=1&query=37.5494185%2C-122.28056989999999&query_place_id=ChIJWwzp49iej4AR1sGoTbslgUo) — 11 reviews (4.7★) · `park`
+- [Stanford Avenue Park](https://www.google.com/maps/search/?api=1&query=37.8390847%2C-122.28718540000001&query_place_id=ChIJ24RGEPB_hYARwpe-F5N82i8) — 11 reviews (4.2★) · `park`
+- [Stanford Hills Park](https://www.google.com/maps/search/?api=1&query=37.4217127%2C-122.19783509999999&query_place_id=ChIJvfTQQy2lj4ARWungFUZ0KhE) — 11 reviews (4.7★) · `park`
+- [Stocklmeir Farm](https://www.google.com/maps/search/?api=1&query=37.3223167%2C-122.06130599999999&query_place_id=ChIJCfWFC2q0j4ARAOdrwpj_d-I) — 11 reviews (4★) · `park`
+- [Student Organic Garden](https://www.google.com/maps/search/?api=1&query=37.8766548%2C-122.2676042&query_place_id=ChIJkRaIMKB-hYAR8CZPRkiKbR8) — 11 reviews (4.6★) · `garden`
+- [Sycamore Valley Open Space Preserve](https://www.google.com/maps/search/?api=1&query=37.8157206%2C-121.9680912&query_place_id=ChIJ37ZYkHbzj4ARQosGGgFdqjU) — 11 reviews (4.5★) · `park`
+- [Taylor Street Rock Garden](https://www.google.com/maps/search/?api=1&query=37.345157199999996%2C-121.90709410000001&query_place_id=ChIJv9GtRnvLj4ARhzsJES6C5J8) — 11 reviews (3.7★) · `garden`
+- [The Rocks Dog Park Yerba Buena Island](https://www.google.com/maps/search/?api=1&query=37.8107672%2C-122.36793279999999&query_place_id=ChIJ0ZykagCBhYAROUsCQGrz-dA) — 11 reviews (4.7★) · `dog_park`
+- [Tidepools](https://www.google.com/maps/search/?api=1&query=37.4373463%2C-122.44397709999998&query_place_id=ChIJde8iZosLj4ARYbs38zrrn0g) — 11 reviews (4★) · `park`
+- [Turk Hyde Mini Park](https://www.google.com/maps/search/?api=1&query=37.7827506%2C-122.41602519999999&query_place_id=ChIJ-33pJXyBhYARqI1PNqcm0rI) — 11 reviews (5★) · `city_park`
+- [Twin Creeks School Park](https://www.google.com/maps/search/?api=1&query=37.768085899999996%2C-121.9855869&query_place_id=ChIJa6eBd7byj4ARaBp2z0mvdtM) — 11 reviews (4.8★) · `park`
+- [UC Master Gardeners of Contra Costa County](https://www.google.com/maps/search/?api=1&query=37.926361899999996%2C-122.0251203&query_place_id=ChIJDeaHk1lghYAR8q4tVNXzGp0) — 11 reviews (4.6★) · `garden`
+- [Village Green](https://www.google.com/maps/search/?api=1&query=37.7189123%2C-121.7149366&query_place_id=ChIJTafUEyrhj4ARsdWTVFrCX6A) — 11 reviews (4.7★) · `park`
+- [Wallace Stegner Pathway](https://www.google.com/maps/search/?api=1&query=37.376396799999995%2C-122.16101950000001&query_place_id=ChIJoUeeIhewj4AR_M2BRFexq14) — 11 reviews (4.4★) · `nature_preserve`
+- [29th & Diamond Open Space](https://www.google.com/maps/search/?api=1&query=37.7436189%2C-122.43523280000001&query_place_id=ChIJg2Ae_21-j4ARQH4kgEdg-nw) — 10 reviews (3.6★) · `city_park`
+- [Baxter Creek Gateway Park](https://www.google.com/maps/search/?api=1&query=37.930827099999995%2C-122.322047&query_place_id=ChIJa2H1qkh4hYARECFw6LxcXks) — 10 reviews (4.1★) · `park`
+- [Big Basin Park](https://www.google.com/maps/search/?api=1&query=37.9565908%2C-121.7009728&query_place_id=ChIJUxMT6CP_j4ARcHo8bmdpSKc) — 10 reviews (4★) · `park`
+- [Blaney Plaza](https://www.google.com/maps/search/?api=1&query=37.2591129%2C-122.0321579&query_place_id=ChIJrYfG5d1KjoARDLz3Bw-1sK8) — 10 reviews (3.8★) · `park`
+- [Brooks Island Regional Preserve](https://www.google.com/maps/search/?api=1&query=37.8978873%2C-122.3568035&query_place_id=ChIJR9PflnuChYARsK3I4BSjGQc) — 10 reviews (4.8★) · `nature_preserve`
+- [Chemeketa Park Playground](https://www.google.com/maps/search/?api=1&query=37.1639303%2C-121.98073210000001&query_place_id=ChIJ__g6mvA3joARQzgwR4OdEIM) — 10 reviews (4.1★) · `park`
+- [Connecticut Friendship Garden](https://www.google.com/maps/search/?api=1&query=37.7573775%2C-122.3974505&query_place_id=ChIJx-RIS7R_j4ARO90GDHeVAr4) — 10 reviews (4.6★) · `garden`
+- [County Line Staging Area](https://www.google.com/maps/search/?api=1&query=37.7728038%2C-121.74046279999999&query_place_id=ChIJbdXdiWnkj4ARc6_5Ra4WytI) — 10 reviews (4.5★) · `park`
+- [Crittenden Hill](https://www.google.com/maps/search/?api=1&query=37.4274483%2C-122.0736152&query_place_id=ChIJtzaxREq5j4ARwjr2FG_0-OY) — 10 reviews (4.3★) · `park`
+- [Crockett Plaza](https://www.google.com/maps/search/?api=1&query=38.052529199999995%2C-122.22340599999998&query_place_id=ChIJLw4Zt3lxhYARu2318OK1Nck) — 10 reviews (4.3★) · `park`
+- [Dewey Park](https://www.google.com/maps/search/?api=1&query=37.996905399999996%2C-121.71305600000001&query_place_id=ChIJi1Q8u-RVhYARR23wIG5upgU) — 10 reviews (4★) · `park`
+- [Don Edwards San Francisco Bay National Wildlife Refuge](https://www.google.com/maps/search/?api=1&query=37.4267836%2C-122.0348554&query_place_id=ChIJux3Sq363j4AR2nljua0VbLE) — 10 reviews (3.8★) · `park`
+- [El Dorado Middle School Play Field](https://www.google.com/maps/search/?api=1&query=37.974903399999995%2C-121.9896235&query_place_id=ChIJg1wV1ANehYARSTa_ZdSRcrY) — 10 reviews (4.5★) · `park`
+- [Exercise Yard](https://www.google.com/maps/search/?api=1&query=37.8914282%2C-122.293703&query_place_id=ChIJ3cCiADR5hYAR6l0KDFsmEUw) — 10 reviews (4.4★) · `park`
+- [Gale Ranch School Park](https://www.google.com/maps/search/?api=1&query=37.769833%2C-121.91187980000001&query_place_id=ChIJOZEa7fntj4ARmsWI3onDFO8) — 10 reviews (4.6★) · `park`
+- [Giant Highway Staging Area](https://www.google.com/maps/search/?api=1&query=37.991791%2C-122.3561682&query_place_id=ChIJjXHELpOdhYARGWKdxc4TMjE) — 10 reviews (4.6★) · `park`
+- [Greenwich Pathway](https://www.google.com/maps/search/?api=1&query=37.8012674%2C-122.41809180000001&query_place_id=ChIJO_vQ_uWAhYARSOW9blWzA3k) — 10 reviews (4.9★) · `park`
+- [Guadalupe Dog Park](https://www.google.com/maps/search/?api=1&query=37.345045%2C-121.910643&query_place_id=ChIJ-w6UVQDLj4AR-08AjyqpyJg) — 10 reviews (1.7★) · `park`
+- [Gullo Park](https://www.google.com/maps/search/?api=1&query=37.309381699999996%2C-121.99254130000001&query_place_id=ChIJAa2745_Kj4ARtwOU4yLxPD0) — 10 reviews (3.6★) · `park`
+- [Island Drive Pollinator Garden](https://www.google.com/maps/search/?api=1&query=37.454394%2C-122.14104059999998&query_place_id=ChIJ7YnC6i27j4ARdSuQBgBwots) — 10 reviews (4.1★) · `garden`
+- [John F. Kennedy Park](https://www.google.com/maps/search/?api=1&query=37.9258362%2C-122.3316494&query_place_id=ChIJp6DSCaF5hYARSroCXA7xYLA) — 10 reviews (4.5★) · `park`
+- [Juan Bautista Community Garden](https://www.google.com/maps/search/?api=1&query=37.7182084%2C-122.4801457&query_place_id=ChIJg6S8ApF9j4ARunC5C8IUvw0) — 10 reviews (4.8★) · `park`
+- [Juan Prado Mesa Preserve](https://www.google.com/maps/search/?api=1&query=37.351560899999996%2C-122.11410970000001&query_place_id=ChIJHXCRMAyxj4ARcoKzV_gA_h8) — 10 reviews (3.8★) · `park`
+- [Lafayette Plaza](https://www.google.com/maps/search/?api=1&query=37.891832%2C-122.11835660000001&query_place_id=ChIJFyYpt1pihYARqCHoo_xdeeE) — 10 reviews (4.4★) · `park`
+- [Livermore Recreation & Parks](https://www.google.com/maps/search/?api=1&query=37.684577%2C-121.72815899999998&query_place_id=ChIJ5ZpbM1Dnj4AR-IHrT4ZMqrw) — 10 reviews (4.6★) · `park`
+- [Main Quad](https://www.google.com/maps/search/?api=1&query=37.4365016%2C-122.1568178&query_place_id=ChIJUfVSHRK7j4ARVp9RcMYN4KI) — 10 reviews (4.6★) · `park`
+- [Marsh Creek Trail Bridge Crossing](https://www.google.com/maps/search/?api=1&query=37.9229923%2C-121.712242&query_place_id=ChIJX48mCAf_j4ARS_K3RW9bJJE) — 10 reviews (4.5★) · `park`
+- [Meadowlark Park](https://www.google.com/maps/search/?api=1&query=37.665202%2C-121.90995000000001&query_place_id=ChIJ320ucdHrj4AR32fSjZ6I-SI) — 10 reviews (4.2★) · `park`
+- [Mercado Park](https://www.google.com/maps/search/?api=1&query=37.370990899999995%2C-121.8802418&query_place_id=ChIJ6ZIlIwDNj4AR_xONcLFupdY) — 10 reviews (3.9★) · `park`
+- [Mission Peak Paragliding and Hang Gliding Landing Zone](https://www.google.com/maps/search/?api=1&query=37.506279%2C-121.90490569999999&query_place_id=ChIJ5eQ2Sn7Gj4AR5WtWCqYvKEI) — 10 reviews (4.9★) · `park`
+- [Molinari Mana Park National Wildlife Federation ® Certified Wildlife Habitat](https://www.google.com/maps/search/?api=1&query=37.8001484%2C-122.4153194&query_place_id=ChIJ3fB9R8mBhYARx0ftDIU0Qmg) — 10 reviews (4.4★) · `garden`
+- [Monterey Redwoods](https://www.google.com/maps/search/?api=1&query=37.817522499999995%2C-122.2055947&query_place_id=ChIJn_r4k72Hj4AR8iEUmkgStiA) — 10 reviews (4.8★) · `park`
+- [Moon Phase Plaza](https://www.google.com/maps/search/?api=1&query=37.5147608%2C-122.1994592&query_place_id=ChIJ3WlJQiajj4ARvO9EaQbmv8w) — 10 reviews (4.6★) · `park`
+- [Mount Diablo South Gate Entrance Station](https://www.google.com/maps/search/?api=1&query=37.842833299999995%2C-121.92038060000002&query_place_id=ChIJef5nDgDzj4ARUj4zAF6XkYE) — 10 reviews (4.6★) · `park`
+- [Parc Metro West](https://www.google.com/maps/search/?api=1&query=37.419163499999996%2C-121.90178300000001&query_place_id=ChIJCS9lqMbJj4ARMuckGHpRfFg) — 10 reviews (4.6★) · `park`
+- [Pepi's Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.804563699999996%2C-122.42091649999999&query_place_id=ChIJG36VbzeBhYAR60vKL17GgVw) — 10 reviews (5★) · `dog_park`
+- [Public Open Space](https://www.google.com/maps/search/?api=1&query=37.790541%2C-122.40085519999998&query_place_id=ChIJI8dINACBhYARB03duNVvDWc) — 10 reviews (4.9★) · `garden`
+- [Quarry park pump track](https://www.google.com/maps/search/?api=1&query=37.5044014%2C-122.46181949999999&query_place_id=ChIJ57N35vtzj4ARBvTzherC1zg) — 10 reviews (4.5★) · `park`
+- [Richmond Park Maintenance](https://www.google.com/maps/search/?api=1&query=37.932632999999996%2C-122.33861999999999&query_place_id=ChIJl9qOfRR4hYARUySOO9lqUOM) — 10 reviews (4.5★) · `park`
+- [Rick Seers Neighborhood Park](https://www.google.com/maps/search/?api=1&query=37.953278499999996%2C-122.0333195&query_place_id=ChIJrYAiaNlghYARSPE4uDWkwqo) — 10 reviews (4★) · `park`
+- [Riverview Stormwater Garden](https://www.google.com/maps/search/?api=1&query=37.4020911%2C-121.94601530000001&query_place_id=ChIJZaJxNQDJj4ARx4yc0KRbppQ) — 10 reviews (4.7★) · `park`
+- [Sangria Hill](https://www.google.com/maps/search/?api=1&query=37.7845994%2C-122.40175280000001&query_place_id=ChIJzUnLg4eAhYAR_1Esu7Ucy_A) — 10 reviews (5★) · `park`
+- [Satellite Entrance](https://www.google.com/maps/search/?api=1&query=37.414071%2C-122.193042&query_place_id=ChIJebb9lyOlj4AR-ZVggHeu18E) — 10 reviews (3.6★) · `park`
+- [Scott Park](https://www.google.com/maps/search/?api=1&query=37.443176699999995%2C-122.1555678&query_place_id=ChIJg-gdxqq7j4AROlyisJHFx2Q) — 10 reviews (4.8★) · `park`
+- [Start Trail Ride - Contra Costa Canal Trail](https://www.google.com/maps/search/?api=1&query=37.9821764%2C-122.01777179999999&query_place_id=ChIJhb2JRDhnhYAR5zB2ULv_kD4) — 10 reviews (4.2★) · `park`
+- [Sunny Glen Recreational Area](https://www.google.com/maps/search/?api=1&query=37.7275352%2C-121.92437779999999&query_place_id=ChIJy75q-jXsj4ARrhANTNvGYR0) — 10 reviews (4.1★) · `park`
+- [Turnstone Park](https://www.google.com/maps/search/?api=1&query=37.5656929%2C-122.25475089999999&query_place_id=ChIJucIzNleZj4ARiE3xUrteWWg) — 10 reviews (4.2★) · `park`
+- [U.N. Plaza Dog Park](https://www.google.com/maps/search/?api=1&query=37.780622699999995%2C-122.413703&query_place_id=ChIJj8QhTyKBhYARkKDgIkhVpC8) — 10 reviews (4.4★) · `dog_park`
+- [Willow Park](https://www.google.com/maps/search/?api=1&query=37.5956408%2C-122.0105194&query_place_id=ChIJH_ZkqF6Vj4ARctJHnlLJYNU) — 10 reviews (4.2★) · `park`
+- [42nd & Greenway Pocket Park](https://www.google.com/maps/search/?api=1&query=37.931058199999995%2C-122.32986799999999&query_place_id=ChIJ62Eg5EB4hYARVpLQhhTs3sE) — 9 reviews (3.8★) · `park`
+- [8th Street Greenbelt](https://www.google.com/maps/search/?api=1&query=38.029639599999996%2C-121.88512239999999&query_place_id=ChIJW7UUr-xbhYARtVBayjIMWvA) — 9 reviews (3.9★) · `park`
+- [Acalanes Ridge Open Space Acalanes South Trail](https://www.google.com/maps/search/?api=1&query=37.9047371%2C-122.0818041&query_place_id=ChIJCei7AWxhhYARp_Wgalsfy-4) — 9 reviews (4.9★) · `park`
+- [Anastasia Park](https://www.google.com/maps/search/?api=1&query=37.9671649%2C-121.7215788&query_place_id=ChIJq2TFHLX4j4ARiR6SEtTZQ6Y) — 9 reviews (4.6★) · `park`
+- [Bay Eagle Community Garden](https://www.google.com/maps/search/?api=1&query=37.7779975%2C-122.26511299999999&query_place_id=ChIJPUZqx9SGj4ARCW1G8Fie5Qc) — 9 reviews (4.6★) · `garden`
+- [Bay Tree Park](https://www.google.com/maps/search/?api=1&query=37.55971050000001%2C-122.32765049999999&query_place_id=ChIJsyZZf9qfj4ARnKwA9T-qJcY) — 9 reviews (4.4★) · `park`
+- [Beechnut Mini Park](https://www.google.com/maps/search/?api=1&query=37.9972144%2C-122.2454477&query_place_id=ChIJyyqHfsBwhYARgMty6foEWtI) — 9 reviews (3.6★) · `park`
+- [Bollinger Dog Run](https://www.google.com/maps/search/?api=1&query=37.7581237%2C-121.97064209999999&query_place_id=ChIJ41288Ovzj4AR5CK3uWj8MLE) — 9 reviews (4.6★) · `dog_park`
+- [Cañada de los Osos Ecological Reserve](https://www.google.com/maps/search/?api=1&query=37.0357164%2C-121.41393550000001&query_place_id=ChIJjazrjXvvkYARpzXdHlGRwmg) — 9 reviews (4.2★) · `nature_preserve`
+- [Clark Memorial Bench](https://www.google.com/maps/search/?api=1&query=37.7593971%2C-122.24528850000002&query_place_id=ChIJST5XBL6Hj4ARWvmqMIg8C8A) — 9 reviews (5★) · `park`
+- [Crockett Waterfront](https://www.google.com/maps/search/?api=1&query=38.056170099999996%2C-122.2284531&query_place_id=ChIJHcYzgbhxhYARPhlGnlZXBoQ) — 9 reviews (4.2★) · `park`
+- [Dana Hills Park](https://www.google.com/maps/search/?api=1&query=37.927786999999995%2C-121.9319213&query_place_id=ChIJQwkuNm5fhYARJn8M-3LrG20) — 9 reviews (4.9★) · `park`
+- [Del Valle West Swim Beach](https://www.google.com/maps/search/?api=1&query=37.576983899999995%2C-121.69416910000001&query_place_id=ChIJQS10cUfZj4AR6v4x2sgST-4) — 9 reviews (4.7★) · `park`
+- [Egret Park](https://www.google.com/maps/search/?api=1&query=37.9415731%2C-121.68940920000001&query_place_id=ChIJyYqT_sP_j4ARXRq5RqF9sUw) — 9 reviews (4.3★) · `park`
+- [El Pueblo Park](https://www.google.com/maps/search/?api=1&query=38.0168259%2C-121.8719286&query_place_id=ChIJb5SX0udbhYARbt8mfXn5At0) — 9 reviews (3.4★) · `park`
+- [Empire Park](https://www.google.com/maps/search/?api=1&query=37.7942384%2C-122.4038476&query_place_id=ChIJHxSa5IqAhYARXwNFpiMYYjE) — 9 reviews (3.8★) · `park`
+- [End of the Trail - Picnic Area](https://www.google.com/maps/search/?api=1&query=37.388999999999996%2C-121.76974179999999&query_place_id=ChIJd4ZJF_zSj4ARRLW0nU1cUv8) — 9 reviews (4.3★) · `park`
+- [Eucalyptus Grove Stanford University](https://www.google.com/maps/search/?api=1&query=37.4355908%2C-122.1650478&query_place_id=ChIJhfTgNQC7j4ARvzWqdfLC4cw) — 9 reviews (4.8★) · `park`
+- [Fitzgerald park](https://www.google.com/maps/search/?api=1&query=37.8260915%2C-122.28246259999997&query_place_id=ChIJSVkf1RB-hYARcGI9GbN5sqQ) — 9 reviews (4★) · `park`
+- [Forest Street Park](https://www.google.com/maps/search/?api=1&query=37.0067721%2C-121.5647564&query_place_id=ChIJoyK01yfjkYARgyZHUL5QVbY) — 9 reviews (4.9★) · `park`
+- [Foster City Sign](https://www.google.com/maps/search/?api=1&query=37.5565126%2C-122.2467808&query_place_id=ChIJV6EKTvGZj4AR9lLoE3UX1BA) — 9 reviews (4.7★) · `park`
+- [Fowler Creek Park Overlook](https://www.google.com/maps/search/?api=1&query=37.314526799999996%2C-121.76494869999999&query_place_id=ChIJi-YsQ-QtjoARhxcj6TYvd7w) — 9 reviews (4.4★) · `park`
+- [Gateshead Park](https://www.google.com/maps/search/?api=1&query=37.5403143%2C-122.2607034&query_place_id=ChIJPdU0PMyYj4ARYQYrCKO7o6g) — 9 reviews (4.2★) · `park`
+- [Gemini Park](https://www.google.com/maps/search/?api=1&query=37.9624435%2C-121.722602&query_place_id=ChIJsyI2VMr4j4ARxlf29nSS26E) — 9 reviews (4.9★) · `park`
+- [Golden Oak Park](https://www.google.com/maps/search/?api=1&query=37.2411714%2C-121.7885746&query_place_id=ChIJBeyogQkvjoARFyaZzJBluic) — 9 reviews (4.7★) · `park`
+- [Greenwich Steps Public Garden](https://www.google.com/maps/search/?api=1&query=37.803014499999996%2C-122.40434209999998&query_place_id=ChIJOeSO6KmBhYARhGogvEbqoxI) — 9 reviews (5★) · `garden`
+- [HESPERIAN PARK](https://www.google.com/maps/search/?api=1&query=37.6932593%2C-122.12339069999999&query_place_id=ChIJE805bEmRj4ARvJd3txs4beY) — 9 reviews (4.4★) · `park`
+- [Howard Weichert Park](https://www.google.com/maps/search/?api=1&query=37.0993353%2C-121.64691610000001&query_place_id=ChIJA5Q0PhQgjoARnS4rDc3_Zfs) — 9 reviews (4★) · `park`
+- [Issei Garden](https://www.google.com/maps/search/?api=1&query=37.786348499999995%2C-122.4322989&query_place_id=ChIJhQyRCwOBhYAR3UCH73GKc1U) — 9 reviews (5★) · `garden`
+- [James Kenney Park](https://www.google.com/maps/search/?api=1&query=37.8715669%2C-122.29700410000001&query_place_id=ChIJl9iAGAB_hYAR0RO56hTN5N4) — 9 reviews (4.7★) · `park`
+- [Kaleidoscope Park](https://www.google.com/maps/search/?api=1&query=37.964577899999995%2C-121.71945679999997&query_place_id=ChIJZ7AlSzX_j4ARQDp1nnlR7q8) — 9 reviews (4★) · `park`
+- [La Placita Park](https://www.google.com/maps/search/?api=1&query=37.6649238%2C-122.1035409&query_place_id=ChIJF6m1XmyRj4ARIMqyZEPKXYY) — 9 reviews (4.6★) · `park`
+- [Laguna Seca Community Garden](https://www.google.com/maps/search/?api=1&query=37.21695040000001%2C-121.76399459999999&query_place_id=ChIJOdCw9nYvjoAR6jA4MS-GWSE) — 9 reviews (4.3★) · `garden`
+- [Larkey Park](https://www.google.com/maps/search/?api=1&query=37.9229886%2C-122.0748673&query_place_id=ChIJVVVV-XphhYARNqT_0K9-M2Q) — 9 reviews (4.9★) · `park`
+- [Leona Heights Sulfur Mine](https://www.google.com/maps/search/?api=1&query=37.788506100000006%2C-122.17303309999998&query_place_id=ChIJdWXTQqCIj4ARKGXYH9crdsE) — 9 reviews (3.9★) · `park`
+- [Linda Mar Tidepools](https://www.google.com/maps/search/?api=1&query=37.6041847%2C-122.499926&query_place_id=ChIJ22PQ4vt7j4ARWhlpdCIoV1k) — 9 reviews (4.4★) · `nature_preserve`
+- [Mac Dutra Park](https://www.google.com/maps/search/?api=1&query=37.463513899999995%2C-122.42949219999998&query_place_id=ChIJq_wTq7R0j4ARbB-2SqBb7Dw) — 9 reviews (4.4★) · `park`
+- [Main Street Linear Park](https://www.google.com/maps/search/?api=1&query=37.7825778%2C-122.2911082&query_place_id=ChIJ01hLFY6Bj4AR02hsEYZynag) — 9 reviews (3.3★) · `park`
+- [Mariposa Park](https://www.google.com/maps/search/?api=1&query=37.7645757%2C-122.3916039&query_place_id=ChIJUaSVsaV_j4ARODz-812ipro) — 9 reviews (4.7★) · `city_park`
+- [Meditation Garden @ Kevin Moran Park](https://www.google.com/maps/search/?api=1&query=37.2888411%2C-122.0191279&query_place_id=ChIJu38u8Ca1j4ARygQsA_8_yas) — 9 reviews (4.8★) · `garden`
+- [Merchant Marine Memorial](https://www.google.com/maps/search/?api=1&query=37.5911785%2C-122.3212489&query_place_id=ChIJRSSFTTSdj4ARj-xfI2uvDvE) — 9 reviews (4.7★) · `park`
+- [Mira Vista Hills Park](https://www.google.com/maps/search/?api=1&query=37.978846399999995%2C-121.83404309999999&query_place_id=ChIJa86kBQBZhYAR9JrGbX-8RmY) — 9 reviews (4★) · `park`
+- [Morgan Hill Community Garden](https://www.google.com/maps/search/?api=1&query=37.111877799999995%2C-121.6318595&query_place_id=ChIJA-3-EY0gjoARSzatd2-QM38) — 9 reviews (4.9★) · `garden`
+- [North Temescal Picnic Area](https://www.google.com/maps/search/?api=1&query=37.847077899999995%2C-122.23266260000001&query_place_id=ChIJwTbB0ad9hYARevCkwcaasCM) — 9 reviews (4.9★) · `park`
+- [Ocean View Park](https://www.google.com/maps/search/?api=1&query=37.4616428%2C-122.4381101&query_place_id=ChIJGU8XeAB1j4ARGbDxSiwhD8I) — 9 reviews (4.8★) · `park`
+- [Ookwe Park](https://www.google.com/maps/search/?api=1&query=37.917726099999996%2C-122.3441853&query_place_id=ChIJP9D0Am95hYAR-xbJn9zkrEQ) — 9 reviews (4.9★) · `park`
+- [Owl Canyon](https://www.google.com/maps/search/?api=1&query=37.6828767%2C-122.41565279999999&query_place_id=ChIJT1ARjBF5j4ARVD9qZU-mzUM) — 9 reviews (3.8★) · `park`
+- [Pellier Park](https://www.google.com/maps/search/?api=1&query=37.3378429%2C-121.89598449999998&query_place_id=ChIJN3PtpoHNj4ARwt0Bji-whhQ) — 9 reviews (4★) · `park`
+- [Pescadero Marsh Natural Preserve](https://www.google.com/maps/search/?api=1&query=37.2616942%2C-122.40624150000001&query_place_id=ChIJs2oDEBYHj4ARwd5VY4oopA0) — 9 reviews (5★) · `nature_preserve`
+- [Pine Meadow Park](https://www.google.com/maps/search/?api=1&query=37.9862452%2C-122.1013031&query_place_id=ChIJjTdEHqVlhYARJRG647E9qS0) — 9 reviews (4.8★) · `park`
+- [Pleasant Hill Instructional Garden](https://www.google.com/maps/search/?api=1&query=37.9382521%2C-122.0681807&query_place_id=ChIJk41KP0JhhYARXXSJo1ze4co) — 9 reviews (4.8★) · `botanical_garden`
+- [Ponderosa park](https://www.google.com/maps/search/?api=1&query=37.6359096%2C-122.46935579999999&query_place_id=ChIJETF8JzZ6j4ARtbL_QKdbp-o) — 9 reviews (3.2★) · `park`
+- [Port Costa Community Garden](https://www.google.com/maps/search/?api=1&query=38.0443985%2C-122.1887702&query_place_id=ChIJ3ecjCMVxhYAROJtnX8hPXd8) — 9 reviews (4.8★) · `garden`
+- [Quarry lakes picnic table](https://www.google.com/maps/search/?api=1&query=37.5768694%2C-122.0068397&query_place_id=ChIJT8wGSwW_j4ARWeewESZTtqw) — 9 reviews (4.3★) · `park`
+- [Ravenwood Park](https://www.google.com/maps/search/?api=1&query=37.2674611%2C-121.9915283&query_place_id=ChIJPffFyYU1joAROSn3Of4wbX8) — 9 reviews (4.8★) · `park`
+- [Rhododendron Garden](https://www.google.com/maps/search/?api=1&query=37.806691099999995%2C-122.25874209999999&query_place_id=ChIJ6SO-TkmHj4ARatbsVjC5mO0) — 9 reviews (4.6★) · `garden`
+- [San Marco Hills Park](https://www.google.com/maps/search/?api=1&query=38.0164028%2C-121.97642229999998&query_place_id=ChIJwaehtiVdhYAR6PUFJlmVRYA) — 9 reviews (4.2★) · `park`
+- [Sutter Gate Park](https://www.google.com/maps/search/?api=1&query=37.686521%2C-121.88542699999998&query_place_id=ChIJR0H2BULpj4ARBBGPw4SGtew) — 9 reviews (4.2★) · `park`
+- [Upper Fields](https://www.google.com/maps/search/?api=1&query=37.9294607%2C-121.91784360000001&query_place_id=ChIJo39LWVlfhYARVV3rNQtzQ0o) — 9 reviews (4.4★) · `park`
+- [Urban Park](https://www.google.com/maps/search/?api=1&query=37.790625999999996%2C-122.39365649999999&query_place_id=ChIJh7knObyBhYARZR9375yylek) — 9 reviews (4.4★) · `park`
+- [Vallejo Stairway](https://www.google.com/maps/search/?api=1&query=37.797848699999996%2C-122.41433119999999&query_place_id=ChIJn80yNkGBhYARs2dqlVBBAwI) — 9 reviews (4.6★) · `garden`
+- [Victoria Park](https://www.google.com/maps/search/?api=1&query=38.0229291%2C-122.26879159999999&query_place_id=ChIJ-ahleMx2hYARqE-vQocINAY) — 9 reviews (4.9★) · `park`
+- [Walnut Grove park](https://www.google.com/maps/search/?api=1&query=37.674586999999995%2C-121.885223&query_place_id=ChIJj6x7hHHpj4ARtFhupiIB-Fg) — 9 reviews (4.6★) · `park`
+- [Yerba Buena Lake](https://www.google.com/maps/search/?api=1&query=37.3095955%2C-121.7582329&query_place_id=ChIJW8jEFDktjoARfh1jos5pnlw) — 9 reviews (4.3★) · `park`
+- [5M Dog Park](https://www.google.com/maps/search/?api=1&query=37.781725400000006%2C-122.406517&query_place_id=ChIJjbpi78aBhYAR3JUO_jFPtp8) — 8 reviews (2.1★) · `dog_park`
+- [Almaden Lakeview Picnic Area](https://www.google.com/maps/search/?api=1&query=37.2412213%2C-121.87292040000001&query_place_id=ChIJgVzHLmQxjoARE1T7WEfoihw) — 8 reviews (4.5★) · `park`
+- [Blackhawk Eagle Nest Park](https://www.google.com/maps/search/?api=1&query=37.8188062%2C-121.90250209999999&query_place_id=ChIJOQH_0iDzj4ARV6aJWpn-yLg) — 8 reviews (4.6★) · `park`
+- [Boat Ramp Street](https://www.google.com/maps/search/?api=1&query=37.9250117%2C-122.3759437&query_place_id=ChIJa-AB4riChYAR-Rq4x1820aQ) — 8 reviews (4.5★) · `park`
+- [California Home & Garden](https://www.google.com/maps/search/?api=1&query=37.2775962%2C-121.95028719999998&query_place_id=ChIJ2_Mo0x01joARiUxJ1nna5Og) — 8 reviews (4.5★) · `garden`
+- [Celeste Park](https://www.google.com/maps/search/?api=1&query=37.9672262%2C-121.72584409999999&query_place_id=ChIJMyWcorb4j4AR6HRH5mEfHp8) — 8 reviews (3.8★) · `park`
+- [Cesar Chavez Community Garden](https://www.google.com/maps/search/?api=1&query=37.7782268%2C-122.21789469999999&query_place_id=ChIJV4Q5906Hj4ARAMvd8t1jlGo) — 8 reviews (4.5★) · `garden`
+- [Clinton Playlot](https://www.google.com/maps/search/?api=1&query=37.940332999999995%2C-122.3285991&query_place_id=ChIJR7AfYzx4hYARvI-aMY1oUsc) — 8 reviews (3.8★) · `park`
+- [Coyote Hills Entry Kiosk](https://www.google.com/maps/search/?api=1&query=37.5551452%2C-122.0718481&query_place_id=ChIJnWmn8JW_j4ARyw4OXnusk1Q) — 8 reviews (4.9★) · `park`
+- [Eagle Plaza](https://www.google.com/maps/search/?api=1&query=37.7701235%2C-122.41322419999999&query_place_id=ChIJZdqK2_B_j4ARgC-8wnP49x0) — 8 reviews (4.1★) · `park`
+- [Emerald Park](https://www.google.com/maps/search/?api=1&query=37.7868676%2C-122.39157279999999&query_place_id=ChIJF_1wVWWAhYARJOgiZbUapjw) — 8 reviews (4.1★) · `park`
+- [Foothill Park](https://www.google.com/maps/search/?api=1&query=37.431104000000005%2C-121.87537499999998&query_place_id=ChIJWzAeBV3Pj4ARP5bi0XRrCrU) — 8 reviews (4.3★) · `park`
+- [Forbes Mill Footbridge](https://www.google.com/maps/search/?api=1&query=37.2227026%2C-121.9810654&query_place_id=ChIJCzt51uQ1joARgZId62BHwDY) — 8 reviews (4.9★) · `park`
+- [Gallery View](https://www.google.com/maps/search/?api=1&query=37.8020375%2C-122.4470156&query_place_id=ChIJ79-TMACHhYARRTvCjtYutCs) — 8 reviews (5★) · `park`
+- [Giant Sequoia Grove](https://www.google.com/maps/search/?api=1&query=37.8938232%2C-122.2439847&query_place_id=ChIJoaU60BN9hYARiz0V9iRieAo) — 8 reviews (4.6★) · `park`
+- [Gilroy Gateway Park](https://www.google.com/maps/search/?api=1&query=37.012743%2C-121.60016990000001&query_place_id=ChIJH7DU14LjkYARZbToqwSi1xE) — 8 reviews (4.4★) · `park`
+- [Grâce Marchant garden](https://www.google.com/maps/search/?api=1&query=37.802032%2C-122.403669&query_place_id=ChIJsWcGr1CBhYARPe2VQyY2dcM) — 8 reviews (4.9★) · `garden`
+- [Heritage Green Park](https://www.google.com/maps/search/?api=1&query=37.1411924%2C-121.60920580000001&query_place_id=ChIJ_Zd7TnLfkYARIfKkFuECmqE) — 8 reviews (4.5★) · `park`
+- [In Chan Kaajal Community Garden](https://www.google.com/maps/search/?api=1&query=37.7640536%2C-122.41568249999999&query_place_id=ChIJVYEk0SR-j4ARGpjugt_0IEE) — 8 reviews (4.5★) · `garden`
+- [Iron Horse Middle School Park](https://www.google.com/maps/search/?api=1&query=37.768883100000004%2C-121.9570268&query_place_id=ChIJBZXGa4Xyj4ARCX3Jhul4nHs) — 8 reviews (5★) · `park`
+- [Joe’s Trail Parking](https://www.google.com/maps/search/?api=1&query=37.2877848%2C-122.03173530000001&query_place_id=ChIJB6WVUzS1j4ARpvYemMNz3zk) — 8 reviews (4★) · `park`
+- [John McDermott Park](https://www.google.com/maps/search/?api=1&query=37.4225753%2C-121.9072625&query_place_id=ChIJEVTl1i3Jj4AR2BQBI7l5PN0) — 8 reviews (4.5★) · `park`
+- [John Ratto Bocce Courts](https://www.google.com/maps/search/?api=1&query=37.7581437%2C-122.2309355&query_place_id=ChIJn1jpVYOGj4ARzNyHFGnG3iA) — 8 reviews (4.4★) · `park`
+- [Joost and Baden Mini Park](https://www.google.com/maps/search/?api=1&query=37.732759%2C-122.4408628&query_place_id=ChIJr6rT_Ht-j4AR6zUnyBJSt_0) — 8 reviews (4.5★) · `city_park`
+- [Lake Lagunita Barbecue Pit](https://www.google.com/maps/search/?api=1&query=37.4229439%2C-122.17337669999998&query_place_id=ChIJ7yEXkxm7j4ARxw2_6GpkN80) — 8 reviews (4.3★) · `park`
+- [Lincoln Theater Park/ One Fam Artist Activist Compound](https://www.google.com/maps/search/?api=1&query=37.8063487%2C-122.2985667&query_place_id=ChIJyRP42pyAj4ARFxrN1hgDsqw) — 8 reviews (4.4★) · `park`
+- [Love in Haight Fairy Garden](https://www.google.com/maps/search/?api=1&query=37.770922%2C-122.44514799999999&query_place_id=ChIJRVRmQQCBhYARDywij0VS3EE) — 8 reviews (5★) · `garden`
+- [Miraflores Sustainable Greenbelt](https://www.google.com/maps/search/?api=1&query=37.9295016%2C-122.3246889&query_place_id=ChIJxyH9UBl5hYARcnz975Tigz8) — 8 reviews (3.9★) · `park`
+- [Monterey Park](https://www.google.com/maps/search/?api=1&query=37.910878000000004%2C-122.320559&query_place_id=ChIJ_wTtbFR5hYARyYA2WRMBuBw) — 8 reviews (3.6★) · `park`
+- [Moraga Parks & Recreation](https://www.google.com/maps/search/?api=1&query=37.8521809%2C-122.12686950000001&query_place_id=ChIJx5egg9KJj4ARbAGZtDkx7XU) — 8 reviews (5★) · `park`
+- [Niles Community Park - fishing pier](https://www.google.com/maps/search/?api=1&query=37.5738109%2C-121.98556640000001&query_place_id=ChIJoboPDgDBj4ARAZJVzQnthhk) — 8 reviews (3.4★) · `park`
+- [Park Entrance Station](https://www.google.com/maps/search/?api=1&query=37.4666249%2C-122.44460629999998&query_place_id=ChIJR4NKRah0j4ARgeYKHu5vgVw) — 8 reviews (3.6★) · `park`
+- [Parque de Los Pobladores](https://www.google.com/maps/search/?api=1&query=37.328269299999995%2C-121.88485990000001&query_place_id=ChIJG4IEqRbNj4ARbArtmw05GSs) — 8 reviews (4.1★) · `park`
+- [Pennsylvania Railroad Garden](https://www.google.com/maps/search/?api=1&query=37.765117599999996%2C-122.39378909999999&query_place_id=ChIJRZZ8MMl_j4ARZ0vEgzVEu-k) — 8 reviews (3.9★) · `garden`
+- [Pintail Picnic Area](https://www.google.com/maps/search/?api=1&query=37.913724699999996%2C-122.3859911&query_place_id=ChIJEa0fTC6DhYARLw2btcw_w08) — 8 reviews (5★) · `park`
+- [Pioneer East Meadow](https://www.google.com/maps/search/?api=1&query=37.7705329%2C-122.4735317&query_place_id=ChIJFxu8YI6HhYARQ7jzwvWFmrs) — 8 reviews (4.9★) · `park`
+- [Ponderosa Cove Park](https://www.google.com/maps/search/?api=1&query=37.5657844%2C-122.07515559999997&query_place_id=ChIJuXFFiAS-j4AR-21gy9uojHo) — 8 reviews (4.4★) · `park`
+- [Presidio Battery East Tunnel](https://www.google.com/maps/search/?api=1&query=37.808372%2C-122.47455099999999&query_place_id=ChIJgxR_ee2HhYARlYVvZ0__gf4) — 8 reviews (4.8★) · `park`
+- [Privately Owned Public Space](https://www.google.com/maps/search/?api=1&query=37.793696499999996%2C-122.4017177&query_place_id=ChIJmdXseYqAhYARqOaGBlCsxPo) — 8 reviews (4.8★) · `park`
+- [Ridge View Loop](https://www.google.com/maps/search/?api=1&query=37.6235347%2C-122.0292039&query_place_id=ChIJb2Cgr_2Uj4AReFscPiY9ZaQ) — 8 reviews (4.8★) · `park`
+- [Rincon South Park](https://www.google.com/maps/search/?api=1&query=37.3612196%2C-121.90650210000001&query_place_id=ChIJ-Uu54iXLj4ARj1V2YgjDYUA) — 8 reviews (4.4★) · `park`
+- [Rivertown Demo Garden](https://www.google.com/maps/search/?api=1&query=38.0102573%2C-121.8230039&query_place_id=ChIJDfPepMJZhYARPRpsKd2KBQA) — 8 reviews (4.9★) · `garden`
+- [ShareNGetty Community Garden](https://www.google.com/maps/search/?api=1&query=37.8691621%2C-122.3158818&query_place_id=ChIJj51KciZ_hYARzrMbHbnNbzg) — 8 reviews (4.8★) · `garden`
+- [Shinn Pond](https://www.google.com/maps/search/?api=1&query=37.571507%2C-121.98812699999999&query_place_id=ChIJU8H045PBj4ARQ3Bsz3lxHsE) — 8 reviews (4.5★) · `park`
+- [Sister City Park](https://www.google.com/maps/search/?api=1&query=37.6962933%2C-121.8173034&query_place_id=ChIJ9Rmsu4Toj4ARo9-omoYuIG4) — 8 reviews (3.9★) · `park`
+- [Solano-Peralta Park](https://www.google.com/maps/search/?api=1&query=37.8912828%2C-122.28555809999999&query_place_id=ChIJNaqF_Ep5hYARZkMBK5b_ML8) — 8 reviews (4.3★) · `park`
+- [Sons of San José Vietnam War Memorial](https://www.google.com/maps/search/?api=1&query=37.3325964%2C-121.89877949999999&query_place_id=ChIJDe04JqHMj4AR0I_FVxUvlX8) — 8 reviews (4.1★) · `park`
+- [Sunfish Park](https://www.google.com/maps/search/?api=1&query=37.5558298%2C-122.25185379999999&query_place_id=ChIJo-hjZvOZj4ARyb4EaYCz6SQ) — 8 reviews (4.5★) · `park`
+- [Sunol Depot Gardens](https://www.google.com/maps/search/?api=1&query=37.5943989%2C-121.8880963&query_place_id=ChIJDei2hzHCj4ARhARlzXWgBYE) — 8 reviews (4.1★) · `garden`
+- [Tanner Fountain](https://www.google.com/maps/search/?api=1&query=37.4283211%2C-122.16672969999999&query_place_id=ChIJp9uwMPW7j4ARXeHKuHYfw8c) — 8 reviews (4.9★) · `garden`
+- [The Duck Pond New Playground SLCCP](https://www.google.com/maps/search/?api=1&query=37.6672511%2C-122.14227179999999&query_place_id=ChIJRzqrcISRj4AR939V2cTOyIU) — 8 reviews (4.6★) · `park`
+- [Tinker Park](https://www.google.com/maps/search/?api=1&query=37.4404077%2C-122.1940402&query_place_id=ChIJOTx7x-ylj4AReFlkIUjxwPQ) — 8 reviews (3.6★) · `park`
+- [University Village Community Garden](https://www.google.com/maps/search/?api=1&query=37.8836923%2C-122.30561389999998&query_place_id=ChIJ91fiUyt5hYARh_qJ42D8wvs) — 8 reviews (4.8★) · `garden`
+- [Upper Great Highway Promenade](https://www.google.com/maps/search/?api=1&query=37.745371899999995%2C-122.508162&query_place_id=ChIJ2QiybQCHhYARVq7WmllrfO0) — 8 reviews (5★) · `park`
+- [Vista Point of the High Ridge Loop Trail](https://www.google.com/maps/search/?api=1&query=37.6219361%2C-122.003142&query_place_id=ChIJH4Gcr7KVj4ARqHL7RaUP56w) — 8 reviews (4.9★) · `park`
+- [Windmill Pasture Trailhead](https://www.google.com/maps/search/?api=1&query=37.3520009%2C-122.13788310000001&query_place_id=ChIJbbponq-xj4AR_fCXVeo1UgE) — 8 reviews (4.8★) · `park`
+- [88th Avenue Mini Park](https://www.google.com/maps/search/?api=1&query=37.753254399999996%2C-122.1711019&query_place_id=ChIJLRm6QnGPj4ARrBOjCdaXpsg) — 7 reviews (3.1★) · `park`
+- [Alameda City Recreation & Park](https://www.google.com/maps/search/?api=1&query=37.7663874%2C-122.2453142&query_place_id=ChIJ1V_rqL-Gj4ARMchY8iZprh0) — 7 reviews (3.6★) · `park`
+- [Alvarado Park](https://www.google.com/maps/search/?api=1&query=37.95391790000001%2C-122.31805070000001&query_place_id=ChIJUwW3S4F5hYARQxZCO2KRrT0) — 7 reviews (4.4★) · `park`
+- [Andean Cloud Forest](https://www.google.com/maps/search/?api=1&query=37.7688786%2C-122.4713933&query_place_id=ChIJJ6pnu2mHhYARB-jR4t1cH3w) — 7 reviews (4.6★) · `garden`
+- [Arbolado Park Soccer Practice Field](https://www.google.com/maps/search/?api=1&query=37.918623%2C-121.998425&query_place_id=ChIJjdB1XwtghYARPmKqke_KkEo) — 7 reviews (4.6★) · `park`
+- [Ashland Zocalo Park](https://www.google.com/maps/search/?api=1&query=37.692861199999996%2C-122.1102897&query_place_id=ChIJqfWGIQCRj4AR0CNaaTluqS0) — 7 reviews (3.7★) · `park`
+- [BTA Tennis & Pickleball Courts](https://www.google.com/maps/search/?api=1&query=37.9194971%2C-122.32508579999998&query_place_id=ChIJbyjqyt55hYARb9mE_vi09dA) — 7 reviews (4.7★) · `park`
+- [Back to the Roots](https://www.google.com/maps/search/?api=1&query=37.794556799999995%2C-122.27394009999998&query_place_id=ChIJqenVw0OBj4ART_wt5RnIxBE) — 7 reviews (3.3★) · `garden`
+- [Bear Park](https://www.google.com/maps/search/?api=1&query=37.8187651%2C-122.2244557&query_place_id=ChIJSxnXkyaHj4ARiAh3DDCTKUs) — 7 reviews (4.7★) · `park`
+- [Berkeley's Park](https://www.google.com/maps/search/?api=1&query=37.8063333%2C-122.4261389&query_place_id=ChIJ2UCQEfSBhYAR6mGsebFc8i4) — 7 reviews (5★) · `park`
+- [Bernal Hill](https://www.google.com/maps/search/?api=1&query=37.220791%2C-121.79716909999998&query_place_id=ChIJG4ivjJMvjoARGFYZ7s1cwHg) — 7 reviews (4.9★) · `nature_preserve`
+- [Brookwood Park Labyrinth](https://www.google.com/maps/search/?api=1&query=37.935513%2C-122.09581499999997&query_place_id=ChIJlczkLfxjhYARbbmgIBo7x-s) — 7 reviews (4.7★) · `park`
+- [Bushy Dell Creek](https://www.google.com/maps/search/?api=1&query=37.8215557%2C-122.23305659999998&query_place_id=ChIJWWyUGWWHj4ARzE4SKbrrwWg) — 7 reviews (3.7★) · `park`
+- [Butcher Town Dog Run](https://www.google.com/maps/search/?api=1&query=37.7403727%2C-122.37593109999999&query_place_id=ChIJfyAeog5_j4ARiW4eB20_qvE) — 7 reviews (4.4★) · `dog_park`
+- [California Native Garden](https://www.google.com/maps/search/?api=1&query=37.766250299999996%2C-122.47020479999999&query_place_id=ChIJX5HTCGiHhYAR6BZBgJs_Cas) — 7 reviews (5★) · `garden`
+- [Chaboya Park](https://www.google.com/maps/search/?api=1&query=37.3082734%2C-121.76106089999998&query_place_id=ChIJs9Z5n1wtjoARyPbplYWcT6U) — 7 reviews (4.9★) · `park`
+- [Children’s Garden](https://www.google.com/maps/search/?api=1&query=37.7660923%2C-122.47420330000001&query_place_id=ChIJQ9hHZ-2HhYAR3uwi2Wju2lI) — 7 reviews (5★) · `botanical_garden`
+- [Coghlan Beach](https://www.google.com/maps/search/?api=1&query=37.808597999999996%2C-122.4403902&query_place_id=ChIJ7fKeAM6BhYAR4Dx4EW1DHM0) — 7 reviews (4.9★) · `park`
+- [Country Faire Park](https://www.google.com/maps/search/?api=1&query=37.7532061%2C-121.94010610000001&query_place_id=ChIJGd9YoJvtj4ARq-CzVKttGO4) — 7 reviews (4.7★) · `park`
+- [Crystol Red Park](https://www.google.com/maps/search/?api=1&query=37.8755582%2C-122.28701319999999&query_place_id=ChIJPVBX6Jp_hYARqE0vrE5Wu_0) — 7 reviews (4.7★) · `park`
+- [Danville Station](https://www.google.com/maps/search/?api=1&query=37.7975779%2C-121.97728800000002&query_place_id=ChIJFXN8xsLzj4ARxq1zl-Xb7iY) — 7 reviews (4.9★) · `park`
+- [De Anza Park](https://www.google.com/maps/search/?api=1&query=38.0250407%2C-121.91944869999999&query_place_id=ChIJkVbCEW5dhYAR9U7k9ENQvO4) — 7 reviews (3.6★) · `park`
+- [Dog park](https://www.google.com/maps/search/?api=1&query=37.8388541%2C-122.288125&query_place_id=ChIJvTK63YB_hYARJEDaz4pWjVI) — 7 reviews (4.3★) · `dog_park`
+- [East Branch Park](https://www.google.com/maps/search/?api=1&query=37.7609364%2C-121.899403&query_place_id=ChIJmUovr_Tvj4ARXHWVCC9h9qE) — 7 reviews (4.4★) · `park`
+- [East Cut Community Garden](https://www.google.com/maps/search/?api=1&query=37.7860971%2C-122.3950446&query_place_id=ChIJyYnjGXSBhYARURFVrZqG0qE) — 7 reviews (4.7★) · `garden`
+- [Eleanor Pardee Community Garden](https://www.google.com/maps/search/?api=1&query=37.4513471%2C-122.1431285&query_place_id=ChIJIZf1IhK7j4AR4gh26R-tb2s) — 7 reviews (4.9★) · `garden`
+- [Encinal](https://www.google.com/maps/search/?api=1&query=37.5747189%2C-122.00741409999999&query_place_id=ChIJb7CpH8K_j4AR6P71ymfG20w) — 7 reviews (4.7★) · `park`
+- [Ensenada North Picnic Area](https://www.google.com/maps/search/?api=1&query=37.576413699999996%2C-122.0075287&query_place_id=ChIJ4-k8bFG_j4ARA2gDH2PG21I) — 7 reviews (4.4★) · `park`
+- [Fairway Park](https://www.google.com/maps/search/?api=1&query=37.6204336%2C-122.4818124&query_place_id=ChIJXzzZQF16j4ARZ7AtLyNS37Q) — 7 reviews (5★) · `park`
+- [Francisco Street Steps](https://www.google.com/maps/search/?api=1&query=37.805404700000004%2C-122.40811069999998&query_place_id=ChIJZbL4xlWBhYARNP4RyeZAKr8) — 7 reviews (4.9★) · `park`
+- [Friends of Stevens Creek Trail](https://www.google.com/maps/search/?api=1&query=37.3129828%2C-122.06339240000001&query_place_id=ChIJS5XZAme0j4AR5lwA5ud3nu8) — 7 reviews (4.9★) · `park`
+- [Gateway Plaza](https://www.google.com/maps/search/?api=1&query=37.3860447%2C-122.0834902&query_place_id=ChIJOW0ATS23j4ARsnY6doUXI_A) — 7 reviews (4.7★) · `city_park`
+- [Gellert Park Dogs Association](https://www.google.com/maps/search/?api=1&query=37.663503%2C-122.4708281&query_place_id=ChIJu5bFLgB7j4ARX8gsIjMv6a4) — 7 reviews (5★) · `dog_park`
+- [Grass area](https://www.google.com/maps/search/?api=1&query=37.3363541%2C-122.0152119&query_place_id=ChIJ_aFI8Q61j4AR7BuTP21lpRg) — 7 reviews (4.7★) · `park`
+- [Great Meadow](https://www.google.com/maps/search/?api=1&query=37.7673637%2C-122.4682117&query_place_id=ChIJo-0kjgeHhYAR67fR-YWCAEg) — 7 reviews (4.9★) · `park`
+- [Heinlenville Park](https://www.google.com/maps/search/?api=1&query=37.3504043%2C-121.89380569999999&query_place_id=ChIJU5tPWxLNj4ARWAthzJnRgzM) — 7 reviews (5★) · `park`
+- [Highland Avenue Park](https://www.google.com/maps/search/?api=1&query=38.0187023%2C-122.1293097&query_place_id=ChIJjRx8QM5vhYAR-KkLy_xc9Tc) — 7 reviews (4.3★) · `city_park`
+- [Iron Horse Trail](https://www.google.com/maps/search/?api=1&query=37.9631183%2C-122.0539658&query_place_id=ChIJsdas6e5nhYAR2JefYONHMoA) — 7 reviews (5★) · `park`
+- [Jasper Park](https://www.google.com/maps/search/?api=1&query=37.124732%2C-121.64037200000001&query_place_id=ChIJG7m7BIggjoARt5fcTUYTgQI) — 7 reviews (3.9★) · `park`
+- [Jean Sweeney Open Space Park - West Gate](https://www.google.com/maps/search/?api=1&query=37.7796387%2C-122.2742687&query_place_id=ChIJZ7ZEtaWBj4AR5bnbXqzFteg) — 7 reviews (4.9★) · `park`
+- [John McLaren Memorial Rhododendron Dell](https://www.google.com/maps/search/?api=1&query=37.7721853%2C-122.46477279999999&query_place_id=ChIJH49Y4UOHhYARvSk0MmZVj4k) — 7 reviews (4.7★) · `garden`
+- [Kite Hill Wildflower Preserve](https://www.google.com/maps/search/?api=1&query=37.4401508%2C-122.2538198&query_place_id=ChIJcwexTDOjj4ARYTnpvcO1DiM) — 7 reviews (3.7★) · `park`
+- [La Grande Community Garden](https://www.google.com/maps/search/?api=1&query=37.715519199999996%2C-122.42804069999998&query_place_id=ChIJ_7wtQJR-j4ARtLuhRpCBeyM) — 7 reviews (5★) · `garden`
+- [Lincoln Community Field](https://www.google.com/maps/search/?api=1&query=37.3268336%2C-121.9258028&query_place_id=ChIJcwI7z1jLj4ARWhPNwv5VyEM) — 7 reviews (3.3★) · `park`
+- [Livermore Wetlands Preserve](https://www.google.com/maps/search/?api=1&query=37.7205362%2C-121.7398654&query_place_id=ChIJIeL208Lmj4ARDmcwuqkp_qg) — 7 reviews (4.9★) · `nature_preserve`
+- [Main Street Park](https://www.google.com/maps/search/?api=1&query=37.324309299999996%2C-122.01156769999999&query_place_id=ChIJw2ZfX561j4ARUVHCogXMEtU) — 7 reviews (4.1★) · `park`
+- [Mariposa Bay Front Park](https://www.google.com/maps/search/?api=1&query=37.7658534%2C-122.38676779999999&query_place_id=ChIJxQ83wah_j4ARoKG1idxSQHw) — 7 reviews (4.6★) · `park`
+- [Mayfield Park](https://www.google.com/maps/search/?api=1&query=37.423489599999996%2C-122.1484816&query_place_id=ChIJ40nkjOi6j4AR4QvCBaCLAFc) — 7 reviews (4.7★) · `park`
+- [Medallion Park](https://www.google.com/maps/search/?api=1&query=37.962947299999996%2C-121.71892249999999&query_place_id=ChIJM9TD0DT_j4ARFldtvYnX2QM) — 7 reviews (4.1★) · `park`
+- [Michael Sullivan Steps](https://www.google.com/maps/search/?api=1&query=37.763417%2C-122.4428922&query_place_id=ChIJOcCmEs1_j4AREAiY9BmDzSo) — 7 reviews (4.7★) · `park`
+- [Mini-Park at Judah & Great Hwy](https://www.google.com/maps/search/?api=1&query=37.7604903%2C-122.50928870000001&query_place_id=ChIJ_fs61A-HhYARFXZow5Jc04M) — 7 reviews (5★) · `park`
+- [Moss beaches](https://www.google.com/maps/search/?api=1&query=37.5194018%2C-122.5140274&query_place_id=ChIJiwQpgoBxj4ARuBcqTnWsHPk) — 7 reviews (5★) · `park`
+- [Nuevo Community Park](https://www.google.com/maps/search/?api=1&query=37.375086200000005%2C-121.9922268&query_place_id=ChIJ_QOoOpnJj4ARkX44dRJdw20) — 7 reviews (4.6★) · `park`
+- [Painted Rock](https://www.google.com/maps/search/?api=1&query=37.860742699999996%2C-122.12345819999999&query_place_id=ChIJ3VJXJq6Jj4ARtKwtOavqWdU) — 7 reviews (4.9★) · `park`
+- [Palo Alto Parks Maintenance](https://www.google.com/maps/search/?api=1&query=37.4391089%2C-122.1111704&query_place_id=ChIJeTHLKEm6j4ARfTBPI0_K4OE) — 7 reviews (4.6★) · `park`
+- [Panther Skate Plaza](https://www.google.com/maps/search/?api=1&query=37.8120182%2C-122.2874427&query_place_id=ChIJAwwgTrSBj4ARGRE0ch4SWXs) — 7 reviews (4.7★) · `park`
+- [Point Edith Wildlife Area](https://www.google.com/maps/search/?api=1&query=38.0433703%2C-122.0695406&query_place_id=ChIJPaYCErpohYARe6bvjo9A5to) — 7 reviews (3.4★) · `wildlife_refuge`
+- [Portola Community Garden](https://www.google.com/maps/search/?api=1&query=37.729026999999995%2C-122.40371999999999&query_place_id=ChIJ06tCARh_j4ARGOHx986bUNc) — 7 reviews (4.7★) · `garden`
+- [Potrero del Sol Community Garden](https://www.google.com/maps/search/?api=1&query=37.7497578%2C-122.4052303&query_place_id=ChIJWxJ_6rJ_j4AR1GvfDLRWa6I) — 7 reviews (5★) · `garden`
+- [Public Path #10](https://www.google.com/maps/search/?api=1&query=37.906912500000004%2C-122.2742198&query_place_id=ChIJq7Kjflt5hYARjWmXUfjSFg4) — 7 reviews (4.1★) · `nature_preserve`
+- [Rainbow Lake](https://www.google.com/maps/search/?api=1&query=37.5735436%2C-122.0096762&query_place_id=ChIJJcDtEEG_j4AREihe4AhNlq0) — 7 reviews (4.7★) · `park`
+- [Riordan Track](https://www.google.com/maps/search/?api=1&query=37.727961799999996%2C-122.45516260000001&query_place_id=ChIJIe0HNth9j4ARETZAzCuGWZo) — 7 reviews (4.4★) · `park`
+- [Rodeo Beach](https://www.google.com/maps/search/?api=1&query=38.0366419%2C-122.2742932&query_place_id=ChIJt68EXwB3hYARi1jHStvGiEs) — 7 reviews (4.9★) · `park`
+- [Rosek Park](https://www.google.com/maps/search/?api=1&query=37.5067896%2C-122.26514080000001&query_place_id=ChIJtZbLfgKij4AR1Xtvv626yps) — 7 reviews (5★) · `park`
+- [San Bruno Mountain Ecological Reserve- Buckeye Canyon](https://www.google.com/maps/search/?api=1&query=37.685609899999996%2C-122.41175159999999&query_place_id=ChIJG1EfH9V5j4ARRh0_BKK7pyc) — 7 reviews (5★) · `park`
+- [San Mateo County Parks & Rec](https://www.google.com/maps/search/?api=1&query=37.4750081%2C-122.1722488&query_place_id=ChIJhTIeNU2jj4ARAZUNcr04EHw) — 7 reviews (4.6★) · `park`
+- [Southwood Playground](https://www.google.com/maps/search/?api=1&query=37.6489602%2C-122.4355765&query_place_id=ChIJyQC_TIN5j4AR5phpXgzWYA8) — 7 reviews (3.7★) · `park`
+- [Stryker Island](https://www.google.com/maps/search/?api=1&query=37.6929839%2C-122.1923142&query_place_id=ChIJF2L80vWFj4ARgeFPHBqTOAM) — 7 reviews (4.4★) · `park`
+- [Succulent Garden](https://www.google.com/maps/search/?api=1&query=37.806506%2C-122.2578621&query_place_id=ChIJi3AdO0yHj4ARtzlMgEHsbt0) — 7 reviews (4.9★) · `garden`
+- [Tea Garden](https://www.google.com/maps/search/?api=1&query=37.4846321%2C-122.2374703&query_place_id=ChIJ1eS6W0uij4AR4Cqq5Er_ypY) — 7 reviews (4.4★) · `garden`
+- [Temperate Asia](https://www.google.com/maps/search/?api=1&query=37.7663896%2C-122.4680494&query_place_id=ChIJ-ef3Sl2HhYARtixxpvzKuQQ) — 7 reviews (5★) · `garden`
+- [The Bountiful Valley - Flower Farm](https://www.google.com/maps/search/?api=1&query=37.717895899999995%2C-122.07621819999999&query_place_id=ChIJY1PFtoiTj4AR9oBjil1IWsY) — 7 reviews (5★) · `garden`
+- [Triangle Park](https://www.google.com/maps/search/?api=1&query=37.3721354%2C-122.2082383&query_place_id=ChIJW8kwWo-vj4ARijrQ8FxNk7U) — 7 reviews (4.1★) · `park`
+- [Valle del Lago Park](https://www.google.com/maps/search/?api=1&query=37.2990122%2C-121.76242239999999&query_place_id=ChIJRaEEnvYtjoARnUkiouLXPg4) — 7 reviews (4.3★) · `park`
+- [Van Ness Park](https://www.google.com/maps/search/?api=1&query=37.807454299999996%2C-122.42666749999998&query_place_id=ChIJ054MHo6BhYARqvD5LHgy9dk) — 7 reviews (4.3★) · `park`
+- [Veterans Memorial](https://www.google.com/maps/search/?api=1&query=37.3422439%2C-121.9772873&query_place_id=ChIJazURZ2_Kj4ARf5cr6Bo4ZgA) — 7 reviews (4.6★) · `park`
+- [Vista Montañas Park](https://www.google.com/maps/search/?api=1&query=37.9812855%2C-122.07653679999999&query_place_id=ChIJYSk3kwNnhYARpFDFLKPqA3E) — 7 reviews (4.7★) · `dog_park`
+- [Wayburn Redwood Grove](https://www.google.com/maps/search/?api=1&query=37.8015488%2C-122.4539106&query_place_id=ChIJKRZTXdaGhYARF4f-0L1vP8k) — 7 reviews (4.6★) · `park`
+- [3 Side Fountain](https://www.google.com/maps/search/?api=1&query=37.3488378%2C-121.94719950000001&query_place_id=ChIJb6uQLK3Lj4ARJamoysoRz-Q) — 6 reviews (3.3★) · `park`
+- [All American Veterans Memorial](https://www.google.com/maps/search/?api=1&query=37.832926%2C-122.23976409999999&query_place_id=ChIJ5bqz0OR9hYARz8-oNdzGRbA) — 6 reviews (4.8★) · `park`
+- [Bamboo Forest](https://www.google.com/maps/search/?api=1&query=37.2512773%2C-122.04126489999999&query_place_id=ChIJHS2OLQFLjoARSS5Wmd-43bM) — 6 reviews (4.2★) · `garden`
+- [Big Daddy's Complete Rejuvenating Community Garden](https://www.google.com/maps/search/?api=1&query=37.827885099999996%2C-122.28101319999999&query_place_id=ChIJixjuvQZ_hYARbI9w7-ApkOY) — 6 reviews (4.7★) · `garden`
+- [Blossom Valley Lake](https://www.google.com/maps/search/?api=1&query=37.2564671%2C-121.86800219999999&query_place_id=ChIJWxLfJ0ozjoAR1Ivh1KvG2wE) — 6 reviews (4★) · `park`
+- [California Native Garden Foundation](https://www.google.com/maps/search/?api=1&query=37.329547%2C-121.9114869&query_place_id=ChIJAwlFOTfLj4AR5HQJMOPMflk) — 6 reviews (4.3★) · `garden`
+- [Cameron Meadows Private Park](https://www.google.com/maps/search/?api=1&query=37.5225812%2C-121.91950779999999&query_place_id=ChIJiYW8Ar7Gj4ARVQGmG3LCOQU) — 6 reviews (3★) · `park`
+- [Chestnut Street Stairway Garden](https://www.google.com/maps/search/?api=1&query=37.8026389%2C-122.4221144&query_place_id=ChIJNXhLZG2BhYARX7YcRWTL1QE) — 6 reviews (4.8★) · `park`
+- [Chinatown Playground](https://www.google.com/maps/search/?api=1&query=37.8000109%2C-122.26833970000001&query_place_id=ChIJl9hJf7WAj4ARPeMqc00345U) — 6 reviews (4.5★) · `park`
+- [Cityline Redwood Square](https://www.google.com/maps/search/?api=1&query=37.3748253%2C-122.03184359999999&query_place_id=ChIJy-90Dr63j4ARv8xBNofXVDc) — 6 reviews (5★) · `city_park`
+- [Critter Crossing Park](https://www.google.com/maps/search/?api=1&query=37.766335%2C-121.91034300000001&query_place_id=ChIJnQgfiUrtj4ARqeRk1uunjyU) — 6 reviews (4.3★) · `park`
+- [Cuesta Pollinator Habitat](https://www.google.com/maps/search/?api=1&query=37.373367099999996%2C-122.08256019999997&query_place_id=ChIJP2LydgC3j4ARJPPHgnS1mhQ) — 6 reviews (4.8★) · `garden`
+- [Cypress Garden](https://www.google.com/maps/search/?api=1&query=37.6509324%2C-122.0873472&query_place_id=ChIJ3_5N5VaRj4ARnBqPaQYtIxo) — 6 reviews (4.7★) · `garden`
+- [D-Day Memorial](https://www.google.com/maps/search/?api=1&query=37.8000997%2C-122.4615271&query_place_id=ChIJWU8kBdmGhYARQnhHAHeN3tk) — 6 reviews (3.3★) · `park`
+- [Dante Park](https://www.google.com/maps/search/?api=1&query=37.3116759%2C-121.779663&query_place_id=ChIJ3-aeLHItjoARjj0C9BVHo3o) — 6 reviews (4.8★) · `park`
+- [Dog park](https://www.google.com/maps/search/?api=1&query=38.0066177%2C-122.2744813&query_place_id=ChIJdY-L40l3hYARKz9iV97UY3Q) — 6 reviews (4.7★) · `park`
+- [Don Edwards San Francisco Bay national wildlife refuge - Alviso](https://www.google.com/maps/search/?api=1&query=37.4398322%2C-121.9592837&query_place_id=ChIJ21DbLFDJj4ARPqUweD_daUI) — 6 reviews (4.8★) · `park`
+- [Douglas B. Miller Point](https://www.google.com/maps/search/?api=1&query=37.1934469%2C-121.98612&query_place_id=ChIJNWhk9f03joARHCJ__d4d8tE) — 6 reviews (4.2★) · `park`
+- [Duboce Park Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.769627899999996%2C-122.4324953&query_place_id=ChIJn38xWwCBhYARTwiA7jDr05I) — 6 reviews (5★) · `dog_park`
+- [EBRPD, Eastport Staging Area](https://www.google.com/maps/search/?api=1&query=37.8398001%2C-122.1811794&query_place_id=ChIJnZmO5fuHj4ARRRYSATqVFio) — 6 reviews (4.5★) · `park`
+- [Eagle Peak](https://www.google.com/maps/search/?api=1&query=37.8264898%2C-122.04900289999999&query_place_id=ChIJb7PELgKLj4ARRhaSL7AriFU) — 6 reviews (4★) · `park`
+- [Far Out West Dune Community Garden](https://www.google.com/maps/search/?api=1&query=37.7608161%2C-122.50305829999999&query_place_id=ChIJRXem_5mHhYARP0_jcL77NPM) — 6 reviews (4.7★) · `garden`
+- [Ford Plaza](https://www.google.com/maps/search/?api=1&query=37.429376%2C-122.16378379999999&query_place_id=ChIJQZUC_de6j4AR5FlnRcjDSTg) — 6 reviews (3.7★) · `park`
+- [Frog Park Front Entrance](https://www.google.com/maps/search/?api=1&query=37.842153499999995%2C-122.25734770000001&query_place_id=ChIJO2MX3yB9hYARsfUxeOrKoag) — 6 reviews (5★) · `park`
+- [Gateway Crossing Community Park](https://www.google.com/maps/search/?api=1&query=37.355588%2C-121.934658&query_place_id=ChIJ1StLcADLj4ARpd72R5phJ_Y) — 6 reviews (4.3★) · `park`
+- [Grateful Gardens](https://www.google.com/maps/search/?api=1&query=37.308087799999996%2C-121.9125897&query_place_id=ChIJjWXYBa40joARbwxzhJmnJ5M) — 6 reviews (5★) · `garden`
+- [Habitat Garden](https://www.google.com/maps/search/?api=1&query=37.7659386%2C-122.2741393&query_place_id=ChIJg4XQ7Y2Bj4ARfItmV98j53E) — 6 reviews (4.3★) · `botanical_garden`
+- [Islais Creek Skate Park](https://www.google.com/maps/search/?api=1&query=37.748031%2C-122.388235&query_place_id=ChIJ8WMKRul_j4AR0BbtZOQXgms) — 6 reviews (3.5★) · `park`
+- [James P. McEntee, Sr. Plaza](https://www.google.com/maps/search/?api=1&query=37.3524775%2C-121.90425160000001&query_place_id=ChIJxZ2ra2fLj4ARxDfruw6b9ZU) — 6 reviews (5★) · `park`
+- [Jordan Pond](https://www.google.com/maps/search/?api=1&query=37.6249172%2C-122.0274508&query_place_id=ChIJXeqHnp2Vj4ARddyox68KVqg) — 6 reviews (4.8★) · `park`
+- [Lafayette Square](https://www.google.com/maps/search/?api=1&query=37.8034454%2C-122.2769085&query_place_id=ChIJq6qqebqAj4ARangmyYHRq5Y) — 6 reviews (3.5★) · `park`
+- [Lake Merced Meadow](https://www.google.com/maps/search/?api=1&query=37.7280346%2C-122.48593759999999&query_place_id=ChIJ2VFfb399j4ARkfzZ7JcNII0) — 6 reviews (4.8★) · `park`
+- [Livermore Area Recreation & Parks District - Parks Maintenance](https://www.google.com/maps/search/?api=1&query=37.6671506%2C-121.75201509999998&query_place_id=ChIJHUKHLnznj4ARZJAf6LyVaeI) — 6 reviews (3.8★) · `park`
+- [Los Gatos Almaden Pollinator Garden](https://www.google.com/maps/search/?api=1&query=37.2434448%2C-121.94417739999999&query_place_id=ChIJBQ4zPQA1joAR8CHRUDht4LU) — 6 reviews (4.3★) · `garden`
+- [Los Gatos Creek Trailhead, Stokes st.](https://www.google.com/maps/search/?api=1&query=37.3015496%2C-121.92052160000001&query_place_id=ChIJjWxvySE1joARAa7zlpWVwA4) — 6 reviews (3.2★) · `park`
+- [Madeira Park](https://www.google.com/maps/search/?api=1&query=37.6847493%2C-121.76077389999999&query_place_id=ChIJX0Mk5XTnj4ARLDMggYWu87Q) — 6 reviews (4.2★) · `park`
+- [Madrone Group Picnic Area](https://www.google.com/maps/search/?api=1&query=37.4747979%2C-122.1707844&query_place_id=ChIJM3IWjq28j4ARItQH08RNIrE) — 6 reviews (3.8★) · `park`
+- [May Nissen Dog Park](https://www.google.com/maps/search/?api=1&query=37.6871654%2C-121.78583769999999&query_place_id=ChIJFYcABv_nj4ARen0rAysMgoM) — 6 reviews (4.2★) · `dog_park`
+- [Mediterranean Garden](https://www.google.com/maps/search/?api=1&query=37.7681715%2C-122.4693575&query_place_id=ChIJx8qDgkKHhYARE90UU0bsIIs) — 6 reviews (4.7★) · `garden`
+- [Oak Knoll Pioneer Memorial Park](https://www.google.com/maps/search/?api=1&query=37.6764235%2C-121.78806509999998&query_place_id=ChIJmZaIsurnj4ARgWNKHuYgbq0) — 6 reviews (2.7★) · `park`
+- [Park Office](https://www.google.com/maps/search/?api=1&query=37.802672199999996%2C-122.14483539999999&query_place_id=ChIJrTkzloyIj4ARUpWs99vZ7ME) — 6 reviews (4.2★) · `park`
+- [Passatempo Park](https://www.google.com/maps/search/?api=1&query=37.711659499999996%2C-121.8604575&query_place_id=ChIJWcbmPyvpj4ARUQT5ji6phB0) — 6 reviews (4.5★) · `park`
+- [Pelican Park](https://www.google.com/maps/search/?api=1&query=37.9445414%2C-121.68826700000001&query_place_id=ChIJfUrK42P_j4AR7YVAc0bMZD0) — 6 reviews (4.8★) · `park`
+- [Pioneer Park](https://www.google.com/maps/search/?api=1&query=37.5738912%2C-122.07049880000001&query_place_id=ChIJoc6fMruVj4AR1uJPLSYYVX0) — 6 reviews (4.5★) · `park`
+- [President's Meadow](https://www.google.com/maps/search/?api=1&query=37.782114799999995%2C-122.18407990000001&query_place_id=ChIJp29Yd5uHj4ARCfwIdnPMHKA) — 6 reviews (5★) · `park`
+- [Primrose Way Pollinator Garden](https://www.google.com/maps/search/?api=1&query=37.445175%2C-122.1329919&query_place_id=ChIJmUfK7ga7j4AR9C7a5auPEDU) — 6 reviews (4.7★) · `garden`
+- [Quarry Lakes Demonstration Garden](https://www.google.com/maps/search/?api=1&query=37.575761299999996%2C-122.01006269999999&query_place_id=ChIJy7QpBNe_j4AR2QcX2NQz30k) — 6 reviews (4.5★) · `park`
+- [Rocksprings Park](https://www.google.com/maps/search/?api=1&query=37.3172418%2C-121.8548105&query_place_id=ChIJn3S2yfczjoARJlP-_8BiaAY) — 6 reviews (3.8★) · `park`
+- [Ryan Park](https://www.google.com/maps/search/?api=1&query=37.4123581%2C-122.15649389999999&query_place_id=ChIJo-I7j5i7j4ARBMqSNgvdV-I) — 6 reviews (4.8★) · `park`
+- [Saratoga Recreation Department](https://www.google.com/maps/search/?api=1&query=37.26709890000001%2C-122.0156379&query_place_id=ChIJo2EgusNKjoARsU92KGaFu48) — 6 reviews (3.7★) · `park`
+- [Seedling Park](https://www.google.com/maps/search/?api=1&query=37.955701%2C-121.71299769999999&query_place_id=ChIJ42vSW4f_j4ARxs_yZ5R7IOA) — 6 reviews (4.2★) · `park`
+- [Snell Pond](https://www.google.com/maps/search/?api=1&query=37.5744976%2C-121.98290139999997&query_place_id=ChIJ7VoM0UfBj4ARpisp8Tlg8vI) — 6 reviews (4.8★) · `park`
+- [Sugar Mill Park](https://www.google.com/maps/search/?api=1&query=37.5993366%2C-122.07162810000001&query_place_id=ChIJw8s743eVj4ARJvRZ9Qe0Uvg) — 6 reviews (5★) · `park`
+- [Sun Terrace Public Open Space](https://www.google.com/maps/search/?api=1&query=37.79363860000001%2C-122.39856890000001&query_place_id=ChIJ9Zyk7CGBhYARj97cGFTKfgU) — 6 reviews (3.7★) · `city_park`
+- [The Little Red Hen Community Garden](https://www.google.com/maps/search/?api=1&query=37.7450352%2C-122.4405843&query_place_id=ChIJg72_tW5_j4ARDHw-Z1H6SE4) — 6 reviews (5★) · `garden`
+- [Three Creeks Trail](https://www.google.com/maps/search/?api=1&query=37.3120962%2C-121.89977959999997&query_place_id=ChIJlW-LxBgzjoARS2w08nwpPCA) — 6 reviews (4★) · `park`
+- [Upper Lake](https://www.google.com/maps/search/?api=1&query=37.1835325%2C-122.00433919999999&query_place_id=ChIJu_24M3xJjoARhrGqLyQ_3yU) — 6 reviews (4★) · `park`
+- [Veterans Memorial](https://www.google.com/maps/search/?api=1&query=37.388891099999995%2C-122.0858164&query_place_id=ChIJ2UKjHEGxj4ARfJsaqrCuRGg) — 6 reviews (4.5★) · `park`
+- [Vietnamese Heritage Garden](https://www.google.com/maps/search/?api=1&query=37.3237208%2C-121.85517619999999&query_place_id=ChIJy5cwNtYyjoARvzuQWbqC3mU) — 6 reviews (2.8★) · `park`
+- [Vista Del Mar Park](https://www.google.com/maps/search/?api=1&query=37.9907314%2C-122.3343168&query_place_id=ChIJJ-3XdjV2hYAR4mU2bqcJse8) — 6 reviews (4.5★) · `park`
+- [WWI Memorial](https://www.google.com/maps/search/?api=1&query=37.772766499999996%2C-122.46888109999999&query_place_id=ChIJO0yl20GHhYAR4gOCv_gEnHI) — 6 reviews (5★) · `park`
+- [Walnut Creek Oktoberfest](https://www.google.com/maps/search/?api=1&query=37.9041048%2C-122.0583656&query_place_id=ChIJ2zDAuGVhhYARdQjeP4KhiFU) — 6 reviews (3.5★) · `park`
+- [Willow Slough](https://www.google.com/maps/search/?api=1&query=37.5687953%2C-122.00144379999998&query_place_id=ChIJ-2ZAxW-_j4ARTxgxn6lQ_a8) — 6 reviews (4.8★) · `park`
+- [100 First St POPOS](https://www.google.com/maps/search/?api=1&query=37.7892049%2C-122.39768120000001&query_place_id=ChIJR5W1PGOAhYARFTWttqoVjRY) — 5 reviews (5★) · `park`
+- [Albany North Berkeley Kiwanis Club Tree Grove](https://www.google.com/maps/search/?api=1&query=37.9140273%2C-122.2522132&query_place_id=ChIJQ9mJzOh7hYARbG3wQTWybzI) — 5 reviews (4.6★) · `park`
+- [Alvarado Middle School Park](https://www.google.com/maps/search/?api=1&query=37.5925608%2C-122.07345839999999&query_place_id=ChIJ8fFNQOiVj4AR0wt2DACG6vo) — 5 reviews (4.6★) · `park`
+- [Antigua Park](https://www.google.com/maps/search/?api=1&query=37.5374541%2C-122.2638919&query_place_id=ChIJvZvN8xmZj4ARItAQ55as5r8) — 5 reviews (4.4★) · `park`
+- [Arcadia Place Pollinator Garden](https://www.google.com/maps/search/?api=1&query=37.4503182%2C-122.1409173&query_place_id=ChIJS6JEEiG7j4AR1er1z-_zgx0) — 5 reviews (4.4★) · `garden`
+- [BRS Rock Island Memorial Park](https://www.google.com/maps/search/?api=1&query=37.5292205%2C-122.25998289999998&query_place_id=ChIJV1Cd0lqZj4ARCE_iaLReyMI) — 5 reviews (4.8★) · `park`
+- [Baker Beach Parking](https://www.google.com/maps/search/?api=1&query=37.7907268%2C-122.48383349999999&query_place_id=ChIJsf3rBwCHhYARt6hc6gjtPSo) — 5 reviews (4.2★) · `park`
+- [Bay Tree Picnic Area](https://www.google.com/maps/search/?api=1&query=37.303433%2C-122.0745826&query_place_id=ChIJVwk4j4e1j4ARUCwUaSGAd7w) — 5 reviews (4.6★) · `park`
+- [Belle Haven Community Garden](https://www.google.com/maps/search/?api=1&query=37.4763011%2C-122.1647225&query_place_id=ChIJl5Acwq-8j4ARSAnu1DDMqiA) — 5 reviews (4★) · `garden`
+- [Bird Sanctuary Pier](https://www.google.com/maps/search/?api=1&query=37.7531816%2C-122.2478559&query_place_id=ChIJvRrptN-Hj4ARDNwJi3htwxg) — 5 reviews (4.8★) · `park`
+- [Boccardo Loop Trail](https://www.google.com/maps/search/?api=1&query=37.404105%2C-121.8103192&query_place_id=ChIJBW1vf07Tj4ARJTp4eG20sY8) — 5 reviews (5★) · `park`
+- [Burma Road](https://www.google.com/maps/search/?api=1&query=37.8749244%2C-121.96106270000001&query_place_id=ChIJ_ekbcRr1j4ARaJZIXZCVPCc) — 5 reviews (5★) · `state_park`
+- [Bushrod Community Garden](https://www.google.com/maps/search/?api=1&query=37.8450063%2C-122.26436469999999&query_place_id=ChIJvXqClth9hYARIZ1000XvSK8) — 5 reviews (4.6★) · `garden`
+- [CCSR Atrium](https://www.google.com/maps/search/?api=1&query=37.4323963%2C-122.1779866&query_place_id=ChIJE4lkJ6Olj4AR76SB8nhwPhQ) — 5 reviews (4.8★) · `garden`
+- [Capriano Park](https://www.google.com/maps/search/?api=1&query=37.150611%2C-121.67501289999998&query_place_id=ChIJbeeFrRMhjoAR3XjBImtojp4) — 5 reviews (4.8★) · `park`
+- [Chú Hậu Garden](https://www.google.com/maps/search/?api=1&query=37.302937%2C-121.8440516&query_place_id=ChIJt9moKQAzjoARweMLTmJ5TcQ) — 5 reviews (4.8★) · `garden`
+- [Coleridge Mini Park](https://www.google.com/maps/search/?api=1&query=37.7443733%2C-122.41951019999999&query_place_id=ChIJuQOafwB_j4ARch2QeXu2QsU) — 5 reviews (4.8★) · `city_park`
+- [Concord Linear Parkway](https://www.google.com/maps/search/?api=1&query=37.979756699999996%2C-122.0305423&query_place_id=ChIJf3zWWyRnhYARkIIPQ9Z_Yq8) — 5 reviews (3.2★) · `park`
+- [Corbin Street Steps Park](https://www.google.com/maps/search/?api=1&query=37.761868799999995%2C-122.4429003&query_place_id=ChIJna83_d5_j4ARcyzpjarTRCs) — 5 reviews (4.8★) · `park`
+- [Coyote Lake](https://www.google.com/maps/search/?api=1&query=37.0831709%2C-121.53423249999997&query_place_id=ChIJaRTo1M3nkYARh-6n8YC9Vlk) — 5 reviews (4.8★) · `park`
+- [Delucchi Park](https://www.google.com/maps/search/?api=1&query=37.659351%2C-121.8743963&query_place_id=ChIJDdadlrzpj4ARZSLvzEA-nIY) — 5 reviews (4.8★) · `park`
+- [Diablo Range District Office](https://www.google.com/maps/search/?api=1&query=37.6373622%2C-121.58924030000001&query_place_id=ChIJEdx2ofonkIAR19mpxgIEBPU) — 5 reviews (4.6★) · `state_park`
+- [Dog Park & playground](https://www.google.com/maps/search/?api=1&query=37.4082632%2C-121.9663601&query_place_id=ChIJfdAjdADJj4ARhlZm3YAHBHg) — 5 reviews (2.8★) · `park`
+- [Donald Reservoir](https://www.google.com/maps/search/?api=1&query=37.8539949%2C-122.13826419999998&query_place_id=ChIJP-ClhSiIj4ARXhzrtRw7pcY) — 5 reviews (4.6★) · `park`
+- [EBMUD Trail Park and Staging](https://www.google.com/maps/search/?api=1&query=37.9265824%2C-122.07146099999999&query_place_id=ChIJeZjxuT5hhYARCSgPF4_Ftic) — 5 reviews (4.2★) · `park`
+- [EV North Garden](https://www.google.com/maps/search/?api=1&query=37.4273725%2C-122.1532532&query_place_id=ChIJmyfv5926j4ARzA8iBlyTM7o) — 5 reviews (5★) · `garden`
+- [Egger Memorial Open Space](https://www.google.com/maps/search/?api=1&query=37.744553499999995%2C-122.411397&query_place_id=ChIJi89KOEt_j4ARWFGL8U98gbY) — 5 reviews (4.4★) · `park`
+- [Emeryville Greenway Park](https://www.google.com/maps/search/?api=1&query=37.839217399999995%2C-122.28925590000001&query_place_id=ChIJiey2xtR_hYARlO3HJHgq8Jw) — 5 reviews (4.6★) · `park`
+- [Exhibition Garden](https://www.google.com/maps/search/?api=1&query=37.7675104%2C-122.4671441&query_place_id=ChIJE3kzYx2HhYAR5PTTmaBYoAY) — 5 reviews (4.8★) · `botanical_garden`
+- [Frank Cresci Plaza](https://www.google.com/maps/search/?api=1&query=37.807130699999995%2C-122.4153752&query_place_id=ChIJb0ZpneOAhYARIHpeJWXhkU8) — 5 reviews (4.8★) · `park`
+- [Friends of Sausal Creek Native Plant and Pollinator Garden](https://www.google.com/maps/search/?api=1&query=37.8139176%2C-122.2111243&query_place_id=ChIJPWrhBaOHj4ARS7zecnzbfFY) — 5 reviews (4.2★) · `garden`
+- [Friendship Park](https://www.google.com/maps/search/?api=1&query=37.1565046%2C-121.98427360000001&query_place_id=ChIJG4S0Asw3joARK4XtjiKBJcA) — 5 reviews (4.8★) · `park`
+- [GGP Dog Play Area 1](https://www.google.com/maps/search/?api=1&query=37.7664477%2C-122.4632288&query_place_id=ChIJ3Qh8bACHhYARILgznXVtOMg) — 5 reviews (3.8★) · `dog_park`
+- [Gansberger Park](https://www.google.com/maps/search/?api=1&query=37.6394089%2C-122.09890960000001&query_place_id=ChIJ_8idTJyXj4ARe16m3rTR5l0) — 5 reviews (4.4★) · `park`
+- [Geof Goodfellow Sesquicentennial Park](https://www.google.com/maps/search/?api=1&query=37.3520921%2C-121.95411009999998&query_place_id=ChIJywL2k07Kj4ARiHks_zYF8TM) — 5 reviews (4.2★) · `park`
+- [Glen Echo Park](https://www.google.com/maps/search/?api=1&query=37.8244992%2C-122.25228699999998&query_place_id=ChIJXfp0kGt9hYARmqI4L_07AAo) — 5 reviews (4.6★) · `park`
+- [Great Baylands Lake](https://www.google.com/maps/search/?api=1&query=37.4156111%2C-121.98986429999998&query_place_id=ChIJSUOdXwDJj4AR5H-tF4Q2wzA) — 5 reviews (4.8★) · `park`
+- [Harliss Park](https://www.google.com/maps/search/?api=1&query=37.319522899999996%2C-121.8885037&query_place_id=ChIJnwNbmgczjoARiD06C_J51m8) — 5 reviews (4.4★) · `park`
+- [Hayward Area Recreation and Park District Dog Park](https://www.google.com/maps/search/?api=1&query=37.6636483%2C-122.14215729999998&query_place_id=ChIJlY7phxaRj4ARtJ999Xv709I) — 5 reviews (4.8★) · `dog_park`
+- [Heritage oak park](https://www.google.com/maps/search/?api=1&query=37.5893037%2C-122.03668449999999&query_place_id=ChIJ2RTZLqmVj4AR-7hOkXrYMuU) — 5 reviews (4.4★) · `park`
+- [Homestead Valley](https://www.google.com/maps/search/?api=1&query=37.925708199999995%2C-122.14777169999998&query_place_id=ChIJ0QnwwGZjhYARq8M5hccYIds) — 5 reviews (4.6★) · `park`
+- [Iron Horse Regional Trail Access](https://www.google.com/maps/search/?api=1&query=37.8847655%2C-122.05065760000001&query_place_id=ChIJf0ewNiRhhYAR2s3G3xrMnwY) — 5 reviews (4.6★) · `park`
+- [Islais Creek Muni Park](https://www.google.com/maps/search/?api=1&query=37.748324000000004%2C-122.391505&query_place_id=ChIJz2SaLfh_j4ARtLkEO8jMreU) — 5 reviews (4.2★) · `park`
+- [Jackson Extended Student Services](https://www.google.com/maps/search/?api=1&query=37.6846641%2C-121.7413211&query_place_id=ChIJBZjz32nnj4ARX0yZZe0v4ns) — 5 reviews (4.2★) · `park`
+- [Jerry Arnold Plaza](https://www.google.com/maps/search/?api=1&query=37.4151555%2C-121.9044612&query_place_id=ChIJN8V9v1rJj4AROxY7TGZhH88) — 5 reviews (4.4★) · `park`
+- [John Muir Memorial Park](https://www.google.com/maps/search/?api=1&query=37.9833466%2C-122.12559449999998&query_place_id=ChIJSRxtNN5lhYARIV51sOEgpGM) — 5 reviews (4.2★) · `city_park`
+- [Kite Hill](https://www.google.com/maps/search/?api=1&query=37.4152188%2C-122.15313900000001&query_place_id=ChIJq6qqOcC6j4ARbO-YkTq1UXM) — 5 reviews (4.2★) · `park`
+- [Landels Elementary Field](https://www.google.com/maps/search/?api=1&query=37.3871375%2C-122.07160100000002&query_place_id=ChIJsab3DuW3j4ARm_sKmalQMKY) — 5 reviews (4.8★) · `park`
+- [Landing Green Park](https://www.google.com/maps/search/?api=1&query=37.543128599999996%2C-122.29899470000001&query_place_id=ChIJDfOTEuOej4ARMspPn12E350) — 5 reviews (4.2★) · `park`
+- [Lewelling Playground](https://www.google.com/maps/search/?api=1&query=37.6861149%2C-122.14213819999999&query_place_id=ChIJhxjsbDiQj4AReqIp0BR-9wM) — 5 reviews (3.2★) · `park`
+- [Little Rancho Pocket Park](https://www.google.com/maps/search/?api=1&query=37.3364384%2C-122.0885412&query_place_id=ChIJ68afgLOzj4ARi1Uo3TvXznY) — 5 reviews (4.6★) · `park`
+- [Littlejohn Park](https://www.google.com/maps/search/?api=1&query=37.776513099999995%2C-122.26166669999999&query_place_id=ChIJAQAAl9OGj4ARtgtS_aEsmOo) — 5 reviews (4.2★) · `park`
+- [Livermorium Plaza](https://www.google.com/maps/search/?api=1&query=37.6820362%2C-121.76794679999999&query_place_id=ChIJj0fxGGvnj4ARV2CnfntUjV4) — 5 reviews (5★) · `park`
+- [Lot 2270](https://www.google.com/maps/search/?api=1&query=37.811918899999995%2C-122.26600909999999&query_place_id=ChIJre8KdwCBj4ARAosnrSxb-ag) — 5 reviews (4.6★) · `park`
+- [Marina Cove Waterfront Park](https://www.google.com/maps/search/?api=1&query=37.7776017%2C-122.2571607&query_place_id=ChIJUUAlKzOHj4ARG6i3oQMQO28) — 5 reviews (5★) · `park`
+- [Meadowhawk Park](https://www.google.com/maps/search/?api=1&query=37.9650014%2C-121.73096389999998&query_place_id=ChIJi9YIfaX5j4ARyh01nQBMz7w) — 5 reviews (4.4★) · `park`
+- [Meeker Slough](https://www.google.com/maps/search/?api=1&query=37.9108028%2C-122.3370116&query_place_id=ChIJGcUAZmN4hYARey_hmVrMBfQ) — 5 reviews (4.6★) · `nature_preserve`
+- [Merritt Park](https://www.google.com/maps/search/?api=1&query=37.760790199999995%2C-122.44348359999998&query_place_id=ChIJ-aeqnNp_j4ARpwx9LXoPbc8) — 5 reviews (4.2★) · `park`
+- [Mission Dolores Dog Play Area South](https://www.google.com/maps/search/?api=1&query=37.7593317%2C-122.42733530000001&query_place_id=ChIJUQeeAQB_j4ARBFHHWGjkP2c) — 5 reviews (4.6★) · `dog_park`
+- [Mission Ranch Park](https://www.google.com/maps/search/?api=1&query=37.1551209%2C-121.6446328&query_place_id=ChIJ099WMKghjoARzccaDQaD-F8) — 5 reviews (4.4★) · `park`
+- [Montelena Park](https://www.google.com/maps/search/?api=1&query=37.3139423%2C-121.7802387&query_place_id=ChIJMTdk45ktjoARdmeGcVVKaDQ) — 5 reviews (4.4★) · `park`
+- [Ogden Terrace Community Garden](https://www.google.com/maps/search/?api=1&query=37.7358165%2C-122.4120835&query_place_id=ChIJ_Q1-D_h-j4ARKf_klTX7ncY) — 5 reviews (4.2★) · `garden`
+- [Ogier Ponds](https://www.google.com/maps/search/?api=1&query=37.181462599999996%2C-121.69227289999999&query_place_id=ChIJxcBZBuMnjoARTYjPpHjDaD4) — 5 reviews (4.2★) · `park`
+- [Ohlone Ridge Lookout](https://www.google.com/maps/search/?api=1&query=37.1601602%2C-122.33808599999999&query_place_id=ChIJn9OnL7FVjoARdy9Rr8mTFjM) — 5 reviews (4.8★) · `nature_preserve`
+- [Pacifica Parks Beaches & Rec](https://www.google.com/maps/search/?api=1&query=37.5985598%2C-122.49961549999998&query_place_id=ChIJDQz6koN6j4ARssIQnKfqfRA) — 5 reviews (2.8★) · `park`
+- [Palmetum](https://www.google.com/maps/search/?api=1&query=37.8061764%2C-122.25750139999998&query_place_id=ChIJt-Y4GEmHj4ARLjbG50xG0kY) — 5 reviews (4.8★) · `park`
+- [Parklab Community Garden](https://www.google.com/maps/search/?api=1&query=37.7707268%2C-122.39270130000001&query_place_id=ChIJHX8qqUp_j4AR0J9nAJGU1P0) — 5 reviews (3.8★) · `garden`
+- [Picnic at Transit](https://www.google.com/maps/search/?api=1&query=37.802327999999996%2C-122.45596649999999&query_place_id=ChIJTSDg6piHhYARK8kez0q5xAw) — 5 reviews (5★) · `garden`
+- [Pine Valley Middle School Park](https://www.google.com/maps/search/?api=1&query=37.738757%2C-121.94202320000001&query_place_id=ChIJwetgRabtj4ARuU9yi9Sask8) — 5 reviews (3.4★) · `park`
+- [Plaza de Santa Clara](https://www.google.com/maps/search/?api=1&query=37.354463800000005%2C-121.95480389999999&query_place_id=ChIJg5TVIe_Lj4ARaQharK1VukU) — 5 reviews (4★) · `park`
+- [Posy Park](https://www.google.com/maps/search/?api=1&query=37.6285192%2C-122.41106579999999&query_place_id=ChIJ6YFB8tB5j4ARI1NURlJKEgI) — 5 reviews (3.2★) · `park`
+- [Redwood Bowl Picnic Spot](https://www.google.com/maps/search/?api=1&query=37.817157%2C-122.17746509999998&query_place_id=ChIJL9gwUWuHj4ARC7Ko0dP3akA) — 5 reviews (4.8★) · `park`
+- [Regnart Creek Trail](https://www.google.com/maps/search/?api=1&query=37.3190381%2C-122.01970929999997&query_place_id=ChIJrT4p-Au1j4ARHFcSAhz6hFg) — 5 reviews (5★) · `park`
+- [Remembrance Park](https://www.google.com/maps/search/?api=1&query=37.8895309%2C-122.0597286&query_place_id=ChIJw8Yv7uFhhYARu079N1I0tJA) — 5 reviews (5★) · `park`
+- [Richard Gamble Memorial Park](https://www.google.com/maps/search/?api=1&query=37.766261%2C-122.4492893&query_place_id=ChIJq6pq9FSHhYARxpTNt5Tk3_A) — 5 reviews (5★) · `park`
+- [Rincon Place](https://www.google.com/maps/search/?api=1&query=37.788345299999996%2C-122.391488&query_place_id=ChIJZ8w1jXqAhYAR3Yk4_QZBcyk) — 5 reviews (4.8★) · `park`
+- [Rooftop Garden | Crocker Galleria](https://www.google.com/maps/search/?api=1&query=37.78924%2C-122.40324600000001&query_place_id=ChIJjUQndk2BhYARCXU0N1FIKzg) — 5 reviews (4.4★) · `city_park`
+- [Rose Garden/Fountain at Joseph D Grant Ranch House](https://www.google.com/maps/search/?api=1&query=37.337668099999995%2C-121.7149711&query_place_id=ChIJ1csY-eUrjoARfR9tYSW22JU) — 5 reviews (4.6★) · `garden`
+- [Ruth Asawa’s “The Garden of Remembrance”](https://www.google.com/maps/search/?api=1&query=37.7227726%2C-122.47961029999999&query_place_id=ChIJR1t1NLB9j4AR0PlMHPeIGWY) — 5 reviews (4.6★) · `garden`
+- [San Luis Reservoir Wildlife Area](https://www.google.com/maps/search/?api=1&query=37.0653542%2C-121.21084189999999&query_place_id=ChIJFc1pVUOTkYARLTE5M0_yhH4) — 5 reviews (4.8★) · `wildlife_refuge`
+- [Santa Monica Park](https://www.google.com/maps/search/?api=1&query=37.738965799999995%2C-122.4646101&query_place_id=ChIJnWXBTgt9j4ARf9GeKbxasfc) — 5 reviews (4.2★) · `park`
+- [Small park](https://www.google.com/maps/search/?api=1&query=37.3267976%2C-121.95398580000001&query_place_id=ChIJYVA2ZOTKj4ARPK94txuq4K4) — 5 reviews (4.2★) · `park`
+- [Sunset Trail Access](https://www.google.com/maps/search/?api=1&query=37.81655860000001%2C-122.19692379999998&query_place_id=ChIJF4dFV7-Hj4ARAP7l4-w4Hn0) — 5 reviews (4.8★) · `park`
+- [Tara Street Park](https://www.google.com/maps/search/?api=1&query=37.721093599999996%2C-122.4487115&query_place_id=ChIJwT8KOSp8j4ARfXMkg2XQKAI) — 5 reviews (4.2★) · `park`
+- [Veterans Memorial Park](https://www.google.com/maps/search/?api=1&query=37.934267999999996%2C-122.3585323&query_place_id=ChIJreili9uDhYARkV7Stru2EMA) — 5 reviews (3.8★) · `park`
+- [Western Horse Restoration Site, Sabercat Historical Park](https://www.google.com/maps/search/?api=1&query=37.5274905%2C-121.92384410000001&query_place_id=ChIJqSLSBfLHj4ARpa9aazjnPTc) — 5 reviews (4.4★) · `park`
+- [Yerba Buena Meadows](https://www.google.com/maps/search/?api=1&query=37.300796399999996%2C-121.76924559999999&query_place_id=ChIJSQUWFPAtjoARJKhJ_Jv_cgs) — 5 reviews (4.8★) · `park`
+
+</details>
+
+
+## Golf Courses — 77 legitimate (matching/measuring)
+
+
+**Flagged to eyeball (8) — kept per rule, drop if you disagree:**
+
+- [Lone Tree Golf & Event Center](https://www.google.com/maps/search/?api=1&query=37.973220399999995%2C-121.8103762&query_place_id=ChIJd7Scj_VXhYARrvRI07bE-K4) — 883 reviews, `golf_course` — _possible mis-tag / driving range_
+- [Mariners Point Golf Center](https://www.google.com/maps/search/?api=1&query=37.571171299999996%2C-122.28448159999999&query_place_id=ChIJpfffOryej4ARHOlbK9xCLRE) — 562 reviews, `golf_course` — _possible mis-tag / driving range_
+- [Fleming 9 Course](https://www.google.com/maps/search/?api=1&query=37.7256296%2C-122.491058&query_place_id=ChIJT0PkXqZ9j4ARxPHUGgJGHB0) — 172 reviews, `golf_course` — _nested near TPC Harding Park_
+- [Marina Golf Course](https://www.google.com/maps/search/?api=1&query=37.698111499999996%2C-122.1862652&query_place_id=ChIJH97g1k-Fj4ARJaj7XqKOMLs) — 130 reviews, `golf_course` — _nested near Monarch Bay Golf Club_
+- [The Pleasanton Golf Center - Golf Course](https://www.google.com/maps/search/?api=1&query=37.66193380000001%2C-121.8827463&query_place_id=ChIJ5fVcsZ7pj4AR_qYKs5GXwlo) — 86 reviews, `golf_course` — _possible mis-tag / driving range_
+- [Palm Tree Golf and Event Center](https://www.google.com/maps/search/?api=1&query=37.9241592%2C-121.72762689999999&query_place_id=ChIJS958dVL5j4AREuMC1sJwnC0) — 22 reviews, `golf_course` — _nested near Brentwood Golf Club_
+- [Norcal Golf Center](https://www.google.com/maps/search/?api=1&query=37.596965399999995%2C-122.4978007&query_place_id=ChIJ-dPBN1l7j4ARxryaewMWwNc) — 12 reviews, `indoor_golf_course` — _possible mis-tag / driving range_
+- [Alameda Junior Golf Club](https://www.google.com/maps/search/?api=1&query=37.7390022%2C-122.2334365&query_place_id=ChIJQWBwPjqEj4ARxYNNYg-pQp4) — 7 reviews, `golf_course` — _nested near Corica Park Golf Course_
+
+<details><summary>All 77 kept</summary>
+
+- [Half Moon Bay Golf Links](https://www.google.com/maps/search/?api=1&query=37.434881%2C-122.44019399999999&query_place_id=ChIJMc1f_28Lj4ARTvQR4cv3Yxg) — 1459 reviews (4.6★) · `golf_course`
+- [Presidio Golf Course](https://www.google.com/maps/search/?api=1&query=37.7904944%2C-122.4597914&query_place_id=ChIJOR1geCGHhYARQ484akGas0M) — 920 reviews (4.5★) · `golf_course`
+- [Lone Tree Golf & Event Center](https://www.google.com/maps/search/?api=1&query=37.973220399999995%2C-121.8103762&query_place_id=ChIJd7Scj_VXhYARrvRI07bE-K4) — 883 reviews (4.4★) · `golf_course`
+- [Callippe Preserve Golf Course](https://www.google.com/maps/search/?api=1&query=37.6267405%2C-121.8603759&query_place_id=ChIJO_bo3HvCj4ARfKBh7KB9aNU) — 814 reviews (4.5★) · `golf_course`
+- [Poppy Ridge Golf Course](https://www.google.com/maps/search/?api=1&query=37.651795799999995%2C-121.6849549&query_place_id=ChIJ69c4oELej4ARl3Hctzgldds) — 803 reviews (4.5★) · `golf_course`
+- [Shoreline Golf Links](https://www.google.com/maps/search/?api=1&query=37.4305087%2C-122.0854755&query_place_id=ChIJQ6nBQR66j4ARt792L4R2NSU) — 691 reviews (4.2★) · `golf_course`
+- [Lake Chabot Golf Course](https://www.google.com/maps/search/?api=1&query=37.7395095%2C-122.11929320000002&query_place_id=ChIJzcX0BVGOj4ARMSlKbp9vVeI) — 611 reviews (4.2★) · `golf_course`
+- [Los Lagos Golf Course](https://www.google.com/maps/search/?api=1&query=37.3011213%2C-121.82792900000001&query_place_id=ChIJd7xYHooyjoARLHSFSMpIIhI) — 600 reviews (4.3★) · `golf_course`
+- [Bay View Golf Club](https://www.google.com/maps/search/?api=1&query=37.455185799999995%2C-121.88152480000001&query_place_id=ChIJyaHccRXPj4ARFMS2AsjfhME) — 583 reviews (4★) · `golf_course`
+- [Mariners Point Golf Center](https://www.google.com/maps/search/?api=1&query=37.571171299999996%2C-122.28448159999999&query_place_id=ChIJpfffOryej4ARHOlbK9xCLRE) — 562 reviews (4.6★) · `golf_course`
+- [Sunnyvale Municipal Golf Course](https://www.google.com/maps/search/?api=1&query=37.3960654%2C-122.04173929999999&query_place_id=ChIJt4Fu4wa3j4ARfIhWtxvd9ec) — 557 reviews (3.9★) · `golf_course`
+- [Diablo Creek Golf Course](https://www.google.com/maps/search/?api=1&query=38.0135874%2C-122.0236528&query_place_id=ChIJO8rhmaNnhYARc0ge_Uq-tHg) — 555 reviews (4.3★) · `golf_course`
+- [San Jose Municipal Golf Course](https://www.google.com/maps/search/?api=1&query=37.3772588%2C-121.8895288&query_place_id=ChIJU0R5Im3Mj4ARYFGfYgCREsQ) — 543 reviews (4★) · `golf_course`
+- [Las Positas Golf Course](https://www.google.com/maps/search/?api=1&query=37.696792599999995%2C-121.8247756&query_place_id=ChIJ_4gBxZPoj4ARDCHL3QeTkOQ) — 542 reviews (4★) · `golf_course`
+- [TPC Harding Park](https://www.google.com/maps/search/?api=1&query=37.7248228%2C-122.4932023&query_place_id=ChIJk27jwAl9j4ARNLRQiZlyo3w) — 542 reviews (4.3★) · `golf_course`
+- [Brentwood Golf Club](https://www.google.com/maps/search/?api=1&query=37.9242224%2C-121.72794329999999&query_place_id=ChIJk7vbdUn5j4AR4-DfCtDMuX0) — 519 reviews (4★) · `golf_course`
+- [Sunken Gardens Golf Course](https://www.google.com/maps/search/?api=1&query=37.355253%2C-122.010575&query_place_id=ChIJRW-nN-G1j4AR5eHyhNPrBfg) — 510 reviews (4.2★) · `golf_course`
+- [Spring Valley Golf Course](https://www.google.com/maps/search/?api=1&query=37.4477211%2C-121.8521579&query_place_id=ChIJ177c6qnPj4ARE5NLV8eC8Ec) — 497 reviews (4.3★) · `golf_course`
+- [Poplar Creek Golf Course](https://www.google.com/maps/search/?api=1&query=37.5861881%2C-122.3253202&query_place_id=ChIJLyIkeMWdj4ARqWYrl6b-BN8) — 478 reviews (4.1★) · `golf_course`
+- [The Olympic Club](https://www.google.com/maps/search/?api=1&query=37.7093869%2C-122.4946306&query_place_id=ChIJyVS1gf98j4AR36HI0J6XAw0) — 461 reviews (4.7★) · `golf_course`
+- [Lincoln Park Golf Course](https://www.google.com/maps/search/?api=1&query=37.7823104%2C-122.4944458&query_place_id=ChIJNQZr1KuHhYARsARKJIUUCzc) — 450 reviews (4.1★) · `golf_course`
+- [Monarch Bay Golf Club](https://www.google.com/maps/search/?api=1&query=37.695102399999996%2C-122.18560260000001&query_place_id=ChIJ9_A6cFKFj4AR6vW35Vfc-ho) — 444 reviews (4.1★) · `golf_course`
+- [Metropolitan Golf Links](https://www.google.com/maps/search/?api=1&query=37.7199519%2C-122.1933287&query_place_id=ChIJmU9IOXOFj4ARI74JO2_vZ8U) — 439 reviews (4.2★) · `golf_course`
+- [Redwood Canyon Golf Course](https://www.google.com/maps/search/?api=1&query=37.726086699999996%2C-122.08202809999999&query_place_id=ChIJ49x-_weOj4ARDEJs0wNIozk) — 416 reviews (4.2★) · `golf_course`
+- [Canyon Lakes Golf Course](https://www.google.com/maps/search/?api=1&query=37.770759%2C-121.94979899999998&query_place_id=ChIJ76-aDn3yj4ARwl7t3pspZyM) — 406 reviews (4.1★) · `golf_course`
+- [Dublin Ranch Golf Course](https://www.google.com/maps/search/?api=1&query=37.7251481%2C-121.8573991&query_place_id=ChIJE_D5Zdjuj4ARaCIeRPDh9hw) — 405 reviews (4.3★) · `golf_course`
+- [Sharp Park Golf Course](https://www.google.com/maps/search/?api=1&query=37.6248862%2C-122.4886486&query_place_id=ChIJ-1L_KFp6j4ARaoyVoHn9cKw) — 395 reviews (3.9★) · `golf_course`
+- [Franklin Canyon Golf Course](https://www.google.com/maps/search/?api=1&query=38.006128499999996%2C-122.21600579999999&query_place_id=ChIJybGfgSlxhYARORXs1QLOof0) — 389 reviews (3.9★) · `golf_course`
+- [Baylands Golf Links](https://www.google.com/maps/search/?api=1&query=37.453680299999995%2C-122.11600159999999&query_place_id=ChIJ3UX4yQO7j4ARwIfC59tF9NM) — 385 reviews (4.2★) · `golf_course`
+- [Skylinks at Buchanan Fields Golf Course](https://www.google.com/maps/search/?api=1&query=37.9789761%2C-122.06030820000001&query_place_id=ChIJHb2xwJRmhYARIO0m0Zecyb8) — 373 reviews (4.3★) · `golf_course`
+- [Crystal Springs Golf Course](https://www.google.com/maps/search/?api=1&query=37.557475%2C-122.3816219&query_place_id=ChIJLaLEtuh1j4ARBGBQhB07mRM) — 371 reviews (3.9★) · `golf_course`
+- [Boundary Oak Golf Course](https://www.google.com/maps/search/?api=1&query=37.9240707%2C-121.99688719999999&query_place_id=ChIJSaDw_nBghYAR5FBL9qi1-d4) — 358 reviews (4.3★) · `golf_course`
+- [Mission Hills of Hayward Golf Course](https://www.google.com/maps/search/?api=1&query=37.6264787%2C-122.05014229999999&query_place_id=ChIJbfs98lqUj4AR7wIRx5kvZgc) — 350 reviews (4.2★) · `golf_course`
+- [Tilden Park Golf Course](https://www.google.com/maps/search/?api=1&query=37.8896068%2C-122.241865&query_place_id=ChIJzYMwJxB8hYAREToe4Ove0Pk) — 349 reviews (4.1★) · `golf_course`
+- [Rancho del Pueblo Golf Course](https://www.google.com/maps/search/?api=1&query=37.346725%2C-121.85159199999998&query_place_id=ChIJm-yYXCHNj4ARvZY7z4-Jp0E) — 336 reviews (4.2★) · `golf_course`
+- [The Course at Wente Vineyards](https://www.google.com/maps/search/?api=1&query=37.6247215%2C-121.75436399999998&query_place_id=ChIJax3bylPcj4ARaa8IKgNJd-I) — 333 reviews (4.6★) · `golf_course`
+- [Diablo Hills Golf Course](https://www.google.com/maps/search/?api=1&query=37.9173492%2C-122.04360190000001&query_place_id=ChIJn0jQDbFhhYARDLTSh5RkyaQ) — 312 reviews (4.1★) · `golf_course`
+- [Sequoyah Country Club](https://www.google.com/maps/search/?api=1&query=37.7662128%2C-122.1337125&query_place_id=ChIJF8ayISKPj4ARs5RlWloFid8) — 293 reviews (4.7★) · `golf_course`
+- [San Ramon Golf Club](https://www.google.com/maps/search/?api=1&query=37.7342472%2C-121.928199&query_place_id=ChIJu70NULTtj4ARzjULkM3Fzno) — 280 reviews (4.2★) · `golf_course`
+- [Corica Park Golf Course](https://www.google.com/maps/search/?api=1&query=37.738990699999995%2C-122.2332077&query_place_id=ChIJOXca9DmEj4AR0Ajcv4NUQD8) — 269 reviews (4.1★) · `golf_course`
+- [Fremont Park Golf Course](https://www.google.com/maps/search/?api=1&query=37.557016%2C-121.95787969999999&query_place_id=ChIJvxzqcOXAj4ARIHzOnl2h2X8) — 260 reviews (3.7★) · `golf_course`
+- [Golden Gate Park Golf Course](https://www.google.com/maps/search/?api=1&query=37.7684225%2C-122.5050846&query_place_id=ChIJC4v-6ryHhYARRl7_ZAvJ7pE) — 235 reviews (4.4★) · `golf_course`
+- [Stanford Golf Course](https://www.google.com/maps/search/?api=1&query=37.42157160000001%2C-122.18376149999999&query_place_id=ChIJJz04Ctikj4ARVzzEcEVB5pE) — 202 reviews (4.5★) · `golf_course`
+- [Blackberry Farm Golf Course](https://www.google.com/maps/search/?api=1&query=37.3224375%2C-122.05968229999999&query_place_id=ChIJQ3tic0K0j4ARU47_pSln6Z0) — 197 reviews (4.4★) · `golf_course`
+- [Deep Cliff Golf Course](https://www.google.com/maps/search/?api=1&query=37.311579699999996%2C-122.06584799999999&query_place_id=ChIJ57oEImG0j4ARiVZ5QxlqUxM) — 193 reviews (3.9★) · `golf_course`
+- [Fleming 9 Course](https://www.google.com/maps/search/?api=1&query=37.7256296%2C-122.491058&query_place_id=ChIJT0PkXqZ9j4ARxPHUGgJGHB0) — 172 reviews (4.3★) · `golf_course`
+- [Sharon Heights Golf and Country Club](https://www.google.com/maps/search/?api=1&query=37.4212308%2C-122.21796739999999&query_place_id=ChIJyxqBTvikj4ARyNuwuTCiHSs) — 170 reviews (4.5★) · `golf_course`
+- [Tony Lema Golf Course](https://www.google.com/maps/search/?api=1&query=37.687854099999996%2C-122.17815269999998&query_place_id=ChIJCdN7GlOFj4ARBpV9igOl5rw) — 147 reviews (4.3★) · `golf_course`
+- [Gleneagles](https://www.google.com/maps/search/?api=1&query=37.7158711%2C-122.42439429999999&query_place_id=ChIJEVEOc-p-j4ARvJFYoHk97UA) — 146 reviews (4.1★) · `golf_course`
+- [Gilroy Golf Course](https://www.google.com/maps/search/?api=1&query=37.0137718%2C-121.62008429999999&query_place_id=ChIJ37143_7hkYARtLU5Exm2DOU) — 144 reviews (4.1★) · `golf_course`
+- [Marina Golf Course](https://www.google.com/maps/search/?api=1&query=37.698111499999996%2C-122.1862652&query_place_id=ChIJH97g1k-Fj4ARJaj7XqKOMLs) — 130 reviews (4.3★) · `golf_course`
+- [Contra Costa Country Club](https://www.google.com/maps/search/?api=1&query=37.9735075%2C-122.0806556&query_place_id=ChIJ13hBCZ9mhYARdzfgusvX24w) — 129 reviews (4.6★) · `golf_course`
+- [Scratch Lab Golf - Walnut Creek](https://www.google.com/maps/search/?api=1&query=37.8970768%2C-122.0620163&query_place_id=ChIJa55PtPhhhYAR8SqwpVgGHes) — 129 reviews (5★) · `indoor_golf_course`
+- [Shadow Lakes Club](https://www.google.com/maps/search/?api=1&query=37.9261184%2C-121.7504326&query_place_id=ChIJ6dn5PhD5j4ARQbskMwtn3kQ) — 113 reviews (4.2★) · `golf_course`
+- [Emerald Hills Golf Course](https://www.google.com/maps/search/?api=1&query=37.4541535%2C-122.26468179999999&query_place_id=ChIJA7470uGjj4AR1Mdm9-Qo1y4) — 103 reviews (4★) · `golf_course`
+- [The Pleasanton Golf Center - Golf Course](https://www.google.com/maps/search/?api=1&query=37.66193380000001%2C-121.8827463&query_place_id=ChIJ5fVcsZ7pj4AR_qYKs5GXwlo) — 86 reviews (4.2★) · `golf_course`
+- [Gavilan College Golf Course](https://www.google.com/maps/search/?api=1&query=36.9678306%2C-121.56687919999999&query_place_id=ChIJE1JbvxfjkYARqlIdcoY1uX0) — 77 reviews (4.1★) · `golf_course`
+- [The Lab Golf Indoor Golf Studios](https://www.google.com/maps/search/?api=1&query=37.7836415%2C-121.9679743&query_place_id=ChIJM_SCXmvzj4ARC9Elu_kNce8) — 73 reviews (4.9★) · `indoor_golf_course`
+- [Eagle Club Indoor Golf](https://www.google.com/maps/search/?api=1&query=37.7887367%2C-122.42099019999999&query_place_id=ChIJh9TylXyAhYARBdILbyU_L9Y) — 65 reviews (4.7★) · `indoor_golf_course`
+- [Urban Fairway Golf](https://www.google.com/maps/search/?api=1&query=37.6490197%2C-122.42001429999999&query_place_id=ChIJb2eHLgB5j4ARZRH-pskdLBU) — 59 reviews (5★) · `indoor_golf_course`
+- [Sandbaggers Golf Spot](https://www.google.com/maps/search/?api=1&query=37.322787999999996%2C-121.80967299999999&query_place_id=ChIJy8cSVtwtjoARTsPELAa1bH0) — 35 reviews (5★) · `indoor_golf_course`
+- [GOLF SQUARE SAN JOSE](https://www.google.com/maps/search/?api=1&query=37.2747283%2C-121.9333397&query_place_id=ChIJ2xAoHS41joARKbqqBP410qI) — 33 reviews (5★) · `indoor_golf_course`
+- [Swing Central Golf Club](https://www.google.com/maps/search/?api=1&query=37.4780517%2C-122.2247841&query_place_id=ChIJzbkRAg2jj4ARyxMYmGGRkR8) — 33 reviews (4.9★) · `indoor_golf_course`
+- [General Store](https://www.google.com/maps/search/?api=1&query=37.7942545%2C-122.46873690000001&query_place_id=ChIJH1ZmGiCHhYARIBIPNaIvaeM) — 28 reviews (4.4★) · `golf_course`
+- [Fox Hole Golf Club](https://www.google.com/maps/search/?api=1&query=37.3860593%2C-121.94604319999999&query_place_id=ChIJ-4ErTILJj4ARD3J_pXiAWkU) — 23 reviews (5★) · `indoor_golf_course`
+- [Palm Tree Golf and Event Center](https://www.google.com/maps/search/?api=1&query=37.9241592%2C-121.72762689999999&query_place_id=ChIJS958dVL5j4AREuMC1sJwnC0) — 22 reviews (4.5★) · `golf_course`
+- [100 Yards Golf](https://www.google.com/maps/search/?api=1&query=37.3774188%2C-121.93740539999999&query_place_id=ChIJD1KcNYLLj4ARUOA1OSzl-gE) — 21 reviews (5★) · `indoor_golf_course`
+- [Primetime A GOLF EXPERIENCE](https://www.google.com/maps/search/?api=1&query=37.801789299999996%2C-122.26873839999999&query_place_id=ChIJzfOrU7SAj4ARamQ3jjrV984) — 21 reviews (4.6★) · `indoor_golf_course`
+- [Los Lagos Golf Course Maintenance](https://www.google.com/maps/search/?api=1&query=37.301524799999996%2C-121.83765580000001&query_place_id=ChIJK0sHZfQyjoARWIOps4LYxRM) — 16 reviews (4.6★) · `golf_course`
+- [SMS Screen Golf And Academy](https://www.google.com/maps/search/?api=1&query=37.5084602%2C-121.95019959999998&query_place_id=ChIJVZL7XwDHj4ARBXHyk5jB_oo) — 16 reviews (4.8★) · `indoor_golf_course`
+- [GolfersBZ](https://www.google.com/maps/search/?api=1&query=37.554601999999996%2C-122.30184659999999&query_place_id=ChIJO5jKT_2fj4ARYdn6N1kzjq8) — 15 reviews (4.7★) · `indoor_golf_course`
+- [Norcal Golf Center](https://www.google.com/maps/search/?api=1&query=37.596965399999995%2C-122.4978007&query_place_id=ChIJ-dPBN1l7j4ARxryaewMWwNc) — 12 reviews (5★) · `indoor_golf_course`
+- [Burlingame Country Club](https://www.google.com/maps/search/?api=1&query=37.5683965%2C-122.36857859999998&query_place_id=ChIJ_Sgh9ht3j4ARk3jKLjJOBn4) — 10 reviews (4.2★) · `golf_course`
+- [Launch Labs Golf](https://www.google.com/maps/search/?api=1&query=37.151132%2C-121.65612300000001&query_place_id=ChIJR_k7Al8hjoARVGFWoRRczxY) — 10 reviews (5★) · `indoor_golf_course`
+- [Stanford Siebel Varsity Golf Training Complex](https://www.google.com/maps/search/?api=1&query=37.4296588%2C-122.18708970000002&query_place_id=ChIJxdbUn9Ckj4ARPbuCr4atxEc) — 10 reviews (4.1★) · `golf_course`
+- [Alameda Junior Golf Club](https://www.google.com/maps/search/?api=1&query=37.7390022%2C-122.2334365&query_place_id=ChIJQWBwPjqEj4ARxYNNYg-pQp4) — 7 reviews (4.3★) · `golf_course`
+- [Woodhall - Orindawoods Clubhouse](https://www.google.com/maps/search/?api=1&query=37.888908%2C-122.1805251&query_place_id=ChIJEZ958lZ9hYARfZka6dYV3xQ) — 5 reviews (4.6★) · `golf_course`
+
+</details>
