@@ -4786,6 +4786,7 @@
    "Muni"
   ],
   "lines": [
+   "Muni J",
    "Muni K",
    "Muni L",
    "Muni M"
@@ -4794,7 +4795,8 @@
    "Church",
    "Church St Station",
    "Church Street & Market Street",
-   "Market Street & Church Street"
+   "Market Street & Church Street",
+   "Church & Market"
   ],
   "service": {
    "wd": {
@@ -6273,8 +6275,8 @@
  },
  {
   "name": "Right Of Way/21st St",
-  "lat": 37.757033,
-  "lon": -122.426962,
+  "lat": 37.75654,
+  "lon": -122.42687,
   "systems": [
    "Muni"
   ],
@@ -6283,8 +6285,7 @@
   ],
   "aka": [
    "Right Of Way/21st St",
-   "Right of Way & 21st Street",
-   "Right of Way & Liberty Street"
+   "Right of Way & 21st Street"
   ],
   "service": {
    "wd": {
@@ -6300,11 +6301,11 @@
   "nameLength": 20,
   "county": "San Francisco",
   "city": "San Francisco city",
-  "elevation": 55.9,
+  "elevation": 59.4,
   "airportDist": {
-   "SFO": 15850.2,
-   "OAK": 18718.4,
-   "SJC": 62000.4
+   "SFO": 15795.2,
+   "OAK": 18698.2,
+   "SJC": 61956.1
   },
   "nearestAirport": "SFO",
   "headwayMin": {
@@ -10452,6 +10453,46 @@
   "headwayMin": {
    "wd": 4.0,
    "we": 4.0
+  }
+ },
+ {
+  "name": "Right Of Way/Liberty St",
+  "lat": 37.757345,
+  "lon": -122.426935,
+  "systems": [
+   "Muni"
+  ],
+  "lines": [
+   "Muni J"
+  ],
+  "aka": [
+   "Right Of Way/Liberty St",
+   "Right of Way & Liberty Street"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s260",
+  "nameLength": 23,
+  "county": "San Francisco",
+  "city": "San Francisco city",
+  "elevation": 53.8,
+  "airportDist": {
+   "SFO": 15883.2,
+   "OAK": 18723.9,
+   "SJC": 62023.1
+  },
+  "nearestAirport": "SFO",
+  "headwayMin": {
+   "wd": 12,
+   "we": 12
   }
  }
 ]
