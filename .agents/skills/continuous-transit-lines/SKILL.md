@@ -130,3 +130,43 @@ To re-tune, sweep values and print the resulting feature count + the small
 3. `npm run lint && npx tsc -b --noEmit && npm test && npm run build`.
 4. `npm run dev` and eyeball the known-tricky spots: BART trunk Oakland 12th–19th,
    Muni along Market St, VTA on Tasman, Caltrain end-to-end — all continuous.
+
+## Corner-cut chords (route relation joins two nodes with a straight way)
+A route relation sometimes connects two stop/track nodes with a **2-node straight
+way** even though the physical track curves between them — the rendered line then
+**cuts the corner**. Example fixed: Muni **N** (`#004988`) cut a ~5–30 m chord
+across the curve of **The Embarcadero** near Don Chee Way / Steuart St (the chord
+was vertices 354→355 of the N LineString). Note: this corner-cut was prototyped
+and then **intentionally kept** — the straight chord was preferred visually — so
+treat the steps below as the procedure to use *if* such a chord is ever judged
+worth correcting, not as a change that lives in the repo.
+
+To fix one segment without disturbing the rest of the line:
+1. Find the two existing vertices that bound the chord (index `i`, `i+1`).
+2. Fetch the real `railway=light_rail` ways for that area (Overpass) and collect
+   the track vertices that fall **interior to the chord span** (project each onto
+   the chord; keep `0 < along < 1`) on the correct side (consistent sign of the
+   perpendicular offset). OSM track geometry here is often **sparse** (only a
+   couple of interior vertices), so don't expect a dense curve.
+3. Thread a **Catmull-Rom** spline through `[v[i-1], v[i], <interior track pts
+   sorted by along>, v[i+1], v[i+2]]` and emit only the samples **between `i` and
+   `i+1`**. Insert them; leave every other vertex untouched. This smooths the kink
+   and bows the line onto the real track (~5 m here) without re-snapping anything
+   else.
+4. Round inserted coords to **5 decimals** and write the file compact
+   (`json.dump(..., separators=(', ', ': '))`) to match the existing one-line
+   format and keep the diff to a single feature.
+
+**Durability caveat (important):** `fetch_transit_lines.py` writes
+`src/data/transit-lines.geojson.json` directly and has **no manual-geometry-patch
+hook** (`scripts/patch_lines.py` is unrelated — it only adds BART line membership
+to `stations.json`). So a hand-edit to the geojson is **silently reverted** the
+next time the pipeline is run. For a durable fix, either re-apply after each
+regenerate, or add a post-process step in `main()` (mirroring the
+`oak_connector.json` saved-alignment block) that applies saved per-line segment
+patches from a file. Surface/at-grade lines (the N along The Embarcadero) genuinely
+follow the road curve, so matching it is "accurate"; deep subway (T Central
+Subway, the Market St subway) does **not** follow road geometry — Google's transit
+overlay simplifies subway shapes toward the street grid, OSM traces the true
+tunnel, and OSM is the more geographically accurate source. Don't "fix" OSM subway
+lines to look like Google.
