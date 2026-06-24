@@ -73,6 +73,14 @@ describe('stationPasses — matching', () => {
     expect(stationPasses(station({ lines: ['Muni N', 'Muni T'] }), r)).toBe(true)
     expect(stationPasses(station({ lines: ['Muni K'] }), r)).toBe(false)
   })
+  it('match-system', () => {
+    const r = record('match-system', { value: 'BART', answer: 'yes' })
+    expect(stationPasses(station({ systems: ['BART', 'Muni'] }), r)).toBe(true)
+    expect(stationPasses(station({ systems: ['Caltrain'] }), r)).toBe(false)
+    const no = record('match-system', { value: 'BART', answer: 'no' })
+    expect(stationPasses(station({ systems: ['BART', 'Muni'] }), no)).toBe(false)
+    expect(stationPasses(station({ systems: ['Muni'] }), no)).toBe(true)
+  })
 })
 
 describe('stationPasses — measuring', () => {

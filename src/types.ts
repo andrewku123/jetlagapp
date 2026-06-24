@@ -41,6 +41,7 @@ export type QuestionKind =
   | 'match-airport'
   | 'match-namelength'
   | 'match-line'
+  | 'match-system'
   | 'measure-airport'
   | 'measure-sealevel'
   | 'inside-floor'

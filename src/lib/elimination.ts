@@ -53,6 +53,10 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const same = station.lines.includes(s(p.value))
       return same === (p.answer === 'yes')
     }
+    case 'match-system': {
+      const same = station.systems.includes(s(p.value))
+      return same === (p.answer === 'yes')
+    }
     case 'measure-airport': {
       const seeker = nearestAirportMiles({ lat: n(p.fromLat), lon: n(p.fromLon) })
       const stationDist = Math.min(...Object.values(station.airportDist)) * (1 / 1609.344)

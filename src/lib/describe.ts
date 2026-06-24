@@ -22,6 +22,8 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Same nearest airport (${p.value})?${arrow(String(a))}`
     case 'match-line':
       return `On line "${p.value}"?${arrow(String(a))}`
+    case 'match-system':
+      return `Same transit agency (${p.value})?${arrow(String(a))}`
     case 'match-namelength':
       return `Name length = ${p.value}?${arrow(String(a))}`
     case 'measure-airport':

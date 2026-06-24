@@ -144,6 +144,10 @@ export default function App() {
     () => uniqSorted(STATIONS.map((s) => s.nearestAirport)),
     [],
   )
+  const systems = useMemo(
+    () => SYSTEM_ORDER.filter((sys) => STATIONS.some((s) => s.systems.includes(sys))),
+    [],
+  )
 
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
   const manualSet = useMemo(() => new Set(game.manualEliminated), [game.manualEliminated])
@@ -367,6 +371,7 @@ export default function App() {
                 counties={counties}
                 cities={cities}
                 lines={lines}
+                systems={systems}
                 airports={airports}
                 onSubmit={addQuestion}
                 onPreview={setLastClick}

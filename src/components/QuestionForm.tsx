@@ -10,6 +10,7 @@ interface Props {
   counties: string[]
   cities: string[]
   lines: string[]
+  systems: string[]
   airports: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
@@ -101,6 +102,7 @@ export default function QuestionForm({
   counties,
   cities,
   lines,
+  systems,
   airports,
   onSubmit,
   onPreview,
@@ -197,7 +199,8 @@ export default function QuestionForm({
       case 'match-county':
       case 'match-city':
       case 'match-airport':
-      case 'match-line': {
+      case 'match-line':
+      case 'match-system': {
         if (!value) return alert('Choose a value.')
         params = { value, answer: yesno }
         break
@@ -394,10 +397,12 @@ export default function QuestionForm({
       {kind === 'match-city' && dropdown(cities)}
       {kind === 'match-airport' && dropdown(airports)}
       {kind === 'match-line' && dropdown(lines)}
+      {kind === 'match-system' && dropdown(systems)}
       {(kind === 'match-county' ||
         kind === 'match-city' ||
         kind === 'match-airport' ||
-        kind === 'match-line') &&
+        kind === 'match-line' ||
+        kind === 'match-system') &&
         yesNo}
 
       {kind === 'match-namelength' && (

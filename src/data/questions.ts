@@ -78,6 +78,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     blurb: 'Will the line I am riding stop at your station?',
   },
   {
+    kind: 'match-system',
+    category: 'Matching',
+    label: 'Matching — Transit agency',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Is your station served by the same transit agency as mine (BART/Caltrain/VTA/Muni/SFO AirTrain)?',
+  },
+  {
     kind: 'match-namelength',
     category: 'Matching',
     label: 'Matching — Station name length',
