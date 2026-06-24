@@ -3295,7 +3295,6 @@
    "Muni T"
   ],
   "aka": [
-   "20th St",
    "3rd St & 20th St"
   ],
   "service": {
@@ -3335,7 +3334,6 @@
    "Muni T"
   ],
   "aka": [
-   "23rd St",
    "3rd St & 23rd St"
   ],
   "service": {
@@ -3375,8 +3373,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Carroll Ave",
-   "Carroll"
+   "3rd St & Carroll Ave"
   ],
   "service": {
    "wd": {
@@ -3415,8 +3412,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Evans Ave",
-   "Evans"
+   "3rd St & Evans Ave"
   ],
   "service": {
    "wd": {
@@ -3455,8 +3451,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Gilman/Paul",
-   "Gilman/Paul"
+   "3rd St & Gilman/Paul"
   ],
   "service": {
    "wd": {
@@ -3495,8 +3490,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Hudson/Innes",
-   "Hudson/Innes"
+   "3rd St & Hudson/Innes"
   ],
   "service": {
    "wd": {
@@ -3535,8 +3529,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Kirkwood/La Salle",
-   "Kirkwood/La Salle"
+   "3rd St & Kirkwood/La Salle"
   ],
   "service": {
    "wd": {
@@ -3575,8 +3568,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Le Conte Ave",
-   "Le Conte"
+   "3rd St & Le Conte Ave"
   ],
   "service": {
    "wd": {
@@ -3615,8 +3607,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Marin St",
-   "Marin St"
+   "3rd St & Marin St"
   ],
   "service": {
    "wd": {
@@ -3655,9 +3646,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Mission Rock St",
-   "Mission Rock (Northbound)",
-   "Mission Rock (Southbound)"
+   "3rd St & Mission Rock St"
   ],
   "service": {
    "wd": {
@@ -3696,8 +3685,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Oakdale/Palou",
-   "Oakdale/Palou"
+   "3rd St & Oakdale/Palou"
   ],
   "service": {
    "wd": {
@@ -3736,8 +3724,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Revere/Shafter",
-   "Revere/Shafter"
+   "3rd St & Revere/Shafter"
   ],
   "service": {
    "wd": {
@@ -3776,8 +3763,7 @@
    "Muni T"
   ],
   "aka": [
-   "3rd St & Williams Ave",
-   "Williams"
+   "3rd St & Williams Ave"
   ],
   "service": {
    "wd": {
@@ -3934,8 +3920,7 @@
    "Muni T"
   ],
   "aka": [
-   "4th St & Brannan St",
-   "Fourth/Brannan"
+   "4th St & Brannan St"
   ],
   "service": {
    "wd": {
@@ -4014,7 +3999,6 @@
    "Muni T"
   ],
   "aka": [
-   "Arleta",
    "Bayshore Blvd & Arleta/Blanken"
   ],
   "service": {
@@ -4054,8 +4038,7 @@
    "Muni T"
   ],
   "aka": [
-   "Bayshore Blvd & Sunnydale Ave",
-   "Sunnydale"
+   "Bayshore Blvd & Sunnydale Ave"
   ],
   "service": {
    "wd": {
@@ -6618,7 +6601,7 @@
   }
  },
  {
-  "name": "Sunset Tunnel East Portal",
+  "name": "Duboce Ave & Noe St (Sunset Tunnel East Portal)",
   "lat": 37.769306,
   "lon": -122.433747,
   "systems": [
@@ -6628,6 +6611,7 @@
    "Muni N"
   ],
   "aka": [
+   "Duboce Ave & Noe St (Sunset Tunnel East Portal)",
    "Sunset Tunnel East Portal"
   ],
   "service": {
@@ -6641,7 +6625,7 @@
    }
   },
   "id": "s173",
-  "nameLength": 25,
+  "nameLength": 47,
   "county": "San Francisco",
   "city": "San Francisco city",
   "elevation": 50.6,
