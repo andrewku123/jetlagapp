@@ -12,7 +12,7 @@
    "BART Yellow (Antioch–SFO/Millbrae)"
   ],
   "aka": [
-   "12th Street / Oakland City Center"
+   "12th St / Oakland City Center"
   ],
   "service": {
    "wd": {
@@ -54,7 +54,7 @@
    "BART Yellow (Antioch–SFO/Millbrae)"
   ],
   "aka": [
-   "16th Street / Mission"
+   "16th St / Mission"
   ],
   "service": {
    "wd": {
@@ -95,7 +95,7 @@
    "BART Yellow (Antioch–SFO/Millbrae)"
   ],
   "aka": [
-   "19th Street Oakland"
+   "19th St Oakland"
   ],
   "service": {
    "wd": {
@@ -137,7 +137,7 @@
    "BART Yellow (Antioch–SFO/Millbrae)"
   ],
   "aka": [
-   "24th Street / Mission"
+   "24th St / Mission"
   ],
   "service": {
    "wd": {
@@ -264,7 +264,7 @@
   "aka": [
    "Balboa Park",
    "Metro Terminal",
-   "San Jose Avenue & Geneva Avenue"
+   "San Jose Ave & Geneva Ave"
   ],
   "service": {
    "wd": {
@@ -436,8 +436,8 @@
    "Civic Center",
    "Civic Center / UN Plaza",
    "Civic Center Station",
-   "Market Street & 7th Street",
-   "Market Street & 7th Street North"
+   "Market St & 7th St",
+   "Market St & 7th St North"
   ],
   "service": {
    "wd": {
@@ -810,8 +810,8 @@
   "aka": [
    "Embarcadero",
    "Embarcadero Station",
-   "Market Street & Drumm Street",
-   "Market Street & Main Street"
+   "Market St & Drumm St",
+   "Market St & Main St"
   ],
   "service": {
    "wd": {
@@ -1269,10 +1269,10 @@
    "Muni N"
   ],
   "aka": [
-   "Market Street & 2nd Street",
-   "Market Street & New Montgomery Street",
+   "Market St & 2nd St",
+   "Market St & New Montgomery St",
    "Montgomery St Station",
-   "Montgomery Street"
+   "Montgomery St"
   ],
   "service": {
    "wd": {
@@ -1595,9 +1595,9 @@
    "Muni N"
   ],
   "aka": [
-   "Market Street & 4th Street",
+   "Market St & 4th St",
    "Powell St Station",
-   "Powell Street"
+   "Powell St"
   ],
   "service": {
    "wd": {
@@ -2122,7 +2122,7 @@
    "Caltrain Local"
   ],
   "aka": [
-   "22nd Street"
+   "22nd St"
   ],
   "service": {
    "wd": {
@@ -2318,7 +2318,7 @@
    "Caltrain Local"
   ],
   "aka": [
-   "California Avenue"
+   "California Ave"
   ],
   "service": {
    "wd": {
@@ -2768,8 +2768,8 @@
    "Muni T"
   ],
   "aka": [
-   "4th Street & King Street",
-   "King Street & 4th Street",
+   "4th St & King St",
+   "King St & 4th St",
    "San Francisco (4th & King)"
   ],
   "service": {
@@ -3058,8 +3058,7 @@
    "Muni L"
   ],
   "aka": [
-   "15th Ave & Taraval St",
-   "15th Avenue & Taraval Street"
+   "15th Ave & Taraval St"
   ],
   "service": {
    "wd": {
@@ -3099,7 +3098,7 @@
   ],
   "aka": [
    "19th Ave & Holloway Ave (SF State)",
-   "19th Avenue & Holloway Avenue"
+   "19th Ave & Holloway Ave"
   ],
   "service": {
    "wd": {
@@ -3139,8 +3138,7 @@
   ],
   "aka": [
    "19th Ave & North Randolph St",
-   "19th Avenue & Junipero Serra Boulevard",
-   "19th Avenue & North Randolph Street"
+   "19th Ave & Junipero Serra Blvd"
   ],
   "service": {
    "wd": {
@@ -3179,8 +3177,7 @@
    "Muni M"
   ],
   "aka": [
-   "19th Ave & Randolph St",
-   "19th Avenue & Randolph Street"
+   "19th Ave & Randolph St"
   ],
   "service": {
    "wd": {
@@ -3220,7 +3217,7 @@
   ],
   "aka": [
    "19th Ave & Winston Dr (Stonestown)",
-   "19th Avenue & Winston Drive"
+   "19th Ave & Winston Dr"
   ],
   "service": {
    "wd": {
@@ -3259,8 +3256,7 @@
    "Muni J"
   ],
   "aka": [
-   "30th St & Dolores St",
-   "30th Street & Dolores Street"
+   "30th St & Dolores St"
   ],
   "service": {
    "wd": {
@@ -3299,7 +3295,7 @@
    "Muni T"
   ],
   "aka": [
-   "20th Street",
+   "20th St",
    "3rd St & 20th St"
   ],
   "service": {
@@ -3339,7 +3335,7 @@
    "Muni T"
   ],
   "aka": [
-   "23rd Street",
+   "23rd St",
    "3rd St & 23rd St"
   ],
   "service": {
@@ -3620,7 +3616,7 @@
   ],
   "aka": [
    "3rd St & Marin St",
-   "Marin Street"
+   "Marin St"
   ],
   "service": {
    "wd": {
@@ -3821,8 +3817,7 @@
   ],
   "aka": [
    "46th Ave & Taraval St",
-   "46th Avenue & Taraval Street",
-   "Taraval Street & 46th Avenue"
+   "Taraval St & 46th Ave"
   ],
   "service": {
    "wd": {
@@ -3861,8 +3856,7 @@
    "Muni L"
   ],
   "aka": [
-   "46th Ave & Ulloa St",
-   "46th Avenue & Ulloa Street"
+   "46th Ave & Ulloa St"
   ],
   "service": {
    "wd": {
@@ -3901,8 +3895,7 @@
    "Muni L"
   ],
   "aka": [
-   "46th Ave & Vicente St",
-   "46th Avenue & Vicente Street"
+   "46th Ave & Vicente St"
   ],
   "service": {
    "wd": {
@@ -3982,8 +3975,7 @@
   ],
   "aka": [
    "Irving St & 8th Ave",
-   "Irving Street & 8th Avenue",
-   "9th Avenue & Irving Street"
+   "9th Ave & Irving St"
   ],
   "service": {
    "wd": {
@@ -4180,8 +4172,7 @@
    "Muni M"
   ],
   "aka": [
-   "Broad St & Capitol Ave",
-   "Broad Street & Capitol Avenue"
+   "Broad St & Capitol Ave"
   ],
   "service": {
    "wd": {
@@ -4221,8 +4212,7 @@
   ],
   "aka": [
    "Broad St & Orizaba Ave",
-   "Broad Street & Orizaba Avenue",
-   "Orizaba Avenue & Broad Street"
+   "Orizaba Ave & Broad St"
   ],
   "service": {
    "wd": {
@@ -4261,8 +4251,7 @@
    "Muni M"
   ],
   "aka": [
-   "Broad St & Plymouth Ave",
-   "Broad Street & Plymouth Avenue"
+   "Broad St & Plymouth Ave"
   ],
   "service": {
    "wd": {
@@ -4301,8 +4290,7 @@
    "Muni N"
   ],
   "aka": [
-   "Carl St & Cole St",
-   "Carl Street & Cole Street"
+   "Carl St & Cole St"
   ],
   "service": {
    "wd": {
@@ -4341,8 +4329,7 @@
    "Muni N"
   ],
   "aka": [
-   "Carl St & Hillway Ave",
-   "Carl Street & Hillway Avenue"
+   "Carl St & Hillway Ave"
   ],
   "service": {
    "wd": {
@@ -4381,8 +4368,7 @@
    "Muni N"
   ],
   "aka": [
-   "Carl St & Stanyan St",
-   "Carl Street & Stanyan Street"
+   "Carl St & Stanyan St"
   ],
   "service": {
    "wd": {
@@ -4423,10 +4409,10 @@
    "Muni M"
   ],
   "aka": [
-   "17th Street & Castro Street",
+   "17th St & Castro St",
    "Castro",
    "Castro Station",
-   "Market Street & Noe Street"
+   "Market St & Noe St"
   ],
   "service": {
    "wd": {
@@ -4504,8 +4490,7 @@
    "Muni J"
   ],
   "aka": [
-   "Church St & 16th St",
-   "Church Street & 16th Street"
+   "Church St & 16th St"
   ],
   "service": {
    "wd": {
@@ -4544,8 +4529,7 @@
    "Muni J"
   ],
   "aka": [
-   "Church St & 22nd St",
-   "Church Street & 22nd Street"
+   "Church St & 22nd St"
   ],
   "service": {
    "wd": {
@@ -4584,8 +4568,7 @@
    "Muni J"
   ],
   "aka": [
-   "Church St & 24th St",
-   "Church Street & 24th Street"
+   "Church St & 24th St"
   ],
   "service": {
    "wd": {
@@ -4624,8 +4607,7 @@
    "Muni J"
   ],
   "aka": [
-   "Church St & 26th St",
-   "Church Street & 26th Street"
+   "Church St & 26th St"
   ],
   "service": {
    "wd": {
@@ -4664,8 +4646,7 @@
    "Muni J"
   ],
   "aka": [
-   "Church St & 28th St",
-   "Church Street & 28th Street"
+   "Church St & 28th St"
   ],
   "service": {
    "wd": {
@@ -4705,9 +4686,7 @@
   ],
   "aka": [
    "Church St & 30th St",
-   "Church Street & 30th Street",
-   "Church St & Day St",
-   "Church Street & Day Street"
+   "Church St & Day St"
   ],
   "service": {
    "wd": {
@@ -4748,8 +4727,7 @@
   ],
   "aka": [
    "Church St & Duboce Ave",
-   "Church Street & Duboce Avenue",
-   "Duboce Avenue & Church Street"
+   "Duboce Ave & Church St"
   ],
   "service": {
    "wd": {
@@ -4793,8 +4771,8 @@
   "aka": [
    "Church",
    "Church St Station",
-   "Church Street & Market Street",
-   "Market Street & Church Street",
+   "Church St & Market St",
+   "Market St & Church St",
    "Church & Market"
   ],
   "service": {
@@ -4873,8 +4851,7 @@
    "Muni F"
   ],
   "aka": [
-   "Don Chee Way & Steuart St",
-   "Don Chee Way & Steuart Street"
+   "Don Chee Way & Steuart St"
   ],
   "service": {
    "wd": {
@@ -4997,8 +4974,7 @@
   ],
   "aka": [
    "Irving St & Arguello Blvd",
-   "Irving Street & Arguello Boulevard",
-   "Irving Street & 2nd Avenue"
+   "Irving St & 2nd Ave"
   ],
   "service": {
    "wd": {
@@ -5038,8 +5014,7 @@
   ],
   "aka": [
    "Irving St & 5th Ave",
-   "Irving Street & 5th Avenue",
-   "Irving Street & 6th Avenue"
+   "Irving St & 6th Ave"
   ],
   "service": {
    "wd": {
@@ -5078,8 +5053,7 @@
    "Muni F"
   ],
   "aka": [
-   "Jefferson St & Powell St",
-   "Jefferson Street & Powell Street"
+   "Jefferson St & Powell St"
   ],
   "service": {
    "wd": {
@@ -5157,8 +5131,7 @@
    "Muni F"
   ],
   "aka": [
-   "Jones St & Beach St",
-   "Jones Street & Beach Street"
+   "Jones St & Beach St"
   ],
   "service": {
    "wd": {
@@ -5197,8 +5170,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 12th Ave",
-   "Judah Street & 12th Avenue"
+   "Judah St & 12th Ave"
   ],
   "service": {
    "wd": {
@@ -5238,8 +5210,7 @@
   ],
   "aka": [
    "Judah St & 15th Ave",
-   "Judah Street & 15th Avenue",
-   "Judah Street & 16th Avenue"
+   "Judah St & 16th Ave"
   ],
   "service": {
    "wd": {
@@ -5278,8 +5249,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 19th Ave",
-   "Judah Street & 19th Avenue"
+   "Judah St & 19th Ave"
   ],
   "service": {
    "wd": {
@@ -5319,8 +5289,7 @@
   ],
   "aka": [
    "Judah St & 22nd Ave",
-   "Judah Street & 22nd Avenue",
-   "Judah Street & 23rd Avenue"
+   "Judah St & 23rd Ave"
   ],
   "service": {
    "wd": {
@@ -5359,8 +5328,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 25th Ave",
-   "Judah Street & 25th Avenue"
+   "Judah St & 25th Ave"
   ],
   "service": {
    "wd": {
@@ -5399,8 +5367,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 28th Ave",
-   "Judah Street & 28th Avenue"
+   "Judah St & 28th Ave"
   ],
   "service": {
    "wd": {
@@ -5439,8 +5406,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 31st Ave",
-   "Judah Street & 31st Avenue"
+   "Judah St & 31st Ave"
   ],
   "service": {
    "wd": {
@@ -5479,8 +5445,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 34th Ave",
-   "Judah Street & 34th Avenue"
+   "Judah St & 34th Ave"
   ],
   "service": {
    "wd": {
@@ -5519,8 +5484,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 40th Ave",
-   "Judah Street & 40th Avenue"
+   "Judah St & 40th Ave"
   ],
   "service": {
    "wd": {
@@ -5559,8 +5523,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 43rd Ave",
-   "Judah Street & 43rd Avenue"
+   "Judah St & 43rd Ave"
   ],
   "service": {
    "wd": {
@@ -5599,8 +5562,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 46th Ave",
-   "Judah Street & 46th Avenue"
+   "Judah St & 46th Ave"
   ],
   "service": {
    "wd": {
@@ -5640,7 +5602,7 @@
   ],
   "aka": [
    "Judah St & La Playa St (Ocean Beach)",
-   "Judah Street & La Playa Street"
+   "Judah St & La Playa St"
   ],
   "service": {
    "wd": {
@@ -5679,8 +5641,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & 9th Ave",
-   "Judah Street & 9th Avenue"
+   "Judah St & 9th Ave"
   ],
   "service": {
    "wd": {
@@ -5719,8 +5680,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & Sunset Blvd",
-   "Judah Street & Sunset Boulevard"
+   "Judah St & Sunset Blvd"
   ],
   "service": {
    "wd": {
@@ -5759,8 +5719,7 @@
    "Muni K"
   ],
   "aka": [
-   "Junipero Serra Blvd & Ocean Ave",
-   "Junipero Serra Boulevard & Ocean Avenue"
+   "Junipero Serra Blvd & Ocean Ave"
   ],
   "service": {
    "wd": {
@@ -5839,8 +5798,7 @@
    "Muni K"
   ],
   "aka": [
-   "Ocean Ave & Aptos Ave",
-   "Ocean Avenue & Aptos Avenue"
+   "Ocean Ave & Aptos Ave"
   ],
   "service": {
    "wd": {
@@ -5880,8 +5838,7 @@
   ],
   "aka": [
    "Ocean Ave & Victoria St",
-   "Ocean Avenue & Victoria Street",
-   "Ocean Avenue & Fairfield Way"
+   "Ocean Ave & Fairfield Way"
   ],
   "service": {
    "wd": {
@@ -5921,8 +5878,7 @@
   ],
   "aka": [
    "Ocean Ave & Jules Ave",
-   "Ocean Avenue & Jules Avenue",
-   "Ocean Avenue & Dorado Terrace"
+   "Ocean Ave & Dorado Terrace"
   ],
   "service": {
    "wd": {
@@ -5961,8 +5917,7 @@
    "Muni K"
   ],
   "aka": [
-   "Ocean Ave & Lee Ave",
-   "Ocean Avenue & Lee Avenue"
+   "Ocean Ave & Lee Ave"
   ],
   "service": {
    "wd": {
@@ -6001,8 +5956,7 @@
    "Muni K"
   ],
   "aka": [
-   "Ocean Ave & Miramar Ave",
-   "Ocean Avenue & Miramar Avenue"
+   "Ocean Ave & Miramar Ave"
   ],
   "service": {
    "wd": {
@@ -6041,8 +5995,7 @@
    "Muni K"
   ],
   "aka": [
-   "Ocean Ave & San Leandro Way",
-   "Ocean Avenue & San Leandro Way"
+   "Ocean Ave & San Leandro Way"
   ],
   "service": {
    "wd": {
@@ -6082,8 +6035,7 @@
   ],
   "aka": [
    "Ocean Ave & Westgate Dr",
-   "Ocean Avenue & Cerritos Avenue",
-   "Ocean Avenue & Westgate Drive"
+   "Ocean Ave & Cerritos Ave"
   ],
   "service": {
    "wd": {
@@ -6122,8 +6074,7 @@
    "Muni M"
   ],
   "aka": [
-   "Randolph St & Arch St",
-   "Randolph Street & Arch Street"
+   "Randolph St & Arch St"
   ],
   "service": {
    "wd": {
@@ -6162,8 +6113,7 @@
    "Muni M"
   ],
   "aka": [
-   "Randolph St & Bright St",
-   "Randolph Street & Bright Street"
+   "Randolph St & Bright St"
   ],
   "service": {
    "wd": {
@@ -6202,9 +6152,9 @@
    "Muni J"
   ],
   "aka": [
-   "Church Street & 18th Street",
+   "Church St & 18th St",
    "Right Of Way/18th St",
-   "Right of Way & 18th Street"
+   "Right of Way & 18th St"
   ],
   "service": {
    "wd": {
@@ -6244,7 +6194,7 @@
   ],
   "aka": [
    "Right Of Way/20th St",
-   "Right of Way & 20th Street"
+   "Right of Way & 20th St"
   ],
   "service": {
    "wd": {
@@ -6284,7 +6234,7 @@
   ],
   "aka": [
    "Right Of Way/21st St",
-   "Right of Way & 21st Street"
+   "Right of Way & 21st St"
   ],
   "service": {
    "wd": {
@@ -6324,8 +6274,8 @@
   ],
   "aka": [
    "Right Of Way/Ocean Ave",
-   "Right of Way & Eucalyptus Drive",
-   "Right of Way & Ocean Avenue"
+   "Right of Way & Eucalyptus Dr",
+   "Right of Way & Ocean Ave"
   ],
   "service": {
    "wd": {
@@ -6404,8 +6354,7 @@
    "Muni M"
   ],
   "aka": [
-   "San Jose Ave & Farallones St",
-   "San Jose Avenue & Farallones Street"
+   "San Jose Ave & Farallones St"
   ],
   "service": {
    "wd": {
@@ -6444,8 +6393,7 @@
    "Muni M"
   ],
   "aka": [
-   "San Jose Ave & Lakeview Ave",
-   "San Jose Avenue & Lakeview Avenue"
+   "San Jose Ave & Lakeview Ave"
   ],
   "service": {
    "wd": {
@@ -6485,8 +6433,7 @@
   ],
   "aka": [
    "San Jose Ave & Niagara Ave",
-   "San Jose Avenue & Niagara Avenue",
-   "San Jose Avenue & Mount Vernon Avenue"
+   "San Jose Ave & Mount Vernon Ave"
   ],
   "service": {
    "wd": {
@@ -6525,8 +6472,7 @@
    "Muni J"
   ],
   "aka": [
-   "San Jose Ave & Ocean Ave",
-   "San Jose Avenue & Ocean Avenue"
+   "San Jose Ave & Ocean Ave"
   ],
   "service": {
    "wd": {
@@ -6565,8 +6511,7 @@
    "Muni J"
   ],
   "aka": [
-   "San Jose Ave & Randall St",
-   "San Jose Avenue & Randall Street"
+   "San Jose Ave & Randall St"
   ],
   "service": {
    "wd": {
@@ -6605,8 +6550,7 @@
    "Muni J"
   ],
   "aka": [
-   "San Jose Ave & Santa Rosa Ave",
-   "San Jose Avenue & Santa Rosa Avenue"
+   "San Jose Ave & Santa Rosa Ave"
   ],
   "service": {
    "wd": {
@@ -6645,8 +6589,7 @@
    "Muni J"
   ],
   "aka": [
-   "San Jose Ave & Santa Ynez Ave",
-   "San Jose Avenue & Santa Ynez Avenue"
+   "San Jose Ave & Santa Ynez Ave"
   ],
   "service": {
    "wd": {
@@ -6724,8 +6667,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 17th Ave",
-   "Taraval Street & 17th Avenue"
+   "Taraval St & 17th Ave"
   ],
   "service": {
    "wd": {
@@ -6764,8 +6706,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 19th Ave",
-   "Taraval Street & 19th Avenue"
+   "Taraval St & 19th Ave"
   ],
   "service": {
    "wd": {
@@ -6804,8 +6745,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 22nd Ave",
-   "Taraval Street & 22nd Avenue"
+   "Taraval St & 22nd Ave"
   ],
   "service": {
    "wd": {
@@ -6844,8 +6784,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 23rd Ave",
-   "Taraval Street & 23rd Avenue"
+   "Taraval St & 23rd Ave"
   ],
   "service": {
    "wd": {
@@ -6884,8 +6823,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 26th Ave",
-   "Taraval Street & 26th Avenue"
+   "Taraval St & 26th Ave"
   ],
   "service": {
    "wd": {
@@ -6924,8 +6862,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 30th Ave",
-   "Taraval Street & 30th Avenue"
+   "Taraval St & 30th Ave"
   ],
   "service": {
    "wd": {
@@ -6964,8 +6901,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 32nd Ave",
-   "Taraval Street & 32nd Avenue"
+   "Taraval St & 32nd Ave"
   ],
   "service": {
    "wd": {
@@ -7004,8 +6940,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 40th Ave",
-   "Taraval Street & 40th Avenue"
+   "Taraval St & 40th Ave"
   ],
   "service": {
    "wd": {
@@ -7044,8 +6979,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 42nd Ave",
-   "Taraval Street & 42nd Avenue"
+   "Taraval St & 42nd Ave"
   ],
   "service": {
    "wd": {
@@ -7084,8 +7018,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & 44th Ave",
-   "Taraval Street & 44th Avenue"
+   "Taraval St & 44th Ave"
   ],
   "service": {
    "wd": {
@@ -7124,8 +7057,7 @@
    "Muni L"
   ],
   "aka": [
-   "Taraval St & Sunset Blvd",
-   "Taraval Street & Sunset Boulevard"
+   "Taraval St & Sunset Blvd"
   ],
   "service": {
    "wd": {
@@ -7164,8 +7096,7 @@
    "Muni F"
   ],
   "aka": [
-   "The Embarcadero & Bay St",
-   "The Embarcadero & Bay Street"
+   "The Embarcadero & Bay St"
   ],
   "service": {
    "wd": {
@@ -7323,8 +7254,7 @@
    "Muni F"
   ],
   "aka": [
-   "The Embarcadero & Green St",
-   "The Embarcadero & Green Street"
+   "The Embarcadero & Green St"
   ],
   "service": {
    "wd": {
@@ -7363,8 +7293,7 @@
    "Muni F"
   ],
   "aka": [
-   "The Embarcadero & Greenwich St",
-   "The Embarcadero & Greenwich Street"
+   "The Embarcadero & Greenwich St"
   ],
   "service": {
    "wd": {
@@ -7403,8 +7332,7 @@
    "Muni F"
   ],
   "aka": [
-   "The Embarcadero & Sansome St",
-   "The Embarcadero & Sansome Street"
+   "The Embarcadero & Sansome St"
   ],
   "service": {
    "wd": {
@@ -7482,8 +7410,7 @@
    "Muni F"
   ],
   "aka": [
-   "The Embarcadero & Washington St",
-   "The Embarcadero & Washington Street"
+   "The Embarcadero & Washington St"
   ],
   "service": {
    "wd": {
@@ -7600,8 +7527,7 @@
    "Muni L"
   ],
   "aka": [
-   "Ulloa St & Forest Side Ave",
-   "Ulloa Street & Forest Side Avenue"
+   "Ulloa St & Forest Side Ave"
   ],
   "service": {
    "wd": {
@@ -7640,7 +7566,7 @@
    "Muni T"
   ],
   "aka": [
-   "Union Square/Market Street"
+   "Union Square/Market St"
   ],
   "service": {
    "wd": {
@@ -7683,8 +7609,8 @@
    "Muni N"
   ],
   "aka": [
-   "Market Street & South Van Ness Avenue",
-   "Market Street & Van Ness Avenue",
+   "Market St & South Van Ness Ave",
+   "Market St & Van Ness Ave",
    "Van Ness",
    "Van Ness Station"
   ],
@@ -7725,10 +7651,10 @@
    "Muni L"
   ],
   "aka": [
-   "47th Avenue & Cutler Avenue",
-   "SF ZOO (Wawona Street & 46th Avenue)",
+   "47th Ave & Cutler Ave",
+   "SF ZOO (Wawona St & 46th Ave)",
    "Wawona St & 46th Ave (SF Zoo)",
-   "Wawona Street & 46th Avenue"
+   "Wawona St & 46th Ave"
   ],
   "service": {
    "wd": {
@@ -7768,8 +7694,7 @@
    "Muni M"
   ],
   "aka": [
-   "West Portal Ave & 14th Ave",
-   "West Portal Avenue & 14th Avenue"
+   "West Portal Ave & 14th Ave"
   ],
   "service": {
    "wd": {
@@ -10055,8 +9980,7 @@
    "Muni N"
   ],
   "aka": [
-   "Judah St & Funston Ave",
-   "Judah Street & Funston Avenue"
+   "Judah St & Funston Ave"
   ],
   "service": {
    "wd": {
@@ -10466,7 +10390,7 @@
   ],
   "aka": [
    "Right Of Way/Liberty St",
-   "Right of Way & Liberty Street"
+   "Right of Way & Liberty St"
   ],
   "service": {
    "wd": {
@@ -10505,8 +10429,7 @@
    "Muni J"
   ],
   "aka": [
-   "Church St & 29th St",
-   "Church Street & 29th Street"
+   "Church St & 29th St"
   ],
   "service": {
    "wd": {
