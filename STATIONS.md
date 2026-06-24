@@ -1,14 +1,14 @@
 # Bay Area Hide & Seek — Eligible Stations
 
-**260 unique hideable stations** (deduped within and across systems).
-Eligible counts after the <1 hr-frequency rule: 259 weekday / 260 weekend.
+**264 unique hideable stations** (deduped within and across systems).
+Eligible counts after the <1 hr-frequency rule: 263 weekday / 264 weekend.
 
 Hide only at these stations; travel by any public transit. WD/WE = served on weekday/weekend; ✓ = at least hourly during the daytime window.
 
 Stations are grouped below by **primary system**, so each shared station is
 listed once (e.g. 4th & King appears under Caltrain, not also under Muni); the
 "shared" tag notes the other systems. Per-system *membership* counts (a shared
-station counted in every system it serves) are BART 50 · Caltrain 24 · VTA 59 · Muni 128 · SFO AirTrain 11. (10 F-only surface stops on Market St inland of Embarcadero are
+station counted in every system it serves) are BART 50 · Caltrain 24 · VTA 59 · Muni 132 · SFO AirTrain 11. (10 F-only surface stops on Market St inland of Embarcadero are
 excluded — they sit directly above the Muni Metro subway and duplicate those
 stations.)
 
@@ -17,9 +17,9 @@ stations.)
 | BART | 50 |
 | Caltrain | 23 |
 | VTA | 55 |
-| Muni | 122 |
+| Muni | 126 |
 | SFO AirTrain | 10 |
-| **Total (deduped)** | **260** |
+| **Total (deduped)** | **264** |
 
 ## BART (50)
 
@@ -164,13 +164,13 @@ stations.)
 | Whisman | Orange | ✓ | ✓ | 37.3921, -122.0583 |
 | Winchester | Green | ✓ | ✓ | 37.2796, -121.9479 |
 
-## Muni (122)
+## Muni (126)
 
 | Station | Lines | WD | WE | Lat, Lon |
 |---|---|:--:|:--:|---|
 | 15th Ave & Taraval St | L | ✓ | ✓ | 37.7431, -122.4714 |
 | 19th Ave & Holloway Ave (SF State) | M | ✓ | ✓ | 37.7217, -122.4752 |
-| 19th Ave & North Randolph St | M | ✓ | ✓ | 37.7165, -122.4720 |
+| 19th Ave & Junipero Serra Blvd | M | ✓ | ✓ | 37.7165, -122.4720 |
 | 19th Ave & Randolph St | M | ✓ | ✓ | 37.7146, -122.4701 |
 | 19th Ave & Winston Dr (Stonestown) | M | ✓ | ✓ | 37.7274, -122.4749 |
 | 30th St & Dolores St | J | ✓ | ✓ | 37.7422, -122.4243 |
@@ -208,11 +208,13 @@ stations.)
 | Church St & 24th St | J | ✓ | ✓ | 37.7519, -122.4275 |
 | Church St & 26th St | J | ✓ | ✓ | 37.7485, -122.4271 |
 | Church St & 28th St | J | ✓ | ✓ | 37.7453, -122.4268 |
-| Church St & Day St | J | ✓ | ✓ | 37.7428, -122.4266 |
+| Church St & 29th St | J | ✓ | ✓ | 37.7436, -122.4266 |
+| Church St & 30th St | J | ✓ | ✓ | 37.7422, -122.4264 |
 | Church St & Duboce Ave | J, N | ✓ | ✓ | 37.7694, -122.4292 |
-| Church St Station | K, L, M | ✓ | ✓ | 37.7672, -122.4292 |
+| Church St Station | J, K, L, M | ✓ | ✓ | 37.7672, -122.4292 |
 | City College Pedestrian Bridge | K | ✓ | ✓ | 37.7230, -122.4510 |
 | Don Chee Way & Steuart St | F | ✓ | ✓ | 37.7940, -122.3936 |
+| Duboce Ave & Noe St (Sunset Tunnel East Portal) | N | ✓ | ✓ | 37.7693, -122.4337 |
 | Forest Hill Station | K, L, M | ✓ | ✓ | 37.7480, -122.4591 |
 | Irving St & 5th Ave | N | ✓ | ✓ | 37.7642, -122.4621 |
 | Irving St & 8th Ave | N | ✓ | ✓ | 37.7640, -122.4654 |
@@ -243,14 +245,14 @@ stations.)
 | Ocean Ave & Miramar Ave | K | ✓ | ✓ | 37.7243, -122.4582 |
 | Ocean Ave & San Leandro Way | K | ✓ | ✓ | 37.7300, -122.4694 |
 | Ocean Ave & Victoria St | K | ✓ | ✓ | 37.7260, -122.4643 |
-| Ocean Ave & Westgate Dr | K | ✓ | ✓ | 37.7272, -122.4667 |
 | Randolph St & Arch St | M | ✓ | ✓ | 37.7143, -122.4671 |
 | Randolph St & Bright St | M | ✓ | ✓ | 37.7143, -122.4635 |
 | Right Of Way/18th St | J | ✓ | ✓ | 37.7612, -122.4283 |
 | Right Of Way/20th St | J | ✓ | ✓ | 37.7584, -122.4279 |
-| Right Of Way/21st St | J | ✓ | ✓ | 37.7570, -122.4270 |
-| Right Of Way/Ocean Ave | M | ✓ | ✓ | 37.7315, -122.4741 |
-| Saint Francis Circle | K, M | ✓ | ✓ | 37.7355, -122.4712 |
+| Right Of Way/21st St | J | ✓ | ✓ | 37.7565, -122.4269 |
+| Right Of Way/Eucalyptus Dr | M | ✓ | ✓ | 37.7311, -122.4744 |
+| Right Of Way/Liberty St | J | ✓ | ✓ | 37.7573, -122.4269 |
+| Right Of Way/Ocean Ave | M | ✓ | ✓ | 37.7319, -122.4738 |
 | San Jose Ave & Farallones St | M | ✓ | ✓ | 37.7141, -122.4522 |
 | San Jose Ave & Lakeview Ave | M | ✓ | ✓ | 37.7162, -122.4504 |
 | San Jose Ave & Niagara Ave | M | ✓ | ✓ | 37.7201, -122.4472 |
@@ -259,7 +261,6 @@ stations.)
 | San Jose Ave & Santa Rosa Ave | J | ✓ | ✓ | 37.7291, -122.4398 |
 | San Jose Ave & Santa Ynez Ave | J | ✓ | ✓ | 37.7258, -122.4424 |
 | San Jose Ave/Glen Park Station | J | ✓ | ✓ | 37.7325, -122.4334 |
-| Sunset Tunnel East Portal | N | ✓ | ✓ | 37.7693, -122.4337 |
 | Taraval St & 17th Ave | L | ✓ | ✓ | 37.7431, -122.4737 |
 | Taraval St & 19th Ave | L | ✓ | ✓ | 37.7431, -122.4757 |
 | Taraval St & 22nd Ave | L | ✓ | ✓ | 37.7429, -122.4785 |
@@ -283,11 +284,14 @@ stations.)
 | The Embarcadero/Ferry Bldg | F | ✓ | ✓ | 37.7952, -122.3940 |
 | UCSF Medical Center | T | ✓ | ✓ | 37.7643, -122.3889 |
 | UCSF/Chase Center | T | ✓ | ✓ | 37.7682, -122.3892 |
+| Ulloa St & 14th Ave | L | ✓ | ✓ | 37.7414, -122.4701 |
 | Ulloa St & Forest Side Ave | L | ✓ | ✓ | 37.7415, -122.4686 |
+| Ulloa St & West Portal Ave | L | ✓ | ✓ | 37.7411, -122.4662 |
 | Union Square/Market Street | T | ✓ | ✓ | 37.7865, -122.4062 |
 | Van Ness Station | J, K, L, M, N | ✓ | ✓ | 37.7752, -122.4192 |
 | Wawona St & 46th Ave (SF Zoo) | L | ✓ | ✓ | 37.7363, -122.5049 |
 | West Portal Ave & 14th Ave | K, M | ✓ | ✓ | 37.7380, -122.4691 |
+| West Portal Ave & Sloat Blvd (Saint Francis Cir) | K, M | ✓ | ✓ | 37.7355, -122.4712 |
 | West Portal Station | K, L, M | ✓ | ✓ | 37.7413, -122.4655 |
 | Yerba Buena/Moscone | T | ✓ | ✓ | 37.7824, -122.4017 |
 
