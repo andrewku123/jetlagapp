@@ -38,6 +38,7 @@
       <div><span class="sw" style="background:#27ae60;display:inline-block"></span> <b>kept</b> (representative)</div>
       <div><span class="sw" style="background:#c0392b;display:inline-block"></span> <b>merged away</b> — name match</div>
       <div><span class="sw" style="background:#e67e22;display:inline-block"></span> <b>merged away</b> — OSM footprint</div>
+      <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
       <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
       <div style="margin-top:6px">Grey line links each absorbed pin → its representative. Click any dot for its name + reviews.</div>
     </div>
@@ -70,10 +71,11 @@ function build(key){
   d.groups.forEach(grp=>{
     const R=grp.rep;
     grp.kids.forEach(k=>{
-      const isosm=k.src==='osm'; const col2=isosm?'#e67e22':'#c0392b';
+      const col2=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b';
+      const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
       L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:1.2,opacity:.8,dashArray:'3,3'}).addTo(g);
       L.circleMarker([k.lat,k.lon],{radius:5,color:'#fff',weight:1.5,fillColor:col2,fillOpacity:1})
-        .bindPopup(popup(k,isosm?'merged (OSM footprint)':'merged (name match)')).addTo(g);
+        .bindPopup(popup(k,klabel)).addTo(g);
     });
     L.circleMarker([R.lat,R.lon],{radius:7,color:'#fff',weight:2,fillColor:'#27ae60',fillOpacity:1})
       .bindPopup(popup(R,'kept')).addTo(g);
