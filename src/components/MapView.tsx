@@ -576,16 +576,24 @@ function escapeHtml(s: string): string {
 
 // Reference POI overlay. Drawn imperatively onto a single shared canvas rather
 // than as React components: there can be thousands of POIs, so a declarative
-// CircleMarker per point would be far too heavy. POIs live in the overlay pane,
-// which is below the markerPane the stations use, so stations always render on
-// top and win clicks. POIs are only interactive (popups) in select mode.
+// CircleMarker per point would be far too heavy. The POI canvas lives in its own
+// pane *below* the overlay pane the stations render into, so a station always
+// wins the click when it sits on top of a POI (clicking a station in select mode
+// still opens its popup even with the POI tab open); a POI only takes the click
+// where no station covers it. POIs are only interactive (popups) in select mode.
 function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boolean }) {
   const map = useMap()
   const groupRef = useRef<L.LayerGroup | null>(null)
   const rendererRef = useRef<L.Canvas | null>(null)
 
   useEffect(() => {
-    const renderer = L.canvas({ padding: 0.5 })
+    const paneName = 'poi'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      pane.style.zIndex = '350' // above satellite (250)/tiles (200), below overlay (400)
+    }
+    const renderer = L.canvas({ padding: 0.5, pane: paneName })
     const group = L.layerGroup([]).addTo(map)
     rendererRef.current = renderer
     groupRef.current = group
