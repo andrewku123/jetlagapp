@@ -576,22 +576,35 @@ function escapeHtml(s: string): string {
 
 // Reference POI overlay. Drawn imperatively onto a single shared canvas rather
 // than as React components: there can be thousands of POIs, so a declarative
-// CircleMarker per point would be far too heavy. POIs live in the overlay pane,
-// which is below the markerPane the stations use, so stations always render on
-// top and win clicks. POIs are only interactive (popups) in select mode.
+// CircleMarker per point would be far too heavy. The POI canvas lives in its own
+// pane (z 410) *below* the station pane (z 450). Stations render as SVG (sparse
+// hit targets whose pane container is click-through), so a station wins the click
+// where it overlaps a POI (its popup opens even with the POI tab open) while a
+// POI still takes the click where no station covers it. Only mounted while the
+// POI tab is open; POIs are only interactive (popups) in select mode.
 function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boolean }) {
   const map = useMap()
   const groupRef = useRef<L.LayerGroup | null>(null)
   const rendererRef = useRef<L.Canvas | null>(null)
 
   useEffect(() => {
-    const renderer = L.canvas({ padding: 0.5 })
+    const paneName = 'poi'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      // above the overlay pane (400) the county/transit canvas lives in, below the
+      // station pane (450), so POIs stay clickable but a station always wins overlap
+      pane.style.zIndex = '410'
+    }
+    const renderer = L.canvas({ padding: 0.5, pane: paneName })
     const group = L.layerGroup([]).addTo(map)
     rendererRef.current = renderer
     groupRef.current = group
     return () => {
       group.remove()
+      renderer.remove()
       groupRef.current = null
+      rendererRef.current = null
     }
   }, [map])
 
@@ -623,6 +636,30 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
     }
   }, [pois, interactive])
 
+  return null
+}
+
+// Dedicated SVG renderer for the station markers, in a pane above the POI canvas.
+// SVG (rather than the map's default canvas) is what lets a click that misses a
+// station fall through to the POI layer below: an SVG renderer's pane container is
+// click-through and only the individual circle <path>s are hit targets, whereas a
+// canvas is one opaque element that would swallow every click in its area.
+function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) {
+  const map = useMap()
+  useEffect(() => {
+    const paneName = 'stations'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      pane.style.zIndex = '450' // above POI (410)/overlay (400), below markerPane (600)
+    }
+    const renderer = L.svg({ padding: 0.5, pane: paneName }).addTo(map)
+    onChange(renderer)
+    return () => {
+      renderer.remove()
+      onChange(null)
+    }
+  }, [map, onChange])
   return null
 }
 
@@ -710,6 +747,9 @@ export default function MapView({
   const setHover = (idx: number | null) => {
     if (!draggingRef.current) setSnapHover(idx)
   }
+  // shared SVG renderer for the station markers (see StationRenderer); kept in
+  // state so the markers only mount once the renderer/pane exist
+  const [stationRenderer, setStationRenderer] = useState<L.SVG | null>(null)
 
   function readCoord(p: LatLng) {
     setCoordPin(p)
@@ -1033,7 +1073,8 @@ export default function MapView({
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
-        <PoiLayer pois={pois} interactive={selectMode} />
+        <StationRenderer onChange={setStationRenderer} />
+        {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
         <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
@@ -1062,12 +1103,14 @@ export default function MapView({
         )}
 
         {showEliminated &&
+          stationRenderer &&
           eliminated.map((st) => (
             <CircleMarker
               key={st.id + (selectMode ? '-s' : '-d')}
               center={[st.lat, st.lon]}
               radius={5}
               interactive={selectMode}
+              renderer={stationRenderer}
               pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
             >
               <Popup>
@@ -1086,7 +1129,8 @@ export default function MapView({
             </CircleMarker>
           ))}
 
-        {remaining.map((st) => {
+        {stationRenderer &&
+          remaining.map((st) => {
           const c = stationColor(st)
           const star = starred.has(st.id)
           return (
@@ -1095,6 +1139,7 @@ export default function MapView({
               center={[st.lat, st.lon]}
               radius={star ? 11 : 6}
               interactive={selectMode}
+              renderer={stationRenderer}
               pathOptions={{
                 color: star ? '#b8860b' : c,
                 weight: star ? 3 : 1.5,
