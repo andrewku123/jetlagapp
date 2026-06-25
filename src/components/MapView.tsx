@@ -16,6 +16,7 @@ import {
 import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
+import type { RenderPoi } from '../lib/poi'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
@@ -208,6 +209,7 @@ interface Props {
   focusTarget: { station: Station; nonce: number } | null
   onStartEndgame: (id: string) => void
   onExitEndgame: () => void
+  pois: RenderPoi[]
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -566,6 +568,64 @@ function MeasureEditPopup({
 
 const rid = () => Math.random().toString(36).slice(2, 9)
 
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!,
+  )
+}
+
+// Reference POI overlay. Drawn imperatively onto a single shared canvas rather
+// than as React components: there can be thousands of POIs, so a declarative
+// CircleMarker per point would be far too heavy. POIs live in the overlay pane,
+// which is below the markerPane the stations use, so stations always render on
+// top and win clicks. POIs are only interactive (popups) in select mode.
+function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boolean }) {
+  const map = useMap()
+  const groupRef = useRef<L.LayerGroup | null>(null)
+  const rendererRef = useRef<L.Canvas | null>(null)
+
+  useEffect(() => {
+    const renderer = L.canvas({ padding: 0.5 })
+    const group = L.layerGroup([]).addTo(map)
+    rendererRef.current = renderer
+    groupRef.current = group
+    return () => {
+      group.remove()
+      groupRef.current = null
+    }
+  }, [map])
+
+  useEffect(() => {
+    const group = groupRef.current
+    const renderer = rendererRef.current
+    if (!group || !renderer) return
+    group.clearLayers()
+    for (const p of pois) {
+      const marker = L.circleMarker([p.lat, p.lon], {
+        renderer,
+        radius: 4,
+        color: '#fff',
+        weight: 1,
+        fillColor: p.color,
+        fillOpacity: 0.9,
+        interactive,
+        bubblingMouseEvents: false,
+      })
+      if (interactive) {
+        const maps = `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`
+        marker.bindPopup(
+          `<div class="popup"><strong>${escapeHtml(p.name)}</strong>` +
+            `<div class="muted">${escapeHtml(p.label)} · ${p.reviews} reviews</div>` +
+            `<a href="${maps}" target="_blank" rel="noreferrer">Open in Google Maps</a></div>`,
+        )
+      }
+      group.addLayer(marker)
+    }
+  }, [pois, interactive])
+
+  return null
+}
+
 export default function MapView({
   remaining,
   eliminated,
@@ -590,6 +650,7 @@ export default function MapView({
   focusTarget,
   onStartEndgame,
   onExitEndgame,
+  pois,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // stations are only clickable in select mode; in draw modes clicks pass
@@ -972,6 +1033,7 @@ export default function MapView({
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
+        <PoiLayer pois={pois} interactive={selectMode} />
 
         <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
         <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
