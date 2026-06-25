@@ -205,9 +205,64 @@ don't repeat that).
   full pull, and the **icon-only `searchText`** (no review fields) for gap
   verification — only on the gap set, hard-capped. A whole new city ≈ the OSM diff
   ($0) + a few hundred no-review lookups (a few $).
-- **Reviews = manual**: the human checks `userRatingCount` by hand on the de-duped
-  survivors. De-dup runs first, so that's a small set, not the raw firehose.
+- **Reviews**: handled by one of two procedures below (A is the current default).
 - Always set the console quota cap + budget alert.
+
+### The >=5-review check — two procedures
+
+Review count is the one fact only Google can give us, and Google charges for it on
+every endpoint. Choose how to pay for it — money or human time:
+
+**Option A — manual (default, ~$0).** Pull in `POI_NO_REVIEWS=1` mode so no review
+fields are ever bought. After de-dup, the reviewer opens the review map and, for
+each surviving pin, clicks through to Google and confirms **>=5 reviews** (skip
+`mountain` — kept regardless). Drop the failures by adding them to the dedup
+overrides / a drop list. De-dup runs first, so this is the survivor set, not the
+raw firehose, but it is real eyeballing. This is the active mode.
+
+**Option B — survivors-only review top-up (~$60-70 one-time, zero rating
+eyeballing).** Same cheap no-review pulls, then run `topup_reviews.py` AFTER
+de-dup: it fetches `userRatingCount` via **Place Details by ID for only the
+de-duped survivors** (the smallest possible set), drops anything < 5 (keeps
+`mountain`), and writes `poi_deduped_reviewed.json`. The reviewer then only
+confirms merges — no rating-checking. Hard `MAX_CALLS` cap + on-disk cache so a
+restart never re-spends; set the quota cap + budget alert first.
+
+```bash
+GOOGLE_PLACES_API_KEY=... python3 topup_reviews.py   # -> poi_deduped_reviewed.json
+```
+
+(Why B is cheaper than re-pulling with reviews: it pays for review counts on the
+~few-thousand *survivors*, not on every raw pin in the firehose. Switch A->B only
+when the user asks.)
+
+### How complete is this? (OSM vs Google — they are NOT nested)
+
+Do **not** assume OSM is a strict superset of Google or vice-versa — neither
+contains the other. They are **complementary**:
+- OSM is usually *richer* for **mountains/peaks, parks, trails, gardens** and many
+  civic places (libraries, museums) — community/enthusiast mapped.
+- Google is usually *richer/more current* for **businesses** — movie theaters,
+  hospitals, golf courses — and anything with reviews.
+
+What the pipeline guarantees: the final set = Google's area-search results **plus**
+any OSM-named place that Google's search missed *and* that still passes a Google
+`searchText` icon lookup (step 3-4). So OSM **widens recall** (catches Google's
+search holes), and the Google icon-check **keeps precision** (an OSM place not on
+Google, or without the icon, is dropped — we never invent POIs OSM-only).
+
+The irreducible hole: a place on **neither** Google's area-search **nor** OSM is
+never seen. OSM only helps to the extent it lists places Google's search missed —
+it does not need to be a superset, just to contain *some* of the misses. For a
+business category where OSM is thin, OSM adds little, so the residual risk is
+Google-search's own recall holes; mitigations, strongest first:
+1. The OSM diff (free) — already in the pipeline.
+2. For a high-stakes category, union an **authoritative list** (e.g. consulates →
+   the official diplomatic directory; hospitals → the state's licensed-hospital
+   list; peaks → USGS GNIS), then icon-check those names the same way.
+3. Human spot-checks on the review map (you already do this).
+No automated pipeline is provably complete; two independent sources + manual
+review is the practical ceiling.
 
 ## Why one-time Google pulls miss places (and why OSM is the fix)
 
