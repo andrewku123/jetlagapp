@@ -161,6 +161,15 @@ The Google icon rule still governs — registries only widen recall.
   **+3 net-new** (Ecuador, Honduras, Nicaragua) Google's search missed. So the
   authoritative layer's payoff is category-dependent: nil where Google is strong,
   real where its search is weak (consulates).
+- Full Bay-Area authoritative sweep result (net-new added back): **consulates +3**
+  (Ecuador, Honduras, Nicaragua); mountains / hospitals / zoos / aquariums **+0**
+  (Google+OSM already cover those registries here). museum/library (IMLS) couldn't
+  be fetched — imls.gov returned 301→000/timeouts from this environment, so they
+  stay on OSM+Google (already backfilled). parks deliberately **not** run: PAD-US
+  is protected-area *boundaries*, not Google park-icon POIs, and OSM already has
+  >2000 — it would mostly produce non-icon candidates the check drops. Takeaway:
+  the authoritative layer earns its keep on the **address/registry categories where
+  Google's area-search is weak (consulates)**, and is confirmation-only elsewhere.
 
 ### 4. `curate_places_poi.py` — apply the icon allowlist + review rule
 - Keeps only `primaryType in ALLOW[cat]` (+ golf/cinema rescue); applies
@@ -305,11 +314,11 @@ agency if a URL 404s.
 | mountain ★ | USGS GNIS / GeoNames `US.zip` | `download.geonames.org/export/dump/US.zip` (coords) |
 | hospital ★ | CMS Hospital General Information | `data.cms.gov` dataset `xubh-q36u` (JSON API; address) |
 | hospital (alt) | HIFLD Hospitals | hifld-geoplatform (ArcGIS; coords) — endpoint moves |
-| museum | IMLS Museum Universe Data File | imls.gov → "museum data files" (CSV) |
-| library | IMLS Public Libraries Survey (public libs) | imls.gov → PLS (outlet file, coords) |
-| zoo / aquarium | AZA accredited list + USDA APHIS exhibitors | aza.org/inst-status; aphis.usda.gov |
+| museum | IMLS Museum Universe Data File | imls.gov → "museum data files" (CSV) — **imls.gov timed out / 000 from this env; OSM already covers museums** |
+| library | IMLS Public Libraries Survey (public libs) | imls.gov → PLS (outlet file, coords) — **same imls.gov access trouble; OSM covers libraries** |
+| zoo / aquarium ★ | AZA current accreditation list | `fetch_zoos_aza.py` scrapes aza.org → `auth_lists/zoo_aquarium.csv` |
 | consulate ★ | US Congressional Directory "Foreign Diplomatic Offices" (govinfo) | `fetch_consulates_fco.py` parses the PDF → `auth_lists/consulate.csv` |
-| park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org (GIS — OSM already strong) |
+| park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org — **GIS boundaries, not Google park-icon POIs; OSM already has thousands; opt-in only (skipped — would mostly drop at icon-check)** |
 
 **Canada** (verified reachable)
 | category | source | access |
