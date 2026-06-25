@@ -96,10 +96,15 @@ cd scripts
 POI_NO_REVIEWS=1 GOOGLE_PLACES_API_KEY=... python3 fetch_places_poi.py   # -> poi_full.json
 # 2. FREE OSM recall safety net: what Google's pull missed
 python3 osm_gap_audit.py                                  # -> osm_gap_candidates.json (+ .md)
-# 3. Cheap icon-verify those gaps (no review fields), then fold survivors in
-GOOGLE_PLACES_API_KEY=... python3 verify_gap_icons.py     # -> poi_gap_verified.json
+#    authoritative registries (3rd source: GeoNames peaks, CMS hospitals, CSV intake)
+python3 authoritative_candidates.py                      # -> auth_gap_candidates.json (FREE)
+# 3. Cheap icon-verify both candidate sets (no review fields), then fold survivors in
+GOOGLE_PLACES_API_KEY=... python3 verify_gap_icons.py     # OSM gaps -> poi_gap_verified.json
+GOOGLE_PLACES_API_KEY=... CAND_FILE=auth_gap_candidates.json OUT_FILE=poi_auth_verified.json \
+  CACHE_FILE=poi_auth_cache.json SOURCE_TAG=authoritative python3 verify_gap_icons.py
 POI_NO_REVIEWS=1 python3 curate_places_poi.py             # -> poi_curated.json (+ poi_review.md)
-python3 apply_gap_backfill.py                             # merges verified gaps into poi_curated.json
+python3 apply_gap_backfill.py                             # folds poi_gap_verified.json in
+IN_FILE=poi_auth_verified.json SOURCE_TAG=authoritative python3 apply_gap_backfill.py
 # 4. De-dup (OSM footprints + name + manual overrides)
 python3 fetch_osm_polys.py                                # -> osm_polys_<cat>.json (FREE)
 python3 dedup_poi.py                                      # -> poi_deduped.json, poi_merge_viz.js
@@ -133,6 +138,26 @@ result **cached to disk**, so a restart never re-spends. `apply_gap_backfill.py`
 then folds the icon-verified survivors into `poi_curated.json`, flagged
 `source=osm_backfill, userRatingCount=None` — the human applies the >=5-review
 rule to them by hand. (Bay Area: 260 candidates → **33** carried a real icon.)
+
+### 2b/3b. `authoritative_candidates.py` — official registries (3rd source)
+A second free discovery source on top of OSM: **official public registries**. It
+normalizes each to the same `{name, lat, lon, query?}` candidate shape and
+gap-filters against our pins, so the survivors flow through the **same**
+`verify_gap_icons.py` icon-check (run it again with `CAND_FILE=auth_gap_candidates.json`).
+The Google icon rule still governs — registries only widen recall.
+- **Built-in automated:** `mountain` ← GeoNames country dump (codes PK/MT, real
+  coords); `hospital` ← CMS Hospital General Information (address-only → the
+  icon-check geocodes via `searchText`).
+- **Generic CSV intake:** drop any list as `auth_lists/*.csv` with columns
+  `category,name,city,state[,lat,lon]` and it's picked up — this is the
+  source-agnostic path for consulates / museums / libraries / zoos / parks and
+  for **any city or country** (see the source tables below). Address-only sources
+  need the play area's admin areas (`US_COUNTIES` in the script) as a coarse
+  pre-filter; precise filtering is the polygon `in_play` check on the Google hit.
+- Bay Area result: GeoNames + CMS surfaced 62 gap candidates → 30 icon-verified →
+  **0 net-new** (all already had Google IDs in our set). That's a *good* outcome:
+  it confirms Google+OSM already cover those registries here. Other cities, or the
+  CSV categories, may yield more.
 
 ### 4. `curate_places_poi.py` — apply the icon allowlist + review rule
 - Keeps only `primaryType in ALLOW[cat]` (+ golf/cinema rescue); applies
@@ -263,6 +288,42 @@ Google-search's own recall holes; mitigations, strongest first:
 3. Human spot-checks on the review map (you already do this).
 No automated pipeline is provably complete; two independent sources + manual
 review is the practical ceiling.
+
+## Authoritative source registry (per category, per country)
+
+The third discovery source. Feed any of these through `authoritative_candidates.py`
+(built-in for the starred ones) or the generic `auth_lists/*.csv` intake, then the
+icon-check. Verified reachable as of this writing; deep links rot — search the
+agency if a URL 404s.
+
+**United States**
+| category | source | access |
+|---|---|---|
+| mountain ★ | USGS GNIS / GeoNames `US.zip` | `download.geonames.org/export/dump/US.zip` (coords) |
+| hospital ★ | CMS Hospital General Information | `data.cms.gov` dataset `xubh-q36u` (JSON API; address) |
+| hospital (alt) | HIFLD Hospitals | hifld-geoplatform (ArcGIS; coords) — endpoint moves |
+| museum | IMLS Museum Universe Data File | imls.gov → "museum data files" (CSV) |
+| library | IMLS Public Libraries Survey (public libs) | imls.gov → PLS (outlet file, coords) |
+| zoo / aquarium | AZA accredited list + USDA APHIS exhibitors | aza.org/inst-status; aphis.usda.gov |
+| consulate | US State Dept "Foreign Consular Offices in the US" | state.gov (JS page → save list to CSV) |
+| park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org (GIS — OSM already strong) |
+
+**Canada** (verified reachable)
+| category | source | access |
+|---|---|---|
+| mountain | GeoNames `CA.zip` / CGNDB (Canadian Geographical Names DB) | `download.geonames.org/export/dump/CA.zip`; open.canada.ca |
+| hospital | StatCan **ODHF** (Open Database of Healthcare Facilities) | statcan.gc.ca/en/lode/databases/odhf (coords; many facility types) |
+| consulate | Global Affairs Canada — foreign representatives in Canada | international.gc.ca/protocol-protocole/reps.aspx |
+| zoo / aquarium | **CAZA** accredited members | caza.ca |
+| museum / library | provincial directories / Canadian Museums Assoc. | no single national open file → CSV intake |
+| park | CARTS / provincial park datasets | open.canada.ca → CSV intake |
+
+**No authoritative public list anywhere** (rely on Google + OSM): `movie_theater`,
+`golf_course`, `amusement_park` — there's no government registry; only commercial
+or community sites (e.g. Cinema Treasures), which we don't treat as authoritative.
+
+To add a country: point `GEONAMES_COUNTRY` at its dump, set the admin-area
+pre-filter, and drop its registries as CSVs. Everything else is unchanged.
 
 ## Why one-time Google pulls miss places (and why OSM is the fix)
 
