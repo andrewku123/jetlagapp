@@ -155,9 +155,12 @@ The Google icon rule still governs — registries only widen recall.
   need the play area's admin areas (`US_COUNTIES` in the script) as a coarse
   pre-filter; precise filtering is the polygon `in_play` check on the Google hit.
 - Bay Area result: GeoNames + CMS surfaced 62 gap candidates → 30 icon-verified →
-  **0 net-new** (all already had Google IDs in our set). That's a *good* outcome:
-  it confirms Google+OSM already cover those registries here. Other cities, or the
-  CSV categories, may yield more.
+  **0 net-new** (all already had Google IDs in our set) — confirming Google+OSM
+  already cover those registries here. The **consulate** CSV (35 official Bay Area
+  consular offices via `fetch_consulates_fco.py`) → 22 gap → 21 icon-verified →
+  **+3 net-new** (Ecuador, Honduras, Nicaragua) Google's search missed. So the
+  authoritative layer's payoff is category-dependent: nil where Google is strong,
+  real where its search is weak (consulates).
 
 ### 4. `curate_places_poi.py` — apply the icon allowlist + review rule
 - Keeps only `primaryType in ALLOW[cat]` (+ golf/cinema rescue); applies
@@ -305,7 +308,7 @@ agency if a URL 404s.
 | museum | IMLS Museum Universe Data File | imls.gov → "museum data files" (CSV) |
 | library | IMLS Public Libraries Survey (public libs) | imls.gov → PLS (outlet file, coords) |
 | zoo / aquarium | AZA accredited list + USDA APHIS exhibitors | aza.org/inst-status; aphis.usda.gov |
-| consulate | US State Dept "Foreign Consular Offices in the US" | state.gov (JS page → save list to CSV) |
+| consulate ★ | US Congressional Directory "Foreign Diplomatic Offices" (govinfo) | `fetch_consulates_fco.py` parses the PDF → `auth_lists/consulate.csv` |
 | park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org (GIS — OSM already strong) |
 
 **Canada** (verified reachable)

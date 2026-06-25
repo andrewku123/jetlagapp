@@ -7,3 +7,7 @@ poi_auth_cache.json
 poi_gap_cache.json
 poi_gap_verified.json
 auth_lists/
+
+# consular directory PDF (re-downloaded on demand)
+consular_directory.pdf
+*DIPLOMATICOFFICES.pdf
