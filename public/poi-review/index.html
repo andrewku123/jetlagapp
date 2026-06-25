@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>POI de-dup — what got merged</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html,body{margin:0;height:100%;font-family:system-ui,Arial,sans-serif}
+  #wrap{display:flex;height:100%}
+  #side{width:300px;overflow:auto;padding:12px 14px;box-sizing:border-box;border-right:1px solid #ddd}
+  #map{flex:1}
+  h2{font-size:16px;margin:0 0 8px}
+  .cat{display:flex;align-items:center;gap:7px;margin:3px 0;font-size:13px;cursor:pointer}
+  .sw{width:13px;height:13px;border-radius:50%;flex:0 0 auto}
+  .cnt{color:#777;margin-left:auto;font-variant-numeric:tabular-nums}
+  .leg{font-size:12px;color:#444;margin-top:12px;line-height:1.5}
+  .leg b{font-weight:600}
+  .ctl{font-size:12px;margin:8px 0}
+  button{font-size:12px;padding:3px 8px;margin-right:6px;cursor:pointer}
+  .tot{font-size:12px;color:#555;margin-top:10px}
+  .lp b{font-size:13px}
+  .lp .k{color:#c0392b}
+  .lp .r{color:#27ae60}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="side">
+    <h2>POI de-dup review</h2>
+    <div class="ctl">
+      <button id="all">Show all</button><button id="none">Hide all</button>
+    </div>
+    <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <div id="cats"></div>
+    <div class="tot" id="tot"></div>
+    <div class="leg">
+      <div><span class="sw" style="background:#27ae60;display:inline-block"></span> <b>kept</b> (representative)</div>
+      <div><span class="sw" style="background:#c0392b;display:inline-block"></span> <b>merged away</b> — name match</div>
+      <div><span class="sw" style="background:#e67e22;display:inline-block"></span> <b>merged away</b> — OSM footprint</div>
+      <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
+      <div style="margin-top:6px">Grey line links each absorbed pin → its representative. Click any dot for its name + reviews.</div>
+    </div>
+  </div>
+  <div id="map"></div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="poi_merge_viz.js"></script>
+<script>
+const COLORS={museum:"#8e44ad",library:"#2980b9",movie_theater:"#16a085",hospital:"#c0392b",
+  zoo:"#d35400",aquarium:"#0097a7",amusement_park:"#e91e63",park:"#27ae60",golf_course:"#7cb342",
+  consulate:"#34495e",mountain:"#795548"};
+const map=L.map('map').setView([37.66,-122.15],9);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+  {maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+
+const layers={}, enabled={}, onlyMerged={v:false};
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function popup(p,kind){return `<div class="lp"><b>${esc(p.n)}</b><br>${p.r} reviews<br>`
+  +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span></div>`}
+
+function build(key){
+  const d=window.VIZ[key]; const g=L.layerGroup(); const col=COLORS[key]||'#555';
+  if(!onlyMerged.v){
+    d.singles.forEach(p=>{
+      L.circleMarker([p.lat,p.lon],{radius:3,color:'#999',weight:1,fillOpacity:.5,opacity:.6})
+        .bindPopup(popup(p,'untouched')).addTo(g);
+    });
+  }
+  d.groups.forEach(grp=>{
+    const R=grp.rep;
+    grp.kids.forEach(k=>{
+      const isosm=k.src==='osm'; const col2=isosm?'#e67e22':'#c0392b';
+      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:1.2,opacity:.8,dashArray:'3,3'}).addTo(g);
+      L.circleMarker([k.lat,k.lon],{radius:5,color:'#fff',weight:1.5,fillColor:col2,fillOpacity:1})
+        .bindPopup(popup(k,isosm?'merged (OSM footprint)':'merged (name match)')).addTo(g);
+    });
+    L.circleMarker([R.lat,R.lon],{radius:7,color:'#fff',weight:2,fillColor:'#27ae60',fillOpacity:1})
+      .bindPopup(popup(R,'kept')).addTo(g);
+  });
+  return g;
+}
+function refresh(key){
+  if(layers[key]){map.removeLayer(layers[key]);delete layers[key];}
+  if(enabled[key]){layers[key]=build(key);layers[key].addTo(map);}
+}
+const catsDiv=document.getElementById('cats');
+Object.keys(window.VIZ).forEach(key=>{
+  const d=window.VIZ[key]; enabled[key]=(d.groups.length>0);
+  const row=document.createElement('label'); row.className='cat';
+  row.innerHTML=`<input type="checkbox" ${enabled[key]?'checked':''}>
+    <span class="sw" style="background:${COLORS[key]}"></span>${d.label}
+    <span class="cnt">${d.before}→${d.after} (−${d.before-d.after})</span>`;
+  row.querySelector('input').addEventListener('change',e=>{enabled[key]=e.target.checked;refresh(key);});
+  catsDiv.appendChild(row);
+  refresh(key);
+});
+let mb=0,ma=0; Object.values(window.VIZ).forEach(d=>{mb+=d.before;ma+=d.after});
+document.getElementById('tot').textContent=`Total: ${mb} → ${ma}  (−${mb-ma})`;
+document.getElementById('all').onclick=()=>{Object.keys(window.VIZ).forEach(k=>{enabled[k]=true;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=true);};
+document.getElementById('none').onclick=()=>{Object.keys(window.VIZ).forEach(k=>{enabled[k]=false;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
+document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
+  Object.keys(window.VIZ).forEach(k=>refresh(k));};
+</script>
+</body>
+</html>
