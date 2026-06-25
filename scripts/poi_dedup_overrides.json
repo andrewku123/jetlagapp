@@ -1,0 +1,18 @@
+{
+  "_comment": "Manual reviewer overrides for the POI de-dup, applied on top of the automatic name+OSM passes. Names are matched (case-insensitive, punctuation-tolerant) within the category against poi_curated.json. 'merge' = force [child, parent] into one (child absorbed into parent). 'separate' = force [a, b] to stay distinct (never merged together).",
+  "library": {
+    "merge": [
+      ["Main (Gardner) Stacks", "Doe Library"],
+      ["The Bancroft Library", "Doe Library"]
+    ],
+    "separate": [
+      ["C.V. Starr East Asian Library", "Earth Science & Map Library"]
+    ]
+  },
+  "museum": {
+    "merge": [
+      ["Bill's Backyard", "Children's Discovery Museum of San Jose"],
+      ["Viet Museum", "History Park (operated by History San Jose)"]
+    ]
+  }
+}

@@ -7,9 +7,13 @@ be the entire playable area, not just near a station. We search the play-area
 bounding box with a recursive quadtree (beats the 20-result, no-pagination cap)
 and keep any place whose pin lies inside the play-area polygon.
 
-A place counts iff it has the category's Google icon (`primaryType`, enforced via
-`includedPrimaryTypes`) AND >=5 Google reviews -- applied later in curation; here
-we just pull `userRatingCount`. Stored coordinate is the icon pin (`location`).
+A place counts iff it has the category's Google icon AND >=5 Google reviews
+(reviews applied later in curation; here we just pull `userRatingCount`). We match
+the icon via `includedTypes` (matches the place's full `types` array), NOT
+`includedPrimaryTypes` -- some places carry the icon as a secondary type (e.g.
+private golf clubs are primaryType `sports_club` but have `golf_course` in
+`types`), and primaryType-only filtering wrongly drops them. Stored coordinate is
+the icon pin (`location`).
 
 Env: GOOGLE_PLACES_API_KEY
 Reads:  ../src/data/play-area.geojson.json  (the map's play-area polygon =
@@ -20,11 +24,21 @@ import os, sys, json, math, time, urllib.request, urllib.error
 
 KEY = os.environ["GOOGLE_PLACES_API_KEY"]
 URL = "https://places.googleapis.com/v1/places:searchNearby"
-FIELDS = ",".join([
+
+# Cheap mode: drop `rating`+`userRatingCount` from the field mask. Those two
+# fields are what push every Nearby Search call into the pricey *Enterprise* SKU;
+# without them the call bills at the cheaper *Pro* SKU (and is far likelier to sit
+# inside the monthly free tier). The trade-off is we can't apply the >=5-review
+# rule automatically -- the reviewer checks the (de-duped) survivors by hand. Turn
+# on with POI_NO_REVIEWS=1.
+NO_REVIEWS = os.environ.get("POI_NO_REVIEWS", "").lower() in ("1", "true", "yes")
+_BASE_FIELDS = [
     "places.id", "places.displayName", "places.location",
     "places.primaryType", "places.types", "places.formattedAddress",
-    "places.rating", "places.userRatingCount", "places.businessStatus",
-])
+    "places.businessStatus",
+]
+FIELDS = ",".join(_BASE_FIELDS if NO_REVIEWS
+                  else _BASE_FIELDS + ["places.rating", "places.userRatingCount"])
 MAX = 20
 MAX_RADIUS = 50000.0
 MIN_RADIUS = 25.0
@@ -32,7 +46,7 @@ MIN_RADIUS = 25.0
 PARK_TYPES = ["park", "national_park", "state_park", "dog_park",
               "garden", "botanical_garden"]
 
-# (category key, includedPrimaryTypes, tentacle radius in mi or None)
+# (category key, includedTypes, tentacle radius in mi or None)
 CATS = [
     ("museum", ["museum"], 1),
     ("library", ["library"], 1),
@@ -43,6 +57,10 @@ CATS = [
     ("amusement_park", ["amusement_park"], 15),
     ("park", PARK_TYPES, None),
     ("golf_course", ["golf_course"], None),
+    ("consulate", ["embassy"], None),       # real consulates; honorary ones are
+                                            # government_office, so excluded
+    ("mountain", ["mountain_peak"], None),  # natural peaks (kept regardless of
+                                            # review count -- see curation)
 ]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -91,7 +109,7 @@ def haversine(lat1, lon1, lat2, lon2):
 def nearby(types, clat, clon, radius):
     global calls
     body = json.dumps({
-        "includedPrimaryTypes": types,
+        "includedTypes": types,
         "maxResultCount": MAX,
         "locationRestriction": {"circle": {"center": {"latitude": clat, "longitude": clon}, "radius": radius}},
     }).encode()

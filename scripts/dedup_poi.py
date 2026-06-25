@@ -1,0 +1,466 @@
+#!/usr/bin/env python3
+"""Collapse duplicate / sub-part POI pins by NAME (proximity-gated).
+
+Google lists one physical place as many pins: a hospital campus = the main
+hospital + its ER + each entrance + departments + affiliated clinics/office
+buildings, and several individually clear the >=5-review bar, so they clump on
+the map. This pass collapses the obvious duplicates the way a human would --
+by reading the names -- using proximity only as a guard so two genuinely
+distinct nearby places are never merged.
+
+Two kinds of confident merge (no Google API; works on poi_curated.json):
+
+  1. SUB-PART pins (entrance / parking / garage / building N / department /
+     pavilion / address-only name / ...) are absorbed into the most-reviewed
+     real POI within SUB_D metres.
+  2. SAME-NAME pins: among the remaining "real" POIs, ones within NAME_D metres
+     whose normalized name is identical, or one name's significant tokens are a
+     subset of the other's, collapse to the most-reviewed.
+
+Anything else that is merely *close* (distinct, unrelated names) is KEPT and,
+if it shares any significant token with a neighbour, surfaced in the review
+file under "close clusters to eyeball" -- never auto-merged.
+
+Reads:  poi_curated.json   (full-area, icon + >=5 reviews)
+Writes: poi_deduped.json, poi_dedup_review.md
+Usage:  python dedup_poi.py [NAME_D] [SUB_D]
+"""
+import os, re, json, sys, math
+from collections import defaultdict
+from shapely import wkt as shp_wkt
+from shapely.geometry import Point
+from shapely import STRtree
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
+def load_osm(cat):
+    """Load cached OSM footprints for a category -> dict(tree, geoms, names)."""
+    path = os.path.join(HERE, f"osm_polys_{cat}.json")
+    if not os.path.exists(path):
+        return None
+    feats = json.load(open(path))
+    geoms, fnames = [], []
+    for f in feats:
+        try:
+            g = shp_wkt.loads(f["wkt"])
+        except Exception:
+            continue
+        if g.is_empty:
+            continue
+        geoms.append(g)
+        fnames.append(f.get("name", ""))
+    if not geoms:
+        return None
+    return {"tree": STRtree(geoms), "geoms": geoms, "names": fnames}
+
+
+SRC = os.path.join(HERE, "poi_curated.json")
+NAME_D = float(sys.argv[1]) if len(sys.argv) > 1 else 300.0   # same-name merge
+SUB_D = float(sys.argv[2]) if len(sys.argv) > 2 else 400.0    # sub-part absorb
+CO_D = 60.0          # two real pins this close are the same point -> merge
+SUBSET_MAXREV = 50   # only absorb a subset-named pin if it's minor (< this)
+
+LABEL = {
+    "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
+    "hospital": "Hospitals", "zoo": "Zoos", "aquarium": "Aquariums",
+    "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
+    "consulate": "Consulates", "mountain": "Mountains",
+}
+
+# --- sub-part signals: a pin whose name is one of these is a piece of a bigger
+#     same-category place, not a place of its own. Conservative on purpose.
+# Only UNAMBIGUOUS structural pieces of a bigger place. Deliberately excludes
+# words that can be a real facility's whole name (outpatient, urgent care,
+# surgery center, dialysis, institute, ER) -- those stay as their own POI.
+SUB_WORDS = [
+    r"\bentrance\b", r"\bexit\b", r"\bparking\b", r"\bgarage\b", r"\bvalet\b",
+    r"\bdrop[\s-]?off\b", r"\bloading dock\b", r"\bhelipad\b", r"\bambulance\b",
+    r"\bbuilding\b", r"\bbldg\b", r"\bwing\b", r"\bannex\b",
+    r"\bpavilion\b", r"\bsuite\b", r"\bste\.?\b", r"\bfloor\b", r"\bbasement\b",
+    r"\bdepartment\b", r"\bdept\b", r"\bradiology\b", r"\bimaging\b",
+    r"\bpharmacy\b", r"\blaborator(y|ies)\b", r"\bcafeteria\b", r"\bgift shop\b",
+    r"\bmember services\b", r"\bregistration\b", r"\badmitting\b",
+    r"\bbox office\b", r"\bticket\b", r"\bkiosk\b", r"\brestroom\b",
+]
+SUB_RE = re.compile("|".join(SUB_WORDS), re.I)
+ADDRESS_RE = re.compile(r"^\s*\d{2,6}\s+[a-z]", re.I)   # "875 Blake Wilbur Drive"
+BUILDING_LETTER_RE = re.compile(r"\bbuilding\s+[a-z0-9]\b", re.I)
+
+STOP = {"the", "at", "of", "and", "a", "an", "for", "to", "in", "on", "&",
+        "-", "|", "de", "la", "el"}
+
+# generic category words: shared ONLY by these is not enough to call two pins the
+# same place ("Oak Park" vs "Lincoln Park" both have "park").
+GENERIC = {
+    "park", "parks", "hospital", "hospitals", "medical", "center", "centre",
+    "garden", "gardens", "plaza", "square", "playground", "dog", "play", "area",
+    "community", "memorial", "public", "open", "space", "regional", "county",
+    "city", "state", "mini", "neighborhood", "playlot", "field", "fields",
+    "clinic", "health", "care", "services", "service", "foundation", "trail",
+    "shoreline", "preserve", "reserve", "creek", "lake", "pond", "grove",
+    "campus", "medicine", "skatepark", "skate", "garden", "rec", "recreation",
+    # category words: two distinct same-category places sharing only this are not
+    # the same place ("C.V. Starr Library" vs "Earth Science & Map Library")
+    "library", "libraries", "branch",
+    # street-type words: sharing only "street"/"ave" is not the same place
+    "street", "st", "avenue", "ave", "road", "rd", "boulevard", "blvd",
+    "way", "drive", "dr", "lane", "ln", "court", "ct", "place", "pl",
+    "highway", "hwy", "terrace", "circle", "row",
+    # diplomatic titles: distinct consulates share these + often one building, so
+    # sharing only these must NOT merge them (only the country name is distinctive)
+    "consulate", "consulates", "consulado", "consulados", "consul", "consular",
+    "general", "embassy", "honorary", "office",
+    # place/region words: two different places sharing only the city/region name
+    # are not the same place ("San Jose Museum" vs "San Jose Library")
+    "san", "francisco", "jose", "oakland", "california", "ca", "bay", "north",
+    "south", "east", "west",
+}
+# structural piece words, stripped before checking a sub-part's real identity
+STRUCTURAL = {
+    "entrance", "exit", "parking", "lot", "garage", "valet", "drop", "off",
+    "loading", "dock", "helipad", "ambulance", "building", "bldg", "wing",
+    "annex", "pavilion", "suite", "ste", "floor", "basement", "department",
+    "dept", "radiology", "imaging", "pharmacy", "laboratory", "lab",
+    "cafeteria", "gift", "shop", "store", "member", "registration", "admitting",
+    "box", "office", "ticket", "kiosk", "restroom", "main", "north", "south",
+    "east", "west", "no", "number", "staging", "station", "ranger",
+}
+
+
+def distinctive(name, drop_structural=False):
+    toks = {t for t in sig_tokens(name) if not t.isdigit()} - GENERIC
+    if drop_structural:
+        toks = toks - STRUCTURAL
+    return toks
+
+
+def hav(a, b, c, d):
+    R = 6371000.0
+    p = math.pi / 180
+    x = (math.sin((c - a) * p / 2) ** 2
+         + math.cos(a * p) * math.cos(c * p) * math.sin((d - b) * p / 2) ** 2)
+    return 2 * R * math.asin(math.sqrt(x))
+
+
+def norm(name):
+    s = re.split(r"[|(:—–]", name)[0]            # drop trailing "| Campus" etc.
+    s = s.lower()
+    s = re.sub(r"[^\w\s]", " ", s)
+    toks = [t for t in s.split() if t and t not in STOP]
+    return toks
+
+
+def sig_tokens(name):
+    return set(norm(name))
+
+
+def is_sub(name):
+    if ADDRESS_RE.search(name):
+        return True
+    if BUILDING_LETTER_RE.search(name):
+        return True
+    return bool(SUB_RE.search(name))
+
+
+def subset(a, b):
+    """a's significant tokens are a (proper, non-trivial) subset of b's."""
+    if not a or not b or a == b:
+        return False
+    return a <= b and len(a) >= 1
+
+
+def match_norm(s):
+    s = s.lower().replace("&", " and ").replace("+", " and ")
+    s = re.sub(r"[^\w\s]", " ", s)
+    return " ".join(s.split())
+
+
+def resolve_name(places, query):
+    """Indices of places matching an override name (exact-normalized, else substring)."""
+    qn = match_norm(query)
+    exact = [i for i, p in enumerate(places) if match_norm(p["name"]) == qn]
+    if exact:
+        return exact
+    return [i for i, p in enumerate(places)
+            if qn and (qn in match_norm(p["name"]) or match_norm(p["name"]) in qn)]
+
+
+def maps_link(p):
+    pid = p.get("id")
+    base = f"https://www.google.com/maps/search/?api=1&query={p['lat']}%2C{p['lon']}"
+    return base + (f"&query_place_id={pid}" if pid else "")
+
+
+def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
+    forced_merge = forced_merge or []
+    forced_sep = forced_sep or []   # list of frozenset({idx, idx}) to keep apart
+    n = len(places)
+    pts = [(p["lat"], p["lon"]) for p in places]
+    rev = [p.get("userRatingCount") or 0 for p in places]
+    names = [p["name"] for p in places]
+    toks = [sig_tokens(nm) for nm in names]
+    dist = [distinctive(nm) for nm in names]              # non-generic words
+    dsub = [distinctive(nm, drop_structural=True) for nm in names]
+    sub = [is_sub(nm) for nm in names]
+    real = [i for i in range(n) if not sub[i]]
+
+    # 1) union-find merge among REAL pins: close + (same name or token subset)
+    par = list(range(n))
+
+    def find(x):
+        while par[x] != x:
+            par[x] = par[par[x]]
+            x = par[x]
+        return x
+
+    def union(x, y):
+        par[find(x)] = find(y)
+
+    def sep_blocks(i, j):
+        """True if joining i,j would put a forced-separate pair in one group."""
+        ri, rj = find(i), find(j)
+        for pair in forced_sep:
+            a, b = tuple(pair)
+            ra, rb = find(a), find(b)
+            if ra in (ri, rj) and rb in (ri, rj) and ra != rb:
+                return True
+        return False
+
+    for ai in range(len(real)):
+        for bi in range(ai + 1, len(real)):
+            i, j = real[ai], real[bi]
+            d = hav(pts[i][0], pts[i][1], pts[j][0], pts[j][1])
+            if d > NAME_D:
+                continue
+            # never merge two pins that don't share a distinctive (non-generic)
+            # word -- this is what keeps distinct neighbours (Oak Park vs Lincoln
+            # Park, UCSF Stanyan vs Kentfield) separate even when co-located.
+            if not (dist[i] & dist[j]):
+                continue
+            if sep_blocks(i, j):
+                continue
+            # co-located + shares a real word => same physical place (e.g. old vs
+            # new name of one hospital at one coordinate)
+            if d <= CO_D:
+                union(i, j)
+                continue
+            if toks[i] == toks[j]:
+                union(i, j)
+                continue
+            # subset (one name is the other plus extra words) only collapses the
+            # MINOR pin -- never merges two well-reviewed distinct hospitals
+            if subset(toks[i], toks[j]) and rev[i] < SUBSET_MAXREV:
+                union(i, j)
+            elif subset(toks[j], toks[i]) and rev[j] < SUBSET_MAXREV:
+                union(i, j)
+
+    # representative pick: most-reviewed pin, but fall back gracefully when the
+    # pull had no review counts (cheap/no-reviews mode -> all rev == 0): prefer a
+    # non-sub-part pin, then the shorter (cleaner, less qualified) name.
+    def rep_score(i):
+        return (0 if sub[i] else 1, rev[i], -len(names[i]))
+
+    groups = defaultdict(list)
+    for i in real:
+        groups[find(i)].append(i)
+    reps = []
+    edges = []                      # (child, parent, source)
+    for g in groups.values():
+        rep = max(g, key=rep_score)
+        reps.append(rep)
+        for i in g:
+            if i != rep:
+                edges.append((i, rep, "name"))
+
+    # 2) absorb each SUB pin into a real representative within SUB_D
+    orphan_subs = []
+    for i in range(n):
+        if not sub[i]:
+            continue
+        cands = [r for r in reps
+                 if hav(pts[i][0], pts[i][1], pts[r][0], pts[r][1]) <= SUB_D]
+        if not cands:
+            orphan_subs.append(i)
+            continue
+        if dsub[i]:
+            named = [r for r in cands if dsub[i] & dist[r]]
+            if named:
+                edges.append((i, max(named, key=lambda r: rev[r]), "name"))
+            else:
+                orphan_subs.append(i)
+        else:
+            edges.append((i, min(cands, key=lambda r: hav(
+                pts[i][0], pts[i][1], pts[r][0], pts[r][1])), "name"))
+
+    # 3) OSM-footprint pass: representatives that fall inside the SAME OSM
+    #    hospital/park polygon are the same physical place -> collapse.
+    after_name = reps + orphan_subs
+    osm_child = set()
+    if osm is not None:
+        assign = {}
+        for r in after_name:
+            pt = Point(pts[r][1], pts[r][0])
+            cand = osm["tree"].query(pt)
+            inside = [gi for gi in cand if osm["geoms"][gi].covers(pt)]
+            if not inside:
+                continue
+            # prefer the footprint whose name best matches the pin; then the
+            # smallest (most specific) one -- so a pin that IS a distinct named
+            # OSM feature stays on its own rather than melting into a big park.
+            best = max(inside, key=lambda gi: (
+                len(distinctive(names[r]) & distinctive(osm["names"][gi])),
+                -osm["geoms"][gi].area))
+            assign[r] = best
+        byf = defaultdict(list)
+        for r, f in assign.items():
+            byf[f].append(r)
+        for f, members in byf.items():
+            if len(members) < 2:
+                continue
+            fname = osm["names"][f]
+            frep = max(members, key=lambda r: (
+                len(distinctive(names[r]) & distinctive(fname)), rev[r]))
+            for r in members:
+                if r != frep:
+                    edges.append((r, frep, "osm"))
+                    osm_child.add(r)
+
+    # 4) manual reviewer overrides: force each [child -> parent] merge. The
+    #    parent is resolved to its current final representative; any automatic
+    #    parenting of the child is dropped so it lands only where the reviewer
+    #    put it. Children of a forced-merged rep follow it via the parent chain.
+    if forced_merge:
+        _, root = final_parent(edges)
+        for child_i, parent_i in forced_merge:
+            proot = root(parent_i)
+            if proot == child_i:
+                continue
+            edges = [(c, p, s) for (c, p, s) in edges if c != child_i]
+            edges.append((child_i, proot, "manual"))
+
+    child_set = {c for c, _, _ in edges}
+    final_kept = sorted([i for i in after_name if i not in child_set],
+                        key=lambda i: -rev[i])
+    return {
+        "kept": final_kept, "names": names, "rev": rev, "pts": pts,
+        "edges": edges,
+    }
+
+
+def final_parent(edges):
+    """child -> immediate parent map, plus resolve to ultimate final rep."""
+    parent = {c: p for c, p, _ in edges}
+
+    def root(i):
+        seen = set()
+        while i in parent and i not in seen:
+            seen.add(i)
+            i = parent[i]
+        return i
+    return parent, root
+
+
+def load_overrides(places, key, overrides):
+    """Resolve override names for a category to (forced_merge, forced_sep) on indices."""
+    ov = overrides.get(key, {})
+    fm, fs = [], []
+    for child_name, parent_name in ov.get("merge", []):
+        ci, pi = resolve_name(places, child_name), resolve_name(places, parent_name)
+        if len(ci) == 1 and len(pi) == 1:
+            fm.append((ci[0], pi[0]))
+        else:
+            print(f"WARN [{key}] merge override unresolved: "
+                  f"{child_name!r}({ci})->{parent_name!r}({pi})")
+    for a_name, b_name in ov.get("separate", []):
+        ai, bi = resolve_name(places, a_name), resolve_name(places, b_name)
+        if len(ai) == 1 and len(bi) == 1:
+            fs.append(frozenset((ai[0], bi[0])))
+        else:
+            print(f"WARN [{key}] separate override unresolved: "
+                  f"{a_name!r}({ai}) / {b_name!r}({bi})")
+    return fm, fs
+
+
+def main():
+    curated = json.load(open(SRC))
+    ovr_path = os.path.join(HERE, "poi_dedup_overrides.json")
+    overrides = {k: v for k, v in json.load(open(ovr_path)).items()
+                 if not k.startswith("_")} if os.path.exists(ovr_path) else {}
+    out = {}
+    md = [f"# POI de-dup review — name + OSM footprint\n",
+          f"NAME_D={NAME_D:.0f}m (same-name merge), SUB_D={SUB_D:.0f}m (sub-part absorb), "
+          f"then pins inside the SAME OSM hospital/park footprint collapse. "
+          f"Representative kept = most-reviewed / best name match.\n"]
+    table = ["| Category | before | after | name-merged | osm-merged | manual |",
+             "|---|---|---|---|---|---|"]
+    viz = {}
+
+    for key in [k for k in LABEL if k in curated]:
+        places = curated[key]["places"]
+        osm = load_osm(key)
+        fm, fs = load_overrides(places, key, overrides)
+        r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs)
+        kept = r["kept"]
+        kept_places = [places[i] for i in kept]
+        out[key] = {"count": len(kept_places), "places": kept_places}
+        edges = r["edges"]
+        _, root = final_parent(edges)
+        n_name = sum(1 for _, _, s in edges if s == "name")
+        n_osm = sum(1 for _, _, s in edges if s == "osm")
+        n_manual = sum(1 for _, _, s in edges if s == "manual")
+        man = f" −{n_manual} manual" if n_manual else ""
+        table.append(f"| {LABEL[key]} | {len(places)} | {len(kept_places)} "
+                     f"| {n_name} | {n_osm} | {n_manual} |")
+
+        # group every absorbed child under its FINAL representative
+        children = defaultdict(list)   # final rep -> [(child, source)]
+        for c, _, s in edges:
+            children[root(c)].append((c, s))
+
+        rev = r["rev"]
+        md.append(f"\n## {LABEL[key]} — {len(places)} → {len(kept_places)} "
+                  f"(name −{n_name}, osm −{n_osm}{man})\n")
+        rep_lines = []
+        for rep in sorted(children, key=lambda i: -rev[i]):
+            kids = children[rep]
+            p = places[rep]
+            head = f"- **[{p['name']}]({maps_link(p)})** ({rev[rep]} rev) absorbs:"
+            kid_s = "; ".join(
+                f"[{places[c]['name']}]({maps_link(places[c])})({rev[c]}"
+                f"{',osm' if s=='osm' else ',manual' if s=='manual' else ''})"
+                for c, s in sorted(kids, key=lambda cs: -rev[cs[0]]))
+            rep_lines.append(head + " " + kid_s)
+        md.append((f"\n**Merged ({len(rep_lines)} groups):**\n" + "\n".join(rep_lines) + "\n")
+                   if rep_lines else "\n_No merges._\n")
+
+        # viz payload: groups (rep + colored child spokes) and untouched singles
+        absorbed_set = {c for c, _, _ in edges}
+        groups = []
+        for rep in sorted(children, key=lambda i: -rev[i]):
+            groups.append({
+                "rep": {"n": places[rep]["name"], "lat": places[rep]["lat"],
+                        "lon": places[rep]["lon"], "r": rev[rep]},
+                "kids": [{"n": places[c]["name"], "lat": places[c]["lat"],
+                          "lon": places[c]["lon"], "r": rev[c], "src": s}
+                         for c, s in sorted(children[rep], key=lambda cs: -rev[cs[0]])],
+            })
+        singles = [{"n": places[i]["name"], "lat": places[i]["lat"],
+                    "lon": places[i]["lon"], "r": rev[i]}
+                   for i in kept if i not in children and i not in absorbed_set]
+        viz[key] = {"label": LABEL[key], "groups": groups, "singles": singles,
+                    "before": len(places), "after": len(kept_places)}
+
+    md = [md[0], md[1], "\n".join(table), "\n"] + md[2:]
+    open(os.path.join(HERE, "poi_dedup_review.md"), "w").write("\n".join(md))
+    json.dump(out, open(os.path.join(HERE, "poi_deduped.json"), "w"), indent=1)
+    with open(os.path.join(HERE, "poi_merge_viz.js"), "w") as f:
+        f.write("window.VIZ=")
+        json.dump(viz, f)
+        f.write(";")
+    print("\n".join(table))
+    print("\nwrote poi_deduped.json + poi_dedup_review.md + poi_merge_viz.js")
+
+
+if __name__ == "__main__":
+    main()
