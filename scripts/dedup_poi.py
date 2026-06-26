@@ -374,13 +374,23 @@ def load_overrides(places, key, overrides):
     """Resolve override names for a category to (forced_merge, forced_sep) on indices."""
     ov = overrides.get(key, {})
     fm, fs, rn = [], [], []
+    revs = [p.get("userRatingCount") or 0 for p in places]
     for child_name, parent_name in ov.get("merge", []):
         ci, pi = resolve_name(places, child_name), resolve_name(places, parent_name)
-        if len(ci) == 1 and len(pi) == 1:
-            fm.append((ci[0], pi[0]))
-        else:
-            print(f"WARN [{key}] merge override unresolved: "
+        if not pi:
+            print(f"WARN [{key}] merge override parent not found: "
+                  f"{parent_name!r} (child {child_name!r})")
+            continue
+        # parent name may match duplicate pins -> the most-reviewed is the survivor
+        parent_idx = max(pi, key=lambda i: revs[i])
+        # child name may match multiple pins (true duplicates) -> absorb all of them
+        targets = [i for i in dict.fromkeys(ci) if i != parent_idx]
+        if not targets:
+            print(f"WARN [{key}] merge override child unresolved: "
                   f"{child_name!r}({ci})->{parent_name!r}({pi})")
+            continue
+        for t in targets:
+            fm.append((t, parent_idx))
     for a_name, b_name in ov.get("separate", []):
         ai, bi = resolve_name(places, a_name), resolve_name(places, b_name)
         if len(ai) == 1 and len(bi) == 1:

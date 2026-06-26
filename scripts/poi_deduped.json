@@ -9908,7 +9908,7 @@
   ]
  },
  "hospital": {
-  "count": 179,
+  "count": 158,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -10313,24 +10313,6 @@
     "lon": -122.4538523
    },
    {
-    "id": "ChIJhx8-Ts2kj4ARSjW_bZorKCw",
-    "name": "Lucile Packard Children's Hospital Stanford",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "725 Welch Rd, Palo Alto, CA 94304, USA",
-    "rating": 4.1,
-    "userRatingCount": 458,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.436029399999995,
-    "lon": -122.17453919999998
-   },
-   {
     "id": "ChIJa_d9WbKHhYARdNmJEtzGc48",
     "name": "San Francisco VA Medical Center",
     "primaryType": "hospital",
@@ -10484,24 +10466,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.405063,
     "lon": -122.14025240000001
-   },
-   {
-    "id": "ChIJJegV7zOHhYARcLDU3eS58jE",
-    "name": "UCSF Benioff Children's Hospital - San Francisco",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "1975 4th St, San Francisco, CA 94158, USA",
-    "rating": 4.5,
-    "userRatingCount": 302,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.764940100000004,
-    "lon": -122.3900471
    },
    {
     "id": "ChIJVVVVCrNhhYAROwS_bQAOD4Y",
@@ -11063,27 +11027,6 @@
     "lon": -122.2525153
    },
    {
-    "id": "ChIJ58wd6x9nhYARwNrRWE1ICh0",
-    "name": "John Muir Health Psychiatric Hospital",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "doctor",
-     "association_or_organization",
-     "point_of_interest",
-     "service",
-     "medical_clinic",
-     "health",
-     "establishment"
-    ],
-    "address": "2740 Grant St, Concord, CA 94520, USA",
-    "rating": 2.7,
-    "userRatingCount": 97,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.985906199999995,
-    "lon": -122.03685700000001
-   },
-   {
     "id": "ChIJF44O2EN-j4ARxRa0y_8juwY",
     "name": "CPMC Mission Bernal Campus & Orthopedic Institute",
     "primaryType": "hospital",
@@ -11180,25 +11123,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.245633399999996,
     "lon": -121.95733560000001
-   },
-   {
-    "id": "ChIJg0sXGHWlj4ARdbvX84fLolI",
-    "name": "Stanford Hospital",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "875 Blake Wilbur Dr, Palo Alto, CA 94304, USA",
-    "rating": 2.7,
-    "userRatingCount": 86,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4357495,
-    "lon": -122.176299
    },
    {
     "id": "ChIJ975BUYF7j4ARaWp5VqY2JUk",
@@ -11628,25 +11552,6 @@
     "lon": -122.42113549999999
    },
    {
-    "id": "ChIJXaA6hWW2j4ART6xtO7XER4U",
-    "name": "Sunnyvale Center (401)",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "401 Old San Francisco Rd, Sunnyvale, CA 94086, USA",
-    "rating": 2.4,
-    "userRatingCount": 28,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.368096699999995,
-    "lon": -122.02744129999999
-   },
-   {
     "id": "ChIJkS-tfGJlhYARcYR8fM1jOyY",
     "name": "VA Martinez",
     "primaryType": "hospital",
@@ -11803,24 +11708,6 @@
     "lon": -122.42266199999999
    },
    {
-    "id": "ChIJVbwSS7ylj4AR5MQU0AlKP_E",
-    "name": "Stanford Medical Center",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "900 Blake Wilbur Dr, Palo Alto, CA 94304, USA",
-    "rating": 3.1,
-    "userRatingCount": 22,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4355331,
-    "lon": -122.17738790000001
-   },
-   {
     "id": "ChIJU2ArU7WMj4ARTB5Udk0hyKQ",
     "name": "Danville Center",
     "primaryType": "medical_center",
@@ -11896,25 +11783,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7993366,
     "lon": -122.27113949999999
-   },
-   {
-    "id": "ChIJc6JmaFeHhYARPkovz6Ol8yg",
-    "name": "UCSF Medical Records",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "400 Parnassus Ave Rm A88, San Francisco, CA 94143, USA",
-    "rating": 1.5,
-    "userRatingCount": 20,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7639012,
-    "lon": -122.45727110000001
    },
    {
     "id": "ChIJzXbuN6qMj4ARUZpKVPKmFgo",
@@ -12078,24 +11946,6 @@
     "lon": -122.50729270000001
    },
    {
-    "id": "ChIJFXFOI2J_j4ARNb5oUGH3dA4",
-    "name": "UCSF Mission Bay Hospitals",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "1500 Owens St, San Francisco, CA 94158, USA",
-    "rating": 3.6,
-    "userRatingCount": 16,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7688306,
-    "lon": -122.3957518
-   },
-   {
     "id": "ChIJuzfueSl9hYARXT6M1dC3PqY",
     "name": "East Bay Pediatrics",
     "primaryType": "hospital",
@@ -12133,25 +11983,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7972081,
     "lon": -122.4114951
-   },
-   {
-    "id": "ChIJj0Z3-rNhhYARtqpuecmC5_c",
-    "name": "Comprehensive Wellness",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "8 Cam Encinas #100, Orinda, CA 94563, USA",
-    "rating": 5,
-    "userRatingCount": 14,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8770859,
-    "lon": -122.180764
    },
    {
     "id": "ChIJF3y2U86Rj4ARBrDPvg_jlhQ",
@@ -12348,24 +12179,6 @@
     "lon": -121.84775789999999
    },
    {
-    "id": "ChIJ31G4SQDLj4ARJQevRXsH-3w",
-    "name": "Valley Health Center San Jose (formerly Bascom)",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "750 S Bascom Ave, San Jose, CA 95128, USA",
-    "rating": 2.9,
-    "userRatingCount": 12,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.314247099999996,
-    "lon": -121.9312672
-   },
-   {
     "id": "ChIJzVGo9EClj4ARmmhdVTAHrQU",
     "name": "875 Blake Wilbur Drive",
     "primaryType": "medical_center",
@@ -12402,43 +12215,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3250579,
     "lon": -121.80944059999999
-   },
-   {
-    "id": "ChIJ76SctAp-hYAR1NT6zaLlyBI",
-    "name": "Family House: UCSF Benioff Children's Hospital Oakland",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5222 Dover St, Oakland, CA 94609, USA",
-    "rating": 5,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.837959,
-    "lon": -122.266472
-   },
-   {
-    "id": "ChIJ5Z5yHo61j4ARyFVvBkeVQgM",
-    "name": "Kaiser Permanenete Child/ado Psy",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "medical_center",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "19000 E Homestead Rd, Cupertino, CA 95014, USA",
-    "rating": 4.4,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3371469,
-    "lon": -122.00436309999999
    },
    {
     "id": "ChIJTxiOVJOGj4ARooRMMOaIL8I",
@@ -12515,25 +12291,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3728195,
     "lon": -122.05092040000001
-   },
-   {
-    "id": "ChIJx75E_XCej4AR6nkri4BHf2Y",
-    "name": "San Mateo Pediatrics (123 South San Mateo Drive)",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "123 S San Mateo Dr, San Mateo, CA 94401, USA",
-    "rating": 3.6,
-    "userRatingCount": 10,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.565469199999995,
-    "lon": -122.32496529999999
    },
    {
     "id": "ChIJiQ3icgDhj4AR_Xy7BZ2CnUM",
@@ -12647,43 +12404,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.2519376,
     "lon": -121.86302119999999
-   },
-   {
-    "id": "ChIJbdCnT3R8j4ARtKseE0fg6yE",
-    "name": "Pediatrics: Sullivan Office: Palo Alto Medical Foundation",
-    "primaryType": "hospital",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "901 Campus Dr #111, Daly City, CA 94015, USA",
-    "rating": 3.7,
-    "userRatingCount": 9,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.66513940000001,
-    "lon": -122.4756996
-   },
-   {
-    "id": "ChIJfWhA15F_j4ARugoTASeeiao",
-    "name": "UCSF Wayne and Gladys Valley Center for Vision",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "490 Illinois St, San Francisco, CA 94158, USA",
-    "rating": 4.4,
-    "userRatingCount": 9,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7660896,
-    "lon": -122.38840529999999
    },
    {
     "id": "ChIJbyskAkOVj4ARsWnZD0Z2Bh8",
@@ -12992,25 +12712,6 @@
     "lon": -122.3445133
    },
    {
-    "id": "ChIJbZGDgs2kj4ARSwRxtaDmWy0",
-    "name": "Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "doctor",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "900 Blake Wilbur Dr, Palo Alto, CA 94304, USA",
-    "rating": 3.6,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.435374599999996,
-    "lon": -122.1772525
-   },
-   {
     "id": "ChIJu3zf90b5j4ARlX29fKBozzw",
     "name": "Brentwood Care Center",
     "primaryType": "medical_center",
@@ -13106,25 +12807,6 @@
     "lon": -122.1856468
    },
    {
-    "id": "ChIJzVef4cNhhYARcdHjKLM2kcU",
-    "name": "Kaiser Permanente Walnut Creek: Chemical Dependency Services",
-    "primaryType": "hospital",
-    "types": [
-     "medical_clinic",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "710 S Broadway Ste 209, Walnut Creek, CA 94596, USA",
-    "rating": 3.2,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8972559,
-    "lon": -122.05642919999998
-   },
-   {
     "id": "ChIJE6LMfut7j4ARD62umoLMKdQ",
     "name": "Sound Pediatrics",
     "primaryType": "hospital",
@@ -13159,44 +12841,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.458452099999995,
     "lon": -122.1761222
-   },
-   {
-    "id": "ChIJf4kUv35lhYARNDqeDVGiTy0",
-    "name": "Telecare Hope House",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "medical_clinic",
-     "health",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "300 Ilene St, Martinez, CA 94553, USA",
-    "rating": 4.2,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.0079882,
-    "lon": -122.13382639999999
-   },
-   {
-    "id": "ChIJPcnfPkSBhYARMDebl-LDvfQ",
-    "name": "CPMC Department of Ophthalmology",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "point_of_interest",
-     "service",
-     "health",
-     "establishment"
-    ],
-    "address": "711 Van Ness Ave #250, San Francisco, CA 94102, USA",
-    "rating": 2.3,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7821484,
-    "lon": -122.4211843
    },
    {
     "id": "ChIJ_V32UADJj4AR_x-6Xp57mUE",
@@ -13237,25 +12881,6 @@
     "lon": -122.11850690000001
    },
    {
-    "id": "ChIJHVEBAMeAhYARv9yDszkoIx4",
-    "name": "Health and Healing Store: California Pacific Medical Center: Pacific Campus",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2300 California St Suite 101, San Francisco, CA 94115, USA",
-    "rating": 3.4,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7894058,
-    "lon": -122.43246450000001
-   },
-   {
     "id": "ChIJIe9j_LKBhYARIDh7XZImthM",
     "name": "Helixa Labs",
     "primaryType": "medical_center",
@@ -13273,26 +12898,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.795332699999996,
     "lon": -122.42149680000001
-   },
-   {
-    "id": "ChIJ3ycvd_JXhYAR-oSqAKXY9oc",
-    "name": "Pediatrics: Sutter East Bay Medical Foundation: Antioch",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "doctor",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "4053 Lone Tree Wy #101, Antioch, CA 94531, USA",
-    "rating": 3.4,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.976549,
-    "lon": -121.799639
    },
    {
     "id": "ChIJgaKFjZbnj4ARnvqSlL1E484",
