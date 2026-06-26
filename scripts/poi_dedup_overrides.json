@@ -63,6 +63,16 @@
       ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
     ]
   },
+  "zoo": {
+    "drop": [
+      ["Little Explorers Mobile Petting Zoo", 37.710623, -122.166868]
+    ]
+  },
+  "aquarium": {
+    "drop": [
+      ["Aquatic Experts", 37.9440861, -122.0769658]
+    ]
+  },
   "amusement_park": {
     "drop": [
       ["Sky Zone Trampoline Park", 37.290989, -121.989784],
