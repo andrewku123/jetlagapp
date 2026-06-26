@@ -67,6 +67,12 @@
       ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
     ]
   },
+  "golf_course": {
+    "merge": [
+      ["Presidio Golf & Concordia Club", "Presidio Golf Course"],
+      ["General Store", "Presidio Golf Course"]
+    ]
+  },
   "zoo": {
     "drop": [
       ["Little Explorers Mobile Petting Zoo", 37.710623, -122.166868]
