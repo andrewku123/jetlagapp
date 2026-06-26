@@ -67,6 +67,11 @@
       ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
     ]
   },
+  "mountain": {
+    "merge": [
+      ["Telegraph Hill", "Telegraph Hill", 37.8027064, -122.40580439999998]
+    ]
+  },
   "consulate": {
     "merge": [
       ["embajada mexicana", "Mexico Consulate"]

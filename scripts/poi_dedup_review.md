@@ -14,7 +14,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Parks | 2546 | 2180 | 39 | 327 | 0 |
 | Golf Courses | 96 | 89 | 2 | 3 | 2 |
 | Consulates | 50 | 41 | 0 | 0 | 1 |
-| Mountains | 239 | 232 | 7 | 0 | 0 |
+| Mountains | 239 | 232 | 6 | 0 | 1 |
 
 
 
@@ -373,13 +373,13 @@ _No merges._
 - **[Mexico Consulate](https://www.google.com/maps/search/?api=1&query=37.7867488%2C-122.39562210000001&query_place_id=ChIJj_rRz1CBhYARNaK44wPeMkU)** (738 rev) absorbs: [embajada mexicana](https://www.google.com/maps/search/?api=1&query=37.786743799999996%2C-122.39559109999999&query_place_id=ChIJB41WfnuAhYAR8zO-KazXCUs)(113,manual)
 
 
-## Mountains — 239 → 232 (name −7, osm −0)
+## Mountains — 239 → 232 (name −6, osm −0 −1 manual)
 
 
 **Merged (6 groups):**
 - **[Mount Sizer](https://www.google.com/maps/search/?api=1&query=37.2138298%2C-121.51355149999998&query_place_id=ChIJVzrcN5PbkYARlXn8Q8pNgF8)** (5 rev) absorbs: [Mount Sizer](https://www.google.com/maps/search/?api=1&query=37.2137712%2C-121.51509499999999&query_place_id=ChIJjRrIu-zbkYAR6G49szExrAo)(1)
 - **[Twin Peaks](https://www.google.com/maps/search/?api=1&query=37.07966%2C-121.6901949&query_place_id=ChIJpZrpeNohjoARJHyjwNmCLiE)** (5 rev) absorbs: [Twin Peaks](https://www.google.com/maps/search/?api=1&query=37.0796699%2C-121.69022509999998&query_place_id=ChIJ36NhQ9shjoARR7Ib_k8VSn4)(0); [Twin Peaks West](https://www.google.com/maps/search/?api=1&query=37.08%2C-121.6911111&query_place_id=ChIJ6_jzqdwhjoARslIAUZVabLA)(0)
-- **[Telegraph Hill](https://www.google.com/maps/search/?api=1&query=37.8020192%2C-122.4057198&query_place_id=ChIJmRBv3faAhYARCpeHcFPT-Fk)** (1 rev) absorbs: [Telegraph Hill](https://www.google.com/maps/search/?api=1&query=37.8027064%2C-122.40580439999998&query_place_id=ChIJhcOiIfeAhYARqQ_iO5x4nj4)(1)
+- **[Telegraph Hill](https://www.google.com/maps/search/?api=1&query=37.8027064%2C-122.40580439999998&query_place_id=ChIJhcOiIfeAhYARqQ_iO5x4nj4)** (1 rev) absorbs: [Telegraph Hill](https://www.google.com/maps/search/?api=1&query=37.8020192%2C-122.4057198&query_place_id=ChIJmRBv3faAhYARCpeHcFPT-Fk)(1,manual)
 - **[Bear Mountain](https://www.google.com/maps/search/?api=1&query=37.2288285%2C-121.4393822&query_place_id=ChIJKVvMm67EkYAR2Q1Afkk92D8)** (0 rev) absorbs: [Bear Mountain](https://www.google.com/maps/search/?api=1&query=37.2277662%2C-121.4375173&query_place_id=ChIJ3SPELKnEkYARkS8bEZsge_0)(0)
 - **[Briones Peak](https://www.google.com/maps/search/?api=1&query=37.9368827%2C-122.12830960000001&query_place_id=ChIJ-cMWB4BjhYARqjBuQVfM3sM)** (0 rev) absorbs: [Briones Hills HP](https://www.google.com/maps/search/?api=1&query=37.936666599999995%2C-122.12805549999999&query_place_id=ChIJ7wfCE4BjhYARtr16jKxvGww)(0)
 - **[Morena Sierra](https://www.google.com/maps/search/?api=1&query=37.4104957%2C-122.3088585&query_place_id=ChIJwf9uwtimj4AR-ht5whvrO9U)** (0 rev) absorbs: [Sierra Morena](https://www.google.com/maps/search/?api=1&query=37.4102777%2C-122.30861110000001&query_place_id=ChIJ15ZN29imj4AR257hVHIsxPY)(0)

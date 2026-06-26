@@ -520,14 +520,26 @@ def load_overrides(places, key, overrides):
     ov = overrides.get(key, {})
     fm, fs, rn, dn = [], [], [], set()
     revs = [p.get("userRatingCount") or 0 for p in places]
-    for child_name, parent_name in ov.get("merge", []):
+    for entry in ov.get("merge", []):
+        child_name, parent_name = entry[0], entry[1]
+        # optional trailing [lat, lon] pins the exact PARENT pin when the parent
+        # name is ambiguous (e.g. two same-named peaks 'Telegraph Hill') so the
+        # reviewer can choose which duplicate survives.
+        pcoord = (entry[2], entry[3]) if len(entry) >= 4 else None
         ci, pi = resolve_name(places, child_name), resolve_name(places, parent_name)
         if not pi:
             print(f"WARN [{key}] merge override parent not found: "
                   f"{parent_name!r} (child {child_name!r})")
             continue
-        # parent name may match duplicate pins -> the most-reviewed is the survivor
-        parent_idx = max(pi, key=lambda i: revs[i])
+        if pcoord is not None:
+            parent_idx = resolve_near(places, parent_name, pcoord[0], pcoord[1])
+            if parent_idx is None:
+                print(f"WARN [{key}] merge override parent coord unresolved: "
+                      f"{parent_name!r} {pcoord}")
+                continue
+        else:
+            # parent name may match duplicate pins -> the most-reviewed is the survivor
+            parent_idx = max(pi, key=lambda i: revs[i])
         # child name may match multiple pins (true duplicates) -> absorb all of them
         targets = [i for i in dict.fromkeys(ci) if i != parent_idx]
         if not targets:
