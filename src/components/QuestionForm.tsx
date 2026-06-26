@@ -41,7 +41,7 @@ function fmt(p: LatLng | null): string {
   return p ? `${p.lat.toFixed(4)}, ${p.lon.toFixed(4)}` : '— click map —'
 }
 
-// A location picker: "Use last click" plus manual lat/lon entry.
+// A location picker: manual lat/lon entry (primary), with last map click as a fallback.
 function CoordPicker({
   label,
   point,
@@ -73,7 +73,6 @@ function CoordPicker({
       <div className="row">
         <label>{label}</label>
         <span className="coord">{fmt(point)}</span>
-        <button disabled={!lastClick} onClick={() => setPoint(lastClick)}>Use last click</button>
       </div>
       <div className="row coordin">
         <input
@@ -91,6 +90,13 @@ function CoordPicker({
         />
         <button onClick={apply}>Set</button>
       </div>
+      <button
+        className="uselast"
+        disabled={!lastClick}
+        onClick={() => lastClick && setPoint(lastClick)}
+      >
+        or use last map click
+      </button>
     </div>
   )
 }

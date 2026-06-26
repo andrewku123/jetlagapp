@@ -413,7 +413,7 @@ export default function App() {
 
           {tab === 'ask' && (
             <div className="panel">
-              <p className="hint">Click the map to drop a point, then use it as a seeker location.</p>
+              <p className="hint">Paste coordinates (lat, lon) for each seeker location — most accurate. Clicking the map drops a point you can fall back on.</p>
               <QuestionForm
                 lastClick={lastClick}
                 units={game.units}
