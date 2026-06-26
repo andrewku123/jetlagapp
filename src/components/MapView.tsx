@@ -27,6 +27,16 @@ import transitData from '../data/transit-lines.geojson.json'
 
 const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
+// Touch devices have no fine pointer, so the small station/POI dots are hard to
+// tap. On a coarse pointer we enlarge the dot radii (which is also the hit area)
+// for easier tapping; desktop (fine pointer) keeps the original sizes.
+const COARSE_POINTER =
+  typeof window !== 'undefined' &&
+  typeof window.matchMedia === 'function' &&
+  window.matchMedia('(pointer: coarse)').matches
+const STATION_R = { elim: COARSE_POINTER ? 8 : 5, base: COARSE_POINTER ? 10 : 6, star: COARSE_POINTER ? 14 : 11 }
+const POI_R = COARSE_POINTER ? 7 : 4
+
 // In-play play area used for the satellite clip: the counties' legal boundaries
 // with the bay kept but the open Pacific (and offshore Farallones) removed — see
 // scripts/build_play_area.mjs. The plain land-clipped `COUNTIES` set above is
@@ -616,7 +626,7 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
     for (const p of pois) {
       const marker = L.circleMarker([p.lat, p.lon], {
         renderer,
-        radius: 4,
+        radius: POI_R,
         color: '#fff',
         weight: 1,
         fillColor: p.color,
@@ -1108,7 +1118,7 @@ export default function MapView({
             <CircleMarker
               key={st.id + (selectMode ? '-s' : '-d')}
               center={[st.lat, st.lon]}
-              radius={5}
+              radius={STATION_R.elim}
               interactive={selectMode}
               renderer={stationRenderer}
               pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
@@ -1137,7 +1147,7 @@ export default function MapView({
             <CircleMarker
               key={st.id + (selectMode ? '-s' : '-d')}
               center={[st.lat, st.lon]}
-              radius={star ? 11 : 6}
+              radius={star ? STATION_R.star : STATION_R.base}
               interactive={selectMode}
               renderer={stationRenderer}
               pathOptions={{
