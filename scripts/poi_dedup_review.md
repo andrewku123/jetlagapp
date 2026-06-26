@@ -4,21 +4,21 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
-| Museums | 263 | 246 | 5 | 7 | 5 |
+| Museums | 263 | 244 | 5 | 7 | 5 |
 | Libraries | 249 | 241 | 2 | 4 | 2 |
 | Movie Theaters | 84 | 80 | 3 | 1 | 0 |
 | Hospitals | 254 | 155 | 44 | 23 | 32 |
-| Zoos | 7 | 7 | 0 | 0 | 0 |
-| Aquariums | 3 | 3 | 0 | 0 | 0 |
-| Amusement Parks | 21 | 21 | 0 | 0 | 0 |
+| Zoos | 7 | 6 | 0 | 0 | 0 |
+| Aquariums | 3 | 2 | 0 | 0 | 0 |
+| Amusement Parks | 21 | 17 | 0 | 0 | 0 |
 | Parks | 2546 | 2180 | 39 | 327 | 0 |
-| Golf Courses | 96 | 91 | 2 | 3 | 0 |
-| Consulates | 50 | 50 | 0 | 0 | 0 |
+| Golf Courses | 96 | 89 | 2 | 3 | 2 |
+| Consulates | 50 | 41 | 0 | 0 | 1 |
 | Mountains | 239 | 232 | 7 | 0 | 0 |
 
 
 
-## Museums — 263 → 246 (name −5, osm −7 −5 manual)
+## Museums — 263 → 244 (name −5, osm −7 −5 manual)
 
 
 **Merged (8 groups):**
@@ -105,19 +105,19 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Orinda Care Center](https://www.google.com/maps/search/?api=1&query=37.8766426%2C-122.18034039999999&query_place_id=ChIJmaleoNR9hYARtyjeC6CVXh4)** (8 rev) absorbs: [Comprehensive Wellness](https://www.google.com/maps/search/?api=1&query=37.8770859%2C-122.180764&query_place_id=ChIJj0Z3-rNhhYARtqpuecmC5_c)(14,manual)
 
 
-## Zoos — 7 → 7 (name −0, osm −0)
+## Zoos — 7 → 6 (name −0, osm −0)
 
 
 _No merges._
 
 
-## Aquariums — 3 → 3 (name −0, osm −0)
+## Aquariums — 3 → 2 (name −0, osm −0)
 
 
 _No merges._
 
 
-## Amusement Parks — 21 → 21 (name −0, osm −0)
+## Amusement Parks — 21 → 17 (name −0, osm −0)
 
 
 _No merges._
@@ -354,10 +354,11 @@ _No merges._
 - **[Dante Park](https://www.google.com/maps/search/?api=1&query=37.3116759%2C-121.779663&query_place_id=ChIJ3-aeLHItjoARjj0C9BVHo3o)** (6 rev) absorbs: [Montelena Park](https://www.google.com/maps/search/?api=1&query=37.3139423%2C-121.7802387&query_place_id=ChIJMTdk45ktjoARdmeGcVVKaDQ)(5,osm)
 
 
-## Golf Courses — 96 → 91 (name −2, osm −3)
+## Golf Courses — 96 → 89 (name −2, osm −3 −2 manual)
 
 
-**Merged (5 groups):**
+**Merged (6 groups):**
+- **[Presidio Golf Course](https://www.google.com/maps/search/?api=1&query=37.7904944%2C-122.4597914&query_place_id=ChIJOR1geCGHhYARQ484akGas0M)** (920 rev) absorbs: [Presidio Golf & Concordia Club](https://www.google.com/maps/search/?api=1&query=37.7892586%2C-122.46080810000001&query_place_id=ChIJId4iICWHhYARMq2rv5kcsD4)(72,manual); [General Store](https://www.google.com/maps/search/?api=1&query=37.7942545%2C-122.46873690000001&query_place_id=ChIJH1ZmGiCHhYARIBIPNaIvaeM)(28,manual)
 - **[Los Lagos Golf Course](https://www.google.com/maps/search/?api=1&query=37.3011213%2C-121.82792900000001&query_place_id=ChIJd7xYHooyjoARLHSFSMpIIhI)** (600 rev) absorbs: [Los Lagos Golf Course Maintenance](https://www.google.com/maps/search/?api=1&query=37.301524799999996%2C-121.83765580000001&query_place_id=ChIJK0sHZfQyjoARWIOps4LYxRM)(16,osm)
 - **[TPC Harding Park](https://www.google.com/maps/search/?api=1&query=37.7248228%2C-122.4932023&query_place_id=ChIJk27jwAl9j4ARNLRQiZlyo3w)** (542 rev) absorbs: [Fleming 9 Course](https://www.google.com/maps/search/?api=1&query=37.7256296%2C-122.491058&query_place_id=ChIJT0PkXqZ9j4ARxPHUGgJGHB0)(172,osm)
 - **[Brentwood Golf Club](https://www.google.com/maps/search/?api=1&query=37.9242224%2C-121.72794329999999&query_place_id=ChIJk7vbdUn5j4AR4-DfCtDMuX0)** (519 rev) absorbs: [Palm Tree Golf and Event Center](https://www.google.com/maps/search/?api=1&query=37.9241592%2C-121.72762689999999&query_place_id=ChIJS958dVL5j4AREuMC1sJwnC0)(22)
@@ -365,10 +366,11 @@ _No merges._
 - **[Marina Golf Course](https://www.google.com/maps/search/?api=1&query=37.698111499999996%2C-122.1862652&query_place_id=ChIJH97g1k-Fj4ARJaj7XqKOMLs)** (130 rev) absorbs: [Monarch Bay Golf Club](https://www.google.com/maps/search/?api=1&query=37.695102399999996%2C-122.18560260000001&query_place_id=ChIJ9_A6cFKFj4AR6vW35Vfc-ho)(444,osm)
 
 
-## Consulates — 50 → 50 (name −0, osm −0)
+## Consulates — 50 → 41 (name −0, osm −0 −1 manual)
 
 
-_No merges._
+**Merged (1 groups):**
+- **[Mexico Consulate](https://www.google.com/maps/search/?api=1&query=37.7867488%2C-122.39562210000001&query_place_id=ChIJj_rRz1CBhYARNaK44wPeMkU)** (738 rev) absorbs: [embajada mexicana](https://www.google.com/maps/search/?api=1&query=37.786743799999996%2C-122.39559109999999&query_place_id=ChIJB41WfnuAhYAR8zO-KazXCUs)(113,manual)
 
 
 ## Mountains — 239 → 232 (name −7, osm −0)

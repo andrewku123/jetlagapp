@@ -1,6 +1,6 @@
 {
  "museum": {
-  "count": 246,
+  "count": 244,
   "places": [
    {
     "id": "ChIJ53I1Yn2AhYAR_Vl1vNygfMg",
@@ -3808,23 +3808,6 @@
     "source": "authoritative"
    },
    {
-    "id": "ChIJte5Q-bvGj4ARZztQhnbUKJE",
-    "name": "Louise Meager Art Gallery",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.527784,
-    "lon": -121.9164388,
-    "source": "authoritative"
-   },
-   {
     "id": "ChIJSQ6A0-13j4ARmuKnR9yeJOI",
     "name": "Museum of Pez Memorabilia",
     "primaryType": "museum",
@@ -4360,23 +4343,6 @@
     "businessStatus": null,
     "lat": 38.0111205,
     "lon": -122.295971,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ-6xgFgDpj4ARA_XUSISRKpQ",
-    "name": "Alameda County Central Railroad Society (ACCRS) - Building F",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.6608051,
-    "lon": -121.88702330000001,
     "source": "authoritative"
    }
   ]
@@ -12902,7 +12868,7 @@
   ]
  },
  "zoo": {
-  "count": 7,
+  "count": 6,
   "places": [
    {
     "id": "ChIJjaIC83F9j4AR1z3B225I_XU",
@@ -13011,28 +12977,11 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4081306,
     "lon": -122.1385795
-   },
-   {
-    "id": "ChIJHxC-i1qFj4ARQo-P62bDWNs",
-    "name": "Little Explorers Mobile Petting Zoo",
-    "primaryType": "zoo",
-    "types": [
-     "zoo",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Leandro, CA 94577, USA",
-    "rating": 3.5,
-    "userRatingCount": 30,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.710623,
-    "lon": -122.166868
    }
   ]
  },
  "aquarium": {
-  "count": 3,
+  "count": 2,
   "places": [
    {
     "id": "ChIJr6OmefyAhYAR-h8_vW9p5GQ",
@@ -13066,27 +13015,11 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7695812,
     "lon": -122.46613449999998
-   },
-   {
-    "id": "ChIJW1Z9kIlhhYARBx-Y_JVEepI",
-    "name": "Aquatic Experts",
-    "primaryType": "aquarium",
-    "types": [
-     "aquarium",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "302 Brandon Ct, Pleasant Hill, CA 94523, USA",
-    "rating": 5,
-    "userRatingCount": 19,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.9440861,
-    "lon": -122.07696580000001
    }
   ]
  },
  "amusement_park": {
-  "count": 21,
+  "count": 17,
   "places": [
    {
     "id": "ChIJq7iF28bJj4ARdWUD6DQUr3I",
@@ -13341,24 +13274,6 @@
     "lon": -121.7995814
    },
    {
-    "id": "ChIJEWrBrpWfj4AROFxDkTv2f6w",
-    "name": "ABC Tree Farms Summer Fun Zone, Pumpkin Patch & Christmas Trees",
-    "primaryType": "amusement_center",
-    "types": [
-     "amusement_center",
-     "water_park",
-     "amusement_park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1863 S Norfolk St, San Mateo, CA 94403, USA",
-    "rating": 4.8,
-    "userRatingCount": 58,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.5551637,
-    "lon": -122.29199820000001
-   },
-   {
     "id": "ChIJa7wBTJIzjoARZH3UjsKCnzA",
     "name": "FUNBOX SAN JOSE",
     "primaryType": "amusement_park",
@@ -13412,22 +13327,6 @@
     "lon": -121.99795999999999
    },
    {
-    "id": "ChIJrfaOrFXLj4AREJyMvz2XTCY",
-    "name": "Sky Zone Trampoline Park",
-    "primaryType": "amusement_park",
-    "types": [
-     "amusement_park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1600 Saratoga Ave, San Jose, CA 95129, USA",
-    "rating": 1.7,
-    "userRatingCount": 19,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2910215,
-    "lon": -121.9895361
-   },
-   {
     "id": "ChIJo-HF0ti1j4ARqgvnS7T6fV8",
     "name": "Ortega park splash park",
     "primaryType": "water_park",
@@ -13443,39 +13342,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.342545,
     "lon": -122.02506670000001
-   },
-   {
-    "id": "ChIJ6Y8pOWhhhYARYVv2_aQbCLA",
-    "name": "Sky Zone Trampoline Park",
-    "primaryType": "amusement_park",
-    "types": [
-     "amusement_park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2317 Oak Grove Rd, Walnut Creek, CA 94598, USA",
-    "rating": 1.8,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.927506,
-    "lon": -122.0178401
-   },
-   {
-    "id": "ChIJLTCOyGJhhYAR0TobSbRsYSg",
-    "name": "Water Light Public Plaza",
-    "primaryType": "water_park",
-    "types": [
-     "water_park",
-     "amusement_park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1501 Locust St, Walnut Creek, CA 94596, USA",
-    "rating": 4.8,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.899879899999995,
-    "lon": -122.0626649
    }
   ]
  },
@@ -50114,7 +49980,7 @@
   ]
  },
  "golf_course": {
-  "count": 91,
+  "count": 89,
   "places": [
    {
     "id": "ChIJMc1f_28Lj4ARTvQR4cv3Yxg",
@@ -51660,47 +51526,6 @@
     "lon": -121.56687919999999
    },
    {
-    "id": "ChIJId4iICWHhYARMq2rv5kcsD4",
-    "name": "Presidio Golf & Concordia Club",
-    "primaryType": "sports_club",
-    "types": [
-     "golf_course",
-     "banquet_hall",
-     "athletic_field",
-     "sports_complex",
-     "event_venue",
-     "sports_activity_location",
-     "sports_club",
-     "point_of_interest",
-     "association_or_organization",
-     "establishment"
-    ],
-    "address": "8 Presidio Terrace, San Francisco, CA 94118, USA",
-    "rating": 4.8,
-    "userRatingCount": 72,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7892586,
-    "lon": -122.46080810000001
-   },
-   {
-    "id": "ChIJH1ZmGiCHhYARIBIPNaIvaeM",
-    "name": "General Store",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "athletic_field",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco, CA 94129, USA",
-    "rating": 4.4,
-    "userRatingCount": 28,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7942545,
-    "lon": -122.46873690000001
-   },
-   {
     "id": "ChIJ_Sgh9ht3j4ARk3jKLjJOBn4",
     "name": "Burlingame Country Club",
     "primaryType": "golf_course",
@@ -52018,7 +51843,7 @@
   ]
  },
  "consulate": {
-  "count": 50,
+  "count": 41,
   "places": [
    {
     "id": "ChIJpTcruo6AhYARPLo5QdmBOrQ",
@@ -52381,24 +52206,6 @@
     "lon": -122.401906
    },
    {
-    "id": "ChIJB41WfnuAhYAR8zO-KazXCUs",
-    "name": "embajada mexicana",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "532 Folsom St, San Francisco, CA 94105, USA",
-    "rating": 3.8,
-    "userRatingCount": 113,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.786743799999996,
-    "lon": -122.39559109999999
-   },
-   {
     "id": "ChIJE03ZnYiAhYARPh8y_58TjyA",
     "name": "Consulate General of Japan",
     "primaryType": "embassy",
@@ -52597,26 +52404,6 @@
     "lon": -122.40422
    },
    {
-    "id": "ChIJk6s23LiAhYARfDUN03KXf4w",
-    "name": "FreeChinaVisa",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "travel_agency",
-     "local_government_office",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "1770 Post St, San Francisco, CA 94115, USA",
-    "rating": 4.8,
-    "userRatingCount": 51,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.785663199999995,
-    "lon": -122.4307906
-   },
-   {
     "id": "ChIJ66RMfWKAhYARnNDY2ZvgrAM",
     "name": "Australian Consulate",
     "primaryType": "embassy",
@@ -52689,24 +52476,6 @@
     "lon": -122.4007514
    },
    {
-    "id": "ChIJRQiEzYqAhYARWPrF0J4znuk",
-    "name": "Swissnex in San Francisco",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "200 Vallejo St, San Francisco, CA 94111, USA",
-    "rating": 4.8,
-    "userRatingCount": 23,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7996099,
-    "lon": -122.40151820000001
-   },
-   {
     "id": "ChIJf2ogNVGBhYARr7ghRVQSe08",
     "name": "Consulate General of Georgia in San Francisco",
     "primaryType": "embassy",
@@ -52743,24 +52512,6 @@
     "lon": -122.4004592
    },
    {
-    "id": "ChIJfSMZ7SOBhYARIRfsp_-ehGg",
-    "name": "Consulado General de Guatemala",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "544 Golden Gate Ave, San Francisco, CA 94102, USA",
-    "rating": 1.9,
-    "userRatingCount": 15,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7813084,
-    "lon": -122.41957759999998
-   },
-   {
     "id": "ChIJc2xuz46AhYARh7IM2i0krUk",
     "name": "Consulate General of Tonga",
     "primaryType": "embassy",
@@ -52777,24 +52528,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5947896,
     "lon": -122.36387339999999
-   },
-   {
-    "id": "ChIJj02r6JWGj4ARhv-ZOtFRWII",
-    "name": "embajada de nicaragua",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "Alameda, CA 94501, USA",
-    "rating": 3.9,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.765324199999995,
-    "lon": -122.24143980000001
    },
    {
     "id": "ChIJV9R36eeBhYARF2uurzMq6QQ",
@@ -52833,42 +52566,6 @@
     "lon": -122.40126629999997
    },
    {
-    "id": "ChIJdcjiRPOBhYARQuSNoZd5PIY",
-    "name": "INDONESIAN CONSULAR OFFICE",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "505 Beach St #130, San Francisco, CA 94133, USA",
-    "rating": 4.6,
-    "userRatingCount": 8,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8067975,
-    "lon": -122.4175701
-   },
-   {
-    "id": "ChIJQ7VdToiAhYARjbjGFXOgSXU",
-    "name": "French Embassy Economic Department",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "88 Kearny St #1510, San Francisco, CA 94108, USA",
-    "rating": 4.7,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.788570899999996,
-    "lon": -122.4034392
-   },
-   {
     "id": "ChIJkYbnH4qAhYAR7NEKio7FTmM",
     "name": "Consulate General of Ecuador",
     "primaryType": "embassy",
@@ -52885,44 +52582,6 @@
     "businessStatus": null,
     "lat": 37.791396399999996,
     "lon": -122.40287609999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJCdQLf3uAhYAR1e7UKm8V0o0",
-    "name": "Consulate General of Honduras",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7852117,
-    "lon": -122.40751859999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJOYlY_IWAhYARgUYZO5gQnyc",
-    "name": "Consulate of Nicaragua in San Francisco",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.785180499999996,
-    "lon": -122.4072778,
     "source": "authoritative"
    }
   ]

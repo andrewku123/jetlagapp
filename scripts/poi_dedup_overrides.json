@@ -67,6 +67,21 @@
       ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
     ]
   },
+  "consulate": {
+    "merge": [
+      ["embajada mexicana", "Mexico Consulate"]
+    ],
+    "drop": [
+      ["embajada de nicaragua", 37.7653242, -122.2414398],
+      ["Consulate of Nicaragua in San Francisco", 37.7851805, -122.4072778],
+      ["Consulate General of Honduras", 37.7852117, -122.4075186],
+      ["Consulado General de Guatemala", 37.7813084, -122.4195776],
+      ["FreeChinaVisa", 37.7856632, -122.4307906],
+      ["Swissnex in San Francisco", 37.7996099, -122.4015182],
+      ["French Embassy Economic Department", 37.7885709, -122.4034392],
+      ["INDONESIAN CONSULAR OFFICE", 37.8067975, -122.4175701]
+    ]
+  },
   "golf_course": {
     "merge": [
       ["Presidio Golf & Concordia Club", "Presidio Golf Course"],
