@@ -20,6 +20,10 @@
     "separate": [
       ["Veterans Memorial Building of San Ramon Valley", "Museum of the San Ramon Valley"],
       ["Sneaker Museum Oakland", "Museum of Art and Digital Entertainment - (MADE)"]
+    ],
+    "drop": [
+      ["Alameda County Central Railroad Society (ACCRS) - Building F", 37.6608051, -121.8870233],
+      ["Louise Meager Art Gallery", 37.527784, -121.9164388]
     ]
   },
   "hospital": {
