@@ -31,7 +31,7 @@ tot_merges = tot_caught = tot_sepviol = tot_over = 0
 for key in [k for k in D.LABEL if k in curated and k in overrides]:
     places = curated[key]["places"]
     osm = D.load_osm(key)
-    fm, fs, rn = D.load_overrides(places, key, overrides)
+    fm, fs, rn, dn = D.load_overrides(places, key, overrides)
     # OFF = auto-logic with the `separate` guardrails still on (they are a
     # permanent safety net), but the manual MERGES removed -- this is what the
     # auto-logic catches by itself in production.

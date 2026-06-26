@@ -260,6 +260,17 @@ def resolve_name(places, query):
             if qn and (qn in match_norm(p["name"]) or match_norm(p["name"]) in qn)]
 
 
+def resolve_near(places, query, lat, lon, tol=200.0):
+    """Index of the place matching `query` nearest to (lat,lon), within `tol` m.
+    Used for `drop`/coord-pinned overrides where the name alone is ambiguous
+    (chains like 'Sky Zone Trampoline Park' appear in several cities)."""
+    cands = resolve_name(places, query)
+    if not cands:
+        return None
+    best = min(cands, key=lambda i: hav(places[i]["lat"], places[i]["lon"], lat, lon))
+    return best if hav(places[best]["lat"], places[best]["lon"], lat, lon) <= tol else None
+
+
 def maps_link(p):
     pid = p.get("id")
     base = f"https://www.google.com/maps/search/?api=1&query={p['lat']}%2C{p['lon']}"
@@ -507,7 +518,7 @@ def final_parent(edges):
 def load_overrides(places, key, overrides):
     """Resolve override names for a category to (forced_merge, forced_sep) on indices."""
     ov = overrides.get(key, {})
-    fm, fs, rn = [], [], []
+    fm, fs, rn, dn = [], [], [], set()
     revs = [p.get("userRatingCount") or 0 for p in places]
     for child_name, parent_name in ov.get("merge", []):
         ci, pi = resolve_name(places, child_name), resolve_name(places, parent_name)
@@ -540,7 +551,21 @@ def load_overrides(places, key, overrides):
             rn.append((oi[0], new_name, coord))
         else:
             print(f"WARN [{key}] rename override unresolved: {old_name!r}({oi})")
-    return fm, fs, rn
+    # drop = remove a pin entirely (reviewer confirmed it doesn't exist). Each
+    # entry is [name, lat, lon]: coords pin the exact pin so chains (several
+    # same-named locations) drop only the one the reviewer flagged.
+    for entry in ov.get("drop", []):
+        name = entry[0]
+        if len(entry) >= 3:
+            di = resolve_near(places, name, entry[1], entry[2])
+        else:
+            cands = resolve_name(places, name)
+            di = cands[0] if len(cands) == 1 else None
+        if di is None:
+            print(f"WARN [{key}] drop override unresolved: {name!r} ({entry[1:]})")
+        else:
+            dn.add(di)
+    return fm, fs, rn, dn
 
 
 def main():
@@ -560,14 +585,14 @@ def main():
     for key in [k for k in LABEL if k in curated]:
         places = curated[key]["places"]
         osm = load_osm(key)
-        fm, fs, rn = load_overrides(places, key, overrides)
+        fm, fs, rn, dn = load_overrides(places, key, overrides)
         r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs,
                            campus=key in CAMPUS_CATS, cat=key)
         for idx, new_name, coord in rn:
             places[idx]["name"] = new_name
             if coord:
                 places[idx]["lat"], places[idx]["lon"] = coord
-        kept = r["kept"]
+        kept = [i for i in r["kept"] if i not in dn]
         kept_places = [places[i] for i in kept]
         out[key] = {"count": len(kept_places), "places": kept_places}
         edges = r["edges"]

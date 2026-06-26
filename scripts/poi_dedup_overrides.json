@@ -62,5 +62,10 @@
       ["Kaiser building 4 Ophthalmology, Physical Therapy)", "Ygnacio Kaiser Medical Center", 37.927654644101324, -122.02931607404275],
       ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
     ]
+  },
+  "amusement_park": {
+    "drop": [
+      ["Sky Zone Trampoline Park", 37.290989, -121.989784]
+    ]
   }
 }
