@@ -19,6 +19,14 @@
   .ctl{font-size:12px;margin:8px 0}
   button{font-size:12px;padding:3px 8px;margin-right:6px;cursor:pointer}
   .tot{font-size:12px;color:#555;margin-top:10px}
+  #q{width:100%;box-sizing:border-box;padding:5px 7px;font-size:13px;margin:2px 0 4px}
+  #res{max-height:200px;overflow:auto;border:1px solid #eee;border-radius:4px;display:none}
+  #res.on{display:block}
+  .ri{display:flex;gap:6px;align-items:baseline;padding:4px 7px;font-size:12px;cursor:pointer;border-bottom:1px solid #f2f2f2}
+  .ri:hover{background:#f0f6ff}
+  .ri .rc{width:9px;height:9px;border-radius:50%;flex:0 0 auto;align-self:center}
+  .ri .rn{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ri .rk{color:#999;font-size:11px}
   .lp b{font-size:13px}
   .lp .k{color:#c0392b}
   .lp .r{color:#27ae60}
@@ -28,6 +36,10 @@
 <div id="wrap">
   <div id="side">
     <h2>POI de-dup review</h2>
+    <div class="ctl">
+      <input id="q" type="search" placeholder="Search POIs by name…" autocomplete="off">
+      <div id="res"></div>
+    </div>
     <div class="ctl">
       <button id="all">Show all</button><button id="none">Hide all</button>
     </div>
@@ -121,6 +133,40 @@ document.getElementById('none').onclick=()=>{Object.keys(window.VIZ).forEach(k=>
   catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
 document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
   Object.keys(window.VIZ).forEach(k=>refresh(k));};
+
+// ---- search ----
+const INDEX=[];
+Object.keys(window.VIZ).forEach(key=>{const d=window.VIZ[key];
+  (d.singles||[]).forEach(p=>INDEX.push({key,p,kind:'untouched',col:'#999'}));
+  (d.groups||[]).forEach(grp=>{INDEX.push({key,p:grp.rep,kind:'kept',col:'#27ae60'});
+    grp.kids.forEach(k=>INDEX.push({key,p:k,kind:'merged away',
+      col:k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b'}));});});
+const qEl=document.getElementById('q'), resEl=document.getElementById('res');
+let flash=null;
+function goTo(it){
+  if(!enabled[it.key]){enabled[it.key]=true;refresh(it.key);
+    const cb=[...catsDiv.querySelectorAll('input')][Object.keys(window.VIZ).indexOf(it.key)];
+    if(cb)cb.checked=true;}
+  map.setView([it.p.lat,it.p.lon],15);
+  if(flash)map.removeLayer(flash);
+  flash=L.circleMarker([it.p.lat,it.p.lon],{radius:13,color:'#1d6fe0',weight:3,fill:false})
+    .addTo(map).bindPopup(popup(it.p,it.kind)).openPopup();
+}
+function runSearch(){
+  const q=qEl.value.trim().toLowerCase();
+  if(q.length<2){resEl.className='';resEl.innerHTML='';return;}
+  const hits=INDEX.filter(it=>(it.p.n||'').toLowerCase().includes(q)).slice(0,60);
+  resEl.innerHTML=hits.length?hits.map((it,i)=>
+    `<div class="ri" data-i="${i}"><span class="rc" style="background:${it.col}"></span>`
+    +`<span class="rn">${esc(it.p.n)}</span>`
+    +`<span class="rk">${window.VIZ[it.key].label} · ${it.kind}</span></div>`).join('')
+    :'<div class="ri" style="color:#999;cursor:default">no matches</div>';
+  resEl.className='on';
+  [...resEl.querySelectorAll('.ri[data-i]')].forEach(el=>
+    el.onclick=()=>goTo(hits[+el.dataset.i]));
+}
+qEl.addEventListener('input',runSearch);
+qEl.addEventListener('focus',runSearch);
 </script>
 </body>
 </html>
