@@ -11,3 +11,6 @@ auth_lists/
 # consular directory PDF (re-downloaded on demand)
 consular_directory.pdf
 *DIPLOMATICOFFICES.pdf
+
+# IMLS GLAMs ArcGIS dump (re-fetched on demand)
+glams.json

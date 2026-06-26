@@ -162,14 +162,30 @@ The Google icon rule still governs — registries only widen recall.
   authoritative layer's payoff is category-dependent: nil where Google is strong,
   real where its search is weak (consulates).
 - Full Bay-Area authoritative sweep result (net-new added back): **consulates +3**
-  (Ecuador, Honduras, Nicaragua); mountains / hospitals / zoos / aquariums **+0**
-  (Google+OSM already cover those registries here). museum/library (IMLS) couldn't
-  be fetched — imls.gov returned 301→000/timeouts from this environment, so they
-  stay on OSM+Google (already backfilled). parks deliberately **not** run: PAD-US
-  is protected-area *boundaries*, not Google park-icon POIs, and OSM already has
-  >2000 — it would mostly produce non-icon candidates the check drops. Takeaway:
-  the authoritative layer earns its keep on the **address/registry categories where
-  Google's area-search is weak (consulates)**, and is confirmation-only elsewhere.
+  (Ecuador, Honduras, Nicaragua); **museums +38**, **libraries +2** (IMLS, below);
+  mountains / hospitals / zoos / aquariums **+0** (Google+OSM already cover those
+  registries here). parks deliberately **not** run: PAD-US is protected-area
+  *boundaries*, not Google park-icon POIs, and OSM already has >2000 — it would
+  mostly produce non-icon candidates the check drops.
+- **IMLS museums + libraries (via ArcGIS, NOT imls.gov):** imls.gov never loaded
+  from this env (301→000/timeouts), so instead query the IMLS-derived **ArcGIS
+  feature layers** by bbox (free, no key) — `fetch_imls_arcgis.py`:
+  museums ← the "GLAMs" layer (`TYPE_MAIN='MUS'`, derived from IMLS's MUDF),
+  libraries ← the IMLS PLS "Public Library Outlet" layer (real per-outlet coords).
+  Bay-Area run: museum **502 raw → 406 gap → 162 icon-verified → +38 net-new**
+  after Google-id dedup (the other ~124 icon hits were pins we already had under a
+  different name, e.g. "M.H. de Young" vs "de Young Museum"); library
+  **230 raw → 66 gap → 27 icon-verified → +2 net-new**. ~472 no-review calls (~$15).
+- Takeaway (use this to decide per future city): the authoritative layer earns its
+  keep on **(a) address/registry categories where Google's area-search is weak
+  (consulates)** and **(b) museums (IMLS MUDF/GLAMs gave the biggest single-source
+  lift, +38 ≈ 18%)**. It is confirmation-only (+0/+2) for hospitals, mountains,
+  zoos, aquariums, and **libraries** (PLS is clean but redundant with OSM+Google —
+  skip it to save the spend). Caveat: MUDF/GLAMs is over-inclusive (art galleries,
+  historical societies, dept collections), so the +38 needs a **manual legitimacy +
+  ≥5-review pass** — expect to prune a chunk. So: for a new US metro, run
+  **consulates + museums** authoritatively; treat the rest as an optional cheap
+  sanity check.
 
 ### 4. `curate_places_poi.py` — apply the icon allowlist + review rule
 - Keeps only `primaryType in ALLOW[cat]` (+ golf/cinema rescue); applies
@@ -314,8 +330,8 @@ agency if a URL 404s.
 | mountain ★ | USGS GNIS / GeoNames `US.zip` | `download.geonames.org/export/dump/US.zip` (coords) |
 | hospital ★ | CMS Hospital General Information | `data.cms.gov` dataset `xubh-q36u` (JSON API; address) |
 | hospital (alt) | HIFLD Hospitals | hifld-geoplatform (ArcGIS; coords) — endpoint moves |
-| museum | IMLS Museum Universe Data File | imls.gov → "museum data files" (CSV) — **imls.gov timed out / 000 from this env; OSM already covers museums** |
-| library | IMLS Public Libraries Survey (public libs) | imls.gov → PLS (outlet file, coords) — **same imls.gov access trouble; OSM covers libraries** |
+| museum ★ | IMLS MUDF via the ArcGIS "GLAMs" layer | `fetch_imls_arcgis.py` queries the GLAMs FeatureServer by bbox (`TYPE_MAIN='MUS'`, coords) → `auth_lists/museum.csv`. **Use the ArcGIS layer, not imls.gov (which timed out / 000 from this env). +38 net-new in the Bay Area — biggest single-source lift; but over-inclusive, needs manual pruning.** |
+| library | IMLS PLS via the ArcGIS "Public Library Outlet" layer | `fetch_imls_arcgis.py` queries the PLS FeatureServer by bbox (real per-outlet coords) → `auth_lists/library.csv`. **Only +2 net-new — clean but redundant with OSM+Google; low priority.** |
 | zoo / aquarium ★ | AZA current accreditation list | `fetch_zoos_aza.py` scrapes aza.org → `auth_lists/zoo_aquarium.csv` |
 | consulate ★ | US Congressional Directory "Foreign Diplomatic Offices" (govinfo) | `fetch_consulates_fco.py` parses the PDF → `auth_lists/consulate.csv` |
 | park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org — **GIS boundaries, not Google park-icon POIs; OSM already has thousands; opt-in only (skipped — would mostly drop at icon-check)** |
