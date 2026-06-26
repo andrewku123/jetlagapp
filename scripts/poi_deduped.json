@@ -9908,7 +9908,7 @@
   ]
  },
  "hospital": {
-  "count": 180,
+  "count": 179,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -10899,7 +10899,7 @@
    },
    {
     "id": "ChIJL9Fk0NeRj4ARYFm5oeK3BAU",
-    "name": "John George Psychiatric Hospital",
+    "name": "Fairmont Hospital",
     "primaryType": "hospital",
     "types": [
      "medical_clinic",
@@ -10913,8 +10913,8 @@
     "rating": 2,
     "userRatingCount": 145,
     "businessStatus": "OPERATIONAL",
-    "lat": 37.7108396,
-    "lon": -122.12021449999999
+    "lat": 37.707981393381004,
+    "lon": -122.11984268807406
    },
    {
     "id": "ChIJZ0iY17mGj4ARoGuoSYkhO-Y",
@@ -11996,25 +11996,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.809993299999995,
     "lon": -122.27063550000001
-   },
-   {
-    "id": "ChIJ1U3EDU2Rj4ARHRQ4ArwnI0Q",
-    "name": "Telecare Willow Rock Center",
-    "primaryType": "hospital",
-    "types": [
-     "medical_clinic",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2050 Fairmont Dr, San Leandro, CA 94578, USA",
-    "rating": 3,
-    "userRatingCount": 17,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7097589,
-    "lon": -122.118491
    },
    {
     "id": "ChIJHxLiZpzzj4AROhfu7gOl6y4",
