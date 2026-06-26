@@ -208,6 +208,42 @@ Representative pick: most-reviewed pin; in no-review mode, the non-sub-part,
 shortest-clean-name pin. Outputs `poi_deduped.json`, `poi_dedup_review.md`, and
 `poi_merge_viz.js` (data for the review map `poi_merge_viz.html`).
 
+#### Campus heuristics (HOSPITAL ONLY — `CAMPUS_CATS`)
+Hospital systems list one campus as many strongly-named pins (`Kaiser Permanente
+Walnut Creek: Chemical Dependency Services`, `Family House: UCSF Benioff ...`,
+`UCSF Medical Records`). The plain name pass misses these because `norm()` keeps
+only the pre-`:` head. So `dedup_category(..., campus=True)` (set for
+`CAMPUS_CATS = {"hospital"}` in `main()`) adds two extra moves, both keyed on
+`distinctive_full()` — brand/place words over the **whole** name (minus
+`GENERIC`+`STRUCTURAL`), so the `:`-tail identity still counts:
+- **≥2 shared brand words within `BRAND2_D` (700m) ⇒ same complex** (union). The
+  two SCVMC and the John Muir Walnut-Creek-vs-Concord pairs sit >700m apart, so
+  they stay distinct.
+- **minor-satellite absorb:** a pin with `< MINOR_MAX` (60) reviews sharing ≥1
+  brand word with a *stronger* anchor within `BRAND1_D` (500m) is absorbed into
+  the **nearest** such anchor (e.g. `UCSF Medical Records`→`UCSF Medical
+  Center`, `Kaiser ... Child/ado Psy`→`Kaiser Santa Clara`). Only minor pins
+  move and only toward a stronger one, so two well-reviewed distinct hospitals
+  are never joined.
+
+**Over-merge trap — why this is hospital-only.** An earlier version ran the
+whole-name brand match on *every* category and falsely merged distinct generic
+places that merely share a descriptor: parks (`Brisbane Dog Park` +
+`Clayton Dog Park` on "dog"), museums (`... Historical Society` on "historical",
+`Museum of Children's Art` + `Sneaker Museum` on "museum"). For hospitals a
+shared brand word ("Kaiser", "UCSF") is real identity; for parks/museums it is
+just a category descriptor. So campus stays gated to `CAMPUS_CATS`; every other
+category keeps only the conservative pre-`:` `distinctive()` name pass + the OSM
+footprint pass. To extend campus to a new category, only do so if its pins carry
+a real shared *brand/place* name (not a generic descriptor), and re-validate.
+
+**Validate after any change** with `validate_merges.py`: it re-runs the dedup
+with the manual MERGES removed (separates kept as a safety net) and reports, per
+category, how many ground-truth merges the auto-logic now catches on its own,
+plus **0 separate-override violations** and **0 over-merges** (a pair the target
+keeps apart that auto-logic joins) as hard gates. Current Bay Area: 18/32
+hospital merges auto-caught, generic counts unchanged.
+
 ### 6. Review — interactive map
 Deploy `poi_merge_viz.html` + `poi_merge_viz.js` to `public/poi-review/` (see the
 `deploy-hideandseek` skill / PR-preview). Multiple reviewers open one URL; legend:
