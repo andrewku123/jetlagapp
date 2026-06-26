@@ -7,7 +7,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Museums | 263 | 246 | 5 | 7 | 5 |
 | Libraries | 249 | 241 | 2 | 4 | 2 |
 | Movie Theaters | 84 | 80 | 3 | 1 | 0 |
-| Hospitals | 254 | 181 | 36 | 37 | 0 |
+| Hospitals | 254 | 180 | 36 | 37 | 1 |
 | Zoos | 7 | 7 | 0 | 0 | 0 |
 | Aquariums | 3 | 3 | 0 | 0 | 0 |
 | Amusement Parks | 21 | 21 | 0 | 0 | 0 |
@@ -54,10 +54,10 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Apple Cinemas Van Ness IMAX](https://www.google.com/maps/search/?api=1&query=37.785190199999995%2C-122.42094379999999&query_place_id=ChIJp0ynta-BhYARI2wou04immo)** (398 rev) absorbs: [1000 Van Ness](https://www.google.com/maps/search/?api=1&query=37.785154899999995%2C-122.42038499999998&query_place_id=ChIJV05OkpaAhYAREvO2JfkoQa0)(636)
 
 
-## Hospitals — 254 → 181 (name −36, osm −37)
+## Hospitals — 254 → 180 (name −36, osm −37 −1 manual)
 
 
-**Merged (41 groups):**
+**Merged (42 groups):**
 - **[Kaiser Permanente Santa Clara Medical Center](https://www.google.com/maps/search/?api=1&query=37.335927999999996%2C-121.9994844&query_place_id=ChIJzT2XUo-1j4AR5A4nV_KVdUg)** (2360 rev) absorbs: [Kaiser Permanente Laboratory Services](https://www.google.com/maps/search/?api=1&query=37.3364495%2C-121.9969746&query_place_id=ChIJo8qFQgC1j4ARNZpKuACLLhA)(8)
 - **[Kaiser Permanente Oakland Medical Center](https://www.google.com/maps/search/?api=1&query=37.8236091%2C-122.25821690000001&query_place_id=ChIJ-2PEM_p9hYARHW91UOyZODw)** (2319 rev) absorbs: [Kaiser Permanente Fabiola Building](https://www.google.com/maps/search/?api=1&query=37.8252179%2C-122.256149&query_place_id=ChIJUSMjsPl9hYAReD-UXda_vuw)(71)
 - **[Kaiser Permanente San Jose Medical Center](https://www.google.com/maps/search/?api=1&query=37.2395632%2C-121.8012245&query_place_id=ChIJLzjiwC8ujoAR50z-X7tCEW0)** (2123 rev) absorbs: [Kaiser Permanente Emergency Care San Jose](https://www.google.com/maps/search/?api=1&query=37.2401176%2C-121.80103000000001&query_place_id=ChIJES7E4OsvjoARm0w9QywNN8g)(11,osm); [Kaiser Permanente Building 2 Surgery Center](https://www.google.com/maps/search/?api=1&query=37.240811099999995%2C-121.80275510000001&query_place_id=ChIJiYI4SwwvjoARjrAZpUU9Ij8)(6); [Kaiser Permanente Building 3](https://www.google.com/maps/search/?api=1&query=37.240671999999996%2C-121.80052780000001&query_place_id=ChIJMQet9S8ujoARiq2nRYi4VLI)(6); [Kaiser building 4 - 1 North](https://www.google.com/maps/search/?api=1&query=37.2409925%2C-121.7995633&query_place_id=ChIJP0kX_y8ujoARPHKYcZRevtY)(5)
@@ -97,6 +97,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Asian Health Services Chenming & Margaret Hu Medical Center](https://www.google.com/maps/search/?api=1&query=37.7993366%2C-122.27113949999999&query_place_id=ChIJB_UACraAj4ARSj8MYUEGWeA)** (20 rev) absorbs: [Asian Health Services Rolland & Kathryn Lowe Medical Center](https://www.google.com/maps/search/?api=1&query=37.7998529%2C-122.27128509999999&query_place_id=ChIJK-1FdLaAj4ARAprkqYVehds)(6)
 - **[UCSF Medical Records](https://www.google.com/maps/search/?api=1&query=37.7639012%2C-122.45727110000001&query_place_id=ChIJc6JmaFeHhYARPkovz6Ol8yg)** (20 rev) absorbs: [UCSF Helen Diller Medical Center at Parnassus Heights](https://www.google.com/maps/search/?api=1&query=37.7642229%2C-122.4573276&query_place_id=ChIJYTTv-PiHhYARTHm7Y7ebCPQ)(15)
 - **[UCSF Wayne and Gladys Valley Center for Vision](https://www.google.com/maps/search/?api=1&query=37.7660896%2C-122.38840529999999&query_place_id=ChIJfWhA15F_j4ARugoTASeeiao)** (9 rev) absorbs: [UCSF Medical Center at Mission Bay](https://www.google.com/maps/search/?api=1&query=37.7664112%2C-122.38846719999998&query_place_id=ChIJ_XSjKgB_j4ARIaSiGP88QcA)(5)
+- **[Ygnacio Kaiser Medical Center](https://www.google.com/maps/search/?api=1&query=37.927654644101324%2C-122.02931607404275&query_place_id=ChIJWcIsoVdghYARDPC1vv2Rr3U)** (9 rev) absorbs: [Sports Medicine Center Walnut Creek: Children's Hospital Oakland](https://www.google.com/maps/search/?api=1&query=37.925324499999995%2C-122.02677639999999&query_place_id=ChIJr6QEBVpghYARscPHC2vxiJg)(6,manual)
 - **[Children's Hospital & Research Center](https://www.google.com/maps/search/?api=1&query=37.8385276%2C-122.2609602&query_place_id=ChIJK8_Bv-B9hYARsT3xZ-KJk_A)** (7 rev) absorbs: [UCSF Benioff Children's Hospital Primary Care Clinic](https://www.google.com/maps/search/?api=1&query=37.8385118%2C-122.26100199999999&query_place_id=ChIJfyx2v-B9hYARO1CxZGp-oCg)(7)
 - **[Fremont Sleep Medicine](https://www.google.com/maps/search/?api=1&query=37.5473442%2C-121.97335809999998&query_place_id=ChIJY7wGbZTAj4ARu3dqh6tR-oo)** (7 rev) absorbs: [Fremont Psychiatry](https://www.google.com/maps/search/?api=1&query=37.5473709%2C-121.97339629999998&query_place_id=ChIJY7wGbZTAj4ARub7XbK8dwDo)(6)
 

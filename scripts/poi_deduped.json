@@ -9908,7 +9908,7 @@
   ]
  },
  "hospital": {
-  "count": 181,
+  "count": 180,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -12725,7 +12725,7 @@
    },
    {
     "id": "ChIJWcIsoVdghYARDPC1vv2Rr3U",
-    "name": "Kaiser building 4 Ophthalmology, Physical Therapy)",
+    "name": "Ygnacio Kaiser Medical Center",
     "primaryType": "medical_center",
     "types": [
      "medical_center",
@@ -12739,8 +12739,8 @@
     "rating": 4.1,
     "userRatingCount": 9,
     "businessStatus": "OPERATIONAL",
-    "lat": 37.9287705,
-    "lon": -122.0289789
+    "lat": 37.927654644101324,
+    "lon": -122.02931607404275
    },
    {
     "id": "ChIJQ-fY6wR-j4ARw-T95ns8jh4",
@@ -13160,26 +13160,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6666886,
     "lon": -122.4668657
-   },
-   {
-    "id": "ChIJr6QEBVpghYARscPHC2vxiJg",
-    "name": "Sports Medicine Center Walnut Creek: Children's Hospital Oakland",
-    "primaryType": "hospital",
-    "types": [
-     "medical_clinic",
-     "hospital",
-     "doctor",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2401 Shadelands Dr, Walnut Creek, CA 94598, USA",
-    "rating": 3.2,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.925324499999995,
-    "lon": -122.02677639999999
    },
    {
     "id": "ChIJQbJ_mKykj4ARBH_VuhTSlSQ",

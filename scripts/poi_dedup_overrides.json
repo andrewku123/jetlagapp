@@ -21,5 +21,13 @@
       ["Veterans Memorial Building of San Ramon Valley", "Museum of the San Ramon Valley"],
       ["Sneaker Museum Oakland", "Museum of Art and Digital Entertainment - (MADE)"]
     ]
+  },
+  "hospital": {
+    "merge": [
+      ["Sports Medicine Center Walnut Creek: Children's Hospital Oakland", "Kaiser building 4 Ophthalmology, Physical Therapy)"]
+    ],
+    "rename": [
+      ["Kaiser building 4 Ophthalmology, Physical Therapy)", "Ygnacio Kaiser Medical Center", 37.927654644101324, -122.02931607404275]
+    ]
   }
 }

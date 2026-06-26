@@ -373,7 +373,7 @@ def final_parent(edges):
 def load_overrides(places, key, overrides):
     """Resolve override names for a category to (forced_merge, forced_sep) on indices."""
     ov = overrides.get(key, {})
-    fm, fs = [], []
+    fm, fs, rn = [], [], []
     for child_name, parent_name in ov.get("merge", []):
         ci, pi = resolve_name(places, child_name), resolve_name(places, parent_name)
         if len(ci) == 1 and len(pi) == 1:
@@ -388,7 +388,15 @@ def load_overrides(places, key, overrides):
         else:
             print(f"WARN [{key}] separate override unresolved: "
                   f"{a_name!r}({ai}) / {b_name!r}({bi})")
-    return fm, fs
+    for entry in ov.get("rename", []):
+        old_name, new_name = entry[0], entry[1]
+        coord = (entry[2], entry[3]) if len(entry) >= 4 else None
+        oi = resolve_name(places, old_name)
+        if len(oi) == 1:
+            rn.append((oi[0], new_name, coord))
+        else:
+            print(f"WARN [{key}] rename override unresolved: {old_name!r}({oi})")
+    return fm, fs, rn
 
 
 def main():
@@ -408,8 +416,12 @@ def main():
     for key in [k for k in LABEL if k in curated]:
         places = curated[key]["places"]
         osm = load_osm(key)
-        fm, fs = load_overrides(places, key, overrides)
+        fm, fs, rn = load_overrides(places, key, overrides)
         r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs)
+        for idx, new_name, coord in rn:
+            places[idx]["name"] = new_name
+            if coord:
+                places[idx]["lat"], places[idx]["lon"] = coord
         kept = r["kept"]
         kept_places = [places[i] for i in kept]
         out[key] = {"count": len(kept_places), "places": kept_places}
