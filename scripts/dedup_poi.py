@@ -60,6 +60,19 @@ NAME_D = float(sys.argv[1]) if len(sys.argv) > 1 else 300.0   # same-name merge
 SUB_D = float(sys.argv[2]) if len(sys.argv) > 2 else 400.0    # sub-part absorb
 CO_D = 60.0          # two real pins this close are the same point -> merge
 SUBSET_MAXREV = 50   # only absorb a subset-named pin if it's minor (< this)
+# campus heuristics (cut future manual merges of hospital department/satellite
+# pins): two pins that share >=2 distinctive (brand/place) words within BRAND2_D
+# are the same complex; a MINOR pin (< MINOR_MAX reviews) sharing >=1 such word
+# within BRAND1_D of a stronger anchor is a satellite of it. Strong, distinctly
+# named pins (big review counts) are never auto-absorbed -> they stay manual.
+BRAND2_D = 700.0     # >=2 shared distinctive words -> same complex
+BRAND1_D = 500.0     # 1 shared distinctive word -> absorb only a MINOR pin
+MINOR_MAX = 60       # a pin under this many reviews may be absorbed as a satellite
+# categories whose pins form multi-building "campuses" sharing a real brand/place
+# name (hospital systems). The campus heuristics ONLY run for these -- generic
+# categories (parks, museums, ...) would over-merge distinct places that merely
+# share a descriptive word, so they keep the conservative passes only.
+CAMPUS_CATS = {"hospital"}
 
 LABEL = {
     "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
@@ -135,6 +148,16 @@ def distinctive(name, drop_structural=False):
     return toks
 
 
+def distinctive_full(name):
+    """Brand/place words over the WHOLE name (norm() keeps only the pre-':' head,
+    which loses the real identity of 'Family House: UCSF ...' / 'Pediatrics: ...'
+    style listings). Drops generic + structural words so a shared token means a
+    shared brand/place, not a shared 'building'/'center'."""
+    s = re.sub(r"[^\w\s]", " ", name.lower())
+    toks = {t for t in s.split() if t and t not in STOP and not t.isdigit()}
+    return toks - GENERIC - STRUCTURAL
+
+
 def hav(a, b, c, d):
     R = 6371000.0
     p = math.pi / 180
@@ -192,7 +215,14 @@ def maps_link(p):
     return base + (f"&query_place_id={pid}" if pid else "")
 
 
-def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
+def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
+                   campus=False):
+    # campus=True turns on the brand/place "same medical campus" heuristics
+    # (>=2 shared brand words within BRAND2_D, and minor-satellite absorption).
+    # They are calibrated for hospital systems (Kaiser/UCSF/Sutter/Stanford) and
+    # would over-merge distinct parks/museums that merely share a descriptive
+    # word ("... Dog Park", "... Historical Society"), so they stay OFF for the
+    # generic-name categories and only the conservative name/OSM passes run there.
     forced_merge = forced_merge or []
     forced_sep = forced_sep or []   # list of frozenset({idx, idx}) to keep apart
     n = len(places)
@@ -201,6 +231,7 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
     names = [p["name"] for p in places]
     toks = [sig_tokens(nm) for nm in names]
     dist = [distinctive(nm) for nm in names]              # non-generic words
+    dfb = [distinctive_full(nm) for nm in names]          # whole-name brand words
     dsub = [distinctive(nm, drop_structural=True) for nm in names]
     sub = [is_sub(nm) for nm in names]
     real = [i for i in range(n) if not sub[i]]
@@ -227,16 +258,21 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
                 return True
         return False
 
+    lim = max(NAME_D, BRAND2_D) if campus else NAME_D
     for ai in range(len(real)):
         for bi in range(ai + 1, len(real)):
             i, j = real[ai], real[bi]
             d = hav(pts[i][0], pts[i][1], pts[j][0], pts[j][1])
-            if d > NAME_D:
+            if d > lim:
                 continue
-            # never merge two pins that don't share a distinctive (non-generic)
+            # never merge two pins that don't share a distinctive (brand/place)
             # word -- this is what keeps distinct neighbours (Oak Park vs Lincoln
-            # Park, UCSF Stanyan vs Kentfield) separate even when co-located.
-            if not (dist[i] & dist[j]):
+            # Park, UCSF Stanyan vs Hyde) separate even when co-located. On campus
+            # categories use the whole-name brand words so ':'-style department
+            # listings still match their parent; elsewhere use the conservative
+            # pre-':' distinctive set (old behaviour) to avoid spurious matches.
+            shared = (dfb[i] & dfb[j]) if campus else (dist[i] & dist[j])
+            if not shared:
                 continue
             if sep_blocks(i, j):
                 continue
@@ -247,6 +283,15 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
                 continue
             if toks[i] == toks[j]:
                 union(i, j)
+                continue
+            # >=2 shared brand/place words within campus distance => same complex
+            # (e.g. Kaiser Permanente Walnut Creek <dept>, UCSF Mission Bay ...).
+            # The two SCVMC / John Muir WC-vs-Concord pairs are >BRAND2_D apart so
+            # they stay distinct. (campus categories only)
+            if campus and len(shared) >= 2 and d <= BRAND2_D:
+                union(i, j)
+                continue
+            if d > NAME_D:
                 continue
             # subset (one name is the other plus extra words) only collapses the
             # MINOR pin -- never merges two well-reviewed distinct hospitals
@@ -275,6 +320,25 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
 
     def sep_pair(i, j):
         return frozenset((i, j)) in forced_sep
+
+    # 2a) absorb a MINOR representative (few reviews) into a stronger nearby rep
+    #     that shares a distinctive brand/place word -> a campus satellite of a
+    #     bigger hospital (UCSF Medical Records -> UCSF Medical Center, etc).
+    #     Only minor pins move, into the NEAREST stronger anchor, so two strong
+    #     distinct hospitals are never joined (UCSF Stanyan vs Hyde untouched).
+    for r in (sorted(list(reps), key=lambda i: rev[i]) if campus else []):
+        if rev[r] >= MINOR_MAX:
+            continue
+        cands = [s for s in reps
+                 if s != r and rev[s] > rev[r] and (dfb[r] & dfb[s])
+                 and hav(pts[r][0], pts[r][1], pts[s][0], pts[s][1]) <= BRAND1_D
+                 and not sep_pair(r, s)]
+        if not cands:
+            continue
+        anchor = min(cands, key=lambda s: hav(
+            pts[r][0], pts[r][1], pts[s][0], pts[s][1]))
+        edges.append((r, anchor, "name"))
+        reps.remove(r)
 
     # 2) absorb each SUB pin into a real representative within SUB_D
     orphan_subs = []
@@ -427,7 +491,8 @@ def main():
         places = curated[key]["places"]
         osm = load_osm(key)
         fm, fs, rn = load_overrides(places, key, overrides)
-        r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs)
+        r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs,
+                           campus=key in CAMPUS_CATS)
         for idx, new_name, coord in rn:
             places[idx]["name"] = new_name
             if coord:

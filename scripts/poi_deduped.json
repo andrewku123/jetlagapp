@@ -9908,7 +9908,7 @@
   ]
  },
  "hospital": {
-  "count": 158,
+  "count": 154,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -11552,6 +11552,25 @@
     "lon": -122.42113549999999
    },
    {
+    "id": "ChIJXaA6hWW2j4ART6xtO7XER4U",
+    "name": "Sunnyvale Center (401)",
+    "primaryType": "medical_center",
+    "types": [
+     "medical_center",
+     "hospital",
+     "health",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "401 Old San Francisco Rd, Sunnyvale, CA 94086, USA",
+    "rating": 2.4,
+    "userRatingCount": 28,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.368096699999995,
+    "lon": -122.02744129999999
+   },
+   {
     "id": "ChIJkS-tfGJlhYARcYR8fM1jOyY",
     "name": "VA Martinez",
     "primaryType": "hospital",
@@ -11588,24 +11607,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.251720899999995,
     "lon": -121.8742281
-   },
-   {
-    "id": "ChIJSaOOImS2j4ARMWZ1wsPrlH8",
-    "name": "Pediatrics: Sunnyvale Center | PAMF",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "301 Old San Francisco Rd Level 2, Sunnyvale, CA 94086, USA",
-    "rating": 3.1,
-    "userRatingCount": 25,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3683772,
-    "lon": -122.02971760000001
    },
    {
     "id": "ChIJ5UMF4Bu1j4ARTCCPZaTrZGo",
@@ -11844,26 +11845,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.716058499999995,
     "lon": -122.43946739999998
-   },
-   {
-    "id": "ChIJk3ys0a2Aj4ARIPA8wJ_7C3E",
-    "name": "Oakland Twenty-First Street VA Clinic",
-    "primaryType": "hospital",
-    "types": [
-     "medical_clinic",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "association_or_organization",
-     "service",
-     "establishment"
-    ],
-    "address": "525 21st St, Oakland, CA 94612, USA",
-    "rating": 3.2,
-    "userRatingCount": 17,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.809993299999995,
-    "lon": -122.27063550000001
    },
    {
     "id": "ChIJHxLiZpzzj4AROhfu7gOl6y4",
@@ -12577,25 +12558,6 @@
     "lon": -121.9541545
    },
    {
-    "id": "ChIJOxIgAMeAhYAR_C49J2x4iZ8",
-    "name": "Pacific Heights Care Center",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2300 California Street Entrance on, Webster St, San Francisco, CA 94115, USA",
-    "rating": 4.6,
-    "userRatingCount": 8,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7894729,
-    "lon": -122.4324576
-   },
-   {
     "id": "ChIJS00ESy2ij4ARlGztd7ugavA",
     "name": "Redwood City Women's Health Center",
     "primaryType": "medical_center",
@@ -12613,43 +12575,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.478516,
     "lon": -122.25525259999999
-   },
-   {
-    "id": "ChIJK8_Bv-B9hYARsT3xZ-KJk_A",
-    "name": "Children's Hospital & Research Center",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5220 Claremont Ave, Oakland, CA 94618, USA",
-    "rating": 4.4,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8385276,
-    "lon": -122.2609602
-   },
-   {
-    "id": "ChIJY7wGbZTAj4ARu3dqh6tR-oo",
-    "name": "Fremont Sleep Medicine",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "39650 Liberty St #300, Fremont, CA 94538, USA",
-    "rating": 3,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.5473442,
-    "lon": -121.97335809999998
    },
    {
     "id": "ChIJawhL6rhXhYAR4g398CHM_xc",

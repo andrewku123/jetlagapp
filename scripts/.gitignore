@@ -14,3 +14,15 @@ consular_directory.pdf
 
 # IMLS GLAMs ArcGIS dump (re-fetched on demand)
 glams.json
+
+# OSM footprint polygon dumps (re-fetched on demand by fetch_osm_polys.py)
+osm_polys_*.json
+osm_gap_candidates.json
+osm_gap_audit.md
+# local curated backups / one-off review dumps
+poi_curated.bak*.json
+poi_full_*.bak.json
+poi_curated_primaryonly.bak.json
+poi_full_curated.json
+poi_full_review.md
+poi_merge_viz.json
