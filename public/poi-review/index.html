@@ -52,8 +52,12 @@ const COLORS={museum:"#8e44ad",library:"#2980b9",movie_theater:"#16a085",hospita
   zoo:"#d35400",aquarium:"#0097a7",amusement_park:"#e91e63",park:"#27ae60",golf_course:"#7cb342",
   consulate:"#34495e",mountain:"#795548"};
 const map=L.map('map').setView([37.66,-122.15],9);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+const baseLight=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
   {maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+  {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
+L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain},null,
+  {collapsed:false,position:'topleft'}).addTo(map);
 
 const layers={}, enabled={}, onlyMerged={v:false};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
