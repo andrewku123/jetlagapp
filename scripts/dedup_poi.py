@@ -141,6 +141,57 @@ STRUCTURAL = {
 }
 
 
+# headline nouns of the "main" place in a group. When there are NO review counts
+# (future cities are pulled cheap/no-reviews), the representative can't be picked
+# by popularity, so we prefer the pin carrying its category's flagship noun
+# ("... Medical Center"/"... Hospital", "... Museum") over a department/branch.
+ANCHOR = {
+    "hospital": ["medical center", "medical centre", "medical foundation",
+                 "hospital"],
+    "museum": ["museum"],
+    "library": ["library", "biblioteca"],
+    "movie_theater": ["cinema", "theatre", "theater", "cineplex"],
+    "zoo": ["zoo"],
+    "aquarium": ["aquarium"],
+    "amusement_park": ["amusement", "theme park"],
+    "park": ["regional park", "state park", "national park", "preserve",
+             "reserve", "open space", "park"],
+    "golf_course": ["golf", "country club"],
+    "consulate": ["consulate", "consulado", "embassy"],
+    "mountain": ["mountain", "peak", "mount ", "mt "],
+}
+_QUALIFIER_TAIL = re.compile(r"\([^)]*\)\s*$")
+# medical specialty / department lead-ins: a pin named after a clinical
+# specialty is a department, never the "main" campus pin, even when it carries
+# an anchor noun ("Internal Medicine ... Palo Alto Medical Foundation").
+_SPECIALTY_RE = re.compile(
+    r"\b(internal medicine|family medicine|sports medicine|sleep medicine|"
+    r"primary care|urgent care|maternal|fetal|pediatric|paediatric|obstetric|"
+    r"gyne?colog|cardiolog|dermatolog|ophthalmolog|optometr|psychiatr|"
+    r"oncolog|radiolog|imaging|orthop.?dic|urolog|neurolog|gastroenterolog|"
+    r"endocrinolog|rheumatolog|allergy|immunolog|nephrolog|pulmonolog|"
+    r"physical therapy|occupational therapy|rehab|infusion|dialysis|"
+    r"chemical dependency)\b", re.I)
+
+
+def is_specialty(name):
+    return bool(_SPECIALTY_RE.search(name))
+
+
+def anchor_hit(name, cat):
+    nm = name.lower()
+    return any(a in nm for a in ANCHOR.get(cat, []))
+
+
+def has_qualifier(name):
+    """A branch/department/disambiguated listing: a ':' or '|' section, or a
+    trailing parenthetical ('Sunnyvale Center (401)', '... (formerly Bascom)').
+    The 'main' pin is the clean, unqualified name."""
+    if ":" in name or "|" in name:
+        return True
+    return bool(_QUALIFIER_TAIL.search(name.strip()))
+
+
 def distinctive(name, drop_structural=False):
     toks = {t for t in sig_tokens(name) if not t.isdigit()} - GENERIC
     if drop_structural:
@@ -216,7 +267,7 @@ def maps_link(p):
 
 
 def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
-                   campus=False):
+                   campus=False, cat=None):
     # campus=True turns on the brand/place "same medical campus" heuristics
     # (>=2 shared brand words within BRAND2_D, and minor-satellite absorption).
     # They are calibrated for hospital systems (Kaiser/UCSF/Sutter/Stanford) and
@@ -305,12 +356,24 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
     # as a satellite below), even if a co-located sibling has more reviews.
     pref_rep = {p for _, p in forced_merge} - {c for c, _ in forced_merge}
 
-    # representative pick: reviewer-named parent first, then most-reviewed pin,
-    # but fall back gracefully when the pull had no review counts (cheap/no-reviews
-    # mode -> all rev == 0): prefer a non-sub-part pin, then the shorter (cleaner,
-    # less qualified) name.
+    # representative pick, most-decisive first:
+    #   1. reviewer-named merge parent (explicit choice of the pin to keep)
+    #   2. a real pin over a structural sub-part
+    #   3. most reviews (the popular flagship) WHEN we have review counts
+    #   4. not named after a clinical specialty/department
+    #   5. carries the category's flagship noun ("... Medical Center"/"Museum")
+    #   6. a clean, unqualified name (no ':'/'|'/trailing parenthetical)
+    #   7. shorter name
+    # 3 sits above the name signals so already-reviewed cities keep their reps;
+    # when a city is pulled with no reviews (all rev == 0) 4-7 pick the "main"
+    # pin by name alone.
     def rep_score(i):
-        return (1 if i in pref_rep else 0, 0 if sub[i] else 1, rev[i],
+        return (1 if i in pref_rep else 0,
+                0 if sub[i] else 1,
+                rev[i],
+                0 if is_specialty(names[i]) else 1,
+                1 if anchor_hit(names[i], cat) else 0,
+                0 if has_qualifier(names[i]) else 1,
                 -len(names[i]))
 
     groups = defaultdict(list)
@@ -499,7 +562,7 @@ def main():
         osm = load_osm(key)
         fm, fs, rn = load_overrides(places, key, overrides)
         r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs,
-                           campus=key in CAMPUS_CATS)
+                           campus=key in CAMPUS_CATS, cat=key)
         for idx, new_name, coord in rn:
             places[idx]["name"] = new_name
             if coord:

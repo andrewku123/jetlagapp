@@ -204,8 +204,25 @@ each entrance + departments + co-located clinics). `dedup_poi.py` collapses them
    (`osm_polys_<cat>.json` from `fetch_osm_polys.py`, FREE).
 4. **manual overrides** — reviewer decisions from `poi_dedup_overrides.json`, last.
 
-Representative pick: most-reviewed pin; in no-review mode, the non-sub-part,
-shortest-clean-name pin. Outputs `poi_deduped.json`, `poi_dedup_review.md`, and
+Representative ("main") pick (`rep_score`, most-decisive first) — designed so
+**future cities pulled with no review counts still pick a sensible main pin**:
+1. reviewer-named merge `parent` (explicit keep).
+2. a real pin over a structural sub-part.
+3. most reviews — **only decides when review counts exist**; in no-review mode all
+   tie at 0 and 4–7 take over.
+4. **not** a clinical specialty/department name (`_SPECIALTY_RE`: "Internal
+   Medicine …", "Pediatrics …", "Imaging …", "Chemical Dependency …") — a
+   department is never the main, even if it carries an anchor noun.
+5. carries the category's flagship noun (`ANCHOR`, e.g. hospital → "medical
+   center"/"hospital", museum → "museum", park → "regional/state park").
+6. a clean, **unqualified** name — no `:` / `|` / trailing `(…)` parenthetical
+   (`has_qualifier`), so "Sunnyvale Center" beats "Sunnyvale Center (401)".
+7. shorter name.
+
+To add a city/category: extend `ANCHOR` with that category's headline noun(s) and
+`_SPECIALTY_RE` with any new department lead-ins. The reviewed Bay-Area set is
+unchanged by 4–7 (rule 3 dominates while reviews exist); they only steer the
+no-review path. Outputs `poi_deduped.json`, `poi_dedup_review.md`, and
 `poi_merge_viz.js` (data for the review map `poi_merge_viz.html`).
 
 #### Campus heuristics (HOSPITAL ONLY — `CAMPUS_CATS`)
