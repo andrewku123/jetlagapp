@@ -300,11 +300,18 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
             elif subset(toks[j], toks[i]) and rev[j] < SUBSET_MAXREV:
                 union(i, j)
 
-    # representative pick: most-reviewed pin, but fall back gracefully when the
-    # pull had no review counts (cheap/no-reviews mode -> all rev == 0): prefer a
-    # non-sub-part pin, then the shorter (cleaner, less qualified) name.
+    # a reviewer who writes a `merge [child, parent]` override is naming the pin
+    # they want kept -> that parent must win rep selection (and never be absorbed
+    # as a satellite below), even if a co-located sibling has more reviews.
+    pref_rep = {p for _, p in forced_merge} - {c for c, _ in forced_merge}
+
+    # representative pick: reviewer-named parent first, then most-reviewed pin,
+    # but fall back gracefully when the pull had no review counts (cheap/no-reviews
+    # mode -> all rev == 0): prefer a non-sub-part pin, then the shorter (cleaner,
+    # less qualified) name.
     def rep_score(i):
-        return (0 if sub[i] else 1, rev[i], -len(names[i]))
+        return (1 if i in pref_rep else 0, 0 if sub[i] else 1, rev[i],
+                -len(names[i]))
 
     groups = defaultdict(list)
     for i in real:
@@ -327,7 +334,7 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
     #     Only minor pins move, into the NEAREST stronger anchor, so two strong
     #     distinct hospitals are never joined (UCSF Stanyan vs Hyde untouched).
     for r in (sorted(list(reps), key=lambda i: rev[i]) if campus else []):
-        if rev[r] >= MINOR_MAX:
+        if rev[r] >= MINOR_MAX or r in pref_rep:
             continue
         cands = [s for s in reps
                  if s != r and rev[s] > rev[r] and (dfb[r] & dfb[s])

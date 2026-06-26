@@ -9908,7 +9908,7 @@
   ]
  },
  "hospital": {
-  "count": 154,
+  "count": 155,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -11299,25 +11299,6 @@
     "lon": -122.1771313
    },
    {
-    "id": "ChIJE5AkSmNhhYAR6ZgGDkXntRw",
-    "name": "CPMC Pacific Heights Outpatient Center | 2333 Buchanan Street",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2333 Buchanan St, San Francisco, CA 94115, USA",
-    "rating": 4.2,
-    "userRatingCount": 52,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.790738000000005,
-    "lon": -122.43169449999999
-   },
-   {
     "id": "ChIJJVVDbTXzj4ARM1B5kbWzzBg",
     "name": "Golden State Medical Center",
     "primaryType": "medical_center",
@@ -11552,25 +11533,6 @@
     "lon": -122.42113549999999
    },
    {
-    "id": "ChIJXaA6hWW2j4ART6xtO7XER4U",
-    "name": "Sunnyvale Center (401)",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "401 Old San Francisco Rd, Sunnyvale, CA 94086, USA",
-    "rating": 2.4,
-    "userRatingCount": 28,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.368096699999995,
-    "lon": -122.02744129999999
-   },
-   {
     "id": "ChIJkS-tfGJlhYARcYR8fM1jOyY",
     "name": "VA Martinez",
     "primaryType": "hospital",
@@ -11607,6 +11569,24 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.251720899999995,
     "lon": -121.8742281
+   },
+   {
+    "id": "ChIJSaOOImS2j4ARMWZ1wsPrlH8",
+    "name": "Pediatrics: Sunnyvale Center | PAMF",
+    "primaryType": "hospital",
+    "types": [
+     "hospital",
+     "health",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "301 Old San Francisco Rd Level 2, Sunnyvale, CA 94086, USA",
+    "rating": 3.1,
+    "userRatingCount": 25,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3683772,
+    "lon": -122.02971760000001
    },
    {
     "id": "ChIJ5UMF4Bu1j4ARTCCPZaTrZGo",
@@ -11845,6 +11825,26 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.716058499999995,
     "lon": -122.43946739999998
+   },
+   {
+    "id": "ChIJk3ys0a2Aj4ARIPA8wJ_7C3E",
+    "name": "Oakland Twenty-First Street VA Clinic",
+    "primaryType": "hospital",
+    "types": [
+     "medical_clinic",
+     "hospital",
+     "health",
+     "point_of_interest",
+     "association_or_organization",
+     "service",
+     "establishment"
+    ],
+    "address": "525 21st St, Oakland, CA 94612, USA",
+    "rating": 3.2,
+    "userRatingCount": 17,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.809993299999995,
+    "lon": -122.27063550000001
    },
    {
     "id": "ChIJHxLiZpzzj4AROhfu7gOl6y4",
@@ -12423,6 +12423,25 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.927654644101324,
     "lon": -122.02931607404275
+   },
+   {
+    "id": "ChIJOxIgAMeAhYAR_C49J2x4iZ8",
+    "name": "Pacific Heights Care Center",
+    "primaryType": "medical_center",
+    "types": [
+     "medical_center",
+     "hospital",
+     "health",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "2300 California Street Entrance on, Webster St, San Francisco, CA 94115, USA",
+    "rating": 4.6,
+    "userRatingCount": 8,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.7894729,
+    "lon": -122.4324576
    },
    {
     "id": "ChIJQ-fY6wR-j4ARw-T95ns8jh4",

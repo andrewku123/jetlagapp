@@ -55,6 +55,9 @@
       ["CPMC Department of Ophthalmology", "CPMC Van Ness Campus"],
       ["Health and Healing Store: California Pacific Medical Center: Pacific Campus", "Pacific Heights Care Center"]
     ],
+    "separate": [
+      ["Oakland Twenty-First Street VA Clinic", "Oakland VA Clinic"]
+    ],
     "rename": [
       ["Kaiser building 4 Ophthalmology, Physical Therapy)", "Ygnacio Kaiser Medical Center", 37.927654644101324, -122.02931607404275],
       ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
