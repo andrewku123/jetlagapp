@@ -1169,6 +1169,7 @@ export default function MapView({
                 radius={5}
                 interactive={interactive}
                 bubblingMouseEvents={false}
+                eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
                 renderer={stationRenderer ?? undefined}
                 pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
               >
@@ -1184,6 +1185,7 @@ export default function MapView({
                   radius={15}
                   interactive={selectMode}
                   bubblingMouseEvents={false}
+                  eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
                   renderer={stationRenderer ?? undefined}
                   pathOptions={HIT_OPTS}
                 >
@@ -1204,6 +1206,7 @@ export default function MapView({
               radius={star ? 11 : 6}
               interactive={interactive}
               bubblingMouseEvents={false}
+              eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
               renderer={stationRenderer ?? undefined}
               pathOptions={{
                 color: star ? '#b8860b' : c,
@@ -1224,6 +1227,7 @@ export default function MapView({
                 radius={Math.max((star ? 11 : 6) + 8, 16)}
                 interactive={selectMode}
                 bubblingMouseEvents={false}
+                eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
                 renderer={stationRenderer ?? undefined}
                 pathOptions={HIT_OPTS}
               >
