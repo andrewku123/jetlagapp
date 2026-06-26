@@ -57,7 +57,10 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
 
 const layers={}, enabled={}, onlyMerged={v:false};
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function gmaps(p){const q=encodeURIComponent(`${p.n} @${p.lat},${p.lon}`);
+  return `https://www.google.com/maps/search/?api=1&query=${q}`}
 function popup(p,kind){return `<div class="lp"><b>${esc(p.n)}</b><br>${p.r} reviews<br>`
+  +`<a href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a><br>`
   +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span></div>`}
 
 function build(key){
