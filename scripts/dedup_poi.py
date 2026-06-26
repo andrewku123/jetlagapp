@@ -273,13 +273,17 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
             if i != rep:
                 edges.append((i, rep, "name"))
 
+    def sep_pair(i, j):
+        return frozenset((i, j)) in forced_sep
+
     # 2) absorb each SUB pin into a real representative within SUB_D
     orphan_subs = []
     for i in range(n):
         if not sub[i]:
             continue
         cands = [r for r in reps
-                 if hav(pts[i][0], pts[i][1], pts[r][0], pts[r][1]) <= SUB_D]
+                 if hav(pts[i][0], pts[i][1], pts[r][0], pts[r][1]) <= SUB_D
+                 and not sep_pair(i, r)]
         if not cands:
             orphan_subs.append(i)
             continue
@@ -321,10 +325,15 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None):
             fname = osm["names"][f]
             frep = max(members, key=lambda r: (
                 len(distinctive(names[r]) & distinctive(fname)), rev[r]))
+            grouped = [frep]
             for r in members:
-                if r != frep:
-                    edges.append((r, frep, "osm"))
-                    osm_child.add(r)
+                if r == frep:
+                    continue
+                if any(sep_pair(r, g) for g in grouped):
+                    continue
+                edges.append((r, frep, "osm"))
+                osm_child.add(r)
+                grouped.append(r)
 
     # 4) manual reviewer overrides: force each [child -> parent] merge. The
     #    parent is resolved to its current final representative; any automatic

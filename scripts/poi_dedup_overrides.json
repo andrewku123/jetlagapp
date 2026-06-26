@@ -12,7 +12,14 @@
   "museum": {
     "merge": [
       ["Bill's Backyard", "Children's Discovery Museum of San Jose"],
-      ["Viet Museum", "History Park (operated by History San Jose)"]
+      ["Viet Museum", "History Park (operated by History San Jose)"],
+      ["University of California Museum of Paleontology", "Museum of Vertebrate Zoology"],
+      ["Essig Museum of Entomology Research", "Museum of Vertebrate Zoology"],
+      ["Berkeley Natural History Museums", "Museum of Vertebrate Zoology"]
+    ],
+    "separate": [
+      ["Veterans Memorial Building of San Ramon Valley", "Museum of the San Ramon Valley"],
+      ["Sneaker Museum Oakland", "Museum of Art and Digital Entertainment - (MADE)"]
     ]
   }
 }
