@@ -268,7 +268,10 @@ here — **never special-case names in code**:
 } }
 ```
 - `merge` = force `[child, parent]` into one (use when names share no distinctive
-  word, e.g. a parenthesized name `norm()` strips).
+  word, e.g. a parenthesized name `norm()` strips). The named **`parent` is kept
+  as the surviving pin** — it wins rep selection and is exempt from satellite
+  absorption even if a co-located sibling has more reviews, so the reviewer's
+  chosen pin is the one that survives.
 - `separate` = force `[a, b]` to never merge (two distinct same-category places
   wrongly joined).
 - Matched case-insensitively, `&`/`+`-tolerant, against the real
