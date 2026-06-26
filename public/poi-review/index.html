@@ -58,8 +58,15 @@ const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
   {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
 L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain},null,
   {collapsed:false,position:'topleft'}).addTo(map);
+map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
+  Object.keys(enabled).forEach(refresh);});
 
-const layers={}, enabled={}, onlyMerged={v:false};
+const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false};
+// darken a #rrggbb hex toward black by factor f (0=unchanged,1=black)
+function dark(hex,f){const n=parseInt(hex.slice(1),16);
+  let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=Math.round(r*(1-f));g=Math.round(g*(1-f));b=Math.round(b*(1-f));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function gmaps(p){const q=encodeURIComponent(`${p.n} @${p.lat},${p.lon}`);
   return `https://www.google.com/maps/search/?api=1&query=${q}`}
@@ -69,22 +76,24 @@ function popup(p,kind){return `<div class="lp"><b>${esc(p.n)}</b><br>${p.r} revi
 
 function build(key){
   const d=window.VIZ[key]; const g=L.layerGroup(); const col=COLORS[key]||'#555';
+  const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0; // darken fills + dark borders on terrain
   if(!onlyMerged.v){
     d.singles.forEach(p=>{
-      L.circleMarker([p.lat,p.lon],{radius:3,color:'#999',weight:1,fillOpacity:.5,opacity:.6})
+      L.circleMarker([p.lat,p.lon],{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6})
         .bindPopup(popup(p,'untouched')).addTo(g);
     });
   }
   d.groups.forEach(grp=>{
     const R=grp.rep;
     grp.kids.forEach(k=>{
-      const col2=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b';
+      const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b';
+      const col2=dark(base,sf);
       const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
-      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:1.2,opacity:.8,dashArray:'3,3'}).addTo(g);
-      L.circleMarker([k.lat,k.lon],{radius:5,color:'#fff',weight:1.5,fillColor:col2,fillOpacity:1})
+      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
+      L.circleMarker([k.lat,k.lon],{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1})
         .bindPopup(popup(k,klabel)).addTo(g);
     });
-    L.circleMarker([R.lat,R.lon],{radius:7,color:'#fff',weight:2,fillColor:'#27ae60',fillOpacity:1})
+    L.circleMarker([R.lat,R.lon],{radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1})
       .bindPopup(popup(R,'kept')).addTo(g);
   });
   return g;
