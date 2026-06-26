@@ -289,8 +289,14 @@ here — **never special-case names in code**:
   as the surviving pin** — it wins rep selection and is exempt from satellite
   absorption even if a co-located sibling has more reviews, so the reviewer's
   chosen pin is the one that survives.
+  When the `parent` name is **ambiguous** (two same-named pins, e.g. two
+  `Telegraph Hill` peaks), append the parent's coords:
+  `[child, parent, lat, lon]` — `resolve_near` pins which duplicate survives.
 - `separate` = force `[a, b]` to never merge (two distinct same-category places
   wrongly joined).
+- `rename` = `[old, new]` or `[old, new, lat, lon]` to also relocate the pin.
+- `drop` = remove a pin entirely; `[name]` if unique, else `[name, lat, lon]` to
+  pin the exact one in a chain (Sky Zone, ABC Tree Farms, …) the reviewer flagged.
 - Matched case-insensitively, `&`/`+`-tolerant, against the real
   `poi_curated.json` names; unresolved ones print `WARN` and are skipped.
 - Prefer a **generic fix** first if a whole class is wrong (e.g. two libraries
