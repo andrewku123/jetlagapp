@@ -65,7 +65,8 @@
   },
   "amusement_park": {
     "drop": [
-      ["Sky Zone Trampoline Park", 37.290989, -121.989784]
+      ["Sky Zone Trampoline Park", 37.290989, -121.989784],
+      ["ABC Tree Farms Summer Fun Zone, Pumpkin Patch & Christmas Trees", 37.555164, -122.291998]
     ]
   }
 }
