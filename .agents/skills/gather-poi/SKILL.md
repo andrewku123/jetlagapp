@@ -1,6 +1,6 @@
 ---
 name: gather-poi
-description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, quarterly-refreshing, or extending the POI data to a new city/region.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, quarterly-refreshing, or extending the POI data to a new city/region.
 ---
 
 # Build a Jet-Lag-ready POI database (any play area)
@@ -54,10 +54,14 @@ the icon + >=5 reviews counts). The only allowed edits:
   "cinema"/"cineplex"); keep live performing-arts theaters **out** (no movie icon);
 - **nested sub-areas** (a pin that's part of a bigger same-category attraction,
   e.g. "Giraffe Enclosure" inside Oakland Zoo) removed via a human-reviewed list.
+- **stadium only**: the rulebook subject is *professional* sports, which Google
+  can't encode (the `stadium`/`arena` icon also covers college/high-school/amateur
+  fields — the vast majority of hits). So after the icon pass, curate filters the
+  category to a **manual `STADIUM_PRO` keep-list** (see Sports stadiums below).
 
 Store the **pin** (`location`), never a polygon centroid.
 
-## Categories (11)
+## Categories (12)
 
 | category | Google `includedTypes` (discovery) | kept `primaryType` (curate allowlist) | tentacle radius |
 |---|---|---|---|
@@ -72,6 +76,7 @@ Store the **pin** (`location`), never a polygon centroid.
 | golf_course | `golf_course` | golf_course (+club rescue, range/mini exclude) | — |
 | consulate | `embassy` | embassy (honorary = government_office, excluded) | — |
 | mountain | `mountain_peak` | mountain_peak (kept regardless of reviews) | — |
+| stadium | `stadium`, `arena` | stadium, arena → then a manual **professional keep-list** (see below) | — |
 
 Discovery uses **`includedTypes`** (matches the full `types` array) so icon-but-
 secondary-type places aren't missed; the **`primaryType` allowlist** in curation
@@ -272,6 +277,37 @@ on load, so corrections show without a hard refresh).
 ### 7. Apply to the app
 Once reviewers sign off, write `poi_deduped.json` into the app's `poi.json` and
 wire the categories into the POI tab (see `build_poi_data.py` / the POI-tab PR).
+
+## Sports stadiums (professional only)
+
+Stadiums power the Matching ("is your nearest sports stadium the same as mine?")
+and Measuring ("…closer/further from a sports stadium?") subjects — **not**
+Tentacles (no radius). The Jet Lag subject is **professional sports**, so:
+
+1. **Discovery + icon** are normal: `fetch_places_poi.py` pulls `includedTypes =
+   [stadium, arena]`; curate keeps `primaryType in {stadium, arena}`. This is the
+   right *icon* but far too broad — it returns every college/high-school/amateur
+   field too (Bay Area: 75 icon-passing → only **8** professional).
+2. **Professional keep-list (the per-city judgment):** in `curate_places_poi.py`,
+   `STADIUM_PRO` is a `{place_id: display_name}` dict of the venues **currently
+   played in** by a **pro / minor / independent-league** team. The curate loop
+   filters the stadium category to exactly these IDs and **relabels** to the
+   display name. `stadium` is in `KEEP_ALL` (skips the ≥5-review rule — legitimacy
+   comes from the keep-list, and stadiums are pulled no-reviews).
+   - **Rule for what qualifies:** pro / minor / independent leagues all count
+     (MLB/NBA/NFL/NHL/MLS/WNBA/NWSL, **and** MiLB, AHL, USL, IFL, indie ball, …).
+     It must be a team's **current** home — **no historic venues** (e.g. Kezar,
+     former 49ers home, is now amateur → excluded; Oakland Arena / Cow Palace have
+     no current pro tenant → excluded).
+   - **Key on `place_id`, not name** — names drift (Levi's Stadium shows as a Super
+     Bowl placeholder "San Francisco Bay Area Stadium"), so we relabel.
+3. **For a NEW CITY:** run discovery, open the icon-passing list on the review map,
+   and rebuild `STADIUM_PRO` with that city's currently-active pro/minor/indie home
+   venues (look up each venue's current tenant). Then re-run curate → dedup.
+4. Wire into the deck: add `Sports Stadium`/`A Sports Stadium` cards to
+   `src/data/questionSets.ts` (MATCHING + MEASURING) and to the reference-PDF deck
+   lists in `make_reference_pdf.py` (`("Sports stadium", False)` /
+   `("A sports stadium", False)` — `False` = not yet auto-eliminated).
 
 ## Manual overrides (`poi_dedup_overrides.json`)
 
