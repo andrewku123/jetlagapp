@@ -643,13 +643,15 @@ def main():
         for rep in sorted(children, key=lambda i: -rev[i]):
             groups.append({
                 "rep": {"n": places[rep]["name"], "lat": places[rep]["lat"],
-                        "lon": places[rep]["lon"], "r": rev[rep]},
+                        "lon": places[rep]["lon"], "r": rev[rep],
+                        "id": places[rep].get("id")},
                 "kids": [{"n": places[c]["name"], "lat": places[c]["lat"],
-                          "lon": places[c]["lon"], "r": rev[c], "src": s}
+                          "lon": places[c]["lon"], "r": rev[c], "src": s,
+                          "id": places[c].get("id")}
                          for c, s in sorted(children[rep], key=lambda cs: -rev[cs[0]])],
             })
         singles = [{"n": places[i]["name"], "lat": places[i]["lat"],
-                    "lon": places[i]["lon"], "r": rev[i]}
+                    "lon": places[i]["lon"], "r": rev[i], "id": places[i].get("id")}
                    for i in kept if i not in children and i not in absorbed_set]
         viz[key] = {"label": LABEL[key], "groups": groups, "singles": singles,
                     "before": len(places), "after": len(kept_places)}
