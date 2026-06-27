@@ -69,7 +69,9 @@
   },
   "mountain": {
     "merge": [
-      ["Telegraph Hill", "Telegraph Hill", 37.8027064, -122.40580439999998]
+      ["Telegraph Hill", "Telegraph Hill", 37.8027064, -122.40580439999998],
+      ["Lone Mountain", "Presidio Hill"],
+      ["Mount Eden", "Table Mountain", 37.2586111, -122.0822222]
     ]
   },
   "consulate": {

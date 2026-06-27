@@ -52587,7 +52587,7 @@
   ]
  },
  "mountain": {
-  "count": 232,
+  "count": 230,
   "places": [
    {
     "id": "ChIJ0ZYv2zH0j4AR3meqIArZmYs",
@@ -53708,22 +53708,6 @@
     "businessStatus": null,
     "lat": 37.104947599999996,
     "lon": -121.823564
-   },
-   {
-    "id": "ChIJAX8qJiGHhYARjTk8KW-vmYY",
-    "name": "Lone Mountain",
-    "primaryType": "mountain_peak",
-    "types": [
-     "mountain_peak",
-     "natural_feature",
-     "establishment"
-    ],
-    "address": "Lone Mountain, San Francisco, CA 94129, USA",
-    "rating": 3,
-    "userRatingCount": 2,
-    "businessStatus": null,
-    "lat": 37.793818099999996,
-    "lon": -122.46441619999999
    },
    {
     "id": "ChIJwzLpEoT1j4ARCrPqzQMXfvA",
@@ -55436,22 +55420,6 @@
     "businessStatus": null,
     "lat": 37.4207706,
     "lon": -121.70078269999999
-   },
-   {
-    "id": "ChIJvzEaxFVLjoARUJ29HZGnB1Q",
-    "name": "Mount Eden",
-    "primaryType": "mountain_peak",
-    "types": [
-     "mountain_peak",
-     "natural_feature",
-     "establishment"
-    ],
-    "address": "Mount Eden, California 95014, USA",
-    "rating": null,
-    "userRatingCount": 0,
-    "businessStatus": null,
-    "lat": 37.2582768,
-    "lon": -122.0819057
    },
    {
     "id": "ChIJyQ65MGGpj4AROPT8OEniNQg",
