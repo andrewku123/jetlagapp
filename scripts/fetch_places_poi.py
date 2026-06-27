@@ -61,6 +61,9 @@ CATS = [
                                             # government_office, so excluded
     ("mountain", ["mountain_peak"], None),  # natural peaks (kept regardless of
                                             # review count -- see curation)
+    ("stadium", ["stadium", "arena"], None),  # sports venues; curation keeps the
+                                            # stadium/arena icon, then the reviewer
+                                            # limits to professional-sports homes
 ]
 
 HERE = os.path.dirname(os.path.abspath(__file__))

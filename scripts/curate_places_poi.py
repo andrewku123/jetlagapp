@@ -33,7 +33,7 @@ LABEL = {
     "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
     "hospital": "Hospitals", "zoo": "Zoos", "aquarium": "Aquariums",
     "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
-    "consulate": "Consulates", "mountain": "Mountains",
+    "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
 }
 # categories exempt from the >=5-review rule (natural features rarely have
 # reviews; we keep every peak and decide later with the data)
@@ -59,6 +59,8 @@ ALLOW = {
     "consulate": {"embassy"},         # honorary consulates are
                                       # local_government_office -> excluded
     "mountain": {"mountain_peak"},
+    "stadium": {"stadium", "arena"},  # the sports-venue icon; reviewer then
+                                      # limits to professional-sports home venues
 }
 # real golf/country clubs Google mis-primaries (e.g. SF Golf Club = sports_club)
 GOLF_CLUB_PRIMARIES = {"sports_club", "association_or_organization", "country_club"}

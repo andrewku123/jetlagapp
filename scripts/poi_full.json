@@ -142297,5 +142297,1721 @@
         "lon": -122.36611110000001
       }
     ]
+  },
+  "stadium": {
+    "includedTypes": [
+      "stadium",
+      "arena"
+    ],
+    "tentacleRadiusMi": null,
+    "count": 88,
+    "places": [
+      {
+        "id": "ChIJ8WUcKwDpj4ARORl0qJMSpzE",
+        "name": "AVHS Football Field and Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1155 Santa Rita Rd, Pleasanton, CA 94566, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.669725899999996,
+        "lon": -121.87670700000001
+      },
+      {
+        "id": "ChIJwRPR0Se7j4ARQaSLehKU2T0",
+        "name": "Angell Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Cobb Track and Angell Field, 295 Galvez St, Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4319693,
+        "lon": -122.16256319999998
+      },
+      {
+        "id": "ChIJ____yEWQj4AR2fkdTlqoihM",
+        "name": "Arroyo Don Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "15701 Lorenzo Ave, San Lorenzo, CA 94580, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.6791547,
+        "lon": -122.1429675
+      },
+      {
+        "id": "ChIJVVVVDMPrj4ARCS7SBykIACs",
+        "name": "Athletic Fields",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Athletic Fields, 4375 Foothill Rd, Pleasanton, CA 94588, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.6736778,
+        "lon": -121.9154877
+      },
+      {
+        "id": "ChIJQfzP5SbHj4ARmmecjmlOm24",
+        "name": "Ayoub",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Fremont Blvd, Fremont, CA 94538, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.508763300000005,
+        "lon": -121.9496896
+      },
+      {
+        "id": "ChIJ664APCe7j4AR3vIGUkH83dI",
+        "name": "Baseball Concession Stand",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4326875,
+        "lon": -122.1587328
+      },
+      {
+        "id": "ChIJAQAAMbpmhYAR2TbX6cbXgYU",
+        "name": "Baseball Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Pleasant Hill, CA 94523, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.967340899999996,
+        "lon": -122.06758749999997
+      },
+      {
+        "id": "ChIJq6rBPie7j4ARj3FNOQl20qs",
+        "name": "Baseball Pressbox",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4324781,
+        "lon": -122.15871659999998
+      },
+      {
+        "id": "ChIJq6pqScxKjoARnNRvxSw-nYY",
+        "name": "Basketball Court",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Angus Ct, Saratoga, CA 95070, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.2764161,
+        "lon": -122.02363179999998
+      },
+      {
+        "id": "ChIJVVUFJBQyjoAR2IgicEwJWy8",
+        "name": "Basketball Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "San Jose, CA 95111, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.275822999999995,
+        "lon": -121.8296165
+      },
+      {
+        "id": "ChIJXR0OUqbLj4AR-83FFX0hY8A",
+        "name": "Bellomy Field",
+        "primaryType": "athletic_field",
+        "types": [
+          "athletic_field",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Pat Malley Fitness and Recreation Center, 500 El Camino Real #105, Santa Clara, CA 95053, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3479004,
+        "lon": -121.93439330000001
+      },
+      {
+        "id": "ChIJg3NTXZt-hYAR-WekphplBaE",
+        "name": "Berkeley High Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "2301-2399 Martin Luther King Jr Way, Berkeley, CA 94704, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.866187499999995,
+        "lon": -122.2717407
+      },
+      {
+        "id": "ChIJQxrSwxDsj4ARvWU2Vehdcys",
+        "name": "Bintang Badminton",
+        "primaryType": "athletic_field",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "gym",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "health",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "2674, 6780 Sierra Ct Ste i & j, Dublin, CA 94568, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7096458,
+        "lon": -121.9141852
+      },
+      {
+        "id": "ChIJk34wplFjhYARrhe1w-8Jubc",
+        "name": "Bob Wilson Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "300 Moraga Rd, Moraga, CA 94556, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.8669838,
+        "lon": -122.12969629999999
+      },
+      {
+        "id": "ChIJT9yecIB-j4ARtNlbxG2Tuw8",
+        "name": "Boxer Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "166 Havelock St, San Francisco, CA 94112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7269169,
+        "lon": -122.44461159999999
+      },
+      {
+        "id": "ChIJm_Av7Ne6j4ARNTMpLtATFbI",
+        "name": "Burnham Pavilion",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "615 Jane Stanford Way, Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4282354,
+        "lon": -122.16439469999999
+      },
+      {
+        "id": "ChIJ7WDi3DEzjoARDNsHUIAp2I8",
+        "name": "CEFCU Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1257 S 10th St, San Jose, CA 95112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3196729,
+        "lon": -121.86828989999998
+      },
+      {
+        "id": "ChIJ1UglqoyTj4ARyv7Zcl2jQwk",
+        "name": "CSUEB Pioneer Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "25800 Carlos Bee Blvd, Hayward, CA 94542, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.657242499999995,
+        "lon": -122.06079299999999
+      },
+      {
+        "id": "ChIJcbu2hTB8hYAR7BD72wgCRxU",
+        "name": "California Memorial Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "2227 Piedmont Ave, Berkeley, CA 94720, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.870657099999995,
+        "lon": -122.2507783
+      },
+      {
+        "id": "ChIJBW-VVvw1joARjlkAqYLpbEg",
+        "name": "Campbell Community Center Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1 Campbell Ave, Campbell, CA 95008, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.2879705,
+        "lon": -121.9539331
+      },
+      {
+        "id": "ChIJ6QBEf8Z_j4AR40Gh2OOTZ30",
+        "name": "Chase Center",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1 Warriors Wy, San Francisco, CA 94158, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7680183,
+        "lon": -122.38787719999999
+      },
+      {
+        "id": "ChIJ53oqmiB5j4AR-wOES4nX1S8",
+        "name": "Clifford Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "400 B St, South San Francisco, CA 94080, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.6479504,
+        "lon": -122.424738
+      },
+      {
+        "id": "ChIJN_nhj0mej4ARDoANieff_6w",
+        "name": "College Heights Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "San Mateo, CA 94402, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.5371229,
+        "lon": -122.3313678
+      },
+      {
+        "id": "ChIJ83KJIsZ-j4ARSOWkN1ol9SI",
+        "name": "Cow Palace Arena & Event Center",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "convention_center",
+          "live_music_venue",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "service",
+          "establishment"
+        ],
+        "address": "2600 Geneva Ave, Daly City, CA 94014, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.706997,
+        "lon": -122.4196491
+      },
+      {
+        "id": "ChIJZTLtZLB9j4ARPVvB2kL9Kxw",
+        "name": "Cox Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1600 Holloway Ave, San Francisco, CA 94132, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7251203,
+        "lon": -122.47826950000001
+      },
+      {
+        "id": "ChIJ78qlRlG0j4ARoPe7DoexiOk",
+        "name": "De Anza College Stadium & Track",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "21250 Stevens Creek Blvd, Cupertino, CA 95014, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.317465299999995,
+        "lon": -122.0456356
+      },
+      {
+        "id": "ChIJAQBA7VO0j4ARskEVaj0dlBo",
+        "name": "De Anza Tennis Courts",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "tennis_court",
+          "athletic_field",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Cupertino, CA 95014, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3180201,
+        "lon": -122.04263700000001
+      },
+      {
+        "id": "ChIJQwVyPqbLj4AR3NM2dFEtKWI",
+        "name": "Degheri Tennis Center",
+        "primaryType": "tennis_court",
+        "types": [
+          "tennis_court",
+          "athletic_field",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Pat Malley Fitness and Recreation Center, 500 El Camino Real #105, Santa Clara, CA 95053, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.34839660000001,
+        "lon": -121.935045
+      },
+      {
+        "id": "ChIJB2Il3rJ0j4ARLxpbtP1WLtQ",
+        "name": "District Events Center",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "530 Kelly Ave, Half Moon Bay, CA 94019, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4635714,
+        "lon": -122.4327895
+      },
+      {
+        "id": "ChIJS6a0-SK7j4ARzhOSR6pqZ-c",
+        "name": "Earl Hansen Viking Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Palo Alto, CA 94306, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.435902,
+        "lon": -122.1545919
+      },
+      {
+        "id": "ChIJwc9whSd8hYAR7Lf5IDzdLws",
+        "name": "Edwards Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "2223 Fulton St, Berkeley, CA 94704, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.8689946,
+        "lon": -122.26483729999998
+      },
+      {
+        "id": "ChIJvS3xg9tZhYARnd_LRSFW_6Q",
+        "name": "Eells Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1401 L St #1639, Antioch, CA 94509, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 38.0081719,
+        "lon": -121.81938579999999
+      },
+      {
+        "id": "ChIJvZrKLy8zjoARKFobE55105U",
+        "name": "Excite Ballpark",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "588 E Alma Ave, San Jose, CA 95112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3204351,
+        "lon": -121.86236339999999
+      },
+      {
+        "id": "ChIJAQDwOFG0j4AR3onNdkbd5_k",
+        "name": "Football Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Cupertino, CA 95014, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3172618,
+        "lon": -122.045523
+      },
+      {
+        "id": "ChIJuUh9xKlLjoARGCPiZ1TAVJU",
+        "name": "Football Field | Saratoga High",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "39729012, Saratoga, CA 95070, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.2662024,
+        "lon": -122.0274656
+      },
+      {
+        "id": "ChIJq6qqE-nMj4ARM0-Bh-xd0mU",
+        "name": "Football Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "N 21st St, San Jose, CA 95116, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.347863499999995,
+        "lon": -121.87173770000001
+      },
+      {
+        "id": "ChIJqY_a99Kxj4ARn0hetQQn7pI",
+        "name": "Foothill football field and track",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "12345 El Monte Rd, Los Altos Hills, CA 94022, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.360456299999996,
+        "lon": -122.12358420000001
+      },
+      {
+        "id": "ChIJszXqINV9j4ARaKqnYcgLyCw",
+        "name": "George M. Rush Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Cloud Cir, San Francisco, CA 94112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7257112,
+        "lon": -122.44937019999999
+      },
+      {
+        "id": "ChIJEzycojp_j4AR_lorv_HE7Nw",
+        "name": "Giants Enterprises",
+        "primaryType": "event_venue",
+        "types": [
+          "event_venue",
+          "stadium",
+          "concert_hall",
+          "auditorium",
+          "live_music_venue",
+          "wedding_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "health",
+          "restaurant",
+          "food",
+          "consultant",
+          "service",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "24 Willie Mays Plaza, San Francisco, CA 94107, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7784845,
+        "lon": -122.38787769999998
+      },
+      {
+        "id": "ChIJTVFfSSZ8hYARob3mDabCwQM",
+        "name": "Haas Pavilion",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "115 Haas Pavilion, Berkeley, CA 94720, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.8694051,
+        "lon": -122.26217949999999
+      },
+      {
+        "id": "ChIJo8UwKdV_j4ARuQF49jf-sO8",
+        "name": "Impark - Golden State Warriors Lot 148",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1 Warriors Wy, San Francisco, CA 94158, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7680183,
+        "lon": -122.38787719999999
+      },
+      {
+        "id": "ChIJmb9OpKrNj4AR0VHrHOcphZM",
+        "name": "Independence High School Football Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "N Jackson Ave, San Jose, CA 95133, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3692618,
+        "lon": -121.85534399999999
+      },
+      {
+        "id": "ChIJt_ycH1GHhYARgFmT_85nvR8",
+        "name": "Kezar Pavilion",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "755 Stanyan St, San Francisco, CA 94117, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7675,
+        "lon": -122.4538889
+      },
+      {
+        "id": "ChIJldoU6FCHhYAREFqwcwO0fr8",
+        "name": "Kezar Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "670 Kezar Dr, San Francisco, CA 94118, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7668135,
+        "lon": -122.45601250000001
+      },
+      {
+        "id": "ChIJe56WljGHj4ARfvN4AM613Bs",
+        "name": "Laney College Football Field",
+        "primaryType": "athletic_field",
+        "types": [
+          "athletic_field",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "900 Fallon St, Oakland, CA 94607, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.794765399999996,
+        "lon": -122.258082
+      },
+      {
+        "id": "ChIJPaPvD6bLj4ARCjxyY3jbW7c",
+        "name": "Leavey Center",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Leavey Event Center, Santa Clara, CA 95053, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3491615,
+        "lon": -121.9351939
+      },
+      {
+        "id": "ChIJw5ps233nj4ARfJo28rxM6WE",
+        "name": "Livermore Valley Stadium",
+        "primaryType": "sports_activity_location",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "3000 Robertson Park Rd, Livermore, CA 94550, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.6685119,
+        "lon": -121.7587262
+      },
+      {
+        "id": "ChIJVVVVOWOVj4ARvyqTBvWp13M",
+        "name": "Logan Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Union City, CA 94587, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.5896343,
+        "lon": -122.0258522
+      },
+      {
+        "id": "ChIJXVgkLie7j4ARuYPE-E-je6k",
+        "name": "Maloney Field at Laird Q. Cagan Stadium",
+        "primaryType": "athletic_field",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "641 Nelson Rd, Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4331137,
+        "lon": -122.15807470000001
+      },
+      {
+        "id": "ChIJVVVVdrr0j4AR-uUR8RhkxiI",
+        "name": "Monte Vista Baseball Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Compo Via, Danville, CA 94526, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.8420924,
+        "lon": -121.98125770000001
+      },
+      {
+        "id": "ChIJG8twP7M2joAR3IO6sBgJnIQ",
+        "name": "Montevideo Improvement Association Caba\u00f1a Club",
+        "primaryType": "association_or_organization",
+        "types": [
+          "association_or_organization",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1585 Monteval Ln, San Jose, CA 95120, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.2255251,
+        "lon": -121.9026179
+      },
+      {
+        "id": "ChIJAzCIOEmHhYARNSDw2K0OXNM",
+        "name": "Negoesco Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "222 Stanyan St, San Francisco, CA 94117, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7768156,
+        "lon": -122.45389460000001
+      },
+      {
+        "id": "ChIJseireMOFj4AR5A3Q7Zw0l2Q",
+        "name": "Oakland Arena",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "7000 S Coliseum Wy, Oakland, CA 94621, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.750338,
+        "lon": -122.20304900000001
+      },
+      {
+        "id": "ChIJyTqA7XGHj4ARgIDG6lN3Tg8",
+        "name": "Oakland Davie Tennis Stadium",
+        "primaryType": "tennis_court",
+        "types": [
+          "tennis_court",
+          "athletic_field",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "198 Oak Rd, Oakland, CA 94610, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.816454199999995,
+        "lon": -122.2302014
+      },
+      {
+        "id": "ChIJ8WOAG8OFj4AR1W_wwL7JV3A",
+        "name": "Oakland-Alameda County Coliseum",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "arena",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "7000 S Coliseum Wy, Oakland, CA 94621, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7514142,
+        "lon": -122.2009106
+      },
+      {
+        "id": "ChIJ_T25cNd_j4ARehGmHe0pT84",
+        "name": "Oracle Park",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "tourist_attraction",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "24 Willie Mays Plaza, San Francisco, CA 94107, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7783654,
+        "lon": -122.38991619999999
+      },
+      {
+        "id": "ChIJVVWl0dpKjoARU3T9s4Rg9U0",
+        "name": "Outdoor Basketball Courts",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "20300 Herriman Ave, Saratoga, CA 95070, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.2671228,
+        "lon": -122.02740639999998
+      },
+      {
+        "id": "ChIJOacloyXNj4AREMs9_1XAefw",
+        "name": "PAL Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "680 S 34th St, San Jose, CA 95116, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.342869799999995,
+        "lon": -121.8491718
+      },
+      {
+        "id": "ChIJGXZh0aHLj4ARX-9DpASeh5w",
+        "name": "PayPal Park",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1123 Coleman Ave, San Jose, CA 95110, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3511355,
+        "lon": -121.92463939999999
+      },
+      {
+        "id": "ChIJAQAAlPoxjoARuDklEEI4JlE",
+        "name": "Phil Sterns Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "San Jose, CA 95123, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.2554694,
+        "lon": -121.8210302
+      },
+      {
+        "id": "ChIJvUcGtuVbhYARNsu5CPAuXVs",
+        "name": "Pirate Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1750 Harbor St, Pittsburg, CA 94565, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 38.0183124,
+        "lon": -121.8862188
+      },
+      {
+        "id": "ChIJVVVVOdV9j4ARC2rk4bXY1EE",
+        "name": "Ram Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "50 Frida Kahlo Way, San Francisco, CA 94112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.725724899999996,
+        "lon": -122.44858529999999
+      },
+      {
+        "id": "ChIJB9B8ySG7j4ARm4yq36NDZC0",
+        "name": "Ray Field | Palo Alto High School",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Palo Alto, CA 94306, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.435668199999995,
+        "lon": -122.1532019
+      },
+      {
+        "id": "ChIJpfh1YDPIj4ARe1WldfTPabc",
+        "name": "Red Lot 7, Levi's Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Great American Pkwy, Santa Clara, CA 95054, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4100763,
+        "lon": -121.9770126
+      },
+      {
+        "id": "ChIJq56TmaDMj4ARJJCpWy9v-i0",
+        "name": "SAP Center",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "live_music_venue",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "525 W Santa Clara St, San Jose, CA 95113, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3327655,
+        "lon": -121.9011143
+      },
+      {
+        "id": "ChIJ3_DFJ8jJj4ARGH0fLjdaRRE",
+        "name": "San Francisco Bay Area Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.403316499999995,
+        "lon": -121.96937739999998
+      },
+      {
+        "id": "ChIJScCHurrMj4AR3x6HUv5hclw",
+        "name": "San Jose Civic",
+        "primaryType": "event_venue",
+        "types": [
+          "event_venue",
+          "arena",
+          "live_music_venue",
+          "auditorium",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "135 W San Carlos St, San Jose, CA 95113, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.330784099999995,
+        "lon": -121.8896922
+      },
+      {
+        "id": "ChIJKbQs0y4zjoARbDFDC9Qg5_M",
+        "name": "San Jose Giants",
+        "primaryType": null,
+        "types": [
+          "athletic_field",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "store",
+          "sports_club",
+          "point_of_interest",
+          "association_or_organization",
+          "establishment"
+        ],
+        "address": "588 E Alma Ave, San Jose, CA 95112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3205166,
+        "lon": -121.86241359999998
+      },
+      {
+        "id": "ChIJsaJ6XqbLj4AReNasQ2fyAHQ",
+        "name": "Santa Clara University Softball Field",
+        "primaryType": "sports_club",
+        "types": [
+          "athletic_field",
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "sports_club",
+          "point_of_interest",
+          "association_or_organization",
+          "establishment"
+        ],
+        "address": "Santa Clara, CA 95053, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.348788400000004,
+        "lon": -121.93336149999999
+      },
+      {
+        "id": "ChIJK4KXetCHj4ARC3-0AJLfYss",
+        "name": "Sequoia Arena",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Skyline Blvd, Oakland, CA 94611, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.8151197,
+        "lon": -122.18377919999999
+      },
+      {
+        "id": "ChIJ2fqNpS8zjoARe3meHef4vb4",
+        "name": "Sharks Ice at San Jose",
+        "primaryType": "ice_skating_rink",
+        "types": [
+          "ice_skating_rink",
+          "arena",
+          "sportswear_store",
+          "sporting_goods_store",
+          "clothing_store",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "store",
+          "sports_club",
+          "restaurant",
+          "food",
+          "point_of_interest",
+          "association_or_organization",
+          "establishment"
+        ],
+        "address": "1500 S 10th St, San Jose, CA 95112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.319543599999996,
+        "lon": -121.8642309
+      },
+      {
+        "id": "ChIJ____5jt6j4ARIGj_VLH-8Lg",
+        "name": "Skyline Athletic Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "College Rd, San Bruno, CA 94066, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.6309283,
+        "lon": -122.4631773
+      },
+      {
+        "id": "ChIJAQAAAVS0j4ARWqaZIuUITGk",
+        "name": "Softball Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "event_venue",
+          "sports_complex",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Cupertino, CA 95014, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3168455,
+        "lon": -122.04379139999999
+      },
+      {
+        "id": "ChIJt8MshRAzjoARkwiYxZa4zX0",
+        "name": "Spartan Athletic Center (SAC) at CEFCU Stadium,",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1257 S 10th St, San Jose, CA 95112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.319883499999996,
+        "lon": -121.86757329999999
+      },
+      {
+        "id": "ChIJKbeXYdi6j4AR3L27PCUB8_Q",
+        "name": "Stanford Maples Pavilion",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "655 Campus Drive, Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4296194,
+        "lon": -122.16063330000001
+      },
+      {
+        "id": "ChIJM1VVVSm7j4AR7l0mAlv7LnI",
+        "name": "Stanford Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "625 Nelson Rd, Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.4345298,
+        "lon": -122.1611227
+      },
+      {
+        "id": "ChIJ____VK_Lj4ARC74AyG19YAM",
+        "name": "Stanton Soccer Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Santa Clara, CA 95053, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3495786,
+        "lon": -121.9361117
+      },
+      {
+        "id": "ChIJY1pp36bLj4ARwlP16YYii94",
+        "name": "Stephen Schott Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "443 El Camino Real, Santa Clara, CA 95050, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.348500699999995,
+        "lon": -121.9315464
+      },
+      {
+        "id": "ChIJ2fIPpSd8hYARW8eSOfDcAFU",
+        "name": "Stu Gordon Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "athletic_field",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Frank Schlessinger Way, Berkeley, CA 94720, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.869424699999996,
+        "lon": -122.2633963
+      },
+      {
+        "id": "ChIJqxUOa4LAj4ARXlQ1tt97Tvg",
+        "name": "Tak Fudenna Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Country Dr, Fremont, CA 94536, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.5522509,
+        "lon": -121.99169230000001
+      },
+      {
+        "id": "ChIJs_e27ye7j4ARDbt6XFiWGpU",
+        "name": "Taube Tennis Center",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "625 Campus Drive, Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.430672,
+        "lon": -122.162416
+      },
+      {
+        "id": "ChIJJx_xws8zjoARo9omW6ZKHGg",
+        "name": "Tech CU Arena",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1500 S 10th St, San Jose, CA 95112, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3183846,
+        "lon": -121.86392539999999
+      },
+      {
+        "id": "ChIJhUGY7SW7j4ARXgzqMVf5BOc",
+        "name": "Ticket Booth",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Stanford, CA 94305, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.435740800000005,
+        "lon": -122.16245939999997
+      },
+      {
+        "id": "ChIJr5ZZCweHj4AREF0WKEukPQc",
+        "name": "Tiger Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "4610 Foothill Blvd, Oakland, CA 94601, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7745333,
+        "lon": -122.21017760000001
+      },
+      {
+        "id": "ChIJxdpVUPN_j4ARWqe71eIM46E",
+        "name": "Triples Alley in Oracle Park",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "San Francisco Bay Trl, San Francisco, CA 94107, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7780913,
+        "lon": -122.38812180000001
+      },
+      {
+        "id": "ChIJ__-_rkyHhYARovMP5r6pAh8",
+        "name": "Ulrich Field",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "2275 Golden Gate Ave, San Francisco, CA 94117, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.7774846,
+        "lon": -122.4471661
+      },
+      {
+        "id": "ChIJQbb-1ZeJj4ARXOD42hFt1EM",
+        "name": "University Credit Union Pavilion",
+        "primaryType": "arena",
+        "types": [
+          "arena",
+          "event_venue",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "1928 Saint Mary\u2019s Road, Moraga, CA 94575, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.841294,
+        "lon": -122.1069009
+      },
+      {
+        "id": "ChIJ8zsokq7Lj4ARWFHwEccGi60",
+        "name": "University Stadium",
+        "primaryType": "stadium",
+        "types": [
+          "stadium",
+          "sports_complex",
+          "event_venue",
+          "sports_activity_location",
+          "point_of_interest",
+          "establishment"
+        ],
+        "address": "Pat Malley Fitness and Recreation Center, 500 El Camino Real #105, Santa Clara, CA 95053, USA",
+        "rating": null,
+        "userRatingCount": 0,
+        "businessStatus": "OPERATIONAL",
+        "lat": 37.3505395,
+        "lon": -121.93659749999999
+      }
+    ]
   }
 }
