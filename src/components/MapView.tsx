@@ -27,15 +27,16 @@ import transitData from '../data/transit-lines.geojson.json'
 
 const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
-// Touch devices have no fine pointer, so the small station/POI dots are hard to
-// tap. On a coarse pointer we enlarge the dot radii (which is also the hit area)
-// for easier tapping; desktop (fine pointer) keeps the original sizes.
+// Touch devices have no fine pointer, so the small station dots are hard to tap.
+// We keep the dots their original visual size but, on a coarse pointer, lay a
+// larger fully-transparent CircleMarker over each one as an invisible tap target
+// (the marker's radius is also its Leaflet hit area). Desktop is unchanged.
 const COARSE_POINTER =
   typeof window !== 'undefined' &&
   typeof window.matchMedia === 'function' &&
   window.matchMedia('(pointer: coarse)').matches
-const STATION_R = { elim: COARSE_POINTER ? 8 : 5, base: COARSE_POINTER ? 10 : 6, star: COARSE_POINTER ? 14 : 11 }
-const POI_R = COARSE_POINTER ? 7 : 4
+// transparent options shared by every invisible station tap target
+const HIT_OPTS = { stroke: false, fill: true, fillColor: '#000', fillOpacity: 0 }
 
 // In-play play area used for the satellite clip: the counties' legal boundaries
 // with the bay kept but the open Pacific (and offshore Farallones) removed — see
@@ -626,7 +627,7 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
     for (const p of pois) {
       const marker = L.circleMarker([p.lat, p.lon], {
         renderer,
-        radius: POI_R,
+        radius: 4,
         color: '#fff',
         weight: 1,
         fillColor: p.color,
@@ -886,6 +887,50 @@ export default function MapView({
         ...(pending ? [pending] : []),
       ]
 
+  // Popup content for a station, shared between the visible dot and (on touch)
+  // the invisible larger tap target laid over it.
+  const elimPopup = (st: Station) => (
+    <Popup>
+      <div className="popup">
+        <strong>{st.name}</strong>
+        <div className="muted">{st.systems.join(' · ')}</div>
+        <div className="muted">Eliminated.</div>
+        <div className="popup-actions">
+          <button onClick={() => onToggleStar(st.id)}>{starred.has(st.id) ? '★ Unstar' : '☆ Star'}</button>
+          {manualEliminated.has(st.id) && (
+            <button onClick={() => onToggleEliminate(st.id)}>↩ Restore</button>
+          )}
+        </div>
+      </div>
+    </Popup>
+  )
+  const remainPopup = (st: Station, star: boolean) => (
+    <Popup>
+      <div className="popup">
+        <strong>{st.name}</strong>
+        {altNames(st).length > 0 && (
+          <div className="muted">also: {altNames(st).join(' · ')}</div>
+        )}
+        <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
+        {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
+        <div className="muted">
+          {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
+          {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
+        </div>
+        <div className="muted">Nearest airport: {st.nearestAirport}</div>
+        <div className="popup-actions">
+          <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
+          <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
+          {endgameStation?.id === st.id ? (
+            <button onClick={onExitEndgame}>↩ Exit endgame</button>
+          ) : (
+            <button onClick={() => onStartEndgame(st.id)}>🎯 Endgame here</button>
+          )}
+        </div>
+      </div>
+    </Popup>
+  )
+
   return (
     <>
       <div className="draw-toolbar">
@@ -1114,42 +1159,55 @@ export default function MapView({
 
         {showEliminated &&
           stationRenderer &&
-          eliminated.map((st) => (
-            <CircleMarker
-              key={st.id + (selectMode ? '-s' : '-d')}
-              center={[st.lat, st.lon]}
-              radius={STATION_R.elim}
-              interactive={selectMode}
-              renderer={stationRenderer}
-              pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
-            >
-              <Popup>
-                <div className="popup">
-                  <strong>{st.name}</strong>
-                  <div className="muted">{st.systems.join(' · ')}</div>
-                  <div className="muted">Eliminated.</div>
-                  <div className="popup-actions">
-                    <button onClick={() => onToggleStar(st.id)}>{starred.has(st.id) ? '★ Unstar' : '☆ Star'}</button>
-                    {manualEliminated.has(st.id) && (
-                      <button onClick={() => onToggleEliminate(st.id)}>↩ Restore</button>
-                    )}
-                  </div>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
+          eliminated.map((st) => {
+            // On touch, the visible dot is non-interactive and an invisible
+            // larger CircleMarker over it (radius 15) is the real tap target.
+            const dot = (interactive: boolean, key: string) => (
+              <CircleMarker
+                key={key}
+                center={[st.lat, st.lon]}
+                radius={5}
+                interactive={interactive}
+                bubblingMouseEvents={false}
+                eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
+                renderer={stationRenderer ?? undefined}
+                pathOptions={{ color: '#9aa0a6', weight: 1, fillColor: '#9aa0a6', fillOpacity: 0.55 }}
+              >
+                {interactive && elimPopup(st)}
+              </CircleMarker>
+            )
+            if (!COARSE_POINTER) return dot(selectMode, st.id + (selectMode ? '-s' : '-d'))
+            return (
+              <Fragment key={st.id + (selectMode ? '-s' : '-d')}>
+                {dot(false, st.id + '-v')}
+                <CircleMarker
+                  center={[st.lat, st.lon]}
+                  radius={15}
+                  interactive={selectMode}
+                  bubblingMouseEvents={false}
+                  eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
+                  renderer={stationRenderer ?? undefined}
+                  pathOptions={HIT_OPTS}
+                >
+                  {elimPopup(st)}
+                </CircleMarker>
+              </Fragment>
+            )
+          })}
 
         {stationRenderer &&
           remaining.map((st) => {
           const c = stationColor(st)
           const star = starred.has(st.id)
-          return (
+          const dot = (interactive: boolean, key: string) => (
             <CircleMarker
-              key={st.id + (selectMode ? '-s' : '-d')}
+              key={key}
               center={[st.lat, st.lon]}
-              radius={star ? STATION_R.star : STATION_R.base}
-              interactive={selectMode}
-              renderer={stationRenderer}
+              radius={star ? 11 : 6}
+              interactive={interactive}
+              bubblingMouseEvents={false}
+              eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
+              renderer={stationRenderer ?? undefined}
               pathOptions={{
                 color: star ? '#b8860b' : c,
                 weight: star ? 3 : 1.5,
@@ -1157,31 +1215,25 @@ export default function MapView({
                 fillOpacity: 0.9,
               }}
             >
-              <Popup>
-                <div className="popup">
-                  <strong>{st.name}</strong>
-                  {altNames(st).length > 0 && (
-                    <div className="muted">also: {altNames(st).join(' · ')}</div>
-                  )}
-                  <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
-                  {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
-                  <div className="muted">
-                    {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
-                    {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
-                  </div>
-                  <div className="muted">Nearest airport: {st.nearestAirport}</div>
-                  <div className="popup-actions">
-                    <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
-                    <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
-                    {endgameStation?.id === st.id ? (
-                      <button onClick={onExitEndgame}>↩ Exit endgame</button>
-                    ) : (
-                      <button onClick={() => onStartEndgame(st.id)}>🎯 Endgame here</button>
-                    )}
-                  </div>
-                </div>
-              </Popup>
+              {interactive && remainPopup(st, star)}
             </CircleMarker>
+          )
+          if (!COARSE_POINTER) return dot(selectMode, st.id + (selectMode ? '-s' : '-d'))
+          return (
+            <Fragment key={st.id + (selectMode ? '-s' : '-d')}>
+              {dot(false, st.id + '-v')}
+              <CircleMarker
+                center={[st.lat, st.lon]}
+                radius={Math.max((star ? 11 : 6) + 8, 16)}
+                interactive={selectMode}
+                bubblingMouseEvents={false}
+                eventHandlers={{ popupopen: (e) => e.popup.setLatLng([st.lat, st.lon]) }}
+                renderer={stationRenderer ?? undefined}
+                pathOptions={HIT_OPTS}
+              >
+                {remainPopup(st, star)}
+              </CircleMarker>
+            </Fragment>
           )
         })}
 

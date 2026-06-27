@@ -141,6 +141,17 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .qform .coordin input { flex: 1; min-width: 0; padding: 5px 6px; font-size: 12px; }
 .qform .coordin input.err { border-color: #cf222e; }
 .qform .coordin button { flex: none; }
+.qform .uselast {
+  margin-top: 4px;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.qform .uselast:disabled { color: var(--muted); opacity: 0.45; cursor: default; text-decoration: none; }
 .qform .qrow-cat { align-items: flex-start; }
 .qform .qcat { flex: 1; }
 .blurb { font-size: 12px; color: var(--muted); margin: 4px 0 6px; }
