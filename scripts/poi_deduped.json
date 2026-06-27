@@ -56271,5 +56271,165 @@
     "source": "osm_backfill"
    }
   ]
+ },
+ "stadium": {
+  "count": 8,
+  "places": [
+   {
+    "id": "ChIJ6QBEf8Z_j4AR40Gh2OOTZ30",
+    "name": "Chase Center",
+    "primaryType": "arena",
+    "types": [
+     "arena",
+     "stadium",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1 Warriors Wy, San Francisco, CA 94158, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.7680183,
+    "lon": -122.38787719999999
+   },
+   {
+    "id": "ChIJvZrKLy8zjoARKFobE55105U",
+    "name": "Excite Ballpark",
+    "primaryType": "stadium",
+    "types": [
+     "stadium",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "588 E Alma Ave, San Jose, CA 95112, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3204351,
+    "lon": -121.86236339999999
+   },
+   {
+    "id": "ChIJ8WOAG8OFj4AR1W_wwL7JV3A",
+    "name": "Oakland Coliseum",
+    "primaryType": "stadium",
+    "types": [
+     "stadium",
+     "arena",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "7000 S Coliseum Wy, Oakland, CA 94621, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.7514142,
+    "lon": -122.2009106
+   },
+   {
+    "id": "ChIJ_T25cNd_j4ARehGmHe0pT84",
+    "name": "Oracle Park",
+    "primaryType": "stadium",
+    "types": [
+     "stadium",
+     "tourist_attraction",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "24 Willie Mays Plaza, San Francisco, CA 94107, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.7783654,
+    "lon": -122.38991619999999
+   },
+   {
+    "id": "ChIJGXZh0aHLj4ARX-9DpASeh5w",
+    "name": "PayPal Park",
+    "primaryType": "stadium",
+    "types": [
+     "stadium",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1123 Coleman Ave, San Jose, CA 95110, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3511355,
+    "lon": -121.92463939999999
+   },
+   {
+    "id": "ChIJq56TmaDMj4ARJJCpWy9v-i0",
+    "name": "SAP Center",
+    "primaryType": "arena",
+    "types": [
+     "arena",
+     "live_music_venue",
+     "stadium",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "525 W Santa Clara St, San Jose, CA 95113, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3327655,
+    "lon": -121.9011143
+   },
+   {
+    "id": "ChIJ3_DFJ8jJj4ARGH0fLjdaRRE",
+    "name": "Levi's Stadium",
+    "primaryType": "stadium",
+    "types": [
+     "stadium",
+     "sports_complex",
+     "event_venue",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.403316499999995,
+    "lon": -121.96937739999998
+   },
+   {
+    "id": "ChIJJx_xws8zjoARo9omW6ZKHGg",
+    "name": "Tech CU Arena",
+    "primaryType": "arena",
+    "types": [
+     "arena",
+     "event_venue",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1500 S 10th St, San Jose, CA 95112, USA",
+    "rating": null,
+    "userRatingCount": 0,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3183846,
+    "lon": -121.86392539999999
+   }
+  ]
  }
 }

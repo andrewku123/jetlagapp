@@ -35,9 +35,10 @@ LABEL = {
     "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
     "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
 }
-# categories exempt from the >=5-review rule (natural features rarely have
-# reviews; we keep every peak and decide later with the data)
-KEEP_ALL = {"mountain"}
+# categories exempt from the >=5-review rule: mountains (natural features rarely
+# have reviews) and stadiums (curated to a manual professional keep-list below,
+# and pulled in no-reviews mode -- legitimacy comes from the keep-list, not reviews)
+KEEP_ALL = {"mountain", "stadium"}
 
 # --- icon allowlist -------------------------------------------------------
 # We pull broadly (includedTypes matches the place's full `types` array), then
@@ -97,6 +98,27 @@ NESTED_REMOVE = {
 # closed by name (businessStatus didn't catch it)
 NAME_CLOSED = {"FB OUTDOOR (PERM CLOSED)"}
 
+# --- STADIUM: professional-venue keep-list (manual, human-reviewed, per city) -
+# The icon rule surfaces EVERY stadium/arena, but the rulebook subject is
+# "professional sports", which Google can't encode -- the overwhelming majority
+# of icon hits are college / high-school / amateur fields. So the reviewer keeps
+# only the home venues *currently played in* by a pro / minor / independent-league
+# team (no historic venues). Keyed by Google place_id (stable; the display name
+# can drift -- e.g. Levi's shows a Super Bowl placeholder -- so we also relabel).
+# For a NEW CITY: re-run discovery, then replace this dict with that city's
+# currently-active pro/minor/indie home venues. Empty dict => keep all (e.g. when
+# a city has none curated yet) is NOT assumed; an empty list drops the category.
+STADIUM_PRO = {
+    "ChIJ_T25cNd_j4ARehGmHe0pT84": "Oracle Park",        # SF Giants (MLB)
+    "ChIJ6QBEf8Z_j4AR40Gh2OOTZ30": "Chase Center",       # Warriors NBA / Valkyries WNBA
+    "ChIJ3_DFJ8jJj4ARGH0fLjdaRRE": "Levi's Stadium",     # 49ers (NFL); Google name drifts
+    "ChIJq56TmaDMj4ARJJCpWy9v-i0": "SAP Center",         # Sharks NHL / Panthers IFL
+    "ChIJGXZh0aHLj4ARX-9DpASeh5w": "PayPal Park",        # Earthquakes MLS / Bay FC NWSL
+    "ChIJvZrKLy8zjoARKFobE55105U": "Excite Ballpark",    # San Jose Giants (MiLB)
+    "ChIJ8WOAG8OFj4AR1W_wwL7JV3A": "Oakland Coliseum",   # Oakland Roots (USL Championship)
+    "ChIJJx_xws8zjoARo9omW6ZKHGg": "Tech CU Arena",      # San Jose Barracuda (AHL)
+}
+
 # --- flagged but KEPT (human eyeball; rule keeps them) ----------------------
 FLAG_REVIEW = {
     "golf_course": {  # likely driving range / practice center, you wanted these out
@@ -153,6 +175,8 @@ for key in [k for k in LABEL if k in raw]:
            and p["name"] not in NAME_CLOSED]
     typed = [p for p in ge5 if keep_by_type(key, p)]
     off_icon = len(ge5) - len(typed)
+    if key == "stadium":   # professional-venue keep-list + relabel (see STADIUM_PRO)
+        typed = [dict(p, name=STADIUM_PRO[p["id"]]) for p in typed if p["id"] in STADIUM_PRO]
     nested = NESTED_REMOVE.get(key, set())
     removed = [p for p in typed if p["name"] in nested]
     kept = [p for p in typed if p["name"] not in nested]

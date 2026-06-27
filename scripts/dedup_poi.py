@@ -78,7 +78,7 @@ LABEL = {
     "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
     "hospital": "Hospitals", "zoo": "Zoos", "aquarium": "Aquariums",
     "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
-    "consulate": "Consulates", "mountain": "Mountains",
+    "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
 }
 
 # --- sub-part signals: a pin whose name is one of these is a piece of a bigger
@@ -159,6 +159,7 @@ ANCHOR = {
     "golf_course": ["golf", "country club"],
     "consulate": ["consulate", "consulado", "embassy"],
     "mountain": ["mountain", "peak", "mount ", "mt "],
+    "stadium": ["stadium", "park", "arena", "center", "coliseum", "ballpark", "field"],
 }
 _QUALIFIER_TAIL = re.compile(r"\([^)]*\)\s*$")
 # medical specialty / department lead-ins: a pin named after a clinical
