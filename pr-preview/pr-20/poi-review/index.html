@@ -50,6 +50,7 @@
       <button id="all">Show all</button><button id="none">Hide all</button>
     </div>
     <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
     <div id="cats"></div>
     <div class="tot" id="tot"></div>
     <div class="leg">
@@ -79,14 +80,20 @@ L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain}
 map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
   Object.keys(enabled).forEach(refresh);});
 
-const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false};
+const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false}, jump={v:false};
 // touch devices: tiny dots are hard to tap, so add a large invisible hit-area
 // marker behind each visible dot, bound to the same popup.
 const TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
-function dot(g,lat,lon,style,pop){
-  if(TOUCH){L.circleMarker([lat,lon],{radius:Math.max(style.radius+10,15),
-    stroke:false,fillOpacity:0,fillColor:'#000'}).bindPopup(pop).addTo(g);}
-  return L.circleMarker([lat,lon],style).bindPopup(pop).addTo(g);
+// In jump mode a dot click opens its Google Maps link directly (no popup),
+// saving a click per pin; otherwise it opens the usual popup.
+function dot(g,lat,lon,style,pop,p){
+  const mk=(ll,st)=>{const m=L.circleMarker(ll,st);
+    if(jump.v&&p){m.on('click',()=>window.open(gmaps(p),'_blank','noopener'));}
+    else{m.bindPopup(pop);}
+    return m.addTo(g);};
+  if(TOUCH){mk([lat,lon],{radius:Math.max(style.radius+10,15),
+    stroke:false,fillOpacity:0,fillColor:'#000'});}
+  return mk([lat,lon],style);
 }
 // darken a #rrggbb hex toward black by factor f (0=unchanged,1=black)
 function dark(hex,f){const n=parseInt(hex.slice(1),16);
@@ -105,7 +112,7 @@ function build(key){
   const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0; // darken fills + dark borders on terrain
   if(!onlyMerged.v){
     d.singles.forEach(p=>{
-      dot(g,p.lat,p.lon,{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'));
+      dot(g,p.lat,p.lon,{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'),p);
     });
   }
   // Merges are reviewed for every category except parks, so only parks still
@@ -118,9 +125,9 @@ function build(key){
       const col2=dark(base,sf);
       const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
       L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
-      dot(g,k.lat,k.lon,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1},popup(k,klabel));
+      dot(g,k.lat,k.lon,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1},popup(k,klabel),k);
     });
-    dot(g,R.lat,R.lon,{radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1},popup(R,'kept'));
+    dot(g,R.lat,R.lon,{radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1},popup(R,'kept'),R);
   });
   return g;
 }
@@ -146,6 +153,8 @@ document.getElementById('all').onclick=()=>{Object.keys(window.VIZ).forEach(k=>{
 document.getElementById('none').onclick=()=>{Object.keys(window.VIZ).forEach(k=>{enabled[k]=false;refresh(k);});
   catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
 document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
+  Object.keys(window.VIZ).forEach(k=>refresh(k));};
+document.getElementById('jump').onchange=e=>{jump.v=e.target.checked;
   Object.keys(window.VIZ).forEach(k=>refresh(k));};
 
 // ---- search ----
