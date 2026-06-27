@@ -94,8 +94,8 @@ function dark(hex,f){const n=parseInt(hex.slice(1),16);
   r=Math.round(r*(1-f));g=Math.round(g*(1-f));b=Math.round(b*(1-f));
   return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
-function gmaps(p){const q=encodeURIComponent(`${p.n} @${p.lat},${p.lon}`);
-  return `https://www.google.com/maps/search/?api=1&query=${q}`}
+function gmaps(p){const base=`https://www.google.com/maps/search/?api=1&query=${p.lat}%2C${p.lon}`;
+  return base+(p.id?`&query_place_id=${encodeURIComponent(p.id)}`:'')}
 function popup(p,kind){return `<div class="lp"><b>${esc(p.n)}</b><br>${p.r} reviews<br>`
   +`<a href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a><br>`
   +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span></div>`}
@@ -108,9 +108,12 @@ function build(key){
       dot(g,p.lat,p.lon,{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'));
     });
   }
+  // Merges are reviewed for every category except parks, so only parks still
+  // draw the absorbed child dots + spokes; elsewhere just show the kept pin.
+  const showKids=(key==='park');
   d.groups.forEach(grp=>{
     const R=grp.rep;
-    grp.kids.forEach(k=>{
+    if(showKids)grp.kids.forEach(k=>{
       const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b';
       const col2=dark(base,sf);
       const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
