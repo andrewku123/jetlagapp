@@ -5,9 +5,9 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
 | Museums | 249 | 215 | 5 | 7 | 5 |
-| Libraries | 249 | 241 | 2 | 4 | 2 |
+| Libraries | 249 | 239 | 2 | 4 | 2 |
 | Movie Theaters | 83 | 79 | 3 | 1 | 0 |
-| Hospitals | 254 | 155 | 44 | 23 | 32 |
+| Hospitals | 254 | 154 | 44 | 23 | 32 |
 | Zoos | 7 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 21 | 17 | 0 | 0 | 0 |
@@ -33,7 +33,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Fine Arts Gallery](https://www.google.com/maps/search/?api=1&query=37.7220419%2C-122.47928489999998&query_place_id=ChIJr5tOz7F9j4ARxlmskgqSFwk)** (0 rev) absorbs: [Martin Wong Gallery](https://www.google.com/maps/search/?api=1&query=37.7223678%2C-122.4794214&query_place_id=ChIJAd3vzLF9j4ARLu3pyP8z5K4)(0)
 
 
-## Libraries — 249 → 241 (name −2, osm −4 −2 manual)
+## Libraries — 249 → 239 (name −2, osm −4 −2 manual)
 
 
 **Merged (6 groups):**
@@ -55,7 +55,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Apple Cinemas Van Ness IMAX](https://www.google.com/maps/search/?api=1&query=37.785190199999995%2C-122.42094379999999&query_place_id=ChIJp0ynta-BhYARI2wou04immo)** (398 rev) absorbs: [1000 Van Ness](https://www.google.com/maps/search/?api=1&query=37.785154899999995%2C-122.42038499999998&query_place_id=ChIJV05OkpaAhYAREvO2JfkoQa0)(636)
 
 
-## Hospitals — 254 → 155 (name −44, osm −23 −32 manual)
+## Hospitals — 254 → 154 (name −44, osm −23 −32 manual)
 
 
 **Merged (45 groups):**

@@ -16,6 +16,18 @@
         "C.V. Starr East Asian Library",
         "Earth Science & Map Library"
       ]
+    ],
+    "drop": [
+      [
+        "NASA Life Sciences Library",
+        37.414512,
+        -122.058167
+      ],
+      [
+        "Patten University Library",
+        37.785869,
+        -122.219618
+      ]
     ]
   },
   "museum": {
@@ -285,6 +297,13 @@
         "Fairmont Hospital",
         37.707981393381004,
         -122.11984268807406
+      ]
+    ],
+    "drop": [
+      [
+        "Seton Coastside",
+        37.526338,
+        -122.507293
       ]
     ]
   },

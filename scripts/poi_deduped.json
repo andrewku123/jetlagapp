@@ -3834,7 +3834,7 @@
   ]
  },
  "library": {
-  "count": 241,
+  "count": 239,
   "places": [
    {
     "id": "ChIJd2spnJuAhYARhkuvhLCp3us",
@@ -7708,23 +7708,6 @@
     "lon": -122.43654269999999
    },
    {
-    "id": "ChIJZUGCqmW3j4ARKFsb5_oVdpk",
-    "name": "NASA Life Sciences Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "Building N239, Mark Ave B53, Mountain View, CA 94040, USA",
-    "rating": 5,
-    "userRatingCount": 5,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.4145123,
-    "lon": -122.0581667
-   },
-   {
     "id": "ChIJJ1XBu9a6j4ARkgoTD8JaHNA",
     "name": "Robert Crown Law Library",
     "primaryType": "library",
@@ -7740,26 +7723,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.424098,
     "lon": -122.1675664
-   },
-   {
-    "id": "ChIJVclZ-FeGj4ARSY0orwQKn-I",
-    "name": "Patten University Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "university",
-     "educational_institution",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.785868799999996,
-    "lon": -122.21961750000001,
-    "source": "osm_backfill"
    },
    {
     "id": "ChIJ1SS0PZfMj4ARqa_98y-NuZI",
@@ -9342,7 +9305,7 @@
   ]
  },
  "hospital": {
-  "count": 155,
+  "count": 154,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -11336,29 +11299,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.1373862,
     "lon": -121.66696710000001
-   },
-   {
-    "id": "ChIJ37ULw5Fxj4ARWZ8VEgjHIRY",
-    "name": "Seton Coastside",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "pharmacy",
-     "doctor",
-     "medical_clinic",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "store",
-     "service",
-     "establishment"
-    ],
-    "address": "600 Marine Blvd, Moss Beach, CA 94038, USA",
-    "rating": 3.3,
-    "userRatingCount": 16,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.5263377,
-    "lon": -122.50729270000001
    },
    {
     "id": "ChIJuzfueSl9hYARXT6M1dC3PqY",

@@ -230,6 +230,35 @@ Carquinez Toy Train, …) used to slip past the audit and waste manual-review ti
   data lags both ways. Use it to delete the confident (perm) closures
   automatically, then audit the rest.
 
+#### Verifying the `CLOSED_TEMPORARILY` pins (web search, not review age)
+Since temp-closed is kept-for-review, you need a cheap way to triage which of those
+pins are *actually* gone vs just stale flags. Two tiers, weakest first:
+- **Review-recency proxy** (Place Details `reviews` field, Atmosphere SKU ~$0.017/call,
+  one-off — do NOT bake into the cached refresh): a temp-closed pin with a review in
+  the last ~2 months is almost certainly open; >1yr or none = suspicious. Good for
+  *businesses* (museums/theaters/hospitals), **unreliable for parks & libraries**
+  (they get few reviews even when wide open — e.g. El Cerrito Historical Society, an
+  appointment-only history room, looked "closed" by review age but is open).
+- **Real web search per pin (authoritative — prefer this).** Search each pin
+  ("<name> <city> open or permanently closed") and read the **operator's own site /
+  Google listing / local news**: the live "temporarily/permanently closed" label and
+  any reopening date. This beats review age both ways — it correctly *keeps* low-review
+  public places and *catches* genuine closures. Findings cluster into:
+  - **Stale flag → KEEP** (the ~90% case): open now, Google just never cleared it.
+  - **Renovation / seismic / seasonal → KEEP**: really closed *today* but a dated
+    reopening exists (Beat Museum retrofit, Antioch Water Park, San Mateo Marina &
+    Oakland Brookfield libraries, SJSU Thompson Gallery summer pause). The game wants
+    these in.
+  - **Genuinely gone → DROP**: closed with no reopening / under legal fight to reopen
+    (Seton Coastside — ER+SNF shut since 2024).
+  - **Not a real public POI → DROP**: turns out to be a digital repository or a
+    defunct/restricted campus facility (NASA "Life Sciences Library" = the online
+    NSLSL database; Patten University Library = online-only school, campus library
+    defunct). Flag genuinely borderline ones (NDNU/Gellert: campus sold to UC, leasing
+    back ≤5 yrs) for the human rather than dropping.
+  Encode confirmed-gone pins as manual `drop` overrides (perm-closed ones auto-drop
+  and need none). Re-run this per quarterly refresh on the temp-closed set only.
+
 ### 5. De-dup — `fetch_osm_polys.py` + `dedup_poi.py`
 Google lists one physical place as many pins (a hospital = main building + ER +
 each entrance + departments + co-located clinics). `dedup_poi.py` collapses them:
