@@ -4,7 +4,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
-| Museums | 249 | 214 | 5 | 7 | 5 |
+| Museums | 249 | 215 | 5 | 7 | 5 |
 | Libraries | 249 | 241 | 2 | 4 | 2 |
 | Movie Theaters | 83 | 79 | 3 | 1 | 0 |
 | Hospitals | 254 | 155 | 44 | 23 | 32 |
@@ -19,7 +19,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 
 
-## Museums — 249 → 214 (name −5, osm −7 −5 manual)
+## Museums — 249 → 215 (name −5, osm −7 −5 manual)
 
 
 **Merged (8 groups):**
