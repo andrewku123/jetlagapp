@@ -2,115 +2,394 @@
   "_comment": "Manual reviewer overrides for the POI de-dup, applied on top of the automatic name+OSM passes. Names are matched (case-insensitive, punctuation-tolerant) within the category against poi_curated.json. 'merge' = force [child, parent] into one (child absorbed into parent). 'separate' = force [a, b] to stay distinct (never merged together).",
   "library": {
     "merge": [
-      ["Main (Gardner) Stacks", "Doe Library"],
-      ["The Bancroft Library", "Doe Library"]
+      [
+        "Main (Gardner) Stacks",
+        "Doe Library"
+      ],
+      [
+        "The Bancroft Library",
+        "Doe Library"
+      ]
     ],
     "separate": [
-      ["C.V. Starr East Asian Library", "Earth Science & Map Library"]
+      [
+        "C.V. Starr East Asian Library",
+        "Earth Science & Map Library"
+      ]
     ]
   },
   "museum": {
     "merge": [
-      ["Bill's Backyard", "Children's Discovery Museum of San Jose"],
-      ["Viet Museum", "History Park (operated by History San Jose)"],
-      ["University of California Museum of Paleontology", "Museum of Vertebrate Zoology"],
-      ["Essig Museum of Entomology Research", "Museum of Vertebrate Zoology"],
-      ["Berkeley Natural History Museums", "Museum of Vertebrate Zoology"]
+      [
+        "Bill's Backyard",
+        "Children's Discovery Museum of San Jose"
+      ],
+      [
+        "Viet Museum",
+        "History Park (operated by History San Jose)"
+      ],
+      [
+        "University of California Museum of Paleontology",
+        "Museum of Vertebrate Zoology"
+      ],
+      [
+        "Essig Museum of Entomology Research",
+        "Museum of Vertebrate Zoology"
+      ],
+      [
+        "Berkeley Natural History Museums",
+        "Museum of Vertebrate Zoology"
+      ]
     ],
     "separate": [
-      ["Veterans Memorial Building of San Ramon Valley", "Museum of the San Ramon Valley"],
-      ["Sneaker Museum Oakland", "Museum of Art and Digital Entertainment - (MADE)"]
+      [
+        "Veterans Memorial Building of San Ramon Valley",
+        "Museum of the San Ramon Valley"
+      ],
+      [
+        "Sneaker Museum Oakland",
+        "Museum of Art and Digital Entertainment - (MADE)"
+      ]
     ],
     "drop": [
-      ["Alameda County Central Railroad Society (ACCRS) - Building F", 37.6608051, -121.8870233],
-      ["Louise Meager Art Gallery", 37.527784, -121.9164388]
+      [
+        "Alameda County Central Railroad Society (ACCRS) - Building F",
+        37.6608051,
+        -121.8870233
+      ],
+      [
+        "Louise Meager Art Gallery",
+        37.527784,
+        -121.9164388
+      ],
+      [
+        "Francophone Museum",
+        37.7887096,
+        -122.4194497
+      ],
+      [
+        "Beyond The Flesh",
+        37.7660566,
+        -122.3990517
+      ],
+      [
+        "Millbrae Museum",
+        37.6020762,
+        -122.3963061
+      ],
+      [
+        "Wiegand Gallery",
+        37.5181435,
+        -122.2876938
+      ],
+      [
+        "Carriage House Museum",
+        37.4104862,
+        -122.2619913
+      ],
+      [
+        "Castro Valley History Museum",
+        37.6960863,
+        -122.0809246
+      ],
+      [
+        "Lightship Relief",
+        37.7957083,
+        -122.280588
+      ],
+      [
+        "Aléna Museum",
+        37.8451297,
+        -122.2762489
+      ],
+      [
+        "Bade Museum",
+        37.8766192,
+        -122.2628927
+      ],
+      [
+        "San Pablo Historical Society",
+        37.9597168,
+        -122.3416518
+      ],
+      [
+        "Pari's Art",
+        37.9547099,
+        -122.0766696
+      ],
+      [
+        "Art Gallery - Los Medanos College",
+        38.0068819,
+        -121.8610449
+      ]
     ]
   },
   "hospital": {
     "merge": [
-      ["Sports Medicine Center Walnut Creek: Children's Hospital Oakland", "Kaiser building 4 Ophthalmology, Physical Therapy)"],
-      ["Telecare Willow Rock Center", "John George Psychiatric Hospital"],
-      ["Contra Costa Health Services", "Contra Costa Regional Medical Center"],
-      ["Telecare Hope House", "Contra Costa Regional Medical Center"],
-      ["John Muir Health Psychiatric Hospital", "John Muir, Concord Medical Center"],
-      ["Pediatrics: Sutter East Bay Medical Foundation: Antioch", "Sutter Delta Medical Center"],
-      ["Kaiser Permanente Walnut Creek: Chemical Dependency Services", "Kaiser Permanente Walnut Creek Medical Center"],
-      ["Comprehensive Wellness", "Orinda Care Center"],
-      ["Family House: UCSF Benioff Children's Hospital Oakland", "UCSF Benioff Children's Hospital - Oakland"],
-      ["Valley Health Center San Jose (formerly Bascom)", "Santa Clara Valley Medical Center"],
-      ["Kaiser Permanenete Child/ado Psy", "Kaiser Permanente Santa Clara Medical Center"],
-      ["Pediatrics: PAMF Sutter Health | Sunnyvale", "Pediatrics: Sunnyvale Center | PAMF"],
-      ["Sunnyvale Center (301)", "Pediatrics: Sunnyvale Center | PAMF"],
-      ["Sunnyvale Center (401)", "Pediatrics: Sunnyvale Center | PAMF"],
-      ["Stanford Hospital", "Stanford Medicine"],
-      ["Stanford General Cardiology at Boswell Building", "Stanford Medicine"],
-      ["Lucile Packard Children's Hospital Stanford", "Stanford Medicine"],
-      ["Stanford Medical Center", "Stanford Medicine"],
-      ["Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto", "Stanford Medicine"],
-      ["San Mateo Pediatrics (123 South San Mateo Drive)", "Mills-Peninsula Medical Center - San Mateo Campus"],
-      ["Pediatrics: Sullivan Office: Palo Alto Medical Foundation", "Daly City Center"],
-      ["UCSF Medical Records", "UCSF Medical Center"],
-      ["UCSF Helen Diller Medical Center at Parnassus Heights", "UCSF Medical Center"],
-      ["UCSF Mission Bay Hospitals", "UCSF Medical Center at Mission Bay"],
-      ["UCSF Wayne and Gladys Valley Center for Vision", "UCSF Medical Center at Mission Bay"],
-      ["UCSF Benioff Children's Hospital - San Francisco", "UCSF Medical Center at Mission Bay"],
-      ["UCSF Nancy Friend Pritzker Psychiatry Building", "UCSF Medical Center at Mission Bay"],
-      ["UCSF Medical Center at Mission Bay", "UCSF Medical Center at Mission Bay"],
-      ["CPMC Department of Ophthalmology", "CPMC Van Ness Campus"],
-      ["Health and Healing Store: California Pacific Medical Center: Pacific Campus", "Pacific Heights Care Center"]
+      [
+        "Sports Medicine Center Walnut Creek: Children's Hospital Oakland",
+        "Kaiser building 4 Ophthalmology, Physical Therapy)"
+      ],
+      [
+        "Telecare Willow Rock Center",
+        "John George Psychiatric Hospital"
+      ],
+      [
+        "Contra Costa Health Services",
+        "Contra Costa Regional Medical Center"
+      ],
+      [
+        "Telecare Hope House",
+        "Contra Costa Regional Medical Center"
+      ],
+      [
+        "John Muir Health Psychiatric Hospital",
+        "John Muir, Concord Medical Center"
+      ],
+      [
+        "Pediatrics: Sutter East Bay Medical Foundation: Antioch",
+        "Sutter Delta Medical Center"
+      ],
+      [
+        "Kaiser Permanente Walnut Creek: Chemical Dependency Services",
+        "Kaiser Permanente Walnut Creek Medical Center"
+      ],
+      [
+        "Comprehensive Wellness",
+        "Orinda Care Center"
+      ],
+      [
+        "Family House: UCSF Benioff Children's Hospital Oakland",
+        "UCSF Benioff Children's Hospital - Oakland"
+      ],
+      [
+        "Valley Health Center San Jose (formerly Bascom)",
+        "Santa Clara Valley Medical Center"
+      ],
+      [
+        "Kaiser Permanenete Child/ado Psy",
+        "Kaiser Permanente Santa Clara Medical Center"
+      ],
+      [
+        "Pediatrics: PAMF Sutter Health | Sunnyvale",
+        "Pediatrics: Sunnyvale Center | PAMF"
+      ],
+      [
+        "Sunnyvale Center (301)",
+        "Pediatrics: Sunnyvale Center | PAMF"
+      ],
+      [
+        "Sunnyvale Center (401)",
+        "Pediatrics: Sunnyvale Center | PAMF"
+      ],
+      [
+        "Stanford Hospital",
+        "Stanford Medicine"
+      ],
+      [
+        "Stanford General Cardiology at Boswell Building",
+        "Stanford Medicine"
+      ],
+      [
+        "Lucile Packard Children's Hospital Stanford",
+        "Stanford Medicine"
+      ],
+      [
+        "Stanford Medical Center",
+        "Stanford Medicine"
+      ],
+      [
+        "Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto",
+        "Stanford Medicine"
+      ],
+      [
+        "San Mateo Pediatrics (123 South San Mateo Drive)",
+        "Mills-Peninsula Medical Center - San Mateo Campus"
+      ],
+      [
+        "Pediatrics: Sullivan Office: Palo Alto Medical Foundation",
+        "Daly City Center"
+      ],
+      [
+        "UCSF Medical Records",
+        "UCSF Medical Center"
+      ],
+      [
+        "UCSF Helen Diller Medical Center at Parnassus Heights",
+        "UCSF Medical Center"
+      ],
+      [
+        "UCSF Mission Bay Hospitals",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Wayne and Gladys Valley Center for Vision",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Benioff Children's Hospital - San Francisco",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Nancy Friend Pritzker Psychiatry Building",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Medical Center at Mission Bay",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "CPMC Department of Ophthalmology",
+        "CPMC Van Ness Campus"
+      ],
+      [
+        "Health and Healing Store: California Pacific Medical Center: Pacific Campus",
+        "Pacific Heights Care Center"
+      ]
     ],
     "separate": [
-      ["Oakland Twenty-First Street VA Clinic", "Oakland VA Clinic"]
+      [
+        "Oakland Twenty-First Street VA Clinic",
+        "Oakland VA Clinic"
+      ]
     ],
     "rename": [
-      ["Kaiser building 4 Ophthalmology, Physical Therapy)", "Ygnacio Kaiser Medical Center", 37.927654644101324, -122.02931607404275],
-      ["John George Psychiatric Hospital", "Fairmont Hospital", 37.707981393381004, -122.11984268807406]
+      [
+        "Kaiser building 4 Ophthalmology, Physical Therapy)",
+        "Ygnacio Kaiser Medical Center",
+        37.927654644101324,
+        -122.02931607404275
+      ],
+      [
+        "John George Psychiatric Hospital",
+        "Fairmont Hospital",
+        37.707981393381004,
+        -122.11984268807406
+      ]
     ]
   },
   "mountain": {
     "merge": [
-      ["Telegraph Hill", "Telegraph Hill", 37.8027064, -122.40580439999998],
-      ["Lone Mountain", "Presidio Hill"],
-      ["Mount Eden", "Table Mountain", 37.2586111, -122.0822222]
+      [
+        "Telegraph Hill",
+        "Telegraph Hill",
+        37.8027064,
+        -122.40580439999998
+      ],
+      [
+        "Lone Mountain",
+        "Presidio Hill"
+      ],
+      [
+        "Mount Eden",
+        "Table Mountain",
+        37.2586111,
+        -122.0822222
+      ]
     ]
   },
   "consulate": {
     "merge": [
-      ["embajada mexicana", "Mexico Consulate"]
+      [
+        "embajada mexicana",
+        "Mexico Consulate"
+      ]
     ],
     "drop": [
-      ["embajada de nicaragua", 37.7653242, -122.2414398],
-      ["Consulate of Nicaragua in San Francisco", 37.7851805, -122.4072778],
-      ["Consulate General of Honduras", 37.7852117, -122.4075186],
-      ["Consulado General de Guatemala", 37.7813084, -122.4195776],
-      ["FreeChinaVisa", 37.7856632, -122.4307906],
-      ["Swissnex in San Francisco", 37.7996099, -122.4015182],
-      ["French Embassy Economic Department", 37.7885709, -122.4034392],
-      ["INDONESIAN CONSULAR OFFICE", 37.8067975, -122.4175701]
+      [
+        "embajada de nicaragua",
+        37.7653242,
+        -122.2414398
+      ],
+      [
+        "Consulate of Nicaragua in San Francisco",
+        37.7851805,
+        -122.4072778
+      ],
+      [
+        "Consulate General of Honduras",
+        37.7852117,
+        -122.4075186
+      ],
+      [
+        "Consulado General de Guatemala",
+        37.7813084,
+        -122.4195776
+      ],
+      [
+        "FreeChinaVisa",
+        37.7856632,
+        -122.4307906
+      ],
+      [
+        "Swissnex in San Francisco",
+        37.7996099,
+        -122.4015182
+      ],
+      [
+        "French Embassy Economic Department",
+        37.7885709,
+        -122.4034392
+      ],
+      [
+        "INDONESIAN CONSULAR OFFICE",
+        37.8067975,
+        -122.4175701
+      ]
     ]
   },
   "golf_course": {
     "merge": [
-      ["Presidio Golf & Concordia Club", "Presidio Golf Course"],
-      ["General Store", "Presidio Golf Course"]
+      [
+        "Presidio Golf & Concordia Club",
+        "Presidio Golf Course"
+      ],
+      [
+        "General Store",
+        "Presidio Golf Course"
+      ]
     ]
   },
   "zoo": {
     "drop": [
-      ["Little Explorers Mobile Petting Zoo", 37.710623, -122.166868]
+      [
+        "Little Explorers Mobile Petting Zoo",
+        37.710623,
+        -122.166868
+      ]
     ]
   },
   "aquarium": {
     "drop": [
-      ["Aquatic Experts", 37.9440861, -122.0769658]
+      [
+        "Aquatic Experts",
+        37.9440861,
+        -122.0769658
+      ]
     ]
   },
   "amusement_park": {
     "drop": [
-      ["Sky Zone Trampoline Park", 37.290989, -121.989784],
-      ["ABC Tree Farms Summer Fun Zone, Pumpkin Patch & Christmas Trees", 37.555164, -122.291998],
-      ["Water Light Public Plaza", 37.899879899999995, -122.0626649],
-      ["Sky Zone Trampoline Park", 37.927545, -122.017851]
+      [
+        "Sky Zone Trampoline Park",
+        37.290989,
+        -121.989784
+      ],
+      [
+        "ABC Tree Farms Summer Fun Zone, Pumpkin Patch & Christmas Trees",
+        37.555164,
+        -122.291998
+      ],
+      [
+        "Water Light Public Plaza",
+        37.899879899999995,
+        -122.0626649
+      ],
+      [
+        "Sky Zone Trampoline Park",
+        37.927545,
+        -122.017851
+      ]
     ]
   }
 }

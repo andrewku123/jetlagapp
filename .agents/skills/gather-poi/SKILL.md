@@ -110,7 +110,9 @@ GOOGLE_PLACES_API_KEY=... CAND_FILE=auth_gap_candidates.json OUT_FILE=poi_auth_v
 POI_NO_REVIEWS=1 python3 curate_places_poi.py             # -> poi_curated.json (+ poi_review.md)
 python3 apply_gap_backfill.py                             # folds poi_gap_verified.json in
 IN_FILE=poi_auth_verified.json SOURCE_TAG=authoritative python3 apply_gap_backfill.py
-# 4. De-dup (OSM footprints + name + manual overrides)
+# 3b. Auto-drop closed places: query each pin's Google businessStatus (cheap; cached)
+GOOGLE_PLACES_API_KEY=... python3 refresh_business_status.py   # annotates poi_curated.json
+# 4. De-dup (OSM footprints + name + manual overrides; drops CLOSED_* pins)
 python3 fetch_osm_polys.py                                # -> osm_polys_<cat>.json (FREE)
 python3 dedup_poi.py                                      # -> poi_deduped.json, poi_merge_viz.js
 ```
@@ -198,6 +200,29 @@ The Google icon rule still governs — registries only widen recall.
   closed; removes the human-reviewed `NESTED_REMOVE` sub-areas; surfaces
   `FLAG_REVIEW` for eyeballing. Writes `poi_curated.json` + `poi_review.md`
   (every name links to Google Maps at the pin so the icon can be checked).
+
+### 4b. `refresh_business_status.py` — auto-drop closed places
+The icon pull (`poi_full.json`) carries Google's `businessStatus`, and curate
+drops `CLOSED_PERMANENTLY`/`CLOSED_TEMPORARILY`. **But the backfilled pins**
+(authoritative IMLS + OSM gap recall) are injected straight into
+`poi_curated.json` from external sources with `businessStatus: None` — they never
+had their status checked, which is how closed places (Madame Tussauds, Habitot,
+Carquinez Toy Train, …) used to slip past the audit and waste manual-review time.
+- This step queries **Place Details with just the `businessStatus` field** (the
+  cheapest SKU) for every pin that has a Google `id` but no status, caches the
+  answer by `place_id` in `poi_bizstatus_cache.json` (statuses rarely change, so
+  reruns are ~free), and writes it back into `poi_curated.json`.
+- `POI_REFRESH_ALL=1` re-queries **every** pin (not just status-less ones) to
+  catch places that closed since the last pull — worth running each quarterly
+  refresh. A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
+- `dedup_poi.py` then drops every `CLOSED_PERMANENTLY`/`CLOSED_TEMPORARILY` pin
+  up front (one chokepoint for all sources). Manual `drop` overrides that target
+  a now-closed pin are silently skipped (not warned) — so you only need manual
+  drops for places Google still reports `OPERATIONAL` but are actually gone
+  (**stale Google data**, e.g. Aléna Museum) or for legit-but-unwanted pins.
+- **Limit:** closure status alone can't replace the human eyeball pass — Google
+  data lags. Use it to delete the obvious closures automatically, then audit the
+  remainder for stale-operational closures and non-qualifying pins.
 
 ### 5. De-dup — `fetch_osm_polys.py` + `dedup_poi.py`
 Google lists one physical place as many pins (a hospital = main building + ER +

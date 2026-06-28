@@ -516,11 +516,15 @@ def final_parent(edges):
     return parent, root
 
 
-def load_overrides(places, key, overrides):
-    """Resolve override names for a category to (forced_merge, forced_sep) on indices."""
+def load_overrides(places, key, overrides, closed_names=frozenset()):
+    """Resolve override names for a category to (forced_merge, forced_sep) on indices.
+    closed_names = names auto-dropped as CLOSED_*; overrides targeting them are
+    silently skipped (the pin is intentionally gone, so it's not a real warning)."""
     ov = overrides.get(key, {})
     fm, fs, rn, dn = [], [], [], set()
     revs = [p.get("userRatingCount") or 0 for p in places]
+    def is_closed(nm):
+        return norm(nm) in closed_names
     for entry in ov.get("merge", []):
         child_name, parent_name = entry[0], entry[1]
         # optional trailing [lat, lon] pins the exact PARENT pin when the parent
@@ -544,8 +548,9 @@ def load_overrides(places, key, overrides):
         # child name may match multiple pins (true duplicates) -> absorb all of them
         targets = [i for i in dict.fromkeys(ci) if i != parent_idx]
         if not targets:
-            print(f"WARN [{key}] merge override child unresolved: "
-                  f"{child_name!r}({ci})->{parent_name!r}({pi})")
+            if not is_closed(child_name):
+                print(f"WARN [{key}] merge override child unresolved: "
+                      f"{child_name!r}({ci})->{parent_name!r}({pi})")
             continue
         for t in targets:
             fm.append((t, parent_idx))
@@ -575,7 +580,8 @@ def load_overrides(places, key, overrides):
             cands = resolve_name(places, name)
             di = cands[0] if len(cands) == 1 else None
         if di is None:
-            print(f"WARN [{key}] drop override unresolved: {name!r} ({entry[1:]})")
+            if not is_closed(name):
+                print(f"WARN [{key}] drop override unresolved: {name!r} ({entry[1:]})")
         else:
             dn.add(di)
     return fm, fs, rn, dn
@@ -596,9 +602,16 @@ def main():
     viz = {}
 
     for key in [k for k in LABEL if k in curated]:
-        places = curated[key]["places"]
+        # auto-drop places Google reports closed (perm or temp). The icon pull
+        # already filtered CLOSED_PERMANENTLY at curate time, but backfilled pins
+        # (authoritative/OSM) arrive without a status until refresh_business_status.py
+        # fills it in -- this catches those plus any place closed since the pull.
+        closed_names = {norm(p["name"]) for p in curated[key]["places"]
+                        if p.get("businessStatus") in ("CLOSED_PERMANENTLY", "CLOSED_TEMPORARILY")}
+        places = [p for p in curated[key]["places"]
+                  if p.get("businessStatus") not in ("CLOSED_PERMANENTLY", "CLOSED_TEMPORARILY")]
         osm = load_osm(key)
-        fm, fs, rn, dn = load_overrides(places, key, overrides)
+        fm, fs, rn, dn = load_overrides(places, key, overrides, closed_names)
         r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs,
                            campus=key in CAMPUS_CATS, cat=key)
         for idx, new_name, coord in rn:

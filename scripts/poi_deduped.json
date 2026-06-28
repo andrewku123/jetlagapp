@@ -1,6 +1,6 @@
 {
  "museum": {
-  "count": 244,
+  "count": 207,
   "places": [
    {
     "id": "ChIJ53I1Yn2AhYAR_Vl1vNygfMg",
@@ -619,25 +619,6 @@
     "lon": -121.88898850000001
    },
    {
-    "id": "ChIJQ4ofxYeAhYARnLQjgdsj76k",
-    "name": "The Contemporary Jewish Museum",
-    "primaryType": "art_museum",
-    "types": [
-     "art_museum",
-     "tourist_attraction",
-     "museum",
-     "event_venue",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "736 Mission St, San Francisco, CA 94103, USA",
-    "rating": 4.2,
-    "userRatingCount": 721,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.786002599999996,
-    "lon": -122.40367200000001
-   },
-   {
     "id": "ChIJt1SMQ4eAhYAR-8dkWSoHKZI",
     "name": "Children's Creativity Museum",
     "primaryType": "museum",
@@ -1010,26 +991,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5769082,
     "lon": -121.98021369999998
-   },
-   {
-    "id": "ChIJY6qvZfSAhYARE-zWxUt9vxE",
-    "name": "The Beat Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "book_store",
-     "home_goods_store",
-     "store",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "540 Broadway, San Francisco, CA 94133, USA",
-    "rating": 4.5,
-    "userRatingCount": 285,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7980878,
-    "lon": -122.40619509999999
    },
    {
     "id": "ChIJfTK51q-Aj4ARI5bIG6D0BKQ",
@@ -1597,22 +1558,6 @@
     "lon": -121.87562750000001
    },
    {
-    "id": "ChIJUQECmPfJj4AROgbZ06JAZFQ",
-    "name": "The 49ers Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",
-    "rating": 4.3,
-    "userRatingCount": 107,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.4041654,
-    "lon": -121.9709552
-   },
-   {
     "id": "ChIJdzvE8zCAhYARFvbhj2smGd0",
     "name": "Treasure Island Museum",
     "primaryType": "history_museum",
@@ -1819,23 +1764,6 @@
     "lon": -122.27111239999999
    },
    {
-    "id": "ChIJeQBULeCAhYAR7iBgEb0gMPE",
-    "name": "Hyde St. Pier Historic Ships",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2984 Hyde Street Pier #2976, San Francisco, CA 94109, USA",
-    "rating": 4.6,
-    "userRatingCount": 81,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.809057599999996,
-    "lon": -122.42125650000001
-   },
-   {
     "id": "ChIJX8jOfUqHj4AReW4snLhyAK0",
     "name": "Camron-Stanford House",
     "primaryType": "museum",
@@ -2016,24 +1944,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6145318,
     "lon": -122.3853714
-   },
-   {
-    "id": "ChIJq9ZkDL2Jj4ARCFdY8upQEI8",
-    "name": "Saint Mary's College Museum of Art",
-    "primaryType": "art_museum",
-    "types": [
-     "art_museum",
-     "tourist_attraction",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1928 St Marys Rd PMB 5110, Moraga, CA 94556, USA",
-    "rating": 4.6,
-    "userRatingCount": 69,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.840741699999995,
-    "lon": -122.10811400000001
    },
    {
     "id": "ChIJK3Lj8LOAj4ARx4LvX6N9JUA",
@@ -2541,23 +2451,6 @@
     "lon": -122.43144799999999
    },
    {
-    "id": "ChIJ8cUX98mAhYAR9gpEbO077dE",
-    "name": "Museum of Russian Culture",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2450 Sutter St, San Francisco, CA 94115, USA",
-    "rating": 4.3,
-    "userRatingCount": 26,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7852415,
-    "lon": -122.44091560000001
-   },
-   {
     "id": "ChIJz_Rh4CZ8hYAR4N0-olz6FOQ",
     "name": "Museum of Vertebrate Zoology",
     "primaryType": "museum",
@@ -2677,25 +2570,6 @@
     "lon": -122.1611479
    },
    {
-    "id": "ChIJMzhl88t9hYARd1_SfZe3Aoo",
-    "name": "The Magnes Collection of Jewish Art and Life",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "history_museum",
-     "tourist_attraction",
-     "art_museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2121 Allston Way, Berkeley, CA 94720, USA",
-    "rating": 4.5,
-    "userRatingCount": 23,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.869794999999996,
-    "lon": -122.26687
-   },
-   {
     "id": "ChIJa5sEo4yAhYARKZOjw4sOZU4",
     "name": "Dr. Sun Yat-Sen Memorial Hall of San Francisco",
     "primaryType": "museum",
@@ -2763,22 +2637,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3218961,
     "lon": -122.0439116
-   },
-   {
-    "id": "ChIJqySbOGZ_hYARAhSt1ffB0Rs",
-    "name": "Al\u00e9na Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "935 61st #1 St, Oakland, CA 94608, USA",
-    "rating": 4.6,
-    "userRatingCount": 19,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.84512970000001,
-    "lon": -122.27624890000001
    },
    {
     "id": "ChIJ6fnwBwCjj4AR6i7rx7ASTi0",
@@ -2908,23 +2766,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7943332,
     "lon": -122.40499069999998
-   },
-   {
-    "id": "ChIJPfVaz7l_j4AR5yOLp6LOeAs",
-    "name": "Ampersand International Arts",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1001 Tennessee St, San Francisco, CA 94107, USA",
-    "rating": 4.5,
-    "userRatingCount": 15,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.759411,
-    "lon": -122.38907799999998
    },
    {
     "id": "ChIJmdF3qDWHhYAR9X_ZtrB31H4",
@@ -3600,76 +3441,6 @@
     "lon": -121.85410820000001
    },
    {
-    "id": "ChIJXZMPIXOlj4ARj8lglBKTDok",
-    "name": "Carriage House Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.4104862,
-    "lon": -122.26199129999998,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJVVUl1NuVj4AR0zq0VL2oK1s",
-    "name": "Union City Historical Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.596680899999996,
-    "lon": -122.07767720000001,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJU20n2B53j4ARpwMRcNZbdgY",
-    "name": "Millbrae Museum",
-    "primaryType": "history_museum",
-    "types": [
-     "history_museum",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.6020762,
-    "lon": -122.39630609999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJGTmCkfyBj4ARjkdjCVKIrw8",
-    "name": "Lightship Relief",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7957083,
-    "lon": -122.28058799999998,
-    "source": "osm_backfill"
-   },
-   {
     "id": "ChIJz3GqornGj4ARQX-4qzWcgOw",
     "name": "Washington Township Museum of Local History",
     "primaryType": "museum",
@@ -3682,7 +3453,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5300285,
     "lon": -121.92028130000001,
     "source": "osm_backfill"
@@ -3699,27 +3470,10 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6704357,
     "lon": -122.12168949999999,
     "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJ68uUQbTNj4ARShgFYhTPpDY",
-    "name": "Natalie and James Thompson Gallery",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.3360377,
-    "lon": -121.8793053,
-    "source": "authoritative"
    },
    {
     "id": "ChIJedSciLDMj4ARGKUKWzDlaQk",
@@ -3733,27 +3487,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3358311,
     "lon": -121.8885461,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJDUljGDS3j4ARC68CBgETR64",
-    "name": "Jehning Lock Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.3941107,
-    "lon": -122.0786133,
     "source": "authoritative"
    },
    {
@@ -3768,60 +3504,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4280194,
     "lon": -122.16771939999998,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ8xeFCyrIj4AR03Q0gHOOHO4",
-    "name": "Chinese American Culture Center",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.4082705,
-    "lon": -121.9925823,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJg_50MkOfj4ARUdgjwbNojDM",
-    "name": "Wiegand Gallery",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.5181435,
-    "lon": -122.2876938,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJSQ6A0-13j4ARmuKnR9yeJOI",
-    "name": "Museum of Pez Memorabilia",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.5793653,
-    "lon": -122.34409699999999,
     "source": "authoritative"
    },
    {
@@ -3836,7 +3521,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6568002,
     "lon": -122.43130389999999,
     "source": "authoritative"
@@ -3853,7 +3538,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6580268,
     "lon": -122.05603430000001,
     "source": "authoritative"
@@ -3871,27 +3556,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.67,
     "lon": -122.07916669999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJoQHRydWTj4ARNxovAKIVs6U",
-    "name": "Castro Valley History Museum",
-    "primaryType": "history_museum",
-    "types": [
-     "history_museum",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.6960863,
-    "lon": -122.08092459999999,
     "source": "authoritative"
    },
    {
@@ -3906,26 +3573,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7220419,
     "lon": -122.47928489999998,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJmxkF-rN9j4ARom6O7T3Ammc",
-    "name": "Treganza Anthropology Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7231494,
-    "lon": -122.4756483,
     "source": "authoritative"
    },
    {
@@ -3940,7 +3590,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7594759,
     "lon": -122.4215653,
     "source": "authoritative"
@@ -3959,7 +3609,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.752964999999996,
     "lon": -122.41371299999999,
     "source": "authoritative"
@@ -3976,138 +3626,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7542523,
     "lon": -122.3893856,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJKdI2CX2AhYARnt2Svolj13k",
-    "name": "Archives of Moca",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7855102,
-    "lon": -122.39944500000001,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJx2NZ-IeAhYARwOHJPBZJJBA",
-    "name": "California Historical Society",
-    "primaryType": "history_museum",
-    "types": [
-     "history_museum",
-     "library",
-     "museum",
-     "non_profit_organization",
-     "store",
-     "point_of_interest",
-     "association_or_organization",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7868316,
-    "lon": -122.4015955,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJl-NPH2WAhYARQ0ldiuV9SEs",
-    "name": "International Museum of Women",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "non_profit_organization",
-     "point_of_interest",
-     "association_or_organization",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7913259,
-    "lon": -122.402767,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ30eFXLWAj4ARqoldwl2JmdM",
-    "name": "Pacific Coast Immigration Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.800408399999995,
-    "lon": -122.26649129999998,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ-xRqun1_j4ARm0BuF_sp3Zw",
-    "name": "Beyond The Flesh",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7660566,
-    "lon": -122.39905169999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ_caszuWAhYARTb4BlzRdBZk",
-    "name": "Diego Rivera Gallery",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.8033801,
-    "lon": -122.41735249999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJy3Ksp-OAhYARthoGyFztDtA",
-    "name": "Madame Tussauds San Francisco",
-    "primaryType": "museum",
-    "types": [
-     "tourist_attraction",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.8082059,
-    "lon": -122.4148825,
     "source": "authoritative"
    },
    {
@@ -4123,61 +3644,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8425254,
     "lon": -122.28998759999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJoz6rCo9xhYARIWwasbRB41c",
-    "name": "Carquinez Toy Train Operating Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 38.0555093,
-    "lon": -122.2160044,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJS7LRNiB8hYARCMDbc4QttS4",
-    "name": "Bade Museum",
-    "primaryType": "museum",
-    "types": [
-     "tourist_attraction",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.8766192,
-    "lon": -122.2628927,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJwSbKWZx-hYAR7chSSAAruUY",
-    "name": "Habitot Children's Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.836574399999996,
-    "lon": -122.2927018,
     "source": "authoritative"
    },
    {
@@ -4197,7 +3666,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8937448,
     "lon": -122.06276260000001,
     "source": "authoritative"
@@ -4215,140 +3684,15 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9010159,
     "lon": -122.06348570000002,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJJTKPGv54hYARjBfEqgWXAPo",
-    "name": "El Cerrito Historical Society",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.9156925,
-    "lon": -122.31100260000001,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJO1AcIQCBhYARugyC2dSssHQ",
-    "name": "Francophone Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "history_museum",
-     "art_gallery",
-     "community_center",
-     "event_venue",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7887096,
-    "lon": -122.41944970000002,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJaxtCQ_RZhYARaOCbjQe5tKk",
-    "name": "Art Gallery - Los Medanos College",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 38.006881899999996,
-    "lon": -121.8610449,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJLRXtdix-j4ARSC0Vv6neWpM",
-    "name": "San Francisco Jewelry Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.7718827,
-    "lon": -122.4052237,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJrW4Hh8xnhYARMhttJHhtR4Y",
-    "name": "Pari's Art",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.9547099,
-    "lon": -122.07666959999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ4TC0kBB3hYARsUB0DmW6O3I",
-    "name": "San Pablo Historical Society",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.959716799999995,
-    "lon": -122.3416518,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJPevM0q53hYARYjwRtbYpxMk",
-    "name": "Pinole Historical Society Caboose",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 38.0111205,
-    "lon": -122.295971,
     "source": "authoritative"
    }
   ]
  },
  "library": {
-  "count": 241,
+  "count": 233,
   "places": [
    {
     "id": "ChIJd2spnJuAhYARhkuvhLCp3us",
@@ -6841,23 +6185,6 @@
     "lon": -122.46280549999997
    },
    {
-    "id": "ChIJh_-ef5CFj4ARYJvacu-cqnc",
-    "name": "Oakland Public Library: Brookfield Branch",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "9255 Edes Ave, Oakland, CA 94603, USA",
-    "rating": 4.8,
-    "userRatingCount": 41,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7376116,
-    "lon": -122.1884853
-   },
-   {
     "id": "ChIJsfS9jzZ8j4AR0qe5bZT4rZo",
     "name": "Ocean View Branch Library",
     "primaryType": "library",
@@ -7009,23 +6336,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.869561999999995,
     "lon": -122.290914
-   },
-   {
-    "id": "ChIJQ5YQM-mej4AR1vJHuJwsFwE",
-    "name": "Marina Branch - San Mateo Public Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "1530 Susan Ct, San Mateo, CA 94403, USA",
-    "rating": 4.3,
-    "userRatingCount": 33,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.55641,
-    "lon": -122.29307759999999
    },
    {
     "id": "ChIJX0E2xg6jj4AR1RiIgIV8a5g",
@@ -7197,23 +6507,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5844538,
     "lon": -122.47634839999999
-   },
-   {
-    "id": "ChIJQQQ4Aj13hYAR2JS_2mFYgMM",
-    "name": "Pinole Library - Contra Costa County Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2935 Pinole Valley Rd, Pinole, CA 94564, USA",
-    "rating": 4.4,
-    "userRatingCount": 27,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.992393299999996,
-    "lon": -122.28501759999997
    },
    {
     "id": "ChIJ_RRg9ui6j4ARBSGMtCmv98U",
@@ -7965,23 +7258,6 @@
     "lon": -122.1822691
    },
    {
-    "id": "ChIJgVZfaVGFj4AR9X3oqUERku0",
-    "name": "Mulford-Marina Branch Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "13699 Aurora Dr, San Leandro, CA 94577, USA",
-    "rating": 4.8,
-    "userRatingCount": 8,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.6978474,
-    "lon": -122.1822938
-   },
-   {
     "id": "ChIJWctF8Dh6j4AReW4H_B8dzIA",
     "name": "Skyline College Library",
     "primaryType": "library",
@@ -8154,23 +7430,6 @@
     "lon": -122.26073620000001
    },
    {
-    "id": "ChIJi2IbyNWPj4ARu6zQ6krqYaM",
-    "name": "South Branch Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "14799 E 14th St, San Leandro, CA 94578, USA",
-    "rating": 4.3,
-    "userRatingCount": 6,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7086882,
-    "lon": -122.1339814
-   },
-   {
     "id": "ChIJZWYhhpiRj4ARb-_-yW9Td9c",
     "name": "Chabot College Library",
     "primaryType": "library",
@@ -8222,23 +7481,6 @@
     "lon": -122.43654269999999
    },
    {
-    "id": "ChIJZUGCqmW3j4ARKFsb5_oVdpk",
-    "name": "NASA Life Sciences Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "Building N239, Mark Ave B53, Mountain View, CA 94040, USA",
-    "rating": 5,
-    "userRatingCount": 5,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.4145123,
-    "lon": -122.0581667
-   },
-   {
     "id": "ChIJJ1XBu9a6j4ARkgoTD8JaHNA",
     "name": "Robert Crown Law Library",
     "primaryType": "library",
@@ -8256,26 +7498,6 @@
     "lon": -122.1675664
    },
    {
-    "id": "ChIJVclZ-FeGj4ARSY0orwQKn-I",
-    "name": "Patten University Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "university",
-     "educational_institution",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.785868799999996,
-    "lon": -122.21961750000001,
-    "source": "osm_backfill"
-   },
-   {
     "id": "ChIJ1SS0PZfMj4ARqa_98y-NuZI",
     "name": "Inez Jackson Library",
     "primaryType": "library",
@@ -8288,7 +7510,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3434224,
     "lon": -121.8884974,
     "source": "osm_backfill"
@@ -8306,7 +7528,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3335892,
     "lon": -121.9223954,
     "source": "osm_backfill"
@@ -8324,7 +7546,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8052174,
     "lon": -122.2697752,
     "source": "osm_backfill"
@@ -8342,7 +7564,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4560992,
     "lon": -122.19210469999999,
     "source": "osm_backfill"
@@ -8360,7 +7582,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.270991599999995,
     "lon": -121.9857495,
     "source": "osm_backfill"
@@ -8378,27 +7600,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.480744,
     "lon": -122.20245519999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJC4fMLUOfj4ARczTNcElGkBo",
-    "name": "The Carl Gellert And Celia Berta Gellert Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.517536299999996,
-    "lon": -122.2846951,
     "source": "osm_backfill"
    },
    {
@@ -8416,7 +7620,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8212942,
     "lon": -122.26445819999999,
     "source": "osm_backfill"
@@ -8434,7 +7638,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3527609,
     "lon": -121.80054210000002,
     "source": "osm_backfill"
@@ -8452,7 +7656,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5231797,
     "lon": -121.96824140000001,
     "source": "authoritative"
@@ -8470,7 +7674,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9325951,
     "lon": -122.33395630000001,
     "source": "authoritative"
@@ -8478,7 +7682,7 @@
   ]
  },
  "movie_theater": {
-  "count": 80,
+  "count": 78,
   "places": [
    {
     "id": "ChIJOYvCo1W3j4AR1LAifgk13rs",
@@ -9836,45 +9040,11 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7990822,
     "lon": -122.27808259999999
-   },
-   {
-    "id": "ChIJNV8Sfz5-j4ARZC_zyRsLd0s",
-    "name": "Other Cinema",
-    "primaryType": "movie_theater",
-    "types": [
-     "movie_theater",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "992 Valencia St, San Francisco, CA 94110, USA",
-    "rating": 4.5,
-    "userRatingCount": 8,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7570899,
-    "lon": -122.4214705
-   },
-   {
-    "id": "ChIJkRU0DynJj4ARGTu1TqyS9vU",
-    "name": "Cinemax4K",
-    "primaryType": "movie_theater",
-    "types": [
-     "movie_theater",
-     "event_venue",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.426134399999995,
-    "lon": -121.91044459999999,
-    "source": "osm_backfill"
    }
   ]
  },
  "hospital": {
-  "count": 155,
+  "count": 154,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -11870,29 +11040,6 @@
     "lon": -121.66696710000001
    },
    {
-    "id": "ChIJ37ULw5Fxj4ARWZ8VEgjHIRY",
-    "name": "Seton Coastside",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "pharmacy",
-     "doctor",
-     "medical_clinic",
-     "hospital",
-     "health",
-     "point_of_interest",
-     "store",
-     "service",
-     "establishment"
-    ],
-    "address": "600 Marine Blvd, Moss Beach, CA 94038, USA",
-    "rating": 3.3,
-    "userRatingCount": 16,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.5263377,
-    "lon": -122.50729270000001
-   },
-   {
     "id": "ChIJuzfueSl9hYARXT6M1dC3PqY",
     "name": "East Bay Pediatrics",
     "primaryType": "hospital",
@@ -12868,7 +12015,7 @@
   ]
  },
  "zoo": {
-  "count": 6,
+  "count": 5,
   "places": [
    {
     "id": "ChIJjaIC83F9j4AR1z3B225I_XU",
@@ -12947,22 +12094,6 @@
     "lon": -122.49823250000001
    },
    {
-    "id": "ChIJW7WmiEHwkYARwBcj9VLdA0w",
-    "name": "Gilroy Ostrich Farm",
-    "primaryType": "zoo",
-    "types": [
-     "zoo",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5560 Pacheco Pass Hwy, Gilroy, CA 95020, USA",
-    "rating": 4.4,
-    "userRatingCount": 396,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 36.972062300000005,
-    "lon": -121.42202759999999
-   },
-   {
     "id": "ChIJVXMziI-6j4ARsS-VijqrJcY",
     "name": "Barron Park Donkeys",
     "primaryType": "zoo",
@@ -13019,7 +12150,7 @@
   ]
  },
  "amusement_park": {
-  "count": 17,
+  "count": 16,
   "places": [
    {
     "id": "ChIJq7iF28bJj4ARdWUD6DQUr3I",
@@ -13232,26 +12363,6 @@
     "lon": -122.0424457
    },
    {
-    "id": "ChIJnZL5WXj4j4ARJkfrMy6Fw4Q",
-    "name": "Antioch Water Park",
-    "primaryType": "water_park",
-    "types": [
-     "water_park",
-     "amusement_park",
-     "tourist_attraction",
-     "swimming_pool",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "4701 Lone Tree Wy, Antioch, CA 94531, USA",
-    "rating": 4.1,
-    "userRatingCount": 271,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.9655397,
-    "lon": -121.7727429
-   },
-   {
     "id": "ChIJgW0dSUQvjoARXOMLFGVU9ys",
     "name": "Altitude Trampoline Park San Jose",
     "primaryType": "amusement_center",
@@ -13346,7 +12457,7 @@
   ]
  },
  "park": {
-  "count": 2180,
+  "count": 2161,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -17064,23 +16175,6 @@
     "lon": -122.4931061
    },
    {
-    "id": "ChIJPQzhKyy2j4ARnq-JVn43kMk",
-    "name": "Lakewood Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "834 Lakechime Dr, Sunnyvale, CA 94089, USA",
-    "rating": 4.5,
-    "userRatingCount": 787,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.3973179,
-    "lon": -122.0008455
-   },
-   {
     "id": "ChIJo4za6vi5j4ARMua093RgGGA",
     "name": "Charleston Park",
     "primaryType": "park",
@@ -19980,24 +19074,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.9445792,
     "lon": -122.02846449999998
-   },
-   {
-    "id": "ChIJuxIN_2t_j4ARProX9pmqB-o",
-    "name": "India Basin Shoreline Park",
-    "primaryType": "city_park",
-    "types": [
-     "city_park",
-     "tourist_attraction",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Hunters Point Blvd & Hawes St, 950 Galvez Ave, San Francisco, CA 94124, USA",
-    "rating": 4.4,
-    "userRatingCount": 449,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.73415380000001,
-    "lon": -122.37594179999998
    },
    {
     "id": "ChIJLxUhPiyBhYAROpmV29IsCTA",
@@ -26866,23 +25942,6 @@
     "lon": -122.1187504
    },
    {
-    "id": "ChIJc0ob-l6Hj4AR7m44DiuPp3Q",
-    "name": "Linda Ave Dog Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "333 Linda Ave, Piedmont, CA 94611, USA",
-    "rating": 4.1,
-    "userRatingCount": 164,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.822344300000005,
-    "lon": -122.2459184
-   },
-   {
     "id": "ChIJSzL1tCq3j4ARq4BTFW8LuzY",
     "name": "Bubb Park",
     "primaryType": "park",
@@ -32466,22 +31525,6 @@
     "lon": -122.0261463
    },
    {
-    "id": "ChIJ_0ylJh14hYARjgHSqmSGE-c",
-    "name": "Wendell Playground",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Richmond, CA 94804, USA",
-    "rating": 4.1,
-    "userRatingCount": 81,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.9455251,
-    "lon": -122.3435214
-   },
-   {
     "id": "ChIJJ2hG5fXtj4ARQqs0EdiFLiU",
     "name": "Bark & Ride",
     "primaryType": "dog_park",
@@ -32808,22 +31851,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7231433,
     "lon": -121.8734514
-   },
-   {
-    "id": "ChIJVVVV1vsxjoARctGR0uWcyb4",
-    "name": "Chynoweth Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Chynoweth Park, Chynoweth Park Ct, San Jose, CA 95136, USA",
-    "rating": 4.1,
-    "userRatingCount": 77,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.259323200000004,
-    "lon": -121.8187167
    },
    {
     "id": "ChIJ1WmnHSSQj4ARJYJ01F1FLcw",
@@ -34248,23 +33275,6 @@
     "lon": -122.03958610000001
    },
    {
-    "id": "ChIJDcy-ubyAhYARHgNPUjtEswE",
-    "name": "Buchanan Street Mall",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Buchanan &, Golden Gate Ave, San Francisco, CA 94115, USA",
-    "rating": 4.1,
-    "userRatingCount": 63,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.780468,
-    "lon": -122.4287636
-   },
-   {
     "id": "ChIJHx9Gx3Xpj4ARxqSs5rTGSTo",
     "name": "Harvest Park",
     "primaryType": "park",
@@ -34766,22 +33776,6 @@
     "lon": -121.87823050000002
    },
    {
-    "id": "ChIJEUf9PJ6Aj4ARJNwtYtBIHW8",
-    "name": "Cypress Freeway Memorial Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Memorial Park, 1301 Mandela Pkwy, Oakland, CA 94607, USA",
-    "rating": 4.4,
-    "userRatingCount": 60,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.8104377,
-    "lon": -122.2921431
-   },
-   {
     "id": "ChIJM11hXXKVj4ARWzzKxYK4bvY",
     "name": "Dry Creek Park",
     "primaryType": "park",
@@ -34977,22 +33971,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7522027,
     "lon": -121.94659530000001
-   },
-   {
-    "id": "ChIJUXiowgxXhYARyyuthBMZdyk",
-    "name": "Jacobsen Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1412 Jacobsen St, Antioch, CA 94509, USA",
-    "rating": 4.1,
-    "userRatingCount": 58,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 38.009152199999996,
-    "lon": -121.7865893
    },
    {
     "id": "ChIJnZSFs7bpj4ARHFqU4LzF4zc",
@@ -35325,22 +34303,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.8714696,
     "lon": -122.2654299
-   },
-   {
-    "id": "ChIJIw9cjAOfj4ARwCyZNSQAt7c",
-    "name": "East Hillsdale Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "123 31st Ave, San Mateo, CA 94403, USA",
-    "rating": 4.5,
-    "userRatingCount": 55,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.5365004,
-    "lon": -122.3036785
    },
    {
     "id": "ChIJhSMdfLDJj4AREuJkzGiY4Ek",
@@ -37065,24 +36027,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.907402999999995,
     "lon": -122.3030759
-   },
-   {
-    "id": "ChIJE4wyM4Z9hYARMaYY5iS2Uhg",
-    "name": "Kennelly Skatepark",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "sports_complex",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "898 Red Rock Rd, Piedmont, CA 94611, USA",
-    "rating": 2.3,
-    "userRatingCount": 41,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.832369799999995,
-    "lon": -122.2304168
    },
    {
     "id": "ChIJk6MoO22xj4ARamoaQk-F2Nc",
@@ -39197,22 +38141,6 @@
     "lon": -121.7697978
    },
    {
-    "id": "ChIJh4bx0YYnjoAR4t2LCjcRVe8",
-    "name": "Anderson Lake County Park- Live Oak Picnic Area",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2300 Cochrane Rd, Morgan Hill, CA 95037, USA",
-    "rating": 4.8,
-    "userRatingCount": 28,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.1648852,
-    "lon": -121.6389215
-   },
-   {
     "id": "ChIJS84gDwt-j4ARmlY6Zn0hUY0",
     "name": "Clipper Community Garden",
     "primaryType": "garden",
@@ -39638,22 +38566,6 @@
     "lon": -121.87190129999998
    },
    {
-    "id": "ChIJC0Hun6mAj4ARIn736mHEbyk",
-    "name": "25th Street Mini Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "25th St, Oakland, CA 94612, USA",
-    "rating": 3.8,
-    "userRatingCount": 26,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.814844,
-    "lon": -122.2724523
-   },
-   {
     "id": "ChIJBVZfrsXPj4ARUvnHquftGVQ",
     "name": "Augustus Rathbone Park",
     "primaryType": "park",
@@ -39913,6 +38825,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.937456,
     "lon": -121.7043847
+   },
+   {
+    "id": "ChIJ8-CG9VPfkYARrOi1uAkMiV8",
+    "name": "Rosendin Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Morgan Hill, CA 95037, USA",
+    "rating": 4.6,
+    "userRatingCount": 26,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.1645058,
+    "lon": -121.62259320000001
    },
    {
     "id": "ChIJ74EdBp-Aj4ARiJ2qqrlh_VQ",
@@ -41311,22 +40240,6 @@
     "lon": -122.1975196
    },
    {
-    "id": "ChIJie9k2Hhwj4AR5mKU7I_cZX4",
-    "name": "Portola Mini Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "201 Marvilla Pl, Pacifica, CA 94044, USA",
-    "rating": 4.5,
-    "userRatingCount": 20,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.5927965,
-    "lon": -122.4985219
-   },
-   {
     "id": "ChIJoYw7Vcbzj4AR0XHeN4COnYg",
     "name": "Sycamore Valley Open Space South",
     "primaryType": "park",
@@ -41909,23 +40822,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.2892943,
     "lon": -121.74490660000001
-   },
-   {
-    "id": "ChIJVQH7voGFj4ARFCyAmExfios",
-    "name": "Tyrone Carney Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "10501 Acalanes Dr, Oakland, CA 94603, USA",
-    "rating": 4.4,
-    "userRatingCount": 18,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7326632,
-    "lon": -122.17865019999998
    },
    {
     "id": "ChIJG6Q8Khd-hYARBB-kEhkb1M4",
@@ -43069,22 +41965,6 @@
     "lon": -121.90805800000001
    },
    {
-    "id": "ChIJKwQ6x6sLj4AR6f-AyBDCCeM",
-    "name": "Half Moon bay trailhead parking",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "699 Thone Ave #601, Half Moon Bay, CA 94019, USA",
-    "rating": 4.4,
-    "userRatingCount": 15,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.4389604,
-    "lon": -122.44278029999998
-   },
-   {
     "id": "ChIJ-dInsX0Y1W8Rg49m6BmhPAg",
     "name": "Americas Garden Center",
     "primaryType": "garden",
@@ -43822,23 +42702,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6643049,
     "lon": -122.09481299999999
-   },
-   {
-    "id": "ChIJyWHrjnW7j4ARSKAgtiUKy3M",
-    "name": "Perboly's Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1495 Woodland Ave, Menlo Park, CA 94025, USA",
-    "rating": 4.9,
-    "userRatingCount": 13,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.458377,
-    "lon": -122.14550799999998
    },
    {
     "id": "ChIJFVyoJwDNj4AR0cqIH9CRIAQ",
@@ -47174,23 +46037,6 @@
     "lon": -122.07515559999997
    },
    {
-    "id": "ChIJmdXseYqAhYARqOaGBlCsxPo",
-    "name": "Privately Owned Public Space",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "343 Sansome St, San Francisco, CA 94104, USA",
-    "rating": 4.8,
-    "userRatingCount": 8,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.793696499999996,
-    "lon": -122.4017177
-   },
-   {
     "id": "ChIJ-Uu54iXLj4ARj1V2YgjDYUA",
     "name": "Rincon South Park",
     "primaryType": "park",
@@ -47527,23 +46373,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.935513,
     "lon": -122.09581499999997
-   },
-   {
-    "id": "ChIJfyAeog5_j4ARiW4eB20_qvE",
-    "name": "Butcher Town Dog Run",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "98 Jennings St, San Francisco, CA 94124, USA",
-    "rating": 4.4,
-    "userRatingCount": 7,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7403727,
-    "lon": -122.37593109999999
    },
    {
     "id": "ChIJX5HTCGiHhYAR6BZBgJs_Cas",
@@ -48523,22 +47352,6 @@
     "lon": -121.9125897
    },
    {
-    "id": "ChIJ8WMKRul_j4AR0BbtZOQXgms",
-    "name": "Islais Creek Skate Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1851 Tennessee St, San Francisco, CA 94124, USA",
-    "rating": 3.5,
-    "userRatingCount": 6,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.748031,
-    "lon": -122.388235
-   },
-   {
     "id": "ChIJxZ2ra2fLj4ARxDfruw6b9ZU",
     "name": "James P. McEntee, Sr. Plaza",
     "primaryType": "park",
@@ -49508,23 +48321,6 @@
     "lon": -122.07160100000002
    },
    {
-    "id": "ChIJDfOTEuOej4ARMspPn12E350",
-    "name": "Landing Green Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "200 E 28th Ave, San Mateo, CA 94403, USA",
-    "rating": 4.2,
-    "userRatingCount": 5,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.543128599999996,
-    "lon": -122.29899470000001
-   },
-   {
     "id": "ChIJhxjsbDiQj4AReqIp0BR-9wM",
     "name": "Lewelling Playground",
     "primaryType": "park",
@@ -49980,7 +48776,7 @@
   ]
  },
  "golf_course": {
-  "count": 89,
+  "count": 87,
   "places": [
    {
     "id": "ChIJMc1f_28Lj4ARTvQR4cv3Yxg",
@@ -51591,7 +50387,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.604870399999996,
     "lon": -122.40801259999998,
     "source": "osm_backfill"
@@ -51609,7 +50405,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6495683,
     "lon": -122.4386062,
     "source": "osm_backfill"
@@ -51631,30 +50427,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2901452,
     "lon": -121.75231579999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJEVvAOfyQj4ARl1ZvZ3aJgv8",
-    "name": "Skywest Golf Course",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "athletic_field",
-     "sports_activity_location",
-     "restaurant",
-     "point_of_interest",
-     "food",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.662269699999996,
-    "lon": -122.1333715,
     "source": "osm_backfill"
    },
    {
@@ -51669,7 +50444,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.541408499999996,
     "lon": -122.3205871,
     "source": "osm_backfill"
@@ -51686,28 +50461,9 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8389692,
     "lon": -121.96607429999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJO0iQLU5VhYARkkw3vkvj_3Q",
-    "name": "Bethel Island Golf Course",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "athletic_field",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 38.0228837,
-    "lon": -121.635518,
     "source": "osm_backfill"
    },
    {
@@ -51722,7 +50478,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3739223,
     "lon": -122.1719992,
     "source": "osm_backfill"
@@ -51743,7 +50499,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8186447,
     "lon": -122.2084219,
     "source": "osm_backfill"
@@ -51760,7 +50516,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2559843,
     "lon": -121.97623979999999,
     "source": "osm_backfill"
@@ -51777,7 +50533,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.934742899999996,
     "lon": -122.30313929999998,
     "source": "osm_backfill"
@@ -51801,7 +50557,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7710003,
     "lon": -121.9340433,
     "source": "osm_backfill"
@@ -51818,7 +50574,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8555114,
     "lon": -122.0077846,
     "source": "osm_backfill"
@@ -51835,7 +50591,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.275661299999996,
     "lon": -121.77138769999998,
     "source": "osm_backfill"
@@ -51843,7 +50599,7 @@
   ]
  },
  "consulate": {
-  "count": 41,
+  "count": 40,
   "places": [
    {
     "id": "ChIJpTcruo6AhYARPLo5QdmBOrQ",
@@ -52564,25 +51320,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.790435599999995,
     "lon": -122.40126629999997
-   },
-   {
-    "id": "ChIJkYbnH4qAhYAR7NEKio7FTmM",
-    "name": "Consulate General of Ecuador",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": null,
-    "lat": 37.791396399999996,
-    "lon": -122.40287609999999,
-    "source": "authoritative"
    }
   ]
  },
@@ -52601,7 +51338,7 @@
     "address": "Mt Diablo, California 94598, USA",
     "rating": 4.7,
     "userRatingCount": 1281,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8815913,
     "lon": -121.91415279999998
    },
@@ -52617,7 +51354,7 @@
     "address": "Mission Peak, California 94539, USA",
     "rating": 4.8,
     "userRatingCount": 691,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5124365,
     "lon": -121.8805126
    },
@@ -52633,7 +51370,7 @@
     "address": "Mt Umunhum, California 95120, USA",
     "rating": 4.8,
     "userRatingCount": 477,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1605016,
     "lon": -121.8985666
    },
@@ -52649,7 +51386,7 @@
     "address": "Hippie Hill, San Francisco, CA 94117, USA",
     "rating": 4.8,
     "userRatingCount": 142,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7699176,
     "lon": -122.45788689999998
    },
@@ -52665,7 +51402,7 @@
     "address": "Grizzly Peak, California 94563, USA",
     "rating": 4.8,
     "userRatingCount": 137,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.882247199999995,
     "lon": -122.2336459
    },
@@ -52681,7 +51418,7 @@
     "address": "China Wall, California 94598, USA",
     "rating": 3.6,
     "userRatingCount": 132,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8679171,
     "lon": -121.98654409999999
    },
@@ -52697,7 +51434,7 @@
     "address": "Strawberry Hill, San Francisco, CA 94118, USA",
     "rating": 4.8,
     "userRatingCount": 102,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.768639799999995,
     "lon": -122.47531989999999
    },
@@ -52713,7 +51450,7 @@
     "address": "Mt Hamilton, CA 95140, USA",
     "rating": 4.7,
     "userRatingCount": 101,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3418834,
     "lon": -121.64300170000001
    },
@@ -52729,7 +51466,7 @@
     "address": "Mt Davidson, San Francisco, CA 94127, USA",
     "rating": 4.7,
     "userRatingCount": 84,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7383333,
     "lon": -122.45333330000001
    },
@@ -52745,7 +51482,7 @@
     "address": "Black Mountain, Palo Alto, CA 94022, USA",
     "rating": 4.8,
     "userRatingCount": 71,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3173167,
     "lon": -122.14810969999999
    },
@@ -52761,7 +51498,7 @@
     "address": "Mt Madonna, California 95020, USA",
     "rating": 4.8,
     "userRatingCount": 60,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0121721,
     "lon": -121.70494810000001
    },
@@ -52777,7 +51514,7 @@
     "address": "San Bruno Mountain, California 94014, USA",
     "rating": 4.9,
     "userRatingCount": 41,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.687432900000005,
     "lon": -122.436361
    },
@@ -52793,7 +51530,7 @@
     "address": "Loma Prieta, California 95037, USA",
     "rating": 4.3,
     "userRatingCount": 37,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1107807,
     "lon": -121.8446759
    },
@@ -52809,7 +51546,7 @@
     "address": "Mt Sutro, San Francisco, CA 94131, USA",
     "rating": 4.5,
     "userRatingCount": 36,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7582636,
     "lon": -122.4571935
    },
@@ -52825,7 +51562,7 @@
     "address": "Twin Peaks, San Francisco, CA 94131, USA",
     "rating": 4.8,
     "userRatingCount": 34,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7544253,
     "lon": -122.44680489999998
    },
@@ -52841,7 +51578,7 @@
     "address": "Skeggs Point, California 94062, USA",
     "rating": 4.1,
     "userRatingCount": 28,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.410773299999995,
     "lon": -122.30608049999998
    },
@@ -52857,7 +51594,7 @@
     "address": "Montara Mountain, California 94019, USA",
     "rating": 3.7,
     "userRatingCount": 26,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5288888,
     "lon": -122.4272222
    },
@@ -52873,7 +51610,7 @@
     "address": "Bernal Heights, San Francisco, CA 94110, USA",
     "rating": 4.6,
     "userRatingCount": 24,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7430814,
     "lon": -122.41521689999999
    },
@@ -52889,7 +51626,7 @@
     "address": "Copernicus Peak, Mt Hamilton, CA 95140, USA",
     "rating": 4.5,
     "userRatingCount": 19,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.346883,
     "lon": -121.6299457
    },
@@ -52905,7 +51642,7 @@
     "address": "Mt Wanda, Martinez, CA 94553, USA",
     "rating": 4.9,
     "userRatingCount": 19,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9835335,
     "lon": -122.1369096
    },
@@ -52921,7 +51658,7 @@
     "address": "Monument Peak, California 94539, USA",
     "rating": 4.7,
     "userRatingCount": 17,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4841039,
     "lon": -121.86551189999999
    },
@@ -52937,7 +51674,7 @@
     "address": "Twin Peaks, San Francisco, CA 94131, USA",
     "rating": 4.7,
     "userRatingCount": 15,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7514142,
     "lon": -122.4478412
    },
@@ -52953,7 +51690,7 @@
     "address": "Windy Hill, Portola Valley, CA 94028, USA",
     "rating": 4.8,
     "userRatingCount": 14,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.364662599999996,
     "lon": -122.246078
    },
@@ -52969,7 +51706,7 @@
     "address": "Brushy Peak, California 94551, USA",
     "rating": 4.5,
     "userRatingCount": 13,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7677056,
     "lon": -121.7032851
    },
@@ -52985,7 +51722,7 @@
     "address": "Borel Hill, California 94062, USA",
     "rating": 4.7,
     "userRatingCount": 11,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3202195,
     "lon": -122.1991324
    },
@@ -53001,7 +51738,7 @@
     "address": "Eagle Peak, California 94517, USA",
     "rating": 4.8,
     "userRatingCount": 11,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9016471,
     "lon": -121.938271
    },
@@ -53017,7 +51754,7 @@
     "address": "El Toro, Morgan Hill, CA 95037, USA",
     "rating": 4.6,
     "userRatingCount": 10,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1205018,
     "lon": -121.67216859999999
    },
@@ -53033,7 +51770,7 @@
     "address": "Pleasanton Ridge, Sunol, CA 94588, USA",
     "rating": 4.7,
     "userRatingCount": 10,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6397222,
     "lon": -121.91666660000001
    },
@@ -53049,7 +51786,7 @@
     "address": "San Pedro Mountain, California 94019, USA",
     "rating": 4.9,
     "userRatingCount": 9,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.573549299999996,
     "lon": -122.50775469999999
    },
@@ -53065,7 +51802,7 @@
     "address": "Ewing Hill, California 94022, USA",
     "rating": 4.6,
     "userRatingCount": 8,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3452191,
     "lon": -122.1480195
    },
@@ -53081,7 +51818,7 @@
     "address": "Sugarloaf Hill, San Mateo, CA 94403, USA",
     "rating": 4.6,
     "userRatingCount": 8,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5224374,
     "lon": -122.3177473
    },
@@ -53097,7 +51834,7 @@
     "address": "Mt Allison, California 94539, USA",
     "rating": 4.1,
     "userRatingCount": 7,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.498548,
     "lon": -121.8707901
    },
@@ -53113,7 +51850,7 @@
     "address": "Vista Slope, Mountain View, CA 94043, USA",
     "rating": 4.6,
     "userRatingCount": 7,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4258114,
     "lon": -122.0830343
    },
@@ -53129,7 +51866,7 @@
     "address": "Albany Hill, Albany, CA 94706, USA",
     "rating": 4.7,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8949254,
     "lon": -122.30469199999997
    },
@@ -53145,7 +51882,7 @@
     "address": "Bald Peaks, California 95141, USA",
     "rating": 4.2,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1585572,
     "lon": -121.79495129999998
    },
@@ -53161,7 +51898,7 @@
     "address": "Bukaki Hill, Fremont, CA 94536, USA",
     "rating": 2.5,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.582983299999995,
     "lon": -121.96289639999999
    },
@@ -53177,7 +51914,7 @@
     "address": "Coyote Peak, Coyote Creek, CA 95119, USA",
     "rating": 4.7,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2088336,
     "lon": -121.77578349999999
    },
@@ -53193,7 +51930,7 @@
     "address": "El Sombroso, California 95032, USA",
     "rating": 4.3,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1785566,
     "lon": -121.91023349999999
    },
@@ -53209,7 +51946,7 @@
     "address": "Elephant Mountain, California 94022, USA",
     "rating": 4.2,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3493856,
     "lon": -122.15468639999997
    },
@@ -53225,7 +51962,7 @@
     "address": "Lands End, California 95037, USA",
     "rating": 4.3,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0668931,
     "lon": -121.7874516
    },
@@ -53241,7 +51978,7 @@
     "address": "Mindego Hill, California 94020, USA",
     "rating": 5,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.310775199999995,
     "lon": -122.2302445
    },
@@ -53257,7 +51994,7 @@
     "address": "Nob Hill, Morgan Hill, CA 95037, USA",
     "rating": 3.7,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1232792,
     "lon": -121.65744579999999
    },
@@ -53273,7 +52010,7 @@
     "address": "North Peak, California 94517, USA",
     "rating": 4.8,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8929799,
     "lon": -121.89995800000001
    },
@@ -53289,7 +52026,7 @@
     "address": "Table Mountain, California 95014, USA",
     "rating": 3.7,
     "userRatingCount": 6,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2586111,
     "lon": -122.08222219999999
    },
@@ -53305,7 +52042,7 @@
     "address": "Mt Sizer, California 95037, USA",
     "rating": 4.8,
     "userRatingCount": 5,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2138298,
     "lon": -121.51355149999998
    },
@@ -53321,7 +52058,7 @@
     "address": "Mt Thayer, California 95033, USA",
     "rating": 5,
     "userRatingCount": 5,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.163557,
     "lon": -121.91912289999999
    },
@@ -53337,7 +52074,7 @@
     "address": "Round Top, California 94563, USA",
     "rating": 4.8,
     "userRatingCount": 5,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8500016,
     "lon": -122.19281670000001
    },
@@ -53353,7 +52090,7 @@
     "address": "Russian Hill, San Francisco, CA 94133, USA",
     "rating": 5,
     "userRatingCount": 5,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7973639,
     "lon": -122.4148933
    },
@@ -53369,7 +52106,7 @@
     "address": "St Josephs Hill, Los Gatos, CA 95030, USA",
     "rating": 5,
     "userRatingCount": 5,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2055004,
     "lon": -121.97634679999999
    },
@@ -53385,7 +52122,7 @@
     "address": "Twin Peaks, California 95037, USA",
     "rating": 5,
     "userRatingCount": 5,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.07966,
     "lon": -121.6901949
    },
@@ -53401,7 +52138,7 @@
     "address": "Las Trampas Peak, California 94556, USA",
     "rating": 3.8,
     "userRatingCount": 4,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.833259399999996,
     "lon": -122.064685
    },
@@ -53417,7 +52154,7 @@
     "address": "Vollmer Peak, California 94563, USA",
     "rating": 4.8,
     "userRatingCount": 4,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8832587,
     "lon": -122.2219123
    },
@@ -53433,7 +52170,7 @@
     "address": "Bald Mountain, Almaden, CA 95120, USA",
     "rating": 5,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.159946,
     "lon": -121.86717639999999
    },
@@ -53449,7 +52186,7 @@
     "address": "Bay View Hill, San Francisco, CA 94124, USA",
     "rating": 5,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7146536,
     "lon": -122.3927488
    },
@@ -53465,7 +52202,7 @@
     "address": "Cattle Hill, Pacifica, CA 94044, USA",
     "rating": 4.3,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.606881,
     "lon": -122.4816417
    },
@@ -53481,7 +52218,7 @@
     "address": "Christmas Hill, Gilroy, CA 95020, USA",
     "rating": 4.7,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 36.988838099999995,
     "lon": -121.58605379999999
    },
@@ -53497,7 +52234,7 @@
     "address": "Crittenden Hill, Mountain View, CA 94043, USA",
     "rating": 5,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4259899,
     "lon": -122.07451220000002
    },
@@ -53513,7 +52250,7 @@
     "address": "Lone Hill, Livermore, CA 94550, USA",
     "rating": 5,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.668888900000006,
     "lon": -121.7075
    },
@@ -53529,7 +52266,7 @@
     "address": "Mt Chual, California 95120, USA",
     "rating": 2.3,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.119113899999995,
     "lon": -121.83467540000001
    },
@@ -53545,7 +52282,7 @@
     "address": "Sunol Peak, Sunol, CA 94586, USA",
     "rating": 5,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.619932999999996,
     "lon": -121.92245829999999
    },
@@ -53561,7 +52298,7 @@
     "address": "Twin Peaks, California 94517, USA",
     "rating": 5,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9110349,
     "lon": -121.93662579999999
    },
@@ -53577,7 +52314,7 @@
     "address": "Wildcat Peak, California 94708, USA",
     "rating": 4.7,
     "userRatingCount": 3,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9192477,
     "lon": -122.26216739999998
    },
@@ -53593,7 +52330,7 @@
     "address": "Bear Creek Summit, California 95033, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1685568,
     "lon": -122.02357140000001
    },
@@ -53609,7 +52346,7 @@
     "address": "Brittan Knoll, San Carlos, CA 94070, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4999372,
     "lon": -122.26524459999999
    },
@@ -53625,7 +52362,7 @@
     "address": "Chaparral Peak, California 94563, USA",
     "rating": 2,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8782589,
     "lon": -122.22302339999999
    },
@@ -53641,7 +52378,7 @@
     "address": "Coyote Hill, Palo Alto, CA 94304, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3985511,
     "lon": -122.14885299999997
    },
@@ -53657,7 +52394,7 @@
     "address": "Crystal Peak, California 95037, USA",
     "rating": 2.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.113280599999996,
     "lon": -121.83578659999999
    },
@@ -53673,7 +52410,7 @@
     "address": "Eagle Hill, Redwood City, CA 94062, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4746598,
     "lon": -122.24357719999999
    },
@@ -53689,7 +52426,7 @@
     "address": "Kings Mountain, California 94062, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4407729,
     "lon": -122.32441449999999
    },
@@ -53705,7 +52442,7 @@
     "address": "Loma Chiquita, California 95033, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.104947599999996,
     "lon": -121.823564
    },
@@ -53721,7 +52458,7 @@
     "address": "Mitchell Rock, California 94517, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.912146,
     "lon": -121.94079499999998
    },
@@ -53737,7 +52474,7 @@
     "address": "Mt Misery, San Felipe, CA 95135, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2779975,
     "lon": -121.70550329999999
    },
@@ -53753,7 +52490,7 @@
     "address": "Nickols Knob, Richmond, CA 94801, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.920480399999995,
     "lon": -122.3821937
    },
@@ -53769,7 +52506,7 @@
     "address": "Nob Hill, Cupertino, CA 95070, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.279711899999995,
     "lon": -122.0613872
    },
@@ -53785,7 +52522,7 @@
     "address": "North Peak, Montara, CA 94038, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.561327299999995,
     "lon": -122.47747600000001
    },
@@ -53801,7 +52538,7 @@
     "address": "Peak Mountain, Montara, CA 94038, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5611265,
     "lon": -122.4844085
    },
@@ -53817,7 +52554,7 @@
     "address": "Pill Hill, Oakland, CA 94609, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.820205099999995,
     "lon": -122.2641359
    },
@@ -53833,7 +52570,7 @@
     "address": "Presidio Hill, San Francisco, CA 94129, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.793540199999995,
     "lon": -122.46441619999999
    },
@@ -53849,7 +52586,7 @@
     "address": "Ramage Peak, California 94552, USA",
     "rating": 4,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7904829,
     "lon": -122.06885169999998
    },
@@ -53865,7 +52602,7 @@
     "address": "Red Hill, Fremont, CA 94555, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5538248,
     "lon": -122.0946855
    },
@@ -53881,7 +52618,7 @@
     "address": "Rincon Hill, San Francisco, CA 94107, USA",
     "rating": 3,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7852068,
     "lon": -122.3919152
    },
@@ -53897,7 +52634,7 @@
     "address": "Rob Hill, San Francisco, CA 94129, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7954847,
     "lon": -122.47636089999997
    },
@@ -53913,7 +52650,7 @@
     "address": "Stony Hill, San Francisco, CA 94124, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.734375,
     "lon": -122.3844151
    },
@@ -53929,7 +52666,7 @@
     "address": "Summit Rock, California 95070, USA",
     "rating": 4.5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2407323,
     "lon": -122.09875699999998
    },
@@ -53945,7 +52682,7 @@
     "address": "Tolman Peak, Union City, CA 94552, USA",
     "rating": 5,
     "userRatingCount": 2,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6138226,
     "lon": -121.9913495
    },
@@ -53961,7 +52698,7 @@
     "address": "Bald Knob, California 94019, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.423551499999995,
     "lon": -122.3544161
    },
@@ -53977,7 +52714,7 @@
     "address": "Belmont Hill, San Carlos, CA 94070, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5102149,
     "lon": -122.2760786
    },
@@ -53993,7 +52730,7 @@
     "address": "Bills Hill, California 95020, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0466494,
     "lon": -121.43911140000002
    },
@@ -54009,7 +52746,7 @@
     "address": "Black Hawk Ridge, California 94506, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8361111,
     "lon": -121.90166660000001
    },
@@ -54025,7 +52762,7 @@
     "address": "Buena Vista Heights, San Francisco, CA 94117, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.767429899999996,
     "lon": -122.4413601
    },
@@ -54041,7 +52778,7 @@
     "address": "Burra Burra Peak, California 95023, USA",
     "rating": 3,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1091865,
     "lon": -121.3654378
    },
@@ -54057,7 +52794,7 @@
     "address": "Cave Point, California 94517, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8410368,
     "lon": -121.88190159999999
    },
@@ -54073,7 +52810,7 @@
     "address": "Donlan Point, Dublin, CA 94568, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7010412,
     "lon": -121.9677373
    },
@@ -54089,7 +52826,7 @@
     "address": "Eureka Peak, Orinda, CA 94563, USA",
     "rating": 1,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.879092199999995,
     "lon": -122.2124676
    },
@@ -54105,7 +52842,7 @@
     "address": "Eylar Mountain, California 94550, USA",
     "rating": 1,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.477433999999995,
     "lon": -121.55688839999999
    },
@@ -54121,7 +52858,7 @@
     "address": "Forest Hill, San Francisco, CA 94116, USA",
     "rating": 4,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7477777,
     "lon": -122.4672222
    },
@@ -54137,7 +52874,7 @@
     "address": "Franklin Ridge, California 94553, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9766666,
     "lon": -122.1669444
    },
@@ -54153,7 +52890,7 @@
     "address": "Goat Hill, California 94060, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.281054399999995,
     "lon": -122.32747119999999
    },
@@ -54169,7 +52906,7 @@
     "address": "Harlan Hill, Norris Canyon, CA 94583, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7363175,
     "lon": -121.98273770000002
    },
@@ -54185,7 +52922,7 @@
     "address": "Langley Hill, California 94062, USA",
     "rating": 4,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3313303,
     "lon": -122.23718910000001
    },
@@ -54201,7 +52938,7 @@
     "address": "Lions Peak, California 95020, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0566143,
     "lon": -121.63216699999998
    },
@@ -54217,7 +52954,7 @@
     "address": "Lookout Point, California 94550, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5143785,
     "lon": -121.6652268
    },
@@ -54233,7 +52970,7 @@
     "address": "Lovers Leap, California 95023, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0343899,
     "lon": -121.3004852
    },
@@ -54249,7 +52986,7 @@
     "address": "Montara Knob, Montara, CA 94038, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5569983,
     "lon": -122.48529219999999
    },
@@ -54265,7 +53002,7 @@
     "address": "Montgomery Hill, San Jose, CA 95135, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2982752,
     "lon": -121.752172
    },
@@ -54281,7 +53018,7 @@
     "address": "Mt Isabel, California 95037, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3260502,
     "lon": -121.62022300000001
    },
@@ -54297,7 +53034,7 @@
     "address": "Mt Melville, California 94062, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3374413,
     "lon": -122.21913289999999
    },
@@ -54313,7 +53050,7 @@
     "address": "Mt Zion, California 94517, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.923812399999996,
     "lon": -121.95329299999999
    },
@@ -54329,7 +53066,7 @@
     "address": "Mulholland Hill, Orinda, CA 94563, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8602035,
     "lon": -122.1474655
    },
@@ -54345,7 +53082,7 @@
     "address": "Nob Hill, San Francisco, CA 94109, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7932622,
     "lon": -122.41524899999999
    },
@@ -54361,7 +53098,7 @@
     "address": "Nob Hill, Pinole, CA 94564, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 38.006138199999995,
     "lon": -122.30488930000001
    },
@@ -54377,7 +53114,7 @@
     "address": "Ox Hill, California 94019, USA",
     "rating": 4,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.52366550000001,
     "lon": -122.42316629999999
    },
@@ -54393,7 +53130,7 @@
     "address": "Oyster Point, California 94506, USA",
     "rating": 4,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8304816,
     "lon": -121.87773480000001
    },
@@ -54409,7 +53146,7 @@
     "address": "Pacheco Peak, California 95023, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.008002,
     "lon": -121.2879841
    },
@@ -54425,7 +53162,7 @@
     "address": "Ransom Point, California 94598, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8857578,
     "lon": -121.91523619999998
    },
@@ -54441,7 +53178,7 @@
     "address": "San Felipe Hills North, California 95135, USA",
     "rating": 1,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2997222,
     "lon": -121.63
    },
@@ -54457,7 +53194,7 @@
     "address": "Teague Hill, California 94062, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4204953,
     "lon": -122.29858010000001
    },
@@ -54473,7 +53210,7 @@
     "address": "Telegraph Hill, San Francisco, CA 94133, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8027064,
     "lon": -122.40580439999998
    },
@@ -54489,7 +53226,7 @@
     "address": "Turk Island, Hayward, CA 94545, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5721574,
     "lon": -122.10440789999998
    },
@@ -54505,7 +53242,7 @@
     "address": "Wall Point, California 94598, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.856869599999996,
     "lon": -121.95329269999999
    },
@@ -54521,7 +53258,7 @@
     "address": "Willow Ridge, California 95037, USA",
     "rating": 4,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.173333299999996,
     "lon": -121.45583330000001
    },
@@ -54537,7 +53274,7 @@
     "address": "Yerba Buena Island HP, San Francisco, CA 94130, USA",
     "rating": 5,
     "userRatingCount": 1,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.809722199999996,
     "lon": -122.36611110000001
    },
@@ -54553,7 +53290,7 @@
     "address": "Alum Rock, CA 95127, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.38799480000001,
     "lon": -121.7888412
    },
@@ -54569,7 +53306,7 @@
     "address": "Artist Point, California 94506, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.845758800000006,
     "lon": -121.9338477
    },
@@ -54585,7 +53322,7 @@
     "address": "Baby Peak, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4624356,
     "lon": -121.66578170000001
    },
@@ -54601,7 +53338,7 @@
     "address": "Bear Mountain, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2288285,
     "lon": -121.4393822
    },
@@ -54617,7 +53354,7 @@
     "address": "Beartrap Ridge, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4786111,
     "lon": -121.6522222
    },
@@ -54633,7 +53370,7 @@
     "address": "Black Mountain, California 95132, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4374367,
     "lon": -121.7013385
    },
@@ -54649,7 +53386,7 @@
     "address": "Black Mountain, Hillsborough, CA 94010, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5452149,
     "lon": -122.3530265
    },
@@ -54665,7 +53402,7 @@
     "address": "Black Point, California 94598, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.912146,
     "lon": -121.9580153
    },
@@ -54681,7 +53418,7 @@
     "address": "Blossom Hill, Los Gatos, CA 95032, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2257776,
     "lon": -121.9260668
    },
@@ -54697,7 +53434,7 @@
     "address": "Blue Rocks, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.248274599999995,
     "lon": -121.61105519999998
    },
@@ -54713,7 +53450,7 @@
     "address": "Bollinger Mountain, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.253828999999996,
     "lon": -121.54521949999999
    },
@@ -54729,7 +53466,7 @@
     "address": "Bollinger Ridge, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2738888,
     "lon": -121.5627777
    },
@@ -54745,7 +53482,7 @@
     "address": "Boon Hill, Danville, CA 94526, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8282593,
     "lon": -121.98051559999999
    },
@@ -54761,7 +53498,7 @@
     "address": "Briones Peak, California 94553, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9368827,
     "lon": -122.12830960000001
    },
@@ -54777,7 +53514,7 @@
     "address": "Brush Mountain, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2988275,
     "lon": -121.53216379999998
    },
@@ -54793,7 +53530,7 @@
     "address": "Burns Chalks, California 94021, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3004981,
     "lon": -122.29024709999999
    },
@@ -54809,7 +53546,7 @@
     "address": "Bush Hill, California 94525, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 38.04186550000001,
     "lon": -122.2060789
    },
@@ -54825,7 +53562,7 @@
     "address": "Cahill Ridge, California 94019, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5236111,
     "lon": -122.38499999999999
    },
@@ -54841,7 +53578,7 @@
     "address": "Carlyle Hills West, California 95020, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 36.9447222,
     "lon": -121.5922222
    },
@@ -54857,7 +53594,7 @@
     "address": "Castle Hill, Alamo, CA 94507, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8604809,
     "lon": -122.0519069
    },
@@ -54873,7 +53610,7 @@
     "address": "Cat's Corridor, California 94062, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.351541,
     "lon": -122.26371609999998
    },
@@ -54889,7 +53626,7 @@
     "address": "Cedar Mountain, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.559932599999996,
     "lon": -121.60661379999999
    },
@@ -54905,7 +53642,7 @@
     "address": "Church Hill, Almaden, CA 95120, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1782788,
     "lon": -121.83661950000001
    },
@@ -54921,7 +53658,7 @@
     "address": "Corinda Los Trancos, California 94019, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5172222,
     "lon": -122.40472219999998
    },
@@ -54937,7 +53674,7 @@
     "address": "Cow Hill, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2627186,
     "lon": -121.6057773
    },
@@ -54953,7 +53690,7 @@
     "address": "Crane Ridge, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6008333,
     "lon": -121.6163888
    },
@@ -54969,7 +53706,7 @@
     "address": "Discovery Peak, California, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5122222,
     "lon": -121.69916660000001
    },
@@ -54985,7 +53722,7 @@
     "address": "El Sereno, California 95030, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2193889,
     "lon": -122.0235706
    },
@@ -55001,7 +53738,7 @@
     "address": "Elephant Head, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0252239,
     "lon": -121.35159859999997
    },
@@ -55017,7 +53754,7 @@
     "address": "Fern Peak, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1527241,
     "lon": -121.8116187
    },
@@ -55033,7 +53770,7 @@
     "address": "Finley Ridge, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1522222,
     "lon": -121.56333329999998
    },
@@ -55065,7 +53802,7 @@
     "address": "Gulnac Peak, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0746667,
     "lon": -121.36826660000001
    },
@@ -55081,7 +53818,7 @@
     "address": "Hagerman Peak, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1124424,
     "lon": -121.2385396
    },
@@ -55097,7 +53834,7 @@
     "address": "Haskins Hill, California 94021, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.302164499999996,
     "lon": -122.27774660000001
    },
@@ -55113,7 +53850,7 @@
     "address": "Ignatius Heights, San Francisco, CA 94117, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.776318599999996,
     "lon": -122.45108250000001
    },
@@ -55129,7 +53866,7 @@
     "address": "Irish Ridge, California 94019, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3847222,
     "lon": -122.3813888
    },
@@ -55145,7 +53882,7 @@
     "address": "Kelly Hill, California 94062, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.366329199999996,
     "lon": -122.24968919999999
    },
@@ -55161,7 +53898,7 @@
     "address": "Kickham Peak, California 95020, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.047445499999995,
     "lon": -121.3846559
    },
@@ -55177,7 +53914,7 @@
     "address": "Knob Point, California 94506, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8446478,
     "lon": -121.90190219999998
    },
@@ -55193,7 +53930,7 @@
     "address": "Lake Mountain, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.087500000000006,
     "lon": -121.32222219999998
    },
@@ -55209,7 +53946,7 @@
     "address": "Lane Hill, California 94060, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2732769,
     "lon": -122.34108300000001
    },
@@ -55225,7 +53962,7 @@
     "address": "Larios Peak, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1224439,
     "lon": -121.52021789999999
    },
@@ -55241,7 +53978,7 @@
     "address": "Laurel Hill, Coyote Creek, CA 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.153835,
     "lon": -121.7346711
    },
@@ -55257,7 +53994,7 @@
     "address": "Lawson Hill, California 94553, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.943534799999995,
     "lon": -122.19218909999998
    },
@@ -55273,7 +54010,7 @@
     "address": "Lincoln Heights, San Francisco, CA 94121, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.782198799999996,
     "lon": -122.49980029999998
    },
@@ -55289,7 +54026,7 @@
     "address": "Lone Hill, San Jose, CA 95124, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2438327,
     "lon": -121.91078820000001
    },
@@ -55305,7 +54042,7 @@
     "address": "Long Ridge, California 94020, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.281887,
     "lon": -122.171909
    },
@@ -55321,7 +54058,7 @@
     "address": "Maderia Hill, Hayward, CA 94546, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.688333199999995,
     "lon": -122.09055559999999
    },
@@ -55337,7 +54074,7 @@
     "address": "Maguire Peaks, California 94586, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.546045899999996,
     "lon": -121.8352333
    },
@@ -55353,7 +54090,7 @@
     "address": "Man Ridge, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.517777699999996,
     "lon": -121.58250000000001
    },
@@ -55369,7 +54106,7 @@
     "address": "Masters Hill, Mount Pleasant Foothills, CA 95148, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.337995899999996,
     "lon": -121.73772759999999
    },
@@ -55385,7 +54122,7 @@
     "address": "Mine Hill, Almaden, CA 95120, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.176612299999995,
     "lon": -121.84467529999998
    },
@@ -55401,7 +54138,7 @@
     "address": "Morena Sierra, California 94062, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4104957,
     "lon": -122.3088585
    },
@@ -55417,7 +54154,7 @@
     "address": "Mt Day, California 95132, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4207706,
     "lon": -121.70078269999999
    },
@@ -55433,7 +54170,7 @@
     "address": "Mt Ellen, California 94021, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.279665099999995,
     "lon": -122.29191399999999
    },
@@ -55449,7 +54186,7 @@
     "address": "Mt Helen, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2771614,
     "lon": -121.52938569999999
    },
@@ -55465,7 +54202,7 @@
     "address": "Mt Helen, Martinez, CA 94553, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9815891,
     "lon": -122.13329840000002
    },
@@ -55481,7 +54218,7 @@
     "address": "Mt Lewis, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.480768499999996,
     "lon": -121.68161599999999
    },
@@ -55497,7 +54234,7 @@
     "address": "Mt Mocho, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4554896,
     "lon": -121.49438579999999
    },
@@ -55513,7 +54250,7 @@
     "address": "Mt Van Lone, Lexington Hills, CA 95033, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.163834699999995,
     "lon": -122.01218209999999
    },
@@ -55529,7 +54266,7 @@
     "address": "Mt Wallace, California 95304, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.539377099999996,
     "lon": -121.5510557
    },
@@ -55545,7 +54282,7 @@
     "address": "Mulligan Hill, California 94521, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9818663,
     "lon": -121.93495940000001
    },
@@ -55561,7 +54298,7 @@
     "address": "Nesbit Ridge, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1361111,
     "lon": -121.53194439999999
    },
@@ -55577,7 +54314,7 @@
     "address": "Nibbs Knob, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.085225900000005,
     "lon": -121.8127304
    },
@@ -55593,7 +54330,7 @@
     "address": "Oak Knoll, Livermore, CA 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6768885,
     "lon": -121.7885523
    },
@@ -55609,7 +54346,7 @@
     "address": "Oak Ridge, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.368333299999996,
     "lon": -121.65472220000001
    },
@@ -55625,7 +54362,7 @@
     "address": "Packard Ridge, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3922222,
     "lon": -121.63472220000001
    },
@@ -55641,7 +54378,7 @@
     "address": "Panochita Hill, San Felipe, CA 95135, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3041075,
     "lon": -121.69272539999999
    },
@@ -55657,7 +54394,7 @@
     "address": "Paz Peak, California 94062, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3685452,
     "lon": -122.27753209999999
    },
@@ -55673,7 +54410,7 @@
     "address": "Pigeon Point, California 95020, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0532792,
     "lon": -121.49382750000001
    },
@@ -55689,7 +54426,7 @@
     "address": "Pinole Ridge, California 94564, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.981944399999996,
     "lon": -122.23777770000001
    },
@@ -55705,7 +54442,7 @@
     "address": "Point San Bruno, South San Francisco, CA 94080, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.6532669,
     "lon": -122.38469359999999
    },
@@ -55721,7 +54458,7 @@
     "address": "Poverty Ridge, California 95132, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4216666,
     "lon": -121.73416660000001
    },
@@ -55737,7 +54474,7 @@
     "address": "Pulgas Ridge, Highlands, CA 94402, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.521666599999996,
     "lon": -122.34611109999999
    },
@@ -55753,7 +54490,7 @@
     "address": "Pyramid Rock, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3060505,
     "lon": -121.59661080000001
    },
@@ -55769,7 +54506,7 @@
     "address": "Rattlesnake Butte, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3971595,
     "lon": -121.6452247
    },
@@ -55785,7 +54522,7 @@
     "address": "Rays Peak, California 94020, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.328553,
     "lon": -122.2971917
    },
@@ -55801,7 +54538,7 @@
     "address": "Red Mountain, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4152128,
     "lon": -121.46688479999997
    },
@@ -55817,7 +54554,7 @@
     "address": "Redwood Peak, California 94611, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.8179826,
     "lon": -122.1760776
    },
@@ -55833,7 +54570,7 @@
     "address": "Rock Springs Peak, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0838332,
     "lon": -121.39299
    },
@@ -55849,7 +54586,7 @@
     "address": "Rocky Ridge, California, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.815000000000005,
     "lon": -122.0611111
    },
@@ -55865,7 +54602,7 @@
     "address": "Round Hill, Pescadero, CA 94060, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2607776,
     "lon": -122.39997460000001
    },
@@ -55881,7 +54618,7 @@
     "address": "Round Mountain, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2893836,
     "lon": -121.5491089
    },
@@ -55897,7 +54634,7 @@
     "address": "Russell Peak, California 94549, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9175642,
     "lon": -122.13952390000001
    },
@@ -55913,7 +54650,7 @@
     "address": "San Felipe Hills South, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2844444,
     "lon": -121.62249990000001
    },
@@ -55929,7 +54666,7 @@
     "address": "Sargent Hills, California 95020, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 36.9211111,
     "lon": -121.57472220000001
    },
@@ -55945,7 +54682,7 @@
     "address": "Sawyer Ridge, California 94010, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5638888,
     "lon": -122.4136111
    },
@@ -55961,7 +54698,7 @@
     "address": "Scar Hill, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5873442,
     "lon": -121.6997725
    },
@@ -55977,7 +54714,7 @@
     "address": "Sheep Ridge, California 95037, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.1152777,
     "lon": -121.51694439999999
    },
@@ -55993,7 +54730,7 @@
     "address": "Sherburn Hills, Danville, CA 94506, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7933333,
     "lon": -121.9419444
    },
@@ -56009,7 +54746,7 @@
     "address": "Sobrante Ridge, California 94803, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9419444,
     "lon": -122.23083330000001
    },
@@ -56025,7 +54762,7 @@
     "address": "South Peak, Montara, CA 94038, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5559195,
     "lon": -122.4795105
    },
@@ -56041,7 +54778,7 @@
     "address": "Sugarloaf Butte, California 94550, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.5365999,
     "lon": -121.6174472
    },
@@ -56057,7 +54794,7 @@
     "address": "Sugarloaf Hill, Walnut Creek, CA 94596, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.877147,
     "lon": -122.0424622
    },
@@ -56073,7 +54810,7 @@
     "address": "Sugarloaf Mountain, California 95140, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.3466045,
     "lon": -121.56355429999999
    },
@@ -56089,7 +54826,7 @@
     "address": "Table Mountain, California 95014, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2891094,
     "lon": -122.13940799999999
    },
@@ -56105,7 +54842,7 @@
     "address": "The Peak, California 95070, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2191111,
     "lon": -122.07135020000001
    },
@@ -56121,7 +54858,7 @@
     "address": "Tulare Hill, Coyote, CA 95139, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.2210554,
     "lon": -121.7549494
    },
@@ -56137,7 +54874,7 @@
     "address": "Vasquez Peak, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0810501,
     "lon": -121.401478
    },
@@ -56153,7 +54890,7 @@
     "address": "Visitacion Knob, San Francisco, CA 94134, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7190982,
     "lon": -122.4219158
    },
@@ -56169,7 +54906,7 @@
     "address": "Vista Grande, California 94586, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.529722199999995,
     "lon": -121.81111109999999
    },
@@ -56185,7 +54922,7 @@
     "address": "Walpert Ridge, Union City, CA 94552, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.626111099999996,
     "lon": -121.9613888
    },
@@ -56201,7 +54938,7 @@
     "address": "Wiedemann Hill, Norris Canyon, CA 94583, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.7382619,
     "lon": -121.9946824
    },
@@ -56217,7 +54954,7 @@
     "address": "William Rust Summit, El Cerrito, CA 94530, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.9263134,
     "lon": -122.2908028
    },
@@ -56233,7 +54970,7 @@
     "address": "Willson Peak, California 95023, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.0953776,
     "lon": -121.435267
    },
@@ -56249,7 +54986,7 @@
     "address": "Windy Point, California 94517, USA",
     "rating": null,
     "userRatingCount": 0,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.852981,
     "lon": -121.87579040000001
    },
@@ -56265,7 +55002,7 @@
     "address": "",
     "rating": null,
     "userRatingCount": null,
-    "businessStatus": null,
+    "businessStatus": "OPERATIONAL",
     "lat": 37.4813222,
     "lon": -121.47133,
     "source": "osm_backfill"

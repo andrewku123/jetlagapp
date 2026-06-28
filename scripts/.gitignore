@@ -5,6 +5,7 @@ auth_gap_candidates.json
 poi_auth_verified.json
 poi_auth_cache.json
 poi_gap_cache.json
+poi_bizstatus_cache.json
 poi_gap_verified.json
 auth_lists/
 

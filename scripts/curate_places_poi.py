@@ -171,7 +171,7 @@ for key in [k for k in LABEL if k in raw]:
     min_rev = 0 if (NO_REVIEWS or key in KEEP_ALL) else MIN_REVIEWS
     ge5 = [p for p in blk["places"]
            if (p.get("userRatingCount") or 0) >= min_rev
-           and p.get("businessStatus") != "CLOSED_PERMANENTLY"
+           and p.get("businessStatus") not in ("CLOSED_PERMANENTLY", "CLOSED_TEMPORARILY")
            and p["name"] not in NAME_CLOSED]
     typed = [p for p in ge5 if keep_by_type(key, p)]
     off_icon = len(ge5) - len(typed)
