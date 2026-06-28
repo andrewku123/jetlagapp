@@ -1,6 +1,6 @@
 {
  "museum": {
-  "count": 207,
+  "count": 214,
   "places": [
    {
     "id": "ChIJ53I1Yn2AhYAR_Vl1vNygfMg",
@@ -993,6 +993,26 @@
     "lon": -121.98021369999998
    },
    {
+    "id": "ChIJY6qvZfSAhYARE-zWxUt9vxE",
+    "name": "The Beat Museum",
+    "primaryType": "museum",
+    "types": [
+     "museum",
+     "tourist_attraction",
+     "book_store",
+     "home_goods_store",
+     "store",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "540 Broadway, San Francisco, CA 94133, USA",
+    "rating": 4.5,
+    "userRatingCount": 285,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7980878,
+    "lon": -122.40619509999999
+   },
+   {
     "id": "ChIJfTK51q-Aj4ARI5bIG6D0BKQ",
     "name": "Museum of Art and Digital Entertainment - (MADE)",
     "primaryType": "museum",
@@ -1558,6 +1578,22 @@
     "lon": -121.87562750000001
    },
    {
+    "id": "ChIJUQECmPfJj4AROgbZ06JAZFQ",
+    "name": "The 49ers Museum",
+    "primaryType": "museum",
+    "types": [
+     "museum",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",
+    "rating": 4.3,
+    "userRatingCount": 107,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.4041654,
+    "lon": -121.9709552
+   },
+   {
     "id": "ChIJdzvE8zCAhYARFvbhj2smGd0",
     "name": "Treasure Island Museum",
     "primaryType": "history_museum",
@@ -1944,6 +1980,24 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6145318,
     "lon": -122.3853714
+   },
+   {
+    "id": "ChIJq9ZkDL2Jj4ARCFdY8upQEI8",
+    "name": "Saint Mary's College Museum of Art",
+    "primaryType": "art_museum",
+    "types": [
+     "art_museum",
+     "tourist_attraction",
+     "museum",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1928 St Marys Rd PMB 5110, Moraga, CA 94556, USA",
+    "rating": 4.6,
+    "userRatingCount": 69,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.840741699999995,
+    "lon": -122.10811400000001
    },
    {
     "id": "ChIJK3Lj8LOAj4ARx4LvX6N9JUA",
@@ -2451,6 +2505,23 @@
     "lon": -122.43144799999999
    },
    {
+    "id": "ChIJ8cUX98mAhYAR9gpEbO077dE",
+    "name": "Museum of Russian Culture",
+    "primaryType": "museum",
+    "types": [
+     "museum",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "2450 Sutter St, San Francisco, CA 94115, USA",
+    "rating": 4.3,
+    "userRatingCount": 26,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7852415,
+    "lon": -122.44091560000001
+   },
+   {
     "id": "ChIJz_Rh4CZ8hYAR4N0-olz6FOQ",
     "name": "Museum of Vertebrate Zoology",
     "primaryType": "museum",
@@ -2568,6 +2639,25 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4441118,
     "lon": -122.1611479
+   },
+   {
+    "id": "ChIJMzhl88t9hYARd1_SfZe3Aoo",
+    "name": "The Magnes Collection of Jewish Art and Life",
+    "primaryType": "museum",
+    "types": [
+     "museum",
+     "history_museum",
+     "tourist_attraction",
+     "art_museum",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "2121 Allston Way, Berkeley, CA 94720, USA",
+    "rating": 4.5,
+    "userRatingCount": 23,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.869794999999996,
+    "lon": -122.26687
    },
    {
     "id": "ChIJa5sEo4yAhYARKZOjw4sOZU4",
@@ -3476,6 +3566,23 @@
     "source": "osm_backfill"
    },
    {
+    "id": "ChIJ68uUQbTNj4ARShgFYhTPpDY",
+    "name": "Natalie and James Thompson Gallery",
+    "primaryType": "art_gallery",
+    "types": [
+     "art_gallery",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": null,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.3360377,
+    "lon": -121.8793053,
+    "source": "authoritative"
+   },
+   {
     "id": "ChIJedSciLDMj4ARGKUKWzDlaQk",
     "name": "Works/San Jos\u00e9",
     "primaryType": "art_gallery",
@@ -3688,11 +3795,29 @@
     "lat": 37.9010159,
     "lon": -122.06348570000002,
     "source": "authoritative"
+   },
+   {
+    "id": "ChIJJTKPGv54hYARjBfEqgWXAPo",
+    "name": "El Cerrito Historical Society",
+    "primaryType": "museum",
+    "types": [
+     "museum",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": null,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.9156925,
+    "lon": -122.31100260000001,
+    "source": "authoritative"
    }
   ]
  },
  "library": {
-  "count": 233,
+  "count": 241,
   "places": [
    {
     "id": "ChIJd2spnJuAhYARhkuvhLCp3us",
@@ -6185,6 +6310,23 @@
     "lon": -122.46280549999997
    },
    {
+    "id": "ChIJh_-ef5CFj4ARYJvacu-cqnc",
+    "name": "Oakland Public Library: Brookfield Branch",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "9255 Edes Ave, Oakland, CA 94603, USA",
+    "rating": 4.8,
+    "userRatingCount": 41,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7376116,
+    "lon": -122.1884853
+   },
+   {
     "id": "ChIJsfS9jzZ8j4AR0qe5bZT4rZo",
     "name": "Ocean View Branch Library",
     "primaryType": "library",
@@ -6336,6 +6478,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.869561999999995,
     "lon": -122.290914
+   },
+   {
+    "id": "ChIJQ5YQM-mej4AR1vJHuJwsFwE",
+    "name": "Marina Branch - San Mateo Public Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "1530 Susan Ct, San Mateo, CA 94403, USA",
+    "rating": 4.3,
+    "userRatingCount": 33,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.55641,
+    "lon": -122.29307759999999
    },
    {
     "id": "ChIJX0E2xg6jj4AR1RiIgIV8a5g",
@@ -6507,6 +6666,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5844538,
     "lon": -122.47634839999999
+   },
+   {
+    "id": "ChIJQQQ4Aj13hYAR2JS_2mFYgMM",
+    "name": "Pinole Library - Contra Costa County Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "2935 Pinole Valley Rd, Pinole, CA 94564, USA",
+    "rating": 4.4,
+    "userRatingCount": 27,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.992393299999996,
+    "lon": -122.28501759999997
    },
    {
     "id": "ChIJ_RRg9ui6j4ARBSGMtCmv98U",
@@ -7258,6 +7434,23 @@
     "lon": -122.1822691
    },
    {
+    "id": "ChIJgVZfaVGFj4AR9X3oqUERku0",
+    "name": "Mulford-Marina Branch Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "13699 Aurora Dr, San Leandro, CA 94577, USA",
+    "rating": 4.8,
+    "userRatingCount": 8,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.6978474,
+    "lon": -122.1822938
+   },
+   {
     "id": "ChIJWctF8Dh6j4AReW4H_B8dzIA",
     "name": "Skyline College Library",
     "primaryType": "library",
@@ -7430,6 +7623,23 @@
     "lon": -122.26073620000001
    },
    {
+    "id": "ChIJi2IbyNWPj4ARu6zQ6krqYaM",
+    "name": "South Branch Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "14799 E 14th St, San Leandro, CA 94578, USA",
+    "rating": 4.3,
+    "userRatingCount": 6,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7086882,
+    "lon": -122.1339814
+   },
+   {
     "id": "ChIJZWYhhpiRj4ARb-_-yW9Td9c",
     "name": "Chabot College Library",
     "primaryType": "library",
@@ -7481,6 +7691,23 @@
     "lon": -122.43654269999999
    },
    {
+    "id": "ChIJZUGCqmW3j4ARKFsb5_oVdpk",
+    "name": "NASA Life Sciences Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "Building N239, Mark Ave B53, Mountain View, CA 94040, USA",
+    "rating": 5,
+    "userRatingCount": 5,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.4145123,
+    "lon": -122.0581667
+   },
+   {
     "id": "ChIJJ1XBu9a6j4ARkgoTD8JaHNA",
     "name": "Robert Crown Law Library",
     "primaryType": "library",
@@ -7496,6 +7723,26 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.424098,
     "lon": -122.1675664
+   },
+   {
+    "id": "ChIJVclZ-FeGj4ARSY0orwQKn-I",
+    "name": "Patten University Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "university",
+     "educational_institution",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": null,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.785868799999996,
+    "lon": -122.21961750000001,
+    "source": "osm_backfill"
    },
    {
     "id": "ChIJ1SS0PZfMj4ARqa_98y-NuZI",
@@ -7606,6 +7853,24 @@
     "source": "osm_backfill"
    },
    {
+    "id": "ChIJC4fMLUOfj4ARczTNcElGkBo",
+    "name": "The Carl Gellert And Celia Berta Gellert Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": null,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.517536299999996,
+    "lon": -122.2846951,
+    "source": "osm_backfill"
+   },
+   {
     "id": "ChIJcW9_pP99hYARvzlifi9xoHo",
     "name": "John A Graziano Memorial Lib",
     "primaryType": "library",
@@ -7682,7 +7947,7 @@
   ]
  },
  "movie_theater": {
-  "count": 78,
+  "count": 79,
   "places": [
    {
     "id": "ChIJOYvCo1W3j4AR1LAifgk13rs",
@@ -9040,11 +9305,27 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7990822,
     "lon": -122.27808259999999
+   },
+   {
+    "id": "ChIJNV8Sfz5-j4ARZC_zyRsLd0s",
+    "name": "Other Cinema",
+    "primaryType": "movie_theater",
+    "types": [
+     "movie_theater",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "992 Valencia St, San Francisco, CA 94110, USA",
+    "rating": 4.5,
+    "userRatingCount": 8,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7570899,
+    "lon": -122.4214705
    }
   ]
  },
  "hospital": {
-  "count": 154,
+  "count": 155,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -11040,6 +11321,29 @@
     "lon": -121.66696710000001
    },
    {
+    "id": "ChIJ37ULw5Fxj4ARWZ8VEgjHIRY",
+    "name": "Seton Coastside",
+    "primaryType": "medical_center",
+    "types": [
+     "medical_center",
+     "pharmacy",
+     "doctor",
+     "medical_clinic",
+     "hospital",
+     "health",
+     "point_of_interest",
+     "store",
+     "service",
+     "establishment"
+    ],
+    "address": "600 Marine Blvd, Moss Beach, CA 94038, USA",
+    "rating": 3.3,
+    "userRatingCount": 16,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.5263377,
+    "lon": -122.50729270000001
+   },
+   {
     "id": "ChIJuzfueSl9hYARXT6M1dC3PqY",
     "name": "East Bay Pediatrics",
     "primaryType": "hospital",
@@ -12015,7 +12319,7 @@
   ]
  },
  "zoo": {
-  "count": 5,
+  "count": 6,
   "places": [
    {
     "id": "ChIJjaIC83F9j4AR1z3B225I_XU",
@@ -12094,6 +12398,22 @@
     "lon": -122.49823250000001
    },
    {
+    "id": "ChIJW7WmiEHwkYARwBcj9VLdA0w",
+    "name": "Gilroy Ostrich Farm",
+    "primaryType": "zoo",
+    "types": [
+     "zoo",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "5560 Pacheco Pass Hwy, Gilroy, CA 95020, USA",
+    "rating": 4.4,
+    "userRatingCount": 396,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 36.972062300000005,
+    "lon": -121.42202759999999
+   },
+   {
     "id": "ChIJVXMziI-6j4ARsS-VijqrJcY",
     "name": "Barron Park Donkeys",
     "primaryType": "zoo",
@@ -12150,7 +12470,7 @@
   ]
  },
  "amusement_park": {
-  "count": 16,
+  "count": 17,
   "places": [
    {
     "id": "ChIJq7iF28bJj4ARdWUD6DQUr3I",
@@ -12363,6 +12683,26 @@
     "lon": -122.0424457
    },
    {
+    "id": "ChIJnZL5WXj4j4ARJkfrMy6Fw4Q",
+    "name": "Antioch Water Park",
+    "primaryType": "water_park",
+    "types": [
+     "water_park",
+     "amusement_park",
+     "tourist_attraction",
+     "swimming_pool",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "4701 Lone Tree Wy, Antioch, CA 94531, USA",
+    "rating": 4.1,
+    "userRatingCount": 271,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.9655397,
+    "lon": -121.7727429
+   },
+   {
     "id": "ChIJgW0dSUQvjoARXOMLFGVU9ys",
     "name": "Altitude Trampoline Park San Jose",
     "primaryType": "amusement_center",
@@ -12457,7 +12797,7 @@
   ]
  },
  "park": {
-  "count": 2161,
+  "count": 2179,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -16175,6 +16515,23 @@
     "lon": -122.4931061
    },
    {
+    "id": "ChIJPQzhKyy2j4ARnq-JVn43kMk",
+    "name": "Lakewood Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "834 Lakechime Dr, Sunnyvale, CA 94089, USA",
+    "rating": 4.5,
+    "userRatingCount": 787,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.3973179,
+    "lon": -122.0008455
+   },
+   {
     "id": "ChIJo4za6vi5j4ARMua093RgGGA",
     "name": "Charleston Park",
     "primaryType": "park",
@@ -19074,6 +19431,24 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.9445792,
     "lon": -122.02846449999998
+   },
+   {
+    "id": "ChIJuxIN_2t_j4ARProX9pmqB-o",
+    "name": "India Basin Shoreline Park",
+    "primaryType": "city_park",
+    "types": [
+     "city_park",
+     "tourist_attraction",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Hunters Point Blvd & Hawes St, 950 Galvez Ave, San Francisco, CA 94124, USA",
+    "rating": 4.4,
+    "userRatingCount": 449,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.73415380000001,
+    "lon": -122.37594179999998
    },
    {
     "id": "ChIJLxUhPiyBhYAROpmV29IsCTA",
@@ -25942,6 +26317,23 @@
     "lon": -122.1187504
    },
    {
+    "id": "ChIJc0ob-l6Hj4AR7m44DiuPp3Q",
+    "name": "Linda Ave Dog Park",
+    "primaryType": "dog_park",
+    "types": [
+     "dog_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "333 Linda Ave, Piedmont, CA 94611, USA",
+    "rating": 4.1,
+    "userRatingCount": 164,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.822344300000005,
+    "lon": -122.2459184
+   },
+   {
     "id": "ChIJSzL1tCq3j4ARq4BTFW8LuzY",
     "name": "Bubb Park",
     "primaryType": "park",
@@ -31525,6 +31917,22 @@
     "lon": -122.0261463
    },
    {
+    "id": "ChIJ_0ylJh14hYARjgHSqmSGE-c",
+    "name": "Wendell Playground",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Richmond, CA 94804, USA",
+    "rating": 4.1,
+    "userRatingCount": 81,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.9455251,
+    "lon": -122.3435214
+   },
+   {
     "id": "ChIJJ2hG5fXtj4ARQqs0EdiFLiU",
     "name": "Bark & Ride",
     "primaryType": "dog_park",
@@ -31851,6 +32259,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7231433,
     "lon": -121.8734514
+   },
+   {
+    "id": "ChIJVVVV1vsxjoARctGR0uWcyb4",
+    "name": "Chynoweth Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Chynoweth Park, Chynoweth Park Ct, San Jose, CA 95136, USA",
+    "rating": 4.1,
+    "userRatingCount": 77,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.259323200000004,
+    "lon": -121.8187167
    },
    {
     "id": "ChIJ1WmnHSSQj4ARJYJ01F1FLcw",
@@ -33275,6 +33699,23 @@
     "lon": -122.03958610000001
    },
    {
+    "id": "ChIJDcy-ubyAhYARHgNPUjtEswE",
+    "name": "Buchanan Street Mall",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Buchanan &, Golden Gate Ave, San Francisco, CA 94115, USA",
+    "rating": 4.1,
+    "userRatingCount": 63,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.780468,
+    "lon": -122.4287636
+   },
+   {
     "id": "ChIJHx9Gx3Xpj4ARxqSs5rTGSTo",
     "name": "Harvest Park",
     "primaryType": "park",
@@ -33776,6 +34217,22 @@
     "lon": -121.87823050000002
    },
    {
+    "id": "ChIJEUf9PJ6Aj4ARJNwtYtBIHW8",
+    "name": "Cypress Freeway Memorial Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Memorial Park, 1301 Mandela Pkwy, Oakland, CA 94607, USA",
+    "rating": 4.4,
+    "userRatingCount": 60,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.8104377,
+    "lon": -122.2921431
+   },
+   {
     "id": "ChIJM11hXXKVj4ARWzzKxYK4bvY",
     "name": "Dry Creek Park",
     "primaryType": "park",
@@ -33971,6 +34428,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7522027,
     "lon": -121.94659530000001
+   },
+   {
+    "id": "ChIJUXiowgxXhYARyyuthBMZdyk",
+    "name": "Jacobsen Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1412 Jacobsen St, Antioch, CA 94509, USA",
+    "rating": 4.1,
+    "userRatingCount": 58,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 38.009152199999996,
+    "lon": -121.7865893
    },
    {
     "id": "ChIJnZSFs7bpj4ARHFqU4LzF4zc",
@@ -34303,6 +34776,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.8714696,
     "lon": -122.2654299
+   },
+   {
+    "id": "ChIJIw9cjAOfj4ARwCyZNSQAt7c",
+    "name": "East Hillsdale Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "123 31st Ave, San Mateo, CA 94403, USA",
+    "rating": 4.5,
+    "userRatingCount": 55,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.5365004,
+    "lon": -122.3036785
    },
    {
     "id": "ChIJhSMdfLDJj4AREuJkzGiY4Ek",
@@ -36027,6 +36516,24 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.907402999999995,
     "lon": -122.3030759
+   },
+   {
+    "id": "ChIJE4wyM4Z9hYARMaYY5iS2Uhg",
+    "name": "Kennelly Skatepark",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "sports_complex",
+     "sports_activity_location",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "898 Red Rock Rd, Piedmont, CA 94611, USA",
+    "rating": 2.3,
+    "userRatingCount": 41,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.832369799999995,
+    "lon": -122.2304168
    },
    {
     "id": "ChIJk6MoO22xj4ARamoaQk-F2Nc",
@@ -38141,6 +38648,22 @@
     "lon": -121.7697978
    },
    {
+    "id": "ChIJh4bx0YYnjoAR4t2LCjcRVe8",
+    "name": "Anderson Lake County Park- Live Oak Picnic Area",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "2300 Cochrane Rd, Morgan Hill, CA 95037, USA",
+    "rating": 4.8,
+    "userRatingCount": 28,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.1648852,
+    "lon": -121.6389215
+   },
+   {
     "id": "ChIJS84gDwt-j4ARmlY6Zn0hUY0",
     "name": "Clipper Community Garden",
     "primaryType": "garden",
@@ -38566,6 +39089,22 @@
     "lon": -121.87190129999998
    },
    {
+    "id": "ChIJC0Hun6mAj4ARIn736mHEbyk",
+    "name": "25th Street Mini Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "25th St, Oakland, CA 94612, USA",
+    "rating": 3.8,
+    "userRatingCount": 26,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.814844,
+    "lon": -122.2724523
+   },
+   {
     "id": "ChIJBVZfrsXPj4ARUvnHquftGVQ",
     "name": "Augustus Rathbone Park",
     "primaryType": "park",
@@ -38825,23 +39364,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.937456,
     "lon": -121.7043847
-   },
-   {
-    "id": "ChIJ8-CG9VPfkYARrOi1uAkMiV8",
-    "name": "Rosendin Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Morgan Hill, CA 95037, USA",
-    "rating": 4.6,
-    "userRatingCount": 26,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.1645058,
-    "lon": -121.62259320000001
    },
    {
     "id": "ChIJ74EdBp-Aj4ARiJ2qqrlh_VQ",
@@ -40240,6 +40762,22 @@
     "lon": -122.1975196
    },
    {
+    "id": "ChIJie9k2Hhwj4AR5mKU7I_cZX4",
+    "name": "Portola Mini Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "201 Marvilla Pl, Pacifica, CA 94044, USA",
+    "rating": 4.5,
+    "userRatingCount": 20,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.5927965,
+    "lon": -122.4985219
+   },
+   {
     "id": "ChIJoYw7Vcbzj4AR0XHeN4COnYg",
     "name": "Sycamore Valley Open Space South",
     "primaryType": "park",
@@ -40822,6 +41360,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.2892943,
     "lon": -121.74490660000001
+   },
+   {
+    "id": "ChIJVQH7voGFj4ARFCyAmExfios",
+    "name": "Tyrone Carney Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "10501 Acalanes Dr, Oakland, CA 94603, USA",
+    "rating": 4.4,
+    "userRatingCount": 18,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7326632,
+    "lon": -122.17865019999998
    },
    {
     "id": "ChIJG6Q8Khd-hYARBB-kEhkb1M4",
@@ -41965,6 +42520,22 @@
     "lon": -121.90805800000001
    },
    {
+    "id": "ChIJKwQ6x6sLj4AR6f-AyBDCCeM",
+    "name": "Half Moon bay trailhead parking",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "699 Thone Ave #601, Half Moon Bay, CA 94019, USA",
+    "rating": 4.4,
+    "userRatingCount": 15,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.4389604,
+    "lon": -122.44278029999998
+   },
+   {
     "id": "ChIJ-dInsX0Y1W8Rg49m6BmhPAg",
     "name": "Americas Garden Center",
     "primaryType": "garden",
@@ -42702,6 +43273,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6643049,
     "lon": -122.09481299999999
+   },
+   {
+    "id": "ChIJyWHrjnW7j4ARSKAgtiUKy3M",
+    "name": "Perboly's Garden",
+    "primaryType": "garden",
+    "types": [
+     "garden",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1495 Woodland Ave, Menlo Park, CA 94025, USA",
+    "rating": 4.9,
+    "userRatingCount": 13,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.458377,
+    "lon": -122.14550799999998
    },
    {
     "id": "ChIJFVyoJwDNj4AR0cqIH9CRIAQ",
@@ -46375,6 +46963,23 @@
     "lon": -122.09581499999997
    },
    {
+    "id": "ChIJfyAeog5_j4ARiW4eB20_qvE",
+    "name": "Butcher Town Dog Run",
+    "primaryType": "dog_park",
+    "types": [
+     "dog_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "98 Jennings St, San Francisco, CA 94124, USA",
+    "rating": 4.4,
+    "userRatingCount": 7,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.7403727,
+    "lon": -122.37593109999999
+   },
+   {
     "id": "ChIJX5HTCGiHhYAR6BZBgJs_Cas",
     "name": "California Native Garden",
     "primaryType": "garden",
@@ -47352,6 +47957,22 @@
     "lon": -121.9125897
    },
    {
+    "id": "ChIJ8WMKRul_j4AR0BbtZOQXgms",
+    "name": "Islais Creek Skate Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1851 Tennessee St, San Francisco, CA 94124, USA",
+    "rating": 3.5,
+    "userRatingCount": 6,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.748031,
+    "lon": -122.388235
+   },
+   {
     "id": "ChIJxZ2ra2fLj4ARxDfruw6b9ZU",
     "name": "James P. McEntee, Sr. Plaza",
     "primaryType": "park",
@@ -48319,6 +48940,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3871375,
     "lon": -122.07160100000002
+   },
+   {
+    "id": "ChIJDfOTEuOej4ARMspPn12E350",
+    "name": "Landing Green Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "200 E 28th Ave, San Mateo, CA 94403, USA",
+    "rating": 4.2,
+    "userRatingCount": 5,
+    "businessStatus": "CLOSED_TEMPORARILY",
+    "lat": 37.543128599999996,
+    "lon": -122.29899470000001
    },
    {
     "id": "ChIJhxjsbDiQj4AReqIp0BR-9wM",

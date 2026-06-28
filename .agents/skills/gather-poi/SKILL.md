@@ -215,14 +215,20 @@ Carquinez Toy Train, …) used to slip past the audit and waste manual-review ti
 - `POI_REFRESH_ALL=1` re-queries **every** pin (not just status-less ones) to
   catch places that closed since the last pull — worth running each quarterly
   refresh. A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
-- `dedup_poi.py` then drops every `CLOSED_PERMANENTLY`/`CLOSED_TEMPORARILY` pin
-  up front (one chokepoint for all sources). Manual `drop` overrides that target
-  a now-closed pin are silently skipped (not warned) — so you only need manual
-  drops for places Google still reports `OPERATIONAL` but are actually gone
-  (**stale Google data**, e.g. Aléna Museum) or for legit-but-unwanted pins.
+- `dedup_poi.py` then drops only `CLOSED_PERMANENTLY` pins up front (one
+  chokepoint for all sources). Manual `drop` overrides that target a now-
+  perm-closed pin are silently skipped (not warned).
+- **`CLOSED_TEMPORARILY` is deliberately NOT auto-dropped** — Google's temp-closed
+  flag is frequently stale (e.g. The Beat Museum, the 49ers Museum read
+  "temporarily closed" but are open). Those pins stay in the dataset and surface
+  on the review map for a human to judge; drop them by override only once
+  confirmed actually gone. Only `CLOSED_PERMANENTLY` is trusted as "really closed."
+- So you still need manual `drop` overrides for: (a) temp-closed pins you confirm
+  are gone, (b) places Google reports `OPERATIONAL` but are actually closed
+  (**stale Google data**, e.g. Aléna Museum), and (c) legit-but-unwanted pins.
 - **Limit:** closure status alone can't replace the human eyeball pass — Google
-  data lags. Use it to delete the obvious closures automatically, then audit the
-  remainder for stale-operational closures and non-qualifying pins.
+  data lags both ways. Use it to delete the confident (perm) closures
+  automatically, then audit the rest.
 
 ### 5. De-dup — `fetch_osm_polys.py` + `dedup_poi.py`
 Google lists one physical place as many pins (a hospital = main building + ER +

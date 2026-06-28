@@ -524,7 +524,7 @@ def load_overrides(places, key, overrides, closed_names=frozenset()):
     fm, fs, rn, dn = [], [], [], set()
     revs = [p.get("userRatingCount") or 0 for p in places]
     def is_closed(nm):
-        return norm(nm) in closed_names
+        return match_norm(nm) in closed_names
     for entry in ov.get("merge", []):
         child_name, parent_name = entry[0], entry[1]
         # optional trailing [lat, lon] pins the exact PARENT pin when the parent
@@ -602,14 +602,16 @@ def main():
     viz = {}
 
     for key in [k for k in LABEL if k in curated]:
-        # auto-drop places Google reports closed (perm or temp). The icon pull
-        # already filtered CLOSED_PERMANENTLY at curate time, but backfilled pins
+        # auto-drop only places Google reports CLOSED_PERMANENTLY. Backfilled pins
         # (authoritative/OSM) arrive without a status until refresh_business_status.py
-        # fills it in -- this catches those plus any place closed since the pull.
-        closed_names = {norm(p["name"]) for p in curated[key]["places"]
-                        if p.get("businessStatus") in ("CLOSED_PERMANENTLY", "CLOSED_TEMPORARILY")}
+        # fills it in -- this catches those plus any place perm-closed since the pull.
+        # CLOSED_TEMPORARILY is intentionally NOT auto-dropped: Google's temp-closed
+        # flag is often stale (many "temp closed" places are actually open), so those
+        # are kept for manual review and dropped by override only when confirmed gone.
+        closed_names = {match_norm(p["name"]) for p in curated[key]["places"]
+                        if p.get("businessStatus") == "CLOSED_PERMANENTLY"}
         places = [p for p in curated[key]["places"]
-                  if p.get("businessStatus") not in ("CLOSED_PERMANENTLY", "CLOSED_TEMPORARILY")]
+                  if p.get("businessStatus") != "CLOSED_PERMANENTLY"]
         osm = load_osm(key)
         fm, fs, rn, dn = load_overrides(places, key, overrides, closed_names)
         r = dedup_category(places, osm, forced_merge=fm, forced_sep=fs,
