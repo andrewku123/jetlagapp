@@ -8,7 +8,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Libraries | 249 | 241 | 2 | 4 | 2 |
 | Movie Theaters | 83 | 79 | 3 | 1 | 0 |
 | Hospitals | 254 | 155 | 44 | 23 | 32 |
-| Zoos | 7 | 6 | 0 | 0 | 0 |
+| Zoos | 7 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 21 | 17 | 0 | 0 | 0 |
 | Parks | 2545 | 2179 | 39 | 327 | 0 |
@@ -106,7 +106,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Orinda Care Center](https://www.google.com/maps/search/?api=1&query=37.8766426%2C-122.18034039999999&query_place_id=ChIJmaleoNR9hYARtyjeC6CVXh4)** (8 rev) absorbs: [Comprehensive Wellness](https://www.google.com/maps/search/?api=1&query=37.8770859%2C-122.180764&query_place_id=ChIJj0Z3-rNhhYARtqpuecmC5_c)(14,manual)
 
 
-## Zoos — 7 → 6 (name −0, osm −0)
+## Zoos — 7 → 5 (name −0, osm −0)
 
 
 _No merges._

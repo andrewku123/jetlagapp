@@ -12319,7 +12319,7 @@
   ]
  },
  "zoo": {
-  "count": 6,
+  "count": 5,
   "places": [
    {
     "id": "ChIJjaIC83F9j4AR1z3B225I_XU",
@@ -12396,22 +12396,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7696864,
     "lon": -122.49823250000001
-   },
-   {
-    "id": "ChIJW7WmiEHwkYARwBcj9VLdA0w",
-    "name": "Gilroy Ostrich Farm",
-    "primaryType": "zoo",
-    "types": [
-     "zoo",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5560 Pacheco Pass Hwy, Gilroy, CA 95020, USA",
-    "rating": 4.4,
-    "userRatingCount": 396,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 36.972062300000005,
-    "lon": -121.42202759999999
    },
    {
     "id": "ChIJVXMziI-6j4ARsS-VijqrJcY",
