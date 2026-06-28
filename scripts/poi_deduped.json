@@ -12738,7 +12738,7 @@
   ]
  },
  "park": {
-  "count": 2179,
+  "count": 2177,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -44643,22 +44643,6 @@
     "lon": -121.8573033
    },
    {
-    "id": "ChIJG11y4WdjhYAReaXFe2K2WLc",
-    "name": "Orinda Oaks Open Space, Donald Drive Entrance",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "343-45 Donald Dr, Orinda, CA 94563, USA",
-    "rating": 4.7,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.861275,
-    "lon": -122.149296
-   },
-   {
     "id": "ChIJg2Ae_21-j4ARQH4kgEdg-nw",
     "name": "29th & Diamond Open Space",
     "primaryType": "city_park",
@@ -48526,22 +48510,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4082632,
     "lon": -121.9663601
-   },
-   {
-    "id": "ChIJP-ClhSiIj4ARXhzrtRw7pcY",
-    "name": "Donald Reservoir",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "37\u00b0 51' 15.312\" N 122\u00b0 8' 19.47\" W, Moraga, CA 94556, USA",
-    "rating": 4.6,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8539949,
-    "lon": -122.13826419999998
    },
    {
     "id": "ChIJeZjxuT5hhYARCSgPF4_Ftic",
