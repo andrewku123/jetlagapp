@@ -104,6 +104,12 @@ export default function App() {
 
   useEffect(() => saveGame(game), [game])
 
+  // the station view override only applies while on the POI tab; reset it to
+  // Normal on leaving so re-opening the tab always starts from Normal
+  useEffect(() => {
+    if (tab !== 'poi') setStationView('normal')
+  }, [tab])
+
   const update = (patch: Partial<GameState>) => setGame((g) => ({ ...g, ...patch }))
 
   // A station is a valid hiding spot only if it's served at least hourly (the
