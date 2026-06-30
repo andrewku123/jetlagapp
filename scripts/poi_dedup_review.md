@@ -5,14 +5,14 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
 | Museums | 217 | 185 | 5 | 6 | 5 |
-| Libraries | 216 | 194 | 2 | 4 | 2 |
+| Libraries | 216 | 193 | 2 | 4 | 2 |
 | Movie Theaters | 74 | 69 | 3 | 1 | 0 |
-| Hospitals | 228 | 132 | 44 | 22 | 30 |
+| Hospitals | 228 | 130 | 44 | 22 | 30 |
 | Zoos | 6 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 18 | 14 | 0 | 0 | 0 |
 | Parks | 1986 | 1721 | 34 | 230 | 1 |
-| Golf Courses | 67 | 61 | 1 | 3 | 2 |
+| Golf Courses | 67 | 58 | 1 | 3 | 2 |
 | Consulates | 47 | 40 | 0 | 0 | 1 |
 | Mountains | 55 | 53 | 0 | 0 | 2 |
 | Sports Stadiums | 8 | 8 | 0 | 0 | 0 |
@@ -32,7 +32,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Fine Arts Gallery](https://www.google.com/maps/search/?api=1&query=37.7220419%2C-122.47928489999998&query_place_id=ChIJr5tOz7F9j4ARxlmskgqSFwk)** (0 rev) absorbs: [Martin Wong Gallery](https://www.google.com/maps/search/?api=1&query=37.7223678%2C-122.4794214&query_place_id=ChIJAd3vzLF9j4ARLu3pyP8z5K4)(0)
 
 
-## Libraries — 216 → 194 (name −2, osm −4 −2 manual)
+## Libraries — 216 → 193 (name −2, osm −4 −2 manual)
 
 
 **Merged (6 groups):**
@@ -54,7 +54,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Apple Cinemas Van Ness IMAX](https://www.google.com/maps/search/?api=1&query=37.785190199999995%2C-122.42094379999999&query_place_id=ChIJp0ynta-BhYARI2wou04immo)** (398 rev) absorbs: [1000 Van Ness](https://www.google.com/maps/search/?api=1&query=37.785154899999995%2C-122.42038499999998&query_place_id=ChIJV05OkpaAhYAREvO2JfkoQa0)(636)
 
 
-## Hospitals — 228 → 132 (name −44, osm −22 −30 manual)
+## Hospitals — 228 → 130 (name −44, osm −22 −30 manual)
 
 
 **Merged (44 groups):**
@@ -293,7 +293,7 @@ _No merges._
 - **[Dante Park](https://www.google.com/maps/search/?api=1&query=37.3116759%2C-121.779663&query_place_id=ChIJ3-aeLHItjoARjj0C9BVHo3o)** (6 rev) absorbs: [Montelena Park](https://www.google.com/maps/search/?api=1&query=37.3139423%2C-121.7802387&query_place_id=ChIJMTdk45ktjoARdmeGcVVKaDQ)(5,osm)
 
 
-## Golf Courses — 67 → 61 (name −1, osm −3 −2 manual)
+## Golf Courses — 67 → 58 (name −1, osm −3 −2 manual)
 
 
 **Merged (5 groups):**

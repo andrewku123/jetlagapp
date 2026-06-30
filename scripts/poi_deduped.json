@@ -3301,7 +3301,7 @@
   ]
  },
  "library": {
-  "count": 194,
+  "count": 193,
   "places": [
    {
     "id": "ChIJd2spnJuAhYARhkuvhLCp3us",
@@ -6495,23 +6495,6 @@
     "lon": -122.41584449999999
    },
    {
-    "id": "ChIJZaMLf1ihj4AR1JkaxyKiuDY",
-    "name": "Ca\u00f1ada College Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "4200 Farm Hill Blvd, Redwood City, CA 94061, USA",
-    "rating": 5,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4489242,
-    "lon": -122.2655304
-   },
-   {
     "id": "ChIJ_____-B-hYARkH8qFkVlQZA",
     "name": "Marian Koshland Bioscience & Natural Resources Library",
     "primaryType": "library",
@@ -7828,7 +7811,7 @@
   ]
  },
  "hospital": {
-  "count": 132,
+  "count": 130,
   "places": [
    {
     "id": "ChIJO1VC0bI1joAR5C8qGDrCSZ4",
@@ -9216,24 +9199,6 @@
     "lon": -121.8747038
    },
    {
-    "id": "ChIJ3x4jpMo1joARoedXWUDiE-8",
-    "name": "Good Samaritan Hospital - Mission Oaks Campus",
-    "primaryType": "hospital",
-    "types": [
-     "hospital",
-     "health",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "15891 Los Gatos Almaden Rd, Los Gatos, CA 95032, USA",
-    "rating": 3.6,
-    "userRatingCount": 36,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2447534,
-    "lon": -121.9479332
-   },
-   {
     "id": "ChIJYU9rjCR5hYARmbomCSkOeYE",
     "name": "Sutter East Bay Medical Foundation Care Center",
     "primaryType": "medical_center",
@@ -10329,25 +10294,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.795332699999996,
     "lon": -122.42149680000001
-   },
-   {
-    "id": "ChIJlYyOWAg1joARhUgT0Dr5I0s",
-    "name": "Supira Medical",
-    "primaryType": "medical_center",
-    "types": [
-     "medical_center",
-     "hospital",
-     "point_of_interest",
-     "service",
-     "health",
-     "establishment"
-    ],
-    "address": "130 Knowles Dr # E, Los Gatos, CA 95032, USA",
-    "rating": 3.4,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2608983,
-    "lon": -121.95919049999999
    },
    {
     "id": "ChIJjxzoWKCBj4ARtrZOxozSof8",
@@ -39629,7 +39575,7 @@
   ]
  },
  "golf_course": {
-  "count": 61,
+  "count": 58,
   "places": [
    {
     "id": "ChIJOWlaP7MljoAR8kqTmZ0heBI",
@@ -40138,31 +40084,6 @@
     "lon": -121.8573991
    },
    {
-    "id": "ChIJHb2xwJRmhYARIO0m0Zecyb8",
-    "name": "Skylinks at Buchanan Fields Golf Course",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "sports_coaching",
-     "sporting_goods_store",
-     "athletic_field",
-     "sports_activity_location",
-     "store",
-     "restaurant",
-     "food",
-     "point_of_interest",
-     "health",
-     "sports_school",
-     "establishment"
-    ],
-    "address": "1091 Concord Ave, Concord, CA 94520, USA",
-    "rating": 4.3,
-    "userRatingCount": 386,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.9789761,
-    "lon": -122.06030820000001
-   },
-   {
     "id": "ChIJ3UX4yQO7j4ARwIfC59tF9NM",
     "name": "Baylands Golf Links",
     "primaryType": "golf_course",
@@ -40207,34 +40128,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.646611799999995,
     "lon": -122.0013412
-   },
-   {
-    "id": "ChIJLaLEtuh1j4ARBGBQhB07mRM",
-    "name": "Crystal Springs Golf Course",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "bar_and_grill",
-     "wedding_venue",
-     "sports_coaching",
-     "event_venue",
-     "bar",
-     "athletic_field",
-     "sports_activity_location",
-     "restaurant",
-     "food",
-     "point_of_interest",
-     "service",
-     "health",
-     "sports_school",
-     "establishment"
-    ],
-    "address": "6650 Golf Course Dr, Burlingame, CA 94010, USA",
-    "rating": 3.9,
-    "userRatingCount": 371,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.557475,
-    "lon": -122.3816219
    },
    {
     "id": "ChIJSaDw_nBghYAR5FBL9qi1-d4",
@@ -40430,24 +40323,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7684225,
     "lon": -122.5050846
-   },
-   {
-    "id": "ChIJJz04Ctikj4ARVzzEcEVB5pE",
-    "name": "Stanford Golf Course",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "athletic_field",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "91 Links Rd, Stanford, CA 94305, USA",
-    "rating": 4.5,
-    "userRatingCount": 202,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.42157160000001,
-    "lon": -122.18376149999999
    },
    {
     "id": "ChIJQ3tic0K0j4ARU47_pSln6Z0",

@@ -426,6 +426,16 @@ play area before dedup:
   polygon survive (Exploratorium, USS Hornet, USS Pampanito, Musée Mécanique…).
   Discovery (`poi_geo`) also uses the buffered union so these are *found* in the
   first place.
+  - **Caveat — the buffer is uniform, not shore-only.** The 150 m ring is applied
+    around the *entire* boundary, so it also keeps a handful of **inland** pins that
+    sit just outside the strict line but nowhere near water (e.g. an out-of-bounds
+    hospital/library/golf-course pin within 150 m of the edge). These are *not*
+    shoreline pins and are not what the buffer is for — surface them in the manual
+    map review (look for pins drawn outside the blue boundary that are still marked
+    *kept*) and `drop` them in `poi_dedup_overrides.json`. A quick audit: any
+    non-natural kept pin that is inside `play_area_buffered.geojson` but outside
+    `play_area.geojson` is a buffer-ring pin to eyeball (keep true pier/ship
+    museums, drop inland strays).
 
 **Outputs of `build_play_area.py`:** `play_area.geojson` (raw whole-place union +
 filled holes, used for the strict clip), `play_area_buffered.geojson` (150 m

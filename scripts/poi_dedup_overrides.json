@@ -107,6 +107,11 @@
         "David Del Simone Memorial Law Library (branch of) Contra Costa County Law Library",
         37.932595,
         -122.333956
+      ],
+      [
+        "Cañada College Library",
+        37.448924,
+        -122.26553
       ]
     ]
   },
@@ -384,6 +389,16 @@
         "Seton Coastside",
         37.526338,
         -122.507293
+      ],
+      [
+        "Good Samaritan Hospital - Mission Oaks Campus",
+        37.244753,
+        -121.947933
+      ],
+      [
+        "Supira Medical",
+        37.260898,
+        -121.95919
       ]
     ]
   },
@@ -466,6 +481,23 @@
       [
         "General Store",
         "Presidio Golf Course"
+      ]
+    ],
+    "drop": [
+      [
+        "Crystal Springs Golf Course",
+        37.557475,
+        -122.381622
+      ],
+      [
+        "Stanford Golf Course",
+        37.421572,
+        -122.183761
+      ],
+      [
+        "Skylinks at Buchanan Fields Golf Course",
+        37.978976,
+        -122.060308
       ]
     ]
   },
