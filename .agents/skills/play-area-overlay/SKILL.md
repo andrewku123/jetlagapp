@@ -24,12 +24,32 @@ neighbours ring it (e.g. Moraga inside Orinda/Lafayette stays grey). See the
 mountains, ranchland) is not a named place, so it stays out.
 
 The app copy additionally has the **open bay water** unioned in for display only,
-so the bay renders as water instead of grey: the central + south bay plus the
-East-Bay channel up to ~Richmond, bounded on the north-west by a line just east of
-Alcatraz/Angel Island (Marin and San Pablo Bay north of Richmond stay grey). That
-bay polygon exists only in the app's `play-area.geojson.json`; it is not in the
-pipeline's `play_area.geojson` and never affects POI clipping or which places are
-in play.
+so the bay renders as water instead of grey. It is built by `bay_water()` in
+`build_play_area.py` from a hand-traced `BAY_CORRIDOR_LL` ring **minus every land
+place** (so it snaps to the real shoreline and never covers the East Bay hills),
+keeping only the connected water component(s) that contain a `BAY_SEEDS_LL` seed.
+The corridor currently covers the central + south bay, reaches WEST along the SF
+north shore to the **Golden Gate Bridge** (so all the SF piers — Embarcadero,
+Wharf, Marina, Crissy — are in), and is capped on the NORTH by the real
+**Richmond–San Rafael Bridge** centreline (`RSR_BRIDGE_LL`, traced from OSM way
+24315544) so San Pablo Bay north of it stays grey. The west boundary threads
+Raccoon Strait — east of Sausalito/Tiburon/Belvedere (Marin stays grey) but
+leaving **Angel Island inside** (in play). That bay polygon exists only in the
+app's `play-area.geojson.json`; it is not in the pipeline's `play_area.geojson`
+and never affects POI clipping or which places are in play.
+
+**Tracing a bay edge to a real bridge/landmark:** pull the geometry from OSM
+(Overpass), don't hand-guess. The Overpass main endpoint often times out / 406s
+from the VM — send a `User-Agent` header and fall back to a mirror
+(`https://maps.mail.ru/osm/tools/overpass/api/interpreter` worked). Query e.g.
+`way["bridge"]["name"~"Richmond.San Rafael",i];out geom;`, pick the full-span way,
+downsample to ~7 points, and order it east→west before splicing into the corridor.
+
+**Far-offshore island parts** (e.g. the Farallon Islands, which are legally part
+of San Francisco city but ~27 mi out in the Pacific) are dropped in
+`build_play_area.py`: any MultiPolygon part whose centroid is west of
+`ISLAND_LON_CUTOFF` (-122.6) is removed from the place before unioning, so it
+never shows as a lone white speck in the ocean.
 
 ## Data
 `src/data/play-area.geojson.json` — a GeoJSON `FeatureCollection` with the

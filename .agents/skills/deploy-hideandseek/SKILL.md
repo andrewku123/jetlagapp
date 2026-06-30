@@ -24,6 +24,24 @@ If the deploy fails on permissions, confirm the workflow's
 `permissions: { pages: write, id-token: write }` block is present and that Pages
 is set to the GitHub Actions source (not "Deploy from a branch").
 
+## PR previews (per-branch) and the concurrency gotcha
+Pushing a `devin/*` branch with an open PR triggers a **"Deploy PR previews"**
+Action (on `pull_request`) that publishes to
+`https://<owner>.github.io/<repo>/pr-preview/pr-<N>/`. This workflow uses a
+**shared concurrency group**, so when several PR branches are pushed close
+together the in-progress runs get **cancelled** — the result is a stale preview
+even though the branch HEAD is up to date and CI shows no failures (the run shows
+`completed/cancelled`, not failed). When updating multiple PRs in one go:
+- Push them **sequentially**, and push the PR you most want verified (usually the
+  app PR) **last**.
+- Confirm its deploy actually finished with the Actions API, e.g.
+  `GET /repos/<owner>/<repo>/actions/runs?branch=<branch>` and check the latest
+  "Deploy PR previews" run is `completed/success` for your HEAD sha (not
+  `cancelled`). If it was cancelled, push an empty/no-op commit or re-push to
+  re-trigger.
+- GitHub Pages caches aggressively; after a successful deploy a hard refresh
+  (Cmd-Shift-R) may still be needed to see the change.
+
 ## The base-path detail (important)
 `vite.config.ts` uses `base: process.env.BASE ?? '/'`. For a **project page**
 (`owner.github.io/repo/`) the base **must** be `/repo/` or assets 404. The
