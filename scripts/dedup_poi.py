@@ -91,6 +91,24 @@ DEG2_M2 = (111320.0 * math.cos(math.radians(37.7))) * 110574.0
 PARK_CONT_MIN_M2 = 3.0e5      # 0.3 km^2
 PARK_CONT_MAX_M2 = 2.0e7      # 20 km^2
 
+# park sub-features that are not their own destination -- a named amenity *within*
+# a park (dog run, community garden, skate park, trail staging area, an entrance).
+# These fold into the nearest real park pin that shares a distinctive name word.
+PARK_SUBFEATURE_RE = re.compile(
+    r"\b(dog\s*(park|run|play|training)|off[-\s]?leash|community\s+garden|"
+    r"instructional\s+garden|demonstration\s+garden|skate\s*park|staging\s+area|"
+    r"trail\s*head|\bentrance\b|boat\s+launch|kayak\s+launch)\b", re.I)
+PARK_SUB_FOLD_M = 1200.0      # max child->parent distance for the name-matched fold
+# weak geographic words that must NOT be the sole link for a sub-feature fold:
+# "Eureka Valley Dog Play Area" must not fold into "Noe Valley Park" just because
+# both say "valley". The fold needs a real shared name token (a place/brand word).
+FOLD_WEAK = {
+    "valley", "hill", "hills", "heights", "canyon", "ridge", "point", "waterfront",
+    "linear", "spur", "town", "upper", "lower", "north", "south", "east", "west",
+    "old", "new", "main", "river", "bay", "island", "meadow", "meadows",
+    "vista", "view", "highland", "highlands", "mission", "willow", "cedar",
+}
+
 
 SRC = os.path.join(HERE, "poi_curated.json")
 NAME_D = float(sys.argv[1]) if len(sys.argv) > 1 else 300.0   # same-name merge
@@ -567,6 +585,31 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
                     edges.append((r, par, "bigpark"))
                     break
 
+    # 3c) PARK SUB-FEATURE fold (park only): a pin named like an amenity *inside* a
+    #     park (dog run / community garden / skate park / trail staging area / an
+    #     entrance) folds into the nearest real park pin that shares a distinctive
+    #     name word (within PARK_SUB_FOLD_M). Name overlap is required so a dog
+    #     park only ever folds into ITS park (e.g. "Buena Vista Dog Play Area" ->
+    #     "Buena Vista Park"), never into an unrelated neighbour. Non-namesake
+    #     cases (e.g. a dog run named for its street) are handled by explicit
+    #     overrides instead. Generalises the reviewer's dog-park/garden decisions.
+    if cat == "park":
+        absorbed = {c for c, _, _ in edges}
+        standing = [r for r in after_name if r not in absorbed]
+        subs = [r for r in standing if PARK_SUBFEATURE_RE.search(names[r])]
+        real = [r for r in standing if not PARK_SUBFEATURE_RE.search(names[r])]
+        for r in subs:
+            cw = distinctive(names[r]) - FOLD_WEAK
+            cand = [(hav(pts[r][0], pts[r][1], pts[q][0], pts[q][1]), q)
+                    for q in real if cw & (distinctive(names[q]) - FOLD_WEAK)]
+            cand = [(d, q) for d, q in cand if d <= PARK_SUB_FOLD_M]
+            if not cand:
+                continue
+            _, par = min(cand, key=lambda t: (t[0], -rev[t[1]]))
+            if sep_pair(r, par):
+                continue
+            edges.append((r, par, "bigpark"))
+
     # 4) manual reviewer overrides: force each [child -> parent] merge. The
     #    parent is resolved to its current final representative; any automatic
     #    parenting of the child is dropped so it lands only where the reviewer
@@ -732,7 +775,9 @@ def main():
         kept = [i for i in r["kept"] if i not in dn]
         kept_places = [places[i] for i in kept]
         out[key] = {"count": len(kept_places), "places": kept_places}
-        edges = r["edges"]
+        # dropped pins vanish entirely -- also strip any merge spoke touching them
+        # so a deleted pin never lingers as a child/parent on the review map.
+        edges = [(c, p, s) for (c, p, s) in r["edges"] if c not in dn and p not in dn]
         _, root = final_parent(edges)
         n_name = sum(1 for _, _, s in edges if s == "name")
         n_osm = sum(1 for _, _, s in edges if s == "osm")
