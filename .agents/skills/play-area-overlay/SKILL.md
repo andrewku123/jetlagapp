@@ -51,6 +51,27 @@ of San Francisco city but ~27 mi out in the Pacific) are dropped in
 `ISLAND_LON_CUTOFF` (-122.6) is removed from the place before unioning, so it
 never shows as a lone white speck in the ocean.
 
+**Dense coastlines (places clipped to the real shore).** Place polygons come from
+the **full-resolution TIGER/Line** file (`tl_2023_06_place`, ~6-7x more vertices
+than the old 1:500k cartographic `cb_*_place_500k`), so the bayfront/ocean coast
+has many segments instead of a coarse straight diagonal that wrongly excluded
+shoreline land (e.g. North Richmond / San Pablo Bay). But TIGER/Line are *legal*
+limits that reach far out into the bay, so each place is clipped back to the real
+shore by subtracting a dense **bay+ocean water mask**:
+- `build_water_mask.py` downloads Census TIGER/Line **AREAWATER** for the five
+  transit counties, unions it, and keeps only connected components ≥ `MIN_WATER_KM2`
+  (15 km²) → `bay_water_mask.geojson` (SF Bay + Pacific only; inland reservoirs/
+  ponds are excluded so they don't punch holes in cities).
+- `load_county_places()` loads `bay_water_mask.geojson` and does
+  `place = place.difference(water_mask)` for every place that intersects it.
+This same dense water mask is the intended source for the future **coastline
+question** (distance-to-coast / Bay-vs-Pacific). Note: OSM `natural=coastline`
+(see `build_bay_land.py`) is **sparse on the inner bay** (only the
+ocean-connected coast is tagged), so it is *not* sufficient as the shoreline
+source — Census AREAWATER is. `build_bay_land.py` / `marin_land.geojson` is still
+used only to subtract Marin land (no census place there) from the bay corridor
+and to keep Angel Island in play.
+
 ## Data
 `src/data/play-area.geojson.json` — a GeoJSON `FeatureCollection` with the
 play-area polygon (the union of in-play places, simplified to ~40 m tolerance to
