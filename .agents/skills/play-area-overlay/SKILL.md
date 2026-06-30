@@ -45,14 +45,21 @@ test — but they are **no longer used to draw the overlay**.)
 ## Code (`src/components/MapView.tsx`)
 - `IN_PLAY_FEATURES` — every feature of `play-area.geojson.json` (no county
   filter).
-- `PLAY_POLYS` / `PLAY_OUTER_LATLNG` — the polygons as `[outer, ...holes]` rings
-  and, separately, each outer ring converted to Leaflet `[lat, lng]` order.
+- `PLAY_POLYS` — the polygons as `[outer, ...holes]` rings.
+- `PLAY_RINGS_LATLNG` — **every** ring of every polygon (outer rings AND interior
+  holes) converted to Leaflet `[lat, lng]` order. Interior holes must be included
+  so the even-odd fill rule re-dims them.
 - `DIM_FILL` — gray `#6b7280`, `fillOpacity: 0.35`, no stroke,
-  `interactive: false` (so it never intercepts map clicks).
+  `interactive: false` (so it never intercepts map clicks), `fillRule: 'evenodd'`.
 - Rendered as a single world-minus-cities mask: a `<Polygon>` whose positions are
-  `[WORLD_RING, ...PLAY_OUTER_LATLNG]` — a near-world outer ring with each in-play
-  place punched out as a hole. Placed **before** the station markers so
-  markers/annotations draw on top of the shading.
+  `[WORLD_RING, ...PLAY_RINGS_LATLNG]` — a near-world outer ring with every play
+  ring as a hole. With the even-odd rule the depth alternates: world (dim) → place
+  outer ring (in play) → interior hole (dim again). **Including interior holes is
+  required** — a deleted place ringed by kept neighbours (e.g. Moraga inside
+  Orinda/Lafayette) is an interior hole in the play polygon; if only outer rings
+  are used it renders white instead of grey. The satellite-imagery clip-path's
+  `<path>` likewise sets `clip-rule="evenodd"` for the same reason. Placed
+  **before** the station markers so markers/annotations draw on top of the shading.
 
 ## To change what is in play
 Change the eligible-place rule and re-run `build_play_area.py` (see the
