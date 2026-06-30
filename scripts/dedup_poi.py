@@ -98,7 +98,23 @@ PARK_SUBFEATURE_RE = re.compile(
     r"\b(dog\s*(park|run|play|training)|off[-\s]?leash|community\s+garden|"
     r"instructional\s+garden|demonstration\s+garden|skate\s*park|staging\s+area|"
     r"trail\s*head|\bentrance\b|boat\s+launch|kayak\s+launch)\b", re.I)
-PARK_SUB_FOLD_M = 1200.0      # max child->parent distance for the name-matched fold
+PARK_SUB_FOLD_M = 1200.0      # legacy flat cap (kept as the absolute upper bound)
+# Density-aware fold reach: a sub-feature belongs to a park only within that
+# park's "reach", which scales with how sparse the surroundings are. We use the
+# parent's real OSM footprint size as the proxy (no population data is bundled,
+# and footprint size faithfully tracks it: regional/wild parks in sparse areas
+# are physically huge and reach far; small city parks in dense blocks reach only
+# a few hundred metres). Containment folds (pass 3b) ignore this entirely.
+PARK_FOLD_SPARSE_M = 2500.0   # big/wild park: distant trailheads/staging fold in
+PARK_FOLD_MID_M    = 900.0    # mid-size park
+PARK_FOLD_URBAN_M  = 500.0    # small/urban park: a dog run a km away stays its own
+PARK_FOLD_BIG_M2   = 1.0e6    # >=1 km^2 footprint  -> treat as sparse/wild
+PARK_FOLD_MID_M2   = 0.2e6    # >=0.2 km^2 footprint -> mid-size
+# name keywords that make a park "sparse/wild" regardless of mapped footprint
+PARK_SPARSE_RE = re.compile(
+    r"\b(regional|state\s+(park|recreation|seashore)|open\s+space|preserve|"
+    r"reserve|wilderness|watershed|national|wildlife|canyon|ridge|shoreline|"
+    r"seashore|mountain|peak|summit|recreation\s+area)\b", re.I)
 # weak geographic words that must NOT be the sole link for a sub-feature fold:
 # "Eureka Valley Dog Play Area" must not fold into "Noe Valley Park" just because
 # both say "valley". The fold needs a real shared name token (a place/brand word).
@@ -598,11 +614,41 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
         standing = [r for r in after_name if r not in absorbed]
         subs = [r for r in standing if PARK_SUBFEATURE_RE.search(names[r])]
         real = [r for r in standing if not PARK_SUBFEATURE_RE.search(names[r])]
+        # footprint area (m^2) of the smallest OSM polygon covering a park pin,
+        # 0.0 if none is mapped; cached because the same parent recurs.
+        fp_cache = {}
+
+        def fp_area(idx):
+            if idx in fp_cache:
+                return fp_cache[idx]
+            a = 0.0
+            if osm is not None and osm.get("geoms"):
+                pt = Point(pts[idx][1], pts[idx][0])
+                cov = [osm["areas"][gi] for gi in osm["tree"].query(pt)
+                       if osm["geoms"][gi].covers(pt)]
+                if cov:
+                    a = min(cov)
+            fp_cache[idx] = a
+            return a
+
+        def fold_reach(q):
+            # density-aware max fold distance for parent q (capped at the legacy
+            # absolute bound). Big footprint OR sparse/wild name -> reaches far;
+            # tiny/urban park -> only a few hundred metres.
+            a = fp_area(q)
+            if a >= PARK_FOLD_BIG_M2 or PARK_SPARSE_RE.search(names[q]):
+                m = PARK_FOLD_SPARSE_M
+            elif a >= PARK_FOLD_MID_M2:
+                m = PARK_FOLD_MID_M
+            else:
+                m = PARK_FOLD_URBAN_M
+            return min(m, PARK_SUB_FOLD_M) if m <= PARK_FOLD_MID_M else m
+
         for r in subs:
             cw = distinctive(names[r]) - FOLD_WEAK
             cand = [(hav(pts[r][0], pts[r][1], pts[q][0], pts[q][1]), q)
                     for q in real if cw & (distinctive(names[q]) - FOLD_WEAK)]
-            cand = [(d, q) for d, q in cand if d <= PARK_SUB_FOLD_M]
+            cand = [(d, q) for d, q in cand if d <= fold_reach(q)]
             if not cand:
                 continue
             _, par = min(cand, key=lambda t: (t[0], -rev[t[1]]))

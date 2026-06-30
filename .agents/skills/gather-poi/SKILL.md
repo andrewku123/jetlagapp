@@ -305,8 +305,24 @@ each entrance + departments + co-located clinics). `dedup_poi.py` collapses them
    polygon. A pin whose name matches `PARK_SUBFEATURE_RE` (dog park/run/play/
    training, off-leash, community/instructional/demonstration garden, skate park,
    staging area, trail head, entrance, boat/kayak launch) folds into the **nearest
-   real park pin** (one that does *not* itself match the regex) within
-   `PARK_SUB_FOLD_M` (1200 m) that **shares a strong name token**. Safety rules:
+   real park pin** (one that does *not* itself match the regex) within a
+   **density-aware reach** that **shares a strong name token**. Safety rules:
+   - **Adaptive fold reach** (`fold_reach()`): a flat radius over-merges in dense
+     cities (a dog run 1 km away in SF is a *different* park) yet under-merges in
+     the hills (a trailhead 1 km from a regional-park flagship is the same place).
+     The reach scales with the **parent's real OSM footprint size** — the bundled
+     proxy for sparseness, since no population data is present and big wild parks
+     are physically huge while urban parks are tiny:
+       - footprint ≥ 1 km² **or** name matches `PARK_SPARSE_RE` (regional/state/
+         open space/preserve/wilderness/watershed/national/wildlife/canyon/ridge/
+         shoreline/seashore/mountain/peak/recreation area) → **2500 m**;
+       - footprint 0.2–1 km² → **900 m**;
+       - small/no footprint (urban neighborhood park) → **500 m**.
+     `PARK_SUB_FOLD_M` (1200 m) is just the absolute upper cap. Effect: Saratoga
+     Creek dog park (725 m, small San Jose park) and Old Creek dog park of
+     Cherryland (955 m) stay standalone, while Wildcat Canyon / Dry Creek / Leona
+     Canyon trailheads/staging still fold across ~800–2500 m. Containment folds
+     (pass 3b) ignore this entirely — inside the polygon always folds.
    - The shared token is `distinctive()` minus `FOLD_WEAK` — weak geographic words
      (valley, hill, heights, canyon, point, waterfront, north/south, mission,
      vista…) **don't** count, so "Eureka Valley Dog Play Area" never folds into

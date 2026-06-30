@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1647,
+  "count": 1648,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -16846,6 +16846,23 @@
     "lon": -121.88267409999999
    },
    {
+    "id": "ChIJZabqHle1j4AR0FxTJlgWbnI",
+    "name": "Saratoga Creek Dog Park, San Jose, CA",
+    "primaryType": "dog_park",
+    "types": [
+     "dog_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "5399 Graves Ave, San Jose, CA 95129, USA",
+    "rating": 4.4,
+    "userRatingCount": 346,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.2957751,
+    "lon": -121.99690820000001
+   },
+   {
     "id": "ChIJ_2M86GeVj4ARtImrzM-f06k",
     "name": "Shorty Garcia Park",
     "primaryType": "park",
@@ -20965,6 +20982,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.9834514,
     "lon": -121.75385829999999
+   },
+   {
+    "id": "ChIJF1z0F6ORj4AR79QOy6l774c",
+    "name": "Old Creek Dog Park of Cherryland",
+    "primaryType": "dog_park",
+    "types": [
+     "dog_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "400 Hampton Rd, Hayward, CA 94541, USA",
+    "rating": 4.1,
+    "userRatingCount": 166,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.684095299999996,
+    "lon": -122.11033609999998
    },
    {
     "id": "ChIJMyry-H2HhYARlUXZS7M30D0",
@@ -37871,23 +37905,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.319522899999996,
     "lon": -121.8885037
-   },
-   {
-    "id": "ChIJlY7phxaRj4ARtJ999Xv709I",
-    "name": "Hayward Area Recreation and Park District Dog Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1970 Via Buena Vista, San Lorenzo, CA 94580, USA",
-    "rating": 4.8,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.6636483,
-    "lon": -122.14215729999998
    },
    {
     "id": "ChIJ2RTZLqmVj4AR-7hOkXrYMuU",
