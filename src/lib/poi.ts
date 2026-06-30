@@ -20,6 +20,9 @@ export const POI_CATEGORIES: PoiCategory[] = [
   { key: 'amusement_park', label: 'Amusement parks', color: '#d81b60' },
   { key: 'park', label: 'Parks', color: '#43a047' },
   { key: 'golf_course', label: 'Golf courses', color: '#c0ca33' },
+  { key: 'stadium', label: 'Sports stadiums', color: '#00897b' },
+  { key: 'mountain', label: 'Mountains', color: '#607d8b' },
+  { key: 'consulate', label: 'Consulates', color: '#5e35b1' },
 ]
 
 export interface PoiPlace {
