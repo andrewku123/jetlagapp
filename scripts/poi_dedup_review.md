@@ -5,7 +5,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
 | Museums | 217 | 185 | 5 | 6 | 5 |
-| Libraries | 220 | 210 | 2 | 4 | 2 |
+| Libraries | 216 | 194 | 2 | 4 | 2 |
 | Movie Theaters | 74 | 69 | 3 | 1 | 0 |
 | Hospitals | 228 | 132 | 44 | 22 | 30 |
 | Zoos | 6 | 5 | 0 | 0 | 0 |
@@ -32,7 +32,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Fine Arts Gallery](https://www.google.com/maps/search/?api=1&query=37.7220419%2C-122.47928489999998&query_place_id=ChIJr5tOz7F9j4ARxlmskgqSFwk)** (0 rev) absorbs: [Martin Wong Gallery](https://www.google.com/maps/search/?api=1&query=37.7223678%2C-122.4794214&query_place_id=ChIJAd3vzLF9j4ARLu3pyP8z5K4)(0)
 
 
-## Libraries — 220 → 210 (name −2, osm −4 −2 manual)
+## Libraries — 216 → 194 (name −2, osm −4 −2 manual)
 
 
 **Merged (6 groups):**

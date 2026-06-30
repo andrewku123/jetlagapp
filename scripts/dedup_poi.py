@@ -106,6 +106,17 @@ LABEL = {
     "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
 }
 
+# Category-specific name patterns for pins that are never a valid POI of that
+# category, regardless of review count / Google type, so they are auto-dropped
+# every audit (no per-pin override needed). Libraries: a *high school* library is
+# a campus facility, not a public library; a *Little Free Library* is a sidewalk
+# book box (some have the icon + >=5 reviews, so neither the icon nor the review
+# rule filters them). Note this only catches book boxes that say "Little Free
+# Library"; un-named ones need the no-footprint review step (see gather-poi skill).
+AUTO_DROP_NAME_RE = {
+    "library": re.compile(r"\bhigh school\b|\blittle free librar", re.I),
+}
+
 # --- sub-part signals: a pin whose name is one of these is a piece of a bigger
 #     same-category place, not a place of its own. Conservative on purpose.
 # Only UNAMBIGUOUS structural pieces of a bigger place. Deliberately excludes
@@ -637,6 +648,18 @@ def main():
         curated[key]["places"] = [p for p in curated[key]["places"]
                                   if in_play(p, key, pa_raw, pa_buf)]
         oop_total += n_before_clip - len(curated[key]["places"])
+
+        # auto-drop pins whose name marks them as never-valid for the category
+        # (e.g. high-school / Little Free "libraries"). Runs every audit.
+        adre = AUTO_DROP_NAME_RE.get(key)
+        if adre:
+            n_pre = len(curated[key]["places"])
+            curated[key]["places"] = [p for p in curated[key]["places"]
+                                      if not adre.search(p["name"])]
+            n_auto = n_pre - len(curated[key]["places"])
+            if n_auto:
+                print(f"[{key}] auto-dropped {n_auto} by name rule "
+                      f"(high-school / Little Free libraries)")
 
         # auto-drop only places Google reports CLOSED_PERMANENTLY. Backfilled pins
         # (authoritative/OSM) arrive without a status until refresh_business_status.py

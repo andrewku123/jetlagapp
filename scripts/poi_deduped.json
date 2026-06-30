@@ -3301,7 +3301,7 @@
   ]
  },
  "library": {
-  "count": 210,
+  "count": 194,
   "places": [
    {
     "id": "ChIJd2spnJuAhYARhkuvhLCp3us",
@@ -5539,23 +5539,6 @@
     "lon": -122.46280549999997
    },
    {
-    "id": "ChIJh_-ef5CFj4ARYJvacu-cqnc",
-    "name": "Oakland Public Library: Brookfield Branch",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "9255 Edes Ave, Oakland, CA 94603, USA",
-    "rating": 4.8,
-    "userRatingCount": 41,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7376116,
-    "lon": -122.1884853
-   },
-   {
     "id": "ChIJsfS9jzZ8j4AR0qe5bZT4rZo",
     "name": "Ocean View Branch Library",
     "primaryType": "library",
@@ -6255,23 +6238,6 @@
     "lon": -122.2305436
    },
    {
-    "id": "ChIJocrjGt2BhYAR2sQP8_mk58w",
-    "name": "Little Free Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "2418 Pine St, San Francisco, CA 94115, USA",
-    "rating": 5,
-    "userRatingCount": 10,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.787869199999996,
-    "lon": -122.4362179
-   },
-   {
     "id": "ChIJZRx2OtyBhYARtXhXFXeA6MI",
     "name": "San Francisco Museum of Modern Art - Library",
     "primaryType": "library",
@@ -6340,23 +6306,6 @@
     "lon": -122.4210652
    },
    {
-    "id": "ChIJaWyC16Dpj4ARp_8iLy1y3hU",
-    "name": "Amador Valley High School Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "1155 Santa Rita Rd, Pleasanton, CA 94566, USA",
-    "rating": 1.4,
-    "userRatingCount": 8,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.6678066,
-    "lon": -121.875095
-   },
-   {
     "id": "ChIJC4r4Fta6j4ARZhnmxbveO_Q",
     "name": "Bowes Art & Architecture Library",
     "primaryType": "library",
@@ -6423,23 +6372,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.781266099999996,
     "lon": -122.1822691
-   },
-   {
-    "id": "ChIJgVZfaVGFj4AR9X3oqUERku0",
-    "name": "Mulford-Marina Branch Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "13699 Aurora Dr, San Leandro, CA 94577, USA",
-    "rating": 4.8,
-    "userRatingCount": 8,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.6978474,
-    "lon": -122.1822938
    },
    {
     "id": "ChIJWctF8Dh6j4AReW4H_B8dzIA",
@@ -6614,23 +6546,6 @@
     "lon": -122.26073620000001
    },
    {
-    "id": "ChIJi2IbyNWPj4ARu6zQ6krqYaM",
-    "name": "South Branch Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "14799 E 14th St, San Leandro, CA 94578, USA",
-    "rating": 4.3,
-    "userRatingCount": 6,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.7086882,
-    "lon": -122.1339814
-   },
-   {
     "id": "ChIJZWYhhpiRj4ARb-_-yW9Td9c",
     "name": "Chabot College Library",
     "primaryType": "library",
@@ -6697,206 +6612,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.424098,
     "lon": -122.1675664
-   },
-   {
-    "id": "ChIJ1SS0PZfMj4ARqa_98y-NuZI",
-    "name": "Inez Jackson Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3434224,
-    "lon": -121.8884974,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJbdx4Da7Lj4ARvqwOUMF8Bfg",
-    "name": "Rosicrucian Research Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3335892,
-    "lon": -121.9223954,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJaRxcASmBj4ARKEviv-ZHzCQ",
-    "name": "Lincoln University Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8052174,
-    "lon": -122.2697752,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJ9z0wNwClj4ARZXPugaH06Is",
-    "name": "Bowman Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4560992,
-    "lon": -122.19210469999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJWWbl7ok1joARqLXsr1RMkN0",
-    "name": "Westmont High School Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.270991599999995,
-    "lon": -121.9857495,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJwXqrHu21j4ARwgNXXkEi8qQ",
-    "name": "Western Philatelic Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.480744,
-    "lon": -122.20245519999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJC4fMLUOfj4ARczTNcElGkBo",
-    "name": "The Carl Gellert And Celia Berta Gellert Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 37.517536299999996,
-    "lon": -122.2846951,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJcW9_pP99hYARvzlifi9xoHo",
-    "name": "John A Graziano Memorial Lib",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "university",
-     "educational_institution",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8212942,
-    "lon": -122.26445819999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJE_8U8Y3Tj4ARgUOD-MSCQUI",
-    "name": "Mt. Pleasant Neighborhood Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3527609,
-    "lon": -121.80054210000002,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJeUudvmLHj4ARmy2AWTbaznY",
-    "name": "Irvington High School Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.5231797,
-    "lon": -121.96824140000001,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJZSP3_T94hYAR2_-FxTg1kKs",
-    "name": "David Del Simone Memorial Law Library (branch of) Contra Costa County Law Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.9325951,
-    "lon": -122.33395630000001,
-    "source": "authoritative"
    }
   ]
  },

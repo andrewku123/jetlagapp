@@ -55,6 +55,13 @@ the icon + >=5 reviews counts). The only allowed edits:
   "cinema"/"cineplex"); keep live performing-arts theaters **out** (no movie icon);
 - **nested sub-areas** (a pin that's part of a bigger same-category attraction,
   e.g. "Giraffe Enclosure" inside Oakland Zoo) removed via a human-reviewed list.
+- **library only**: a *high-school* library is a campus facility (not a public
+  library) and a *Little Free Library* is a sidewalk book box — both carry the
+  `library` icon and some clear >=5 reviews, so neither the icon nor the review
+  rule catches them. `dedup_poi.py` auto-drops them every audit via
+  `AUTO_DROP_NAME_RE["library"]` (`\bhigh school\b|\blittle free librar`). This
+  is name-based, so it only catches book boxes literally named "Little Free
+  Library"; un-named ones are left for the normal manual map review.
 - **stadium only**: the rulebook subject is *professional* sports, which Google
   can't encode (the `stadium`/`arena` icon also covers college/high-school/amateur
   fields — the vast majority of hits). So after the icon pass, curate filters the
