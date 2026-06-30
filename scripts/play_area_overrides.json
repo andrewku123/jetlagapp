@@ -69,5 +69,16 @@
   "West Menlo Park CDP",
   "Woodside town",
   "Morgan Hill city"
+ ],
+ "corridors": [
+  {
+   "_note": "Berkeley-hills strip up from Tilden (traced from user's black line, no transit line here to bridge)",
+   "radius_mi": 0.5,
+   "coords": [
+    [-122.2412, 37.8817],
+    [-122.2327, 37.8861],
+    [-122.2247, 37.8905]
+   ]
+  }
  ]
 }
