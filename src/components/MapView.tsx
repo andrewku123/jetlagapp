@@ -682,6 +682,34 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Transit lines drawn into a dedicated pane that fades in once mounted. As a
+// vector overlay they paint a beat after the base tiles, so without this they
+// "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
+// full opacity. Pane sits above the dim mask (overlayPane 400) and below POIs
+// (410), matching the previous draw order.
+function TransitLines() {
+  const map = useMap()
+  const [pane, setPane] = useState<string | null>(null)
+  useEffect(() => {
+    const name = 'transit'
+    let p = map.getPane(name)
+    if (!p) {
+      p = map.createPane(name)
+      p.style.zIndex = '405'
+    }
+    p.style.transition = 'opacity 0.4s ease-in'
+    p.style.opacity = '0'
+    setPane(name)
+    const id = window.setTimeout(() => {
+      const pp = map.getPane(name)
+      if (pp) pp.style.opacity = '1'
+    }, 60)
+    return () => window.clearTimeout(id)
+  }, [map])
+  if (!pane) return null
+  return <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} pane={pane} />
+}
+
 export default function MapView({
   remaining,
   eliminated,
@@ -1146,7 +1174,7 @@ export default function MapView({
           pathOptions={DIM_FILL}
           interactive={false}
         />
-        <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
+        <TransitLines />
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}
