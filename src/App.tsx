@@ -92,7 +92,8 @@ export default function App() {
   const [poiEnabled, setPoiEnabled] = useState<Set<string>>(
     () => new Set(POI_CATEGORIES.map((c) => c.key)),
   )
-  // how stations are shown while the POI tab is open, so POI dots can stand out
+  // how stations are shown while the POI tab is open (Normal/Faded ~40%/Hidden),
+  // so POI dots can stand out
   const [stationView, setStationView] = useState<StationView>('normal')
   const [poiQuery, setPoiQuery] = useState('')
   // bump nonce so the map re-centers even when the same station is clicked twice

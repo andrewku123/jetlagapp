@@ -693,7 +693,7 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
     const pane = map.getPane('stations')
     if (!pane) return
     pane.style.transition = 'opacity 0.2s ease'
-    pane.style.opacity = mode === 'hidden' ? '0' : mode === 'faded' ? '0.3' : '1'
+    pane.style.opacity = mode === 'hidden' ? '0' : mode === 'faded' ? '0.4' : '1'
     pane.style.pointerEvents = mode === 'hidden' ? 'none' : ''
     return () => {
       pane.style.opacity = '1'
