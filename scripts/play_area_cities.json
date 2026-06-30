@@ -51,6 +51,7 @@
   "Montara CDP",
   "Monte Sereno city",
   "Moraga town",
+  "Morgan Hill city",
   "Moss Beach CDP",
   "Mountain View CDP",
   "Norris Canyon CDP",
@@ -80,7 +81,7 @@
  "dropped_auto_surrounded": [
   "Vine Hill CDP"
  ],
- "count": 64,
+ "count": 63,
  "cities": [
   {
    "name": "Acalanes Ridge CDP",
@@ -300,12 +301,6 @@
   },
   {
    "name": "Milpitas city",
-   "county": "Santa Clara",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Morgan Hill city",
    "county": "Santa Clara",
    "type": "city/town",
    "reason": "kept"

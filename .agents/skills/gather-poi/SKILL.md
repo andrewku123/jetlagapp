@@ -362,12 +362,26 @@ model for every city.** The steps:
    place, `< SURROUND_MIN_FRAC`) is dropped too — a lone island in the grey. Runs
    to a fixed point (removing one island can isolate its neighbour). Incorporated
    cities/towns are never auto-dropped; only the curator removes those.
-5. **Play area = the union of the kept place polygons**, whole-place granularity
-   (no raw disks), then **fill fully-enclosed holes** (`fill_holes`): any pocket
-   ringed on all sides by in-play land is itself in play — surrounded ⇒ in (e.g.
-   San Bruno Mountain between Daly City/Colma/Brisbane/South San Francisco, and
-   the unincorporated pockets around Fremont/Newark/Union City). Concave bays that
-   open to the outside are not interior rings, so far open space stays out.
+5. **Transit-line bridges** (`transit_bridges`) — a station-to-station rail leg
+   often runs through non-playable open land between two kept cities (BART
+   Rockridge→Orinda over the Berkeley hills; Castro Valley→Dublin up Dublin
+   Canyon). For each line in `transit-lines.geojson.json`, the part outside the
+   kept union is split into gap segments; a segment is re-included as a hideable
+   corridor (buffered `BRIDGE_RADIUS_MI`, default 0.5 mi) **only if both its ends
+   touch a kept place** (so it bridges two in-play areas) **and it is shorter than
+   `BRIDGE_MAX_MI`** (so a trailing stub off the end of a line — e.g. Caltrain
+   south of San Jose toward deleted Gilroy — is left out). This keeps the rail
+   corridor itself in play without dragging in whole deleted regions.
+6. **Play area = the union of the kept place polygons (+ bridges)**, whole-place
+   granularity (no raw disks), then **fill fully-enclosed holes** (`fill_holes`):
+   any pocket ringed on all sides by in-play land is itself in play — surrounded ⇒
+   in (e.g. San Bruno Mountain between Daly City/Colma/Brisbane/South San
+   Francisco, and the unincorporated pockets around Fremont/Newark/Union City).
+   Concave bays that open to the outside are not interior rings, so far open space
+   stays out. A **manually deleted place is never re-added** by hole-fill — only
+   *unnamed* enclosed open space gets filled (a deleted town that ends up ringed by
+   kept neighbours, e.g. Moraga inside Orinda/Lafayette, stays grey because it is a
+   named place the curator removed, not an anonymous pocket).
 
 The **open land between/around the kept places** (regional parks, ranchland, the
 big mountains, the east-county hills, the Santa Cruz range) is not a named place,

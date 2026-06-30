@@ -4,22 +4,22 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
-| Museums | 213 | 181 | 5 | 6 | 5 |
-| Libraries | 220 | 211 | 2 | 4 | 2 |
-| Movie Theaters | 75 | 70 | 3 | 1 | 0 |
-| Hospitals | 230 | 134 | 44 | 22 | 30 |
+| Museums | 216 | 185 | 5 | 6 | 5 |
+| Libraries | 219 | 209 | 2 | 4 | 2 |
+| Movie Theaters | 74 | 69 | 3 | 1 | 0 |
+| Hospitals | 228 | 132 | 44 | 22 | 30 |
 | Zoos | 6 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 18 | 14 | 0 | 0 | 0 |
-| Parks | 1992 | 1727 | 34 | 230 | 1 |
-| Golf Courses | 66 | 60 | 1 | 3 | 2 |
+| Parks | 1971 | 1708 | 34 | 228 | 1 |
+| Golf Courses | 67 | 61 | 1 | 3 | 2 |
 | Consulates | 47 | 40 | 0 | 0 | 1 |
-| Mountains | 54 | 52 | 0 | 0 | 2 |
+| Mountains | 52 | 50 | 0 | 0 | 2 |
 | Sports Stadiums | 8 | 8 | 0 | 0 | 0 |
 
 
 
-## Museums — 213 → 181 (name −5, osm −6 −5 manual)
+## Museums — 216 → 185 (name −5, osm −6 −5 manual)
 
 
 **Merged (7 groups):**
@@ -32,7 +32,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Fine Arts Gallery](https://www.google.com/maps/search/?api=1&query=37.7220419%2C-122.47928489999998&query_place_id=ChIJr5tOz7F9j4ARxlmskgqSFwk)** (0 rev) absorbs: [Martin Wong Gallery](https://www.google.com/maps/search/?api=1&query=37.7223678%2C-122.4794214&query_place_id=ChIJAd3vzLF9j4ARLu3pyP8z5K4)(0)
 
 
-## Libraries — 220 → 211 (name −2, osm −4 −2 manual)
+## Libraries — 219 → 209 (name −2, osm −4 −2 manual)
 
 
 **Merged (6 groups):**
@@ -44,7 +44,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Lathrop Library](https://www.google.com/maps/search/?api=1&query=37.4291471%2C-122.16742579999999&query_place_id=ChIJVVUVwim7j4AR79mh7iy3fX0)** (27 rev) absorbs: [East Asia Library](https://www.google.com/maps/search/?api=1&query=37.4294684%2C-122.1672722&query_place_id=ChIJw9DEC2W7j4AReHwSguLp2DQ)(6,osm)
 
 
-## Movie Theaters — 75 → 70 (name −3, osm −1)
+## Movie Theaters — 74 → 69 (name −3, osm −1)
 
 
 **Merged (4 groups):**
@@ -54,7 +54,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Apple Cinemas Van Ness IMAX](https://www.google.com/maps/search/?api=1&query=37.785190199999995%2C-122.42094379999999&query_place_id=ChIJp0ynta-BhYARI2wou04immo)** (398 rev) absorbs: [1000 Van Ness](https://www.google.com/maps/search/?api=1&query=37.785154899999995%2C-122.42038499999998&query_place_id=ChIJV05OkpaAhYAREvO2JfkoQa0)(636)
 
 
-## Hospitals — 230 → 134 (name −44, osm −22 −30 manual)
+## Hospitals — 228 → 132 (name −44, osm −22 −30 manual)
 
 
 **Merged (44 groups):**
@@ -122,10 +122,10 @@ _No merges._
 _No merges._
 
 
-## Parks — 1992 → 1727 (name −34, osm −230 −1 manual)
+## Parks — 1971 → 1708 (name −34, osm −228 −1 manual)
 
 
-**Merged (165 groups):**
+**Merged (163 groups):**
 - **[Golden Gate Park](https://www.google.com/maps/search/?api=1&query=37.7689203%2C-122.482977&query_place_id=ChIJY_dFYHKHhYARMKc772iLvnE)** (44418 rev) absorbs: [Conservatory of Flowers](https://www.google.com/maps/search/?api=1&query=37.772618699999995%2C-122.46025579999998&query_place_id=ChIJ5abCmkWHhYARH3zgiLVc_Ew)(4091,osm); [Golden Gate Park Polo Field](https://www.google.com/maps/search/?api=1&query=37.768211699999995%2C-122.4932246&query_place_id=ChIJd-UpaaCHhYARATTB9Q5e4xk)(505,osm); [Golden Gate Park - East](https://www.google.com/maps/search/?api=1&query=37.7691071%2C-122.4580175&query_place_id=ChIJOVObBVCHhYAREYUH1plPZwo)(429,osm); [National AIDS Memorial Grove](https://www.google.com/maps/search/?api=1&query=37.7697139%2C-122.4620104&query_place_id=ChIJA5OA_YWAhYARhmsqNSUugxY)(406,osm); [Blue Heron Lake](https://www.google.com/maps/search/?api=1&query=37.768728599999996%2C-122.47344450000001&query_place_id=ChIJ_aOxME6HhYARYRaTOEP1dEA)(245,osm); [Marx Event Meadow](https://www.google.com/maps/search/?api=1&query=37.7711579%2C-122.4856119&query_place_id=ChIJJRq1rgyHhYARcRwqZcp8jsU)(69,osm); [Conservatory of Flowers Golden Gate Park](https://www.google.com/maps/search/?api=1&query=37.772618699999995%2C-122.46025579999998&query_place_id=ChIJCa4MCwCHhYARW0FshBIVaio)(19); [Pioneer East Meadow](https://www.google.com/maps/search/?api=1&query=37.7705329%2C-122.4735317&query_place_id=ChIJFxu8YI6HhYARQ7jzwvWFmrs)(8,osm); [John McLaren Memorial Rhododendron Dell](https://www.google.com/maps/search/?api=1&query=37.7721853%2C-122.46477279999999&query_place_id=ChIJH49Y4UOHhYARvSk0MmZVj4k)(7,osm); [WWI Memorial](https://www.google.com/maps/search/?api=1&query=37.772766499999996%2C-122.46888109999999&query_place_id=ChIJO0yl20GHhYAR4gOCv_gEnHI)(6,osm); [GGP Dog Play Area 1](https://www.google.com/maps/search/?api=1&query=37.7664477%2C-122.4632288&query_place_id=ChIJ3Qh8bACHhYARILgznXVtOMg)(5,osm)
 - **[Mission Dolores Park](https://www.google.com/maps/search/?api=1&query=37.7602015%2C-122.4267959&query_place_id=ChIJp3CqeRd-j4ARYI0i8e_kGKY)** (16403 rev) absorbs: [Mission Dolores Dog Play Area North](https://www.google.com/maps/search/?api=1&query=37.760351299999996%2C-122.42641069999998&query_place_id=ChIJ1-ggbwB_j4ARInwrP8QLDBI)(19); [Mission Dolores Dog Play Area South](https://www.google.com/maps/search/?api=1&query=37.7593317%2C-122.42733530000001&query_place_id=ChIJUQeeAQB_j4ARBFHHWGjkP2c)(5,osm)
 - **[San Francisco Botanical Garden](https://www.google.com/maps/search/?api=1&query=37.767709599999996%2C-122.4693109&query_place_id=ChIJW5w2V2iHhYARQoOl_ZsQlOg)** (8001 rev) absorbs: [Redwood Grove Garden](https://www.google.com/maps/search/?api=1&query=37.766597%2C-122.47181999999998&query_place_id=ChIJa04xZ2iHhYARFjq3zH0OIrA)(48,osm); [Moon Viewing Garden](https://www.google.com/maps/search/?api=1&query=37.767847599999996%2C-122.47167800000001&query_place_id=ChIJoU4MB-GHhYARZlkRKwsEXpM)(19,osm); [Zellerbach Garden of Perennials](https://www.google.com/maps/search/?api=1&query=37.7684461%2C-122.47208359999999&query_place_id=ChIJp2nEp2mHhYARk86w61RHlYI)(13,osm); [Andean Cloud Forest](https://www.google.com/maps/search/?api=1&query=37.7688786%2C-122.4713933&query_place_id=ChIJJ6pnu2mHhYARB-jR4t1cH3w)(7,osm); [Children’s Garden](https://www.google.com/maps/search/?api=1&query=37.7660923%2C-122.47420330000001&query_place_id=ChIJQ9hHZ-2HhYAR3uwi2Wju2lI)(7,osm); [Great Meadow](https://www.google.com/maps/search/?api=1&query=37.7673637%2C-122.4682117&query_place_id=ChIJo-0kjgeHhYAR67fR-YWCAEg)(7,osm); [Temperate Asia](https://www.google.com/maps/search/?api=1&query=37.7663896%2C-122.4680494&query_place_id=ChIJ-ef3Sl2HhYARtixxpvzKuQQ)(7,osm)
@@ -163,7 +163,6 @@ _No merges._
 - **[Duboce Park](https://www.google.com/maps/search/?api=1&query=37.7695967%2C-122.43333439999999&query_place_id=ChIJwXCwC6eAhYARQoWxmx9XoRk)** (1585 rev) absorbs: [Duboce Park Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.769627899999996%2C-122.4324953&query_place_id=ChIJn38xWwCBhYARTwiA7jDr05I)(6,osm)
 - **[Corona Heights Park](https://www.google.com/maps/search/?api=1&query=37.7653137%2C-122.43857960000001&query_place_id=ChIJX3DWQgJ-j4ARxWqSTDOy_CU)** (1570 rev) absorbs: [States Street Playground Park](https://www.google.com/maps/search/?api=1&query=37.7637747%2C-122.43780859999998&query_place_id=ChIJIaln-nB_j4ARQm4HdypWVkk)(21,osm)
 - **[Garin Regional Park](https://www.google.com/maps/search/?api=1&query=37.6289215%2C-122.02993079999997&query_place_id=ChIJq_YCtfOUj4AR_0u7MWxA0-M)** (1479 rev) absorbs: [Ridge View Loop](https://www.google.com/maps/search/?api=1&query=37.6235347%2C-122.0292039&query_place_id=ChIJb2Cgr_2Uj4AReFscPiY9ZaQ)(8,osm); [Jordan Pond](https://www.google.com/maps/search/?api=1&query=37.6249172%2C-122.0274508&query_place_id=ChIJXeqHnp2Vj4ARddyox68KVqg)(6,osm)
-- **[Don Castro Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.6900902%2C-122.05557309999999&query_place_id=ChIJx-huV7KTj4ARt8SE-dyulXk)** (1387 rev) absorbs: [East Bay Regional Park](https://www.google.com/maps/search/?api=1&query=37.6918547%2C-122.0531394&query_place_id=ChIJD2VjP7OTj4ARNz9iHvZseSo)(136,osm)
 - **[Temescal Regional Recreation Area](https://www.google.com/maps/search/?api=1&query=37.847859299999996%2C-122.233447&query_place_id=ChIJnZjC6pl9hYARrekcAH6CTP4)** (1386 rev) absorbs: [Temescal South Entrance](https://www.google.com/maps/search/?api=1&query=37.8434664%2C-122.2273397&query_place_id=ChIJ1yNFeAl9hYARD9lDHy-q1rg)(20,osm); [North Temescal Picnic Area](https://www.google.com/maps/search/?api=1&query=37.847077899999995%2C-122.23266260000001&query_place_id=ChIJwTbB0ad9hYARevCkwcaasCM)(9,osm)
 - **[Crocker Amazon Playground Park](https://www.google.com/maps/search/?api=1&query=37.7144528%2C-122.43054719999999&query_place_id=ChIJrW0PhpZ-j4ARuS1A2RkoHQM)** (1373 rev) absorbs: [La Grande Community Garden](https://www.google.com/maps/search/?api=1&query=37.715519199999996%2C-122.42804069999998&query_place_id=ChIJ_7wtQJR-j4ARtLuhRpCBeyM)(7,osm)
 - **[Stevens Creek County Park](https://www.google.com/maps/search/?api=1&query=37.3053619%2C-122.07387670000001&query_place_id=ChIJaRyA1GKzj4ARrxehTNbkYUI)** (1364 rev) absorbs: [Bay Tree Picnic Area](https://www.google.com/maps/search/?api=1&query=37.303433%2C-122.0745826&query_place_id=ChIJVwk4j4e1j4ARUCwUaSGAd7w)(5,osm)
@@ -194,7 +193,6 @@ _No merges._
 - **[Watson Park](https://www.google.com/maps/search/?api=1&query=37.3595633%2C-121.87543300000002&query_place_id=ChIJ35Ir9_TMj4ARAIanMkLhgfY)** (814 rev) absorbs: [Watson Dog Park](https://www.google.com/maps/search/?api=1&query=37.3598904%2C-121.87553209999999&query_place_id=ChIJucZ1zNLNj4ARdEadq-c2I6o)(63)
 - **[Piedmont Park](https://www.google.com/maps/search/?api=1&query=37.8217444%2C-122.23312680000001&query_place_id=ChIJy1J05GSHj4ARTvUR7hHkajg)** (809 rev) absorbs: [Bushy Dell Creek](https://www.google.com/maps/search/?api=1&query=37.8215557%2C-122.23305659999998&query_place_id=ChIJWWyUGWWHj4ARzE4SKbrrwWg)(7,osm)
 - **[Sue Bierman Park](https://www.google.com/maps/search/?api=1&query=37.7961171%2C-122.39601599999999&query_place_id=ChIJJdhU9k2HhYARiq91XhmsfX8)** (801 rev) absorbs: [Ferry Park](https://www.google.com/maps/search/?api=1&query=37.7958309%2C-122.39751640000001&query_place_id=ChIJ3aKp5mCAhYARrnj40qWp_v0)(11,osm)
-- **[Morgan Hill Community Park](https://www.google.com/maps/search/?api=1&query=37.1147016%2C-121.64799819999999&query_place_id=ChIJR-qnrGcgjoARxw6jtX6VWpY)** (779 rev) absorbs: [Morgan Hill Dog Park](https://www.google.com/maps/search/?api=1&query=37.112977%2C-121.64720589999999&query_place_id=ChIJmxopmWggjoARyL6iHTY0oY0)(274,osm)
 - **[Shorebird Park](https://www.google.com/maps/search/?api=1&query=37.8616235%2C-122.3162801&query_place_id=ChIJ6x6F-SF_hYARZwzBYuu1Bvs)** (775 rev) absorbs: [Shorebird Park Stage](https://www.google.com/maps/search/?api=1&query=37.8632573%2C-122.315095&query_place_id=ChIJgWCJmCF_hYARJ0wHwov9Gu0)(28,osm)
 - **[McClellan Ranch Preserve](https://www.google.com/maps/search/?api=1&query=37.3134602%2C-122.0628024&query_place_id=ChIJS5XZAme0j4ARo7EI4nXxk1Y)** (723 rev) absorbs: [Friends of Stevens Creek Trail](https://www.google.com/maps/search/?api=1&query=37.3129828%2C-122.06339240000001&query_place_id=ChIJS5XZAme0j4AR5lwA5ud3nu8)(7,osm)
 - **[Washington Manor Park](https://www.google.com/maps/search/?api=1&query=37.694159299999995%2C-122.14633930000001&query_place_id=ChIJ4c0TXyOQj4ARu_ULirJpEGI)** (718 rev) absorbs: [San Leandro Pickleball Courts](https://www.google.com/maps/search/?api=1&query=37.6948678%2C-122.14702000000001&query_place_id=ChIJOy5dDH-Rj4ARr0pfT67WtBQ)(18,osm)
@@ -293,7 +291,7 @@ _No merges._
 - **[Dante Park](https://www.google.com/maps/search/?api=1&query=37.3116759%2C-121.779663&query_place_id=ChIJ3-aeLHItjoARjj0C9BVHo3o)** (6 rev) absorbs: [Montelena Park](https://www.google.com/maps/search/?api=1&query=37.3139423%2C-121.7802387&query_place_id=ChIJMTdk45ktjoARdmeGcVVKaDQ)(5,osm)
 
 
-## Golf Courses — 66 → 60 (name −1, osm −3 −2 manual)
+## Golf Courses — 67 → 61 (name −1, osm −3 −2 manual)
 
 
 **Merged (5 groups):**
@@ -311,7 +309,7 @@ _No merges._
 - **[Mexico Consulate](https://www.google.com/maps/search/?api=1&query=37.7867488%2C-122.39562210000001&query_place_id=ChIJj_rRz1CBhYARNaK44wPeMkU)** (738 rev) absorbs: [embajada mexicana](https://www.google.com/maps/search/?api=1&query=37.786743799999996%2C-122.39559109999999&query_place_id=ChIJB41WfnuAhYAR8zO-KazXCUs)(113,manual)
 
 
-## Mountains — 54 → 52 (name −0, osm −0 −2 manual)
+## Mountains — 52 → 50 (name −0, osm −0 −2 manual)
 
 
 **Merged (2 groups):**

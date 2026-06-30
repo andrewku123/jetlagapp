@@ -42,11 +42,16 @@ APP_PLAY_AREA = os.environ.get("APP_PLAY_AREA",
     os.path.join(HERE, "..", "..", "repos", "bayarea-hideandseek", "src", "data", "play-area.geojson.json"))
 OVERRIDES = os.path.join(HERE, "play_area_overrides.json")
 CACHE = os.path.join(HERE, "_census_place")
+TRANSIT_LINES = os.environ.get("TRANSIT_LINES",
+    os.path.join(HERE, "..", "..", "repos", "bayarea-hideandseek", "src", "data", "transit-lines.geojson.json"))
 
 SHORELINE_BUF_M = 150.0        # pier/waterfront rescue for non-natural POIs
 ADJ_TOL_M = 150.0              # boundary-adjacency tolerance
 SURROUND_MIN_FRAC = 0.02      # a kept CDP touching <2% of its border to another
                               # kept place counts as "surrounded by nonplayable"
+BRIDGE_RADIUS_MI = 0.5        # half-width of a transit-line corridor bridge
+BRIDGE_NEAR_M = 60.0          # gap endpoint within this of a kept place = touching
+BRIDGE_MAX_MI = 12.0         # only bridge gaps shorter than this between two kept places
 # Census place + county cartographic boundary files (1:500k, NAD83 ~ WGS84 here)
 CBF_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_06_place_500k.zip"
 CBF_STEM = "cb_2023_06_place_500k"
@@ -113,6 +118,40 @@ def load_county_places(counties):
         nm = d["NAMELSAD"]
         out[nm] = {"geom": g, "county": best, "cdp": nm.endswith("CDP")}
     return out
+
+
+def transit_bridges(city_m, to_m):
+    """Corridors that re-include the transit line where it runs through non-playable
+    land *between two kept places* (e.g. BART Rockridge->Orinda over the Berkeley
+    hills, or Castro Valley->Dublin up Dublin Canyon). For each line, the part
+    outside the kept union is split into gap segments; a segment is bridged only if
+    BOTH its ends touch a kept place (so it connects two in-play areas) and it is
+    shorter than BRIDGE_MAX_MI (so trailing stubs off the end of a line -- e.g.
+    Caltrain south of San Jose toward deleted Gilroy -- are left out). The kept
+    gap segments are buffered by BRIDGE_RADIUS_MI into a hideable corridor."""
+    if not os.path.exists(TRANSIT_LINES):
+        return None
+    from shapely.geometry import LineString
+    fc = json.load(open(TRANSIT_LINES))
+    feats = fc["features"] if isinstance(fc, dict) else fc
+    near = city_m.boundary
+    segs = []
+    maxlen = BRIDGE_MAX_MI * 1609.344
+    for f in feats:
+        if f["geometry"]["type"] != "LineString":
+            continue
+        ln = LineString([to_m(x, y) for x, y in f["geometry"]["coordinates"]])
+        gap = ln.difference(city_m)
+        parts = [gap] if gap.geom_type == "LineString" else list(getattr(gap, "geoms", []))
+        for p in parts:
+            if p.is_empty or p.geom_type != "LineString" or p.length > maxlen:
+                continue
+            a, b = Point(p.coords[0]), Point(p.coords[-1])
+            if a.distance(near) <= BRIDGE_NEAR_M and b.distance(near) <= BRIDGE_NEAR_M:
+                segs.append(p)
+    if not segs:
+        return None
+    return unary_union(segs).buffer(BRIDGE_RADIUS_MI * 1609.344)
 
 
 def fill_holes(geom):
@@ -216,7 +255,19 @@ def main():
 
     keep = sorted(kept)
     city_m = unary_union([places_m[n] for n in keep])
+    bridges = transit_bridges(city_m, to_m)
+    if bridges is not None:
+        print("added transit-line bridges between kept places")
+        city_m = unary_union([city_m, bridges])
     union_m = fill_holes(city_m)
+    # A deleted place (manual or auto-surrounded) must stay out even when it ends
+    # up ringed by kept neighbours, so carve every dropped place back out of the
+    # hole-filled union. fill_holes therefore only fills *unnamed* enclosed open
+    # space (e.g. San Bruno Mountain), never a place the curator removed (e.g.
+    # San Pablo / Moraga inside their kept neighbours).
+    removed = [places_m[n] for n in (drop | set(auto_dropped)) if n in places_m]
+    if removed:
+        union_m = union_m.difference(unary_union(removed))
     union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 
