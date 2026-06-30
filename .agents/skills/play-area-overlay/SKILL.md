@@ -17,11 +17,17 @@ curator deletes the unwanted ones in `play_area_overrides.json` `"drop"`; any ke
 unincorporated CDP left completely surrounded by non-playable area is auto-dropped;
 the rail line is bridged through the open land between two kept cities (e.g. BART
 Rockridge→Orinda, Castro Valley→Dublin) as a hideable corridor; the kept polygons
-are unioned and surrounded *unnamed* pockets are filled, but a deleted place is
-always carved back out so it never re-appears via hole-fill even when its kept
-neighbours ring it (e.g. Moraga inside Orinda/Lafayette stays grey). See the
-`gather-poi` skill. The open land between/around the kept cities (parks,
-mountains, ranchland) is not a named place, so it stays out.
+are unioned and surrounded *unnamed* pockets are filled. A deleted place is then
+carved back out **only if it is not fully enclosed by in-play land**: measure the
+fraction of the deleted place covered by the hole-filled union, and if it is
+`>= ENCLAVE_FILL_FRAC` (0.9) treat it as a true interior enclave and **leave it in
+play** (e.g. San Pablo / East Richmond Heights inside Richmond, Shell Ridge / San
+Miguel inside Walnut Creek). A deleted place that opens onto out-of-play land
+(coverage `< 0.9`, e.g. Moraga onto the EBMUD/Las Trampas hills) is carved out and
+stays grey. So "delete" means "grey unless it is a complete enclave"; if a curator
+truly wants an enclosed place grey it must border out-of-play land or be excepted
+explicitly. See the `gather-poi` skill. The open land between/around the kept
+cities (parks, mountains, ranchland) is not a named place, so it stays out.
 
 The app copy additionally has the **open bay water** unioned in for display only,
 so the bay renders as water instead of grey. It is built by `bay_water()` in
@@ -32,11 +38,25 @@ The corridor currently covers the central + south bay, reaches WEST along the SF
 north shore to the **Golden Gate Bridge** (so all the SF piers — Embarcadero,
 Wharf, Marina, Crissy — are in), and is capped on the NORTH by the real
 **Richmond–San Rafael Bridge** centreline (`RSR_BRIDGE_LL`, traced from OSM way
-24315544) so San Pablo Bay north of it stays grey. The west boundary threads
-Raccoon Strait — east of Sausalito/Tiburon/Belvedere (Marin stays grey) but
-leaving **Angel Island inside** (in play). That bay polygon exists only in the
-app's `play-area.geojson.json`; it is not in the pipeline's `play_area.geojson`
-and never affects POI clipping or which places are in play.
+24315544) so San Pablo Bay north of it stays grey. To make the water **wrap the
+real Marin shoreline** instead of cutting a straight diagonal, `BAY_CORRIDOR_LL`
+reaches WEST over the Tiburon/Belvedere peninsula and `bay_water()` subtracts
+`marin_land.geojson` (the Tiburon/Belvedere/Sausalito landmass, traced from the
+OSM coastline — see below) along with the kept places, so the water snaps to the
+true coast. **Angel Island is deliberately excluded from `marin_land.geojson`**, so
+it is left covered by the corridor and stays **in play**. The Marin land itself
+(Sausalito/Tiburon/Belvedere) is not a kept place, so it stays grey. That bay
+polygon exists only in the app's `play-area.geojson.json`; it is not in the
+pipeline's `play_area.geojson` and never affects POI clipping or which places are
+in play.
+
+After the bay is unioned in, the app copy also runs `fill_small_holes(display,
+DISPLAY_HOLE_MAX_KM2)` (12 km²): unioning bay water can ring small bits of
+unnamed shoreline land (the Albany/Golden Gate Fields flats, a bay-fronting
+deleted place like North Richmond) into tiny grey interior holes; this fills any
+enclosed hole below the threshold so the waterfront reads clean. It is
+**display-only** — `play_area.geojson` and POI clipping are untouched, and large
+genuinely-out-of-play enclosed space is left grey.
 
 **Tracing a bay edge to a real bridge/landmark:** pull the geometry from OSM
 (Overpass), don't hand-guess. The Overpass main endpoint often times out / 406s
@@ -44,6 +64,15 @@ from the VM — send a `User-Agent` header and fall back to a mirror
 (`https://maps.mail.ru/osm/tools/overpass/api/interpreter` worked). Query e.g.
 `way["bridge"]["name"~"Richmond.San Rafael",i];out geom;`, pick the full-span way,
 downsample to ~7 points, and order it east→west before splicing into the corridor.
+
+**Tracing a coastline into a land polygon (`marin_land.geojson`):** query the
+`natural=coastline` ways in a bbox around the peninsula (same UA/mirror fallback),
+**polygonize** the coastline ways together with the bbox boundary, then classify
+each resulting face as land or water by testing a known land point and a known
+water point with `.contains()`; union the land faces into a MultiPolygon and save
+it. Deliberately **drop any face you want to stay in play** (Angel Island) so it
+is not subtracted from the corridor. Verify with point checks (peninsula towns
+contained; Richardson Bay and Angel Island NOT contained) before committing.
 
 **Far-offshore island parts** (e.g. the Farallon Islands, which are legally part
 of San Francisco city but ~27 mi out in the Pacific) are dropped in
