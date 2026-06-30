@@ -11,7 +11,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Zoos | 6 | 5 | 0 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 | 0 |
 | Amusement Parks | 18 | 14 | 0 | 0 | 0 | 0 |
-| Parks | 1986 | 1646 | 34 | 229 | 50 | 24 |
+| Parks | 1986 | 1647 | 34 | 229 | 49 | 24 |
 | Golf Courses | 67 | 58 | 1 | 3 | 0 | 2 |
 | Consulates | 47 | 40 | 0 | 0 | 0 | 1 |
 | Mountains | 55 | 53 | 0 | 0 | 0 | 2 |
@@ -121,7 +121,7 @@ _No merges._
 _No merges._
 
 
-## Parks — 1986 → 1646 (name −34, osm −229 −50 bigpark −24 manual)
+## Parks — 1986 → 1647 (name −34, osm −229 −49 bigpark −24 manual)
 
 
 **Merged (197 groups):**
@@ -223,7 +223,7 @@ _No merges._
 - **[Saratoga Creek Park](https://www.google.com/maps/search/?api=1&query=37.3022136%2C-121.99563649999997&query_place_id=ChIJC2vOt1m1j4ARz3gLtPcFySQ)** (455 rev) absorbs: [Saratoga Creek Dog Park, San Jose, CA](https://www.google.com/maps/search/?api=1&query=37.2957751%2C-121.99690820000001&query_place_id=ChIJZabqHle1j4AR0FxTJlgWbnI)(346,park)
 - **[Francisco Park](https://www.google.com/maps/search/?api=1&query=37.804385599999996%2C-122.42100429999999&query_place_id=ChIJraufRSeBhYARt-3p5SCli4A)** (453 rev) absorbs: [Pepi's Dog Play Area](https://www.google.com/maps/search/?api=1&query=37.804563699999996%2C-122.42091649999999&query_place_id=ChIJG36VbzeBhYAR60vKL17GgVw)(10,osm)
 - **[India Basin Shoreline Park](https://www.google.com/maps/search/?api=1&query=37.73415380000001%2C-122.37594179999998&query_place_id=ChIJuxIN_2t_j4ARProX9pmqB-o)** (449 rev) absorbs: [India Basin Waterfront Park](https://www.google.com/maps/search/?api=1&query=37.7322136%2C-122.37577449999999&query_place_id=ChIJWxFX7lx_j4ARq-MI38GWC_U)(33,manual)
-- **[Potrero del Sol Park](https://www.google.com/maps/search/?api=1&query=37.750583299999995%2C-122.405084&query_place_id=ChIJI-kHTUx-j4ARXZWVjoYDkIQ)** (446 rev) absorbs: [Potrero Hill Community Garden](https://www.google.com/maps/search/?api=1&query=37.759805799999995%2C-122.40528429999999&query_place_id=ChIJuXpLszV-j4ARdijvs256-9k)(108,park); [Potrero del Sol Community Garden](https://www.google.com/maps/search/?api=1&query=37.7497578%2C-122.4052303&query_place_id=ChIJWxJ_6rJ_j4AR1GvfDLRWa6I)(7,manual)
+- **[Potrero del Sol Park](https://www.google.com/maps/search/?api=1&query=37.750583299999995%2C-122.405084&query_place_id=ChIJI-kHTUx-j4ARXZWVjoYDkIQ)** (446 rev) absorbs: [Potrero del Sol Community Garden](https://www.google.com/maps/search/?api=1&query=37.7497578%2C-122.4052303&query_place_id=ChIJWxJ_6rJ_j4AR1GvfDLRWa6I)(7,manual)
 - **[Paso Nogal Park](https://www.google.com/maps/search/?api=1&query=37.967093%2C-122.08891899999999&query_place_id=ChIJwZIgYR5khYAR3BbfCnQ3dMo)** (428 rev) absorbs: [Paso Nogal Dog Park](https://www.google.com/maps/search/?api=1&query=37.9666948%2C-122.0893815&query_place_id=ChIJeWASRABlhYARuEBXd3jllBY)(41,manual)
 - **[Mount Eden Park](https://www.google.com/maps/search/?api=1&query=37.6306831%2C-122.0993528&query_place_id=ChIJcQApbLqWj4ARkTsm99UA50s)** (424 rev) absorbs: [Eden Greenway Dog Park](https://www.google.com/maps/search/?api=1&query=37.6344281%2C-122.0973554&query_place_id=ChIJg9WotrGWj4ARdfazfeL5YDQ)(175,park)
 - **[Dracena Quarry Park](https://www.google.com/maps/search/?api=1&query=37.8270682%2C-122.2386212&query_place_id=ChIJR5M332GHj4ARdenBhc4pcEM)** (415 rev) absorbs: [Dracena Park Entrance](https://www.google.com/maps/search/?api=1&query=37.8262121%2C-122.2403931&query_place_id=ChIJXfoBMWCHj4AR_rXT04q_biU)(88)

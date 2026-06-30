@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1646,
+  "count": 1647,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -23742,6 +23742,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5731028,
     "lon": -122.3476606
+   },
+   {
+    "id": "ChIJuXpLszV-j4ARdijvs256-9k",
+    "name": "Potrero Hill Community Garden",
+    "primaryType": "garden",
+    "types": [
+     "garden",
+     "association_or_organization",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "780 San Bruno Ave, San Francisco, CA 94107, USA",
+    "rating": 4.8,
+    "userRatingCount": 108,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.759805799999995,
+    "lon": -122.40528429999999
    },
    {
     "id": "ChIJZY5nnxoyjoARCKWLoTCqGiM",
