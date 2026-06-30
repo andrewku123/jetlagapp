@@ -671,7 +671,7 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
         const maps = `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`
         marker.bindPopup(
           `<div class="popup"><strong>${escapeHtml(p.name)}</strong>` +
-            `<div class="muted">${escapeHtml(p.label)} · ${p.reviews} reviews</div>` +
+            `<div class="muted">${escapeHtml(p.label)}</div>` +
             `<a href="${maps}" target="_blank" rel="noreferrer">Open in Google Maps</a></div>`,
         )
       }
