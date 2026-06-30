@@ -94,6 +94,34 @@ def fill_holes(geom):
     return unary_union([Polygon(g.exterior) for g in geom.geoms])
 
 
+# A corridor traced down the open water of the central + south San Francisco Bay,
+# cut off at the Bay Bridge on the north (San Pablo Bay above it is left grey).
+# It hugs the bay so it never covers the East Bay hills; the actual shoreline is
+# carved out by subtracting the land places. Display-only (dimming + satellite).
+BAY_CORRIDOR_LL = [
+    (-122.40, 37.82), (-122.28, 37.82), (-122.18, 37.73), (-122.10, 37.66),
+    (-122.02, 37.57), (-121.98, 37.50), (-122.05, 37.45), (-122.13, 37.48),
+    (-122.22, 37.55), (-122.30, 37.63), (-122.37, 37.72), (-122.40, 37.78),
+]
+BAY_SEEDS_LL = [(-122.33, 37.79), (-122.13, 37.58), (-122.10, 37.50)]
+
+
+def bay_water(places_all_m, to_m):
+    """The open bay water (central + south, up to the Bay Bridge) as a polygon:
+    the hand-traced bay corridor minus every land place, keeping the connected
+    water component(s) that contain a known mid-bay point."""
+    corr = Polygon([to_m(lon, lat) for lon, lat in BAY_CORRIDOR_LL])
+    land = unary_union(list(places_all_m.values()))
+    water = corr.difference(land)
+    polys = [water] if water.geom_type == "Polygon" else \
+        [g for g in getattr(water, "geoms", []) if g.geom_type == "Polygon"]
+    seeds = [Point(*to_m(lon, lat)) for lon, lat in BAY_SEEDS_LL]
+    keep = [p for p in polys if any(p.intersects(s) for s in seeds)]
+    if not keep and polys:
+        keep = [max(polys, key=lambda p: p.area)]
+    return unary_union(keep) if keep else None
+
+
 def main():
     stations = json.load(open(STATIONS))
     lats = [s["lat"] for s in stations]
@@ -148,15 +176,17 @@ def main():
         reason.pop(n, None)
 
     keep = sorted(reason)
-    # Play area = the kept city polygons, UNION the 0.5 mi hiding-zone disk around
-    # every eligible station (so the immediate hideable area around a station is
-    # always in play even where it spills outside city limits — e.g. the
-    # unincorporated land by Orinda BART), then any fully-enclosed interior hole
-    # filled in (a pocket surrounded on all sides by in-play land is itself in
-    # play — e.g. San Bruno Mountain between Daly City/Colma/Brisbane/South SF, or
-    # the unincorporated pockets around Fremont/Newark/Union City).
+    # Play area = the WHOLE kept place polygons (city granularity, no raw circular
+    # disks). When a station's hiding zone protrudes out of its own city, the
+    # "reachable" rule above has already pulled in the entire neighbouring place
+    # the zone reaches (e.g. Dublin/Pleasanton both whole-in for the Dublin BART
+    # disk), so the boundary stays on clean city limits instead of painting a
+    # circle bump into open space. Then fill any fully-enclosed interior hole — a
+    # pocket ringed on all sides by in-play land is itself in play (e.g. San Bruno
+    # Mountain between Daly City/Colma/Brisbane/South SF, or the unincorporated
+    # pockets around Fremont/Newark/Union City).
     city_m = unary_union([places_m[n] for n in keep])
-    union_m = fill_holes(unary_union([city_m, zone]))
+    union_m = fill_holes(city_m)
     union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 
@@ -174,7 +204,12 @@ def main():
         # The app only uses this polygon for display (out-of-play dimming mask,
         # satellite clip-path / tile culling), not for any correctness check, so
         # ship a simplified version (~40 m tolerance) to keep the clip-path light.
-        simp_ll = transform(to_ll, union_m.simplify(40.0, preserve_topology=True))
+        # The open bay water (up to the Bay Bridge) is unioned in for display only
+        # so the bay shows as water instead of grey — it is NOT in play_area.geojson
+        # and does not affect POI clipping or which places are in play.
+        bay = bay_water(places_m, to_m)
+        display_m = unary_union([union_m, bay]) if bay is not None else union_m
+        simp_ll = transform(to_ll, display_m.simplify(40.0, preserve_topology=True))
         app_feat = {"type": "Feature", "properties": {"name": "play-area"},
                     "geometry": mapping(simp_ll)}
         json.dump({"type": "FeatureCollection", "features": [app_feat]},

@@ -4,14 +4,14 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 | Category | before | after | name-merged | osm-merged | manual |
 |---|---|---|---|---|---|
-| Museums | 218 | 186 | 5 | 6 | 5 |
+| Museums | 213 | 181 | 5 | 6 | 5 |
 | Libraries | 219 | 210 | 2 | 4 | 2 |
 | Movie Theaters | 75 | 70 | 3 | 1 | 0 |
 | Hospitals | 226 | 131 | 43 | 22 | 30 |
 | Zoos | 6 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 18 | 14 | 0 | 0 | 0 |
-| Parks | 1992 | 1722 | 36 | 232 | 2 |
+| Parks | 1990 | 1720 | 36 | 232 | 2 |
 | Golf Courses | 69 | 63 | 1 | 3 | 2 |
 | Consulates | 47 | 40 | 0 | 0 | 1 |
 | Mountains | 54 | 52 | 0 | 0 | 2 |
@@ -19,7 +19,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 
 
-## Museums — 218 → 186 (name −5, osm −6 −5 manual)
+## Museums — 213 → 181 (name −5, osm −6 −5 manual)
 
 
 **Merged (7 groups):**
@@ -121,7 +121,7 @@ _No merges._
 _No merges._
 
 
-## Parks — 1992 → 1722 (name −36, osm −232 −2 manual)
+## Parks — 1990 → 1720 (name −36, osm −232 −2 manual)
 
 
 **Merged (168 groups):**

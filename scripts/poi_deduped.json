@@ -1,6 +1,6 @@
 {
  "museum": {
-  "count": 186,
+  "count": 181,
   "places": [
    {
     "id": "ChIJ53I1Yn2AhYAR_Vl1vNygfMg",
@@ -588,23 +588,6 @@
     "lon": -122.41321610000001
    },
    {
-    "id": "ChIJAQAAANWwj4ARwi4IwGaw3pM",
-    "name": "Moffett Field Museum",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Building 126, Severyns Ave, Mountain View, CA 94035, USA",
-    "rating": 4.6,
-    "userRatingCount": 645,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.411155799999996,
-    "lon": -122.0542111
-   },
-   {
     "id": "ChIJ3dPu2zl-j4ARe9aRil_Yrmk",
     "name": "Randall Museum",
     "primaryType": "museum",
@@ -1129,23 +1112,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.353108299999995,
     "lon": -121.9362194
-   },
-   {
-    "id": "ChIJsUM6Mpd3j4ARMQf5LGgx9fw",
-    "name": "SFO Museum Louis A. Turpen Aviation Museum and Library",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "International Terminal Departures Level, San Francisco, CA 94128, USA",
-    "rating": 4.4,
-    "userRatingCount": 195,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.615014099999996,
-    "lon": -122.388899
    },
    {
     "id": "ChIJWw1ZRiqHhYARMvzK-KRKl9E",
@@ -1772,22 +1738,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.349953899999996,
     "lon": -121.9405869
-   },
-   {
-    "id": "ChIJMVLxukF3j4ARSPlx4pF6uwE",
-    "name": "SFO Museum Gallery Harvey Milk Terminal 1",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco International Airport, SFO), Terminal 1, San Francisco, CA 94128, USA",
-    "rating": 4.7,
-    "userRatingCount": 69,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.6145318,
-    "lon": -122.3853714
    },
    {
     "id": "ChIJq9ZkDL2Jj4ARCFdY8upQEI8",
@@ -2511,23 +2461,6 @@
     "lon": -122.4269497
    },
    {
-    "id": "ChIJVaOQJt53j4ARNeTBYsgfDD4",
-    "name": "SFO Museum International Terminal ( FLY & EXPLORE VIDEO ARTS )",
-    "primaryType": "art_museum",
-    "types": [
-     "art_museum",
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "International Terminal Departures Level, San Francisco, CA 94128, USA",
-    "rating": 4.3,
-    "userRatingCount": 14,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.6161769,
-    "lon": -122.39012229999999
-   },
-   {
     "id": "ChIJj6mJ5qPJj4ARtQyoZ61jbn4",
     "name": "Agnews Historic Cemetery",
     "primaryType": "museum",
@@ -2560,22 +2493,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7052618,
     "lon": -122.4617456
-   },
-   {
-    "id": "ChIJp3USt16AhYARYvwOJld3Owo",
-    "name": "Fisher Bay Observatory Gallery",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Pier 15, The Embarcadero, San Francisco, CA 94111, USA",
-    "rating": 4.4,
-    "userRatingCount": 12,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8023284,
-    "lon": -122.39693729999999
    },
    {
     "id": "ChIJW_Xu18ODhYARQQDLxCdBHEc",
@@ -11080,7 +10997,7 @@
   ]
  },
  "park": {
-  "count": 1722,
+  "count": 1720,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -11509,23 +11426,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3228222,
     "lon": -121.85812800000001
-   },
-   {
-    "id": "ChIJkZyW-2-AhYARzCwWSe3qHMQ",
-    "name": "Rincon Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "The Embarcadero & Folsom St, San Francisco, CA 94105, USA",
-    "rating": 4.6,
-    "userRatingCount": 2995,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7916129,
-    "lon": -122.38995059999999
    },
    {
     "id": "ChIJoTYXIyK6j4ARXJNLdHVtPaY",
@@ -34327,22 +34227,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7782543,
     "lon": -122.4132913
-   },
-   {
-    "id": "ChIJOwL8nuCBhYAR8NzYIl8Py0g",
-    "name": "Pier 43 Promenade",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco, CA 94133, USA",
-    "rating": 4.8,
-    "userRatingCount": 16,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.809204099999995,
-    "lon": -122.4129973
    },
    {
     "id": "ChIJRwy567Dpj4AR8neT145JpTg",

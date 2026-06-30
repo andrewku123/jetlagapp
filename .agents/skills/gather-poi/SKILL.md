@@ -363,46 +363,55 @@ A place is **in play** if ANY of:
 4. **Manual keep** — listed in `play_area_overrides.json` `"keep"` (escape hatch;
    Bay Area keeps Cupertino). `"drop"` is the opposite override.
 
-The play-area polygon is then the union of those kept places **plus two geometry
-steps** that close gaps you can actually hide in:
-- **Station hiding-zone disks.** Union in the `hide_radius_mi` disk around *every*
-  eligible station, not just the city polygons. The hideable area immediately
-  around a station is always in play even where it spills outside city limits
-  (e.g. the unincorporated land right by Orinda BART that the city polygon
-  excludes). Without this, land within the hiding radius gets wrongly greyed.
-- **Fill fully-enclosed holes** (`fill_holes`). Any pocket ringed on all sides by
-  in-play land is itself in play — surrounded ⇒ in (e.g. San Bruno Mountain
-  between Daly City/Colma/Brisbane/South San Francisco, and the unincorporated
-  pockets around Fremont/Newark/Union City). Concave bays that open to the outside
-  are not interior rings, so far open space (the East Bay hills, which open east to
-  out-of-play land) stays out.
+The play-area polygon is **whole-place granularity** — the union of the *entire*
+kept place polygons, no raw circular disks. When a station's hiding zone protrudes
+out of its own city, rule 2 ("reachable") has already pulled in the **whole**
+neighbouring place the zone reaches (e.g. the Dublin/Pleasanton BART disk → both
+Dublin and Pleasanton whole-in), so the boundary stays on clean city limits
+instead of painting a circle bump into open space. (An earlier version unioned in
+the bare disks; that left ugly circles poking into unincorporated open space, so
+we reverted to whole-place.)
+
+One geometry step is applied to the union: **fill fully-enclosed holes**
+(`fill_holes`). Any pocket ringed on all sides by in-play land is itself in play —
+surrounded ⇒ in (e.g. San Bruno Mountain between Daly City/Colma/Brisbane/South
+San Francisco, and the unincorporated pockets around Fremont/Newark/Union City).
+Concave bays that open to the outside are not interior rings, so far open space
+(the East Bay hills, which open east to out-of-play land) stays out.
 
 This drops the no-rail sprawl (Gilroy, Morgan Hill, Half Moon Bay, Livermore, San
-Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want —
-while keeping every spot a hider could legally be.
+Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want.
 
 **Clipping is strict, with one buffer.** `dedup_poi.py` clips every POI to the
 play area before dedup:
 - **Parks & mountains (`NATURAL_CATS`) — strict:** must be inside the raw
-  play-area polygon (`play_area.geojson` — the city union plus station disks and
-  filled holes), no shoreline buffer. This deliberately drops big open-space
-  landmarks that sit in *out-of-play* unincorporated land (Mt. Diablo, Mission
-  Peak, Tilden, Mt. Tam, Rancho San Antonio…), emptying most of the mountains
-  category. That is intended. Note open space that is *surrounded* by in-play land
-  (a filled hole, e.g. San Bruno Mountain) or within a station's hiding disk is
-  in play and its parks/mountains are kept.
+  play-area polygon (`play_area.geojson` — the whole-place union plus filled
+  holes), no shoreline buffer. This deliberately drops big open-space landmarks
+  that sit in *out-of-play* unincorporated land (Mt. Diablo, Mission Peak, Tilden,
+  Mt. Tam, Rancho San Antonio…), emptying most of the mountains category. That is
+  intended. Note open space that is *surrounded* by in-play land (a filled hole,
+  e.g. San Bruno Mountain) is in play and its parks/mountains are kept.
 - **All other categories — 150 m shoreline buffer** (`play_area_buffered.geojson`)
   so waterfront/pier pins that belong to an in-play city but sit just off the land
   polygon survive (Exploratorium, USS Hornet, USS Pampanito, Musée Mécanique…).
   Discovery (`poi_geo`) also uses the buffered union so these are *found* in the
   first place.
 
-**Outputs of `build_play_area.py`:** `play_area.geojson` (raw union, used for the
-strict clip), `play_area_buffered.geojson` (150 m buffer, used for discovery + the
-non-natural clip), `play_area_cities.json` (the keep list + why each qualified),
-and a **simplified** copy written to the app's `src/data/play-area.geojson.json`
-(display only — out-of-play dimming mask + satellite clip; the app no longer uses
-counties for the play area). The review map draws this boundary as a blue outline.
+**Outputs of `build_play_area.py`:** `play_area.geojson` (raw whole-place union +
+filled holes, used for the strict clip), `play_area_buffered.geojson` (150 m
+buffer, used for discovery + the non-natural clip), `play_area_cities.json` (the
+keep list + why each qualified), and a **simplified** copy written to the app's
+`src/data/play-area.geojson.json` (display only — out-of-play dimming mask +
+satellite clip; the app no longer uses counties for the play area). The review map
+draws the `play_area.geojson` boundary as a blue outline.
+
+**Bay water is added to the app copy only.** `bay_water()` traces the open central
++ south bay (cut off at the Bay Bridge — San Pablo Bay north of it stays grey),
+subtracts the land places to snap to the real shoreline, and is unioned **only**
+into the simplified app `play-area.geojson.json` so the bay renders as water
+instead of grey. It is deliberately **not** in `play_area.geojson`, so it never
+affects POI clipping or which places are in play. For a new city, retrace
+`BAY_CORRIDOR_LL`/`BAY_SEEDS_LL` (or drop the bay step) to match its waterways.
 
 ## Sports stadiums (professional only)
 
