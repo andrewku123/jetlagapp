@@ -10,11 +10,12 @@ mask, leaving the in-play cities clear. This visually communicates the game
 boundary without affecting elimination logic.
 
 The play area is the **union of transit-served city/town/CDP polygons** (not
-counties). It is produced by `scripts/build_play_area.py` in the POI pipeline
-(a place qualifies if any part of it is within a hiding zone of an eligible
-station, or it is a transit-enclosed enclave, plus a manual keep/drop override —
-see the `gather-poi` skill) and shipped to the app as a single (simplified)
-polygon.
+counties), plus the 0.5 mi hiding-zone disk around every station and any
+fully-enclosed hole filled in. It is produced by `scripts/build_play_area.py` in
+the POI pipeline (a place qualifies if any part of it is within a hiding zone of
+an eligible station, or it is a transit-enclosed enclave, plus a manual keep/drop
+override; then station disks are unioned in and surrounded pockets filled — see
+the `gather-poi` skill) and shipped to the app as a single (simplified) polygon.
 
 ## Data
 `src/data/play-area.geojson.json` — a GeoJSON `FeatureCollection` with the
