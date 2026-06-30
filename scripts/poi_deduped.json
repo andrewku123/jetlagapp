@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1644,
+  "count": 1646,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -25473,6 +25473,22 @@
     "lon": -122.0591529
    },
    {
+    "id": "ChIJSbBJrmKVj4ARx4cWDsICxYE",
+    "name": "Union City Skatepark",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "34009 Alvarado-Niles Rd, Union City, CA 94587, USA",
+    "rating": 4.4,
+    "userRatingCount": 81,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.5865791,
+    "lon": -122.0261463
+   },
+   {
     "id": "ChIJ_0ylJh14hYARjgHSqmSGE-c",
     "name": "Wendell Playground",
     "primaryType": "park",
@@ -27115,6 +27131,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5373673,
     "lon": -122.31482910000001
+   },
+   {
+    "id": "ChIJNX7gR59_j4AReTFhMyX2qVg",
+    "name": "Upper Noe Dog Play Area",
+    "primaryType": "dog_park",
+    "types": [
+     "dog_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "207 Day St, San Francisco, CA 94131, USA",
+    "rating": 4.4,
+    "userRatingCount": 63,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.7425844,
+    "lon": -122.42712309999999
    },
    {
     "id": "ChIJh_mpjm-7j4AR1afs4d9OzbU",
@@ -34404,6 +34437,23 @@
     "lon": -121.9411782
    },
    {
+    "id": "ChIJcVKJAuh3j4ARxdhFIUzFneU",
+    "name": "Millbrae Community Garden",
+    "primaryType": "garden",
+    "types": [
+     "garden",
+     "association_or_organization",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Millbrae, CA 94030, USA",
+    "rating": 4.7,
+    "userRatingCount": 12,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.6009002,
+    "lon": -122.39956980000001
+   },
+   {
     "id": "ChIJM8gbJQx-j4ARpgLTa0x3p50",
     "name": "Noe Valley Park",
     "primaryType": "city_park",
@@ -35733,22 +35783,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.9229886,
     "lon": -122.0748673
-   },
-   {
-    "id": "ChIJdWXTQqCIj4ARKGXYH9crdsE",
-    "name": "Leona Heights Sulfur Mine",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5250 McDonell Ave, Oakland, CA 94619, USA",
-    "rating": 3.9,
-    "userRatingCount": 9,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.788506100000006,
-    "lon": -122.17303309999998
    },
    {
     "id": "ChIJ01hLFY6Bj4AR02hsEYZynag",

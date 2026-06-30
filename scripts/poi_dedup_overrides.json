@@ -677,6 +677,18 @@
     "Mission Creek Park North",
     37.771441,
     -122.398362
+   ],
+   [
+    "Leona Canyon Trail Head",
+    "Leona Canyon Regional Open Space Preserve",
+    37.78192,
+    -122.15135
+   ],
+   [
+    "Leona Heights Sulfur Mine",
+    "Leona Heights Park",
+    37.79269,
+    -122.17646
    ]
   ],
   "drop": [
@@ -699,6 +711,20 @@
     "Giant Highway Staging Area",
     37.99179,
     -122.35617
+   ]
+  ],
+  "separate": [
+   [
+    "Upper Noe Dog Play Area",
+    "Noe Valley Town Square"
+   ],
+   [
+    "Millbrae Community Garden",
+    "Millbrae Spur Trail"
+   ],
+   [
+    "Union City Skatepark",
+    "Union City Pyramid"
    ]
   ]
  },
