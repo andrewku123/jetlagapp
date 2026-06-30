@@ -343,44 +343,42 @@ wire the categories into the POI tab (see `build_poi_data.py` / the POI-tab PR).
 
 ## Defining the play area (which cities are in play)
 
-The play area is **not** a hand-drawn boundary or a county list — it is the
-**union of the Census places (city / town / CDP) that transit actually serves**,
-computed by `build_play_area.py` straight from `stations.json`. This keeps the
-playable area tight (only places you can realistically reach/hide near a station),
-which also means far fewer POIs to audit. **Use this same rule for every city.**
+The play area is **not** a hand-drawn boundary. It is built by `build_play_area.py`
+as an **opt-out, county-scoped curation**: start from every Census place in the
+transit counties, then a human deletes the ones they don't want. **Use this same
+model for every city.** The steps:
 
-A place is **in play** if ANY of:
-1. **Station-city** — it contains an eligible station.
-2. **Reachable / hideable** — any part of it lies within one hiding-zone radius
-   (`hide_radius_mi`, the *largest* game size — 0.5 mi for the Bay Area, so it
-   covers all smaller game sizes) of an eligible station. Catches places whose
-   station sits just over the line (e.g. Dublin → Dublin/Pleasanton BART).
-3. **Transit-enclosed enclave** — it is surrounded by in-play places: >30% of its
-   perimeter is adjacent to in-play places and <12% adjacent to out-of-play
-   places. Keeps islands/enclaves (Alameda, Foster City, Newark, Emeryville,
-   Piedmont, East Palo Alto…) while excluding open-space border towns (Los Altos,
-   Moraga, Danville…).
-4. **Manual keep** — listed in `play_area_overrides.json` `"keep"` (escape hatch;
-   Bay Area keeps Cupertino). `"drop"` is the opposite override.
+1. **Transit counties** — the distinct `county` values on the eligible stations
+   (Bay Area: San Francisco, Alameda, Contra Costa, San Mateo, Santa Clara). The
+   county cartographic-boundary shapefile is downloaded automatically.
+2. **Candidate set = every Census place (city / town / CDP)** with ≥10% of its
+   area in those counties (131 places for the Bay Area).
+3. **Manual delete** — the curator lists the places to remove in
+   `play_area_overrides.json` `"drop"` (Census `NAMELSAD`, e.g. `"Gilroy city"`,
+   `"Moss Beach CDP"`). Everything not dropped is kept. `"keep"` force-keeps a
+   place even if the auto-clean below would remove it.
+4. **Auto-clean surrounded CDPs** — any kept *unincorporated* place (CDP) left
+   completely surrounded by non-playable area (its border touches no other kept
+   place, `< SURROUND_MIN_FRAC`) is dropped too — a lone island in the grey. Runs
+   to a fixed point (removing one island can isolate its neighbour). Incorporated
+   cities/towns are never auto-dropped; only the curator removes those.
+5. **Play area = the union of the kept place polygons**, whole-place granularity
+   (no raw disks), then **fill fully-enclosed holes** (`fill_holes`): any pocket
+   ringed on all sides by in-play land is itself in play — surrounded ⇒ in (e.g.
+   San Bruno Mountain between Daly City/Colma/Brisbane/South San Francisco, and
+   the unincorporated pockets around Fremont/Newark/Union City). Concave bays that
+   open to the outside are not interior rings, so far open space stays out.
 
-The play-area polygon is **whole-place granularity** — the union of the *entire*
-kept place polygons, no raw circular disks. When a station's hiding zone protrudes
-out of its own city, rule 2 ("reachable") has already pulled in the **whole**
-neighbouring place the zone reaches (e.g. the Dublin/Pleasanton BART disk → both
-Dublin and Pleasanton whole-in), so the boundary stays on clean city limits
-instead of painting a circle bump into open space. (An earlier version unioned in
-the bare disks; that left ugly circles poking into unincorporated open space, so
-we reverted to whole-place.)
-
-One geometry step is applied to the union: **fill fully-enclosed holes**
-(`fill_holes`). Any pocket ringed on all sides by in-play land is itself in play —
-surrounded ⇒ in (e.g. San Bruno Mountain between Daly City/Colma/Brisbane/South
-San Francisco, and the unincorporated pockets around Fremont/Newark/Union City).
-Concave bays that open to the outside are not interior rings, so far open space
-(the East Bay hills, which open east to out-of-play land) stays out.
-
+The **open land between/around the kept places** (regional parks, ranchland, the
+big mountains, the east-county hills, the Santa Cruz range) is not a named place,
+so it stays out — the play area trims to the transit cities, not the whole county.
 This drops the no-rail sprawl (Gilroy, Morgan Hill, Half Moon Bay, Livermore, San
 Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want.
+
+*(History: earlier models were opt-in — county clip, then a station/reachable/
+enclave auto-include heuristic, then a station-disk union. The opt-out curation
+replaced them because it is simpler to reason about and gives the curator exact
+control over the boundary.)*
 
 **Clipping is strict, with one buffer.** `dedup_poi.py` clips every POI to the
 play area before dedup:

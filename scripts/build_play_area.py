@@ -1,17 +1,23 @@
 #!/usr/bin/env python3
-"""Build the play-area polygon from the eligible stations.
+"""Build the play-area polygon — opt-out, county-scoped model.
 
-General rule (city-agnostic; works for any metro once stations.json exists):
-a Census place (city / town / CDP) is IN the play area if EITHER
-  1. it contains an eligible station, OR
-  2. it is *reachable / hideable* — any part of it lies within the largest
-     hiding-zone radius (0.5 mi) of an eligible station, OR
-  3. it is *transit-enclosed* — an enclave whose land border is essentially all
-     in-play places and that touches no out-of-play place (e.g. Alameda, Foster
-     City, Newark, Piedmont, Emeryville). This keeps islands separated only by
-     water/in-play cities while excluding cities that open onto out-of-play
-     open space (Los Altos, Moraga's hills, Livermore).
-Plus a manual keep/drop list in play_area_overrides.json (e.g. Cupertino).
+General rule (works for any metro once stations.json exists):
+  1. Find the counties the transit network touches (the distinct `county` values
+     on the eligible stations).
+  2. The candidate set is EVERY Census place (city / town / CDP) in those
+     counties.
+  3. A curator deletes the places they don't want (play_area_overrides.json
+     "drop"). Everything not dropped is kept.
+  4. Auto-clean: any kept *unincorporated* place (CDP) left completely surrounded
+     by non-playable area — i.e. its border touches no other kept place — is
+     dropped too (a lone island in the grey). "keep" in the overrides force-keeps
+     a place even if it would be auto-dropped.
+  5. Play area = the union of the kept place polygons, then fill any fully
+     enclosed hole (a pocket ringed on all sides by in-play land is in play).
+
+The open land between/around the kept places (regional parks, ranchland, the big
+mountains, the east-county hills, the Santa Cruz range) is NOT a named place, so
+it stays out — the play area trims to the transit cities, not the whole county.
 
 POIs are then clipped to this polygon (see dedup_poi.py): strictly inside for
 natural categories (park, mountain); a small 150 m shoreline buffer is allowed
@@ -37,16 +43,17 @@ APP_PLAY_AREA = os.environ.get("APP_PLAY_AREA",
 OVERRIDES = os.path.join(HERE, "play_area_overrides.json")
 CACHE = os.path.join(HERE, "_census_place")
 
-HIDE_RADIUS_MI = 0.5            # largest game-size hiding radius
 SHORELINE_BUF_M = 150.0        # pier/waterfront rescue for non-natural POIs
-ENCLAVE_IN_MIN = 0.30          # >= this share of border adjacent to in-play
-ENCLAVE_OUT_MAX = 0.12         # <= this share of border adjacent to out-of-play places
-ADJ_TOL_M = 150.0
-# Census place shapefile (cartographic boundary, 1:500k, NAD83 ~ WGS84 for our use)
+ADJ_TOL_M = 150.0              # boundary-adjacency tolerance
+SURROUND_MIN_FRAC = 0.02      # a kept CDP touching <2% of its border to another
+                              # kept place counts as "surrounded by nonplayable"
+# Census place + county cartographic boundary files (1:500k, NAD83 ~ WGS84 here)
 CBF_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_06_place_500k.zip"
 CBF_STEM = "cb_2023_06_place_500k"
+COUNTY_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_county_500k.zip"
+COUNTY_STEM = "cb_2023_us_county_500k"
+STATE_NAME = "California"      # state the transit counties live in
 
-LAT0 = 37.6
 M = 111320.0
 
 
@@ -57,31 +64,54 @@ def _proj(lat0):
     return to_m, to_ll
 
 
-def ensure_shapefile():
-    shp = os.path.join(CACHE, CBF_STEM + ".shp")
+def ensure_shapefile(url, stem):
+    shp = os.path.join(CACHE, stem + ".shp")
     if os.path.exists(shp):
         return shp
     os.makedirs(CACHE, exist_ok=True)
-    print(f"downloading {CBF_URL} ...", file=sys.stderr)
-    data = urllib.request.urlopen(CBF_URL, timeout=180).read()
+    print(f"downloading {url} ...", file=sys.stderr)
+    data = urllib.request.urlopen(url, timeout=180).read()
     zipfile.ZipFile(io.BytesIO(data)).extractall(CACHE)
     return shp
 
 
-def load_places(bbox):
+def load_counties(names):
     import shapefile
-    r = shapefile.Reader(ensure_shapefile())
+    r = shapefile.Reader(ensure_shapefile(COUNTY_URL, COUNTY_STEM))
     flds = [f[0] for f in r.fields[1:]]
     out = {}
     for sh, rec in zip(r.shapes(), r.records()):
         d = dict(zip(flds, rec))
-        bb = sh.bbox
-        if bb[2] < bbox[0] or bb[0] > bbox[1] or bb[3] < bbox[2] or bb[1] > bbox[3]:
-            continue
+        if d.get("STATE_NAME") == STATE_NAME and d["NAME"] in names:
+            g = shape(sh.__geo_interface__)
+            if not g.is_valid:
+                g = g.buffer(0)
+            out[d["NAME"]] = g
+    return out
+
+
+def load_county_places(counties):
+    """Every Census place with >=10% of its area inside the given counties,
+    tagged with the county it overlaps most and whether it is a CDP."""
+    import shapefile
+    r = shapefile.Reader(ensure_shapefile(CBF_URL, CBF_STEM))
+    flds = [f[0] for f in r.fields[1:]]
+    out = {}
+    for sh, rec in zip(r.shapes(), r.records()):
+        d = dict(zip(flds, rec))
         g = shape(sh.__geo_interface__)
         if not g.is_valid:
             g = g.buffer(0)
-        out[d["NAMELSAD"]] = g
+        best, bestA = None, 0.0
+        for cn, cg in counties.items():
+            if g.intersects(cg):
+                a = g.intersection(cg).area
+                if a > bestA:
+                    bestA, best = a, cn
+        if best is None or bestA < 0.10 * g.area:
+            continue
+        nm = d["NAMELSAD"]
+        out[nm] = {"geom": g, "county": best, "cdp": nm.endswith("CDP")}
     return out
 
 
@@ -114,9 +144,8 @@ BAY_SEEDS_LL = [(-122.33, 37.79), (-122.36, 37.88), (-122.13, 37.58), (-122.10, 
 
 
 def bay_water(places_all_m, to_m):
-    """The open bay water (central + south, up to the Bay Bridge) as a polygon:
-    the hand-traced bay corridor minus every land place, keeping the connected
-    water component(s) that contain a known mid-bay point."""
+    """The open bay water as a polygon: the hand-traced bay corridor minus every
+    land place, keeping the connected water component(s) that contain a seed."""
     corr = Polygon([to_m(lon, lat) for lon, lat in BAY_CORRIDOR_LL])
     land = unary_union(list(places_all_m.values()))
     water = corr.difference(land)
@@ -132,66 +161,60 @@ def bay_water(places_all_m, to_m):
 def main():
     stations = json.load(open(STATIONS))
     lats = [s["lat"] for s in stations]
-    lons = [s["lon"] for s in stations]
     lat0 = sum(lats) / len(lats)
     to_m, to_ll = _proj(lat0)
-    pad = 0.5
-    bbox = (min(lons) - pad, max(lons) + pad, min(lats) - pad, max(lats) + pad)
 
-    places_ll = load_places(bbox)
-    places_m = {n: transform(to_m, g) for n, g in places_ll.items()}
-    station_cities = {s["city"] for s in stations}
-    missing = sorted(c for c in station_cities if c not in places_ll)
-    if missing:
-        print("WARN station cities with no place polygon:", missing, file=sys.stderr)
+    transit_counties = sorted({s["county"] for s in stations})
+    print("transit counties:", ", ".join(transit_counties))
+    counties_ll = load_counties(set(transit_counties))
+    missing_co = [c for c in transit_counties if c not in counties_ll]
+    if missing_co:
+        print("WARN counties with no polygon:", missing_co, file=sys.stderr)
 
-    stpts = [Point(*to_m(s["lon"], s["lat"])) for s in stations]
-    zone = unary_union([p.buffer(HIDE_RADIUS_MI * 1609.344) for p in stpts])
-    reachable = {n for n, g in places_m.items() if g.intersects(zone)}
-    base = (station_cities & set(places_m)) | reachable
-    baseU = unary_union([places_m[n] for n in base])
-
-    reason = {}
-    for n in station_cities & set(places_m):
-        reason[n] = "station"
-    for n in reachable - (station_cities & set(places_m)):
-        reason[n] = "reachable"
-
-    # transit-enclosed enclaves
-    nonbase = [n for n in places_m if n not in base]
-
-    def frac(b, other):
-        return b.intersection(other.buffer(ADJ_TOL_M)).length / b.length if b.length else 0.0
-
-    for n in nonbase:
-        b = places_m[n].boundary
-        others = [places_m[x] for x in nonbase if x != n]
-        ou = unary_union(others) if others else None
-        fi = frac(b, baseU)
-        fo = frac(b, ou) if ou is not None else 0.0
-        if fi >= ENCLAVE_IN_MIN and fo <= ENCLAVE_OUT_MAX:
-            reason[n] = "enclave"
+    places = load_county_places(counties_ll)
+    places_m = {n: transform(to_m, d["geom"]) for n, d in places.items()}
+    is_cdp = {n: d["cdp"] for n, d in places.items()}
 
     ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
-    for n in ov.get("keep", []):
-        if n not in places_ll:
-            print(f"WARN override keep not found: {n!r}", file=sys.stderr)
-        else:
-            reason[n] = reason.get(n, "manual-keep")
+    force_keep = set(ov.get("keep", []))
     drop = set(ov.get("drop", []))
-    for n in drop:
-        reason.pop(n, None)
+    for n in drop | force_keep:
+        if n not in places:
+            print(f"WARN override name not in candidate places: {n!r}", file=sys.stderr)
 
-    keep = sorted(reason)
-    # Play area = the WHOLE kept place polygons (city granularity, no raw circular
-    # disks). When a station's hiding zone protrudes out of its own city, the
-    # "reachable" rule above has already pulled in the entire neighbouring place
-    # the zone reaches (e.g. Dublin/Pleasanton both whole-in for the Dublin BART
-    # disk), so the boundary stays on clean city limits instead of painting a
-    # circle bump into open space. Then fill any fully-enclosed interior hole — a
-    # pocket ringed on all sides by in-play land is itself in play (e.g. San Bruno
-    # Mountain between Daly City/Colma/Brisbane/South SF, or the unincorporated
-    # pockets around Fremont/Newark/Union City).
+    kept = set(places) - drop
+    reason = {n: ("manual-keep" if n in force_keep else "kept") for n in kept}
+
+    # Auto-clean: drop kept CDPs left completely surrounded by non-playable area
+    # (border touches no other kept place). Iterate to a fixed point, since
+    # removing one island can isolate its neighbour. force_keep is immune.
+    auto_dropped = []
+    while True:
+        kl = sorted(kept)
+        removed_this_pass = []
+        for n in kl:
+            if not is_cdp[n] or n in force_keep:
+                continue
+            b = places_m[n].boundary
+            if not b.length:
+                continue
+            others = [places_m[x] for x in kept if x != n]
+            ou = unary_union(others) if others else None
+            fi = (b.intersection(ou.buffer(ADJ_TOL_M)).length / b.length) if ou is not None else 0.0
+            if fi < SURROUND_MIN_FRAC:
+                removed_this_pass.append(n)
+        if not removed_this_pass:
+            break
+        for n in removed_this_pass:
+            kept.discard(n)
+            reason.pop(n, None)
+            auto_dropped.append(n)
+    if auto_dropped:
+        print("auto-dropped (surrounded CDP):", ", ".join(sorted(auto_dropped)))
+        for n in sorted(auto_dropped):
+            reason  # already removed from reason
+
+    keep = sorted(kept)
     city_m = unary_union([places_m[n] for n in keep])
     union_m = fill_holes(city_m)
     union_ll = transform(to_ll, union_m)
@@ -202,18 +225,24 @@ def main():
     json.dump(feat, open(os.path.join(HERE, "play_area.geojson"), "w"))
     json.dump({"type": "Feature", "properties": {"name": "play-area-buffered"},
                "geometry": mapping(buf_ll)}, open(os.path.join(HERE, "play_area_buffered.geojson"), "w"))
-    json.dump({"hide_radius_mi": HIDE_RADIUS_MI, "shoreline_buffer_m": SHORELINE_BUF_M,
+    json.dump({"model": "opt-out-county",
+               "transit_counties": transit_counties,
+               "shoreline_buffer_m": SHORELINE_BUF_M,
+               "candidate_places": len(places),
+               "dropped_manual": sorted(drop),
+               "dropped_auto_surrounded": sorted(auto_dropped),
                "count": len(keep),
-               "cities": [{"name": n, "reason": reason[n]} for n in keep]},
+               "cities": [{"name": n, "county": places[n]["county"],
+                           "type": "CDP" if is_cdp[n] else "city/town",
+                           "reason": reason[n]} for n in keep]},
               open(os.path.join(HERE, "play_area_cities.json"), "w"), indent=1)
 
     if os.path.exists(os.path.dirname(APP_PLAY_AREA)):
         # The app only uses this polygon for display (out-of-play dimming mask,
         # satellite clip-path / tile culling), not for any correctness check, so
-        # ship a simplified version (~40 m tolerance) to keep the clip-path light.
-        # The open bay water (up to the Bay Bridge) is unioned in for display only
-        # so the bay shows as water instead of grey — it is NOT in play_area.geojson
-        # and does not affect POI clipping or which places are in play.
+        # ship a simplified version (~40 m tolerance). The open bay water is
+        # unioned in for display only so the bay shows as water instead of grey —
+        # it is NOT in play_area.geojson and never affects POI clipping.
         bay = bay_water(places_m, to_m)
         display_m = unary_union([union_m, bay]) if bay is not None else union_m
         simp_ll = transform(to_ll, display_m.simplify(40.0, preserve_topology=True))
@@ -223,13 +252,15 @@ def main():
                   open(APP_PLAY_AREA, "w"))
         print("updated app play-area:", APP_PLAY_AREA)
 
+    print(f"\nplay area = {len(keep)} kept places "
+          f"({len(places)} candidates - {len(drop)} manual - {len(auto_dropped)} auto)")
     by = {}
     for n in keep:
-        by.setdefault(reason[n], []).append(n)
-    print(f"play area = {len(keep)} places")
-    for r in ("station", "reachable", "enclave", "manual-keep"):
-        if by.get(r):
-            print(f"  {r:12} {len(by[r]):3}  {', '.join(by[r])}")
+        by.setdefault(places[n]["county"], []).append(n)
+    for cn in transit_counties:
+        lst = by.get(cn, [])
+        print(f"  {cn} ({len(lst)}): " +
+              ", ".join(x.replace(" city", "").replace(" town", "").replace(" CDP", "*") for x in lst))
 
 
 if __name__ == "__main__":
