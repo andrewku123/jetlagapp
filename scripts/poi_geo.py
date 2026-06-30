@@ -1,18 +1,27 @@
 """Shared, city-agnostic geometry helpers for the POI pipeline.
 
-The ONLY per-city input is the play-area polygon
-(`../src/data/play-area.geojson.json`). Bounding box, point-in-polygon and the
-Overpass area clause all derive from it, so no script hard-codes a city, bbox or
-county list.
+The per-city input is the set of eligible stations; `build_play_area.py` turns it
+into the play-area polygons. For *discovery/recall* (bbox, point-in-polygon,
+Overpass area) we use the 150 m-buffered city union (`play_area_buffered.geojson`)
+so waterfront/pier places just off the land polygon are still found; the precise
+strict clip (raw for parks/mountains, buffered for the rest) happens later in
+`dedup_poi.py`. If the buffered file is absent we fall back to the app polygon
+(`../src/data/play-area.geojson.json`). No script hard-codes a city/bbox/county.
 """
 import os, json
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_PLAY = os.path.join(HERE, "..", "src", "data", "play-area.geojson.json")
+BUFFERED_PLAY = os.path.join(HERE, "play_area_buffered.geojson")
+APP_PLAY = os.path.join(HERE, "..", "src", "data", "play-area.geojson.json")
+DEFAULT_PLAY = BUFFERED_PLAY if os.path.exists(BUFFERED_PLAY) else APP_PLAY
 
 
 def load_play(path=DEFAULT_PLAY):
-    return json.load(open(path))
+    g = json.load(open(path))
+    # normalize a bare Feature (build_play_area's output) to a FeatureCollection
+    if g.get("type") == "Feature":
+        return {"type": "FeatureCollection", "features": [g]}
+    return g
 
 
 def _rings(geom):

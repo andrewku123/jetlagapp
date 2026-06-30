@@ -17,16 +17,17 @@ must cover the **entire play area**. One full-area build serves all three.
 
 ## The one per-city input
 
-The **only** thing that changes between cities is the play-area polygon:
-`src/data/play-area.geojson.json`. Everything downstream — bounding box,
-point-in-polygon (`in_play`), Google search cells, and the OSM/Overpass area — is
-**derived from it** by `poi_geo.py`. To build a new city: **drop in that city's
-`play-area.geojson.json` and run the pipeline.** No script hard-codes a city,
-bbox, or county list.
+The **only** thing that changes between cities is the eligible-station set
+(`src/data/stations.json`). `build_play_area.py` turns those stations into the
+play-area polygons (see "Defining the play area" below), and everything
+downstream — bounding box, point-in-polygon (`in_play`), Google search cells, and
+the OSM/Overpass area — is **derived from the play polygon** by `poi_geo.py`. To
+build a new city: **drop in that city's `stations.json`, run `build_play_area.py`,
+then run the pipeline.** No script hard-codes a city, bbox, or county list.
 
 ```python
 # poi_geo.py — shared, city-agnostic helpers used by every gather/audit script
-play = poi_geo.load_play()                 # reads ../src/data/play-area.geojson.json
+play = poi_geo.load_play()                 # 150m-buffered city union (falls back to app polygon)
 poi_geo.bbox(play)        -> (lat0,lat1,lon0,lon1)
 poi_geo.bbox_swne(play)   -> (S,W,N,E)     # Overpass bbox order
 in_play = poi_geo.make_in_play(play)       # even-odd ray cast, holes/ocean handled
@@ -97,6 +98,8 @@ from existing transit geometry, no POI gather.
 
 ```bash
 cd scripts
+# 0. Build the play area from the eligible stations (FREE; see "Defining the play area")
+python3 build_play_area.py   # stations.json -> play_area.geojson(+_buffered), app play-area.geojson.json
 # 1. Google discovery (paid; use cheap mode by default — see Cost)
 POI_NO_REVIEWS=1 GOOGLE_PLACES_API_KEY=... python3 fetch_places_poi.py   # -> poi_full.json
 # 2. FREE OSM recall safety net: what Google's pull missed
@@ -337,6 +340,51 @@ on load, so corrections show without a hard refresh).
 ### 7. Apply to the app
 Once reviewers sign off, write `poi_deduped.json` into the app's `poi.json` and
 wire the categories into the POI tab (see `build_poi_data.py` / the POI-tab PR).
+
+## Defining the play area (which cities are in play)
+
+The play area is **not** a hand-drawn boundary or a county list — it is the
+**union of the Census places (city / town / CDP) that transit actually serves**,
+computed by `build_play_area.py` straight from `stations.json`. This keeps the
+playable area tight (only places you can realistically reach/hide near a station),
+which also means far fewer POIs to audit. **Use this same rule for every city.**
+
+A place is **in play** if ANY of:
+1. **Station-city** — it contains an eligible station.
+2. **Reachable / hideable** — any part of it lies within one hiding-zone radius
+   (`hide_radius_mi`, the *largest* game size — 0.5 mi for the Bay Area, so it
+   covers all smaller game sizes) of an eligible station. Catches places whose
+   station sits just over the line (e.g. Dublin → Dublin/Pleasanton BART).
+3. **Transit-enclosed enclave** — it is surrounded by in-play places: >30% of its
+   perimeter is adjacent to in-play places and <12% adjacent to out-of-play
+   places. Keeps islands/enclaves (Alameda, Foster City, Newark, Emeryville,
+   Piedmont, East Palo Alto…) while excluding open-space border towns (Los Altos,
+   Moraga, Danville…).
+4. **Manual keep** — listed in `play_area_overrides.json` `"keep"` (escape hatch;
+   Bay Area keeps Cupertino). `"drop"` is the opposite override.
+
+This drops the no-rail sprawl (Gilroy, Morgan Hill, Half Moon Bay, Livermore, San
+Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want.
+
+**Clipping is strict, with one buffer.** `dedup_poi.py` clips every POI to the
+play area before dedup:
+- **Parks & mountains (`NATURAL_CATS`) — strict:** must be inside the raw city
+  polygons. This deliberately drops big open-space landmarks that sit in
+  unincorporated land (Mt. Diablo, Mission Peak, Tilden, Mt. Tam, Rancho San
+  Antonio…), emptying most of the mountains category. That is intended: the play
+  area = cities, for every category.
+- **All other categories — 150 m shoreline buffer** (`play_area_buffered.geojson`)
+  so waterfront/pier pins that belong to an in-play city but sit just off the land
+  polygon survive (Exploratorium, USS Hornet, USS Pampanito, Musée Mécanique…).
+  Discovery (`poi_geo`) also uses the buffered union so these are *found* in the
+  first place.
+
+**Outputs of `build_play_area.py`:** `play_area.geojson` (raw union, used for the
+strict clip), `play_area_buffered.geojson` (150 m buffer, used for discovery + the
+non-natural clip), `play_area_cities.json` (the keep list + why each qualified),
+and a **simplified** copy written to the app's `src/data/play-area.geojson.json`
+(display only — out-of-play dimming mask + satellite clip; the app no longer uses
+counties for the play area). The review map draws this boundary as a blue outline.
 
 ## Sports stadiums (professional only)
 

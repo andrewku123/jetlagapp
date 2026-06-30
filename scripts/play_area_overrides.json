@@ -1,0 +1,7 @@
+{
+  "_comment": "Manual play-area exceptions on top of build_play_area.py's automatic rules (station / reachable-within-0.5mi / transit-enclosed-enclave). Names are Census NAMELSAD (e.g. 'Cupertino city'). 'keep' force-includes a place; 'drop' force-excludes one.",
+  "keep": [
+    "Cupertino city"
+  ],
+  "drop": []
+}

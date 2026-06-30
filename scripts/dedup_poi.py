@@ -28,10 +28,35 @@ Usage:  python dedup_poi.py [NAME_D] [SUB_D]
 import os, re, json, sys, math
 from collections import defaultdict
 from shapely import wkt as shp_wkt
-from shapely.geometry import Point
+from shapely.geometry import Point, shape as shp_shape
+from shapely.prepared import prep
 from shapely import STRtree
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
+# Categories whose pins must lie strictly inside the play-area city polygons.
+# Everything else gets a small shoreline buffer so pier/waterfront pins inside an
+# in-play city (Exploratorium, USS Hornet...) survive. See build_play_area.py.
+NATURAL_CATS = {"park", "mountain"}
+
+
+def load_play_area():
+    """Return (prepared_raw, prepared_buffered) play-area polygons, or (None,None)
+    if not built yet (filter is then a no-op)."""
+    raw = os.path.join(HERE, "play_area.geojson")
+    buf = os.path.join(HERE, "play_area_buffered.geojson")
+    if not os.path.exists(raw):
+        return None, None
+    g_raw = shp_shape(json.load(open(raw))["geometry"])
+    g_buf = shp_shape(json.load(open(buf))["geometry"]) if os.path.exists(buf) else g_raw
+    return prep(g_raw), prep(g_buf)
+
+
+def in_play(p, cat, pa_raw, pa_buf):
+    if pa_raw is None:
+        return True
+    poly = pa_raw if cat in NATURAL_CATS else pa_buf
+    return poly.contains(Point(p["lon"], p["lat"]))
 
 
 def load_osm(cat):
@@ -601,7 +626,18 @@ def main():
              "|---|---|---|---|---|---|"]
     viz = {}
 
+    pa_raw, pa_buf = load_play_area()
+    oop_total = 0   # POIs dropped for falling outside the play area
+
     for key in [k for k in LABEL if k in curated]:
+        # Clip to the play area (union of transit-served city polygons). Natural
+        # categories (park/mountain) must be strictly inside; others get a small
+        # shoreline buffer so in-city pier pins survive. See build_play_area.py.
+        n_before_clip = len(curated[key]["places"])
+        curated[key]["places"] = [p for p in curated[key]["places"]
+                                  if in_play(p, key, pa_raw, pa_buf)]
+        oop_total += n_before_clip - len(curated[key]["places"])
+
         # auto-drop only places Google reports CLOSED_PERMANENTLY. Backfilled pins
         # (authoritative/OSM) arrive without a status until refresh_business_status.py
         # fills it in -- this catches those plus any place perm-closed since the pull.
@@ -680,6 +716,8 @@ def main():
         json.dump(viz, f)
         f.write(";")
     print("\n".join(table))
+    if pa_raw is not None:
+        print(f"\nplay-area clip: dropped {oop_total} POIs outside the city polygons")
     print("\nwrote poi_deduped.json + poi_dedup_review.md + poi_merge_viz.js")
 
 

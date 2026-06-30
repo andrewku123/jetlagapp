@@ -1,0 +1,299 @@
+{
+ "hide_radius_mi": 0.5,
+ "shoreline_buffer_m": 150.0,
+ "count": 73,
+ "cities": [
+  {
+   "name": "Acalanes Ridge CDP",
+   "reason": "reachable"
+  },
+  {
+   "name": "Alameda city",
+   "reason": "enclave"
+  },
+  {
+   "name": "Albany city",
+   "reason": "reachable"
+  },
+  {
+   "name": "Alum Rock CDP",
+   "reason": "reachable"
+  },
+  {
+   "name": "Antioch city",
+   "reason": "station"
+  },
+  {
+   "name": "Ashland CDP",
+   "reason": "station"
+  },
+  {
+   "name": "Atherton town",
+   "reason": "reachable"
+  },
+  {
+   "name": "Bay Point CDP",
+   "reason": "station"
+  },
+  {
+   "name": "Belmont city",
+   "reason": "station"
+  },
+  {
+   "name": "Berkeley city",
+   "reason": "station"
+  },
+  {
+   "name": "Brisbane city",
+   "reason": "reachable"
+  },
+  {
+   "name": "Broadmoor CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Burlingame city",
+   "reason": "station"
+  },
+  {
+   "name": "Cambrian Park CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Campbell city",
+   "reason": "station"
+  },
+  {
+   "name": "Castro Valley CDP",
+   "reason": "station"
+  },
+  {
+   "name": "Cherryland CDP",
+   "reason": "reachable"
+  },
+  {
+   "name": "Clayton city",
+   "reason": "enclave"
+  },
+  {
+   "name": "Colma town",
+   "reason": "station"
+  },
+  {
+   "name": "Concord city",
+   "reason": "station"
+  },
+  {
+   "name": "Contra Costa Centre CDP",
+   "reason": "station"
+  },
+  {
+   "name": "Cupertino city",
+   "reason": "manual-keep"
+  },
+  {
+   "name": "Daly City city",
+   "reason": "station"
+  },
+  {
+   "name": "Dublin city",
+   "reason": "reachable"
+  },
+  {
+   "name": "East Foothills CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "East Palo Alto city",
+   "reason": "enclave"
+  },
+  {
+   "name": "East Richmond Heights CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "El Cerrito city",
+   "reason": "station"
+  },
+  {
+   "name": "Emerald Lake Hills CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Emeryville city",
+   "reason": "enclave"
+  },
+  {
+   "name": "Fairview CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Foster City city",
+   "reason": "enclave"
+  },
+  {
+   "name": "Fremont city",
+   "reason": "station"
+  },
+  {
+   "name": "Hayward city",
+   "reason": "station"
+  },
+  {
+   "name": "Hillsborough town",
+   "reason": "reachable"
+  },
+  {
+   "name": "Kensington CDP",
+   "reason": "reachable"
+  },
+  {
+   "name": "Lafayette city",
+   "reason": "station"
+  },
+  {
+   "name": "Menlo Park city",
+   "reason": "station"
+  },
+  {
+   "name": "Millbrae city",
+   "reason": "station"
+  },
+  {
+   "name": "Milpitas city",
+   "reason": "station"
+  },
+  {
+   "name": "Moraga town",
+   "reason": "enclave"
+  },
+  {
+   "name": "Mountain View city",
+   "reason": "station"
+  },
+  {
+   "name": "Newark city",
+   "reason": "enclave"
+  },
+  {
+   "name": "North Fair Oaks CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "North Gate CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "North Richmond CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Oakland city",
+   "reason": "station"
+  },
+  {
+   "name": "Orinda city",
+   "reason": "station"
+  },
+  {
+   "name": "Palo Alto city",
+   "reason": "station"
+  },
+  {
+   "name": "Piedmont city",
+   "reason": "enclave"
+  },
+  {
+   "name": "Pittsburg city",
+   "reason": "station"
+  },
+  {
+   "name": "Pleasant Hill city",
+   "reason": "reachable"
+  },
+  {
+   "name": "Pleasanton city",
+   "reason": "station"
+  },
+  {
+   "name": "Redwood City city",
+   "reason": "station"
+  },
+  {
+   "name": "Richmond city",
+   "reason": "station"
+  },
+  {
+   "name": "San Bruno city",
+   "reason": "station"
+  },
+  {
+   "name": "San Carlos city",
+   "reason": "station"
+  },
+  {
+   "name": "San Francisco city",
+   "reason": "station"
+  },
+  {
+   "name": "San Jose city",
+   "reason": "station"
+  },
+  {
+   "name": "San Leandro city",
+   "reason": "station"
+  },
+  {
+   "name": "San Lorenzo CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "San Mateo city",
+   "reason": "station"
+  },
+  {
+   "name": "San Miguel CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Santa Clara city",
+   "reason": "station"
+  },
+  {
+   "name": "Saranap CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Shell Ridge CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "South San Francisco city",
+   "reason": "station"
+  },
+  {
+   "name": "Stanford CDP",
+   "reason": "reachable"
+  },
+  {
+   "name": "Sunnyvale city",
+   "reason": "station"
+  },
+  {
+   "name": "Sunol CDP",
+   "reason": "enclave"
+  },
+  {
+   "name": "Union City city",
+   "reason": "station"
+  },
+  {
+   "name": "Walnut Creek city",
+   "reason": "station"
+  },
+  {
+   "name": "West Menlo Park CDP",
+   "reason": "enclave"
+  }
+ ]
+}

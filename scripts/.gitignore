@@ -27,3 +27,6 @@ poi_curated_primaryonly.bak.json
 poi_full_curated.json
 poi_full_review.md
 poi_merge_viz.json
+
+# Census TIGER place shapefile cache (re-downloaded on demand by build_play_area.py)
+_census_place/
