@@ -218,6 +218,7 @@ interface Props {
   onStartEndgame: (id: string) => void
   onExitEndgame: () => void
   pois: RenderPoi[]
+  stationView: 'normal' | 'faded' | 'hidden'
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -705,6 +706,25 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Dims or hides the station pane while the POI tab is open so POI dots stand out.
+// 'faded' keeps stations clickable as faint context; 'hidden' also drops their
+// hit-testing so only POIs respond. Resets to full opacity otherwise.
+function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
+  const map = useMap()
+  useEffect(() => {
+    const pane = map.getPane('stations')
+    if (!pane) return
+    pane.style.transition = 'opacity 0.2s ease'
+    pane.style.opacity = mode === 'hidden' ? '0' : mode === 'faded' ? '0.3' : '1'
+    pane.style.pointerEvents = mode === 'hidden' ? 'none' : ''
+    return () => {
+      pane.style.opacity = '1'
+      pane.style.pointerEvents = ''
+    }
+  }, [map, mode])
+  return null
+}
+
 // Transit lines drawn into a dedicated pane that fades in once mounted. As a
 // vector overlay they paint a beat after the base tiles, so without this they
 // "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
@@ -758,6 +778,7 @@ export default function MapView({
   onStartEndgame,
   onExitEndgame,
   pois,
+  stationView,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // stations are only clickable in select mode; in draw modes clicks pass
@@ -1188,6 +1209,7 @@ export default function MapView({
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <StationRenderer onChange={setStationRenderer} />
+        <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
 
         {/* dim everything outside the play area: a world-sized polygon with

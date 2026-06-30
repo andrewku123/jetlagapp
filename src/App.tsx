@@ -15,6 +15,7 @@ import rawStations from './data/stations.json'
 const STATIONS = rawStations as unknown as Station[]
 
 type Tab = 'ask' | 'history' | 'suspects' | 'poi' | 'legend'
+type StationView = 'normal' | 'faded' | 'hidden'
 
 // the agency a station is filed under = the first system in canonical order
 const primarySystem = (s: Station) =>
@@ -91,6 +92,8 @@ export default function App() {
   const [poiEnabled, setPoiEnabled] = useState<Set<string>>(
     () => new Set(POI_CATEGORIES.map((c) => c.key)),
   )
+  // how stations are shown while the POI tab is open, so POI dots can stand out
+  const [stationView, setStationView] = useState<StationView>('normal')
   const [poiQuery, setPoiQuery] = useState('')
   // bump nonce so the map re-centers even when the same station is clicked twice
   const [focusTarget, setFocusTarget] = useState<{ station: Station; nonce: number } | null>(null)
@@ -382,6 +385,7 @@ export default function App() {
             onStartEndgame={(id) => update({ endgame: id })}
             onExitEndgame={() => update({ endgame: null })}
             pois={visiblePois}
+            stationView={tab === 'poi' ? stationView : 'normal'}
           />
         </div>
 
@@ -562,6 +566,20 @@ export default function App() {
                 </button>
                 <button onClick={() => setPoiEnabled(new Set())}>Hide all</button>
                 <span className="poi-total">{pois.length} shown</span>
+              </div>
+              <div className="poi-stations">
+                <span className="poi-stations-label">Stations</span>
+                <div className="seg">
+                  {(['normal', 'faded', 'hidden'] as StationView[]).map((v) => (
+                    <button
+                      key={v}
+                      className={stationView === v ? 'on' : ''}
+                      onClick={() => setStationView(v)}
+                    >
+                      {v === 'normal' ? 'Normal' : v === 'faded' ? 'Faded' : 'Hidden'}
+                    </button>
+                  ))}
+                </div>
               </div>
               <ul className="poi-list">
                 {POI_CATEGORIES.map((cat) => (

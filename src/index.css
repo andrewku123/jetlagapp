@@ -120,6 +120,8 @@ body { background: var(--bg); color: var(--text); }
 .seg button.on { background: var(--accent); color: #fff; }
 .seg.seg-wrap { display: flex; flex-wrap: wrap; max-width: 100%; }
 .seg.seg-wrap button { flex: 1 1 auto; }
+.poi-stations { display: flex; align-items: center; gap: 8px; margin: 8px 0 4px; }
+.poi-stations-label { font-size: 12px; color: var(--muted); }
 
 button { font: inherit; }
 .toggles button, .qactions button, .qform button { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
