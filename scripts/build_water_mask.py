@@ -30,10 +30,16 @@ from shapely.ops import transform, unary_union
 HERE = os.path.dirname(os.path.abspath(__file__))
 CACHE = os.path.join(HERE, "_cache")
 
-# Census county FIPS for the five transit-served counties.
+# Census county FIPS for the five transit-served counties, plus Marin (041).
+# Marin is not a transit county and has no in-play places, but its AREAWATER is
+# needed so the bay water mask has real water around Tiburon/Belvedere and, most
+# importantly, *rings Angel Island* (Raccoon Strait + Richardson Bay). Without
+# Marin water the island fuses to the Tiburon peninsula as one landmass and the
+# bay clip can't tell them apart.
 COUNTY_FIPS = {
     "Alameda": "001",
     "Contra Costa": "013",
+    "Marin": "041",
     "San Francisco": "075",
     "San Mateo": "081",
     "Santa Clara": "085",

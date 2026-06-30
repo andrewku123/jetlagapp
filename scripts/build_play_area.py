@@ -241,6 +241,9 @@ BAY_CORRIDOR_LL = [
     (-122.34, 37.92),                                      # back NW toward the bridge east end
 ]
 BAY_SEEDS_LL = [(-122.33, 37.79), (-122.36, 37.88), (-122.13, 37.58), (-122.10, 37.50)]
+# Angel Island is land (not in the water mask), so the corridor∩water clip would
+# drop it; it is explicitly re-added so it stays in play.
+ANGEL_ISLAND_LL = (-122.4326, 37.8607)
 
 
 def _load_bay_land(to_m):
@@ -262,21 +265,43 @@ def _load_bay_land(to_m):
 
 
 def bay_water(places_all_m, to_m):
-    """The open bay water as a polygon: the hand-traced bay corridor minus every
-    land place, keeping the connected water component(s) that contain a seed."""
+    """The open bay water as a polygon: the hand-traced bay corridor **clipped to
+    the dense Census water mask** (build_water_mask.py -> bay_water_mask.geojson),
+    keeping the connected water component(s) that contain a seed. Clipping to the
+    real water (rather than subtracting land) means the water hugs the true coast
+    everywhere — Tiburon/Belvedere/Sausalito, the East Bay, the peninsula — so it
+    never spills over land the census places or the (sparse) OSM coastline miss.
+    Angel Island is land (absent from the water mask) so it is re-added explicitly,
+    keeping it in play."""
     corr = Polygon([to_m(lon, lat) for lon, lat in BAY_CORRIDOR_LL])
-    land = unary_union(list(places_all_m.values()))
-    bay_land = _load_bay_land(to_m)
-    if bay_land is not None:
-        land = unary_union([land, bay_land])
-    water = corr.difference(land)
-    polys = [water] if water.geom_type == "Polygon" else \
-        [g for g in getattr(water, "geoms", []) if g.geom_type == "Polygon"]
+    water_mask = _load_water_mask()
+    water_mask_m = transform(to_m, water_mask) if water_mask is not None else None
+    if water_mask_m is not None:
+        bay = corr.intersection(water_mask_m)
+    else:
+        # fallback: corridor minus land (legacy, used only if the mask is absent)
+        land = unary_union(list(places_all_m.values()))
+        bl = _load_bay_land(to_m)
+        if bl is not None:
+            land = unary_union([land, bl])
+        bay = corr.difference(land)
+    polys = [bay] if bay.geom_type == "Polygon" else \
+        [g for g in getattr(bay, "geoms", []) if g.geom_type == "Polygon"]
     seeds = [Point(*to_m(lon, lat)) for lon, lat in BAY_SEEDS_LL]
     keep = [p for p in polys if any(p.intersects(s) for s in seeds)]
     if not keep and polys:
         keep = [max(polys, key=lambda p: p.area)]
-    return unary_union(keep) if keep else None
+    bay = unary_union(keep) if keep else None
+    # Re-add Angel Island (land surrounded by bay water, so the clip drops it).
+    if bay is not None and water_mask_m is not None:
+        ai_pt = Point(*to_m(*ANGEL_ISLAND_LL))
+        land_in_corr = corr.difference(water_mask_m)
+        parts = [land_in_corr] if land_in_corr.geom_type == "Polygon" else \
+            list(getattr(land_in_corr, "geoms", []))
+        island = [p for p in parts if p.contains(ai_pt)]
+        if island:
+            bay = unary_union([bay, *island])
+    return bay
 
 
 def main():
