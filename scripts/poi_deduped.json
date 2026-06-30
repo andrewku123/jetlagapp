@@ -11065,7 +11065,7 @@
   ]
  },
  "park": {
-  "count": 1719,
+  "count": 1721,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -17240,23 +17240,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.673499199999995,
     "lon": -121.87531820000001
-   },
-   {
-    "id": "ChIJOTf4IdIvjoARbBrDwix86Jg",
-    "name": "Bernal-Gulnac-Joice Ranch",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "372 Manila Dr, San Jose, CA 95119, USA",
-    "rating": 4.7,
-    "userRatingCount": 365,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2263131,
-    "lon": -121.7983405
    },
    {
     "id": "ChIJ7zstUYSHj4AR8VhzahtpZPs",
@@ -29798,6 +29781,22 @@
     "lon": -122.0937445
    },
    {
+    "id": "ChIJW8ZQrGIvjoARd0s6yR4iqis",
+    "name": "Santa Teresa Spring",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Manila Dr, San Jose, CA 95119, USA",
+    "rating": 4.6,
+    "userRatingCount": 45,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.2259917,
+    "lon": -121.79517639999999
+   },
+   {
     "id": "ChIJEb2376Lpj4AR4Ef0px-ixEQ",
     "name": "Veterans Plaza Park",
     "primaryType": "park",
@@ -33468,6 +33467,22 @@
     "lon": -121.7701402
    },
    {
+    "id": "ChIJqxaAAwB5hYAR_0pf0RYBQ9Q",
+    "name": "Bench with View",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "VMWG+5X, Richmond, CA 94804, USA",
+    "rating": 4.8,
+    "userRatingCount": 19,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.8954922,
+    "lon": -122.32261279999997
+   },
+   {
     "id": "ChIJN5Qy6sp9hYARHxzKEDM2gbg",
     "name": "Claremont Fire Trail",
     "primaryType": "park",
@@ -34365,6 +34380,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7782543,
     "lon": -122.4132913
+   },
+   {
+    "id": "ChIJOwL8nuCBhYAR8NzYIl8Py0g",
+    "name": "Pier 43 Promenade",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "San Francisco, CA 94133, USA",
+    "rating": 4.8,
+    "userRatingCount": 16,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.809204099999995,
+    "lon": -122.4129973
    },
    {
     "id": "ChIJRwy567Dpj4AR8neT145JpTg",
@@ -36400,6 +36431,24 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.930827099999995,
     "lon": -122.322047
+   },
+   {
+    "id": "ChIJR9PflnuChYARsK3I4BSjGQc",
+    "name": "Brooks Island Regional Preserve",
+    "primaryType": "nature_preserve",
+    "types": [
+     "nature_preserve",
+     "tourist_attraction",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1316 Canal Blvd, Richmond, CA 94804, USA",
+    "rating": 4.8,
+    "userRatingCount": 10,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.8978873,
+    "lon": -122.3568035
    },
    {
     "id": "ChIJx-RIS7R_j4ARO90GDHeVAr4",
@@ -39602,23 +39651,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7776017,
     "lon": -122.2571607
-   },
-   {
-    "id": "ChIJGcUAZmN4hYARey_hmVrMBfQ",
-    "name": "Meeker Slough",
-    "primaryType": "nature_preserve",
-    "types": [
-     "nature_preserve",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Bayside Dr, Richmond, CA 94804, USA",
-    "rating": 4.6,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.9108028,
-    "lon": -122.3370116
    },
    {
     "id": "ChIJ-aeqnNp_j4ARpwx9LXoPbc8",

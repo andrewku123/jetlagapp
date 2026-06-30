@@ -58,11 +58,16 @@ BRIDGE_RADIUS_MI = 0.5        # half-width of a transit-line corridor bridge
 BRIDGE_NEAR_M = 60.0          # gap endpoint within this of a kept place = touching
 BRIDGE_MAX_MI = 12.0         # only bridge gaps shorter than this between two kept places
 ISLAND_LON_CUTOFF = -122.6   # drop place parts west of this (far-offshore Pacific islands, e.g. Farallones)
-# Census place + county cartographic boundary files (1:500k, NAD83 ~ WGS84 here)
-CBF_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_06_place_500k.zip"
-CBF_STEM = "cb_2023_06_place_500k"
+# Census places: full-resolution TIGER/Line (dense coastline nodes, ~6-7x more
+# vertices than the 1:500k cartographic file). These are *legal* limits that
+# extend out into the bay, so each place is clipped back to the real shoreline by
+# subtracting the dense bay+ocean water mask (build_water_mask.py -> AREAWATER).
+# Counties stay on the 1:500k cartographic file (only used for tagging/inclusion).
+CBF_URL = "https://www2.census.gov/geo/tiger/TIGER2023/PLACE/tl_2023_06_place.zip"
+CBF_STEM = "tl_2023_06_place"
 COUNTY_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_county_500k.zip"
 COUNTY_STEM = "cb_2023_us_county_500k"
+WATER_MASK = os.path.join(HERE, "bay_water_mask.geojson")
 STATE_NAME = "California"      # state the transit counties live in
 
 M = 111320.0
@@ -101,18 +106,37 @@ def load_counties(names):
     return out
 
 
+def _load_water_mask():
+    """Dense bay+ocean water polygon (Census AREAWATER, build_water_mask.py),
+    in lon/lat. Subtracted from each full-resolution TIGER/Line place so the
+    legal limits that reach into the bay are clipped back to the real coast."""
+    if not os.path.exists(WATER_MASK):
+        return None
+    g = shape(json.load(open(WATER_MASK))["geometry"])
+    return g.buffer(0) if not g.is_valid else g
+
+
 def load_county_places(counties):
     """Every Census place with >=10% of its area inside the given counties,
-    tagged with the county it overlaps most and whether it is a CDP."""
+    tagged with the county it overlaps most and whether it is a CDP. Places use
+    the full-resolution TIGER/Line geometry clipped to the real shoreline (the
+    bay+ocean water mask is subtracted) so coastlines are dense, not 1:500k."""
     import shapefile
     r = shapefile.Reader(ensure_shapefile(CBF_URL, CBF_STEM))
     flds = [f[0] for f in r.fields[1:]]
+    water = _load_water_mask()
     out = {}
     for sh, rec in zip(r.shapes(), r.records()):
         d = dict(zip(flds, rec))
         g = shape(sh.__geo_interface__)
         if not g.is_valid:
             g = g.buffer(0)
+        if water is not None and g.intersects(water):
+            g = g.difference(water)
+            if not g.is_valid:
+                g = g.buffer(0)
+        if g.is_empty:
+            continue
         best, bestA = None, 0.0
         for cn, cg in counties.items():
             if g.intersects(cg):
@@ -219,18 +243,22 @@ BAY_CORRIDOR_LL = [
 BAY_SEEDS_LL = [(-122.33, 37.79), (-122.36, 37.88), (-122.13, 37.58), (-122.10, 37.50)]
 
 
-def _load_marin_land(to_m):
-    """Marin bay-front landmass (Tiburon/Belvedere peninsula, Sausalito) traced
-    from the OSM coastline, in metres. Subtracted from the bay corridor so the
-    water follows the real shoreline. Angel Island is deliberately excluded from
-    this polygon so it stays in play (covered by the corridor)."""
-    path = os.path.join(HERE, "marin_land.geojson")
-    if not os.path.exists(path):
-        return None
-    g = shape(json.load(open(path))["geometry"])
-    if not g.is_valid:
-        g = g.buffer(0)
-    return transform(to_m, g)
+def _load_bay_land(to_m):
+    """Dense bay-shore landmass traced from the OSM coastline, in metres
+    (built by build_bay_land.py -> bay_land.geojson, covering the whole bay
+    perimeter at OSM resolution). Subtracted from the bay corridor so the water
+    follows the real shoreline everywhere instead of spilling over unincorporated
+    shoreline the census-place polygons don't cover. Angel Island is deliberately
+    excluded from this polygon so it stays in play (covered by the corridor).
+    Falls back to the Marin-only marin_land.geojson if the full mask is absent."""
+    for fname in ("bay_land.geojson", "marin_land.geojson"):
+        path = os.path.join(HERE, fname)
+        if os.path.exists(path):
+            g = shape(json.load(open(path))["geometry"])
+            if not g.is_valid:
+                g = g.buffer(0)
+            return transform(to_m, g)
+    return None
 
 
 def bay_water(places_all_m, to_m):
@@ -238,9 +266,9 @@ def bay_water(places_all_m, to_m):
     land place, keeping the connected water component(s) that contain a seed."""
     corr = Polygon([to_m(lon, lat) for lon, lat in BAY_CORRIDOR_LL])
     land = unary_union(list(places_all_m.values()))
-    marin = _load_marin_land(to_m)
-    if marin is not None:
-        land = unary_union([land, marin])
+    bay_land = _load_bay_land(to_m)
+    if bay_land is not None:
+        land = unary_union([land, bay_land])
     water = corr.difference(land)
     polys = [water] if water.geom_type == "Polygon" else \
         [g for g in getattr(water, "geoms", []) if g.geom_type == "Polygon"]
