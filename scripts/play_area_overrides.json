@@ -112,6 +112,32 @@
      37.872
     ]
    ]
+  },
+  {
+   "_note": "Olympic Club / Lake Merced golf complex S of Lake Merced: unincorporated land (in no Census place) wedged between SF (N) and Daly City (S/E). West edge traced along the real Pacific coast (from bay_land.geojson) so the fill stops at the shore and never reaches the ocean; east edge cuts into in-play Daly City (harmless union).",
+   "ring": [
+    [-122.50345, 37.71022],
+    [-122.50308, 37.70873],
+    [-122.50278, 37.70785],
+    [-122.50268, 37.70717],
+    [-122.50235, 37.70636],
+    [-122.50194, 37.70508],
+    [-122.50171, 37.70452],
+    [-122.5014, 37.70332],
+    [-122.50121, 37.70238],
+    [-122.50082, 37.7011],
+    [-122.50062, 37.70029],
+    [-122.50053, 37.69922],
+    [-122.50025, 37.698],
+    [-122.49989, 37.69687],
+    [-122.49975, 37.69603],
+    [-122.49923, 37.69433],
+    [-122.49909, 37.69348],
+    [-122.49877, 37.69178],
+    [-122.49821, 37.69],
+    [-122.483, 37.69],
+    [-122.483, 37.71022]
+   ]
   }
  ]
 }
