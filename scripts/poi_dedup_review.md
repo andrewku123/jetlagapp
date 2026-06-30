@@ -6,7 +6,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 |---|---|---|---|---|---|
 | Museums | 249 | 215 | 5 | 7 | 5 |
 | Libraries | 249 | 239 | 2 | 4 | 2 |
-| Movie Theaters | 83 | 79 | 3 | 1 | 0 |
+| Movie Theaters | 83 | 78 | 3 | 1 | 0 |
 | Hospitals | 254 | 154 | 44 | 23 | 32 |
 | Zoos | 7 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
@@ -45,7 +45,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Lathrop Library](https://www.google.com/maps/search/?api=1&query=37.4291471%2C-122.16742579999999&query_place_id=ChIJVVUVwim7j4AR79mh7iy3fX0)** (27 rev) absorbs: [East Asia Library](https://www.google.com/maps/search/?api=1&query=37.4294684%2C-122.1672722&query_place_id=ChIJw9DEC2W7j4AReHwSguLp2DQ)(6,osm)
 
 
-## Movie Theaters — 83 → 79 (name −3, osm −1)
+## Movie Theaters — 83 → 78 (name −3, osm −1)
 
 
 **Merged (4 groups):**

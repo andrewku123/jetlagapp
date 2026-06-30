@@ -7927,7 +7927,7 @@
   ]
  },
  "movie_theater": {
-  "count": 79,
+  "count": 78,
   "places": [
    {
     "id": "ChIJOYvCo1W3j4AR1LAifgk13rs",
@@ -9219,23 +9219,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7842728,
     "lon": -122.38837590000001
-   },
-   {
-    "id": "ChIJV_zoYZTLj4AR98oZeCYGPm0",
-    "name": "Chill Theaters - World's First Mobile Movie Theater",
-    "primaryType": "movie_theater",
-    "types": [
-     "movie_theater",
-     "store",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1435 Koll Cir, San Jose, CA 95112, USA",
-    "rating": 5,
-    "userRatingCount": 13,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3651629,
-    "lon": -121.9063745
    },
    {
     "id": "ChIJm0Ezz7F9j4ARmjFxghp6JhE",

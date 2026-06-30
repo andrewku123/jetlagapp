@@ -447,5 +447,14 @@
         "Mulholland Ridge Open Space"
       ]
     ]
+  },
+  "movie_theater": {
+    "drop": [
+      [
+        "Chill Theaters - World's First Mobile Movie Theater",
+        37.3651629,
+        -121.9063745
+      ]
+    ]
   }
 }
