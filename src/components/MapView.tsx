@@ -20,12 +20,8 @@ import type { RenderPoi } from '../lib/poi'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { IN_PLAY_COUNTIES } from '../lib/playArea'
-import countiesData from '../data/counties.geojson.json'
 import playAreaData from '../data/play-area.geojson.json'
 import transitData from '../data/transit-lines.geojson.json'
-
-const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -38,28 +34,26 @@ const COARSE_POINTER =
 // transparent options shared by every invisible station tap target
 const HIT_OPTS = { stroke: false, fill: true, fillColor: '#000', fillOpacity: 0 }
 
-// In-play play area used for the satellite clip: the counties' legal boundaries
-// with the bay kept but the open Pacific (and offshore Farallones) removed — see
-// scripts/build_play_area.mjs. The plain land-clipped `COUNTIES` set above is
-// still used for the out-of-play dimming overlay.
+// In-play play area: the union of transit-served city/town/CDP polygons (see
+// scripts/build_play_area.py — a place qualifies if any part is within a hiding
+// zone of an eligible station, or it is a transit-enclosed enclave). Used for
+// the satellite-imagery clip, tile culling, and the out-of-play dimming mask.
 const IN_PLAY_FEATURES = (
   playAreaData as unknown as GeoJSON.FeatureCollection
-).features.filter((f) =>
-  IN_PLAY_COUNTIES.has((f.properties as { name: string }).name),
-)
+).features
 
-// Bounding box of the in-play counties; used as a cheap first-pass filter on
-// satellite imagery tile requests (out-of-play tiles never load → much faster).
+// Bounding box of the play area; used as a cheap first-pass filter on satellite
+// imagery tile requests (out-of-play tiles never load → much faster).
 const PLAY_BOUNDS = L.geoJSON({
   type: 'FeatureCollection',
   features: IN_PLAY_FEATURES,
 } as GeoJSON.FeatureCollection).getBounds()
 
 // --- satellite-to-play-area clipping ----------------------------------------
-// The satellite imagery is restricted to the *actual* in-play county polygons
-// (not just their bounding box) in two ways: tiles that don't intersect a county
+// The satellite imagery is restricted to the *actual* in-play city polygons
+// (not just their bounding box) in two ways: tiles that don't intersect a city
 // are never requested (perf), and the layer's pane is clipped with an SVG
-// clip-path so imagery only shows inside the counties (visual). Rings below are
+// clip-path so imagery only shows inside the cities (visual). Rings below are
 // GeoJSON [lng, lat] order.
 type Ring = number[][]
 type Poly = Ring[] // [outer, ...holes]
@@ -77,6 +71,12 @@ function featurePolys(f: Feature): Poly[] {
 }
 const PLAY_RINGS: Ring[] = IN_PLAY_FEATURES.flatMap(featureRings)
 const PLAY_POLYS: Poly[] = IN_PLAY_FEATURES.flatMap(featurePolys)
+
+// Outer ring of every in-play place, as Leaflet [lat, lng] — used as the holes
+// of a world-sized polygon that dims everything outside the play area.
+const PLAY_OUTER_LATLNG: [number, number][][] = PLAY_POLYS.map((poly) =>
+  poly[0].map(([lng, lat]) => [lat, lng] as [number, number]),
+)
 
 function pointInRing(lng: number, lat: number, ring: Ring): boolean {
   let inside = false
@@ -139,13 +139,6 @@ const SATELLITE_URL =
 const SAT_LABEL_URLS = [
   'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
 ]
-
-function countyStyle(feature?: Feature<Geometry, { name: string }>) {
-  const inPlay = feature ? IN_PLAY_COUNTIES.has(feature.properties.name) : false
-  return inPlay
-    ? { stroke: false, fill: false, interactive: false }
-    : { stroke: true, color: '#6b7280', weight: 1, fillColor: '#6b7280', fillOpacity: 0.35, interactive: false }
-}
 
 interface TransitWay {
   type: 'Feature'
@@ -242,6 +235,15 @@ const WORLD_RING: [number, number][] = [
   [85, 179.9],
   [85, -179.9],
 ]
+
+// out-of-play dimming fill for the world-minus-cities mask
+const DIM_FILL = {
+  stroke: false,
+  weight: 0,
+  fillColor: '#6b7280',
+  fillOpacity: 0.35,
+  interactive: false,
+} as const
 
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 
@@ -1131,7 +1133,13 @@ export default function MapView({
         <StationRenderer onChange={setStationRenderer} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
 
-        <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
+        {/* dim everything outside the play area: a world-sized polygon with
+            each in-play place punched out as a hole. */}
+        <Polygon
+          positions={[WORLD_RING, ...PLAY_OUTER_LATLNG]}
+          pathOptions={DIM_FILL}
+          interactive={false}
+        />
         <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as

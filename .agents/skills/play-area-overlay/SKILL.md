@@ -1,58 +1,57 @@
 ---
 name: play-area-overlay
-description: Dim the counties that are NOT in play on the map so the playable area stands out. Use when asked to highlight/shade the game boundary, gray out out-of-play regions, or change which counties are in play.
+description: Dim everything outside the play area on the map so the playable area stands out. Use when asked to highlight/shade the game boundary, gray out out-of-play regions, or change what is in play.
 ---
 
-# Play-area overlay (dim out-of-play counties)
+# Play-area overlay (dim out-of-play area)
 
-The map shades every county that is **not in play** with a translucent gray
-polygon, leaving the in-play counties clear. This visually communicates the game
+The map shades everything **outside the play area** with a translucent gray
+mask, leaving the in-play cities clear. This visually communicates the game
 boundary without affecting elimination logic.
 
-## Data
-`src/data/counties.geojson.json` — a trimmed GeoJSON `FeatureCollection` of Bay
-Area + neighboring California counties. Each feature has a single property
-`name` (e.g. `"Marin"`). It uses **high-resolution** boundaries from the US
-Census 1:500k cartographic boundary file (`cb_2022_us_county_500k`, clipped to
-shoreline) so the gray edges follow the coast smoothly instead of looking blocky.
-Produced by:
-1. Convert the Census county shapefile to GeoJSON, filtering `STATEFP == '06'`
-   (California): `npx mapshaper cb_2022_us_county_500k.shp -filter "'06'==STATEFP"
-   -o format=geojson`.
-2. Keep only the ~25 counties already present (match by `NAME`), rename `NAME` →
-   `name`, drop all other properties.
-3. Round coordinates to 4 decimal places to shrink the file (~356 KB).
+The play area is the **union of transit-served city/town/CDP polygons** (not
+counties). It is produced by `scripts/build_play_area.py` in the POI pipeline
+(a place qualifies if any part of it is within a hiding zone of an eligible
+station, or it is a transit-enclosed enclave, plus a manual keep/drop override —
+see the `gather-poi` skill) and shipped to the app as a single (simplified)
+polygon.
 
-To regenerate (e.g. to widen the region or add counties), re-run those steps with
-a short Node script. (An older version used the lower-res click_that_hood file,
-which made San Francisco only 26 points and looked blocky.)
+## Data
+`src/data/play-area.geojson.json` — a GeoJSON `FeatureCollection` with the
+play-area polygon (the union of in-play places, simplified to ~40 m tolerance to
+keep the SVG clip-path light). This same file is used for the satellite-imagery
+clip + tile culling. Regenerate it by re-running the POI pipeline's
+`build_play_area.py`, which writes this file directly.
+
+(`src/data/counties.geojson.json` + `src/lib/playArea.ts`'s `IN_PLAY_COUNTIES`
+still exist — they back the county Matching question and the dataset invariant
+test — but they are **no longer used to draw the overlay**.)
 
 ## Code (`src/components/MapView.tsx`)
-- `IN_PLAY_COUNTIES: Set<string>` — the county names that are in play. Currently
-  `Alameda, Contra Costa, San Francisco, San Mateo, Santa Clara` (the counties
-  that actually contain eligible stations — verify with
-  `[...new Set(stations.map(s => s.county))]`).
-- `countyStyle(feature)` — returns Leaflet path options per feature:
-  - in play → `{ stroke: false, fill: false, interactive: false }` (invisible).
-  - out of play → gray `#6b7280`, `fillOpacity: 0.35`, thin outline,
-    `interactive: false` (so it never intercepts map clicks).
-- Rendered as `<GeoJSON data={COUNTIES} style={countyStyle} interactive={false} />`
-  placed **immediately after `<TileLayer>`** and **before** the station markers,
-  so markers/annotations draw on top of the shading.
+- `IN_PLAY_FEATURES` — every feature of `play-area.geojson.json` (no county
+  filter).
+- `PLAY_POLYS` / `PLAY_OUTER_LATLNG` — the polygons as `[outer, ...holes]` rings
+  and, separately, each outer ring converted to Leaflet `[lat, lng]` order.
+- `DIM_FILL` — gray `#6b7280`, `fillOpacity: 0.35`, no stroke,
+  `interactive: false` (so it never intercepts map clicks).
+- Rendered as a single world-minus-cities mask: a `<Polygon>` whose positions are
+  `[WORLD_RING, ...PLAY_OUTER_LATLNG]` — a near-world outer ring with each in-play
+  place punched out as a hole. Placed **before** the station markers so
+  markers/annotations draw on top of the shading.
 
-## To change which counties are in play
-Edit the `IN_PLAY_COUNTIES` set. Keep the names exactly matching the `name`
-property in `counties.geojson.json`. If you add a county that isn't in the
-GeoJSON yet, regenerate the data with a wider region first.
+## To change what is in play
+Change the eligible-place rule and re-run `build_play_area.py` (see the
+`gather-poi` skill — station-reachability radius, enclave heuristic, or the
+manual `play_area_overrides.json`). That regenerates `play-area.geojson.json`;
+the overlay, satellite clip and tile culling all follow it automatically.
 
 ## To change the look
-Adjust `countyStyle` (fill color / `fillOpacity` / outline). Keep
-`interactive: false` so the overlay doesn't block seeker-point clicks or station
-marker clicks.
+Adjust `DIM_FILL` (fill color / `fillOpacity`). Keep `interactive: false` so the
+overlay doesn't block seeker-point clicks or station marker clicks.
 
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: zoom out
-one or two steps and confirm the in-play counties around the bay are clear while
-surrounding counties (Marin, Sonoma, Napa, Solano, San Joaquin, Santa Cruz, …)
-are dimmed gray, and that clicking inside a dimmed county still drops a seeker
-point (overlay is non-interactive).
+one or two steps and confirm the in-play cities around the bay are clear while
+everything else (out-of-play cities, hills, ocean, neighboring counties) is
+dimmed gray, and that clicking inside the dimmed area still drops a seeker point
+(overlay is non-interactive).
