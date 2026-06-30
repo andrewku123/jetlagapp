@@ -15,8 +15,12 @@ disks), with any fully-enclosed hole filled in. It is produced by
 curation**: start from every Census place in the transit-touched counties, then a
 curator deletes the unwanted ones in `play_area_overrides.json` `"drop"`; any kept
 unincorporated CDP left completely surrounded by non-playable area is auto-dropped;
-the kept polygons are unioned and surrounded pockets are filled (see the
-`gather-poi` skill). The open land between/around the kept cities (parks,
+the rail line is bridged through the open land between two kept cities (e.g. BART
+Rockridge→Orinda, Castro Valley→Dublin) as a hideable corridor; the kept polygons
+are unioned and surrounded *unnamed* pockets are filled, but a deleted place is
+always carved back out so it never re-appears via hole-fill even when its kept
+neighbours ring it (e.g. Moraga inside Orinda/Lafayette stays grey). See the
+`gather-poi` skill. The open land between/around the kept cities (parks,
 mountains, ranchland) is not a named place, so it stays out.
 
 The app copy additionally has the **open bay water** unioned in for display only,
