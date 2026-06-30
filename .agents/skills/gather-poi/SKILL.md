@@ -390,6 +390,19 @@ model for every city.** The steps:
    happened when corridors were unioned before hole-fill). Trace coordinates off a
    user screenshot by calibrating against two known on-map points (e.g. two BART
    station dots) to a linear pixel→lon/lat transform.
+5c. **Manual fill regions** (`fill_regions` in `play_area_overrides.json`) — a
+   polygon `ring` of `[lon,lat]` points unioned in (same late stage as corridors)
+   to fill a grey *area* rather than a thin strip — e.g. the Berkeley–Orinda hills
+   valley, or the Olympic Club / Lake Merced golf complex south of Lake Merced
+   (unincorporated land in no Census place, wedged between SF and Daly City).
+   **If the wedge opens onto water, trace the fill's water-facing edge along the
+   real coast, not a straight line** — pull the coastline from `bay_land.geojson`
+   (`shape(bay_land).boundary.intersection(bbox)` gives the dense OSM coast trace)
+   and use those vertices as that edge; the other edges can overlap freely into the
+   neighbouring in-play places (union is harmless). This keeps the fill from
+   spilling into the ocean. Verify after rebuild by grid-sampling the new
+   `play-area.geojson.json`: every wedge cell should flip to in-play and **no**
+   cell west of the coast should become in-play.
 6. **Play area = the union of the kept place polygons (+ bridges)**, whole-place
    granularity (no raw disks), then **fill fully-enclosed holes** (`fill_holes`):
    any pocket ringed on all sides by in-play land is itself in play — surrounded ⇒
