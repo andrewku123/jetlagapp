@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1721,
+  "count": 1693,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -10745,23 +10745,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7689203,
     "lon": -122.482977
-   },
-   {
-    "id": "ChIJhVvouY-AhYARt6oYQBabsr8",
-    "name": "Japanese Tea Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "75 Hagiwara Tea Garden Dr, San Francisco, CA 94118, USA",
-    "rating": 4.5,
-    "userRatingCount": 16714,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7700913,
-    "lon": -122.47043590000001
    },
    {
     "id": "ChIJp3CqeRd-j4ARYI0i8e_kGKY",
@@ -10798,26 +10781,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7529149,
     "lon": -122.44741309999999
-   },
-   {
-    "id": "ChIJW5w2V2iHhYARQoOl_ZsQlOg",
-    "name": "San Francisco Botanical Garden",
-    "primaryType": "botanical_garden",
-    "types": [
-     "botanical_garden",
-     "garden",
-     "tourist_attraction",
-     "museum",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1199 9th Ave, San Francisco, CA 94122, USA",
-    "rating": 4.8,
-    "userRatingCount": 8001,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.767709599999996,
-    "lon": -122.4693109
    },
    {
     "id": "ChIJb5KWbRTLj4AR1iYBl5vpNf8",
@@ -11385,23 +11348,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.9199875,
     "lon": -122.04361390000001
-   },
-   {
-    "id": "ChIJnwKWPCwzjoARY4_zZxCFY5k",
-    "name": "Japanese Friendship Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1300 Senter Rd, San Jose, CA 95112, USA",
-    "rating": 4,
-    "userRatingCount": 2406,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3212316,
-    "lon": -121.86087429999999
    },
    {
     "id": "ChIJTUGEaNGej4ARrYwhj3foElQ",
@@ -12253,22 +12199,6 @@
     "lon": -122.0426344
    },
    {
-    "id": "ChIJXfbP6YmAhYARX1lrFe54-tY",
-    "name": "Presidio Tunnel Tops",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "210 Lincoln Blvd, San Francisco, CA 94129, USA",
-    "rating": 4.9,
-    "userRatingCount": 1331,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8028724,
-    "lon": -122.45632880000001
-   },
-   {
     "id": "ChIJR_fvTap_hYARFQi1Hm81Tqk",
     "name": "Emeryville Marina Park",
     "primaryType": "park",
@@ -12811,24 +12741,6 @@
     "lon": -121.91725829999999
    },
    {
-    "id": "ChIJl9BKfLmHhYARtbJoLQTkHA8",
-    "name": "Queen Wilhelmina Garden",
-    "primaryType": "botanical_garden",
-    "types": [
-     "botanical_garden",
-     "tourist_attraction",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1690 John F Kennedy Dr, San Francisco, CA 94121, USA",
-    "rating": 4.7,
-    "userRatingCount": 1049,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.770120399999996,
-    "lon": -122.50926840000001
-   },
-   {
     "id": "ChIJ-Wl58sywj4ARs-TZYmXDoDc",
     "name": "Eagle Park",
     "primaryType": "park",
@@ -13070,41 +12982,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.8071141,
     "lon": -122.2642898
-   },
-   {
-    "id": "ChIJIXE5rk6Hj4ARqHfzUIk5l00",
-    "name": "The Gardens at Lake Merritt",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "666 Bellevue Ave, Oakland, CA 94610, USA",
-    "rating": 4.6,
-    "userRatingCount": 921,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8062142,
-    "lon": -122.25842379999999
-   },
-   {
-    "id": "ChIJzR4-U2LLj4ARjiMp-x3X-Po",
-    "name": "Rotary PlayGarden",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "playground",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "438 Coleman Ave, San Jose, CA 95110, USA",
-    "rating": 4.6,
-    "userRatingCount": 920,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3418533,
-    "lon": -121.9048182
    },
    {
     "id": "ChIJ4XkbLfeRj4ARvX0UbFQ8NiY",
@@ -14665,25 +14542,6 @@
     "lon": -122.26918889999997
    },
    {
-    "id": "ChIJ38PBV2qHhYARQNvZBtima_M",
-    "name": "Rose Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "state_park",
-     "tourist_attraction",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Golden Gate Park, John F Kennedy Dr, San Francisco, CA 94117, USA",
-    "rating": 4.7,
-    "userRatingCount": 583,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7718863,
-    "lon": -122.47133950000001
-   },
-   {
     "id": "ChIJT-2NwPfKj4AR50o3LpK2T8E",
     "name": "Henry Schmidt Park",
     "primaryType": "park",
@@ -15955,23 +15813,6 @@
     "lon": -122.4446006
    },
    {
-    "id": "ChIJ9VwC5gI1joARNTNIxzUxG-0",
-    "name": "Dog Park | Los Gatos Creek",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1250 Dell Ave, Campbell, CA 95008, USA",
-    "rating": 4.5,
-    "userRatingCount": 440,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2718475,
-    "lon": -121.9494562
-   },
-   {
     "id": "ChIJZ5KyRmLpj4AR6aW7UD0lwjc",
     "name": "Pleasanton Tennis and Community Park",
     "primaryType": "park",
@@ -16744,23 +16585,6 @@
     "lon": -122.35828009999999
    },
    {
-    "id": "ChIJZa6z86OHhYARdZs451KURS0",
-    "name": "Golden Gate Park Dog Training Area",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "6335 Fulton St, San Francisco, CA 94121, USA",
-    "rating": 4.5,
-    "userRatingCount": 373,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.771041,
-    "lon": -122.4993131
-   },
-   {
     "id": "ChIJfx7_to-6j4ARHbG6lNdTsrk",
     "name": "Cornelis Bol Park",
     "primaryType": "park",
@@ -16987,23 +16811,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.279367199999996,
     "lon": -121.975665
-   },
-   {
-    "id": "ChIJgwPVLBqHhYARDxgRIgP6Zko",
-    "name": "Lands End - Golden Gate National Recreation Area",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "680 Point Lobos Ave, San Francisco, CA 94121, USA",
-    "rating": 4.9,
-    "userRatingCount": 352,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.77977560000001,
-    "lon": -122.5116272
    },
    {
     "id": "ChIJwfMsmbWAj4ARASWjviWC_rQ",
@@ -17998,23 +17805,6 @@
     "lon": -122.1764638
    },
    {
-    "id": "ChIJhU0PekWHhYAR6u7KjevOSmg",
-    "name": "Dahlia Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco, CA 94117, USA",
-    "rating": 4.8,
-    "userRatingCount": 295,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7724708,
-    "lon": -122.45928049999998
-   },
-   {
     "id": "ChIJS-M0dx2fj4ARVzHNeSjrkcA",
     "name": "Paddock Park",
     "primaryType": "park",
@@ -18047,24 +17837,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.795166699999996,
     "lon": -122.40228059999998
-   },
-   {
-    "id": "ChIJ76Wd13OHhYARorpaY79_m6U",
-    "name": "Shakespeare Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "335 Martin Luther King Jr Dr, San Francisco, CA 94118, USA",
-    "rating": 4.7,
-    "userRatingCount": 290,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.768895799999996,
-    "lon": -122.4672329
    },
    {
     "id": "ChIJYyf8xDGfj4AR52O2cN_RpA4",
@@ -19734,24 +19506,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.8106789,
     "lon": -122.24779059999997
-   },
-   {
-    "id": "ChIJT2MgBFCHhYARTNn-AYuwQFA",
-    "name": "Hippie Hill",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "picnic_ground",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco, CA 94117, USA",
-    "rating": 4.8,
-    "userRatingCount": 217,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7699219,
-    "lon": -122.4578806
    },
    {
     "id": "ChIJMxqZQAWPj4ARW4z4-3YFIJs",
@@ -23032,23 +22786,6 @@
     "lon": -121.96420130000001
    },
    {
-    "id": "ChIJvxH_xy5_hYARFVuiR5WTSGI",
-    "name": "Berkeley Waterfront",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Perimeter Trail, Berkeley, CA 94720, USA",
-    "rating": 4.7,
-    "userRatingCount": 128,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8725685,
-    "lon": -122.3190102
-   },
-   {
     "id": "ChIJhVftYI-ej4ARMtbipO_Vn5I",
     "name": "Shoreview Park",
     "primaryType": "park",
@@ -23721,23 +23458,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.2407228,
     "lon": -121.80839419999998
-   },
-   {
-    "id": "ChIJLQEuWdd4hYARxmaYN-dNlYg",
-    "name": "Albany Waterfront Trail",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1 Buchanan St, Albany, CA 94710, USA",
-    "rating": 4.6,
-    "userRatingCount": 116,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8895603,
-    "lon": -122.31691430000001
    },
    {
     "id": "ChIJtTRsGlFchYARv7dfNiCzOq0",
@@ -31038,22 +30758,6 @@
     "lon": -122.3877211
    },
    {
-    "id": "ChIJ7-lBL45_hYARCr7WIg21wX8",
-    "name": "Brickyard Cove",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Berkeley, CA 94720, USA",
-    "rating": 4.4,
-    "userRatingCount": 32,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8647269,
-    "lon": -122.30543
-   },
-   {
     "id": "ChIJxX3utp2Fj4ARGcFjsFlN1Co",
     "name": "Columbian Gardens Park",
     "primaryType": "park",
@@ -31222,22 +30926,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.736986699999996,
     "lon": -122.46528099999998
-   },
-   {
-    "id": "ChIJK_zrYBi9j4ARncuQvVsbRy0",
-    "name": "Coyote Hills Nectar Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "8000 Patterson Ranch Rd, Fremont, CA 94555, USA",
-    "rating": 4.4,
-    "userRatingCount": 31,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.5531593,
-    "lon": -122.0911372
    },
    {
     "id": "ChIJKUui9jOPj4AR63vZsI35Ydw",
@@ -33128,22 +32816,6 @@
     "lon": -121.7701402
    },
    {
-    "id": "ChIJqxaAAwB5hYAR_0pf0RYBQ9Q",
-    "name": "Bench with View",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "VMWG+5X, Richmond, CA 94804, USA",
-    "rating": 4.8,
-    "userRatingCount": 19,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8954922,
-    "lon": -122.32261279999997
-   },
-   {
     "id": "ChIJN5Qy6sp9hYARHxzKEDM2gbg",
     "name": "Claremont Fire Trail",
     "primaryType": "park",
@@ -33272,22 +32944,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4498645,
     "lon": -121.8986176
-   },
-   {
-    "id": "ChIJ5ffz95SHhYAR9kJ53IADiz0",
-    "name": "Succulent Garden",
-    "primaryType": "botanical_garden",
-    "types": [
-     "botanical_garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco, CA 94122, USA",
-    "rating": 4.5,
-    "userRatingCount": 19,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.766887499999996,
-    "lon": -122.47251259999999
    },
    {
     "id": "ChIJf7H4YACBj4AR9S13_6FcZ9k",
@@ -33930,22 +33586,6 @@
     "lon": -122.4063837
    },
    {
-    "id": "ChIJ3fWYERKHhYARaD8U3kw_-2w",
-    "name": "Ancient Plants Walk",
-    "primaryType": "botanical_garden",
-    "types": [
-     "botanical_garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1199 9th Ave, San Francisco, CA 94122, USA",
-    "rating": 5,
-    "userRatingCount": 16,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.768792499999996,
-    "lon": -122.46959979999998
-   },
-   {
     "id": "ChIJUfqWiBnpj4AR89QPMuhEu4k",
     "name": "Clover Park",
     "primaryType": "park",
@@ -34218,22 +33858,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.645477,
     "lon": -122.4223629
-   },
-   {
-    "id": "ChIJ8e3vkEKHhYAR7bEb3A5gpGA",
-    "name": "Garden of Fragrance",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco, CA 94122, USA",
-    "rating": 4.2,
-    "userRatingCount": 15,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7681103,
-    "lon": -122.4685314
    },
    {
     "id": "ChIJkfPk0SRZhYARb_Vao1W0dFI",
@@ -34792,24 +34416,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.479065299999995,
     "lon": -122.25377909999999
-   },
-   {
-    "id": "ChIJ5_-Vo1CHhYARBC6GPu8W9BM",
-    "name": "Golden Gate Park Community Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "780 Frederick St, San Francisco, CA 94117, USA",
-    "rating": 5,
-    "userRatingCount": 13,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7662024,
-    "lon": -122.4573627
    },
    {
     "id": "ChIJXyfoMaGHj4ARptbparKKNX0",
@@ -36191,22 +35797,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.8914282,
     "lon": -122.293703
-   },
-   {
-    "id": "ChIJjXHELpOdhYARGWKdxc4TMjE",
-    "name": "Giant Highway Staging Area",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5551 Giant Hwy, Richmond, CA 94806, USA",
-    "rating": 4.6,
-    "userRatingCount": 10,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.991791,
-    "lon": -122.3561682
    },
    {
     "id": "ChIJO_vQ_uWAhYARSOW9blWzA3k",
@@ -37643,22 +37233,6 @@
     "lon": -122.37593109999999
    },
    {
-    "id": "ChIJX5HTCGiHhYAR6BZBgJs_Cas",
-    "name": "California Native Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Franciscio Botanical Garden, San Francisco, CA 94122, USA",
-    "rating": 5,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.766250299999996,
-    "lon": -122.47020479999999
-   },
-   {
     "id": "ChIJs9Z5n1wtjoARyPbplYWcT6U",
     "name": "Chaboya Park",
     "primaryType": "park",
@@ -38490,22 +38064,6 @@
     "lon": -121.92052160000001
    },
    {
-    "id": "ChIJx8qDgkKHhYARE90UU0bsIIs",
-    "name": "Mediterranean Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Francisco Botanical Garden, San Francisco, CA 94122, USA",
-    "rating": 4.7,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7681715,
-    "lon": -122.4693575
-   },
-   {
     "id": "ChIJWcbmPyvpj4ARUQT5ji6phB0",
     "name": "Passatempo Park",
     "primaryType": "park",
@@ -38666,22 +38224,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3120962,
     "lon": -121.89977959999997
-   },
-   {
-    "id": "ChIJy5cwNtYyjoARvzuQWbqC3mU",
-    "name": "Vietnamese Heritage Garden",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Roberts Ave, San Jose, CA 95122, USA",
-    "rating": 2.8,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3237208,
-    "lon": -121.85517619999999
    },
    {
     "id": "ChIJJ-3XdjV2hYAR4mU2bqcJse8",
@@ -38990,22 +38532,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.839217399999995,
     "lon": -122.28925590000001
-   },
-   {
-    "id": "ChIJE3kzYx2HhYAR5PTTmaBYoAY",
-    "name": "Exhibition Garden",
-    "primaryType": "botanical_garden",
-    "types": [
-     "botanical_garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1199 9th Ave, San Francisco, CA 94122, USA",
-    "rating": 4.8,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.7675104,
-    "lon": -122.4671441
    },
    {
     "id": "ChIJb0ZpneOAhYARIHpeJWXhkU8",
