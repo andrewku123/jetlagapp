@@ -372,6 +372,17 @@ model for every city.** The steps:
    `BRIDGE_MAX_MI`** (so a trailing stub off the end of a line — e.g. Caltrain
    south of San Jose toward deleted Gilroy — is left out). This keeps the rail
    corridor itself in play without dragging in whole deleted regions.
+5b. **Manual hand-drawn corridors** (`corridors` in `play_area_overrides.json`) —
+   where the curator wants the play area to reach into open land that has *no*
+   transit line to bridge it (e.g. a Berkeley-hills strip traced up from Tilden),
+   each entry is a polyline of `[lon,lat]` points + optional `radius_mi` (default
+   `BRIDGE_RADIUS_MI`, 0.5 mi). Each is buffered into a thin hideable strip.
+   **Corridors are unioned in AFTER `fill_holes` and after the deleted-place
+   carve-out**, so a corridor is only the strip itself — it never closes off a
+   wedge and tricks `fill_holes` into gobbling a whole enclosed hillside (that bug
+   happened when corridors were unioned before hole-fill). Trace coordinates off a
+   user screenshot by calibrating against two known on-map points (e.g. two BART
+   station dots) to a linear pixel→lon/lat transform.
 6. **Play area = the union of the kept place polygons (+ bridges)**, whole-place
    granularity (no raw disks), then **fill fully-enclosed holes** (`fill_holes`):
    any pocket ringed on all sides by in-play land is itself in play — surrounded ⇒
