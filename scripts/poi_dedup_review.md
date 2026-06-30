@@ -12,9 +12,9 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 18 | 14 | 0 | 0 | 0 |
 | Parks | 1971 | 1708 | 34 | 228 | 1 |
-| Golf Courses | 68 | 62 | 1 | 3 | 2 |
+| Golf Courses | 67 | 61 | 1 | 3 | 2 |
 | Consulates | 47 | 40 | 0 | 0 | 1 |
-| Mountains | 54 | 52 | 0 | 0 | 2 |
+| Mountains | 55 | 53 | 0 | 0 | 2 |
 | Sports Stadiums | 8 | 8 | 0 | 0 | 0 |
 
 
@@ -291,7 +291,7 @@ _No merges._
 - **[Dante Park](https://www.google.com/maps/search/?api=1&query=37.3116759%2C-121.779663&query_place_id=ChIJ3-aeLHItjoARjj0C9BVHo3o)** (6 rev) absorbs: [Montelena Park](https://www.google.com/maps/search/?api=1&query=37.3139423%2C-121.7802387&query_place_id=ChIJMTdk45ktjoARdmeGcVVKaDQ)(5,osm)
 
 
-## Golf Courses — 68 → 62 (name −1, osm −3 −2 manual)
+## Golf Courses — 67 → 61 (name −1, osm −3 −2 manual)
 
 
 **Merged (5 groups):**
@@ -309,7 +309,7 @@ _No merges._
 - **[Mexico Consulate](https://www.google.com/maps/search/?api=1&query=37.7867488%2C-122.39562210000001&query_place_id=ChIJj_rRz1CBhYARNaK44wPeMkU)** (738 rev) absorbs: [embajada mexicana](https://www.google.com/maps/search/?api=1&query=37.786743799999996%2C-122.39559109999999&query_place_id=ChIJB41WfnuAhYAR8zO-KazXCUs)(113,manual)
 
 
-## Mountains — 54 → 52 (name −0, osm −0 −2 manual)
+## Mountains — 55 → 53 (name −0, osm −0 −2 manual)
 
 
 **Merged (2 groups):**

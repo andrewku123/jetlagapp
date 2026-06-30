@@ -268,22 +268,26 @@ def main():
     removed = [places_m[n] for n in (drop | set(auto_dropped)) if n in places_m]
     if removed:
         union_m = union_m.difference(unary_union(removed))
-    # Manual hand-drawn corridors: a curator traces a polyline (lon,lat) where the
-    # play area should reach into open land that has no transit line to bridge it
-    # (e.g. the Berkeley-hills strip up from Tilden). Added AFTER hole-fill so each
-    # is only the thin buffered strip itself -- it never closes off a wedge and
-    # triggers fill_holes to gobble the whole enclosed hillside.
-    corridors = ov.get("corridors", [])
-    if corridors:
+    # Manual hand-drawn corridors / fill regions: where the curator wants the play
+    # area to reach into open land that has no transit line to bridge it (e.g. the
+    # Berkeley-hills valley between Berkeley and Orinda). Both are added AFTER
+    # hole-fill and the deleted-place carve-out so they are exactly the geometry the
+    # curator drew -- they never close off a wedge and trick fill_holes into
+    # gobbling a whole enclosed hillside. A "corridor" is a buffered polyline (thin
+    # strip); a "fill_region" is a polygon ring traced around the area to include.
+    extra = []
+    for c in ov.get("corridors", []):
         from shapely.geometry import LineString
-        strips = []
-        for c in corridors:
-            pts = [to_m(lon, lat) for lon, lat in c["coords"]]
-            r = c.get("radius_mi", BRIDGE_RADIUS_MI) * 1609.344
-            geom = LineString(pts) if len(pts) > 1 else Point(*pts[0])
-            strips.append(geom.buffer(r))
-        print(f"added {len(strips)} manual corridor(s)")
-        union_m = unary_union([union_m] + strips)
+        pts = [to_m(lon, lat) for lon, lat in c["coords"]]
+        r = c.get("radius_mi", BRIDGE_RADIUS_MI) * 1609.344
+        geom = LineString(pts) if len(pts) > 1 else Point(*pts[0])
+        extra.append(geom.buffer(r))
+    for fr in ov.get("fill_regions", []):
+        ring = [to_m(lon, lat) for lon, lat in fr["ring"]]
+        extra.append(Polygon(ring))
+    if extra:
+        print(f"added {len(extra)} manual corridor/fill region(s)")
+        union_m = unary_union([union_m] + extra)
     union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 

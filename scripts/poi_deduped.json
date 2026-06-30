@@ -39684,7 +39684,7 @@
   ]
  },
  "golf_course": {
-  "count": 62,
+  "count": 61,
   "places": [
    {
     "id": "ChIJOWlaP7MljoAR8kqTmZ0heBI",
@@ -40337,31 +40337,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6264787,
     "lon": -122.05014229999999
-   },
-   {
-    "id": "ChIJzYMwJxB8hYAREToe4Ove0Pk",
-    "name": "Tilden Park Golf Course",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "athletic_field",
-     "sports_club",
-     "sports_coaching",
-     "sports_school",
-     "sports_activity_location",
-     "health",
-     "association_or_organization",
-     "restaurant",
-     "point_of_interest",
-     "food",
-     "establishment"
-    ],
-    "address": "10 Golf Course Dr, Berkeley, CA 94708, USA",
-    "rating": 4.1,
-    "userRatingCount": 349,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.8896068,
-    "lon": -122.241865
    },
    {
     "id": "ChIJm-yYXCHNj4ARvZY7z4-Jp0E",
@@ -41729,7 +41704,7 @@
   ]
  },
  "mountain": {
-  "count": 52,
+  "count": 53,
   "places": [
    {
     "id": "ChIJd9hpAFCHhYAR6z3NKhIqOFA",
@@ -42034,6 +42009,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4999372,
     "lon": -122.26524459999999
+   },
+   {
+    "id": "ChIJ0ef3CFd8hYAR5jppqxh6i04",
+    "name": "Chaparral Peak",
+    "primaryType": "mountain_peak",
+    "types": [
+     "mountain_peak",
+     "natural_feature",
+     "establishment"
+    ],
+    "address": "Chaparral Peak, California 94563, USA",
+    "rating": 2,
+    "userRatingCount": 2,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.8782589,
+    "lon": -122.22302339999999
    },
    {
     "id": "ChIJ2b_7_J66j4AR4UGYIWzb0Zg",
