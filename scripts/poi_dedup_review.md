@@ -11,7 +11,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 | Zoos | 6 | 5 | 0 | 0 | 0 |
 | Aquariums | 3 | 2 | 0 | 0 | 0 |
 | Amusement Parks | 18 | 14 | 0 | 0 | 0 |
-| Parks | 1982 | 1718 | 34 | 229 | 1 |
+| Parks | 1983 | 1719 | 34 | 229 | 1 |
 | Golf Courses | 67 | 61 | 1 | 3 | 2 |
 | Consulates | 47 | 40 | 0 | 0 | 1 |
 | Mountains | 55 | 53 | 0 | 0 | 2 |
@@ -122,7 +122,7 @@ _No merges._
 _No merges._
 
 
-## Parks — 1982 → 1718 (name −34, osm −229 −1 manual)
+## Parks — 1983 → 1719 (name −34, osm −229 −1 manual)
 
 
 **Merged (164 groups):**

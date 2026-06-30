@@ -11065,7 +11065,7 @@
   ]
  },
  "park": {
-  "count": 1718,
+  "count": 1719,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -33840,6 +33840,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.825859699999995,
     "lon": -122.2827083
+   },
+   {
+    "id": "ChIJL3I872WdhYARwxR7lvQgeIo",
+    "name": "Urban Tilth North Richmond Farm",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "323 Brookside Dr, Richmond, CA 94801, USA",
+    "rating": 4.7,
+    "userRatingCount": 18,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.9651819,
+    "lon": -122.36643420000001
    },
    {
     "id": "ChIJ59SrTje3j4ARrLYlAX_eesk",

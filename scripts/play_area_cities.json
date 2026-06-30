@@ -56,7 +56,6 @@
   "Mountain View CDP",
   "Norris Canyon CDP",
   "North Gate CDP",
-  "North Richmond CDP",
   "Oakley city",
   "Pacheco CDP",
   "Pacifica city",
@@ -81,7 +80,7 @@
  "dropped_auto_surrounded": [
   "Vine Hill CDP"
  ],
- "count": 63,
+ "count": 64,
  "cities": [
   {
    "name": "Acalanes Ridge CDP",
@@ -322,6 +321,12 @@
    "county": "San Mateo",
    "type": "CDP",
    "reason": "kept"
+  },
+  {
+   "name": "North Richmond CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "manual-keep"
   },
   {
    "name": "Oakland city",

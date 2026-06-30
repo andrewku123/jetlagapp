@@ -1,6 +1,8 @@
 {
  "_comment": "Opt-out model: play area = union of ALL Census places in the transit-touched counties MINUS the names in 'drop' (manual deletions), then any kept unincorporated CDP left completely surrounded by non-playable area is auto-dropped. 'keep' force-includes a place even if it would be auto-dropped. Names are Census NAMELSAD.",
- "keep": [],
+ "keep": [
+  "North Richmond CDP"
+ ],
  "drop": [
   "Alamo CDP",
   "Alhambra Valley CDP",
@@ -47,7 +49,6 @@
   "Mountain View CDP",
   "Norris Canyon CDP",
   "North Gate CDP",
-  "North Richmond CDP",
   "Oakley city",
   "Pacheco CDP",
   "Pacifica city",
