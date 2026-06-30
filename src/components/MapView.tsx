@@ -594,79 +594,57 @@ function escapeHtml(s: string): string {
   )
 }
 
-// Reference POI overlay. Drawn imperatively onto shared canvases rather than as
-// React components: there can be thousands of POIs, so a declarative CircleMarker
-// per point would be far too heavy. POIs are drawn into TWO panes:
-//   - a *visible* canvas (z 460) ABOVE the station pane (450), made click-through
-//     (`pointer-events: none`), so a POI dot is never hidden under a station
-//     marker (e.g. a stadium sitting beneath a transit stop stays visible).
-//   - a *hit* canvas (z 410) BELOW the station pane, where the interactive markers
-//     (popups, in select mode) live. Because it's below the (click-through) station
-//     SVG, a station still wins the click where it overlaps a POI, while a POI takes
-//     the click where no station covers it.
-// Only mounted while the POI tab is open; POIs are only interactive in select mode.
+// Reference POI overlay. Drawn imperatively onto a single shared canvas rather
+// than as React components: there can be thousands of POIs, so a declarative
+// CircleMarker per point would be far too heavy. The POI canvas lives in its own
+// pane (z 410) *below* the station pane (z 450). Stations render as SVG (sparse
+// hit targets whose pane container is click-through), so a station wins the click
+// where it overlaps a POI (its popup opens even with the POI tab open) while a
+// POI still takes the click where no station covers it. A POI hidden under a
+// station is surfaced by the POI tab's Stations Faded/Hidden toggle. Only mounted
+// while the POI tab is open; POIs are only interactive (popups) in select mode.
 function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boolean }) {
   const map = useMap()
-  const hitGroupRef = useRef<L.LayerGroup | null>(null)
-  const hitRendererRef = useRef<L.Canvas | null>(null)
-  const topGroupRef = useRef<L.LayerGroup | null>(null)
-  const topRendererRef = useRef<L.Canvas | null>(null)
+  const groupRef = useRef<L.LayerGroup | null>(null)
+  const rendererRef = useRef<L.Canvas | null>(null)
 
   useEffect(() => {
-    let hitPane = map.getPane('poi')
-    if (!hitPane) {
-      hitPane = map.createPane('poi')
-      hitPane.style.zIndex = '410' // below stations (450): stations win overlap clicks
+    const paneName = 'poi'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      // above the overlay pane (400) the county/transit canvas lives in, below the
+      // station pane (450), so POIs stay clickable but a station always wins overlap
+      pane.style.zIndex = '410'
     }
-    let topPane = map.getPane('poi-top')
-    if (!topPane) {
-      topPane = map.createPane('poi-top')
-      topPane.style.zIndex = '460' // above stations (450): dots always visible
-      topPane.style.pointerEvents = 'none' // but click-through, so stations stay clickable
-    }
-    const hitRenderer = L.canvas({ padding: 0.5, pane: 'poi' })
-    const topRenderer = L.canvas({ padding: 0.5, pane: 'poi-top' })
-    const hitGroup = L.layerGroup([]).addTo(map)
-    const topGroup = L.layerGroup([]).addTo(map)
-    hitRendererRef.current = hitRenderer
-    topRendererRef.current = topRenderer
-    hitGroupRef.current = hitGroup
-    topGroupRef.current = topGroup
+    const renderer = L.canvas({ padding: 0.5, pane: paneName })
+    const group = L.layerGroup([]).addTo(map)
+    rendererRef.current = renderer
+    groupRef.current = group
     return () => {
-      hitGroup.remove()
-      topGroup.remove()
-      hitRenderer.remove()
-      topRenderer.remove()
-      hitGroupRef.current = null
-      topGroupRef.current = null
-      hitRendererRef.current = null
-      topRendererRef.current = null
+      group.remove()
+      renderer.remove()
+      groupRef.current = null
+      rendererRef.current = null
     }
   }, [map])
 
   useEffect(() => {
-    const hitGroup = hitGroupRef.current
-    const topGroup = topGroupRef.current
-    const hitRenderer = hitRendererRef.current
-    const topRenderer = topRendererRef.current
-    if (!hitGroup || !topGroup || !hitRenderer || !topRenderer) return
-    hitGroup.clearLayers()
-    topGroup.clearLayers()
+    const group = groupRef.current
+    const renderer = rendererRef.current
+    if (!group || !renderer) return
+    group.clearLayers()
     for (const p of pois) {
-      const style = {
+      const marker = L.circleMarker([p.lat, p.lon], {
+        renderer,
         radius: 4,
         color: '#fff',
         weight: 1,
         fillColor: p.color,
         fillOpacity: 0.9,
+        interactive,
         bubblingMouseEvents: false,
-      }
-      // visible dot, always on top, never interactive (its pane is click-through)
-      topGroup.addLayer(
-        L.circleMarker([p.lat, p.lon], { ...style, renderer: topRenderer, interactive: false }),
-      )
-      // hit target under the stations, only interactive in select mode
-      const marker = L.circleMarker([p.lat, p.lon], { ...style, renderer: hitRenderer, interactive })
+      })
       if (interactive) {
         const maps = `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`
         marker.bindPopup(
@@ -675,7 +653,7 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
             `<a href="${maps}" target="_blank" rel="noreferrer">Open in Google Maps</a></div>`,
         )
       }
-      hitGroup.addLayer(marker)
+      group.addLayer(marker)
     }
   }, [pois, interactive])
 
