@@ -17,10 +17,13 @@ enclave, plus a manual keep/drop override; when a hiding zone protrudes past a
 city, the *whole* neighbouring place is included rather than a circle bump; then
 surrounded pockets are filled — see the `gather-poi` skill).
 
-The app copy additionally has the **open bay water (up to the Bay Bridge)** unioned
-in for display only, so the bay renders as water instead of grey. That bay polygon
-exists only in the app's `play-area.geojson.json`; it is not in the pipeline's
-`play_area.geojson` and never affects POI clipping or which places are in play.
+The app copy additionally has the **open bay water** unioned in for display only,
+so the bay renders as water instead of grey: the central + south bay plus the
+East-Bay channel up to ~Richmond, bounded on the north-west by a line just east of
+Alcatraz/Angel Island (Marin and San Pablo Bay north of Richmond stay grey). That
+bay polygon exists only in the app's `play-area.geojson.json`; it is not in the
+pipeline's `play_area.geojson` and never affects POI clipping or which places are
+in play.
 
 ## Data
 `src/data/play-area.geojson.json` — a GeoJSON `FeatureCollection` with the
