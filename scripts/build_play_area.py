@@ -94,16 +94,23 @@ def fill_holes(geom):
     return unary_union([Polygon(g.exterior) for g in geom.geoms])
 
 
-# A corridor traced down the open water of the central + south San Francisco Bay,
-# cut off at the Bay Bridge on the north (San Pablo Bay above it is left grey).
-# It hugs the bay so it never covers the East Bay hills; the actual shoreline is
-# carved out by subtracting the land places. Display-only (dimming + satellite).
+# A corridor traced down the open water of the San Francisco Bay: the full central
+# + south bay, running up the East-Bay channel to ~Richmond. Its north-west edge
+# (the closing edge, last vertex -> first) is a near-N/S line just EAST of Alcatraz
+# / Angel Island, so the Marin side (Sausalito, Tiburon, Angel Island) and San
+# Pablo Bay north of Richmond stay grey, while the north-SF waterfront water and
+# the central channel up to Richmond are in. It hugs the bay so it never covers
+# the East Bay hills; the real shoreline is carved out by subtracting the land
+# places. Display-only (dimming + satellite).
 BAY_CORRIDOR_LL = [
-    (-122.40, 37.82), (-122.28, 37.82), (-122.18, 37.73), (-122.10, 37.66),
-    (-122.02, 37.57), (-121.98, 37.50), (-122.05, 37.45), (-122.13, 37.48),
-    (-122.22, 37.55), (-122.30, 37.63), (-122.37, 37.72), (-122.40, 37.78),
+    (-122.415, 37.94),                                    # NW: black-line top (Richmond inner bay)
+    (-122.34, 37.945), (-122.30, 37.87), (-122.28, 37.82),  # down the East Bay shore (Richmond->Berkeley->Emeryville)
+    (-122.18, 37.73), (-122.10, 37.66), (-122.02, 37.57),   # San Leandro -> Hayward -> Union City
+    (-121.98, 37.50), (-122.05, 37.45),                     # south bay SE -> Alviso tip
+    (-122.13, 37.48), (-122.22, 37.55), (-122.30, 37.63),   # up the peninsula shore
+    (-122.37, 37.72), (-122.41, 37.78), (-122.42, 37.808),  # Burlingame -> north-SF waterfront (black-line bottom)
 ]
-BAY_SEEDS_LL = [(-122.33, 37.79), (-122.13, 37.58), (-122.10, 37.50)]
+BAY_SEEDS_LL = [(-122.33, 37.79), (-122.36, 37.88), (-122.13, 37.58), (-122.10, 37.50)]
 
 
 def bay_water(places_all_m, to_m):

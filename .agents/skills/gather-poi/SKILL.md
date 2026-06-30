@@ -405,13 +405,17 @@ keep list + why each qualified), and a **simplified** copy written to the app's
 satellite clip; the app no longer uses counties for the play area). The review map
 draws the `play_area.geojson` boundary as a blue outline.
 
-**Bay water is added to the app copy only.** `bay_water()` traces the open central
-+ south bay (cut off at the Bay Bridge — San Pablo Bay north of it stays grey),
+**Bay water is added to the app copy only.** `bay_water()` traces the open San
+Francisco Bay (central + south bay, plus the East-Bay channel up to ~Richmond),
 subtracts the land places to snap to the real shoreline, and is unioned **only**
 into the simplified app `play-area.geojson.json` so the bay renders as water
-instead of grey. It is deliberately **not** in `play_area.geojson`, so it never
-affects POI clipping or which places are in play. For a new city, retrace
-`BAY_CORRIDOR_LL`/`BAY_SEEDS_LL` (or drop the bay step) to match its waterways.
+instead of grey. Its north-west edge (the corridor's closing edge) is a near-N/S
+line just **east of Alcatraz / Angel Island**, so the Marin side (Sausalito,
+Tiburon, Angel Island) and San Pablo Bay north of Richmond stay grey, while the
+north-SF waterfront water and the central channel up to Richmond are in. It is
+deliberately **not** in `play_area.geojson`, so it never affects POI clipping or
+which places are in play. For a new city, retrace `BAY_CORRIDOR_LL`/`BAY_SEEDS_LL`
+(or drop the bay step) to match its waterways.
 
 ## Sports stadiums (professional only)
 
