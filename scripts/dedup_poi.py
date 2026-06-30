@@ -65,7 +65,7 @@ def load_osm(cat):
     if not os.path.exists(path):
         return None
     feats = json.load(open(path))
-    geoms, fnames = [], []
+    geoms, fnames, areas = [], [], []
     for f in feats:
         try:
             g = shp_wkt.loads(f["wkt"])
@@ -75,9 +75,21 @@ def load_osm(cat):
             continue
         geoms.append(g)
         fnames.append(f.get("name", ""))
+        areas.append(g.area * DEG2_M2)   # deg^2 -> m^2 (equirect. @ bay lat)
     if not geoms:
         return None
-    return {"tree": STRtree(geoms), "geoms": geoms, "names": fnames}
+    return {"tree": STRtree(geoms), "geoms": geoms, "names": fnames,
+            "areas": areas}
+
+
+# equirectangular deg^2 -> m^2 around the bay (~37.7N); good enough to size parks
+DEG2_M2 = (111320.0 * math.cos(math.radians(37.7))) * 110574.0
+# big-park container thresholds: fold interior sub-park pins into the one
+# flagship pin of any park whose OSM polygon area is in this range. The upper
+# cap excludes the 135 km^2 "Golden Gate National Recreation Area" umbrella so
+# the Presidio / Lands End keep their own pins instead of melting into it.
+PARK_CONT_MIN_M2 = 3.0e5      # 0.3 km^2
+PARK_CONT_MAX_M2 = 2.0e7      # 20 km^2
 
 
 SRC = os.path.join(HERE, "poi_curated.json")
@@ -517,6 +529,44 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
                 osm_child.add(r)
                 grouped.append(r)
 
+    # 3b) BIG-PARK container pass (park only): fold every interior sub-feature
+    #     pin (named gardens, playgrounds, trails, "bench with view"...) into the
+    #     single flagship pin of the large park whose OSM polygon contains it, so
+    #     one big park reads as one POI. Uses the SMALLEST containing big-park
+    #     footprint (so the Presidio wins over the huge GGNRA umbrella) and only
+    #     when that footprint has a name-matching flagship pin inside it -- never
+    #     collapses a cluster into an arbitrary member. Neighbourhood parks that
+    #     merely sit just outside a big park's real polygon are untouched.
+    if cat == "park" and osm is not None and osm.get("areas"):
+        conts = [gi for gi in range(len(osm["geoms"]))
+                 if PARK_CONT_MIN_M2 <= osm["areas"][gi] <= PARK_CONT_MAX_M2]
+        if conts:
+            absorbed = {c for c, _, _ in edges}
+            standing = [r for r in after_name if r not in absorbed]
+            cont_pt = {r: Point(pts[r][1], pts[r][0]) for r in standing}
+            cont_members, cont_parent = {}, {}
+            for gi in conts:
+                g = osm["geoms"][gi]
+                mem = [r for r in standing if g.covers(cont_pt[r])]
+                cont_members[gi] = mem
+                fdist = distinctive(osm["names"][gi])
+                cand = [r for r in mem if distinctive(names[r]) & fdist]
+                cont_parent[gi] = (max(cand, key=lambda r: rev[r])
+                                   if cand else None)
+            for r in standing:
+                holding = sorted(
+                    (gi for gi in conts if cont_parent[gi] is not None
+                     and r in cont_members[gi]),
+                    key=lambda gi: osm["areas"][gi])
+                for gi in holding:
+                    par = cont_parent[gi]
+                    if par == r:
+                        break               # r is this park's own flagship
+                    if sep_pair(r, par):
+                        continue
+                    edges.append((r, par, "bigpark"))
+                    break
+
     # 4) manual reviewer overrides: force each [child -> parent] merge. The
     #    parent is resolved to its current final representative; any automatic
     #    parenting of the child is dropped so it lands only where the reviewer
@@ -633,8 +683,8 @@ def main():
           f"NAME_D={NAME_D:.0f}m (same-name merge), SUB_D={SUB_D:.0f}m (sub-part absorb), "
           f"then pins inside the SAME OSM hospital/park footprint collapse. "
           f"Representative kept = most-reviewed / best name match.\n"]
-    table = ["| Category | before | after | name-merged | osm-merged | manual |",
-             "|---|---|---|---|---|---|"]
+    table = ["| Category | before | after | name-merged | osm-merged | bigpark | manual |",
+             "|---|---|---|---|---|---|---|"]
     viz = {}
 
     pa_raw, pa_buf = load_play_area()
@@ -686,10 +736,12 @@ def main():
         _, root = final_parent(edges)
         n_name = sum(1 for _, _, s in edges if s == "name")
         n_osm = sum(1 for _, _, s in edges if s == "osm")
+        n_bigpark = sum(1 for _, _, s in edges if s == "bigpark")
         n_manual = sum(1 for _, _, s in edges if s == "manual")
         man = f" −{n_manual} manual" if n_manual else ""
+        bp = f" −{n_bigpark} bigpark" if n_bigpark else ""
         table.append(f"| {LABEL[key]} | {len(places)} | {len(kept_places)} "
-                     f"| {n_name} | {n_osm} | {n_manual} |")
+                     f"| {n_name} | {n_osm} | {n_bigpark} | {n_manual} |")
 
         # group every absorbed child under its FINAL representative
         children = defaultdict(list)   # final rep -> [(child, source)]
@@ -698,7 +750,7 @@ def main():
 
         rev = r["rev"]
         md.append(f"\n## {LABEL[key]} — {len(places)} → {len(kept_places)} "
-                  f"(name −{n_name}, osm −{n_osm}{man})\n")
+                  f"(name −{n_name}, osm −{n_osm}{bp}{man})\n")
         rep_lines = []
         for rep in sorted(children, key=lambda i: -rev[i]):
             kids = children[rep]
@@ -706,7 +758,7 @@ def main():
             head = f"- **[{p['name']}]({maps_link(p)})** ({rev[rep]} rev) absorbs:"
             kid_s = "; ".join(
                 f"[{places[c]['name']}]({maps_link(places[c])})({rev[c]}"
-                f"{',osm' if s=='osm' else ',manual' if s=='manual' else ''})"
+                f"{',osm' if s=='osm' else ',park' if s=='bigpark' else ',manual' if s=='manual' else ''})"
                 for c, s in sorted(kids, key=lambda cs: -rev[cs[0]]))
             rep_lines.append(head + " " + kid_s)
         md.append((f"\n**Merged ({len(rep_lines)} groups):**\n" + "\n".join(rep_lines) + "\n")

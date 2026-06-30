@@ -276,7 +276,30 @@ each entrance + departments + co-located clinics). `dedup_poi.py` collapses them
    (non-`GENERIC`) word and same-name / token-subset / co-located (<60m).
 2. **sub-part pass** — entrances/parking/buildings absorb into the nearest rep.
 3. **OSM-footprint pass** — reps inside the SAME OSM polygon collapse
-   (`osm_polys_<cat>.json` from `fetch_osm_polys.py`, FREE).
+   (`osm_polys_<cat>.json` from `fetch_osm_polys.py`, FREE). This pass picks the
+   *smallest* (most specific) footprint, so a distinct named feature inside a big
+   park (e.g. the Japanese Tea Garden inside Golden Gate Park) stays on its own.
+3b. **big-park container pass (park category only)** — the opposite move for large
+   parks: every interior sub-feature pin (named gardens, playgrounds, trails, dog
+   parks, "bench with view"…) folds into the **one flagship pin** of the big park
+   whose OSM polygon contains it, so a big park reads as a single POI for the
+   Matching/Measuring/Radar questions. Rules that keep it safe:
+   - Only OSM park footprints with area in `[PARK_CONT_MIN_M2, PARK_CONT_MAX_M2]`
+     (0.3–20 km²) count as containers. The **upper cap is essential**: it excludes
+     the ~135 km² "Golden Gate National Recreation Area" umbrella so the Presidio /
+     Lands End keep their own pins instead of melting into it.
+   - Each pin folds into the **smallest** containing container (Presidio wins over
+     any larger overlap), and only if that container has a **flagship pin** inside
+     it sharing a `distinctive()` word with the footprint name (most-reviewed of
+     those). No flagship ⇒ the cluster is left alone (never collapsed into an
+     arbitrary member — that's why a generic "Shoreline Park" with no name-matching
+     pin is skipped). A pin that *is* a container's flagship is never folded away.
+   - Neighbourhood parks that merely sit just *outside* a big park's real polygon
+     are untouched (the OSM polygon, not a bbox, defines "inside"). Merges are
+     tagged `bigpark` in `poi_dedup_review.md` (`,park` in the child list) so they
+     are easy to audit and unmerge. Bay-Area run folded 28 pins into 11 big parks
+     (15 into Golden Gate Park, 1 into the Presidio, plus Kelley/Coyote Hills/
+     Eastshore/Point Pinole/Lands End/etc.).
 4. **manual overrides** — reviewer decisions from `poi_dedup_overrides.json`, last.
 
 Representative ("main") pick (`rep_score`, most-decisive first) — designed so
