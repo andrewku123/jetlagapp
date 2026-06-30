@@ -9,13 +9,18 @@ The map shades everything **outside the play area** with a translucent gray
 mask, leaving the in-play cities clear. This visually communicates the game
 boundary without affecting elimination logic.
 
-The play area is the **union of transit-served city/town/CDP polygons** (not
-counties), plus the 0.5 mi hiding-zone disk around every station and any
-fully-enclosed hole filled in. It is produced by `scripts/build_play_area.py` in
-the POI pipeline (a place qualifies if any part of it is within a hiding zone of
-an eligible station, or it is a transit-enclosed enclave, plus a manual keep/drop
-override; then station disks are unioned in and surrounded pockets filled — see
-the `gather-poi` skill) and shipped to the app as a single (simplified) polygon.
+The play area is the **union of whole transit-served city/town/CDP polygons** (not
+counties, and no raw circular disks), with any fully-enclosed hole filled in. It
+is produced by `scripts/build_play_area.py` in the POI pipeline (a place qualifies
+if any part of it is within a station's hiding zone, or it is a transit-enclosed
+enclave, plus a manual keep/drop override; when a hiding zone protrudes past a
+city, the *whole* neighbouring place is included rather than a circle bump; then
+surrounded pockets are filled — see the `gather-poi` skill).
+
+The app copy additionally has the **open bay water (up to the Bay Bridge)** unioned
+in for display only, so the bay renders as water instead of grey. That bay polygon
+exists only in the app's `play-area.geojson.json`; it is not in the pipeline's
+`play_area.geojson` and never affects POI clipping or which places are in play.
 
 ## Data
 `src/data/play-area.geojson.json` — a GeoJSON `FeatureCollection` with the
