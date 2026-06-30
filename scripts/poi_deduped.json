@@ -3301,7 +3301,7 @@
   ]
  },
  "library": {
-  "count": 209,
+  "count": 210,
   "places": [
    {
     "id": "ChIJd2spnJuAhYARhkuvhLCp3us",
@@ -3865,6 +3865,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6809764,
     "lon": -122.1260754
+   },
+   {
+    "id": "ChIJocksNuh3hYARmcuw_78gLCg",
+    "name": "San Pablo Library - Contra Costa County Library",
+    "primaryType": "library",
+    "types": [
+     "library",
+     "point_of_interest",
+     "service",
+     "establishment"
+    ],
+    "address": "13751 San Pablo Ave, San Pablo, CA 94806, USA",
+    "rating": 4.5,
+    "userRatingCount": 131,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.9579069,
+    "lon": -122.33992799999999
    },
    {
     "id": "ChIJ-wwPXWGfj4ARdsO2xllckJo",
@@ -11048,7 +11065,7 @@
   ]
  },
  "park": {
-  "count": 1708,
+  "count": 1718,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -12421,6 +12438,23 @@
     "lon": -122.32159879999999
    },
    {
+    "id": "ChIJx-huV7KTj4ARt8SE-dyulXk",
+    "name": "Don Castro Regional Recreation Area",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "22400 Woodroe Ave, Hayward, CA 94541, USA",
+    "rating": 4.4,
+    "userRatingCount": 1387,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.6900902,
+    "lon": -122.05557309999999
+   },
+   {
     "id": "ChIJnZjC6pl9hYARrekcAH6CTP4",
     "name": "Temescal Regional Recreation Area",
     "primaryType": "park",
@@ -12658,6 +12692,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4019952,
     "lon": -121.87013679999998
+   },
+   {
+    "id": "ChIJBR-rWaN5hYARshK4fXyhIlM",
+    "name": "Wildcat Canyon Regional Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "5755 McBryde Ave, Richmond, CA 94805, USA",
+    "rating": 4.7,
+    "userRatingCount": 1264,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.9515158,
+    "lon": -122.32242889999999
    },
    {
     "id": "ChIJC1ALR0mHj4ARIKKNtKaMNeE",
@@ -16756,6 +16807,22 @@
     "lon": -122.4256583
    },
    {
+    "id": "ChIJn5em7MeTj4ARB7IqL7joURk",
+    "name": "San Felipe Community Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "2058 D St, Hayward, CA 94541, USA",
+    "rating": 4.5,
+    "userRatingCount": 395,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.6794,
+    "lon": -122.06212199999999
+   },
+   {
     "id": "ChIJvYhmZi7Pj4ARYw1wwq2rAeI",
     "name": "Peter Gill Memorial Park",
     "primaryType": "park",
@@ -17582,6 +17649,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3277419,
     "lon": -121.8923366
+   },
+   {
+    "id": "ChIJ50fhJOF3hYARfZTgl311vsc",
+    "name": "John Herbert Davis Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1667 Folsom Ave, San Pablo, CA 94806, USA",
+    "rating": 4.2,
+    "userRatingCount": 329,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.9613339,
+    "lon": -122.35279129999998
    },
    {
     "id": "ChIJZ0zooD1-j4ARzVFrHova9O4",
@@ -21148,6 +21232,22 @@
     "lon": -121.85288159999999
    },
    {
+    "id": "ChIJqflUUZuTj4ARA5IEk2RSwfM",
+    "name": "East Avenue Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "3221 East Ave, Hayward, CA 94541, USA",
+    "rating": 4.7,
+    "userRatingCount": 176,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.667229899999995,
+    "lon": -122.04433449999999
+   },
+   {
     "id": "ChIJl7mq-t55j4AR_FYCDNExs_8",
     "name": "Grundy Park",
     "primaryType": "park",
@@ -21889,6 +21989,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3646646,
     "lon": -122.03707700000001
+   },
+   {
+    "id": "ChIJyw1Ix3OTj4ARrxEjPQV3u74",
+    "name": "Five Canyons Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "25852 Five Canyons Pkwy, Castro Valley, CA 94552, USA",
+    "rating": 4.4,
+    "userRatingCount": 160,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.676498699999996,
+    "lon": -122.0304705
    },
    {
     "id": "ChIJEdis99--j4ARjYXuItoNjm8",
@@ -24179,6 +24296,22 @@
     "lon": -122.10888339999998
    },
    {
+    "id": "ChIJDZdnwsR3hYARwvIQdD9opPY",
+    "name": "Wanlass Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "2999 21st St, San Pablo, CA 94806, USA",
+    "rating": 4.1,
+    "userRatingCount": 114,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.9731046,
+    "lon": -122.34347629999999
+   },
+   {
     "id": "ChIJDzG1CtGjj4ARsxxv3GNr2zU",
     "name": "Holbrook Palmer Park",
     "primaryType": "park",
@@ -24719,6 +24852,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.448954400000005,
     "lon": -122.18640060000001
+   },
+   {
+    "id": "ChIJ5bC8p7qTj4ARIsIZgE0EFfQ",
+    "name": "Lakeridge Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "tourist_attraction",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "23333 Lakeridge Ave, Hayward, CA 94541, USA",
+    "rating": 4.2,
+    "userRatingCount": 104,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.68372660000001,
+    "lon": -122.05054009999999
    },
    {
     "id": "ChIJn0ELlT98j4AR3vyFHZEBCvQ",
@@ -31047,6 +31197,22 @@
     "lon": -122.03911239999998
    },
    {
+    "id": "ChIJ__lDtjV4hYAR_HNDf4iBpTA",
+    "name": "Mira Vista Field",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "6407-6419 Hazel Ave, Richmond, CA 94805, USA",
+    "rating": 4.1,
+    "userRatingCount": 33,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.9395042,
+    "lon": -122.31488999999999
+   },
+   {
     "id": "ChIJ2dLLI2OAhYAR4wO-3b_RaOE",
     "name": "Roof Garden",
     "primaryType": "park",
@@ -34688,6 +34854,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.4770013,
     "lon": -122.1588237
+   },
+   {
+    "id": "ChIJAVOfNeN3hYAR-81Gk7TVTXc",
+    "name": "Green Slide Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "1795 Brentz Ln, San Pablo, CA 94806, USA",
+    "rating": 4.7,
+    "userRatingCount": 14,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.958855,
+    "lon": -122.32701940000001
    },
    {
     "id": "ChIJudbWYiR8hYARMzdQ7KTvgEY",

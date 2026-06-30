@@ -49,6 +49,11 @@ SHORELINE_BUF_M = 150.0        # pier/waterfront rescue for non-natural POIs
 ADJ_TOL_M = 150.0              # boundary-adjacency tolerance
 SURROUND_MIN_FRAC = 0.02      # a kept CDP touching <2% of its border to another
                               # kept place counts as "surrounded by nonplayable"
+ENCLAVE_FILL_FRAC = 0.9       # a dropped place >=90% covered by the filled union is a
+                              # fully-enclosed enclave -> keep it in play (not grey)
+DISPLAY_HOLE_MAX_KM2 = 12.0   # in the app display, fill interior holes (land ringed by
+                              # in-play land + bay water) smaller than this, e.g. the
+                              # Albany waterfront / North Richmond shoreline specks
 BRIDGE_RADIUS_MI = 0.5        # half-width of a transit-line corridor bridge
 BRIDGE_NEAR_M = 60.0          # gap endpoint within this of a kept place = touching
 BRIDGE_MAX_MI = 12.0         # only bridge gaps shorter than this between two kept places
@@ -164,6 +169,17 @@ def fill_holes(geom):
     return unary_union([Polygon(g.exterior) for g in geom.geoms])
 
 
+def fill_small_holes(geom, max_area_m2):
+    """Like fill_holes but only fills interior rings smaller than max_area_m2,
+    so large genuinely-out-of-play enclosed space (if any) is left grey."""
+    def one(poly):
+        keep = [r for r in poly.interiors if Polygon(r).area >= max_area_m2]
+        return Polygon(poly.exterior, keep)
+    if geom.geom_type == "Polygon":
+        return one(geom)
+    return unary_union([one(g) for g in geom.geoms])
+
+
 # A corridor traced down the open water of the San Francisco Bay: the full central
 # + south bay, WEST along the SF north shore out to the Golden Gate Bridge so every
 # SF pier (Embarcadero, Wharf, Marina, Crissy) is included, and capped on the NORTH
@@ -184,8 +200,14 @@ RSR_BRIDGE_LL = [
 BAY_CORRIDOR_LL = [
     *RSR_BRIDGE_LL,                                        # N edge: R-SR bridge, E (Richmond) -> W (San Rafael)
     (-122.473, 37.915), (-122.468, 37.895),               # S down the Marin side, in open water
-    (-122.452, 37.878), (-122.440, 37.870),               # through Raccoon Strait (E of Tiburon, W of Angel I.)
-    (-122.470, 37.838), (-122.478, 37.823),               # to the GG bridge Marin anchorage / mid-Gate
+    # Wrap the Tiburon/Belvedere peninsula: the corridor reaches WEST over the
+    # peninsula (down to ~-122.47, just east of its Richardson-Bay shore) and the
+    # real Marin coastline (MARIN_LAND, traced from OSM) is subtracted in
+    # bay_water(), so the water hugs the peninsula's east + south shore instead of
+    # a straight diagonal. Angel Island is NOT subtracted, so it stays in play.
+    (-122.458, 37.892), (-122.470, 37.884),               # NE corner -> over the peninsula (carved by MARIN_LAND)
+    (-122.472, 37.872), (-122.470, 37.860),               # down the peninsula's west side past Belvedere (carved)
+    (-122.476, 37.840), (-122.478, 37.823),               # to the GG bridge Marin anchorage / mid-Gate
     (-122.478, 37.808), (-122.466, 37.806), (-122.44, 37.806),  # GG bridge SF anchorage, E along the SF north shore
     (-122.41, 37.78),                                      # Embarcadero
     (-122.37, 37.72), (-122.30, 37.63), (-122.22, 37.55),  # down the peninsula shore
@@ -197,11 +219,28 @@ BAY_CORRIDOR_LL = [
 BAY_SEEDS_LL = [(-122.33, 37.79), (-122.36, 37.88), (-122.13, 37.58), (-122.10, 37.50)]
 
 
+def _load_marin_land(to_m):
+    """Marin bay-front landmass (Tiburon/Belvedere peninsula, Sausalito) traced
+    from the OSM coastline, in metres. Subtracted from the bay corridor so the
+    water follows the real shoreline. Angel Island is deliberately excluded from
+    this polygon so it stays in play (covered by the corridor)."""
+    path = os.path.join(HERE, "marin_land.geojson")
+    if not os.path.exists(path):
+        return None
+    g = shape(json.load(open(path))["geometry"])
+    if not g.is_valid:
+        g = g.buffer(0)
+    return transform(to_m, g)
+
+
 def bay_water(places_all_m, to_m):
     """The open bay water as a polygon: the hand-traced bay corridor minus every
     land place, keeping the connected water component(s) that contain a seed."""
     corr = Polygon([to_m(lon, lat) for lon, lat in BAY_CORRIDOR_LL])
     land = unary_union(list(places_all_m.values()))
+    marin = _load_marin_land(to_m)
+    if marin is not None:
+        land = unary_union([land, marin])
     water = corr.difference(land)
     polys = [water] if water.geom_type == "Polygon" else \
         [g for g in getattr(water, "geoms", []) if g.geom_type == "Polygon"]
@@ -285,14 +324,31 @@ def main():
         print("added transit-line bridges between kept places")
         city_m = unary_union([city_m, bridges])
     union_m = fill_holes(city_m)
-    # A deleted place (manual or auto-surrounded) must stay out even when it ends
-    # up ringed by kept neighbours, so carve every dropped place back out of the
-    # hole-filled union. fill_holes therefore only fills *unnamed* enclosed open
-    # space (e.g. San Bruno Mountain), never a place the curator removed (e.g.
-    # San Pablo / Moraga inside their kept neighbours).
-    removed = [places_m[n] for n in (drop | set(auto_dropped)) if n in places_m]
+    # Carve dropped places back out of the hole-filled union -- but ONLY those
+    # that are NOT fully enclosed by in-play land. A deleted place that is an
+    # interior hole (fully ringed by kept neighbours, e.g. San Pablo / East
+    # Richmond Heights inside Richmond, or Shell Ridge / San Miguel by Walnut
+    # Creek) is left FILLED = in play, because an enclave completely surrounded
+    # by playable land should itself be playable. A deleted place that opens onto
+    # out-of-play land (e.g. Moraga -> EBMUD/Las Trampas hills, coverage ~0)
+    # stays carved out = grey. Enclosure is measured as the fraction of the
+    # place covered by the hole-filled union.
+    removed = []
+    refilled = []
+    for n in (drop | set(auto_dropped)):
+        if n not in places_m:
+            continue
+        p = places_m[n]
+        cov = (p.intersection(union_m).area / p.area) if p.area else 0.0
+        if cov >= ENCLAVE_FILL_FRAC:
+            refilled.append(n)
+        else:
+            removed.append(p)
     if removed:
         union_m = union_m.difference(unary_union(removed))
+    if refilled:
+        print("kept enclosed enclaves in play (not carved out):",
+              ", ".join(sorted(refilled)))
     # Manual hand-drawn corridors / fill regions: where the curator wants the play
     # area to reach into open land that has no transit line to bridge it (e.g. the
     # Berkeley-hills valley between Berkeley and Orinda). Both are added AFTER
@@ -341,6 +397,13 @@ def main():
         # it is NOT in play_area.geojson and never affects POI clipping.
         bay = bay_water(places_m, to_m)
         display_m = unary_union([union_m, bay]) if bay is not None else union_m
+        # Unioning the bay water can ring small bits of unnamed shoreline land
+        # (e.g. Albany Hill / the Golden Gate Fields flats, or a bay-fronting
+        # deleted place like North Richmond) so they become interior holes — grey
+        # specks fully surrounded by in-play land + water. Fill any such enclosed
+        # hole below DISPLAY_HOLE_MAX_KM2 so the waterfront reads clean. This is
+        # display-only (the gameplay play_area / POI clip is untouched).
+        display_m = fill_small_holes(display_m, DISPLAY_HOLE_MAX_KM2 * 1e6)
         simp_ll = transform(to_ll, display_m.simplify(40.0, preserve_topology=True))
         app_feat = {"type": "Feature", "properties": {"name": "play-area"},
                     "geometry": mapping(simp_ll)}

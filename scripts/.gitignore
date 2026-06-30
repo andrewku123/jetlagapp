@@ -30,3 +30,5 @@ poi_merge_viz.json
 
 # Census TIGER place shapefile cache (re-downloaded on demand by build_play_area.py)
 _census_place/
+# one-off scratch dump of county place names (not used by the pipeline)
+_county_places.json
