@@ -9,13 +9,15 @@ The map shades everything **outside the play area** with a translucent gray
 mask, leaving the in-play cities clear. This visually communicates the game
 boundary without affecting elimination logic.
 
-The play area is the **union of whole transit-served city/town/CDP polygons** (not
-counties, and no raw circular disks), with any fully-enclosed hole filled in. It
-is produced by `scripts/build_play_area.py` in the POI pipeline (a place qualifies
-if any part of it is within a station's hiding zone, or it is a transit-enclosed
-enclave, plus a manual keep/drop override; when a hiding zone protrudes past a
-city, the *whole* neighbouring place is included rather than a circle bump; then
-surrounded pockets are filled — see the `gather-poi` skill).
+The play area is the **union of whole city/town/CDP polygons** (no raw circular
+disks), with any fully-enclosed hole filled in. It is produced by
+`scripts/build_play_area.py` in the POI pipeline by an **opt-out, county-scoped
+curation**: start from every Census place in the transit-touched counties, then a
+curator deletes the unwanted ones in `play_area_overrides.json` `"drop"`; any kept
+unincorporated CDP left completely surrounded by non-playable area is auto-dropped;
+the kept polygons are unioned and surrounded pockets are filled (see the
+`gather-poi` skill). The open land between/around the kept cities (parks,
+mountains, ranchland) is not a named place, so it stays out.
 
 The app copy additionally has the **open bay water** unioned in for display only,
 so the bay renders as water instead of grey: the central + south bay plus the
