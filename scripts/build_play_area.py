@@ -52,6 +52,7 @@ SURROUND_MIN_FRAC = 0.02      # a kept CDP touching <2% of its border to another
 BRIDGE_RADIUS_MI = 0.5        # half-width of a transit-line corridor bridge
 BRIDGE_NEAR_M = 60.0          # gap endpoint within this of a kept place = touching
 BRIDGE_MAX_MI = 12.0         # only bridge gaps shorter than this between two kept places
+ISLAND_LON_CUTOFF = -122.6   # drop place parts west of this (far-offshore Pacific islands, e.g. Farallones)
 # Census place + county cartographic boundary files (1:500k, NAD83 ~ WGS84 here)
 CBF_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_06_place_500k.zip"
 CBF_STEM = "cb_2023_06_place_500k"
@@ -164,20 +165,34 @@ def fill_holes(geom):
 
 
 # A corridor traced down the open water of the San Francisco Bay: the full central
-# + south bay, running up the East-Bay channel to ~Richmond. Its north-west edge
-# (the closing edge, last vertex -> first) is a near-N/S line just EAST of Alcatraz
-# / Angel Island, so the Marin side (Sausalito, Tiburon, Angel Island) and San
-# Pablo Bay north of Richmond stay grey, while the north-SF waterfront water and
-# the central channel up to Richmond are in. It hugs the bay so it never covers
-# the East Bay hills; the real shoreline is carved out by subtracting the land
-# places. Display-only (dimming + satellite).
+# + south bay, WEST along the SF north shore out to the Golden Gate Bridge so every
+# SF pier (Embarcadero, Wharf, Marina, Crissy) is included, and capped on the NORTH
+# by the real Richmond-San Rafael Bridge (traced from OpenStreetMap) so San Pablo
+# Bay north of the bridge stays grey. The west boundary runs from the GG bridge up
+# through Raccoon Strait, passing east of Sausalito / Tiburon / Belvedere (Marin
+# stays grey) but leaving Angel Island inside (in play). It hugs the bay so it
+# never covers the East Bay hills; the real shoreline is carved out by subtracting
+# the land places. Display-only (dimming + satellite).
+#
+# Richmond-San Rafael Bridge centreline, EAST (Richmond) -> WEST (San Rafael),
+# downsampled from OSM way 24315544. Forms the bay's north edge.
+RSR_BRIDGE_LL = [
+    (-122.4054, 37.9323), (-122.4228, 37.9336), (-122.4495, 37.9354),
+    (-122.4522, 37.9359), (-122.4550, 37.9366), (-122.4687, 37.9407),
+    (-122.4778, 37.9425),
+]
 BAY_CORRIDOR_LL = [
-    (-122.415, 37.94),                                    # NW: black-line top (Richmond inner bay)
-    (-122.34, 37.945), (-122.30, 37.87), (-122.28, 37.82),  # down the East Bay shore (Richmond->Berkeley->Emeryville)
-    (-122.18, 37.73), (-122.10, 37.66), (-122.02, 37.57),   # San Leandro -> Hayward -> Union City
-    (-121.98, 37.50), (-122.05, 37.45),                     # south bay SE -> Alviso tip
-    (-122.13, 37.48), (-122.22, 37.55), (-122.30, 37.63),   # up the peninsula shore
-    (-122.37, 37.72), (-122.41, 37.78), (-122.42, 37.808),  # Burlingame -> north-SF waterfront (black-line bottom)
+    *RSR_BRIDGE_LL,                                        # N edge: R-SR bridge, E (Richmond) -> W (San Rafael)
+    (-122.473, 37.915), (-122.468, 37.895),               # S down the Marin side, in open water
+    (-122.452, 37.878), (-122.440, 37.870),               # through Raccoon Strait (E of Tiburon, W of Angel I.)
+    (-122.470, 37.838), (-122.478, 37.823),               # to the GG bridge Marin anchorage / mid-Gate
+    (-122.478, 37.808), (-122.466, 37.806), (-122.44, 37.806),  # GG bridge SF anchorage, E along the SF north shore
+    (-122.41, 37.78),                                      # Embarcadero
+    (-122.37, 37.72), (-122.30, 37.63), (-122.22, 37.55),  # down the peninsula shore
+    (-122.13, 37.48), (-122.05, 37.45),                    # south bay SW -> Alviso tip
+    (-121.98, 37.50), (-122.02, 37.57), (-122.10, 37.66),  # up the East Bay shore (Union City -> Hayward)
+    (-122.18, 37.73), (-122.28, 37.82), (-122.30, 37.87),  # San Leandro -> Berkeley -> Richmond
+    (-122.34, 37.92),                                      # back NW toward the bridge east end
 ]
 BAY_SEEDS_LL = [(-122.33, 37.79), (-122.36, 37.88), (-122.13, 37.58), (-122.10, 37.50)]
 
@@ -211,6 +226,16 @@ def main():
         print("WARN counties with no polygon:", missing_co, file=sys.stderr)
 
     places = load_county_places(counties_ll)
+    # Drop far-offshore island parts of any place (e.g. the Farallon Islands, which
+    # are legally part of San Francisco city but sit ~27 mi out in the Pacific). A
+    # multipolygon part is dropped if its centroid is west of ISLAND_LON_CUTOFF.
+    for n, d in places.items():
+        g = d["geom"]
+        if g.geom_type == "MultiPolygon":
+            parts = [p for p in g.geoms if p.centroid.x >= ISLAND_LON_CUTOFF]
+            if len(parts) != len(g.geoms):
+                d["geom"] = unary_union(parts)
+                print(f"dropped {len(g.geoms) - len(parts)} offshore island part(s) from {n}")
     places_m = {n: transform(to_m, d["geom"]) for n, d in places.items()}
     is_cdp = {n: d["cdp"] for n, d in places.items()}
 
