@@ -72,10 +72,14 @@ function featurePolys(f: Feature): Poly[] {
 const PLAY_RINGS: Ring[] = IN_PLAY_FEATURES.flatMap(featureRings)
 const PLAY_POLYS: Poly[] = IN_PLAY_FEATURES.flatMap(featurePolys)
 
-// Outer ring of every in-play place, as Leaflet [lat, lng] — used as the holes
-// of a world-sized polygon that dims everything outside the play area.
-const PLAY_OUTER_LATLNG: [number, number][][] = PLAY_POLYS.map((poly) =>
-  poly[0].map(([lng, lat]) => [lat, lng] as [number, number]),
+// Every ring of every in-play place (outer rings AND interior holes), as Leaflet
+// [lat, lng] — used as the holes of a world-sized polygon that dims everything
+// outside the play area. Interior holes (a deleted place ringed by kept
+// neighbours, e.g. Moraga inside Orinda/Lafayette) are included so the even-odd
+// fill rule re-dims them: world(depth 1, dim) → place outer(2, in play) → hole(3,
+// dim again).
+const PLAY_RINGS_LATLNG: [number, number][][] = PLAY_RINGS.map((ring) =>
+  ring.map(([lng, lat]) => [lat, lng] as [number, number]),
 )
 
 function pointInRing(lng: number, lat: number, ring: Ring): boolean {
@@ -243,6 +247,7 @@ const DIM_FILL = {
   fillColor: '#6b7280',
   fillOpacity: 0.35,
   interactive: false,
+  fillRule: 'evenodd',
 } as const
 
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
@@ -406,6 +411,7 @@ function SatelliteLayer() {
     clip.setAttribute('id', clipId)
     clip.setAttribute('clipPathUnits', 'userSpaceOnUse')
     const path = document.createElementNS(svgNS, 'path')
+    path.setAttribute('clip-rule', 'evenodd')
     clip.appendChild(path)
     const defs = document.createElementNS(svgNS, 'defs')
     defs.appendChild(clip)
@@ -1136,7 +1142,7 @@ export default function MapView({
         {/* dim everything outside the play area: a world-sized polygon with
             each in-play place punched out as a hole. */}
         <Polygon
-          positions={[WORLD_RING, ...PLAY_OUTER_LATLNG]}
+          positions={[WORLD_RING, ...PLAY_RINGS_LATLNG]}
           pathOptions={DIM_FILL}
           interactive={false}
         />
