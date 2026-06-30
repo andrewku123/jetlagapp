@@ -26,7 +26,7 @@ and copies the raw union into the app at
   ../../<app>/src/data/play-area.geojson.json
 """
 import json, math, os, sys, io, zipfile, urllib.request
-from shapely.geometry import shape, Point, mapping
+from shapely.geometry import shape, Point, Polygon, mapping
 from shapely.ops import transform, unary_union
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -85,6 +85,15 @@ def load_places(bbox):
     return out
 
 
+def fill_holes(geom):
+    """Drop interior rings: any pocket fully enclosed by the play area (ringed on
+    all sides by in-play land) becomes in-play too. Concave bays that open to the
+    outside are not interior rings, so they stay open."""
+    if geom.geom_type == "Polygon":
+        return Polygon(geom.exterior)
+    return unary_union([Polygon(g.exterior) for g in geom.geoms])
+
+
 def main():
     stations = json.load(open(STATIONS))
     lats = [s["lat"] for s in stations]
@@ -139,8 +148,16 @@ def main():
         reason.pop(n, None)
 
     keep = sorted(reason)
-    union_ll = unary_union([places_ll[n] for n in keep])
-    union_m = transform(to_m, union_ll)
+    # Play area = the kept city polygons, UNION the 0.5 mi hiding-zone disk around
+    # every eligible station (so the immediate hideable area around a station is
+    # always in play even where it spills outside city limits — e.g. the
+    # unincorporated land by Orinda BART), then any fully-enclosed interior hole
+    # filled in (a pocket surrounded on all sides by in-play land is itself in
+    # play — e.g. San Bruno Mountain between Daly City/Colma/Brisbane/South SF, or
+    # the unincorporated pockets around Fremont/Newark/Union City).
+    city_m = unary_union([places_m[n] for n in keep])
+    union_m = fill_holes(unary_union([city_m, zone]))
+    union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 
     feat = {"type": "Feature", "properties": {"name": "play-area"},

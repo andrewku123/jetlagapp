@@ -363,16 +363,34 @@ A place is **in play** if ANY of:
 4. **Manual keep** — listed in `play_area_overrides.json` `"keep"` (escape hatch;
    Bay Area keeps Cupertino). `"drop"` is the opposite override.
 
+The play-area polygon is then the union of those kept places **plus two geometry
+steps** that close gaps you can actually hide in:
+- **Station hiding-zone disks.** Union in the `hide_radius_mi` disk around *every*
+  eligible station, not just the city polygons. The hideable area immediately
+  around a station is always in play even where it spills outside city limits
+  (e.g. the unincorporated land right by Orinda BART that the city polygon
+  excludes). Without this, land within the hiding radius gets wrongly greyed.
+- **Fill fully-enclosed holes** (`fill_holes`). Any pocket ringed on all sides by
+  in-play land is itself in play — surrounded ⇒ in (e.g. San Bruno Mountain
+  between Daly City/Colma/Brisbane/South San Francisco, and the unincorporated
+  pockets around Fremont/Newark/Union City). Concave bays that open to the outside
+  are not interior rings, so far open space (the East Bay hills, which open east to
+  out-of-play land) stays out.
+
 This drops the no-rail sprawl (Gilroy, Morgan Hill, Half Moon Bay, Livermore, San
-Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want.
+Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want —
+while keeping every spot a hider could legally be.
 
 **Clipping is strict, with one buffer.** `dedup_poi.py` clips every POI to the
 play area before dedup:
-- **Parks & mountains (`NATURAL_CATS`) — strict:** must be inside the raw city
-  polygons. This deliberately drops big open-space landmarks that sit in
-  unincorporated land (Mt. Diablo, Mission Peak, Tilden, Mt. Tam, Rancho San
-  Antonio…), emptying most of the mountains category. That is intended: the play
-  area = cities, for every category.
+- **Parks & mountains (`NATURAL_CATS`) — strict:** must be inside the raw
+  play-area polygon (`play_area.geojson` — the city union plus station disks and
+  filled holes), no shoreline buffer. This deliberately drops big open-space
+  landmarks that sit in *out-of-play* unincorporated land (Mt. Diablo, Mission
+  Peak, Tilden, Mt. Tam, Rancho San Antonio…), emptying most of the mountains
+  category. That is intended. Note open space that is *surrounded* by in-play land
+  (a filled hole, e.g. San Bruno Mountain) or within a station's hiding disk is
+  in play and its parks/mountains are kept.
 - **All other categories — 150 m shoreline buffer** (`play_area_buffered.geojson`)
   so waterfront/pier pins that belong to an in-play city but sit just off the land
   polygon survive (Exploratorium, USS Hornet, USS Pampanito, Musée Mécanique…).
