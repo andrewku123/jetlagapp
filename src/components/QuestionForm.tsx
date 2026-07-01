@@ -7,11 +7,11 @@ import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles 
 import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
+import { cityAt } from '../lib/cities'
 
 interface Props {
   lastClick: LatLng | null
   units: UnitSystem
-  cities: string[]
   lines: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
@@ -106,7 +106,6 @@ function CoordPicker({
 export default function QuestionForm({
   lastClick,
   units,
-  cities,
   lines,
   onSubmit,
   onPreview,
@@ -235,7 +234,13 @@ export default function QuestionForm({
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
-      case 'match-city':
+      case 'match-city': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const c = cityAt(center)
+        if (!c) return alert('That location is not inside any city in the play area.')
+        params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
       case 'match-line': {
         if (!value) return alert('Choose a value.')
         params = { value, answer: yesno }
@@ -537,9 +542,23 @@ export default function QuestionForm({
         </>
       )}
 
-      {kind === 'match-city' && dropdown(cities)}
+      {kind === 'match-city' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const c = cityAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {c ? <>Your city: <b>{c}</b></> : 'That location is not inside any city in the play area.'}
+              </p>
+            )
+          })()}
+          {yesNo}
+        </>
+      )}
+
       {kind === 'match-line' && dropdown(lines)}
-      {(kind === 'match-city' || kind === 'match-line') && yesNo}
+      {kind === 'match-line' && yesNo}
 
       {kind === 'match-namelength' && (
         <>

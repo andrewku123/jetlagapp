@@ -4,6 +4,7 @@ import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
 import { distanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
+import { cityAt, cityGeom } from './cities'
 import { haversineMiles } from './geo'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
@@ -295,6 +296,22 @@ export function countyMatchEliminatedRegion(record: QuestionRecord): LatLngMulti
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Matching a city (3rd admin): shade outside (Yes) / inside (No) the
+// seeker's city polygon. -----------------------------------------------------
+
+export function cityMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const name = String(p.value || '') || cityAt(seeker) || ''
+  const geom = cityGeom(name)
+  if (!geom.length) return null
+  const yes = p.answer === 'yes'
+  const elim = yes
+    ? polygonClipping.difference([WORLD_RING], geom)
+    : polygonClipping.intersection([WORLD_RING], geom)
+  return elim.length ? toLatLng(elim) : null
+}
+
 // Eliminated region for any shaded question record, or null if it has none.
 export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (!record.active || record.vetoed || !record.eliminates) return null
@@ -304,5 +321,6 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
+  if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   return null
 }

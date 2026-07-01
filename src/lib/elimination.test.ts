@@ -59,9 +59,11 @@ describe('stationPasses — radar', () => {
 
 describe('stationPasses — matching', () => {
   it('match-city', () => {
-    const r = record('match-city', { value: 'San Francisco', answer: 'yes' })
-    expect(stationPasses(station(), r)).toBe(true)
-    expect(stationPasses(station({ city: 'Oakland' }), r)).toBe(false)
+    // city is resolved geometrically from coordinates (not the baked .city field),
+    // so shading and elimination always agree.
+    const r = record('match-city', { value: 'San Francisco city', fromLat: 37.7749, fromLon: -122.4194, answer: 'yes' })
+    expect(stationPasses(station(), r)).toBe(true) // SF coords → same city
+    expect(stationPasses(station({ lat: 37.8044, lon: -122.2712 }), r)).toBe(false) // Oakland coords → different
   })
   it('match-namelength', () => {
     const r = record('match-namelength', { value: 12, answer: 'yes' })
@@ -149,11 +151,11 @@ describe('stationPasses — measure-feature (distance to a coastline / border)',
 
 describe('applyFilters', () => {
   it('partitions stations into remaining and eliminated', () => {
-    const a = station({ id: 'a', city: 'San Francisco' })
-    const b = station({ id: 'b', city: 'Oakland' })
+    const a = station({ id: 'a', lat: 37.7749, lon: -122.4194 }) // San Francisco
+    const b = station({ id: 'b', lat: 37.8044, lon: -122.2712 }) // Oakland
     const { remaining, eliminatedByQuestion } = applyFilters(
       [a, b],
-      [record('match-city', { value: 'San Francisco', answer: 'yes' })],
+      [record('match-city', { value: 'San Francisco city', fromLat: 37.7749, fromLon: -122.4194, answer: 'yes' })],
     )
     expect(remaining.map((s) => s.id)).toEqual(['a'])
     expect(eliminatedByQuestion.has('b')).toBe(true)

@@ -1,8 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { nearestAirport } from './airports'
 import { countyAt } from './counties'
+import { cityAt } from './cities'
 import type { QuestionRecord } from '../types'
 
 // ray-cast point-in-ring on a [lat, lon] ring
@@ -32,7 +33,7 @@ function pointInMulti(lat: number, lon: number, mp: LatLngMultiPolygon): boolean
 }
 
 function rec(
-  kind: 'match-poi' | 'measure-poi' | 'measure-feature' | 'match-airport' | 'measure-airport' | 'match-county',
+  kind: 'match-poi' | 'measure-poi' | 'measure-feature' | 'match-airport' | 'measure-airport' | 'match-county' | 'match-city',
   params: Record<string, unknown>,
 ): QuestionRecord {
   return { id: 'q', kind, createdAt: 0, params, eliminates: true, active: true }
@@ -177,6 +178,25 @@ describe('countyMatchEliminatedRegion shades outside/inside the seeker county', 
   it('NO shades the seeker county instead', () => {
     const region = countyMatchEliminatedRegion(rec('match-county', { fromLat: sf.lat, fromLon: sf.lon, value: 'San Francisco', answer: 'no' }))!
     expect(pointInMulti(sf.lat, sf.lon, region)).toBe(true)
+    expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(false)
+  })
+})
+
+describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () => {
+  const oakland = { lat: 37.8044, lon: -122.2712 }
+  const sanJose = { lat: 37.3382, lon: -121.8863 }
+
+  it('YES keeps the seeker city (unshaded); another city is shaded', () => {
+    const city = cityAt(oakland)
+    expect(city).toBe('Oakland city')
+    const region = cityMatchEliminatedRegion(rec('match-city', { fromLat: oakland.lat, fromLon: oakland.lon, value: 'Oakland city', answer: 'yes' }))!
+    expect(pointInMulti(oakland.lat, oakland.lon, region)).toBe(false)
+    expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(true)
+  })
+
+  it('NO shades the seeker city instead', () => {
+    const region = cityMatchEliminatedRegion(rec('match-city', { fromLat: oakland.lat, fromLon: oakland.lon, value: 'Oakland city', answer: 'no' }))!
+    expect(pointInMulti(oakland.lat, oakland.lon, region)).toBe(true)
     expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(false)
   })
 })
