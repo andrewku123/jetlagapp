@@ -20,12 +20,8 @@ import type { RenderPoi } from '../lib/poi'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { IN_PLAY_COUNTIES } from '../lib/playArea'
-import countiesData from '../data/counties.geojson.json'
 import playAreaData from '../data/play-area.geojson.json'
 import transitData from '../data/transit-lines.geojson.json'
-
-const COUNTIES = countiesData as unknown as GeoJSON.FeatureCollection
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -38,28 +34,26 @@ const COARSE_POINTER =
 // transparent options shared by every invisible station tap target
 const HIT_OPTS = { stroke: false, fill: true, fillColor: '#000', fillOpacity: 0 }
 
-// In-play play area used for the satellite clip: the counties' legal boundaries
-// with the bay kept but the open Pacific (and offshore Farallones) removed — see
-// scripts/build_play_area.mjs. The plain land-clipped `COUNTIES` set above is
-// still used for the out-of-play dimming overlay.
+// In-play play area: the union of transit-served city/town/CDP polygons (see
+// scripts/build_play_area.py — a place qualifies if any part is within a hiding
+// zone of an eligible station, or it is a transit-enclosed enclave). Used for
+// the satellite-imagery clip, tile culling, and the out-of-play dimming mask.
 const IN_PLAY_FEATURES = (
   playAreaData as unknown as GeoJSON.FeatureCollection
-).features.filter((f) =>
-  IN_PLAY_COUNTIES.has((f.properties as { name: string }).name),
-)
+).features
 
-// Bounding box of the in-play counties; used as a cheap first-pass filter on
-// satellite imagery tile requests (out-of-play tiles never load → much faster).
+// Bounding box of the play area; used as a cheap first-pass filter on satellite
+// imagery tile requests (out-of-play tiles never load → much faster).
 const PLAY_BOUNDS = L.geoJSON({
   type: 'FeatureCollection',
   features: IN_PLAY_FEATURES,
 } as GeoJSON.FeatureCollection).getBounds()
 
 // --- satellite-to-play-area clipping ----------------------------------------
-// The satellite imagery is restricted to the *actual* in-play county polygons
-// (not just their bounding box) in two ways: tiles that don't intersect a county
+// The satellite imagery is restricted to the *actual* in-play city polygons
+// (not just their bounding box) in two ways: tiles that don't intersect a city
 // are never requested (perf), and the layer's pane is clipped with an SVG
-// clip-path so imagery only shows inside the counties (visual). Rings below are
+// clip-path so imagery only shows inside the cities (visual). Rings below are
 // GeoJSON [lng, lat] order.
 type Ring = number[][]
 type Poly = Ring[] // [outer, ...holes]
@@ -77,6 +71,16 @@ function featurePolys(f: Feature): Poly[] {
 }
 const PLAY_RINGS: Ring[] = IN_PLAY_FEATURES.flatMap(featureRings)
 const PLAY_POLYS: Poly[] = IN_PLAY_FEATURES.flatMap(featurePolys)
+
+// Every ring of every in-play place (outer rings AND interior holes), as Leaflet
+// [lat, lng] — used as the holes of a world-sized polygon that dims everything
+// outside the play area. Interior holes (a deleted place ringed by kept
+// neighbours, e.g. Moraga inside Orinda/Lafayette) are included so the even-odd
+// fill rule re-dims them: world(depth 1, dim) → place outer(2, in play) → hole(3,
+// dim again).
+const PLAY_RINGS_LATLNG: [number, number][][] = PLAY_RINGS.map((ring) =>
+  ring.map(([lng, lat]) => [lat, lng] as [number, number]),
+)
 
 function pointInRing(lng: number, lat: number, ring: Ring): boolean {
   let inside = false
@@ -139,13 +143,6 @@ const SATELLITE_URL =
 const SAT_LABEL_URLS = [
   'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
 ]
-
-function countyStyle(feature?: Feature<Geometry, { name: string }>) {
-  const inPlay = feature ? IN_PLAY_COUNTIES.has(feature.properties.name) : false
-  return inPlay
-    ? { stroke: false, fill: false, interactive: false }
-    : { stroke: true, color: '#6b7280', weight: 1, fillColor: '#6b7280', fillOpacity: 0.35, interactive: false }
-}
 
 interface TransitWay {
   type: 'Feature'
@@ -221,6 +218,7 @@ interface Props {
   onStartEndgame: (id: string) => void
   onExitEndgame: () => void
   pois: RenderPoi[]
+  stationView: 'normal' | 'faded' | 'hidden'
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -242,6 +240,16 @@ const WORLD_RING: [number, number][] = [
   [85, 179.9],
   [85, -179.9],
 ]
+
+// out-of-play dimming fill for the world-minus-cities mask
+const DIM_FILL = {
+  stroke: false,
+  weight: 0,
+  fillColor: '#6b7280',
+  fillOpacity: 0.35,
+  interactive: false,
+  fillRule: 'evenodd',
+} as const
 
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 
@@ -404,6 +412,7 @@ function SatelliteLayer() {
     clip.setAttribute('id', clipId)
     clip.setAttribute('clipPathUnits', 'userSpaceOnUse')
     const path = document.createElementNS(svgNS, 'path')
+    path.setAttribute('clip-rule', 'evenodd')
     clip.appendChild(path)
     const defs = document.createElementNS(svgNS, 'defs')
     defs.appendChild(clip)
@@ -591,8 +600,9 @@ function escapeHtml(s: string): string {
 // pane (z 410) *below* the station pane (z 450). Stations render as SVG (sparse
 // hit targets whose pane container is click-through), so a station wins the click
 // where it overlaps a POI (its popup opens even with the POI tab open) while a
-// POI still takes the click where no station covers it. Only mounted while the
-// POI tab is open; POIs are only interactive (popups) in select mode.
+// POI still takes the click where no station covers it. A POI hidden under a
+// station is surfaced by the POI tab's Stations Faded/Hidden toggle. Only mounted
+// while the POI tab is open; POIs are only interactive (popups) in select mode.
 function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boolean }) {
   const map = useMap()
   const groupRef = useRef<L.LayerGroup | null>(null)
@@ -639,7 +649,7 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
         const maps = `https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`
         marker.bindPopup(
           `<div class="popup"><strong>${escapeHtml(p.name)}</strong>` +
-            `<div class="muted">${escapeHtml(p.label)} · ${p.reviews} reviews</div>` +
+            `<div class="muted">${escapeHtml(p.label)}</div>` +
             `<a href="${maps}" target="_blank" rel="noreferrer">Open in Google Maps</a></div>`,
         )
       }
@@ -674,6 +684,53 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Dims or hides the station pane while the POI tab is open so POI dots stand out.
+// 'faded' keeps stations clickable as faint context; 'hidden' also drops their
+// hit-testing so only POIs respond. Resets to full opacity otherwise.
+function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
+  const map = useMap()
+  useEffect(() => {
+    const pane = map.getPane('stations')
+    if (!pane) return
+    pane.style.transition = 'opacity 0.2s ease'
+    pane.style.opacity = mode === 'hidden' ? '0' : mode === 'faded' ? '0.4' : '1'
+    pane.style.pointerEvents = mode === 'hidden' ? 'none' : ''
+    return () => {
+      pane.style.opacity = '1'
+      pane.style.pointerEvents = ''
+    }
+  }, [map, mode])
+  return null
+}
+
+// Transit lines drawn into a dedicated pane that fades in once mounted. As a
+// vector overlay they paint a beat after the base tiles, so without this they
+// "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
+// full opacity. Pane sits above the dim mask (overlayPane 400) and below POIs
+// (410), matching the previous draw order.
+function TransitLines() {
+  const map = useMap()
+  const [pane, setPane] = useState<string | null>(null)
+  useEffect(() => {
+    const name = 'transit'
+    let p = map.getPane(name)
+    if (!p) {
+      p = map.createPane(name)
+      p.style.zIndex = '405'
+    }
+    p.style.transition = 'opacity 0.4s ease-in'
+    p.style.opacity = '0'
+    setPane(name)
+    const id = window.setTimeout(() => {
+      const pp = map.getPane(name)
+      if (pp) pp.style.opacity = '1'
+    }, 60)
+    return () => window.clearTimeout(id)
+  }, [map])
+  if (!pane) return null
+  return <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} pane={pane} />
+}
+
 export default function MapView({
   remaining,
   eliminated,
@@ -699,6 +756,7 @@ export default function MapView({
   onStartEndgame,
   onExitEndgame,
   pois,
+  stationView,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // stations are only clickable in select mode; in draw modes clicks pass
@@ -1129,10 +1187,17 @@ export default function MapView({
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <StationRenderer onChange={setStationRenderer} />
+        <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
 
-        <GeoJSON data={COUNTIES} style={countyStyle as never} interactive={false} />
-        <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} />
+        {/* dim everything outside the play area: a world-sized polygon with
+            each in-play place punched out as a hole. */}
+        <Polygon
+          positions={[WORLD_RING, ...PLAY_RINGS_LATLNG]}
+          pathOptions={DIM_FILL}
+          interactive={false}
+        />
+        <TransitLines />
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}
