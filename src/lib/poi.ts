@@ -63,16 +63,24 @@ export interface RenderPoi extends PoiPlace {
   color: string
 }
 
-// Categories offered by the POI Matching / Measuring questions (the Medium-deck
-// subjects that we have data for). Order = the dropdown order in the ask form.
+// Categories offered by the POI Matching / Measuring questions (every Medium-deck
+// subject we have data for). Order = the dropdown order in the ask form, grouped
+// natural → places of interest → public utilities. Sparser categories are the
+// stronger map-cutters (a 2-aquarium map splits cleanly in half), so they are
+// deliberately kept rather than hidden.
 export const QUESTION_POI_CATEGORIES: string[] = [
   'park',
-  'museum',
-  'library',
-  'movie_theater',
-  'hospital',
-  'golf_course',
   'mountain',
+  'museum',
+  'movie_theater',
+  'golf_course',
+  'amusement_park',
+  'zoo',
+  'aquarium',
+  'stadium',
+  'hospital',
+  'library',
+  'consulate',
 ]
 
 const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
@@ -80,9 +88,13 @@ const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
 )
 
 // Singular label for a category, for question prompts ("your nearest museum").
+// Handles the "-ies" plural (Libraries → library) before the plain "-s" strip.
 export function poiCategoryLabel(key: string): string {
   const plural = CATEGORY_LABEL[key] ?? key
-  return plural.replace(/s$/, '').toLowerCase()
+  const singular = plural.endsWith('ies')
+    ? plural.slice(0, -3) + 'y'
+    : plural.replace(/s$/, '')
+  return singular.toLowerCase()
 }
 
 // A stable identity for a POI (name + rounded coords) so two independent
