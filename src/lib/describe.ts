@@ -1,6 +1,7 @@
 import type { QuestionRecord, UnitSystem } from '../types'
 import { formatDistance, formatElevation } from './geo'
 import { poiCategoryLabel } from './poi'
+import { MEASURE_FEATURE_LABELS, type MeasureFeatureKey } from './measureFeatures'
 
 export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'): string {
   const p = r.params
@@ -29,6 +30,8 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Same nearest ${poiCategoryLabel(String(p.poiCat))}${p.poiName ? ` ("${String(p.poiName)}")` : ''}?${arrow(String(a))}`
     case 'measure-poi':
       return `Closer/further from nearest ${poiCategoryLabel(String(p.poiCat))}${arrow(String(a))}`
+    case 'measure-feature':
+      return `Closer/further from ${MEASURE_FEATURE_LABELS[String(p.feature) as MeasureFeatureKey] ?? 'a border'}${arrow(String(a))}`
     case 'measure-airport':
       return `Closer/further from airport${arrow(String(a))}`
     case 'measure-sealevel':
