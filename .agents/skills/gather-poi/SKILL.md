@@ -300,7 +300,54 @@ each entrance + departments + co-located clinics). `dedup_poi.py` collapses them
      are easy to audit and unmerge. Bay-Area run folded 28 pins into 11 big parks
      (15 into Golden Gate Park, 1 into the Presidio, plus Kelley/Coyote Hills/
      Eastshore/Point Pinole/Lands End/etc.).
+3c. **park sub-feature fold (park category only)** — generalises the reviewer's
+   dog-park/garden decisions to every park *without* needing a containing OSM
+   polygon. A pin whose name matches `PARK_SUBFEATURE_RE` (dog park/run/play/
+   training, off-leash, community/instructional/demonstration garden, skate park,
+   staging area, trail head, entrance, boat/kayak launch) folds into the **nearest
+   real park pin** (one that does *not* itself match the regex) within a
+   **density-aware reach** that **shares a strong name token**. Safety rules:
+   - **Adaptive fold reach** (`fold_reach()`): a flat radius over-merges in dense
+     cities (a dog run 1 km away in SF is a *different* park) yet under-merges in
+     the hills (a trailhead 1 km from a regional-park flagship is the same place).
+     The reach scales with the **parent's real OSM footprint size** — the bundled
+     proxy for sparseness, since no population data is present and big wild parks
+     are physically huge while urban parks are tiny:
+       - footprint ≥ 1 km² **or** name matches `PARK_SPARSE_RE` (regional/state/
+         open space/preserve/wilderness/watershed/national/wildlife/canyon/ridge/
+         shoreline/seashore/mountain/peak/recreation area) → **2500 m**;
+       - footprint 0.2–1 km² → **900 m**;
+       - small/no footprint (urban neighborhood park) → **500 m**.
+     `PARK_SUB_FOLD_M` (1200 m) is just the absolute upper cap. Effect: Saratoga
+     Creek dog park (725 m, small San Jose park) and Old Creek dog park of
+     Cherryland (955 m) stay standalone, while Wildcat Canyon / Dry Creek / Leona
+     Canyon trailheads/staging still fold across ~800–2500 m. Containment folds
+     (pass 3b) ignore this entirely — inside the polygon always folds.
+   - The shared token is `distinctive()` minus `FOLD_WEAK` — weak geographic words
+     (valley, hill, heights, canyon, point, waterfront, north/south, mission,
+     vista…) **don't** count, so "Eureka Valley Dog Play Area" never folds into
+     "Noe Valley Park" just because both say "valley". A real place/brand word is
+     required (e.g. "Buena Vista Dog Play Area" → "Buena Vista Park" via "buena").
+   - Non-namesake cases (a dog run named for its street, e.g. "Butcher Town Dog
+     Run" → "Heron's Head Park") have **no** shared token, so they're left to
+     explicit `poi_dedup_overrides.json` merges instead of guessed by proximity.
+   - Tagged `bigpark` too (same teal "into parent park" spoke on the review map).
+     Bay-Area run: this pass folded ~30 extra dog-parks/gardens citywide on top of
+     the big-park pass; the explicit override list carried ~20 hand-picked pairs.
 4. **manual overrides** — reviewer decisions from `poi_dedup_overrides.json`, last.
+   `merge`/`drop`/`rename` entries take an optional trailing `[lat, lon]` to pin
+   the exact pin when the name is ambiguous (Central Park, Roof Garden…). A `drop`
+   now also strips any merge spoke touching the dropped pin, so a deleted pin never
+   lingers as a child/parent on the review map even if it was auto-merged earlier.
+   Coord slots by entry type (all optional, backward-compatible):
+   - `merge`: `[child, parent]`, `[child, parent, plat, plon]` (pin the **parent**),
+     or `[child, parent, plat, plon, clat, clon]` (also pin the **child** — needed
+     for a generic child name like `"Dog park"` or a name shared across cities like
+     `"Shorebird Park"`, where a bare name would absorb the wrong same-named pin).
+   - `separate`: `[a, b]` or `[a, b, alat, alon, blat, blon]` to pin either side
+     when its name is ambiguous (several `"Oak Park"`s). Both sides must resolve to
+     exactly one pin or it WARNs and is skipped.
+   - `rename`: `[old, new, lat, lon]` pins the exact pin to rename.
 
 Representative ("main") pick (`rep_score`, most-decisive first) — designed so
 **future cities pulled with no review counts still pick a sensible main pin**:

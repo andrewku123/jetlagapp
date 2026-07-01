@@ -23,13 +23,63 @@ import os, json, math
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 raw = json.load(open(os.path.join(HERE, "poi_full.json")))
+# Cheap mode (POI_NO_REVIEWS=1): the pull omitted review counts to bill at the
+# cheaper Pro SKU, so the >=5-review rule can't be applied here -- keep every
+# icon-matching place and let the reviewer drop low-review ones by hand.
+NO_REVIEWS = os.environ.get("POI_NO_REVIEWS", "").lower() in ("1", "true", "yes")
 MIN_REVIEWS = 5
 
 LABEL = {
     "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
     "hospital": "Hospitals", "zoo": "Zoos", "aquarium": "Aquariums",
     "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
+    "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
 }
+# categories exempt from the >=5-review rule: mountains (natural features rarely
+# have reviews) and stadiums (curated to a manual professional keep-list below,
+# and pulled in no-reviews mode -- legitimacy comes from the keep-list, not reviews)
+KEEP_ALL = {"mountain", "stadium"}
+
+# --- icon allowlist -------------------------------------------------------
+# We pull broadly (includedTypes matches the place's full `types` array), then
+# keep only places whose `primaryType` is the icon Google actually shows. This
+# drops the noise the broad pull introduces (urgent-care clinics typed as
+# hospitals, shopping malls typed as movie theaters, pet stores as aquariums,
+# zoos/Union Square as parks, Topgolf/disc-golf/Golf Galaxy as golf, etc.).
+ALLOW = {
+    "museum": {"museum", "art_museum", "history_museum", "art_gallery"},
+    "library": {"library"},
+    "movie_theater": {"movie_theater"},
+    "hospital": {"hospital", "general_hospital", "medical_center"},
+    "zoo": {"zoo"},
+    "aquarium": {"aquarium"},
+    "amusement_park": {"amusement_park", "water_park", "amusement_center"},
+    "park": {"park", "city_park", "national_park", "state_park", "dog_park",
+             "garden", "botanical_garden", "nature_preserve"},
+    "golf_course": {"golf_course"},   # + club rescue, see keep_by_type()
+    "consulate": {"embassy"},         # honorary consulates are
+                                      # local_government_office -> excluded
+    "mountain": {"mountain_peak"},
+    "stadium": {"stadium", "arena"},  # the sports-venue icon; reviewer then
+                                      # limits to professional-sports home venues
+}
+# real golf/country clubs Google mis-primaries (e.g. SF Golf Club = sports_club)
+GOLF_CLUB_PRIMARIES = {"sports_club", "association_or_organization", "country_club"}
+GOLF_NAME_EXCLUDE = ("driving range", "topgolf", "top golf", "mini golf",
+                     "miniature golf", "disc golf", "golf galaxy", "indoor golf")
+
+
+def keep_by_type(key, p):
+    pt = p.get("primaryType")
+    name = (p.get("name") or "").lower()
+    if key == "golf_course":
+        if any(x in name for x in GOLF_NAME_EXCLUDE):
+            return False
+        if pt == "golf_course":
+            return True
+        return pt in GOLF_CLUB_PRIMARIES and ("golf" in name or "country club" in name)
+    allow = ALLOW.get(key)
+    return True if allow is None else pt in allow
 
 # --- human judgement: nested sub-areas to REMOVE (part of a bigger attraction) -
 NESTED_REMOVE = {
@@ -47,6 +97,27 @@ NESTED_REMOVE = {
 }
 # closed by name (businessStatus didn't catch it)
 NAME_CLOSED = {"FB OUTDOOR (PERM CLOSED)"}
+
+# --- STADIUM: professional-venue keep-list (manual, human-reviewed, per city) -
+# The icon rule surfaces EVERY stadium/arena, but the rulebook subject is
+# "professional sports", which Google can't encode -- the overwhelming majority
+# of icon hits are college / high-school / amateur fields. So the reviewer keeps
+# only the home venues *currently played in* by a pro / minor / independent-league
+# team (no historic venues). Keyed by Google place_id (stable; the display name
+# can drift -- e.g. Levi's shows a Super Bowl placeholder -- so we also relabel).
+# For a NEW CITY: re-run discovery, then replace this dict with that city's
+# currently-active pro/minor/indie home venues. Empty dict => keep all (e.g. when
+# a city has none curated yet) is NOT assumed; an empty list drops the category.
+STADIUM_PRO = {
+    "ChIJ_T25cNd_j4ARehGmHe0pT84": "Oracle Park",        # SF Giants (MLB)
+    "ChIJ6QBEf8Z_j4AR40Gh2OOTZ30": "Chase Center",       # Warriors NBA / Valkyries WNBA
+    "ChIJ3_DFJ8jJj4ARGH0fLjdaRRE": "Levi's Stadium",     # 49ers (NFL); Google name drifts
+    "ChIJq56TmaDMj4ARJJCpWy9v-i0": "SAP Center",         # Sharks NHL / Panthers IFL
+    "ChIJGXZh0aHLj4ARX-9DpASeh5w": "PayPal Park",        # Earthquakes MLS / Bay FC NWSL
+    "ChIJvZrKLy8zjoARKFobE55105U": "Excite Ballpark",    # San Jose Giants (MiLB)
+    "ChIJ8WOAG8OFj4AR1W_wwL7JV3A": "Oakland Coliseum",   # Oakland Roots (USL Championship)
+    "ChIJJx_xws8zjoARo9omW6ZKHGg": "Tech CU Arena",      # San Jose Barracuda (AHL)
+}
 
 # --- flagged but KEPT (human eyeball; rule keeps them) ----------------------
 FLAG_REVIEW = {
@@ -97,20 +168,25 @@ SPARSE = {"zoo", "aquarium", "amusement_park", "golf_course"}
 
 for key in [k for k in LABEL if k in raw]:
     blk = raw[key]
+    min_rev = 0 if (NO_REVIEWS or key in KEEP_ALL) else MIN_REVIEWS
     ge5 = [p for p in blk["places"]
-           if (p.get("userRatingCount") or 0) >= MIN_REVIEWS
+           if (p.get("userRatingCount") or 0) >= min_rev
            and p.get("businessStatus") != "CLOSED_PERMANENTLY"
            and p["name"] not in NAME_CLOSED]
+    typed = [p for p in ge5 if keep_by_type(key, p)]
+    off_icon = len(ge5) - len(typed)
+    if key == "stadium":   # professional-venue keep-list + relabel (see STADIUM_PRO)
+        typed = [dict(p, name=STADIUM_PRO[p["id"]]) for p in typed if p["id"] in STADIUM_PRO]
     nested = NESTED_REMOVE.get(key, set())
-    removed = [p for p in ge5 if p["name"] in nested]
-    kept = [p for p in ge5 if p["name"] not in nested]
+    removed = [p for p in typed if p["name"] in nested]
+    kept = [p for p in typed if p["name"] not in nested]
     kept.sort(key=lambda x: -(x.get("userRatingCount") or 0))
     curated[key] = {"tentacleRadiusMi": blk.get("tentacleRadiusMi"),
                     "count": len(kept), "places": kept}
 
     prox = proximity_nested([p for p in kept]) if key in SPARSE else {}
     flags = FLAG_REVIEW.get(key, set())
-    summary.append((LABEL[key], blk["count"], len(ge5), len(removed), len(kept)))
+    summary.append((LABEL[key], blk["count"], len(ge5), off_icon, len(removed), len(kept)))
 
     md.append(f"\n## {LABEL[key]} — {len(kept)} legitimate "
               f"({'tentacle ' + str(blk['tentacleRadiusMi']) + 'mi; ' if blk.get('tentacleRadiusMi') else ''}"
@@ -133,10 +209,10 @@ for key in [k for k in LABEL if k in raw]:
 
 json.dump(curated, open(os.path.join(HERE, "poi_full_curated.json"), "w"), indent=2)
 
-hdr = ["| Category | Raw in play | >=5 reviews | nested removed | **final** |",
-       "|---|---|---|---|---|"]
-for name, rawn, g5, rem, fin in summary:
-    hdr.append(f"| {name} | {rawn} | {g5} | {rem} | **{fin}** |")
+hdr = ["| Category | Raw in play | >=5 reviews | off-icon dropped | nested removed | **final** |",
+       "|---|---|---|---|---|---|"]
+for name, rawn, g5, offi, rem, fin in summary:
+    hdr.append(f"| {name} | {rawn} | {g5} | {offi} | {rem} | **{fin}** |")
 md = [md[0], md[1], "\n".join(hdr), "\n"] + md[2:]
 open(os.path.join(HERE, "poi_full_review.md"), "w").write("\n".join(md))
 print("\n".join(hdr))

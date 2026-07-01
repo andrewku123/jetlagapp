@@ -220,7 +220,8 @@ MATCHING = [
     ("Mountain", False), ("Landmass", False), ("Park", False),
     ("Amusement park", False), ("Zoo", False), ("Aquarium", False),
     ("Golf course", False), ("Museum", False), ("Movie theater", False),
-    ("Hospital", False), ("Library", False), ("Foreign consulate", False),
+    ("Sports stadium", False), ("Hospital", False), ("Library", False),
+    ("Foreign consulate", False),
 ]
 MEASURING = [
     ("A commercial airport", True), ("A high-speed train line", False),
@@ -231,7 +232,8 @@ MEASURING = [
     ("A coastline", False), ("A mountain", False), ("A park", False),
     ("An amusement park", False), ("A zoo", False), ("An aquarium", False),
     ("A golf course", False), ("A museum", False), ("A movie theater", False),
-    ("A hospital", False), ("A library", False), ("A foreign consulate", False),
+    ("A sports stadium", False), ("A hospital", False), ("A library", False),
+    ("A foreign consulate", False),
 ]
 RADAR = ["\u00bc", "\u00bd", "1", "3", "5", "10", "25", "50", "100"]
 THERMO = ["\u00bd", "3", "10"]
