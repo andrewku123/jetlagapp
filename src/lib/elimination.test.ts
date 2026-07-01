@@ -87,6 +87,38 @@ describe('stationPasses — measuring', () => {
   })
 })
 
+describe('stationPasses — match-poi (nearest place of a type)', () => {
+  const here = { lat: 37.7749, lon: -122.4194 } // downtown SF
+  const far = { lat: 37.3352, lon: -121.8811 } // San Jose (different nearest park)
+  it('a station co-located with the seeker shares the nearest park', () => {
+    const r = record('match-poi', { poiCat: 'park', fromLat: here.lat, fromLon: here.lon, answer: 'yes' })
+    expect(stationPasses(station(here), r)).toBe(true)
+    expect(stationPasses(station(here), { ...r, params: { ...r.params, answer: 'no' } })).toBe(false)
+  })
+  it('a far station has a different nearest park (eliminated on yes)', () => {
+    const r = record('match-poi', { poiCat: 'park', fromLat: here.lat, fromLon: here.lon, answer: 'yes' })
+    expect(stationPasses(station(far), r)).toBe(false)
+    expect(stationPasses(station(far), { ...r, params: { ...r.params, answer: 'no' } })).toBe(true)
+  })
+  it('unknown category never eliminates', () => {
+    const r = record('match-poi', { poiCat: 'nonesuch', fromLat: here.lat, fromLon: here.lon, answer: 'yes' })
+    expect(stationPasses(station(far), r)).toBe(true)
+  })
+})
+
+describe('stationPasses — measure-poi (distance to nearest place of a type)', () => {
+  const here = { lat: 37.7749, lon: -122.4194 }
+  it('a co-located station is not strictly closer (tie ⇒ not "closer")', () => {
+    const r = record('measure-poi', { poiCat: 'park', fromLat: here.lat, fromLon: here.lon, answer: 'closer' })
+    expect(stationPasses(station(here), r)).toBe(false)
+    expect(stationPasses(station(here), { ...r, params: { ...r.params, answer: 'further' } })).toBe(true)
+  })
+  it('unknown category never eliminates', () => {
+    const r = record('measure-poi', { poiCat: 'nonesuch', fromLat: here.lat, fromLon: here.lon, answer: 'closer' })
+    expect(stationPasses(station(here), r)).toBe(true)
+  })
+})
+
 describe('applyFilters', () => {
   it('partitions stations into remaining and eliminated', () => {
     const a = station({ id: 'a', city: 'San Francisco' })

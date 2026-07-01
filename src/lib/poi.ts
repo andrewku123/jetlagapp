@@ -1,4 +1,6 @@
 import poiData from '../data/poi.json'
+import type { LatLng } from '../types'
+import { haversineMiles } from './geo'
 
 // One entry per gathered POI category. `key` matches the keys in poi.json
 // (the Google primaryType family); `color` is the dot color on the map.
@@ -59,4 +61,54 @@ export interface RenderPoi extends PoiPlace {
   categoryKey: string
   label: string
   color: string
+}
+
+// Categories offered by the POI Matching / Measuring questions (the Medium-deck
+// subjects that we have data for). Order = the dropdown order in the ask form.
+export const QUESTION_POI_CATEGORIES: string[] = [
+  'park',
+  'museum',
+  'library',
+  'movie_theater',
+  'hospital',
+  'golf_course',
+  'mountain',
+]
+
+const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
+  POI_CATEGORIES.map((c) => [c.key, c.label]),
+)
+
+// Singular label for a category, for question prompts ("your nearest museum").
+export function poiCategoryLabel(key: string): string {
+  const plural = CATEGORY_LABEL[key] ?? key
+  return plural.replace(/s$/, '').toLowerCase()
+}
+
+// A stable identity for a POI (name + rounded coords) so two independent
+// "nearest" computations agree on whether they landed on the same place.
+export function poiKey(p: { name: string; lat: number; lon: number }): string {
+  return `${p.name}|${p.lat.toFixed(5)}|${p.lon.toFixed(5)}`
+}
+
+// The nearest POI (straight-line) of `categoryKey` to `p`, or null if none.
+export function nearestPoi(p: LatLng, categoryKey: string): PoiPlace | null {
+  const list = POI_BY_CATEGORY[categoryKey]
+  if (!list || list.length === 0) return null
+  let best = list[0]
+  let bestD = haversineMiles(p, best)
+  for (let i = 1; i < list.length; i++) {
+    const d = haversineMiles(p, list[i])
+    if (d < bestD) {
+      bestD = d
+      best = list[i]
+    }
+  }
+  return best
+}
+
+// Straight-line miles from `p` to the nearest POI of `categoryKey` (NaN if none).
+export function nearestPoiMiles(p: LatLng, categoryKey: string): number {
+  const b = nearestPoi(p, categoryKey)
+  return b ? haversineMiles(p, b) : NaN
 }
