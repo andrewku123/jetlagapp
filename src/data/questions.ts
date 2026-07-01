@@ -118,6 +118,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     blurb: 'Compared to me, are you closer to or further from your nearest place of a chosen type? Set your location and pick a type; the app shows your distance to it.',
   },
   {
+    kind: 'measure-feature',
+    category: 'Measuring',
+    label: 'Measuring — Border / coastline',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Compared to me, are you closer to or further from a coastline / county / state / international border? Set your location and pick which; the app shows your distance to the nearest one.',
+  },
+  {
     kind: 'inside-floor',
     category: 'Inside',
     label: 'Inside — floor in a building (endgame)',
@@ -161,6 +169,9 @@ export function questionGroupKey(
   if (kind === 'match-poi' || kind === 'measure-poi') {
     return `${kind}:${String(params.poiCat)}`
   }
+  // Measuring a different linear feature (coastline vs county line) is a different
+  // question; two asks of the same feature are the same question.
+  if (kind === 'measure-feature') return `measure-feature:${String(params.feature)}`
   if (kind === 'thermometer') {
     // Prefer the thermometer the seeker explicitly chose; two asks with the same
     // chosen thermometer are "the same question". Fall back to inferring the

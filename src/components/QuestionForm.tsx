@@ -4,14 +4,15 @@ import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey,
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
+import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, distanceToFeatureMiles } from '../lib/measureFeatures'
+import { nearestAirport } from '../lib/airports'
+import { countyAt } from '../lib/counties'
 
 interface Props {
   lastClick: LatLng | null
   units: UnitSystem
-  counties: string[]
   cities: string[]
   lines: string[]
-  airports: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
   // how many times each question group has already been asked, keyed by
@@ -105,10 +106,8 @@ function CoordPicker({
 export default function QuestionForm({
   lastClick,
   units,
-  counties,
   cities,
   lines,
-  airports,
   onSubmit,
   onPreview,
   askGroupCounts,
@@ -150,6 +149,7 @@ export default function QuestionForm({
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
+  const [feature, setFeature] = useState<string>(MEASURE_FEATURE_KEYS[0])
   const [num, setNum] = useState<string>('')
   const [building, setBuilding] = useState<string>('')
   const [floor, setFloor] = useState<string>('')
@@ -205,6 +205,13 @@ export default function QuestionForm({
         params = { poiCat, fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
       }
+      case 'measure-feature': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!Number.isFinite(distanceToFeatureMiles(center, feature)))
+          return alert('That feature has no geometry in the play area.')
+        params = { feature, fromLat: center.lat, fromLon: center.lon, answer: closefar }
+        break
+      }
       case 'measure-sealevel': {
         if (num === '') return alert(`Enter your altitude in ${elevUnit}.`)
         const meters = metric ? Number(num) : Number(num) / FEET_PER_METER
@@ -216,9 +223,19 @@ export default function QuestionForm({
         params = { value: Number(num), answer: yesno }
         break
       }
-      case 'match-county':
+      case 'match-airport': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        params = { value: nearestAirport(center).code, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
+      case 'match-county': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const c = countyAt(center)
+        if (!c) return alert('That location is not inside any county in the play area.')
+        params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
       case 'match-city':
-      case 'match-airport':
       case 'match-line': {
         if (!value) return alert('Choose a value.')
         params = { value, answer: yesno }
@@ -272,6 +289,8 @@ export default function QuestionForm({
       params = { thermometerMiles: t }
     } else if (kind === 'match-poi' || kind === 'measure-poi') {
       params = { poiCat }
+    } else if (kind === 'measure-feature') {
+      params = { feature }
     }
     const key = questionGroupKey(kind, params)
     return (askGroupCounts.get(key) ?? 0) + 1
@@ -388,6 +407,14 @@ export default function QuestionForm({
       {kind === 'measure-airport' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const a = nearestAirport(center)
+            return (
+              <p className="blurb poi-readout">
+                Distance to nearest airport (<b>{a.code}</b>): <b>{formatDistance(a.distMiles, units)}</b>
+              </p>
+            )
+          })()}
           <div className="row">
             <label>Answer</label>
             <div className="seg">
@@ -395,6 +422,33 @@ export default function QuestionForm({
               <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
             </div>
           </div>
+        </>
+      )}
+
+      {kind === 'match-airport' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (
+            <p className="blurb poi-readout">
+              Your nearest airport: <b>{nearestAirport(center).code}</b> — {formatDistance(nearestAirport(center).distMiles, units)}
+            </p>
+          )}
+          {yesNo}
+        </>
+      )}
+
+      {kind === 'match-county' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const c = countyAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {c ? <>Your county: <b>{c}</b></> : 'That location is not inside any county in the play area.'}
+              </p>
+            )
+          })()}
+          {yesNo}
         </>
       )}
 
@@ -436,6 +490,37 @@ export default function QuestionForm({
         </>
       )}
 
+      {kind === 'measure-feature' && (
+        <>
+          <div className="row">
+            <label>Feature</label>
+            <select value={feature} onChange={(e) => setFeature(e.target.value)}>
+              {MEASURE_FEATURE_KEYS.map((k) => (
+                <option key={k} value={k}>{MEASURE_FEATURE_LABELS[k]}</option>
+              ))}
+            </select>
+          </div>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const d = distanceToFeatureMiles(center, feature)
+            if (!Number.isFinite(d))
+              return <p className="blurb poi-readout">No geometry for {MEASURE_FEATURE_LABELS[feature as keyof typeof MEASURE_FEATURE_LABELS]}.</p>
+            return (
+              <p className="blurb poi-readout">
+                Distance to nearest {MEASURE_FEATURE_LABELS[feature as keyof typeof MEASURE_FEATURE_LABELS]}: <b>{formatDistance(d, units)}</b>
+              </p>
+            )
+          })()}
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
+        </>
+      )}
+
       {kind === 'measure-sealevel' && (
         <>
           <div className="row">
@@ -452,15 +537,9 @@ export default function QuestionForm({
         </>
       )}
 
-      {kind === 'match-county' && dropdown(counties)}
       {kind === 'match-city' && dropdown(cities)}
-      {kind === 'match-airport' && dropdown(airports)}
       {kind === 'match-line' && dropdown(lines)}
-      {(kind === 'match-county' ||
-        kind === 'match-city' ||
-        kind === 'match-airport' ||
-        kind === 'match-line') &&
-        yesNo}
+      {(kind === 'match-city' || kind === 'match-line') && yesNo}
 
       {kind === 'match-namelength' && (
         <>
