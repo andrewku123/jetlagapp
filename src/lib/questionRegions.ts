@@ -108,19 +108,29 @@ function clipHalfPlane(poly: P2[], a: number, b: number, c: number): P2[] {
   return out
 }
 
+// Finite lon/lat box the Voronoi cells are bounded to. A Voronoi cell can be an
+// unbounded wedge; without a finite frame it extends to absurd coordinates and,
+// once clipped to the world (lat ±85), renders as a giant triangle/bowtie across
+// the map. This box comfortably wraps the play area (bbox -122.7,37.0 →
+// -121.4,38.2) with padding, so every cell is a sane bounded polygon and the edge
+// of the frame sits well off-screen.
+const CELL_FRAME = { minLon: -124, minLat: 36, maxLon: -120, maxLat: 39 }
+
 // The Voronoi cell of `sites[idx]` — the region closer to it than to any other
-// site — as a [lon, lat] ring. Computed in an equirectangular projection scaled
-// at `refLat` so distances read straight-line, matching the elimination engine.
+// site — as a [lon, lat] ring, clipped to CELL_FRAME. Computed in an
+// equirectangular projection scaled at `refLat` so distances read straight-line,
+// matching the elimination engine.
 function voronoiCellRing(sites: LatLng[], idx: number, refLat: number): Ring | null {
   const cosRef = Math.cos((refLat * Math.PI) / 180) || 1e-6
   const proj = (p: LatLng): P2 => ({ x: p.lon * cosRef, y: p.lat })
   const p0 = proj(sites[idx])
-  const span = 200 // projected degrees; safely covers the metro before world-clip
+  const bl = proj({ lat: CELL_FRAME.minLat, lon: CELL_FRAME.minLon })
+  const tr = proj({ lat: CELL_FRAME.maxLat, lon: CELL_FRAME.maxLon })
   let poly: P2[] = [
-    { x: p0.x - span, y: p0.y - span },
-    { x: p0.x + span, y: p0.y - span },
-    { x: p0.x + span, y: p0.y + span },
-    { x: p0.x - span, y: p0.y + span },
+    { x: bl.x, y: bl.y },
+    { x: tr.x, y: bl.y },
+    { x: tr.x, y: tr.y },
+    { x: bl.x, y: tr.y },
   ]
   for (let i = 0; i < sites.length && poly.length >= 3; i++) {
     if (i === idx) continue
