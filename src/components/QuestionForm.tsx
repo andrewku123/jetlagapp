@@ -20,6 +20,35 @@ interface Props {
   askGroupCounts: Map<string, number>
 }
 
+// Optgroup each POI category falls under in the flattened subject dropdown, so
+// the 12 categories read as one scannable list alongside airport/county/etc.
+const POI_SUBJECT_GROUP: Record<string, string> = {
+  park: 'Natural',
+  mountain: 'Natural',
+  museum: 'Places of Interest',
+  movie_theater: 'Places of Interest',
+  golf_course: 'Places of Interest',
+  amusement_park: 'Places of Interest',
+  zoo: 'Places of Interest',
+  aquarium: 'Places of Interest',
+  stadium: 'Places of Interest',
+  hospital: 'Public Utilities',
+  library: 'Public Utilities',
+  consulate: 'Public Utilities',
+}
+
+// Optgroup a non-POI matching/measuring subject falls under.
+const KIND_SUBJECT_GROUP: Partial<Record<QuestionKind, string>> = {
+  'match-airport': 'Transit',
+  'match-line': 'Transit',
+  'match-namelength': 'Transit',
+  'match-county': 'Administrative divisions',
+  'match-city': 'Administrative divisions',
+  'measure-airport': 'Transit',
+  'measure-feature': 'Borders & coastline',
+  'measure-sealevel': 'Natural',
+}
+
 function ordinalSuffix(n: number): string {
   const t = n % 100
   if (t >= 11 && t <= 13) return 'th'
@@ -134,6 +163,7 @@ export default function QuestionForm({
     const i = label.indexOf(' — ')
     return i >= 0 ? label.slice(i + 3) : label
   }
+  const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
   // shared param state
   const [radius, setRadius] = useState<string>('0.5')
@@ -324,6 +354,37 @@ export default function QuestionForm({
     </div>
   )
 
+  // Flattened subject dropdown: the two POI kinds (match-poi / measure-poi) each
+  // expand into one entry per category, so all 12 places sit in the single
+  // Question dropdown next to airport/county/etc rather than behind a second
+  // "Place type" select. A POI option encodes its category as `${kind}::${cat}`.
+  interface SubjectOption { value: string; label: string; group: string }
+  const subjectOptions: SubjectOption[] = kindsInCategory.flatMap((q) => {
+    if (q.kind === 'match-poi' || q.kind === 'measure-poi') {
+      return QUESTION_POI_CATEGORIES.map((c) => ({
+        value: `${q.kind}::${c}`,
+        label: capitalize(poiCategoryLabel(c)),
+        group: POI_SUBJECT_GROUP[c] ?? 'Places of Interest',
+      }))
+    }
+    return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
+  })
+  const subjectValue = kind === 'match-poi' || kind === 'measure-poi' ? `${kind}::${poiCat}` : kind
+  function pickSubject(v: string) {
+    const [k, cat] = v.split('::')
+    setKind(k as QuestionKind)
+    if (cat) setPoiCat(cat)
+  }
+  const subjectGroups: { group: string; opts: SubjectOption[] }[] = []
+  for (const o of subjectOptions) {
+    let g = subjectGroups.find((x) => x.group === o.group)
+    if (!g) {
+      g = { group: o.group, opts: [] }
+      subjectGroups.push(g)
+    }
+    g.opts.push(o)
+  }
+
   return (
     <div className="qform">
       <div className="row qrow-cat">
@@ -334,12 +395,16 @@ export default function QuestionForm({
           ))}
         </div>
       </div>
-      {kindsInCategory.length > 1 && (
+      {subjectOptions.length > 1 && (
         <div className="row">
           <label>Question</label>
-          <select value={kind} onChange={(e) => setKind(e.target.value as QuestionKind)}>
-            {kindsInCategory.map((q) => (
-              <option key={q.kind} value={q.kind}>{subLabel(q.label)}</option>
+          <select value={subjectValue} onChange={(e) => pickSubject(e.target.value)}>
+            {subjectGroups.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.opts.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>
@@ -459,14 +524,6 @@ export default function QuestionForm({
 
       {(kind === 'match-poi' || kind === 'measure-poi') && (
         <>
-          <div className="row">
-            <label>Place type</label>
-            <select value={poiCat} onChange={(e) => setPoiCat(e.target.value)}>
-              {QUESTION_POI_CATEGORIES.map((c) => (
-                <option key={c} value={c}>{poiCategoryLabel(c)}</option>
-              ))}
-            </select>
-          </div>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {center && (() => {
             const np = nearestPoi(center, poiCat)
