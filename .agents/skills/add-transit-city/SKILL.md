@@ -44,14 +44,45 @@ and adjusting a few region constants. There is no per-city code branching.
    fragmentation problem affects every metro, so reuse that algorithm rather than
    rendering one feature per raw OSM way.
 
-6. **Update the map default view** in `src/components/MapView.tsx` (initial
+6. **Measuring-feature geometry** (coastline + county/state/international
+   borders) and the **county polygons** used by county Matching. These are the
+   ONLY city-specific data the Measuring/Matching questions need — the question
+   code (`src/lib/measureFeatures.ts`, `src/lib/counties.ts`, elimination +
+   shading) is fully city-agnostic and needs no change.
+   - Add a per-city entry to the `CITIES` dict at the top of
+     `scripts/build_measure_features.py`, then run `CITY=<slug> python3
+     scripts/build_measure_features.py`. Each entry supplies:
+     - `play_bbox` (lon/lat, generous buffer around all stations)
+     - `land` + `saltwater` source geojson (Census land/AREAWATER + ocean)
+     - `counties` (a FeatureCollection of the metro + neighbor county polygons;
+       reuse the same file the county Matching question reads,
+       `src/data/counties.geojson.json`, via the `data:` path prefix)
+     - `states` + `countries` source geojson (US states file + Natural Earth
+       admin-0 already in `scripts/measure_src/`)
+     - `state` + `state_neighbors` (the 1st-admin div the metro is in and the
+       adjacent ones whose shared border is the "state border"; a superset is
+       harmless — the nearest-point math ignores farther segments)
+     - `country` + `country_neighbor` (nearest international border)
+   - Output is `src/data/measure-features.geojson.json` (a FeatureCollection of
+     `MultiLineString`s keyed `coastline` / `county-border` / `state-border` /
+     `intl-border`). Any feature whose sources are missing is skipped, so a
+     landlocked/inland city can omit `coastline` or `intl-border`.
+   - Skip degenerate questions: e.g. "A Rail Station" (measuring) is useless when
+     every hiding station is itself a rail station (distance always 0). It stays
+     wired generically for cities whose station set includes non-rail stops.
+   - For the county polygons themselves, produce `src/data/counties.geojson.json`
+     as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
+     (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
+     `properties.name` for both point-in-polygon lookup and shading.
+
+7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
    `STATIONS.md`, and `public/stations-map.html`.
 
-7. **Question set**: the existing medium-game questions in `src/data/questions.ts`
+8. **Question set**: the existing medium-game questions in `src/data/questions.ts`
    are geography-generic and need no change. If the new region lacks an attribute
-   a question relies on (e.g. no airports), hide that question or ensure the
-   attribute is still populated.
+   a question relies on (e.g. no airports, no coastline), hide that question or
+   ensure the attribute is still populated.
 
 ## Multi-region (optional)
 If you want one deployment to switch between cities, generalize
