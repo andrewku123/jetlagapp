@@ -91,7 +91,7 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Matching — Nearest place (park, museum, hospital…)',
     cards: 'draw 3, keep 1',
     eliminates: true,
-    blurb: 'Is your nearest place of a chosen type the same as mine? Set your location and pick a type; the app shows which place it treats as nearest.',
+    blurb: 'Is your nearest place of the chosen type the same as mine? Set your location; the app shows which place it treats as nearest.',
   },
   {
     kind: 'measure-airport',
@@ -115,7 +115,7 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Measuring — Nearest place (park, museum, hospital…)',
     cards: 'draw 3, keep 1',
     eliminates: true,
-    blurb: 'Compared to me, are you closer to or further from your nearest place of a chosen type? Set your location and pick a type; the app shows your distance to it.',
+    blurb: 'Compared to me, are you closer to or further from your nearest place of the chosen type? Set your location; the app shows your distance to it.',
   },
   {
     kind: 'measure-feature',
