@@ -23,9 +23,12 @@ const WORLD_RING: Ring = [
 ]
 
 // A geodesic circle (equirectangular, fine at metro scale) as a [lon, lat] ring.
+// The regular n-gon is inflated to the mean of its inscribed and circumscribed
+// radius so it straddles the true circle, halving the worst-case radial error —
+// keeps boundary stations on the correct side of the shading.
 function diskRing(c: LatLng, radiusMiles: number, n: number): Ring {
   const cosLat = Math.cos((c.lat * Math.PI) / 180) || 1e-6
-  const r = radiusMiles * DEG_PER_MILE
+  const r = radiusMiles * DEG_PER_MILE * ((1 + 1 / Math.cos(Math.PI / n)) / 2)
   const ring: Ring = []
   for (let i = 0; i < n; i++) {
     const t = (i / n) * 2 * Math.PI
@@ -127,9 +130,9 @@ export function poiMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPol
 // Denser categories → more disks to union; cap the segment count so parks stay
 // responsive while sparse categories still read as clean circles.
 function diskSegments(count: number): number {
-  if (count > 800) return 16
-  if (count > 200) return 20
-  return 28
+  if (count > 800) return 24
+  if (count > 200) return 32
+  return 48
 }
 
 export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
