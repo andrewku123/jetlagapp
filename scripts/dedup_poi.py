@@ -714,6 +714,10 @@ def load_overrides(places, key, overrides, closed_names=frozenset()):
         # name is ambiguous (e.g. two same-named peaks 'Telegraph Hill') so the
         # reviewer can choose which duplicate survives.
         pcoord = (entry[2], entry[3]) if len(entry) >= 4 else None
+        # optional 5th/6th elements pin the exact CHILD pin, for generic child
+        # names ('Dog park') or names shared across cities ('Shorebird Park')
+        # where the wrong same-named pin would otherwise be absorbed.
+        ccoord = (entry[4], entry[5]) if len(entry) >= 6 else None
         ci, pi = resolve_name(places, child_name), resolve_name(places, parent_name)
         if not pi:
             print(f"WARN [{key}] merge override parent not found: "
@@ -728,8 +732,16 @@ def load_overrides(places, key, overrides, closed_names=frozenset()):
         else:
             # parent name may match duplicate pins -> the most-reviewed is the survivor
             parent_idx = max(pi, key=lambda i: revs[i])
-        # child name may match multiple pins (true duplicates) -> absorb all of them
-        targets = [i for i in dict.fromkeys(ci) if i != parent_idx]
+        if ccoord is not None:
+            cidx = resolve_near(places, child_name, ccoord[0], ccoord[1])
+            if cidx is None:
+                print(f"WARN [{key}] merge override child coord unresolved: "
+                      f"{child_name!r} {ccoord}")
+                continue
+            targets = [cidx] if cidx != parent_idx else []
+        else:
+            # child name may match multiple pins (true duplicates) -> absorb all of them
+            targets = [i for i in dict.fromkeys(ci) if i != parent_idx]
         if not targets:
             if not is_closed(child_name):
                 print(f"WARN [{key}] merge override child unresolved: "
@@ -737,8 +749,18 @@ def load_overrides(places, key, overrides, closed_names=frozenset()):
             continue
         for t in targets:
             fm.append((t, parent_idx))
-    for a_name, b_name in ov.get("separate", []):
-        ai, bi = resolve_name(places, a_name), resolve_name(places, b_name)
+    for entry in ov.get("separate", []):
+        a_name, b_name = entry[0], entry[1]
+        # optional coords pin either side when its name is ambiguous (several
+        # 'Oak Park's): [a, b, alat, alon, blat, blon].
+        acoord = (entry[2], entry[3]) if len(entry) >= 4 else None
+        bcoord = (entry[4], entry[5]) if len(entry) >= 6 else None
+        ai = ([resolve_near(places, a_name, *acoord)] if acoord
+              else resolve_name(places, a_name))
+        bi = ([resolve_near(places, b_name, *bcoord)] if bcoord
+              else resolve_name(places, b_name))
+        ai = [x for x in ai if x is not None]
+        bi = [x for x in bi if x is not None]
         if len(ai) == 1 and len(bi) == 1:
             fs.append(frozenset((ai[0], bi[0])))
         else:

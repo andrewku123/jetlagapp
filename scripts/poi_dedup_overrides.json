@@ -109,7 +109,7 @@
     -122.333956
    ],
    [
-    "Ca\u00f1ada College Library",
+    "Cañada College Library",
     37.448924,
     -122.26553
    ]
@@ -195,7 +195,7 @@
     -122.280588
    ],
    [
-    "Al\u00e9na Museum",
+    "Aléna Museum",
     37.8451297,
     -122.2762489
    ],
@@ -861,7 +861,7 @@
     "Arena Green Park"
    ],
    [
-    "Sons of San Jos\u00e9 Vietnam War Memorial",
+    "Sons of San José Vietnam War Memorial",
     "Arena Green Park"
    ],
    [
@@ -879,6 +879,144 @@
    [
     "Guadalupe Gardens Heritage Rose Garden",
     "Guadalupe River Park"
+   ],
+   [
+    "Western Horse Restoration Site",
+    "Sabercat Historical Park"
+   ],
+   [
+    "Trail Head, Sabercat Creek Trail",
+    "Sabercat Historical Park"
+   ],
+   [
+    "Sabercat Creek Trail",
+    "Sabercat Historical Park"
+   ],
+   [
+    "Blacow Elementary Butterfly Garden",
+    "Blacow Park"
+   ],
+   [
+    "Duck Island",
+    "Lakeshore Park"
+   ],
+   [
+    "LEAF Community Garden",
+    "California Nursery Historical Park"
+   ],
+   [
+    "Coyote Hills Entry Kiosk",
+    "Coyote Hills Regional Park"
+   ],
+   [
+    "Eden Greenway Dog Park",
+    "Southgate Park"
+   ],
+   [
+    "Hayward Shoreline Interpretive Center",
+    "Hayward Regional Shoreline"
+   ],
+   [
+    "Alvarado Park",
+    "Wildcat Canyon Regional Park"
+   ],
+   [
+    "Old Creek Dog Park of Cherryland",
+    "Meek Park"
+   ],
+   [
+    "Hayward Area Recreation and Park District Dog Park",
+    "San Lorenzo Community Park"
+   ],
+   [
+    "Hayward Regional Shoreline Parking",
+    "San Lorenzo Community Park"
+   ],
+   [
+    "Knowland Park Open Space",
+    "Knowland Park"
+   ],
+   [
+    "Alameda Dog Park",
+    "Washington Park",
+    37.76966,
+    -122.27375
+   ],
+   [
+    "Jean Sweeney Open Space Park - West Gate",
+    "Jean Sweeney Open Space Park"
+   ],
+   [
+    "Circle Bike Park",
+    "Jean Sweeney Open Space Park"
+   ],
+   [
+    "El Centro Trailhead (Dimond Canyon)",
+    "Dimond Park"
+   ],
+   [
+    "Benevides Trailhead",
+    "Dimond Park"
+   ],
+   [
+    "Bridgeview Trailhead",
+    "Dimond Park"
+   ],
+   [
+    "Friends of Sausal Creek Native Plant and Pollinator Garden",
+    "Dimond Park"
+   ],
+   [
+    "Monterey Redwoods",
+    "Dimond Park"
+   ],
+   [
+    "Palos Colorados Trailhead",
+    "Joaquin Miller Park"
+   ],
+   [
+    "Albany Bulb",
+    "McLaughlin Eastshore State Park State Seashore"
+   ],
+   [
+    "César E. Chávez Park",
+    "McLaughlin Eastshore State Park State Seashore"
+   ],
+   [
+    "ShareNGetty Community Garden",
+    "McLaughlin Eastshore State Park State Seashore"
+   ],
+   [
+    "Shorebird Park",
+    "McLaughlin Eastshore State Park State Seashore",
+    37.86804,
+    -122.30887,
+    37.86162,
+    -122.31628
+   ],
+   [
+    "Horseshoe Park",
+    "McLaughlin Eastshore State Park State Seashore"
+   ],
+   [
+    "Rockridge-Temescal Greenbelt",
+    "Frog Park"
+   ],
+   [
+    "Hardy Dog Park",
+    "Frog Park"
+   ],
+   [
+    "Dog park",
+    "Stanford Avenue Park",
+    37.83908,
+    -122.28719,
+    37.83885,
+    -122.28812
+   ],
+   [
+    "Claremont Fire Trail",
+    "Claremont Canyon Regional Preserve"
    ]
   ],
   "drop": [
@@ -921,6 +1059,36 @@
     "Parc Metro Clubhouse",
     37.41936,
     -121.90024
+   ],
+   [
+    "Boat Ramp Street",
+    37.92501,
+    -122.37594
+   ],
+   [
+    "Stryker Island",
+    37.69298,
+    -122.19231
+   ],
+   [
+    "Public Path #10",
+    37.90691,
+    -122.27422
+   ],
+   [
+    "Lincoln Theater Park/ One Fam Artist Activist Compound",
+    37.80635,
+    -122.29857
+   ],
+   [
+    "Oxford Street Parklet",
+    37.87031,
+    -122.26607
+   ],
+   [
+    "Grizzly Peak Blvd Overlook",
+    37.87223,
+    -122.22055
    ]
   ],
   "separate": [
@@ -967,6 +1135,34 @@
    [
     "Discovery Dog Park",
     "Discovery Meadow"
+   ],
+   [
+    "Eden Greenway Park",
+    "Hayward Community Gardens"
+   ],
+   [
+    "Oak Park",
+    "Oak Glen Park",
+    37.81885,
+    -122.25828,
+    37.82051,
+    -122.25856
+   ],
+   [
+    "Bench with View",
+    "McLaughlin Eastshore State Park State Seashore"
+   ],
+   [
+    "Bateman Park",
+    "Bateman Mall Park"
+   ]
+  ],
+  "rename": [
+   [
+    "Orinda Parks & Recreation Department",
+    "Orinda Community Park",
+    37.88379,
+    -122.18881
    ]
   ]
  },
