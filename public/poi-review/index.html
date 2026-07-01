@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>POI de-dup — what got merged</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html,body{margin:0;height:100%;font-family:system-ui,Arial,sans-serif}
+  #wrap{display:flex;height:100%}
+  #side{width:300px;overflow:auto;padding:12px 14px;box-sizing:border-box;border-right:1px solid #ddd}
+  #map{flex:1}
+  h2{font-size:16px;margin:0 0 8px}
+  .cat{display:flex;align-items:center;gap:7px;margin:3px 0;font-size:13px;cursor:pointer}
+  .sw{width:13px;height:13px;border-radius:50%;flex:0 0 auto}
+  .cnt{color:#777;margin-left:auto;font-variant-numeric:tabular-nums}
+  .leg{font-size:12px;color:#444;margin-top:12px;line-height:1.5}
+  .leg b{font-weight:600}
+  .ctl{font-size:12px;margin:8px 0}
+  button{font-size:12px;padding:3px 8px;margin-right:6px;cursor:pointer}
+  .tot{font-size:12px;color:#555;margin-top:10px}
+  #q{width:100%;box-sizing:border-box;padding:5px 7px;font-size:13px;margin:2px 0 4px}
+  #res{max-height:200px;overflow:auto;border:1px solid #eee;border-radius:4px;display:none}
+  #res.on{display:block}
+  .ri{display:flex;gap:6px;align-items:baseline;padding:4px 7px;font-size:12px;cursor:pointer;border-bottom:1px solid #f2f2f2}
+  .ri:hover{background:#f0f6ff}
+  .ri .rc{width:9px;height:9px;border-radius:50%;flex:0 0 auto;align-self:center}
+  .ri .rn{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ri .rk{color:#999;font-size:11px}
+  .lp b{font-size:13px}
+  .lp .k{color:#c0392b}
+  .lp .r{color:#27ae60}
+  @media (max-width:700px){
+    #wrap{flex-direction:column}
+    #side{width:auto;max-height:40vh;border-right:none;border-bottom:1px solid #ddd}
+    #map{flex:1;min-height:60vh}
+    .leaflet-popup-content{font-size:15px}
+  }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="side">
+    <h2>POI de-dup review</h2>
+    <div class="ctl">
+      <input id="q" type="search" placeholder="Search POIs by name…" autocomplete="off">
+      <div id="res"></div>
+    </div>
+    <div class="ctl">
+      <button id="all">Show all</button><button id="none">Hide all</button>
+    </div>
+    <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
+    <div id="cats"></div>
+    <div class="tot" id="tot"></div>
+    <div class="leg">
+      <div><span class="sw" style="background:#27ae60;display:inline-block"></span> <b>kept</b> (representative)</div>
+      <div><span class="sw" style="background:#c0392b;display:inline-block"></span> <b>merged away</b> — name match</div>
+      <div><span class="sw" style="background:#e67e22;display:inline-block"></span> <b>merged away</b> — OSM footprint</div>
+      <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
+      <div><span class="sw" style="background:#1abc9c;display:inline-block"></span> <b>merged away</b> — into parent park</div>
+      <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
+      <div style="margin-top:6px">Grey line links each absorbed pin → its representative. Click any dot for its name + reviews.</div>
+    </div>
+  </div>
+  <div id="map"></div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>document.write('<scr'+'ipt src="poi_merge_viz.js?cb='+Date.now()+'"><\/scr'+'ipt>')</script>
+<script>
+const COLORS={museum:"#8e44ad",library:"#2980b9",movie_theater:"#16a085",hospital:"#c0392b",
+  zoo:"#d35400",aquarium:"#0097a7",amusement_park:"#e91e63",park:"#27ae60",golf_course:"#7cb342",
+  consulate:"#34495e",mountain:"#795548",stadium:"#283593"};
+const map=L.map('map').setView([37.66,-122.15],9);
+const baseLight=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+  {maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+  {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
+L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain},null,
+  {collapsed:false,position:'topleft'}).addTo(map);
+
+// Play-area boundary: the union of transit-served city/town/CDP polygons that
+// POIs are clipped to (see scripts/build_play_area.py). Pins outside it are
+// dropped before they ever reach this map.
+fetch('play_area.geojson.json?cb='+Date.now()).then(r=>r.json()).then(geo=>{
+  L.geoJSON(geo,{interactive:false,style:{color:'#1d4ed8',weight:1.5,
+    fill:true,fillColor:'#1d4ed8',fillOpacity:0.04}}).addTo(map).bringToBack();
+}).catch(()=>{});
+map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
+  Object.keys(enabled).forEach(refresh);});
+
+const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false}, jump={v:false};
+// touch devices: tiny dots are hard to tap, so add a large invisible hit-area
+// marker behind each visible dot, bound to the same popup.
+const TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
+// In jump mode a dot click opens its Google Maps link directly (no popup),
+// saving a click per pin; otherwise it opens the usual popup.
+function dot(g,lat,lon,style,pop,p){
+  const mk=(ll,st)=>{const m=L.circleMarker(ll,st);
+    if(jump.v&&p){m.on('click',()=>window.open(gmaps(p),'_blank','noopener'));}
+    else{m.bindPopup(pop);}
+    return m.addTo(g);};
+  if(TOUCH){mk([lat,lon],{radius:Math.max(style.radius+10,15),
+    stroke:false,fillOpacity:0,fillColor:'#000'});}
+  return mk([lat,lon],style);
+}
+// darken a #rrggbb hex toward black by factor f (0=unchanged,1=black)
+function dark(hex,f){const n=parseInt(hex.slice(1),16);
+  let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=Math.round(r*(1-f));g=Math.round(g*(1-f));b=Math.round(b*(1-f));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function gmaps(p){const base=`https://www.google.com/maps/search/?api=1&query=${p.lat}%2C${p.lon}`;
+  return base+(p.id?`&query_place_id=${encodeURIComponent(p.id)}`:'')}
+function popup(p,kind){return `<div class="lp"><b>${esc(p.n)}</b><br>${p.r} reviews<br>`
+  +`<a href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a><br>`
+  +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span></div>`}
+
+function build(key){
+  const d=window.VIZ[key]; const g=L.layerGroup(); const col=COLORS[key]||'#555';
+  const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0; // darken fills + dark borders on terrain
+  if(!onlyMerged.v){
+    d.singles.forEach(p=>{
+      dot(g,p.lat,p.lon,{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'),p);
+    });
+  }
+  // Merges are reviewed for every category except parks, so only parks still
+  // draw the absorbed child dots + spokes; elsewhere just show the kept pin.
+  const showKids=(key==='park');
+  d.groups.forEach(grp=>{
+    const R=grp.rep;
+    if(showKids)grp.kids.forEach(k=>{
+      const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':k.src==='bigpark'?'#1abc9c':'#c0392b';
+      const col2=dark(base,sf);
+      const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':k.src==='bigpark'?'merged (into parent park)':'merged (name match)';
+      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
+      dot(g,k.lat,k.lon,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1},popup(k,klabel),k);
+    });
+    dot(g,R.lat,R.lon,{radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1},popup(R,'kept'),R);
+  });
+  return g;
+}
+function refresh(key){
+  if(layers[key]){map.removeLayer(layers[key]);delete layers[key];}
+  if(enabled[key]){layers[key]=build(key);layers[key].addTo(map);}
+}
+const catsDiv=document.getElementById('cats');
+Object.keys(window.VIZ).forEach(key=>{
+  const d=window.VIZ[key]; enabled[key]=(d.groups.length>0);
+  const row=document.createElement('label'); row.className='cat';
+  row.innerHTML=`<input type="checkbox" ${enabled[key]?'checked':''}>
+    <span class="sw" style="background:${COLORS[key]}"></span>${d.label}
+    <span class="cnt">${d.before}→${d.after} (−${d.before-d.after})</span>`;
+  row.querySelector('input').addEventListener('change',e=>{enabled[key]=e.target.checked;refresh(key);});
+  catsDiv.appendChild(row);
+  refresh(key);
+});
+let mb=0,ma=0; Object.values(window.VIZ).forEach(d=>{mb+=d.before;ma+=d.after});
+document.getElementById('tot').textContent=`Total: ${mb} → ${ma}  (−${mb-ma})`;
+document.getElementById('all').onclick=()=>{Object.keys(window.VIZ).forEach(k=>{enabled[k]=true;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=true);};
+document.getElementById('none').onclick=()=>{Object.keys(window.VIZ).forEach(k=>{enabled[k]=false;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
+document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
+  Object.keys(window.VIZ).forEach(k=>refresh(k));};
+document.getElementById('jump').onchange=e=>{jump.v=e.target.checked;
+  Object.keys(window.VIZ).forEach(k=>refresh(k));};
+
+// ---- search ----
+const INDEX=[];
+Object.keys(window.VIZ).forEach(key=>{const d=window.VIZ[key];
+  (d.singles||[]).forEach(p=>INDEX.push({key,p,kind:'untouched',col:'#999'}));
+  (d.groups||[]).forEach(grp=>{INDEX.push({key,p:grp.rep,kind:'kept',col:'#27ae60'});
+    grp.kids.forEach(k=>INDEX.push({key,p:k,kind:'merged away',
+      col:k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b'}));});});
+const qEl=document.getElementById('q'), resEl=document.getElementById('res');
+let flash=null;
+function goTo(it){
+  if(!enabled[it.key]){enabled[it.key]=true;refresh(it.key);
+    const cb=[...catsDiv.querySelectorAll('input')][Object.keys(window.VIZ).indexOf(it.key)];
+    if(cb)cb.checked=true;}
+  map.setView([it.p.lat,it.p.lon],15);
+  if(flash)map.removeLayer(flash);
+  flash=L.circleMarker([it.p.lat,it.p.lon],{radius:13,color:'#1d6fe0',weight:3,fill:false})
+    .addTo(map).bindPopup(popup(it.p,it.kind)).openPopup();
+}
+function runSearch(){
+  const q=qEl.value.trim().toLowerCase();
+  if(q.length<2){resEl.className='';resEl.innerHTML='';return;}
+  const hits=INDEX.filter(it=>(it.p.n||'').toLowerCase().includes(q)).slice(0,60);
+  resEl.innerHTML=hits.length?hits.map((it,i)=>
+    `<div class="ri" data-i="${i}"><span class="rc" style="background:${it.col}"></span>`
+    +`<span class="rn">${esc(it.p.n)}</span>`
+    +`<span class="rk">${window.VIZ[it.key].label} · ${it.kind}</span></div>`).join('')
+    :'<div class="ri" style="color:#999;cursor:default">no matches</div>';
+  resEl.className='on';
+  [...resEl.querySelectorAll('.ri[data-i]')].forEach(el=>
+    el.onclick=()=>goTo(hits[+el.dataset.i]));
+}
+qEl.addEventListener('input',runSearch);
+qEl.addEventListener('focus',runSearch);
+</script>
+</body>
+</html>

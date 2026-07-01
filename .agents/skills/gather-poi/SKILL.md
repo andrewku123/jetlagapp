@@ -1,147 +1,696 @@
 ---
 name: gather-poi
-description: Gather the Points-of-Interest dataset used by the Tentacles, POI-Matching and POI-Measuring questions (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses) from Google Places, over the map's whole play area, using the rulebook's "category icon + >=5 Google reviews" rule and the icon pin coordinate. Use when (re)building or quarterly-refreshing the POI data for the Bay Area or any new city.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, quarterly-refreshing, or extending the POI data to a new city/region.
 ---
 
-# Gather the POI dataset (Google Places, icon + review rule)
+# Build a Jet-Lag-ready POI database (any play area)
 
-Three question families need per-category POI data:
+This is the complete procedure to turn **one play-area polygon** into a clean,
+de-duped, per-category POI dataset the game can use. Three question families need
+it:
 - **Tentacles** — "of all the ___ within R of me, which are you nearest to?"
 - **Matching** — "is your nearest ___ the same as mine?"
 - **Measuring** — "how far are you from the nearest ___?"
 
 Matching/Measuring have **no radius** (you compare your *nearest*), so the data
-must cover the **entire play area**, not just near a station. One full-area pull
-serves all three (Tentacles just filters by its radius later).
+must cover the **entire play area**. One full-area build serves all three.
+
+## The one per-city input
+
+The **only** thing that changes between cities is the eligible-station set
+(`src/data/stations.json`). `build_play_area.py` turns those stations into the
+play-area polygons (see "Defining the play area" below), and everything
+downstream — bounding box, point-in-polygon (`in_play`), Google search cells, and
+the OSM/Overpass area — is **derived from the play polygon** by `poi_geo.py`. To
+build a new city: **drop in that city's `stations.json`, run `build_play_area.py`,
+then run the pipeline.** No script hard-codes a city, bbox, or county list.
+
+```python
+# poi_geo.py — shared, city-agnostic helpers used by every gather/audit script
+play = poi_geo.load_play()                 # 150m-buffered city union (falls back to app polygon)
+poi_geo.bbox(play)        -> (lat0,lat1,lon0,lon1)
+poi_geo.bbox_swne(play)   -> (S,W,N,E)     # Overpass bbox order
+in_play = poi_geo.make_in_play(play)       # even-odd ray cast, holes/ocean handled
+```
 
 ## The rulebook criterion (keep it objective)
 
 A place counts as a valid POI of a category **iff**:
-1. **It has that category's Google Maps icon** — Google's `primaryType` is the
-   category (book = `library`, ferris wheel = `amusement_park`, …). Enforced by
-   `includedPrimaryTypes` at query time.
+1. **It has that category's Google Maps icon** — Google's **`primaryType`** is in
+   the category's allowlist (book = `library`, ferris wheel = `amusement_park`,
+   …). `primaryType` is what actually drives the icon; the secondary `types` array
+   does not.
 2. **It has >=5 Google reviews** (`userRatingCount >= 5`). Under 5 = assumed
-   illegitimate (mis-tagged parking lot, fake listing, internal department, Little
-   Free Library box, …).
+   illegitimate (mis-tagged lot, fake listing, internal department, Little Free
+   Library box, …). In cheap/no-review mode this rule is applied **by hand** on
+   the de-duped survivors instead.
 
-That's the whole rule — **do not add subjective name filters** (a trampoline park
-or a pet hospital with the icon + >=5 reviews counts). The only allowed edits:
+Do **not** add subjective name filters (a trampoline park or a pet hospital with
+the icon + >=5 reviews counts). The only allowed edits:
 - drop `CLOSED_PERMANENTLY` (and names that literally say "perm closed");
-- **golf only**: the rulebook says *no mini-golf / driving ranges* — name-exclude
-  those (none fire automatically in the Bay Area; ambiguous "Golf Center" pins are
-  flagged for a human);
+- **golf only**: rulebook bans mini-golf / driving ranges → name-exclude those,
+  and *rescue* real clubs Google mis-primaries (`sports_club`/`country_club` with
+  "golf"/"country club" in the name, e.g. SF Golf Club, California Golf Club);
+- **movie only**: rescue genuine cinemas Google mis-types (name has
+  "cinema"/"cineplex"); keep live performing-arts theaters **out** (no movie icon);
 - **nested sub-areas** (a pin that's part of a bigger same-category attraction,
-  e.g. "Giraffe Enclosure" inside Oakland Zoo, "South Bay Shores" inside Great
-  America) are removed via an explicit human-reviewed list, cross-checked by a
-  proximity heuristic. Only applied to the sparse categories.
+  e.g. "Giraffe Enclosure" inside Oakland Zoo) removed via a human-reviewed list.
+- **library only**: a *high-school* library is a campus facility (not a public
+  library) and a *Little Free Library* is a sidewalk book box — both carry the
+  `library` icon and some clear >=5 reviews, so neither the icon nor the review
+  rule catches them. `dedup_poi.py` auto-drops them every audit via
+  `AUTO_DROP_NAME_RE["library"]` (`\bhigh school\b|\blittle free librar`). This
+  is name-based, so it only catches book boxes literally named "Little Free
+  Library"; un-named ones are left for the normal manual map review.
+- **stadium only**: the rulebook subject is *professional* sports, which Google
+  can't encode (the `stadium`/`arena` icon also covers college/high-school/amateur
+  fields — the vast majority of hits). So after the icon pass, curate filters the
+  category to a **manual `STADIUM_PRO` keep-list** (see Sports stadiums below).
 
 Store the **pin** (`location`), never a polygon centroid.
 
-## The search region (generalizes to any city)
+## Categories (12)
 
-The search region is **the map's play-area polygon** —
-`src/data/play-area.geojson.json` (here = the 5 in-play counties: SF, San Mateo,
-Santa Clara, Alameda, Contra Costa, land+bay). The fetch script searches the
-polygon's bounding box and keeps any pin that is **inside the polygon**
-(even-odd ray cast, holes/ocean handled). No station dependency and no Bay-Area
-assumptions: **to gather a new city, swap in that city's `play-area.geojson.json`
-and re-run** — everything else is unchanged. (No edge buffer is needed unless a
-station sits within the largest hiding-zone radius, 0.5mi, of the play-area
-border; the Bay Area has none.)
+| category | Google `includedTypes` (discovery) | kept `primaryType` (curate allowlist) | tentacle radius |
+|---|---|---|---|
+| museum | `museum` | museum, art_museum, history_museum, art_gallery | 1 mi |
+| library | `library` | library | 1 mi |
+| movie_theater | `movie_theater` | movie_theater (+cinema name-rescue) | 1 mi |
+| hospital | `hospital` | hospital, general_hospital, medical_center | 1 mi |
+| zoo | `zoo` | zoo | 15 mi |
+| aquarium | `aquarium` | aquarium | 15 mi |
+| amusement_park | `amusement_park` | amusement_park, water_park, amusement_center | 15 mi |
+| park | park, national/state/dog_park, garden, botanical_garden | (broad — all kept) | — |
+| golf_course | `golf_course` | golf_course (+club rescue, range/mini exclude) | — |
+| consulate | `embassy` | embassy (honorary = government_office, excluded) | — |
+| mountain | `mountain_peak` | mountain_peak (kept regardless of reviews) | — |
+| stadium | `stadium`, `arena` | stadium, arena → then a manual **professional keep-list** (see below) | — |
 
-## Categories
-
-| category | Google `includedPrimaryTypes` | tentacle radius |
-|---|---|---|
-| museum | `museum` | 1 mi |
-| library | `library` | 1 mi |
-| movie_theater | `movie_theater` | 1 mi |
-| hospital | `hospital` | 1 mi |
-| zoo | `zoo` | 15 mi |
-| aquarium | `aquarium` | 15 mi |
-| amusement_park | `amusement_park` | 15 mi |
-| park | `park, national_park, state_park, dog_park, garden, botanical_garden` | — (matching/measuring only) |
-| golf_course | `golf_course` | — |
-
-`park` is intentionally broad ("any park counts, gardens included"). Google
-hierarchy-expands these, so results also include `city_park`, `nature_preserve`,
-`dog_park`, `wildlife_refuge`, etc. — all kept.
-Tentacles also lists "Metro Lines" (15 mi) — answered from existing transit-line
-geometry, no POI gather.
-**Mountain** and **foreign consulate** are *not* gathered here — Google has no
-clean mountain icon type and no honorary-consulate flag; source those from OSM
-(named `natural=peak`; `diplomatic=consulate` excluding honorary) separately.
+Discovery uses **`includedTypes`** (matches the full `types` array) so icon-but-
+secondary-type places aren't missed; the **`primaryType` allowlist** in curation
+then removes the over-inclusion that broad filter causes (urgent-care clinics,
+malls, pet stores, Topgolf, etc.). Tentacles also lists "Metro Lines" — answered
+from existing transit geometry, no POI gather.
 
 ## Prerequisites
 
 - Secret **`GOOGLE_PLACES_API_KEY`** — a Google Maps Platform key with **Places
-  API (New)** enabled, billing on (first 10k calls/month free; a full Bay Area
-  pull is ~2,500 calls → ~$0). Saved at user scope.
-- `userRatingCount` is an **Enterprise**-tier field; it's the only way to apply
-  the >=5-review rule, so the pull uses that SKU.
+  API (New)** enabled, billing on.
+- Python deps: `requests`, `shapely` (for OSM footprints).
+- **Before any paid pull**, in the Google Cloud console: set a low **quota cap**
+  (APIs & Services → Places API (New) → Quotas → *requests per day*, e.g. 500) and
+  a **budget alert** (Billing → Budgets). The pipeline also caps calls in-script.
 
-## Run
+## The pipeline (run from `scripts/`)
 
 ```bash
 cd scripts
-GOOGLE_PLACES_API_KEY=... python3 fetch_places_poi.py   # -> scripts/poi_full.json (raw, all in-play)
-python3 curate_places_poi.py                             # -> poi_curated.json + poi_review.md
+# 0. Build the play area from the eligible stations (FREE; see "Defining the play area")
+python3 build_play_area.py   # stations.json -> play_area.geojson(+_buffered), app play-area.geojson.json
+# 1. Google discovery (paid; use cheap mode by default — see Cost)
+POI_NO_REVIEWS=1 GOOGLE_PLACES_API_KEY=... python3 fetch_places_poi.py   # -> poi_full.json
+# 2. FREE OSM recall safety net: what Google's pull missed
+python3 osm_gap_audit.py                                  # -> osm_gap_candidates.json (+ .md)
+#    authoritative registries (3rd source: GeoNames peaks, CMS hospitals, CSV intake)
+python3 authoritative_candidates.py                      # -> auth_gap_candidates.json (FREE)
+# 3. Cheap icon-verify both candidate sets (no review fields), then fold survivors in
+GOOGLE_PLACES_API_KEY=... python3 verify_gap_icons.py     # OSM gaps -> poi_gap_verified.json
+GOOGLE_PLACES_API_KEY=... CAND_FILE=auth_gap_candidates.json OUT_FILE=poi_auth_verified.json \
+  CACHE_FILE=poi_auth_cache.json SOURCE_TAG=authoritative python3 verify_gap_icons.py
+POI_NO_REVIEWS=1 python3 curate_places_poi.py             # -> poi_curated.json (+ poi_review.md)
+python3 apply_gap_backfill.py                             # folds poi_gap_verified.json in
+IN_FILE=poi_auth_verified.json SOURCE_TAG=authoritative python3 apply_gap_backfill.py
+# 3b. Auto-drop closed places: query each pin's Google businessStatus (cheap; cached)
+GOOGLE_PLACES_API_KEY=... python3 refresh_business_status.py   # annotates poi_curated.json
+# 4. De-dup (OSM footprints + name + manual overrides; drops CLOSED_* pins)
+python3 fetch_osm_polys.py                                # -> osm_polys_<cat>.json (FREE)
+python3 dedup_poi.py                                      # -> poi_deduped.json, poi_merge_viz.js
 ```
 
-### `fetch_places_poi.py`
-- Reads `../src/data/play-area.geojson.json`; searches its bbox with a
-  **recursive quadtree** (any cell returning the full 20 results — the API's hard
-  cap, no pagination — is split into quadrants, recursing until <20 or
-  `MIN_RADIUS`; cells > `MAX_RADIUS` 50km are pre-split).
-- Dedupes by place `id`; keeps pins **inside the polygon** (`in_play`).
-- Field mask: `primaryType, location, rating, userRatingCount, businessStatus,
-  displayName, formattedAddress, types`.
-- **Resumable/incremental** — writes after each category, skips cached ones.
-  Delete `poi_full.json` to force a fresh pull. 8-retry backoff (dense categories
-  like park/hospital fan out to hundreds of calls).
+### 1. `fetch_places_poi.py` — Google discovery
+- Reads the play polygon; searches its bbox with a **recursive quadtree** (any
+  cell returning the full 20 results — the API's hard cap, no pagination — splits
+  into quadrants until <20 or `MIN_RADIUS`; cells > `MAX_RADIUS` 50km pre-split).
+- Uses **`includedTypes`** per category; dedupes by place `id`; keeps pins
+  **inside the polygon** (`in_play`). Resumable: writes after each category, skips
+  cached ones; delete `poi_full.json` to force a fresh pull. 8-retry backoff.
+- **`POI_NO_REVIEWS=1`** drops `rating`/`userRatingCount` from the field mask →
+  cheaper SKU (see Cost).
 
-### `curate_places_poi.py`
-- Keeps `userRatingCount >= 5` & not permanently closed.
-- Removes the explicit **nested sub-area** lists (`NESTED_REMOVE`), drops
-  `NAME_CLOSED`, and surfaces `FLAG_REVIEW` (golf centers / mis-tags) — all
-  human-curated dicts at the top of the file; update them when reviewing a new
-  pull.
-- Writes `poi_curated.json` (the dataset, with `tentacleRadiusMi` per category)
-  and `poi_review.md` (summary table + flags + collapsible per-category lists;
-  every name links to Google Maps at the pin so the icon can be eyeballed).
+### 2. `osm_gap_audit.py` — free recall safety net
+A one-time Google pull always has recall holes (see **Why pulls miss places**).
+OpenStreetMap is an **independent, free** source, so we diff it against ours: for
+each category it pulls named OSM features in the play area (`tourism=museum`,
+`amenity=library`, `leisure=golf_course`, `natural=peak`, `diplomatic=consulate`,
+…) and lists every one with **no pin within 300m** (or name-match within 1.5km) of
+ours. Output `osm_gap_candidates.json` is the candidate set; `osm_gap_audit.md` is
+the human-readable list with Google-Maps links. **No Google calls.**
 
-## Expected Bay Area result (sanity check)
+### 3. `verify_gap_icons.py` — cheap icon check + `apply_gap_backfill.py`
+For each gap candidate, **one `searchText`** call **biased to the OSM coordinate**,
+with a field mask that **omits review fields** (cheaper SKU). Keep it only if
+Google returns a place at ~that spot whose `primaryType` is the category icon
+(same allowlist + golf/cinema rescue). Safety: **hard `MAX_CALLS` cap** and every
+result **cached to disk**, so a restart never re-spends. `apply_gap_backfill.py`
+then folds the icon-verified survivors into `poi_curated.json`, flagged
+`source=osm_backfill, userRatingCount=None` — the human applies the >=5-review
+rule to them by hand. (Bay Area: 260 candidates → **33** carried a real icon.)
 
-~2,500 API calls. Final counts after the rule + nested removal:
+### 2b/3b. `authoritative_candidates.py` — official registries (3rd source)
+A second free discovery source on top of OSM: **official public registries**. It
+normalizes each to the same `{name, lat, lon, query?}` candidate shape and
+gap-filters against our pins, so the survivors flow through the **same**
+`verify_gap_icons.py` icon-check (run it again with `CAND_FILE=auth_gap_candidates.json`).
+The Google icon rule still governs — registries only widen recall.
+- **Built-in automated:** `mountain` ← GeoNames country dump (codes PK/MT, real
+  coords); `hospital` ← CMS Hospital General Information (address-only → the
+  icon-check geocodes via `searchText`).
+- **Generic CSV intake:** drop any list as `auth_lists/*.csv` with columns
+  `category,name,city,state[,lat,lon]` and it's picked up — this is the
+  source-agnostic path for consulates / museums / libraries / zoos / parks and
+  for **any city or country** (see the source tables below). Address-only sources
+  need the play area's admin areas (`US_COUNTIES` in the script) as a coarse
+  pre-filter; precise filtering is the polygon `in_play` check on the Google hit.
+- Bay Area result: GeoNames + CMS surfaced 62 gap candidates → 30 icon-verified →
+  **0 net-new** (all already had Google IDs in our set) — confirming Google+OSM
+  already cover those registries here. The **consulate** CSV (35 official Bay Area
+  consular offices via `fetch_consulates_fco.py`) → 22 gap → 21 icon-verified →
+  **+3 net-new** (Ecuador, Honduras, Nicaragua) Google's search missed. So the
+  authoritative layer's payoff is category-dependent: nil where Google is strong,
+  real where its search is weak (consulates).
+- Full Bay-Area authoritative sweep result (net-new added back): **consulates +3**
+  (Ecuador, Honduras, Nicaragua); **museums +38**, **libraries +2** (IMLS, below);
+  mountains / hospitals / zoos / aquariums **+0** (Google+OSM already cover those
+  registries here). parks deliberately **not** run: PAD-US is protected-area
+  *boundaries*, not Google park-icon POIs, and OSM already has >2000 — it would
+  mostly produce non-icon candidates the check drops.
+- **IMLS museums + libraries (via ArcGIS, NOT imls.gov):** imls.gov never loaded
+  from this env (301→000/timeouts), so instead query the IMLS-derived **ArcGIS
+  feature layers** by bbox (free, no key) — `fetch_imls_arcgis.py`:
+  museums ← the "GLAMs" layer (`TYPE_MAIN='MUS'`, derived from IMLS's MUDF),
+  libraries ← the IMLS PLS "Public Library Outlet" layer (real per-outlet coords).
+  Bay-Area run: museum **502 raw → 406 gap → 162 icon-verified → +38 net-new**
+  after Google-id dedup (the other ~124 icon hits were pins we already had under a
+  different name, e.g. "M.H. de Young" vs "de Young Museum"); library
+  **230 raw → 66 gap → 27 icon-verified → +2 net-new**. ~472 no-review calls (~$15).
+- Takeaway (use this to decide per future city): the authoritative layer earns its
+  keep on **(a) address/registry categories where Google's area-search is weak
+  (consulates)** and **(b) museums (IMLS MUDF/GLAMs gave the biggest single-source
+  lift, +38 ≈ 18%)**. It is confirmation-only (+0/+2) for hospitals, mountains,
+  zoos, aquariums, and **libraries** (PLS is clean but redundant with OSM+Google —
+  skip it to save the spend). Caveat: MUDF/GLAMs is over-inclusive (art galleries,
+  historical societies, dept collections), so the +38 needs a **manual legitimacy +
+  ≥5-review pass** — expect to prune a chunk. So: for a new US metro, run
+  **consulates + museums** authoritatively; treat the rest as an optional cheap
+  sanity check.
 
-| category | final |
-|---|---|
-| museum | 214 |
-| library | 237 |
-| movie_theater | 85 |
-| hospital | 254 |
-| zoo | 7 |
-| aquarium | 3 |
-| amusement_park | 19 |
-| park | 2554 |
-| golf_course | 77 |
+### 4. `curate_places_poi.py` — apply the icon allowlist + review rule
+- Keeps only `primaryType in ALLOW[cat]` (+ golf/cinema rescue); applies
+  `userRatingCount >= 5` (skipped under `POI_NO_REVIEWS=1`); drops permanently
+  closed; removes the human-reviewed `NESTED_REMOVE` sub-areas; surfaces
+  `FLAG_REVIEW` for eyeballing. Writes `poi_curated.json` + `poi_review.md`
+  (every name links to Google Maps at the pin so the icon can be checked).
 
-If counts move a lot, an upstream Google categorization changed — diff the review
-list before trusting it.
+### 4b. `refresh_business_status.py` — auto-drop closed places
+The icon pull (`poi_full.json`) carries Google's `businessStatus`, and curate
+drops `CLOSED_PERMANENTLY`/`CLOSED_TEMPORARILY`. **But the backfilled pins**
+(authoritative IMLS + OSM gap recall) are injected straight into
+`poi_curated.json` from external sources with `businessStatus: None` — they never
+had their status checked, which is how closed places (Madame Tussauds, Habitot,
+Carquinez Toy Train, …) used to slip past the audit and waste manual-review time.
+- This step queries **Place Details with just the `businessStatus` field** (the
+  cheapest SKU) for every pin that has a Google `id` but no status, caches the
+  answer by `place_id` in `poi_bizstatus_cache.json` (statuses rarely change, so
+  reruns are ~free), and writes it back into `poi_curated.json`.
+- `POI_REFRESH_ALL=1` re-queries **every** pin (not just status-less ones) to
+  catch places that closed since the last pull — worth running each quarterly
+  refresh. A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
+- `dedup_poi.py` then drops only `CLOSED_PERMANENTLY` pins up front (one
+  chokepoint for all sources). Manual `drop` overrides that target a now-
+  perm-closed pin are silently skipped (not warned).
+- **`CLOSED_TEMPORARILY` is deliberately NOT auto-dropped** — Google's temp-closed
+  flag is frequently stale (e.g. The Beat Museum, the 49ers Museum read
+  "temporarily closed" but are open). Those pins stay in the dataset and surface
+  on the review map for a human to judge; drop them by override only once
+  confirmed actually gone. Only `CLOSED_PERMANENTLY` is trusted as "really closed."
+- So you still need manual `drop` overrides for: (a) temp-closed pins you confirm
+  are gone, (b) places Google reports `OPERATIONAL` but are actually closed
+  (**stale Google data**, e.g. Aléna Museum), and (c) legit-but-unwanted pins.
+- **Limit:** closure status alone can't replace the human eyeball pass — Google
+  data lags both ways. Use it to delete the confident (perm) closures
+  automatically, then audit the rest.
 
-## Next steps (not this skill)
+#### Verifying the `CLOSED_TEMPORARILY` pins (web search, not review age)
+Since temp-closed is kept-for-review, you need a cheap way to triage which of those
+pins are *actually* gone vs just stale flags. Two tiers, weakest first:
+- **Review-recency proxy** (Place Details `reviews` field, Atmosphere SKU ~$0.017/call,
+  one-off — do NOT bake into the cached refresh): a temp-closed pin with a review in
+  the last ~2 months is almost certainly open; >1yr or none = suspicious. Good for
+  *businesses* (museums/theaters/hospitals), **unreliable for parks & libraries**
+  (they get few reviews even when wide open — e.g. El Cerrito Historical Society, an
+  appointment-only history room, looked "closed" by review age but is open).
+- **Real web search per pin (authoritative — prefer this).** Search each pin
+  ("<name> <city> open or permanently closed") and read the **operator's own site /
+  Google listing / local news**: the live "temporarily/permanently closed" label and
+  any reopening date. This beats review age both ways — it correctly *keeps* low-review
+  public places and *catches* genuine closures. Findings cluster into:
+  - **Stale flag → KEEP** (the ~90% case): open now, Google just never cleared it.
+  - **Renovation / seismic / seasonal → KEEP**: really closed *today* but a dated
+    reopening exists (Beat Museum retrofit, Antioch Water Park, San Mateo Marina &
+    Oakland Brookfield libraries, SJSU Thompson Gallery summer pause). The game wants
+    these in.
+  - **Genuinely gone → DROP**: closed with no reopening / under legal fight to reopen
+    (Seton Coastside — ER+SNF shut since 2024).
+  - **Not a real public POI → DROP**: turns out to be a digital repository or a
+    defunct/restricted campus facility (NASA "Life Sciences Library" = the online
+    NSLSL database; Patten University Library = online-only school, campus library
+    defunct). Flag genuinely borderline ones (NDNU/Gellert: campus sold to UC, leasing
+    back ≤5 yrs) for the human rather than dropping.
+  Encode confirmed-gone pins as manual `drop` overrides (perm-closed ones auto-drop
+  and need none). Re-run this per quarterly refresh on the temp-closed set only.
 
-- Build the compact app data file the **POI browser tab** loads, and derive
-  per-station attributes (nearest POI + which POIs fall within the tentacle
-  radius, per category) during the station rebuild.
-- Implement the questions via `add-elimination-question`.
+### 5. De-dup — `fetch_osm_polys.py` + `dedup_poi.py`
+Google lists one physical place as many pins (a hospital = main building + ER +
+each entrance + departments + co-located clinics). `dedup_poi.py` collapses them:
+1. **name pass** — proximity-gated union of "real" pins sharing a *distinctive*
+   (non-`GENERIC`) word and same-name / token-subset / co-located (<60m).
+2. **sub-part pass** — entrances/parking/buildings absorb into the nearest rep.
+3. **OSM-footprint pass** — reps inside the SAME OSM polygon collapse
+   (`osm_polys_<cat>.json` from `fetch_osm_polys.py`, FREE). This pass picks the
+   *smallest* (most specific) footprint, so a distinct named feature inside a big
+   park (e.g. the Japanese Tea Garden inside Golden Gate Park) stays on its own.
+3b. **big-park container pass (park category only)** — the opposite move for large
+   parks: every interior sub-feature pin (named gardens, playgrounds, trails, dog
+   parks, "bench with view"…) folds into the **one flagship pin** of the big park
+   whose OSM polygon contains it, so a big park reads as a single POI for the
+   Matching/Measuring/Radar questions. Rules that keep it safe:
+   - Only OSM park footprints with area in `[PARK_CONT_MIN_M2, PARK_CONT_MAX_M2]`
+     (0.3–20 km²) count as containers. The **upper cap is essential**: it excludes
+     the ~135 km² "Golden Gate National Recreation Area" umbrella so the Presidio /
+     Lands End keep their own pins instead of melting into it.
+   - Each pin folds into the **smallest** containing container (Presidio wins over
+     any larger overlap), and only if that container has a **flagship pin** inside
+     it sharing a `distinctive()` word with the footprint name (most-reviewed of
+     those). No flagship ⇒ the cluster is left alone (never collapsed into an
+     arbitrary member — that's why a generic "Shoreline Park" with no name-matching
+     pin is skipped). A pin that *is* a container's flagship is never folded away.
+   - Neighbourhood parks that merely sit just *outside* a big park's real polygon
+     are untouched (the OSM polygon, not a bbox, defines "inside"). Merges are
+     tagged `bigpark` in `poi_dedup_review.md` (`,park` in the child list) so they
+     are easy to audit and unmerge. Bay-Area run folded 28 pins into 11 big parks
+     (15 into Golden Gate Park, 1 into the Presidio, plus Kelley/Coyote Hills/
+     Eastshore/Point Pinole/Lands End/etc.).
+4. **manual overrides** — reviewer decisions from `poi_dedup_overrides.json`, last.
+
+Representative ("main") pick (`rep_score`, most-decisive first) — designed so
+**future cities pulled with no review counts still pick a sensible main pin**:
+1. reviewer-named merge `parent` (explicit keep).
+2. a real pin over a structural sub-part.
+3. most reviews — **only decides when review counts exist**; in no-review mode all
+   tie at 0 and 4–7 take over.
+4. **not** a clinical specialty/department name (`_SPECIALTY_RE`: "Internal
+   Medicine …", "Pediatrics …", "Imaging …", "Chemical Dependency …") — a
+   department is never the main, even if it carries an anchor noun.
+5. carries the category's flagship noun (`ANCHOR`, e.g. hospital → "medical
+   center"/"hospital", museum → "museum", park → "regional/state park").
+6. a clean, **unqualified** name — no `:` / `|` / trailing `(…)` parenthetical
+   (`has_qualifier`), so "Sunnyvale Center" beats "Sunnyvale Center (401)".
+7. shorter name.
+
+To add a city/category: extend `ANCHOR` with that category's headline noun(s) and
+`_SPECIALTY_RE` with any new department lead-ins. The reviewed Bay-Area set is
+unchanged by 4–7 (rule 3 dominates while reviews exist); they only steer the
+no-review path. Outputs `poi_deduped.json`, `poi_dedup_review.md`, and
+`poi_merge_viz.js` (data for the review map `poi_merge_viz.html`).
+
+#### Campus heuristics (HOSPITAL ONLY — `CAMPUS_CATS`)
+Hospital systems list one campus as many strongly-named pins (`Kaiser Permanente
+Walnut Creek: Chemical Dependency Services`, `Family House: UCSF Benioff ...`,
+`UCSF Medical Records`). The plain name pass misses these because `norm()` keeps
+only the pre-`:` head. So `dedup_category(..., campus=True)` (set for
+`CAMPUS_CATS = {"hospital"}` in `main()`) adds two extra moves, both keyed on
+`distinctive_full()` — brand/place words over the **whole** name (minus
+`GENERIC`+`STRUCTURAL`), so the `:`-tail identity still counts:
+- **≥2 shared brand words within `BRAND2_D` (700m) ⇒ same complex** (union). The
+  two SCVMC and the John Muir Walnut-Creek-vs-Concord pairs sit >700m apart, so
+  they stay distinct.
+- **minor-satellite absorb:** a pin with `< MINOR_MAX` (60) reviews sharing ≥1
+  brand word with a *stronger* anchor within `BRAND1_D` (500m) is absorbed into
+  the **nearest** such anchor (e.g. `UCSF Medical Records`→`UCSF Medical
+  Center`, `Kaiser ... Child/ado Psy`→`Kaiser Santa Clara`). Only minor pins
+  move and only toward a stronger one, so two well-reviewed distinct hospitals
+  are never joined.
+
+**Over-merge trap — why this is hospital-only.** An earlier version ran the
+whole-name brand match on *every* category and falsely merged distinct generic
+places that merely share a descriptor: parks (`Brisbane Dog Park` +
+`Clayton Dog Park` on "dog"), museums (`... Historical Society` on "historical",
+`Museum of Children's Art` + `Sneaker Museum` on "museum"). For hospitals a
+shared brand word ("Kaiser", "UCSF") is real identity; for parks/museums it is
+just a category descriptor. So campus stays gated to `CAMPUS_CATS`; every other
+category keeps only the conservative pre-`:` `distinctive()` name pass + the OSM
+footprint pass. To extend campus to a new category, only do so if its pins carry
+a real shared *brand/place* name (not a generic descriptor), and re-validate.
+
+**Validate after any change** with `validate_merges.py`: it re-runs the dedup
+with the manual MERGES removed (separates kept as a safety net) and reports, per
+category, how many ground-truth merges the auto-logic now catches on its own,
+plus **0 separate-override violations** and **0 over-merges** (a pair the target
+keeps apart that auto-logic joins) as hard gates. Current Bay Area: 18/32
+hospital merges auto-caught, generic counts unchanged.
+
+### 6. Review — interactive map
+Deploy `poi_merge_viz.html` + `poi_merge_viz.js` to `public/poi-review/` (see the
+`deploy-hideandseek` skill / PR-preview). Multiple reviewers open one URL; legend:
+green = kept, **red spoke = name merge**, **orange = OSM footprint**, **purple =
+manual override**. Reviewers send merge/separate corrections → record them in
+`poi_dedup_overrides.json` and re-run `dedup_poi.py` (the map cache-busts its data
+on load, so corrections show without a hard refresh).
+
+### 7. Apply to the app
+Once reviewers sign off, write `poi_deduped.json` into the app's `poi.json` and
+wire the categories into the POI tab (see `build_poi_data.py` / the POI-tab PR).
+
+## Defining the play area (which cities are in play)
+
+The play area is **not** a hand-drawn boundary. It is built by `build_play_area.py`
+as an **opt-out, county-scoped curation**: start from every Census place in the
+transit counties, then a human deletes the ones they don't want. **Use this same
+model for every city.** The steps:
+
+1. **Transit counties** — the distinct `county` values on the eligible stations
+   (Bay Area: San Francisco, Alameda, Contra Costa, San Mateo, Santa Clara). The
+   county cartographic-boundary shapefile is downloaded automatically.
+2. **Candidate set = every Census place (city / town / CDP)** with ≥10% of its
+   area in those counties (131 places for the Bay Area).
+3. **Manual delete** — the curator lists the places to remove in
+   `play_area_overrides.json` `"drop"` (Census `NAMELSAD`, e.g. `"Gilroy city"`,
+   `"Moss Beach CDP"`). Everything not dropped is kept. `"keep"` force-keeps a
+   place even if the auto-clean below would remove it.
+4. **Auto-clean surrounded CDPs** — any kept *unincorporated* place (CDP) left
+   completely surrounded by non-playable area (its border touches no other kept
+   place, `< SURROUND_MIN_FRAC`) is dropped too — a lone island in the grey. Runs
+   to a fixed point (removing one island can isolate its neighbour). Incorporated
+   cities/towns are never auto-dropped; only the curator removes those.
+5. **Transit-line bridges** (`transit_bridges`) — a station-to-station rail leg
+   often runs through non-playable open land between two kept cities (BART
+   Rockridge→Orinda over the Berkeley hills; Castro Valley→Dublin up Dublin
+   Canyon). For each line in `transit-lines.geojson.json`, the part outside the
+   kept union is split into gap segments; a segment is re-included as a hideable
+   corridor (buffered `BRIDGE_RADIUS_MI`, default 0.5 mi) **only if both its ends
+   touch a kept place** (so it bridges two in-play areas) **and it is shorter than
+   `BRIDGE_MAX_MI`** (so a trailing stub off the end of a line — e.g. Caltrain
+   south of San Jose toward deleted Gilroy — is left out). This keeps the rail
+   corridor itself in play without dragging in whole deleted regions.
+5b. **Manual hand-drawn corridors** (`corridors` in `play_area_overrides.json`) —
+   where the curator wants the play area to reach into open land that has *no*
+   transit line to bridge it (e.g. a Berkeley-hills strip traced up from Tilden),
+   each entry is a polyline of `[lon,lat]` points + optional `radius_mi` (default
+   `BRIDGE_RADIUS_MI`, 0.5 mi). Each is buffered into a thin hideable strip.
+   **Corridors are unioned in AFTER `fill_holes` and after the deleted-place
+   carve-out**, so a corridor is only the strip itself — it never closes off a
+   wedge and tricks `fill_holes` into gobbling a whole enclosed hillside (that bug
+   happened when corridors were unioned before hole-fill). Trace coordinates off a
+   user screenshot by calibrating against two known on-map points (e.g. two BART
+   station dots) to a linear pixel→lon/lat transform.
+5c. **Manual fill regions** (`fill_regions` in `play_area_overrides.json`) — a
+   polygon `ring` of `[lon,lat]` points unioned in (same late stage as corridors)
+   to fill a grey *area* rather than a thin strip — e.g. the Berkeley–Orinda hills
+   valley, or the Olympic Club / Lake Merced golf complex south of Lake Merced
+   (unincorporated land in no Census place, wedged between SF and Daly City).
+   **If the wedge opens onto water, trace the fill's water-facing edge along the
+   real coast, not a straight line** — pull the coastline from `bay_land.geojson`
+   (`shape(bay_land).boundary.intersection(bbox)` gives the dense OSM coast trace)
+   and use those vertices as that edge; the other edges can overlap freely into the
+   neighbouring in-play places (union is harmless). This keeps the fill from
+   spilling into the ocean. Verify after rebuild by grid-sampling the new
+   `play-area.geojson.json`: every wedge cell should flip to in-play and **no**
+   cell west of the coast should become in-play.
+6. **Play area = the union of the kept place polygons (+ bridges)**, whole-place
+   granularity (no raw disks), then **fill fully-enclosed holes** (`fill_holes`):
+   any pocket ringed on all sides by in-play land is itself in play — surrounded ⇒
+   in (e.g. San Bruno Mountain between Daly City/Colma/Brisbane/South San
+   Francisco, and the unincorporated pockets around Fremont/Newark/Union City).
+   Concave bays that open to the outside are not interior rings, so far open space
+   stays out. A **manually deleted place is never re-added** by hole-fill — only
+   *unnamed* enclosed open space gets filled (a deleted town that ends up ringed by
+   kept neighbours, e.g. Moraga inside Orinda/Lafayette, stays grey because it is a
+   named place the curator removed, not an anonymous pocket).
+
+The **open land between/around the kept places** (regional parks, ranchland, the
+big mountains, the east-county hills, the Santa Cruz range) is not a named place,
+so it stays out — the play area trims to the transit cities, not the whole county.
+This drops the no-rail sprawl (Gilroy, Morgan Hill, Half Moon Bay, Livermore, San
+Ramon, Brentwood, Los Gatos, Saratoga…) — exactly the clutter we don't want.
+
+*(History: earlier models were opt-in — county clip, then a station/reachable/
+enclave auto-include heuristic, then a station-disk union. The opt-out curation
+replaced them because it is simpler to reason about and gives the curator exact
+control over the boundary.)*
+
+**Clipping is strict, with one buffer.** `dedup_poi.py` clips every POI to the
+play area before dedup:
+- **Parks & mountains (`NATURAL_CATS`) — strict:** must be inside the raw
+  play-area polygon (`play_area.geojson` — the whole-place union plus filled
+  holes), no shoreline buffer. This deliberately drops big open-space landmarks
+  that sit in *out-of-play* unincorporated land (Mt. Diablo, Mission Peak, Tilden,
+  Mt. Tam, Rancho San Antonio…), emptying most of the mountains category. That is
+  intended. Note open space that is *surrounded* by in-play land (a filled hole,
+  e.g. San Bruno Mountain) is in play and its parks/mountains are kept.
+- **All other categories — 150 m shoreline buffer** (`play_area_buffered.geojson`)
+  so waterfront/pier pins that belong to an in-play city but sit just off the land
+  polygon survive (Exploratorium, USS Hornet, USS Pampanito, Musée Mécanique…).
+  Discovery (`poi_geo`) also uses the buffered union so these are *found* in the
+  first place.
+  - **Caveat — the buffer is uniform, not shore-only.** The 150 m ring is applied
+    around the *entire* boundary, so it also keeps a handful of **inland** pins that
+    sit just outside the strict line but nowhere near water (e.g. an out-of-bounds
+    hospital/library/golf-course pin within 150 m of the edge). These are *not*
+    shoreline pins and are not what the buffer is for — surface them in the manual
+    map review (look for pins drawn outside the blue boundary that are still marked
+    *kept*) and `drop` them in `poi_dedup_overrides.json`. A quick audit: any
+    non-natural kept pin that is inside `play_area_buffered.geojson` but outside
+    `play_area.geojson` is a buffer-ring pin to eyeball (keep true pier/ship
+    museums, drop inland strays).
+
+**Outputs of `build_play_area.py`:** `play_area.geojson` (raw whole-place union +
+filled holes, used for the strict clip), `play_area_buffered.geojson` (150 m
+buffer, used for discovery + the non-natural clip), `play_area_cities.json` (the
+keep list + why each qualified), and a **simplified** copy written to the app's
+`src/data/play-area.geojson.json` (display only — out-of-play dimming mask +
+satellite clip; the app no longer uses counties for the play area). The review map
+draws the `play_area.geojson` boundary as a blue outline.
+
+**Bay water is added to the app copy only.** `bay_water()` traces the open San
+Francisco Bay (central + south bay, plus the East-Bay channel up to ~Richmond),
+subtracts the land places to snap to the real shoreline, and is unioned **only**
+into the simplified app `play-area.geojson.json` so the bay renders as water
+instead of grey. Its north-west edge (the corridor's closing edge) is a near-N/S
+line just **east of Alcatraz / Angel Island**, so the Marin side (Sausalito,
+Tiburon, Angel Island) and San Pablo Bay north of Richmond stay grey, while the
+north-SF waterfront water and the central channel up to Richmond are in. It is
+deliberately **not** in `play_area.geojson`, so it never affects POI clipping or
+which places are in play. For a new city, retrace `BAY_CORRIDOR_LL`/`BAY_SEEDS_LL`
+(or drop the bay step) to match its waterways.
+
+## Sports stadiums (professional only)
+
+Stadiums power the Matching ("is your nearest sports stadium the same as mine?")
+and Measuring ("…closer/further from a sports stadium?") subjects — **not**
+Tentacles (no radius). The Jet Lag subject is **professional sports**, so:
+
+1. **Discovery + icon** are normal: `fetch_places_poi.py` pulls `includedTypes =
+   [stadium, arena]`; curate keeps `primaryType in {stadium, arena}`. This is the
+   right *icon* but far too broad — it returns every college/high-school/amateur
+   field too (Bay Area: 75 icon-passing → only **8** professional).
+2. **Professional keep-list (the per-city judgment):** in `curate_places_poi.py`,
+   `STADIUM_PRO` is a `{place_id: display_name}` dict of the venues **currently
+   played in** by a **pro / minor / independent-league** team. The curate loop
+   filters the stadium category to exactly these IDs and **relabels** to the
+   display name. `stadium` is in `KEEP_ALL` (skips the ≥5-review rule — legitimacy
+   comes from the keep-list, and stadiums are pulled no-reviews).
+   - **Rule for what qualifies:** pro / minor / independent leagues all count
+     (MLB/NBA/NFL/NHL/MLS/WNBA/NWSL, **and** MiLB, AHL, USL, IFL, indie ball, …).
+     It must be a team's **current** home — **no historic venues** (e.g. Kezar,
+     former 49ers home, is now amateur → excluded; Oakland Arena / Cow Palace have
+     no current pro tenant → excluded).
+   - **Key on `place_id`, not name** — names drift (Levi's Stadium shows as a Super
+     Bowl placeholder "San Francisco Bay Area Stadium"), so we relabel.
+3. **For a NEW CITY:** run discovery, open the icon-passing list on the review map,
+   and rebuild `STADIUM_PRO` with that city's currently-active pro/minor/indie home
+   venues (look up each venue's current tenant). Then re-run curate → dedup.
+4. Wire into the deck: add `Sports Stadium`/`A Sports Stadium` cards to
+   `src/data/questionSets.ts` (MATCHING + MEASURING) and to the reference-PDF deck
+   lists in `make_reference_pdf.py` (`("Sports stadium", False)` /
+   `("A sports stadium", False)` — `False` = not yet auto-eliminated).
+
+## Manual overrides (`poi_dedup_overrides.json`)
+
+When a reviewer finds a wrong/missed merge the rules can't safely get, record it
+here — **never special-case names in code**:
+
+```json
+{ "library": {
+    "merge":    [["Main (Gardner) Stacks", "Doe Library"]],
+    "separate": [["C.V. Starr East Asian Library", "Earth Science & Map Library"]]
+} }
+```
+- `merge` = force `[child, parent]` into one (use when names share no distinctive
+  word, e.g. a parenthesized name `norm()` strips). The named **`parent` is kept
+  as the surviving pin** — it wins rep selection and is exempt from satellite
+  absorption even if a co-located sibling has more reviews, so the reviewer's
+  chosen pin is the one that survives.
+  When the `parent` name is **ambiguous** (two same-named pins, e.g. two
+  `Telegraph Hill` peaks), append the parent's coords:
+  `[child, parent, lat, lon]` — `resolve_near` pins which duplicate survives.
+- `separate` = force `[a, b]` to never merge (two distinct same-category places
+  wrongly joined).
+- `rename` = `[old, new]` or `[old, new, lat, lon]` to also relocate the pin.
+- `drop` = remove a pin entirely; `[name]` if unique, else `[name, lat, lon]` to
+  pin the exact one in a chain (Sky Zone, ABC Tree Farms, …) the reviewer flagged.
+- Matched case-insensitively, `&`/`+`-tolerant, against the real
+  `poi_curated.json` names; unresolved ones print `WARN` and are skipped.
+- Prefer a **generic fix** first if a whole class is wrong (e.g. two libraries
+  merging on the word "library" → add "library" to `GENERIC`). Use a per-pair
+  override only for genuine one-offs.
+
+## Cost & the cheap blend (OSM-first + minimal API + manual)
+
+Billing reality (Places API New — confirm in **Billing → Reports → group by
+SKU**): there is **no ~$3/1k tier** for *discovery*. Search SKUs are **Pro
+(~$32/1k)** and, once you add `rating`/`userRatingCount`, **Enterprise (~$35/1k)**.
+The cheap Place-Details Essentials tier is for refreshing known IDs, not
+discovery. The real cost driver is **call count** (the quadtree fan-out), and a
+full review-mode pull is a few thousand calls (Bay Area's first build ≈ $190 —
+don't repeat that).
+
+**The cheap, sustainable blend (use this):**
+- **OSM/Overpass = $0** for discovery (`osm_gap_audit.py`) and footprints
+  (`fetch_osm_polys.py`). It's also the safety net for Google's recall holes.
+- **Google = minimal & capped**: prefer `POI_NO_REVIEWS=1` (Pro SKU) for the
+  full pull, and the **icon-only `searchText`** (no review fields) for gap
+  verification — only on the gap set, hard-capped. A whole new city ≈ the OSM diff
+  ($0) + a few hundred no-review lookups (a few $).
+- **Reviews**: handled by one of two procedures below (A is the current default).
+- Always set the console quota cap + budget alert.
+
+### The >=5-review check — two procedures
+
+Review count is the one fact only Google can give us, and Google charges for it on
+every endpoint. Choose how to pay for it — money or human time:
+
+**Option A — manual (default, ~$0).** Pull in `POI_NO_REVIEWS=1` mode so no review
+fields are ever bought. After de-dup, the reviewer opens the review map and, for
+each surviving pin, clicks through to Google and confirms **>=5 reviews** (skip
+`mountain` — kept regardless). Drop the failures by adding them to the dedup
+overrides / a drop list. De-dup runs first, so this is the survivor set, not the
+raw firehose, but it is real eyeballing. This is the active mode.
+
+**Option B — survivors-only review top-up (~$60-70 one-time, zero rating
+eyeballing).** Same cheap no-review pulls, then run `topup_reviews.py` AFTER
+de-dup: it fetches `userRatingCount` via **Place Details by ID for only the
+de-duped survivors** (the smallest possible set), drops anything < 5 (keeps
+`mountain`), and writes `poi_deduped_reviewed.json`. The reviewer then only
+confirms merges — no rating-checking. Hard `MAX_CALLS` cap + on-disk cache so a
+restart never re-spends; set the quota cap + budget alert first.
+
+```bash
+GOOGLE_PLACES_API_KEY=... python3 topup_reviews.py   # -> poi_deduped_reviewed.json
+```
+
+(Why B is cheaper than re-pulling with reviews: it pays for review counts on the
+~few-thousand *survivors*, not on every raw pin in the firehose. Switch A->B only
+when the user asks.)
+
+### How complete is this? (OSM vs Google — they are NOT nested)
+
+Do **not** assume OSM is a strict superset of Google or vice-versa — neither
+contains the other. They are **complementary**:
+- OSM is usually *richer* for **mountains/peaks, parks, trails, gardens** and many
+  civic places (libraries, museums) — community/enthusiast mapped.
+- Google is usually *richer/more current* for **businesses** — movie theaters,
+  hospitals, golf courses — and anything with reviews.
+
+What the pipeline guarantees: the final set = Google's area-search results **plus**
+any OSM-named place that Google's search missed *and* that still passes a Google
+`searchText` icon lookup (step 3-4). So OSM **widens recall** (catches Google's
+search holes), and the Google icon-check **keeps precision** (an OSM place not on
+Google, or without the icon, is dropped — we never invent POIs OSM-only).
+
+The irreducible hole: a place on **neither** Google's area-search **nor** OSM is
+never seen. OSM only helps to the extent it lists places Google's search missed —
+it does not need to be a superset, just to contain *some* of the misses. For a
+business category where OSM is thin, OSM adds little, so the residual risk is
+Google-search's own recall holes; mitigations, strongest first:
+1. The OSM diff (free) — already in the pipeline.
+2. For a high-stakes category, union an **authoritative list** (e.g. consulates →
+   the official diplomatic directory; hospitals → the state's licensed-hospital
+   list; peaks → USGS GNIS), then icon-check those names the same way.
+3. Human spot-checks on the review map (you already do this).
+No automated pipeline is provably complete; two independent sources + manual
+review is the practical ceiling.
+
+## Authoritative source registry (per category, per country)
+
+The third discovery source. Feed any of these through `authoritative_candidates.py`
+(built-in for the starred ones) or the generic `auth_lists/*.csv` intake, then the
+icon-check. Verified reachable as of this writing; deep links rot — search the
+agency if a URL 404s.
+
+**United States**
+| category | source | access |
+|---|---|---|
+| mountain ★ | USGS GNIS / GeoNames `US.zip` | `download.geonames.org/export/dump/US.zip` (coords) |
+| hospital ★ | CMS Hospital General Information | `data.cms.gov` dataset `xubh-q36u` (JSON API; address) |
+| hospital (alt) | HIFLD Hospitals | hifld-geoplatform (ArcGIS; coords) — endpoint moves |
+| museum ★ | IMLS MUDF via the ArcGIS "GLAMs" layer | `fetch_imls_arcgis.py` queries the GLAMs FeatureServer by bbox (`TYPE_MAIN='MUS'`, coords) → `auth_lists/museum.csv`. **Use the ArcGIS layer, not imls.gov (which timed out / 000 from this env). +38 net-new in the Bay Area — biggest single-source lift; but over-inclusive, needs manual pruning.** |
+| library | IMLS PLS via the ArcGIS "Public Library Outlet" layer | `fetch_imls_arcgis.py` queries the PLS FeatureServer by bbox (real per-outlet coords) → `auth_lists/library.csv`. **Only +2 net-new — clean but redundant with OSM+Google; low priority.** |
+| zoo / aquarium ★ | AZA current accreditation list | `fetch_zoos_aza.py` scrapes aza.org → `auth_lists/zoo_aquarium.csv` |
+| consulate ★ | US Congressional Directory "Foreign Diplomatic Offices" (govinfo) | `fetch_consulates_fco.py` parses the PDF → `auth_lists/consulate.csv` |
+| park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org — **GIS boundaries, not Google park-icon POIs; OSM already has thousands; opt-in only (skipped — would mostly drop at icon-check)** |
+
+**Canada** (verified reachable)
+| category | source | access |
+|---|---|---|
+| mountain | GeoNames `CA.zip` / CGNDB (Canadian Geographical Names DB) | `download.geonames.org/export/dump/CA.zip`; open.canada.ca |
+| hospital | StatCan **ODHF** (Open Database of Healthcare Facilities) | statcan.gc.ca/en/lode/databases/odhf (coords; many facility types) |
+| consulate | Global Affairs Canada — foreign representatives in Canada | international.gc.ca/protocol-protocole/reps.aspx |
+| zoo / aquarium | **CAZA** accredited members | caza.ca |
+| museum / library | provincial directories / Canadian Museums Assoc. | no single national open file → CSV intake |
+| park | CARTS / provincial park datasets | open.canada.ca → CSV intake |
+
+**No authoritative public list anywhere** (rely on Google + OSM): `movie_theater`,
+`golf_course`, `amusement_park` — there's no government registry; only commercial
+or community sites (e.g. Cinema Treasures), which we don't treat as authoritative.
+
+To add a country: point `GEONAMES_COUNTRY` at its dump, set the admin-area
+pre-filter, and drop its registries as CSVs. Everything else is unchanged.
+
+## Why one-time Google pulls miss places (and why OSM is the fix)
+
+A `searchNearby`/`includedTypes` pull is **not buggy** — at a place's real
+coordinate it returns it. Misses come from:
+1. **Data drift** — the place was added/retyped on Google *after* the pull (this
+   is what hid Washington Township Museum; OSM already had it).
+2. **Mis-primary type** — Google primaries it as a non-category type, so
+   `includedTypes` never surfaces it (SF Golf Club = `sports_club`). The curate
+   rescue handles the known classes; OSM catches the rest.
+3. **20-result cap** in dense cells (mitigated by the quadtree, but edge cases
+   slip through).
+
+None are fixed by "call the API harder." The robust, cheap fix is the **free OSM
+diff** (step 2) as a recurring safety net + a tiny capped icon check (step 3).
+Re-run those two each refresh; they cost ~nothing and catch drift.
 
 ## Gotchas
 
-- Run from `scripts/`; the fetch script reads `../src/data/play-area.geojson.json`.
-- `userRatingCount` needs the Enterprise field mask — don't drop it or the rule
-  can't be applied.
-- Never reintroduce subjective keyword filters (except the rulebook's golf
-  mini/range exclusion). Keep the pin, never a centroid.
-- `searchNearby` has no pagination — the quadtree is mandatory for dense
+- Run from `scripts/`; everything reads `../src/data/play-area.geojson.json`.
+- New city = swap that one file. If a station sits within the largest hiding-zone
+  radius (0.5mi) of the play border, add an edge buffer (Bay Area needs none).
+- `searchNearby` has **no pagination** — the quadtree is mandatory for dense
   categories (park, hospital, library).
+- Keep the **pin**, never a centroid. Never reintroduce subjective keyword filters
+  (except the rulebook golf range/mini exclusion + golf/cinema name-rescue).
+- Don't push commits touching `.github/workflows/` with the scoped PAT (no
+  Workflows permission).
+```
