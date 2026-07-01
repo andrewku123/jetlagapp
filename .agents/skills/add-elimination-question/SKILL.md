@@ -37,6 +37,15 @@ just a pure predicate over `(station, record.params)`.
    (the dropdowns/answer buttons) and assemble the `params` bag + `answer` that
    `stationPasses` reads. If the question needs a map point, reuse the existing
    "use last click" pattern (the form receives `lastClick`).
+   - **Subject dropdown is flat, not nested.** The primary "Question" `<select>`
+     is built from `subjectOptions`/`subjectGroups`: each `QUESTION_CATALOG` kind
+     in the active category becomes one option, **except** `match-poi`/`measure-poi`
+     which expand into one option per `QUESTION_POI_CATEGORIES` entry (value encoded
+     `` `${kind}::${cat}` ``, grouped via `POI_SUBJECT_GROUP`; non-POI kinds via
+     `KIND_SUBJECT_GROUP`). `pickSubject` splits on `::` to set `kind` (+ `poiCat`).
+     So a new POI category shows up automatically; a new non-POI kind just needs a
+     `KIND_SUBJECT_GROUP` entry. Do **not** re-introduce a secondary "Place type"
+     select — keep every subject in the one dropdown.
 
 ## If the question needs new station data
 Add the attribute to the `Station` type and populate it in
