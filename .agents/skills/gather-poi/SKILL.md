@@ -339,6 +339,15 @@ each entrance + departments + co-located clinics). `dedup_poi.py` collapses them
    the exact pin when the name is ambiguous (Central Park, Roof Garden…). A `drop`
    now also strips any merge spoke touching the dropped pin, so a deleted pin never
    lingers as a child/parent on the review map even if it was auto-merged earlier.
+   Coord slots by entry type (all optional, backward-compatible):
+   - `merge`: `[child, parent]`, `[child, parent, plat, plon]` (pin the **parent**),
+     or `[child, parent, plat, plon, clat, clon]` (also pin the **child** — needed
+     for a generic child name like `"Dog park"` or a name shared across cities like
+     `"Shorebird Park"`, where a bare name would absorb the wrong same-named pin).
+   - `separate`: `[a, b]` or `[a, b, alat, alon, blat, blon]` to pin either side
+     when its name is ambiguous (several `"Oak Park"`s). Both sides must resolve to
+     exactly one pin or it WARNs and is skipped.
+   - `rename`: `[old, new, lat, lon]` pins the exact pin to rename.
 
 Representative ("main") pick (`rep_score`, most-decisive first) — designed so
 **future cities pulled with no review counts still pick a sensible main pin**:
