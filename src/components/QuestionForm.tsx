@@ -42,12 +42,38 @@ const KIND_SUBJECT_GROUP: Partial<Record<QuestionKind, string>> = {
   'match-airport': 'Transit',
   'match-line': 'Transit',
   'match-namelength': 'Transit',
+  'match-street': 'Transit',
+  'match-admin1': 'Administrative divisions',
   'match-county': 'Administrative divisions',
   'match-city': 'Administrative divisions',
+  'match-admin4': 'Administrative divisions',
+  'match-landmass': 'Natural',
   'measure-airport': 'Transit',
-  'measure-feature': 'Borders & coastline',
+  'measure-hsr': 'Transit',
+  'measure-railstation': 'Transit',
   'measure-sealevel': 'Natural',
+  'measure-water': 'Natural',
 }
+
+// Optgroup each coastline/border feature falls under when measure-feature is
+// flattened into the single Question dropdown (same treatment as POI categories).
+const FEATURE_SUBJECT_GROUP: Record<string, string> = {
+  coastline: 'Natural',
+  'county-border': 'Borders',
+  'state-border': 'Borders',
+  'intl-border': 'Borders',
+}
+
+// Dropdown label for a measure-feature: strip the leading article from the
+// data label ("a coastline" → "Coastline") and capitalize.
+function featureSubjectLabel(key: string): string {
+  const raw = (MEASURE_FEATURE_LABELS[key as keyof typeof MEASURE_FEATURE_LABELS] ?? key).replace(/^an? /, '')
+  return raw.charAt(0).toUpperCase() + raw.slice(1)
+}
+
+// Kinds that have no auto-eliminator — logged for the seeker's notes only.
+const MATCH_LOGONLY: QuestionKind[] = ['match-street', 'match-admin1', 'match-admin4', 'match-landmass']
+const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-railstation', 'measure-water']
 
 function ordinalSuffix(n: number): string {
   const t = n % 100
@@ -276,6 +302,20 @@ export default function QuestionForm({
         params = { value, answer: yesno }
         break
       }
+      case 'match-street':
+      case 'match-admin1':
+      case 'match-admin4':
+      case 'match-landmass': {
+        // Record-keeping only: log the answer (+ optional detail) but eliminate nothing.
+        params = { description: value.trim() || undefined, answer: yesno }
+        break
+      }
+      case 'measure-hsr':
+      case 'measure-railstation':
+      case 'measure-water': {
+        params = { description: value.trim() || undefined, answer: closefar }
+        break
+      }
       case 'inside-floor': {
         if (!building.trim()) return alert('Enter the building you are inside.')
         if (!floor.trim()) return alert('Enter the floor you are on.')
@@ -354,10 +394,10 @@ export default function QuestionForm({
     </div>
   )
 
-  // Flattened subject dropdown: the two POI kinds (match-poi / measure-poi) each
-  // expand into one entry per category, so all 12 places sit in the single
-  // Question dropdown next to airport/county/etc rather than behind a second
-  // "Place type" select. A POI option encodes its category as `${kind}::${cat}`.
+  // Flattened subject dropdown: the two POI kinds (match-poi / measure-poi) and
+  // measure-feature each expand into one entry per category/feature, so every
+  // subject sits in the single Question dropdown rather than behind a second
+  // select. An expanded option encodes its parameter as `${kind}::${value}`.
   interface SubjectOption { value: string; label: string; group: string }
   const subjectOptions: SubjectOption[] = kindsInCategory.flatMap((q) => {
     if (q.kind === 'match-poi' || q.kind === 'measure-poi') {
@@ -367,13 +407,28 @@ export default function QuestionForm({
         group: POI_SUBJECT_GROUP[c] ?? 'Places of Interest',
       }))
     }
+    if (q.kind === 'measure-feature') {
+      return MEASURE_FEATURE_KEYS.map((k) => ({
+        value: `${q.kind}::${k}`,
+        label: featureSubjectLabel(k),
+        group: FEATURE_SUBJECT_GROUP[k] ?? 'Borders',
+      }))
+    }
     return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
   })
-  const subjectValue = kind === 'match-poi' || kind === 'measure-poi' ? `${kind}::${poiCat}` : kind
+  const subjectValue =
+    kind === 'match-poi' || kind === 'measure-poi'
+      ? `${kind}::${poiCat}`
+      : kind === 'measure-feature'
+        ? `${kind}::${feature}`
+        : kind
   function pickSubject(v: string) {
-    const [k, cat] = v.split('::')
+    const [k, param] = v.split('::')
     setKind(k as QuestionKind)
-    if (cat) setPoiCat(cat)
+    if (param) {
+      if (k === 'measure-feature') setFeature(param)
+      else setPoiCat(param)
+    }
   }
   const subjectGroups: { group: string; opts: SubjectOption[] }[] = []
   for (const o of subjectOptions) {
@@ -554,14 +609,6 @@ export default function QuestionForm({
 
       {kind === 'measure-feature' && (
         <>
-          <div className="row">
-            <label>Feature</label>
-            <select value={feature} onChange={(e) => setFeature(e.target.value)}>
-              {MEASURE_FEATURE_KEYS.map((k) => (
-                <option key={k} value={k}>{MEASURE_FEATURE_LABELS[k]}</option>
-              ))}
-            </select>
-          </div>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {center && (() => {
             const d = distanceToFeatureMiles(center, feature)
@@ -616,6 +663,32 @@ export default function QuestionForm({
 
       {kind === 'match-line' && dropdown(lines)}
       {kind === 'match-line' && yesNo}
+
+      {MATCH_LOGONLY.includes(kind) && (
+        <>
+          <div className="row">
+            <label>Detail (optional)</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="your answer, for your notes" />
+          </div>
+          {yesNo}
+        </>
+      )}
+
+      {MEASURE_LOGONLY.includes(kind) && (
+        <>
+          <div className="row">
+            <label>Detail (optional)</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="your answer, for your notes" />
+          </div>
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
+        </>
+      )}
 
       {kind === 'match-namelength' && (
         <>

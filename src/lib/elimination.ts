@@ -2,7 +2,7 @@ import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
 import { nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { distanceToFeatureMiles, stationFeatureDistanceMiles } from './measureFeatures'
+import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
 
 function n(v: unknown): number {
@@ -81,8 +81,12 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
     }
     case 'measure-feature': {
       const key = s(p.feature)
-      const seekerD = distanceToFeatureMiles({ lat: n(p.fromLat), lon: n(p.fromLon) }, key)
-      const stationD = stationFeatureDistanceMiles(station, key)
+      const seeker = { lat: n(p.fromLat), lon: n(p.fromLon) }
+      // Measure both the seeker and the station in the same seeker-centred flat
+      // projection the shading buffer is built in, so eliminate/keep and the
+      // shaded boundary always agree (see projectedDistanceToFeatureMiles).
+      const seekerD = projectedDistanceToFeatureMiles(seeker, key, seeker.lat)
+      const stationD = projectedDistanceToFeatureMiles({ lat: station.lat, lon: station.lon }, key, seeker.lat)
       if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
       return (stationD < seekerD) === (p.answer === 'closer')
     }
