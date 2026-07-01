@@ -551,7 +551,11 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
             if len(members) < 2:
                 continue
             fname = osm["names"][f]
+            # a reviewer-named merge parent (pref_rep) must win here too, else an
+            # OSM polygon named after a co-located sibling would absorb the pin
+            # the reviewer chose to keep (and the manual override then no-ops).
             frep = max(members, key=lambda r: (
+                1 if r in pref_rep else 0,
                 len(distinctive(names[r]) & distinctive(fname)), rev[r]))
             grouped = [frep]
             for r in members:
@@ -585,7 +589,7 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
                 cont_members[gi] = mem
                 fdist = distinctive(osm["names"][gi])
                 cand = [r for r in mem if distinctive(names[r]) & fdist]
-                cont_parent[gi] = (max(cand, key=lambda r: rev[r])
+                cont_parent[gi] = (max(cand, key=lambda r: (1 if r in pref_rep else 0, rev[r]))
                                    if cand else None)
             for r in standing:
                 holding = sorted(
@@ -612,8 +616,12 @@ def dedup_category(places, osm=None, forced_merge=None, forced_sep=None,
     if cat == "park":
         absorbed = {c for c, _, _ in edges}
         standing = [r for r in after_name if r not in absorbed]
-        subs = [r for r in standing if PARK_SUBFEATURE_RE.search(names[r])]
-        real = [r for r in standing if not PARK_SUBFEATURE_RE.search(names[r])]
+        # a reviewer-named survivor (pref_rep) is never treated as a foldable
+        # sub-feature -- it stays standing so its manual merge parent wins.
+        subs = [r for r in standing
+                if PARK_SUBFEATURE_RE.search(names[r]) and r not in pref_rep]
+        real = [r for r in standing
+                if not PARK_SUBFEATURE_RE.search(names[r]) or r in pref_rep]
         # footprint area (m^2) of the smallest OSM polygon covering a park pin,
         # 0.0 if none is mapped; cached because the same parent recurs.
         fp_cache = {}

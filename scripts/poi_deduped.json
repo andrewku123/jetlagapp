@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1648,
+  "count": 1614,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -12028,23 +12028,6 @@
     "lon": -121.8911568
    },
    {
-    "id": "ChIJE47cZmWej4ARKTviV3qYJLQ",
-    "name": "San Mateo Japanese Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "50 E 5th Ave, San Mateo, CA 94401, USA",
-    "rating": 4.7,
-    "userRatingCount": 1416,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.561975,
-    "lon": -122.32159879999999
-   },
-   {
     "id": "ChIJx-huV7KTj4ARt8SE-dyulXk",
     "name": "Don Castro Regional Recreation Area",
     "primaryType": "park",
@@ -12724,23 +12707,6 @@
     "lon": -122.4717361
    },
    {
-    "id": "ChIJL_bFi240joARmwA70n2h3_k",
-    "name": "Butcher Dog Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1782 Lancaster Dr, San Jose, CA 95124, USA",
-    "rating": 4.4,
-    "userRatingCount": 1050,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.259991899999996,
-    "lon": -121.91725829999999
-   },
-   {
     "id": "ChIJ-Wl58sywj4ARs-TZYmXDoDc",
     "name": "Eagle Park",
     "primaryType": "park",
@@ -13153,23 +13119,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.779614699999996,
     "lon": -122.263559
-   },
-   {
-    "id": "ChIJicDPmS27j4ARo1YjhvARFkg",
-    "name": "Arizona Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Stanford, CA 94305, USA",
-    "rating": 4.8,
-    "userRatingCount": 845,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.435893300000004,
-    "lon": -122.17102829999999
    },
    {
     "id": "ChIJOZhLD3SSj4AR3VKaGrB0YvI",
@@ -13792,23 +13741,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.694159299999995,
     "lon": -122.14633930000001
-   },
-   {
-    "id": "ChIJnVaUnce7j4AR9jYacpYcqVA",
-    "name": "Palo Alto Byxbee Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2375 Embarcadero Rd, Palo Alto, CA 94303, USA",
-    "rating": 4.7,
-    "userRatingCount": 713,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.448055599999996,
-    "lon": -122.10625359999999
    },
    {
     "id": "ChIJ0-BqC4dghYAR8CrdImAimSU",
@@ -15241,24 +15173,6 @@
     "lon": -121.9736049
    },
    {
-    "id": "ChIJV4up9p15j4ARBmynzOUmNLs",
-    "name": "Centennial Dog Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "tourist_attraction",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "SSF, Centennial Way Trail, South San Francisco, CA 94080, USA",
-    "rating": 4.5,
-    "userRatingCount": 480,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.6533182,
-    "lon": -122.4297711
-   },
-   {
     "id": "ChIJ_7oMhFO-j4ARSnWlYzO-gPc",
     "name": "Newark Community Center Park",
     "primaryType": "park",
@@ -16601,24 +16515,6 @@
     "lon": -122.40057850000001
    },
    {
-    "id": "ChIJAfUjxwPNj4AROAEeCo8rC3Y",
-    "name": "Chinese Cultural Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "tourist_attraction",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2145 McKee Rd, San Jose, CA 95116, USA",
-    "rating": 4.2,
-    "userRatingCount": 368,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.365048,
-    "lon": -121.85649269999999
-   },
-   {
     "id": "ChIJv2XFGeaAhYARR0dmTGoXhvE",
     "name": "George Sterling Park",
     "primaryType": "city_park",
@@ -16706,6 +16602,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.9971373,
     "lon": -121.86519009999999
+   },
+   {
+    "id": "ChIJh9tpCnifj4ARONkn-6iuLgM",
+    "name": "Waterdog Lake & Open Space",
+    "primaryType": "nature_preserve",
+    "types": [
+     "nature_preserve",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "2400 Lyall Way &, Lake Road Trail, Belmont, CA 94002, USA",
+    "rating": 4.5,
+    "userRatingCount": 364,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.5050398,
+    "lon": -122.30449410000001
    },
    {
     "id": "ChIJ7aTfjhuUj4ARrIxfMF7EVYc",
@@ -16844,23 +16757,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.380978299999995,
     "lon": -121.88267409999999
-   },
-   {
-    "id": "ChIJZabqHle1j4AR0FxTJlgWbnI",
-    "name": "Saratoga Creek Dog Park, San Jose, CA",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "5399 Graves Ave, San Jose, CA 95129, USA",
-    "rating": 4.4,
-    "userRatingCount": 346,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2957751,
-    "lon": -121.99690820000001
    },
    {
     "id": "ChIJ_2M86GeVj4ARtImrzM-f06k",
@@ -18038,23 +17934,6 @@
     "lon": -121.8144211
    },
    {
-    "id": "ChIJxVZ7abqwj4ARCfMirrzjfFI",
-    "name": "Fenced Dog Park | Rengstorff Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2000 California St, Mountain View, CA 94040, USA",
-    "rating": 4.5,
-    "userRatingCount": 274,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3990116,
-    "lon": -122.0960913
-   },
-   {
     "id": "ChIJESK7Kk8zjoARu73s9fBPiNk",
     "name": "Tamien Park",
     "primaryType": "park",
@@ -18524,23 +18403,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.2337574,
     "lon": -121.8122664
-   },
-   {
-    "id": "ChIJdd3BFWPLj4ARLGGrI7lTbg0",
-    "name": "Guadalupe Gardens Heritage Rose Garden",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "438 Coleman Ave, San Jose, CA 95110, USA",
-    "rating": 3.9,
-    "userRatingCount": 252,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.343894999999996,
-    "lon": -121.90727779999997
    },
    {
     "id": "ChIJGTJp4DOZj4ARxqhgsc68VyQ",
@@ -19336,22 +19198,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7825858,
     "lon": -122.2055282
-   },
-   {
-    "id": "ChIJv5VAO_G5j4ARQpu7x_Fmx48",
-    "name": "Kite Lot",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "N Shoreline Blvd, Mountain View, CA 94043, USA",
-    "rating": 4.6,
-    "userRatingCount": 222,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4302226,
-    "lon": -122.07679739999999
    },
    {
     "id": "ChIJrcxqRhO_j4ARK5dvthqZ2Zo",
@@ -20358,23 +20204,6 @@
     "lon": -122.24150519999999
    },
    {
-    "id": "ChIJd9c5sGKfj4ARTc0CAkzyx4Q",
-    "name": "Hidden Canyon Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Parking lot, 2642 Carlmont Dr, Belmont, CA 94002, USA",
-    "rating": 4.7,
-    "userRatingCount": 180,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.503427699999996,
-    "lon": -122.2987105
-   },
-   {
     "id": "ChIJ4yc_D1N5hYAR2Yjc_SvNnoM",
     "name": "John Hinkel Park",
     "primaryType": "park",
@@ -21217,23 +21046,6 @@
     "lon": -122.49859319999999
    },
    {
-    "id": "ChIJU6jRaiW3j4ARS93xfiVY6QI",
-    "name": "Dog Park | Las Palmas",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "831 Stella Ct, Sunnyvale, CA 94087, USA",
-    "rating": 4.5,
-    "userRatingCount": 160,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3646646,
-    "lon": -122.03707700000001
-   },
-   {
     "id": "ChIJyw1Ix3OTj4ARrxEjPQV3u74",
     "name": "Five Canyons Park",
     "primaryType": "park",
@@ -21618,6 +21430,23 @@
     "lon": -122.45256239999999
    },
    {
+    "id": "ChIJl4PdCqbMj4ARK3GsLEx9XgA",
+    "name": "Discovery Dog Park",
+    "primaryType": "dog_park",
+    "types": [
+     "dog_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "410 Park Ave, San Jose, CA 95110, USA",
+    "rating": 3.6,
+    "userRatingCount": 150,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3287814,
+    "lon": -121.8963488
+   },
+   {
     "id": "ChIJ1SQONsV-j4ARMzfZIQqvkcQ",
     "name": "Kelloch & Velasco Mini Park",
     "primaryType": "city_park",
@@ -21886,23 +21715,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.717256899999995,
     "lon": -122.46678820000001
-   },
-   {
-    "id": "ChIJp3d1-Iedj4ARnsiBAUHnk0E",
-    "name": "Burlingame Dog Exercise Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1125 Airport Blvd., Burlingame, CA 94010, USA",
-    "rating": 4.4,
-    "userRatingCount": 143,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.591628199999995,
-    "lon": -122.3560919
    },
    {
     "id": "ChIJhzQKpKB3hYARgjd8XTSEtw8",
@@ -22579,23 +22391,6 @@
     "lon": -121.8183608
    },
    {
-    "id": "ChIJQZnrMjEujoARgpsllrspUJ8",
-    "name": "Miyuki Dog Park",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Jose, CA 95119, USA",
-    "rating": 4,
-    "userRatingCount": 129,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.239567,
-    "lon": -121.7937858
-   },
-   {
     "id": "ChIJrZYCyzjKj4ARm35uGunId-w",
     "name": "Warburton Swim Center",
     "primaryType": "park",
@@ -22899,23 +22694,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5057729,
     "lon": -122.27671160000001
-   },
-   {
-    "id": "ChIJtYvGs2TLj4ARWhk-ns3HVHA",
-    "name": "Guadalupe Gardens",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "438 Coleman Ave, San Jose, CA 95110, USA",
-    "rating": 4.2,
-    "userRatingCount": 123,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.342979899999996,
-    "lon": -121.90855280000001
    },
    {
     "id": "ChIJAX8KJEa0j4ARlPB96e9uLb8",
@@ -23469,23 +23247,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.282696699999995,
     "lon": -121.8565643
-   },
-   {
-    "id": "ChIJu8RigLi7j4ARBPdqQCVnqgU",
-    "name": "Palo Alto Duck Pond",
-    "primaryType": "nature_preserve",
-    "types": [
-     "nature_preserve",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2500 Embarcadero Rd, Palo Alto, CA 94303, USA",
-    "rating": 4.6,
-    "userRatingCount": 114,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4572637,
-    "lon": -122.10888339999998
    },
    {
     "id": "ChIJDZdnwsR3hYARwvIQdD9opPY",
@@ -26097,23 +25858,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3503109,
     "lon": -122.05625119999999
-   },
-   {
-    "id": "ChIJCQYW6KDMj4AR-Vk_jjIN2wU",
-    "name": "Arena Green West",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "N Autumn St, San Jose, CA 95113, USA",
-    "rating": 4,
-    "userRatingCount": 74,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.33282090000001,
-    "lon": -121.8997187
    },
    {
     "id": "ChIJZyWcQOp-hYARmx5esPwW5eI",
@@ -28858,22 +28602,6 @@
     "lon": -121.89642870000002
    },
    {
-    "id": "ChIJd9Vn9Ze7j4AR0lvhtGZqlkQ",
-    "name": "Pelican View",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Adobe Creek Loop Trail, Palo Alto, CA 94303, USA",
-    "rating": 4.6,
-    "userRatingCount": 45,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.448498,
-    "lon": -122.0937445
-   },
-   {
     "id": "ChIJW8ZQrGIvjoARd0s6yR4iqis",
     "name": "Santa Teresa Spring",
     "primaryType": "park",
@@ -29288,22 +29016,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3611676,
     "lon": -121.8898013
-   },
-   {
-    "id": "ChIJPXVnqy6fj4AR1nXoStWFpV4",
-    "name": "Marion Panaretos Rose Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "710 Laurel Ave, San Mateo, CA 94401, USA",
-    "rating": 4.8,
-    "userRatingCount": 41,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.561116399999996,
-    "lon": -122.321197
    },
    {
     "id": "ChIJ24wg19h9j4ARsp-LoIqDTT8",
@@ -29829,22 +29541,6 @@
     "lon": -122.06917599999998
    },
    {
-    "id": "ChIJRyn7-zgzjoAROgpDIO8fFBk",
-    "name": "Vieira Park Outlook",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Vieira Park, San Jose, CA 95136, USA",
-    "rating": 4.6,
-    "userRatingCount": 37,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.286203,
-    "lon": -121.86155289999999
-   },
-   {
     "id": "ChIJkTVuULd_j4ARvSBtTP0XTOU",
     "name": "Woods Yard Park",
     "primaryType": "park",
@@ -29875,6 +29571,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.416921599999995,
     "lon": -122.09557029999999
+   },
+   {
+    "id": "ChIJId2DArI1joARJn_eDrXnmHs",
+    "name": "Butcher Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "San Jose, CA 95124, USA",
+    "rating": 4.4,
+    "userRatingCount": 36,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.26049140000001,
+    "lon": -121.9160701
    },
    {
     "id": "ChIJsV5OSz7Nj4AREPVrryGldBc",
@@ -30604,6 +30316,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.736986699999996,
     "lon": -122.46528099999998
+   },
+   {
+    "id": "ChIJbboT2Xe9j4ARW9TJKZO9hPk",
+    "name": "Nature Reservation Bedwell",
+    "primaryType": "nature_preserve",
+    "types": [
+     "nature_preserve",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Menlo Park, CA 94025, USA",
+    "rating": 4.5,
+    "userRatingCount": 31,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.4884268,
+    "lon": -122.1552172
    },
    {
     "id": "ChIJBz_QC63Jj4ARXpU6iLXCjrg",
@@ -31641,22 +31370,6 @@
     "lon": -122.4054461
    },
    {
-    "id": "ChIJC9IyEAAvjoARn13u69w-GeY",
-    "name": "Tree Life Cycles Trail of Coyote Creek",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Coyote Creek Trail, San Jose, CA 95138, USA",
-    "rating": 4.3,
-    "userRatingCount": 24,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.241212999999995,
-    "lon": -121.76437109999999
-   },
-   {
     "id": "ChIJy3AZUcK6j4ARmCZ_FEL30I0",
     "name": "Werry Park",
     "primaryType": "park",
@@ -31738,23 +31451,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.2666533,
     "lon": -121.9205317
-   },
-   {
-    "id": "ChIJEWbTkC-3j4AR9VAElX0M4bM",
-    "name": "Dog Park | Fair Oaks",
-    "primaryType": "dog_park",
-    "types": [
-     "dog_park",
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "470 N Wolfe Rd, Sunnyvale, CA 94085, USA",
-    "rating": 3.9,
-    "userRatingCount": 23,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.38448520000001,
-    "lon": -122.01529310000001
    },
    {
     "id": "ChIJJzWFKlJ-j4ARTr_VMlkGmVE",
@@ -31951,22 +31647,6 @@
     "lon": -122.25315150000002
    },
    {
-    "id": "ChIJbb-YSC4tjoAR17tNRD2o4Qs",
-    "name": "Evergreen Village Duck Pond",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "65957011, San Jose, CA 95135, USA",
-    "rating": 4.1,
-    "userRatingCount": 22,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3142066,
-    "lon": -121.7752227
-   },
-   {
     "id": "ChIJOSECCLuAhYARD9Ao4-2ASj8",
     "name": "Fillmore & Turk Mini Park",
     "primaryType": "city_park",
@@ -32030,22 +31710,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.889455399999996,
     "lon": -122.3153598
-   },
-   {
-    "id": "ChIJA5cO-S-7j4ARbc8uun7XIMo",
-    "name": "Arboretum Grove",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Palo Alto, CA 94301, USA",
-    "rating": 3.5,
-    "userRatingCount": 21,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.43869,
-    "lon": -122.16381270000001
    },
    {
     "id": "ChIJQ6fZ1S55j4ARYG-JYksxeDw",
@@ -32113,6 +31777,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.931337299999996,
     "lon": -122.36669669999999
+   },
+   {
+    "id": "ChIJU--SOFm1j4ARxyECEjzIerY",
+    "name": "San Tomas Aquino/ Saratoga Creek Trail",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "Unnamed Road, San Jose, CA 95129, USA",
+    "rating": 4.2,
+    "userRatingCount": 21,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3017387,
+    "lon": -121.9976569
    },
    {
     "id": "ChIJq9NyfLelj4ARtg5dvVg8C0M",
@@ -32438,22 +32118,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.361913699999995,
     "lon": -121.99665929999998
-   },
-   {
-    "id": "ChIJeR2wcJeZj4AR6XcNe9cADMk",
-    "name": "Dirt Bike Jumps",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Beach Park Blvd, Foster City, CA 94404, USA",
-    "rating": 4.5,
-    "userRatingCount": 19,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.5550419,
-    "lon": -122.24675800000001
    },
    {
     "id": "ChIJNRRYFXl-hYARkZp-xntUQO0",
@@ -33013,22 +32677,6 @@
     "lon": -122.24367500000001
    },
    {
-    "id": "ChIJrUUl6szOj4ARrzVjBvHF34E",
-    "name": "Parc Metro Clubhouse",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Comet Dr, Milpitas, CA 95035, USA",
-    "rating": 4.5,
-    "userRatingCount": 17,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4193576,
-    "lon": -121.90024299999999
-   },
-   {
     "id": "ChIJWc8ggNXGj4ARxlvRHwxTsOs",
     "name": "Phillip Bauer Park",
     "primaryType": "park",
@@ -33176,22 +32824,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.707431899999996,
     "lon": -121.85524459999999
-   },
-   {
-    "id": "ChIJVcONiBQujoARvFIVni3oMgk",
-    "name": "Coyote Creek Parkway North",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "San Jose, CA 95138, USA",
-    "rating": 4.8,
-    "userRatingCount": 16,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.2576669,
-    "lon": -121.79052159999999
    },
    {
     "id": "ChIJSQ1AQ1XNj4ARg-yNAYPFm8Q",
@@ -33516,20 +33148,20 @@
     "lon": -121.91453550000001
    },
    {
-    "id": "ChIJ7TgZfn65j4AR0jGCF_9xYa8",
-    "name": "Shoreline Maintenance",
-    "primaryType": "park",
+    "id": "ChIJNQSg3-G7j4AREYr7nlRvJrw",
+    "name": "Rinconada Community Garden",
+    "primaryType": "garden",
     "types": [
-     "park",
+     "garden",
      "point_of_interest",
      "establishment"
     ],
-    "address": "2612 N Shoreline Blvd, Mountain View, CA 94043, USA",
-    "rating": 3.9,
+    "address": "1213 Newell Rd, Palo Alto, CA 94303, USA",
+    "rating": 4.9,
     "userRatingCount": 15,
     "businessStatus": "OPERATIONAL",
-    "lat": 37.428427,
-    "lon": -122.07976329999998
+    "lat": 37.444838499999996,
+    "lon": -122.13786669999998
    },
    {
     "id": "ChIJ04nJR5qAhYARKg1_-EkjtwY",
@@ -33548,6 +33180,23 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.780803399999996,
     "lon": -122.4165333
+   },
+   {
+    "id": "ChIJ0SZsR6HMj4AR7Ud6fa3nxl0",
+    "name": "Arena Green Park",
+    "primaryType": "city_park",
+    "types": [
+     "city_park",
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "345 W Santa Clara St, San Jose, CA 95113, USA",
+    "rating": 4.2,
+    "userRatingCount": 14,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.332985199999996,
+    "lon": -121.8993618
    },
    {
     "id": "ChIJURbXi9LBj4ARWkl4KVUcr4A",
@@ -34074,22 +33723,6 @@
     "lon": -122.14550799999998
    },
    {
-    "id": "ChIJFVyoJwDNj4AR0cqIH9CRIAQ",
-    "name": "Piedmont Road Dog Park",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "1025 Piedmont Rd, San Jose, CA 95132, USA",
-    "rating": 4.6,
-    "userRatingCount": 13,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3914687,
-    "lon": -121.84322870000001
-   },
-   {
     "id": "ChIJ2WJdZqmTj4ARxGV1guw1tIY",
     "name": "Ridge Trail Park",
     "primaryType": "park",
@@ -34338,22 +33971,6 @@
     "lon": -122.0373834
    },
    {
-    "id": "ChIJycLOAYu7j4AR7_17eKAdo0w",
-    "name": "Emily Renzel Ponds",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2837 E Bayshore Rd, Palo Alto, CA 94303, USA",
-    "rating": 4.6,
-    "userRatingCount": 12,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.442006899999996,
-    "lon": -122.1145327
-   },
-   {
     "id": "ChIJ1ZUw6Q1hhYARQJQ9U3iTNzQ",
     "name": "Fox Creek Park",
     "primaryType": "park",
@@ -34488,23 +34105,6 @@
     "lon": -121.9411782
    },
    {
-    "id": "ChIJcVKJAuh3j4ARxdhFIUzFneU",
-    "name": "Millbrae Community Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Millbrae, CA 94030, USA",
-    "rating": 4.7,
-    "userRatingCount": 12,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.6009002,
-    "lon": -122.39956980000001
-   },
-   {
     "id": "ChIJM8gbJQx-j4ARpgLTa0x3p50",
     "name": "Noe Valley Park",
     "primaryType": "city_park",
@@ -34601,22 +34201,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.6685386,
     "lon": -122.38861629999998
-   },
-   {
-    "id": "ChIJ83YoDmnKj4ARrybMRfJapyE",
-    "name": "Santa Clara Park Services Center",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2600 Benton St, Santa Clara, CA 95051, USA",
-    "rating": 4.7,
-    "userRatingCount": 12,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3455619,
-    "lon": -121.97343839999999
    },
    {
     "id": "ChIJw0U-sjC0j4ARqs44yorUBcQ",
@@ -34929,22 +34513,6 @@
     "lon": -122.3897687
    },
    {
-    "id": "ChIJXcjkZVZ3j4AROsr58SsRrRI",
-    "name": "Mosta Grove",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "935 Millbrae Ave, Millbrae, CA 94030, USA",
-    "rating": 4.5,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.593502799999996,
-    "lon": -122.3959045
-   },
-   {
     "id": "ChIJ_4bVYuuHj4AR36h1YJSnlro",
     "name": "Peralta Park",
     "primaryType": "park",
@@ -35042,22 +34610,6 @@
     "lon": -122.2676042
    },
    {
-    "id": "ChIJv9GtRnvLj4ARhzsJES6C5J8",
-    "name": "Taylor Street Rock Garden",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Taylor St. between Irene and, Walnut St, San Jose, CA 95110, USA",
-    "rating": 3.7,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.345157199999996,
-    "lon": -121.90709410000001
-   },
-   {
     "id": "ChIJ-33pJXyBhYARqI1PNqcm0rI",
     "name": "Turk Hyde Mini Park",
     "primaryType": "city_park",
@@ -35090,22 +34642,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.926361899999996,
     "lon": -122.0251203
-   },
-   {
-    "id": "ChIJE3Jw7CczjoARA-ahBvvfNVM",
-    "name": "History Park Entrance",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "635 Phelan Ave, San Jose, CA 95112, USA",
-    "rating": 4,
-    "userRatingCount": 11,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.319139799999995,
-    "lon": -121.8573033
    },
    {
     "id": "ChIJg2Ae_21-j4ARQH4kgEdg-nw",
@@ -35480,22 +35016,6 @@
     "lon": -122.0333195
    },
    {
-    "id": "ChIJZaJxNQDJj4ARx4yc0KRbppQ",
-    "name": "Riverview Stormwater Garden",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "3477 Lily Way, San Jose, CA 95134, USA",
-    "rating": 4.7,
-    "userRatingCount": 10,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4020911,
-    "lon": -121.94601530000001
-   },
-   {
     "id": "ChIJg-gdxqq7j4AROlyisJHFx2Q",
     "name": "Scott Park",
     "primaryType": "park",
@@ -35673,38 +35193,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.7942384,
     "lon": -122.4038476
-   },
-   {
-    "id": "ChIJhfTgNQC7j4ARvzWqdfLC4cw",
-    "name": "Eucalyptus Grove Stanford University",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "CRPM+6X, Stanford, CA 94305, USA",
-    "rating": 4.8,
-    "userRatingCount": 9,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4355908,
-    "lon": -122.1650478
-   },
-   {
-    "id": "ChIJV6EKTvGZj4AR9lLoE3UX1BA",
-    "name": "Foster City Sign",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Slough Path, Foster City, CA 94404, USA",
-    "rating": 4.7,
-    "userRatingCount": 9,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.5565126,
-    "lon": -122.2467808
    },
    {
     "id": "ChIJPdU0PMyYj4ARYQYrCKO7o6g",
@@ -36512,22 +36000,6 @@
     "lon": -122.2453142
    },
    {
-    "id": "ChIJjdB1XwtghYARPmKqke_KkEo",
-    "name": "Arbolado Park Soccer Practice Field",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Walnut Creek, CA 94598, USA",
-    "rating": 4.6,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.918623,
-    "lon": -121.998425
-   },
-   {
     "id": "ChIJqfWGIQCRj4AR0CNaaTluqS0",
     "name": "Ashland Zocalo Park",
     "primaryType": "park",
@@ -36851,22 +36323,6 @@
     "lon": -121.9922268
    },
    {
-    "id": "ChIJeTHLKEm6j4ARfTBPI0_K4OE",
-    "name": "Palo Alto Parks Maintenance",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "3201 E Bayshore Rd, Palo Alto, CA 94303, USA",
-    "rating": 4.6,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.4391089,
-    "lon": -122.1111704
-   },
-   {
     "id": "ChIJ06tCARh_j4ARGOHx986bUNc",
     "name": "Portola Community Garden",
     "primaryType": "garden",
@@ -36930,22 +36386,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.5067896,
     "lon": -122.26514080000001
-   },
-   {
-    "id": "ChIJG1EfH9V5j4ARRh0_BKK7pyc",
-    "name": "San Bruno Mountain Ecological Reserve- Buckeye Canyon",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Quarry Rd, Brisbane, CA 94005, USA",
-    "rating": 5,
-    "userRatingCount": 7,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.685609899999996,
-    "lon": -122.41175159999999
    },
    {
     "id": "ChIJyQC_TIN5j4AR5phpXgzWYA8",
@@ -37178,22 +36618,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.3748253,
     "lon": -122.03184359999999
-   },
-   {
-    "id": "ChIJP2LydgC3j4ARJPPHgnS1mhQ",
-    "name": "Cuesta Pollinator Habitat",
-    "primaryType": "garden",
-    "types": [
-     "garden",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Mountain View, CA 94040, USA",
-    "rating": 4.8,
-    "userRatingCount": 6,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.373367099999996,
-    "lon": -122.08256019999997
    },
    {
     "id": "ChIJ3_5N5VaRj4ARnBqPaQYtIxo",
@@ -38114,6 +37538,22 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.760790199999995,
     "lon": -122.44348359999998
+   },
+   {
+    "id": "ChIJMTdk45ktjoARdmeGcVVKaDQ",
+    "name": "Montelena Park",
+    "primaryType": "park",
+    "types": [
+     "park",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "3062 Florence Park Dr, San Jose, CA 95135, USA",
+    "rating": 4.4,
+    "userRatingCount": 5,
+    "businessStatus": "OPERATIONAL",
+    "lat": 37.3139423,
+    "lon": -121.7802387
    },
    {
     "id": "ChIJ_Q1-D_h-j4ARKf_klTX7ncY",

@@ -109,7 +109,7 @@
     -122.333956
    ],
    [
-    "Cañada College Library",
+    "Ca\u00f1ada College Library",
     37.448924,
     -122.26553
    ]
@@ -195,7 +195,7 @@
     -122.280588
    ],
    [
-    "Aléna Museum",
+    "Al\u00e9na Museum",
     37.8451297,
     -122.2762489
    ],
@@ -695,6 +695,190 @@
     "Presidio of San Francisco",
     37.79685,
     -122.466817
+   ],
+   [
+    "Arbolado Park Soccer Practice Field",
+    "Arbolado Park"
+   ],
+   [
+    "San Bruno Mountain Ecological Reserve- Buckeye Canyon",
+    "San Bruno Mountain State Park",
+    37.69687,
+    -122.43393
+   ],
+   [
+    "Centennial Dog Park",
+    "Orange Memorial Park"
+   ],
+   [
+    "Millbrae Community Garden",
+    "Central Park",
+    37.60006,
+    -122.40058
+   ],
+   [
+    "Mosta Grove",
+    "Millbrae Spur Trail"
+   ],
+   [
+    "Burlingame Dog Exercise Park",
+    "Bayside Park"
+   ],
+   [
+    "San Mateo Japanese Garden",
+    "San Mateo Central Park"
+   ],
+   [
+    "Marion Panaretos Rose Garden",
+    "San Mateo Central Park"
+   ],
+   [
+    "Foster City Sign",
+    "Shorebird Park",
+    37.5538,
+    -122.24863
+   ],
+   [
+    "Dirt Bike Jumps",
+    "Shorebird Park",
+    37.5538,
+    -122.24863
+   ],
+   [
+    "Hidden Canyon Park",
+    "Waterdog Lake & Open Space"
+   ],
+   [
+    "Palo Alto Duck Pond",
+    "Baylands Nature Preserve"
+   ],
+   [
+    "Palo Alto Byxbee Park",
+    "Baylands Nature Preserve"
+   ],
+   [
+    "Pelican View",
+    "Baylands Nature Preserve"
+   ],
+   [
+    "Emily Renzel Ponds",
+    "Baylands Nature Preserve"
+   ],
+   [
+    "Arizona Garden",
+    "Stanford University Arboretum"
+   ],
+   [
+    "Arboretum Grove",
+    "Stanford University Arboretum"
+   ],
+   [
+    "Eucalyptus Grove Stanford University",
+    "Stanford University Arboretum"
+   ],
+   [
+    "Kite Lot",
+    "Shoreline Park",
+    37.43244,
+    -122.08624
+   ],
+   [
+    "Don Edwards San Francisco Bay national wildlife refuge - Alviso",
+    "Alviso Marina County Park"
+   ],
+   [
+    "Fenced Dog Park | Rengstorff Park",
+    "Rengstorff Park"
+   ],
+   [
+    "Cuesta Pollinator Habitat",
+    "Cuesta Park"
+   ],
+   [
+    "Cuesta Park Annex",
+    "Cuesta Park"
+   ],
+   [
+    "Saratoga Creek Dog Park, San Jose, CA",
+    "Saratoga Creek Park"
+   ],
+   [
+    "Dog Park | Las Palmas",
+    "Las Palmas Park"
+   ],
+   [
+    "Dog Park | Fair Oaks",
+    "Fair Oaks Park"
+   ],
+   [
+    "Riverview Stormwater Garden",
+    "Riverview Park",
+    37.40146,
+    -121.9421
+   ],
+   [
+    "Chinese Cultural Garden",
+    "Overfelt Gardens"
+   ],
+   [
+    "Piedmont Road Dog Park",
+    "Penitencia Creek Park"
+   ],
+   [
+    "Evergreen Village Duck Pond",
+    "Evergreen Village Square"
+   ],
+   [
+    "Tree Life Cycles Trail of Coyote Creek",
+    "Coyote Creek Trail"
+   ],
+   [
+    "Coyote Creek Parkway North",
+    "Coyote Creek Trail"
+   ],
+   [
+    "Miyuki Dog Park",
+    "George Page Park"
+   ],
+   [
+    "Butcher Dog Park",
+    "Butcher Park"
+   ],
+   [
+    "History Park Entrance",
+    "Kelley Park"
+   ],
+   [
+    "Vieira Park Outlook",
+    "Vieira Park"
+   ],
+   [
+    "Arena Green West",
+    "Arena Green Park"
+   ],
+   [
+    "Arena Green East",
+    "Arena Green Park"
+   ],
+   [
+    "Sons of San Jos\u00e9 Vietnam War Memorial",
+    "Arena Green Park"
+   ],
+   [
+    "Taylor Street Rock Garden",
+    "Guadalupe River Park"
+   ],
+   [
+    "Guadalupe Community Garden",
+    "Guadalupe River Park"
+   ],
+   [
+    "Guadalupe Gardens",
+    "Guadalupe River Park"
+   ],
+   [
+    "Guadalupe Gardens Heritage Rose Garden",
+    "Guadalupe River Park"
    ]
   ],
   "drop": [
@@ -717,6 +901,26 @@
     "Giant Highway Staging Area",
     37.99179,
     -122.35617
+   ],
+   [
+    "Palo Alto Parks Maintenance",
+    37.43911,
+    -122.11117
+   ],
+   [
+    "Shoreline Maintenance",
+    37.42843,
+    -122.07976
+   ],
+   [
+    "Santa Clara Park Services Center",
+    37.34556,
+    -121.97344
+   ],
+   [
+    "Parc Metro Clubhouse",
+    37.41936,
+    -121.90024
    ]
   ],
   "separate": [
@@ -735,6 +939,34 @@
    [
     "Potrero Hill Community Garden",
     "Potrero del Sol Park"
+   ],
+   [
+    "Nature Reservation Bedwell",
+    "Don Edwards San Francisco Bay National Wildlife Refuge"
+   ],
+   [
+    "Nature Reservation Bedwell",
+    "Don Edwards San Francisco Bay national wildlife refuge - Alviso"
+   ],
+   [
+    "Don Edwards San Francisco Bay National Wildlife Refuge",
+    "Don Edwards San Francisco Bay national wildlife refuge - Alviso"
+   ],
+   [
+    "Rinconada Cultural Park",
+    "Rinconada Community Garden"
+   ],
+   [
+    "San Tomas Aquino/ Saratoga Creek Trail",
+    "Murdock Park"
+   ],
+   [
+    "Montelena Park",
+    "Dante Park"
+   ],
+   [
+    "Discovery Dog Park",
+    "Discovery Meadow"
    ]
   ]
  },
