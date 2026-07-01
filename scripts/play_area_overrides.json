@@ -1,0 +1,143 @@
+{
+ "_comment": "Opt-out model: play area = union of ALL Census places in the transit-touched counties MINUS the names in 'drop' (manual deletions), then any kept unincorporated CDP left completely surrounded by non-playable area is auto-dropped. 'keep' force-includes a place even if it would be auto-dropped. Names are Census NAMELSAD.",
+ "keep": [
+  "North Richmond CDP"
+ ],
+ "drop": [
+  "Alamo CDP",
+  "Alhambra Valley CDP",
+  "Bayview CDP",
+  "Baywood Park CDP",
+  "Bethel Island CDP",
+  "Blackhawk CDP",
+  "Brentwood city",
+  "Byron CDP",
+  "Cambrian Park CDP",
+  "Camino Tassajara CDP",
+  "Castle Hill CDP",
+  "Clayton city",
+  "Clyde CDP",
+  "Crockett CDP",
+  "Danville town",
+  "Diablo CDP",
+  "Discovery Bay CDP",
+  "East Foothills CDP",
+  "East Richmond Heights CDP",
+  "El Granada CDP",
+  "El Sobrante CDP",
+  "Emerald Lake Hills CDP",
+  "Fairview CDP",
+  "Gilroy city",
+  "Half Moon Bay city",
+  "Hercules city",
+  "Highlands CDP",
+  "Knightsen CDP",
+  "La Honda CDP",
+  "Ladera CDP",
+  "Lexington Hills CDP",
+  "Livermore city",
+  "Loma Mar CDP",
+  "Los Altos Hills town",
+  "Los Gatos town",
+  "Loyola CDP",
+  "Martinez city",
+  "Montalvin Manor CDP",
+  "Montara CDP",
+  "Monte Sereno city",
+  "Moraga town",
+  "Moss Beach CDP",
+  "Mountain View CDP",
+  "Norris Canyon CDP",
+  "North Gate CDP",
+  "Oakley city",
+  "Pacheco CDP",
+  "Pacifica city",
+  "Pescadero CDP",
+  "Pinole city",
+  "Port Costa CDP",
+  "Portola Valley town",
+  "Reliez Valley CDP",
+  "Rodeo CDP",
+  "Rollingwood CDP",
+  "San Martin CDP",
+  "San Miguel CDP",
+  "San Pablo city",
+  "San Ramon city",
+  "Saratoga city",
+  "Shell Ridge CDP",
+  "Sunol CDP",
+  "Tara Hills CDP",
+  "West Menlo Park CDP",
+  "Woodside town",
+  "Morgan Hill city"
+ ],
+ "fill_regions": [
+  {
+   "_note": "Berkeley-Orinda hills valley: fill the grey wedge between the two kept cities (traced from user's outline). North bound follows the user's drawn line below the high parks; south bound dips into the in-play BART corridor valley.",
+   "ring": [
+    [
+     -122.252,
+     37.879
+    ],
+    [
+     -122.2297,
+     37.8895
+    ],
+    [
+     -122.2275,
+     37.8905
+    ],
+    [
+     -122.2253,
+     37.8906
+    ],
+    [
+     -122.1852,
+     37.8829
+    ],
+    [
+     -122.182,
+     37.876
+    ],
+    [
+     -122.182,
+     37.867
+    ],
+    [
+     -122.235,
+     37.867
+    ],
+    [
+     -122.255,
+     37.872
+    ]
+   ]
+  },
+  {
+   "_note": "Olympic Club / Lake Merced golf complex S of Lake Merced: unincorporated land (in no Census place) wedged between SF (N) and Daly City (S/E). West edge traced along the real Pacific coast (from bay_land.geojson) so the fill stops at the shore and never reaches the ocean; east edge cuts into in-play Daly City (harmless union).",
+   "ring": [
+    [-122.50345, 37.71022],
+    [-122.50308, 37.70873],
+    [-122.50278, 37.70785],
+    [-122.50268, 37.70717],
+    [-122.50235, 37.70636],
+    [-122.50194, 37.70508],
+    [-122.50171, 37.70452],
+    [-122.5014, 37.70332],
+    [-122.50121, 37.70238],
+    [-122.50082, 37.7011],
+    [-122.50062, 37.70029],
+    [-122.50053, 37.69922],
+    [-122.50025, 37.698],
+    [-122.49989, 37.69687],
+    [-122.49975, 37.69603],
+    [-122.49923, 37.69433],
+    [-122.49909, 37.69348],
+    [-122.49877, 37.69178],
+    [-122.49821, 37.69],
+    [-122.483, 37.69],
+    [-122.483, 37.71022]
+   ]
+  }
+ ]
+}

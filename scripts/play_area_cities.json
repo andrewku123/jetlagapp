@@ -1,0 +1,470 @@
+{
+ "model": "opt-out-county",
+ "transit_counties": [
+  "Alameda",
+  "Contra Costa",
+  "San Francisco",
+  "San Mateo",
+  "Santa Clara"
+ ],
+ "shoreline_buffer_m": 150.0,
+ "candidate_places": 131,
+ "dropped_manual": [
+  "Alamo CDP",
+  "Alhambra Valley CDP",
+  "Bayview CDP",
+  "Baywood Park CDP",
+  "Bethel Island CDP",
+  "Blackhawk CDP",
+  "Brentwood city",
+  "Byron CDP",
+  "Cambrian Park CDP",
+  "Camino Tassajara CDP",
+  "Castle Hill CDP",
+  "Clayton city",
+  "Clyde CDP",
+  "Crockett CDP",
+  "Danville town",
+  "Diablo CDP",
+  "Discovery Bay CDP",
+  "East Foothills CDP",
+  "East Richmond Heights CDP",
+  "El Granada CDP",
+  "El Sobrante CDP",
+  "Emerald Lake Hills CDP",
+  "Fairview CDP",
+  "Gilroy city",
+  "Half Moon Bay city",
+  "Hercules city",
+  "Highlands CDP",
+  "Knightsen CDP",
+  "La Honda CDP",
+  "Ladera CDP",
+  "Lexington Hills CDP",
+  "Livermore city",
+  "Loma Mar CDP",
+  "Los Altos Hills town",
+  "Los Gatos town",
+  "Loyola CDP",
+  "Martinez city",
+  "Montalvin Manor CDP",
+  "Montara CDP",
+  "Monte Sereno city",
+  "Moraga town",
+  "Morgan Hill city",
+  "Moss Beach CDP",
+  "Mountain View CDP",
+  "Norris Canyon CDP",
+  "North Gate CDP",
+  "Oakley city",
+  "Pacheco CDP",
+  "Pacifica city",
+  "Pescadero CDP",
+  "Pinole city",
+  "Port Costa CDP",
+  "Portola Valley town",
+  "Reliez Valley CDP",
+  "Rodeo CDP",
+  "Rollingwood CDP",
+  "San Martin CDP",
+  "San Miguel CDP",
+  "San Pablo city",
+  "San Ramon city",
+  "Saratoga city",
+  "Shell Ridge CDP",
+  "Sunol CDP",
+  "Tara Hills CDP",
+  "West Menlo Park CDP",
+  "Woodside town"
+ ],
+ "dropped_auto_surrounded": [
+  "Vine Hill CDP"
+ ],
+ "count": 64,
+ "cities": [
+  {
+   "name": "Acalanes Ridge CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Alameda city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Albany city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Alum Rock CDP",
+   "county": "Santa Clara",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Antioch city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Ashland CDP",
+   "county": "Alameda",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Atherton town",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Bay Point CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Belmont city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Berkeley city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Brisbane city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Broadmoor CDP",
+   "county": "San Mateo",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Burbank CDP",
+   "county": "Santa Clara",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Burlingame city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Campbell city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Castro Valley CDP",
+   "county": "Alameda",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Cherryland CDP",
+   "county": "Alameda",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Colma town",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Concord city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Contra Costa Centre CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Cupertino city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Daly City city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Dublin city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "East Palo Alto city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "El Cerrito city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Emeryville city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Foster City city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Fremont city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Fruitdale CDP",
+   "county": "Santa Clara",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Hayward city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Hillsborough town",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Kensington CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Lafayette city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Los Altos city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Menlo Park city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Millbrae city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Milpitas city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Mountain View city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Newark city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "North Fair Oaks CDP",
+   "county": "San Mateo",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "North Richmond CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "manual-keep"
+  },
+  {
+   "name": "Oakland city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Orinda city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Palo Alto city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Piedmont city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Pittsburg city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Pleasant Hill city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Pleasanton city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Redwood City city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Richmond city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "San Bruno city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "San Carlos city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "San Francisco city",
+   "county": "San Francisco",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "San Jose city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "San Leandro city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "San Lorenzo CDP",
+   "county": "Alameda",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "San Mateo city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Santa Clara city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Saranap CDP",
+   "county": "Contra Costa",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "South San Francisco city",
+   "county": "San Mateo",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Stanford CDP",
+   "county": "Santa Clara",
+   "type": "CDP",
+   "reason": "kept"
+  },
+  {
+   "name": "Sunnyvale city",
+   "county": "Santa Clara",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Union City city",
+   "county": "Alameda",
+   "type": "city/town",
+   "reason": "kept"
+  },
+  {
+   "name": "Walnut Creek city",
+   "county": "Contra Costa",
+   "type": "city/town",
+   "reason": "kept"
+  }
+ ]
+}
