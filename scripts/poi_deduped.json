@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1584,
+  "count": 1583,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -16669,24 +16669,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.357319,
     "lon": -121.85875170000001
-   },
-   {
-    "id": "ChIJn1yHtiLKj4AR-rNI4Jq93CE",
-    "name": "San Tomas Aquino Creek Trailhead",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "hiking_area",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "Santa Clara, CA 95051, USA",
-    "rating": 4.4,
-    "userRatingCount": 345,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.3637711,
-    "lon": -121.9683601
    },
    {
     "id": "ChIJJwGKAOB4j4ARAIdUN4jeiF0",
