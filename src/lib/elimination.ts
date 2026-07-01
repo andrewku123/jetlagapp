@@ -1,6 +1,7 @@
 import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
+import { nearestPoi, nearestPoiMiles, poiKey } from './poi'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -52,6 +53,21 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
     case 'match-line': {
       const same = station.lines.includes(s(p.value))
       return same === (p.answer === 'yes')
+    }
+    case 'match-poi': {
+      const cat = s(p.poiCat)
+      const seeker = nearestPoi({ lat: n(p.fromLat), lon: n(p.fromLon) }, cat)
+      const st = nearestPoi(station, cat)
+      if (!seeker || !st) return true // no data for this category: don't eliminate
+      const same = poiKey(seeker) === poiKey(st)
+      return same === (p.answer === 'yes')
+    }
+    case 'measure-poi': {
+      const cat = s(p.poiCat)
+      const seekerD = nearestPoiMiles({ lat: n(p.fromLat), lon: n(p.fromLon) }, cat)
+      const stationD = nearestPoiMiles(station, cat)
+      if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
+      return (stationD < seekerD) === (p.answer === 'closer')
     }
     case 'measure-airport': {
       const seeker = nearestAirportMiles({ lat: n(p.fromLat), lon: n(p.fromLon) })

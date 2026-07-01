@@ -86,6 +86,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     blurb: 'Is your station name the same number of characters as mine?',
   },
   {
+    kind: 'match-poi',
+    category: 'Matching',
+    label: 'Matching — Nearest place (park, museum, hospital…)',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Is your nearest place of a chosen type the same as mine? Set your location and pick a type; the app shows which place it treats as nearest.',
+  },
+  {
     kind: 'measure-airport',
     category: 'Measuring',
     label: 'Measuring — Commercial airport',
@@ -100,6 +108,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     cards: 'draw 3, keep 1',
     eliminates: true,
     blurb: 'Compared to me, are you closer to or further from sea level (lower altitude)?',
+  },
+  {
+    kind: 'measure-poi',
+    category: 'Measuring',
+    label: 'Measuring — Nearest place (park, museum, hospital…)',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Compared to me, are you closer to or further from your nearest place of a chosen type? Set your location and pick a type; the app shows your distance to it.',
   },
   {
     kind: 'inside-floor',
@@ -140,6 +156,11 @@ export function questionGroupKey(
   params: Record<string, unknown>,
 ): string {
   if (kind === 'radar') return `radar:${Number(params.radiusMiles)}`
+  // POI match/measure of two different subjects (museum vs park) are different
+  // questions; two asks of the same subject are the same question.
+  if (kind === 'match-poi' || kind === 'measure-poi') {
+    return `${kind}:${String(params.poiCat)}`
+  }
   if (kind === 'thermometer') {
     // Prefer the thermometer the seeker explicitly chose; two asks with the same
     // chosen thermometer are "the same question". Fall back to inferring the
