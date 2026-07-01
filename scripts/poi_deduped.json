@@ -10726,7 +10726,7 @@
   ]
  },
  "park": {
-  "count": 1585,
+  "count": 1584,
   "places": [
    {
     "id": "ChIJY_dFYHKHhYARMKc772iLvnE",
@@ -37021,22 +37021,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 37.776513099999995,
     "lon": -122.26166669999999
-   },
-   {
-    "id": "ChIJre8KdwCBj4ARAosnrSxb-ag",
-    "name": "Lot 2270",
-    "primaryType": "park",
-    "types": [
-     "park",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "2270 Broadway, Oakland, CA 94612, USA",
-    "rating": 4.6,
-    "userRatingCount": 5,
-    "businessStatus": "OPERATIONAL",
-    "lat": 37.811918899999995,
-    "lon": -122.26600909999999
    },
    {
     "id": "ChIJUUAlKzOHj4ARG6i3oQMQO28",

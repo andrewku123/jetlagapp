@@ -1,1178 +1,1183 @@
 {
- "_comment": "Manual reviewer overrides for the POI de-dup, applied on top of the automatic name+OSM passes. Names are matched (case-insensitive, punctuation-tolerant) within the category against poi_curated.json. 'merge' = force [child, parent] into one (child absorbed into parent). 'separate' = force [a, b] to stay distinct (never merged together).",
- "library": {
-  "merge": [
-   [
-    "Main (Gardner) Stacks",
-    "Doe Library"
-   ],
-   [
-    "The Bancroft Library",
-    "Doe Library"
-   ]
-  ],
-  "separate": [
-   [
-    "C.V. Starr East Asian Library",
-    "Earth Science & Map Library"
-   ]
-  ],
-  "drop": [
-   [
-    "NASA Life Sciences Library",
-    37.414512,
-    -122.058167
-   ],
-   [
-    "Patten University Library",
-    37.785869,
-    -122.219618
-   ],
-   [
-    "Little Free Library",
-    37.787869,
-    -122.436218
-   ],
-   [
-    "The Carl Gellert And Celia Berta Gellert Library",
-    37.517536,
-    -122.284695
-   ],
-   [
-    "Western Philatelic Library",
-    37.480744,
-    -122.202455
-   ],
-   [
-    "Bowman Library",
-    37.456099,
-    -122.192105
-   ],
-   [
-    "Westmont High School Library",
-    37.270992,
-    -121.985749
-   ],
-   [
-    "Rosicrucian Research Library",
-    37.333589,
-    -121.922395
-   ],
-   [
-    "Inez Jackson Library",
-    37.343422,
-    -121.888497
-   ],
-   [
-    "Mt. Pleasant Neighborhood Library",
-    37.352761,
-    -121.800542
-   ],
-   [
-    "Irvington High School Library",
-    37.52318,
-    -121.968241
-   ],
-   [
-    "South Branch Library",
-    37.708688,
-    -122.133981
-   ],
-   [
-    "Amador Valley High School Library",
-    37.667807,
-    -121.875095
-   ],
-   [
-    "Mulford-Marina Branch Library",
-    37.697847,
-    -122.182294
-   ],
-   [
-    "Oakland Public Library: Brookfield Branch",
-    37.737612,
-    -122.188485
-   ],
-   [
-    "Lincoln University Library",
-    37.805217,
-    -122.269775
-   ],
-   [
-    "John A Graziano Memorial Lib",
-    37.821294,
-    -122.264458
-   ],
-   [
-    "David Del Simone Memorial Law Library (branch of) Contra Costa County Law Library",
-    37.932595,
-    -122.333956
-   ],
-   [
-    "Cañada College Library",
-    37.448924,
-    -122.26553
-   ]
-  ]
- },
- "museum": {
-  "merge": [
-   [
-    "Bill's Backyard",
-    "Children's Discovery Museum of San Jose"
-   ],
-   [
-    "Viet Museum",
-    "History Park (operated by History San Jose)"
-   ],
-   [
-    "University of California Museum of Paleontology",
-    "Museum of Vertebrate Zoology"
-   ],
-   [
-    "Essig Museum of Entomology Research",
-    "Museum of Vertebrate Zoology"
-   ],
-   [
-    "Berkeley Natural History Museums",
-    "Museum of Vertebrate Zoology"
-   ]
-  ],
-  "separate": [
-   [
-    "Veterans Memorial Building of San Ramon Valley",
-    "Museum of the San Ramon Valley"
-   ],
-   [
-    "Sneaker Museum Oakland",
-    "Museum of Art and Digital Entertainment - (MADE)"
-   ]
-  ],
-  "drop": [
-   [
-    "Alameda County Central Railroad Society (ACCRS) - Building F",
-    37.6608051,
-    -121.8870233
-   ],
-   [
-    "Louise Meager Art Gallery",
-    37.527784,
-    -121.9164388
-   ],
-   [
-    "Francophone Museum",
-    37.7887096,
-    -122.4194497
-   ],
-   [
-    "Beyond The Flesh",
-    37.7660566,
-    -122.3990517
-   ],
-   [
-    "Millbrae Museum",
-    37.6020762,
-    -122.3963061
-   ],
-   [
-    "Wiegand Gallery",
-    37.5181435,
-    -122.2876938
-   ],
-   [
-    "Carriage House Museum",
-    37.4104862,
-    -122.2619913
-   ],
-   [
-    "Castro Valley History Museum",
-    37.6960863,
-    -122.0809246
-   ],
-   [
-    "Lightship Relief",
-    37.7957083,
-    -122.280588
-   ],
-   [
-    "Aléna Museum",
-    37.8451297,
-    -122.2762489
-   ],
-   [
-    "Bade Museum",
-    37.8766192,
-    -122.2628927
-   ],
-   [
-    "San Pablo Historical Society",
-    37.9597168,
-    -122.3416518
-   ],
-   [
-    "Pari's Art",
-    37.9547099,
-    -122.0766696
-   ],
-   [
-    "Art Gallery - Los Medanos College",
-    38.0068819,
-    -121.8610449
-   ],
-   [
-    "Hyde St. Pier Historic Ships",
-    37.8090576,
-    -122.4212565
-   ],
-   [
-    "The Contemporary Jewish Museum",
-    37.7860026,
-    -122.403672
-   ],
-   [
-    "Ampersand International Arts",
-    37.759411,
-    -122.389078
-   ],
-   [
-    "Union City Historical Museum",
-    37.5966809,
-    -122.0776772
-   ]
-  ]
- },
- "hospital": {
-  "merge": [
-   [
-    "Sports Medicine Center Walnut Creek: Children's Hospital Oakland",
-    "Kaiser building 4 Ophthalmology, Physical Therapy)"
-   ],
-   [
-    "Telecare Willow Rock Center",
-    "John George Psychiatric Hospital"
-   ],
-   [
-    "Contra Costa Health Services",
-    "Contra Costa Regional Medical Center"
-   ],
-   [
-    "Telecare Hope House",
-    "Contra Costa Regional Medical Center"
-   ],
-   [
-    "John Muir Health Psychiatric Hospital",
-    "John Muir, Concord Medical Center"
-   ],
-   [
-    "Pediatrics: Sutter East Bay Medical Foundation: Antioch",
-    "Sutter Delta Medical Center"
-   ],
-   [
-    "Kaiser Permanente Walnut Creek: Chemical Dependency Services",
-    "Kaiser Permanente Walnut Creek Medical Center"
-   ],
-   [
-    "Comprehensive Wellness",
-    "Orinda Care Center"
-   ],
-   [
-    "Family House: UCSF Benioff Children's Hospital Oakland",
-    "UCSF Benioff Children's Hospital - Oakland"
-   ],
-   [
-    "Valley Health Center San Jose (formerly Bascom)",
-    "Santa Clara Valley Medical Center"
-   ],
-   [
-    "Kaiser Permanenete Child/ado Psy",
-    "Kaiser Permanente Santa Clara Medical Center"
-   ],
-   [
-    "Pediatrics: PAMF Sutter Health | Sunnyvale",
-    "Pediatrics: Sunnyvale Center | PAMF"
-   ],
-   [
-    "Sunnyvale Center (301)",
-    "Pediatrics: Sunnyvale Center | PAMF"
-   ],
-   [
-    "Sunnyvale Center (401)",
-    "Pediatrics: Sunnyvale Center | PAMF"
-   ],
-   [
-    "Stanford Hospital",
-    "Stanford Medicine"
-   ],
-   [
-    "Stanford General Cardiology at Boswell Building",
-    "Stanford Medicine"
-   ],
-   [
-    "Lucile Packard Children's Hospital Stanford",
-    "Stanford Medicine"
-   ],
-   [
-    "Stanford Medical Center",
-    "Stanford Medicine"
-   ],
-   [
-    "Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto",
-    "Stanford Medicine"
-   ],
-   [
-    "San Mateo Pediatrics (123 South San Mateo Drive)",
-    "Mills-Peninsula Medical Center - San Mateo Campus"
-   ],
-   [
-    "Pediatrics: Sullivan Office: Palo Alto Medical Foundation",
-    "Daly City Center"
-   ],
-   [
-    "UCSF Medical Records",
-    "UCSF Medical Center"
-   ],
-   [
-    "UCSF Helen Diller Medical Center at Parnassus Heights",
-    "UCSF Medical Center"
-   ],
-   [
-    "UCSF Mission Bay Hospitals",
-    "UCSF Medical Center at Mission Bay"
-   ],
-   [
-    "UCSF Wayne and Gladys Valley Center for Vision",
-    "UCSF Medical Center at Mission Bay"
-   ],
-   [
-    "UCSF Benioff Children's Hospital - San Francisco",
-    "UCSF Medical Center at Mission Bay"
-   ],
-   [
-    "UCSF Nancy Friend Pritzker Psychiatry Building",
-    "UCSF Medical Center at Mission Bay"
-   ],
-   [
-    "UCSF Medical Center at Mission Bay",
-    "UCSF Medical Center at Mission Bay"
-   ],
-   [
-    "CPMC Department of Ophthalmology",
-    "CPMC Van Ness Campus"
-   ],
-   [
-    "Health and Healing Store: California Pacific Medical Center: Pacific Campus",
-    "Pacific Heights Care Center"
-   ]
-  ],
-  "separate": [
-   [
-    "Oakland Twenty-First Street VA Clinic",
-    "Oakland VA Clinic"
-   ]
-  ],
-  "rename": [
-   [
-    "Kaiser building 4 Ophthalmology, Physical Therapy)",
-    "Ygnacio Kaiser Medical Center",
-    37.927654644101324,
-    -122.02931607404275
-   ],
-   [
-    "John George Psychiatric Hospital",
-    "Fairmont Hospital",
-    37.707981393381004,
-    -122.11984268807406
-   ]
-  ],
-  "drop": [
-   [
-    "Seton Coastside",
-    37.526338,
-    -122.507293
-   ],
-   [
-    "Good Samaritan Hospital - Mission Oaks Campus",
-    37.244753,
-    -121.947933
-   ],
-   [
-    "Supira Medical",
-    37.260898,
-    -121.95919
-   ]
-  ]
- },
- "mountain": {
-  "merge": [
-   [
-    "Telegraph Hill",
-    "Telegraph Hill",
-    37.8027064,
-    -122.40580439999998
-   ],
-   [
-    "Lone Mountain",
-    "Presidio Hill"
-   ],
-   [
-    "Mount Eden",
-    "Table Mountain",
-    37.2586111,
-    -122.0822222
-   ]
-  ]
- },
- "consulate": {
-  "merge": [
-   [
-    "embajada mexicana",
-    "Mexico Consulate"
-   ]
-  ],
-  "drop": [
-   [
-    "embajada de nicaragua",
-    37.7653242,
-    -122.2414398
-   ],
-   [
-    "Consulate of Nicaragua in San Francisco",
-    37.7851805,
-    -122.4072778
-   ],
-   [
-    "Consulate General of Honduras",
-    37.7852117,
-    -122.4075186
-   ],
-   [
-    "Consulado General de Guatemala",
-    37.7813084,
-    -122.4195776
-   ],
-   [
-    "FreeChinaVisa",
-    37.7856632,
-    -122.4307906
-   ],
-   [
-    "Swissnex in San Francisco",
-    37.7996099,
-    -122.4015182
-   ],
-   [
-    "French Embassy Economic Department",
-    37.7885709,
-    -122.4034392
-   ],
-   [
-    "INDONESIAN CONSULAR OFFICE",
-    37.8067975,
-    -122.4175701
-   ]
-  ]
- },
- "golf_course": {
-  "merge": [
-   [
-    "Presidio Golf & Concordia Club",
-    "Presidio Golf Course"
-   ],
-   [
-    "General Store",
-    "Presidio Golf Course"
-   ]
-  ],
-  "drop": [
-   [
-    "Crystal Springs Golf Course",
-    37.557475,
-    -122.381622
-   ],
-   [
-    "Stanford Golf Course",
-    37.421572,
-    -122.183761
-   ],
-   [
-    "Skylinks at Buchanan Fields Golf Course",
-    37.978976,
-    -122.060308
-   ]
-  ]
- },
- "zoo": {
-  "drop": [
-   [
-    "Little Explorers Mobile Petting Zoo",
-    37.710623,
-    -122.166868
-   ],
-   [
-    "Gilroy Ostrich Farm",
-    36.972062,
-    -121.422028
-   ]
-  ]
- },
- "aquarium": {
-  "drop": [
-   [
-    "Aquatic Experts",
-    37.9440861,
-    -122.0769658
-   ]
-  ]
- },
- "amusement_park": {
-  "drop": [
-   [
-    "Sky Zone Trampoline Park",
-    37.290989,
-    -121.989784
-   ],
-   [
-    "ABC Tree Farms Summer Fun Zone, Pumpkin Patch & Christmas Trees",
-    37.555164,
-    -122.291998
-   ],
-   [
-    "Water Light Public Plaza",
-    37.899879899999995,
-    -122.0626649
-   ],
-   [
-    "Sky Zone Trampoline Park",
-    37.927545,
-    -122.017851
-   ]
-  ]
- },
- "park": {
-  "merge": [
-   [
-    "Orinda Oaks Open Space, Donald Drive Entrance",
-    "Orinda Oaks Park"
-   ],
-   [
-    "Donald Reservoir",
-    "Mulholland Ridge Open Space"
-   ],
-   [
-    "Worth Shaw Community Park",
-    "Contra Loma Regional Park",
-    37.972743,
-    -121.821677
-   ],
-   [
-    "Markley Creek Dog Park",
-    "Markley Creek Park",
-    37.990132,
-    -121.854653
-   ],
-   [
-    "Central Addition Park",
-    "Central Park",
-    38.019914,
-    -121.871585
-   ],
-   [
-    "Pleasant Hill Instructional Garden",
-    "Pleasant Oaks Park",
-    37.937107,
-    -122.069151
-   ],
-   [
-    "Paso Nogal Dog Park",
-    "Paso Nogal Park",
-    37.967093,
-    -122.088919
-   ],
-   [
-    "Lafayette Community Garden and Outdoor Learning Center",
-    "Lafayette Reservoir Recreation",
-    37.884793,
-    -122.145527
-   ],
-   [
-    "The Rocks Dog Park Yerba Buena Island",
-    "Panorama Park",
-    37.810606,
-    -122.369432
-   ],
-   [
-    "Buena Vista Dog Play Area",
-    "Buena Vista Park",
-    37.770371,
-    -122.443178
-   ],
-   [
-    "Corona Heights Dog Run",
-    "Corona Heights Park",
-    37.765314,
-    -122.43858
-   ],
-   [
-    "100 First St POPOS",
-    "Roof Garden",
-    37.789133,
-    -122.398081
-   ],
-   [
-    "Corwin Street Community Garden",
-    "Seward Mini Park",
-    37.757741,
-    -122.439919
-   ],
-   [
-    "Upper Douglass Dog Play Area",
-    "Douglass Playground Park",
-    37.747354,
-    -122.438866
-   ],
-   [
-    "Walter Haas Dog Play Area",
-    "Walter Haas Playground Park",
-    37.740502,
-    -122.434515
-   ],
-   [
-    "Potrero del Sol Community Garden",
-    "Potrero del Sol Park",
-    37.750583,
-    -122.405084
-   ],
-   [
-    "McLaren Park Community Garden",
-    "John McLaren Park",
-    37.719287,
-    -122.418315
-   ],
-   [
-    "India Basin Waterfront Park",
-    "India Basin Shoreline Park",
-    37.734154,
-    -122.375942
-   ],
-   [
-    "Butcher Town Dog Run",
-    "Heron's Head Park - Nature Exploration Area",
-    37.737994,
-    -122.373013
-   ],
-   [
-    "Islais Creek Skate Park",
-    "Islais Creek Muni Park",
-    37.748324,
-    -122.391505
-   ],
-   [
-    "Avalon Dogpatch Dog Park",
-    "Esprit Park",
-    37.760983,
-    -122.391059
-   ],
-   [
-    "Mission Creek Dog Park",
-    "Mission Creek Park North",
-    37.771441,
-    -122.398362
-   ],
-   [
-    "Leona Canyon Trail Head",
-    "Leona Canyon Regional Open Space Preserve",
-    37.78192,
-    -122.15135
-   ],
-   [
-    "Leona Heights Sulfur Mine",
-    "Leona Heights Park",
-    37.79269,
-    -122.17646
-   ],
-   [
-    "View Golden Gate Bridge",
-    "Presidio of San Francisco",
-    37.79685,
-    -122.466817
-   ],
-   [
-    "Arbolado Park Soccer Practice Field",
-    "Arbolado Park"
-   ],
-   [
-    "San Bruno Mountain Ecological Reserve- Buckeye Canyon",
-    "San Bruno Mountain State Park",
-    37.69687,
-    -122.43393
-   ],
-   [
-    "Centennial Dog Park",
-    "Orange Memorial Park"
-   ],
-   [
-    "Millbrae Community Garden",
-    "Central Park",
-    37.60006,
-    -122.40058
-   ],
-   [
-    "Mosta Grove",
-    "Millbrae Spur Trail"
-   ],
-   [
-    "Burlingame Dog Exercise Park",
-    "Bayside Park"
-   ],
-   [
-    "San Mateo Japanese Garden",
-    "San Mateo Central Park"
-   ],
-   [
-    "Marion Panaretos Rose Garden",
-    "San Mateo Central Park"
-   ],
-   [
-    "Foster City Sign",
-    "Shorebird Park",
-    37.5538,
-    -122.24863
-   ],
-   [
-    "Dirt Bike Jumps",
-    "Shorebird Park",
-    37.5538,
-    -122.24863
-   ],
-   [
-    "Hidden Canyon Park",
-    "Waterdog Lake & Open Space"
-   ],
-   [
-    "Palo Alto Duck Pond",
-    "Baylands Nature Preserve"
-   ],
-   [
-    "Palo Alto Byxbee Park",
-    "Baylands Nature Preserve"
-   ],
-   [
-    "Pelican View",
-    "Baylands Nature Preserve"
-   ],
-   [
-    "Emily Renzel Ponds",
-    "Baylands Nature Preserve"
-   ],
-   [
-    "Arizona Garden",
-    "Stanford University Arboretum"
-   ],
-   [
-    "Arboretum Grove",
-    "Stanford University Arboretum"
-   ],
-   [
-    "Eucalyptus Grove Stanford University",
-    "Stanford University Arboretum"
-   ],
-   [
-    "Kite Lot",
-    "Shoreline Park",
-    37.43244,
-    -122.08624
-   ],
-   [
-    "Don Edwards San Francisco Bay national wildlife refuge - Alviso",
-    "Alviso Marina County Park"
-   ],
-   [
-    "Fenced Dog Park | Rengstorff Park",
-    "Rengstorff Park"
-   ],
-   [
-    "Cuesta Pollinator Habitat",
-    "Cuesta Park"
-   ],
-   [
-    "Cuesta Park Annex",
-    "Cuesta Park"
-   ],
-   [
-    "Saratoga Creek Dog Park, San Jose, CA",
-    "Saratoga Creek Park"
-   ],
-   [
-    "Dog Park | Las Palmas",
-    "Las Palmas Park"
-   ],
-   [
-    "Dog Park | Fair Oaks",
-    "Fair Oaks Park"
-   ],
-   [
-    "Riverview Stormwater Garden",
-    "Riverview Park",
-    37.40146,
-    -121.9421
-   ],
-   [
-    "Chinese Cultural Garden",
-    "Overfelt Gardens"
-   ],
-   [
-    "Piedmont Road Dog Park",
-    "Penitencia Creek Park"
-   ],
-   [
-    "Evergreen Village Duck Pond",
-    "Evergreen Village Square"
-   ],
-   [
-    "Tree Life Cycles Trail of Coyote Creek",
-    "Coyote Creek Trail"
-   ],
-   [
-    "Coyote Creek Parkway North",
-    "Coyote Creek Trail"
-   ],
-   [
-    "Miyuki Dog Park",
-    "George Page Park"
-   ],
-   [
-    "Butcher Dog Park",
-    "Butcher Park"
-   ],
-   [
-    "History Park Entrance",
-    "Kelley Park"
-   ],
-   [
-    "Vieira Park Outlook",
-    "Vieira Park"
-   ],
-   [
-    "Arena Green West",
-    "Arena Green Park"
-   ],
-   [
-    "Arena Green East",
-    "Arena Green Park"
-   ],
-   [
-    "Sons of San José Vietnam War Memorial",
-    "Arena Green Park"
-   ],
-   [
-    "Taylor Street Rock Garden",
-    "Guadalupe River Park"
-   ],
-   [
-    "Guadalupe Community Garden",
-    "Guadalupe River Park"
-   ],
-   [
-    "Guadalupe Gardens",
-    "Guadalupe River Park"
-   ],
-   [
-    "Guadalupe Gardens Heritage Rose Garden",
-    "Guadalupe River Park"
-   ],
-   [
-    "Western Horse Restoration Site",
-    "Sabercat Historical Park"
-   ],
-   [
-    "Trail Head, Sabercat Creek Trail",
-    "Sabercat Historical Park"
-   ],
-   [
-    "Sabercat Creek Trail",
-    "Sabercat Historical Park"
-   ],
-   [
-    "Blacow Elementary Butterfly Garden",
-    "Blacow Park"
-   ],
-   [
-    "Duck Island",
-    "Lakeshore Park"
-   ],
-   [
-    "LEAF Community Garden",
-    "California Nursery Historical Park"
-   ],
-   [
-    "Coyote Hills Entry Kiosk",
-    "Coyote Hills Regional Park"
-   ],
-   [
-    "Eden Greenway Dog Park",
-    "Southgate Park"
-   ],
-   [
-    "Hayward Shoreline Interpretive Center",
-    "Hayward Regional Shoreline"
-   ],
-   [
-    "Alvarado Park",
-    "Wildcat Canyon Regional Park"
-   ],
-   [
-    "Old Creek Dog Park of Cherryland",
-    "Meek Park"
-   ],
-   [
-    "Hayward Area Recreation and Park District Dog Park",
-    "San Lorenzo Community Park"
-   ],
-   [
-    "Hayward Regional Shoreline Parking",
-    "San Lorenzo Community Park"
-   ],
-   [
-    "Knowland Park Open Space",
-    "Knowland Park"
-   ],
-   [
-    "Alameda Dog Park",
-    "Washington Park",
-    37.76966,
-    -122.27375
-   ],
-   [
-    "Jean Sweeney Open Space Park - West Gate",
-    "Jean Sweeney Open Space Park"
-   ],
-   [
-    "Circle Bike Park",
-    "Jean Sweeney Open Space Park"
-   ],
-   [
-    "El Centro Trailhead (Dimond Canyon)",
-    "Dimond Park"
-   ],
-   [
-    "Benevides Trailhead",
-    "Dimond Park"
-   ],
-   [
-    "Bridgeview Trailhead",
-    "Dimond Park"
-   ],
-   [
-    "Friends of Sausal Creek Native Plant and Pollinator Garden",
-    "Dimond Park"
-   ],
-   [
-    "Monterey Redwoods",
-    "Dimond Park"
-   ],
-   [
-    "Palos Colorados Trailhead",
-    "Joaquin Miller Park"
-   ],
-   [
-    "Albany Bulb",
-    "McLaughlin Eastshore State Park State Seashore"
-   ],
-   [
-    "César E. Chávez Park",
-    "McLaughlin Eastshore State Park State Seashore"
-   ],
-   [
-    "ShareNGetty Community Garden",
-    "McLaughlin Eastshore State Park State Seashore"
-   ],
-   [
-    "Shorebird Park",
-    "McLaughlin Eastshore State Park State Seashore",
-    37.86804,
-    -122.30887,
-    37.86162,
-    -122.31628
-   ],
-   [
-    "Horseshoe Park",
-    "McLaughlin Eastshore State Park State Seashore"
-   ],
-   [
-    "Rockridge-Temescal Greenbelt",
-    "Frog Park"
-   ],
-   [
-    "Hardy Dog Park",
-    "Frog Park"
-   ],
-   [
-    "Dog park",
-    "Stanford Avenue Park",
-    37.83908,
-    -122.28719,
-    37.83885,
-    -122.28812
-   ],
-   [
-    "Claremont Fire Trail",
-    "Claremont Canyon Regional Preserve"
-   ]
-  ],
-  "drop": [
-   [
-    "Miwok Trail",
-    37.94818,
-    -121.71943
-   ],
-   [
-    "Richmond Recreation & Parks",
-    37.933762,
-    -122.338361
-   ],
-   [
-    "Richmond Park Maintenance",
-    37.932633,
-    -122.33862
-   ],
-   [
-    "Giant Highway Staging Area",
-    37.99179,
-    -122.35617
-   ],
-   [
-    "Palo Alto Parks Maintenance",
-    37.43911,
-    -122.11117
-   ],
-   [
-    "Shoreline Maintenance",
-    37.42843,
-    -122.07976
-   ],
-   [
-    "Santa Clara Park Services Center",
-    37.34556,
-    -121.97344
-   ],
-   [
-    "Parc Metro Clubhouse",
-    37.41936,
-    -121.90024
-   ],
-   [
-    "Boat Ramp Street",
-    37.92501,
-    -122.37594
-   ],
-   [
-    "Stryker Island",
-    37.69298,
-    -122.19231
-   ],
-   [
-    "Public Path #10",
-    37.90691,
-    -122.27422
-   ],
-   [
-    "Lincoln Theater Park/ One Fam Artist Activist Compound",
-    37.80635,
-    -122.29857
-   ],
-   [
-    "Oxford Street Parklet",
-    37.87031,
-    -122.26607
-   ],
-   [
-    "Grizzly Peak Blvd Overlook",
-    37.87223,
-    -122.22055
-   ]
-  ],
-  "separate": [
-   [
-    "Upper Noe Dog Play Area",
-    "Noe Valley Town Square"
-   ],
-   [
-    "Millbrae Community Garden",
-    "Millbrae Spur Trail"
-   ],
-   [
-    "Union City Skatepark",
-    "Union City Pyramid"
-   ],
-   [
-    "Potrero Hill Community Garden",
-    "Potrero del Sol Park"
-   ],
-   [
-    "Nature Reservation Bedwell",
-    "Don Edwards San Francisco Bay National Wildlife Refuge"
-   ],
-   [
-    "Nature Reservation Bedwell",
-    "Don Edwards San Francisco Bay national wildlife refuge - Alviso"
-   ],
-   [
-    "Don Edwards San Francisco Bay National Wildlife Refuge",
-    "Don Edwards San Francisco Bay national wildlife refuge - Alviso"
-   ],
-   [
-    "Rinconada Cultural Park",
-    "Rinconada Community Garden"
-   ],
-   [
-    "San Tomas Aquino/ Saratoga Creek Trail",
-    "Murdock Park"
-   ],
-   [
-    "Montelena Park",
-    "Dante Park"
-   ],
-   [
-    "Discovery Dog Park",
-    "Discovery Meadow"
-   ],
-   [
-    "Eden Greenway Park",
-    "Hayward Community Gardens"
-   ],
-   [
-    "Oak Park",
-    "Oak Glen Park",
-    37.81885,
-    -122.25828,
-    37.82051,
-    -122.25856
-   ],
-   [
-    "Bench with View",
-    "McLaughlin Eastshore State Park State Seashore"
-   ],
-   [
-    "Bateman Park",
-    "Bateman Mall Park"
-   ]
-  ],
-  "rename": [
-   [
-    "Orinda Parks & Recreation Department",
-    "Orinda Community Park",
-    37.88379,
-    -122.18881
-   ]
-  ]
- },
- "movie_theater": {
-  "drop": [
-   [
-    "Chill Theaters - World's First Mobile Movie Theater",
-    37.3651629,
-    -121.9063745
-   ]
-  ]
- }
+  "_comment": "Manual reviewer overrides for the POI de-dup, applied on top of the automatic name+OSM passes. Names are matched (case-insensitive, punctuation-tolerant) within the category against poi_curated.json. 'merge' = force [child, parent] into one (child absorbed into parent). 'separate' = force [a, b] to stay distinct (never merged together).",
+  "library": {
+    "merge": [
+      [
+        "Main (Gardner) Stacks",
+        "Doe Library"
+      ],
+      [
+        "The Bancroft Library",
+        "Doe Library"
+      ]
+    ],
+    "separate": [
+      [
+        "C.V. Starr East Asian Library",
+        "Earth Science & Map Library"
+      ]
+    ],
+    "drop": [
+      [
+        "NASA Life Sciences Library",
+        37.414512,
+        -122.058167
+      ],
+      [
+        "Patten University Library",
+        37.785869,
+        -122.219618
+      ],
+      [
+        "Little Free Library",
+        37.787869,
+        -122.436218
+      ],
+      [
+        "The Carl Gellert And Celia Berta Gellert Library",
+        37.517536,
+        -122.284695
+      ],
+      [
+        "Western Philatelic Library",
+        37.480744,
+        -122.202455
+      ],
+      [
+        "Bowman Library",
+        37.456099,
+        -122.192105
+      ],
+      [
+        "Westmont High School Library",
+        37.270992,
+        -121.985749
+      ],
+      [
+        "Rosicrucian Research Library",
+        37.333589,
+        -121.922395
+      ],
+      [
+        "Inez Jackson Library",
+        37.343422,
+        -121.888497
+      ],
+      [
+        "Mt. Pleasant Neighborhood Library",
+        37.352761,
+        -121.800542
+      ],
+      [
+        "Irvington High School Library",
+        37.52318,
+        -121.968241
+      ],
+      [
+        "South Branch Library",
+        37.708688,
+        -122.133981
+      ],
+      [
+        "Amador Valley High School Library",
+        37.667807,
+        -121.875095
+      ],
+      [
+        "Mulford-Marina Branch Library",
+        37.697847,
+        -122.182294
+      ],
+      [
+        "Oakland Public Library: Brookfield Branch",
+        37.737612,
+        -122.188485
+      ],
+      [
+        "Lincoln University Library",
+        37.805217,
+        -122.269775
+      ],
+      [
+        "John A Graziano Memorial Lib",
+        37.821294,
+        -122.264458
+      ],
+      [
+        "David Del Simone Memorial Law Library (branch of) Contra Costa County Law Library",
+        37.932595,
+        -122.333956
+      ],
+      [
+        "Cañada College Library",
+        37.448924,
+        -122.26553
+      ]
+    ]
+  },
+  "museum": {
+    "merge": [
+      [
+        "Bill's Backyard",
+        "Children's Discovery Museum of San Jose"
+      ],
+      [
+        "Viet Museum",
+        "History Park (operated by History San Jose)"
+      ],
+      [
+        "University of California Museum of Paleontology",
+        "Museum of Vertebrate Zoology"
+      ],
+      [
+        "Essig Museum of Entomology Research",
+        "Museum of Vertebrate Zoology"
+      ],
+      [
+        "Berkeley Natural History Museums",
+        "Museum of Vertebrate Zoology"
+      ]
+    ],
+    "separate": [
+      [
+        "Veterans Memorial Building of San Ramon Valley",
+        "Museum of the San Ramon Valley"
+      ],
+      [
+        "Sneaker Museum Oakland",
+        "Museum of Art and Digital Entertainment - (MADE)"
+      ]
+    ],
+    "drop": [
+      [
+        "Alameda County Central Railroad Society (ACCRS) - Building F",
+        37.6608051,
+        -121.8870233
+      ],
+      [
+        "Louise Meager Art Gallery",
+        37.527784,
+        -121.9164388
+      ],
+      [
+        "Francophone Museum",
+        37.7887096,
+        -122.4194497
+      ],
+      [
+        "Beyond The Flesh",
+        37.7660566,
+        -122.3990517
+      ],
+      [
+        "Millbrae Museum",
+        37.6020762,
+        -122.3963061
+      ],
+      [
+        "Wiegand Gallery",
+        37.5181435,
+        -122.2876938
+      ],
+      [
+        "Carriage House Museum",
+        37.4104862,
+        -122.2619913
+      ],
+      [
+        "Castro Valley History Museum",
+        37.6960863,
+        -122.0809246
+      ],
+      [
+        "Lightship Relief",
+        37.7957083,
+        -122.280588
+      ],
+      [
+        "Aléna Museum",
+        37.8451297,
+        -122.2762489
+      ],
+      [
+        "Bade Museum",
+        37.8766192,
+        -122.2628927
+      ],
+      [
+        "San Pablo Historical Society",
+        37.9597168,
+        -122.3416518
+      ],
+      [
+        "Pari's Art",
+        37.9547099,
+        -122.0766696
+      ],
+      [
+        "Art Gallery - Los Medanos College",
+        38.0068819,
+        -121.8610449
+      ],
+      [
+        "Hyde St. Pier Historic Ships",
+        37.8090576,
+        -122.4212565
+      ],
+      [
+        "The Contemporary Jewish Museum",
+        37.7860026,
+        -122.403672
+      ],
+      [
+        "Ampersand International Arts",
+        37.759411,
+        -122.389078
+      ],
+      [
+        "Union City Historical Museum",
+        37.5966809,
+        -122.0776772
+      ]
+    ]
+  },
+  "hospital": {
+    "merge": [
+      [
+        "Sports Medicine Center Walnut Creek: Children's Hospital Oakland",
+        "Kaiser building 4 Ophthalmology, Physical Therapy)"
+      ],
+      [
+        "Telecare Willow Rock Center",
+        "John George Psychiatric Hospital"
+      ],
+      [
+        "Contra Costa Health Services",
+        "Contra Costa Regional Medical Center"
+      ],
+      [
+        "Telecare Hope House",
+        "Contra Costa Regional Medical Center"
+      ],
+      [
+        "John Muir Health Psychiatric Hospital",
+        "John Muir, Concord Medical Center"
+      ],
+      [
+        "Pediatrics: Sutter East Bay Medical Foundation: Antioch",
+        "Sutter Delta Medical Center"
+      ],
+      [
+        "Kaiser Permanente Walnut Creek: Chemical Dependency Services",
+        "Kaiser Permanente Walnut Creek Medical Center"
+      ],
+      [
+        "Comprehensive Wellness",
+        "Orinda Care Center"
+      ],
+      [
+        "Family House: UCSF Benioff Children's Hospital Oakland",
+        "UCSF Benioff Children's Hospital - Oakland"
+      ],
+      [
+        "Valley Health Center San Jose (formerly Bascom)",
+        "Santa Clara Valley Medical Center"
+      ],
+      [
+        "Kaiser Permanenete Child/ado Psy",
+        "Kaiser Permanente Santa Clara Medical Center"
+      ],
+      [
+        "Pediatrics: PAMF Sutter Health | Sunnyvale",
+        "Pediatrics: Sunnyvale Center | PAMF"
+      ],
+      [
+        "Sunnyvale Center (301)",
+        "Pediatrics: Sunnyvale Center | PAMF"
+      ],
+      [
+        "Sunnyvale Center (401)",
+        "Pediatrics: Sunnyvale Center | PAMF"
+      ],
+      [
+        "Stanford Hospital",
+        "Stanford Medicine"
+      ],
+      [
+        "Stanford General Cardiology at Boswell Building",
+        "Stanford Medicine"
+      ],
+      [
+        "Lucile Packard Children's Hospital Stanford",
+        "Stanford Medicine"
+      ],
+      [
+        "Stanford Medical Center",
+        "Stanford Medicine"
+      ],
+      [
+        "Imaging Services at Blake Wilbur Outpatient Clinic in Palo Alto",
+        "Stanford Medicine"
+      ],
+      [
+        "San Mateo Pediatrics (123 South San Mateo Drive)",
+        "Mills-Peninsula Medical Center - San Mateo Campus"
+      ],
+      [
+        "Pediatrics: Sullivan Office: Palo Alto Medical Foundation",
+        "Daly City Center"
+      ],
+      [
+        "UCSF Medical Records",
+        "UCSF Medical Center"
+      ],
+      [
+        "UCSF Helen Diller Medical Center at Parnassus Heights",
+        "UCSF Medical Center"
+      ],
+      [
+        "UCSF Mission Bay Hospitals",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Wayne and Gladys Valley Center for Vision",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Benioff Children's Hospital - San Francisco",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Nancy Friend Pritzker Psychiatry Building",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "UCSF Medical Center at Mission Bay",
+        "UCSF Medical Center at Mission Bay"
+      ],
+      [
+        "CPMC Department of Ophthalmology",
+        "CPMC Van Ness Campus"
+      ],
+      [
+        "Health and Healing Store: California Pacific Medical Center: Pacific Campus",
+        "Pacific Heights Care Center"
+      ]
+    ],
+    "separate": [
+      [
+        "Oakland Twenty-First Street VA Clinic",
+        "Oakland VA Clinic"
+      ]
+    ],
+    "rename": [
+      [
+        "Kaiser building 4 Ophthalmology, Physical Therapy)",
+        "Ygnacio Kaiser Medical Center",
+        37.927654644101324,
+        -122.02931607404275
+      ],
+      [
+        "John George Psychiatric Hospital",
+        "Fairmont Hospital",
+        37.707981393381004,
+        -122.11984268807406
+      ]
+    ],
+    "drop": [
+      [
+        "Seton Coastside",
+        37.526338,
+        -122.507293
+      ],
+      [
+        "Good Samaritan Hospital - Mission Oaks Campus",
+        37.244753,
+        -121.947933
+      ],
+      [
+        "Supira Medical",
+        37.260898,
+        -121.95919
+      ]
+    ]
+  },
+  "mountain": {
+    "merge": [
+      [
+        "Telegraph Hill",
+        "Telegraph Hill",
+        37.8027064,
+        -122.40580439999998
+      ],
+      [
+        "Lone Mountain",
+        "Presidio Hill"
+      ],
+      [
+        "Mount Eden",
+        "Table Mountain",
+        37.2586111,
+        -122.0822222
+      ]
+    ]
+  },
+  "consulate": {
+    "merge": [
+      [
+        "embajada mexicana",
+        "Mexico Consulate"
+      ]
+    ],
+    "drop": [
+      [
+        "embajada de nicaragua",
+        37.7653242,
+        -122.2414398
+      ],
+      [
+        "Consulate of Nicaragua in San Francisco",
+        37.7851805,
+        -122.4072778
+      ],
+      [
+        "Consulate General of Honduras",
+        37.7852117,
+        -122.4075186
+      ],
+      [
+        "Consulado General de Guatemala",
+        37.7813084,
+        -122.4195776
+      ],
+      [
+        "FreeChinaVisa",
+        37.7856632,
+        -122.4307906
+      ],
+      [
+        "Swissnex in San Francisco",
+        37.7996099,
+        -122.4015182
+      ],
+      [
+        "French Embassy Economic Department",
+        37.7885709,
+        -122.4034392
+      ],
+      [
+        "INDONESIAN CONSULAR OFFICE",
+        37.8067975,
+        -122.4175701
+      ]
+    ]
+  },
+  "golf_course": {
+    "merge": [
+      [
+        "Presidio Golf & Concordia Club",
+        "Presidio Golf Course"
+      ],
+      [
+        "General Store",
+        "Presidio Golf Course"
+      ]
+    ],
+    "drop": [
+      [
+        "Crystal Springs Golf Course",
+        37.557475,
+        -122.381622
+      ],
+      [
+        "Stanford Golf Course",
+        37.421572,
+        -122.183761
+      ],
+      [
+        "Skylinks at Buchanan Fields Golf Course",
+        37.978976,
+        -122.060308
+      ]
+    ]
+  },
+  "zoo": {
+    "drop": [
+      [
+        "Little Explorers Mobile Petting Zoo",
+        37.710623,
+        -122.166868
+      ],
+      [
+        "Gilroy Ostrich Farm",
+        36.972062,
+        -121.422028
+      ]
+    ]
+  },
+  "aquarium": {
+    "drop": [
+      [
+        "Aquatic Experts",
+        37.9440861,
+        -122.0769658
+      ]
+    ]
+  },
+  "amusement_park": {
+    "drop": [
+      [
+        "Sky Zone Trampoline Park",
+        37.290989,
+        -121.989784
+      ],
+      [
+        "ABC Tree Farms Summer Fun Zone, Pumpkin Patch & Christmas Trees",
+        37.555164,
+        -122.291998
+      ],
+      [
+        "Water Light Public Plaza",
+        37.899879899999995,
+        -122.0626649
+      ],
+      [
+        "Sky Zone Trampoline Park",
+        37.927545,
+        -122.017851
+      ]
+    ]
+  },
+  "park": {
+    "merge": [
+      [
+        "Orinda Oaks Open Space, Donald Drive Entrance",
+        "Orinda Oaks Park"
+      ],
+      [
+        "Donald Reservoir",
+        "Mulholland Ridge Open Space"
+      ],
+      [
+        "Worth Shaw Community Park",
+        "Contra Loma Regional Park",
+        37.972743,
+        -121.821677
+      ],
+      [
+        "Markley Creek Dog Park",
+        "Markley Creek Park",
+        37.990132,
+        -121.854653
+      ],
+      [
+        "Central Addition Park",
+        "Central Park",
+        38.019914,
+        -121.871585
+      ],
+      [
+        "Pleasant Hill Instructional Garden",
+        "Pleasant Oaks Park",
+        37.937107,
+        -122.069151
+      ],
+      [
+        "Paso Nogal Dog Park",
+        "Paso Nogal Park",
+        37.967093,
+        -122.088919
+      ],
+      [
+        "Lafayette Community Garden and Outdoor Learning Center",
+        "Lafayette Reservoir Recreation",
+        37.884793,
+        -122.145527
+      ],
+      [
+        "The Rocks Dog Park Yerba Buena Island",
+        "Panorama Park",
+        37.810606,
+        -122.369432
+      ],
+      [
+        "Buena Vista Dog Play Area",
+        "Buena Vista Park",
+        37.770371,
+        -122.443178
+      ],
+      [
+        "Corona Heights Dog Run",
+        "Corona Heights Park",
+        37.765314,
+        -122.43858
+      ],
+      [
+        "100 First St POPOS",
+        "Roof Garden",
+        37.789133,
+        -122.398081
+      ],
+      [
+        "Corwin Street Community Garden",
+        "Seward Mini Park",
+        37.757741,
+        -122.439919
+      ],
+      [
+        "Upper Douglass Dog Play Area",
+        "Douglass Playground Park",
+        37.747354,
+        -122.438866
+      ],
+      [
+        "Walter Haas Dog Play Area",
+        "Walter Haas Playground Park",
+        37.740502,
+        -122.434515
+      ],
+      [
+        "Potrero del Sol Community Garden",
+        "Potrero del Sol Park",
+        37.750583,
+        -122.405084
+      ],
+      [
+        "McLaren Park Community Garden",
+        "John McLaren Park",
+        37.719287,
+        -122.418315
+      ],
+      [
+        "India Basin Waterfront Park",
+        "India Basin Shoreline Park",
+        37.734154,
+        -122.375942
+      ],
+      [
+        "Butcher Town Dog Run",
+        "Heron's Head Park - Nature Exploration Area",
+        37.737994,
+        -122.373013
+      ],
+      [
+        "Islais Creek Skate Park",
+        "Islais Creek Muni Park",
+        37.748324,
+        -122.391505
+      ],
+      [
+        "Avalon Dogpatch Dog Park",
+        "Esprit Park",
+        37.760983,
+        -122.391059
+      ],
+      [
+        "Mission Creek Dog Park",
+        "Mission Creek Park North",
+        37.771441,
+        -122.398362
+      ],
+      [
+        "Leona Canyon Trail Head",
+        "Leona Canyon Regional Open Space Preserve",
+        37.78192,
+        -122.15135
+      ],
+      [
+        "Leona Heights Sulfur Mine",
+        "Leona Heights Park",
+        37.79269,
+        -122.17646
+      ],
+      [
+        "View Golden Gate Bridge",
+        "Presidio of San Francisco",
+        37.79685,
+        -122.466817
+      ],
+      [
+        "Arbolado Park Soccer Practice Field",
+        "Arbolado Park"
+      ],
+      [
+        "San Bruno Mountain Ecological Reserve- Buckeye Canyon",
+        "San Bruno Mountain State Park",
+        37.69687,
+        -122.43393
+      ],
+      [
+        "Centennial Dog Park",
+        "Orange Memorial Park"
+      ],
+      [
+        "Millbrae Community Garden",
+        "Central Park",
+        37.60006,
+        -122.40058
+      ],
+      [
+        "Mosta Grove",
+        "Millbrae Spur Trail"
+      ],
+      [
+        "Burlingame Dog Exercise Park",
+        "Bayside Park"
+      ],
+      [
+        "San Mateo Japanese Garden",
+        "San Mateo Central Park"
+      ],
+      [
+        "Marion Panaretos Rose Garden",
+        "San Mateo Central Park"
+      ],
+      [
+        "Foster City Sign",
+        "Shorebird Park",
+        37.5538,
+        -122.24863
+      ],
+      [
+        "Dirt Bike Jumps",
+        "Shorebird Park",
+        37.5538,
+        -122.24863
+      ],
+      [
+        "Hidden Canyon Park",
+        "Waterdog Lake & Open Space"
+      ],
+      [
+        "Palo Alto Duck Pond",
+        "Baylands Nature Preserve"
+      ],
+      [
+        "Palo Alto Byxbee Park",
+        "Baylands Nature Preserve"
+      ],
+      [
+        "Pelican View",
+        "Baylands Nature Preserve"
+      ],
+      [
+        "Emily Renzel Ponds",
+        "Baylands Nature Preserve"
+      ],
+      [
+        "Arizona Garden",
+        "Stanford University Arboretum"
+      ],
+      [
+        "Arboretum Grove",
+        "Stanford University Arboretum"
+      ],
+      [
+        "Eucalyptus Grove Stanford University",
+        "Stanford University Arboretum"
+      ],
+      [
+        "Kite Lot",
+        "Shoreline Park",
+        37.43244,
+        -122.08624
+      ],
+      [
+        "Don Edwards San Francisco Bay national wildlife refuge - Alviso",
+        "Alviso Marina County Park"
+      ],
+      [
+        "Fenced Dog Park | Rengstorff Park",
+        "Rengstorff Park"
+      ],
+      [
+        "Cuesta Pollinator Habitat",
+        "Cuesta Park"
+      ],
+      [
+        "Cuesta Park Annex",
+        "Cuesta Park"
+      ],
+      [
+        "Saratoga Creek Dog Park, San Jose, CA",
+        "Saratoga Creek Park"
+      ],
+      [
+        "Dog Park | Las Palmas",
+        "Las Palmas Park"
+      ],
+      [
+        "Dog Park | Fair Oaks",
+        "Fair Oaks Park"
+      ],
+      [
+        "Riverview Stormwater Garden",
+        "Riverview Park",
+        37.40146,
+        -121.9421
+      ],
+      [
+        "Chinese Cultural Garden",
+        "Overfelt Gardens"
+      ],
+      [
+        "Piedmont Road Dog Park",
+        "Penitencia Creek Park"
+      ],
+      [
+        "Evergreen Village Duck Pond",
+        "Evergreen Village Square"
+      ],
+      [
+        "Tree Life Cycles Trail of Coyote Creek",
+        "Coyote Creek Trail"
+      ],
+      [
+        "Coyote Creek Parkway North",
+        "Coyote Creek Trail"
+      ],
+      [
+        "Miyuki Dog Park",
+        "George Page Park"
+      ],
+      [
+        "Butcher Dog Park",
+        "Butcher Park"
+      ],
+      [
+        "History Park Entrance",
+        "Kelley Park"
+      ],
+      [
+        "Vieira Park Outlook",
+        "Vieira Park"
+      ],
+      [
+        "Arena Green West",
+        "Arena Green Park"
+      ],
+      [
+        "Arena Green East",
+        "Arena Green Park"
+      ],
+      [
+        "Sons of San José Vietnam War Memorial",
+        "Arena Green Park"
+      ],
+      [
+        "Taylor Street Rock Garden",
+        "Guadalupe River Park"
+      ],
+      [
+        "Guadalupe Community Garden",
+        "Guadalupe River Park"
+      ],
+      [
+        "Guadalupe Gardens",
+        "Guadalupe River Park"
+      ],
+      [
+        "Guadalupe Gardens Heritage Rose Garden",
+        "Guadalupe River Park"
+      ],
+      [
+        "Western Horse Restoration Site",
+        "Sabercat Historical Park"
+      ],
+      [
+        "Trail Head, Sabercat Creek Trail",
+        "Sabercat Historical Park"
+      ],
+      [
+        "Sabercat Creek Trail",
+        "Sabercat Historical Park"
+      ],
+      [
+        "Blacow Elementary Butterfly Garden",
+        "Blacow Park"
+      ],
+      [
+        "Duck Island",
+        "Lakeshore Park"
+      ],
+      [
+        "LEAF Community Garden",
+        "California Nursery Historical Park"
+      ],
+      [
+        "Coyote Hills Entry Kiosk",
+        "Coyote Hills Regional Park"
+      ],
+      [
+        "Eden Greenway Dog Park",
+        "Southgate Park"
+      ],
+      [
+        "Hayward Shoreline Interpretive Center",
+        "Hayward Regional Shoreline"
+      ],
+      [
+        "Alvarado Park",
+        "Wildcat Canyon Regional Park"
+      ],
+      [
+        "Old Creek Dog Park of Cherryland",
+        "Meek Park"
+      ],
+      [
+        "Hayward Area Recreation and Park District Dog Park",
+        "San Lorenzo Community Park"
+      ],
+      [
+        "Hayward Regional Shoreline Parking",
+        "San Lorenzo Community Park"
+      ],
+      [
+        "Knowland Park Open Space",
+        "Knowland Park"
+      ],
+      [
+        "Alameda Dog Park",
+        "Washington Park",
+        37.76966,
+        -122.27375
+      ],
+      [
+        "Jean Sweeney Open Space Park - West Gate",
+        "Jean Sweeney Open Space Park"
+      ],
+      [
+        "Circle Bike Park",
+        "Jean Sweeney Open Space Park"
+      ],
+      [
+        "El Centro Trailhead (Dimond Canyon)",
+        "Dimond Park"
+      ],
+      [
+        "Benevides Trailhead",
+        "Dimond Park"
+      ],
+      [
+        "Bridgeview Trailhead",
+        "Dimond Park"
+      ],
+      [
+        "Friends of Sausal Creek Native Plant and Pollinator Garden",
+        "Dimond Park"
+      ],
+      [
+        "Monterey Redwoods",
+        "Dimond Park"
+      ],
+      [
+        "Palos Colorados Trailhead",
+        "Joaquin Miller Park"
+      ],
+      [
+        "Albany Bulb",
+        "McLaughlin Eastshore State Park State Seashore"
+      ],
+      [
+        "César E. Chávez Park",
+        "McLaughlin Eastshore State Park State Seashore"
+      ],
+      [
+        "ShareNGetty Community Garden",
+        "McLaughlin Eastshore State Park State Seashore"
+      ],
+      [
+        "Shorebird Park",
+        "McLaughlin Eastshore State Park State Seashore",
+        37.86804,
+        -122.30887,
+        37.86162,
+        -122.31628
+      ],
+      [
+        "Horseshoe Park",
+        "McLaughlin Eastshore State Park State Seashore"
+      ],
+      [
+        "Rockridge-Temescal Greenbelt",
+        "Frog Park"
+      ],
+      [
+        "Hardy Dog Park",
+        "Frog Park"
+      ],
+      [
+        "Dog park",
+        "Stanford Avenue Park",
+        37.83908,
+        -122.28719,
+        37.83885,
+        -122.28812
+      ],
+      [
+        "Claremont Fire Trail",
+        "Claremont Canyon Regional Preserve"
+      ]
+    ],
+    "drop": [
+      [
+        "Miwok Trail",
+        37.94818,
+        -121.71943
+      ],
+      [
+        "Richmond Recreation & Parks",
+        37.933762,
+        -122.338361
+      ],
+      [
+        "Richmond Park Maintenance",
+        37.932633,
+        -122.33862
+      ],
+      [
+        "Giant Highway Staging Area",
+        37.99179,
+        -122.35617
+      ],
+      [
+        "Palo Alto Parks Maintenance",
+        37.43911,
+        -122.11117
+      ],
+      [
+        "Shoreline Maintenance",
+        37.42843,
+        -122.07976
+      ],
+      [
+        "Santa Clara Park Services Center",
+        37.34556,
+        -121.97344
+      ],
+      [
+        "Parc Metro Clubhouse",
+        37.41936,
+        -121.90024
+      ],
+      [
+        "Boat Ramp Street",
+        37.92501,
+        -122.37594
+      ],
+      [
+        "Stryker Island",
+        37.69298,
+        -122.19231
+      ],
+      [
+        "Public Path #10",
+        37.90691,
+        -122.27422
+      ],
+      [
+        "Lincoln Theater Park/ One Fam Artist Activist Compound",
+        37.80635,
+        -122.29857
+      ],
+      [
+        "Oxford Street Parklet",
+        37.87031,
+        -122.26607
+      ],
+      [
+        "Grizzly Peak Blvd Overlook",
+        37.87223,
+        -122.22055
+      ],
+      [
+        "Lot 2270",
+        37.81192,
+        -122.26601
+      ]
+    ],
+    "separate": [
+      [
+        "Upper Noe Dog Play Area",
+        "Noe Valley Town Square"
+      ],
+      [
+        "Millbrae Community Garden",
+        "Millbrae Spur Trail"
+      ],
+      [
+        "Union City Skatepark",
+        "Union City Pyramid"
+      ],
+      [
+        "Potrero Hill Community Garden",
+        "Potrero del Sol Park"
+      ],
+      [
+        "Nature Reservation Bedwell",
+        "Don Edwards San Francisco Bay National Wildlife Refuge"
+      ],
+      [
+        "Nature Reservation Bedwell",
+        "Don Edwards San Francisco Bay national wildlife refuge - Alviso"
+      ],
+      [
+        "Don Edwards San Francisco Bay National Wildlife Refuge",
+        "Don Edwards San Francisco Bay national wildlife refuge - Alviso"
+      ],
+      [
+        "Rinconada Cultural Park",
+        "Rinconada Community Garden"
+      ],
+      [
+        "San Tomas Aquino/ Saratoga Creek Trail",
+        "Murdock Park"
+      ],
+      [
+        "Montelena Park",
+        "Dante Park"
+      ],
+      [
+        "Discovery Dog Park",
+        "Discovery Meadow"
+      ],
+      [
+        "Eden Greenway Park",
+        "Hayward Community Gardens"
+      ],
+      [
+        "Oak Park",
+        "Oak Glen Park",
+        37.81885,
+        -122.25828,
+        37.82051,
+        -122.25856
+      ],
+      [
+        "Bench with View",
+        "McLaughlin Eastshore State Park State Seashore"
+      ],
+      [
+        "Bateman Park",
+        "Bateman Mall Park"
+      ]
+    ],
+    "rename": [
+      [
+        "Orinda Parks & Recreation Department",
+        "Orinda Community Park",
+        37.88379,
+        -122.18881
+      ]
+    ]
+  },
+  "movie_theater": {
+    "drop": [
+      [
+        "Chill Theaters - World's First Mobile Movie Theater",
+        37.3651629,
+        -121.9063745
+      ]
+    ]
+  }
 }
