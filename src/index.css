@@ -172,9 +172,10 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .tag.veto { background: #4a1f1f; color: #ff9a9a; }
 .tag.endgame { background: #0f3d24; color: #6ee7a8; }
 .qactions button.on { background: #0f3d24; color: #6ee7a8; border-color: #16a34a; }
-.qform label.endgame-check { display: flex; align-items: center; gap: 8px; width: auto; margin-top: 10px; font-size: 13px; color: var(--text); cursor: pointer; }
-.qform label.endgame-check input { flex: none; width: auto; margin: 0; }
-.endgame-check .muted { color: var(--muted); }
+.qform label.endgame-check { display: flex; align-items: flex-start; gap: 8px; width: auto; margin-top: 10px; font-size: 13px; color: var(--text); cursor: pointer; }
+.qform label.endgame-check input { flex: none; width: auto; margin: 2px 0 0; }
+.endgame-check .endgame-text { display: flex; flex-direction: column; line-height: 1.35; }
+.endgame-check .muted { color: var(--muted); font-size: 12px; }
 .qlist li.vetoed { border-color: #6b2a2a; }
 .qlist li.vetoed .qtext { text-decoration: line-through; text-decoration-color: rgba(255, 154, 154, 0.6); }
 .qreward { font-size: 12px; color: var(--accent); margin-top: 3px; }

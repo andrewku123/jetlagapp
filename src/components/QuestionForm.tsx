@@ -747,7 +747,10 @@ export default function QuestionForm({
       {meta.eliminates && (
         <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
           <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
-          Endgame question <span className="muted">— shading clips to the hiding zone</span>
+          <span className="endgame-text">
+            Endgame question
+            <span className="muted">shading clips to the hiding zone</span>
+          </span>
         </label>
       )}
 
