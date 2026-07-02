@@ -5,6 +5,7 @@ import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeat
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
+import { bisectorHalfPlane } from './geo'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -365,4 +366,63 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   return null
+}
+
+// --- Endgame: clip a question's eliminated area to the hiding-zone disk. ---------
+// In endgame the board collapses to one station + its hiding zone; endgame-phase
+// questions (answered from the hider's real position) sub-divide that zone. We
+// reuse the exact same eliminated geometry as the map-wide shading and intersect
+// it with the zone circle so the shading always agrees with the elimination rule.
+
+// [lat,lon] display multipolygon → [lon,lat] clipping geometry (inverse toLatLng).
+function toGeom(mp: LatLngMultiPolygon): MultiPolygon {
+  return mp.map((poly) => poly.map((ring) => ring.map(([lat, lon]) => [lon, lat] as [number, number])))
+}
+
+// The eliminated region of any auto-eliminating question, in [lon,lat] geometry.
+// Radar and thermometer are built here directly (they're otherwise drawn inline in
+// MapView); everything else routes through poiEliminatedRegion.
+function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
+  if (!record.active || record.vetoed || !record.eliminates) return null
+  const p = record.params
+  if (record.kind === 'radar') {
+    const c: LatLng = { lat: Number(p.lat), lon: Number(p.lon) }
+    const rMi = Number(p.radiusMiles)
+    if (!Number.isFinite(rMi)) return null
+    const disk: Polygon = [diskRing(c, rMi, 96)]
+    // Yes = within → eliminate outside the disk; No = eliminate the disk.
+    const elim = p.answer === 'yes' ? polygonClipping.difference([WORLD_RING], disk) : [disk]
+    return elim.length ? elim : null
+  }
+  if (record.kind === 'thermometer') {
+    const from: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+    const to: LatLng = { lat: Number(p.toLat), lon: Number(p.toLon) }
+    // Eliminate the half-plane the hider moved away from: cold side.
+    const coldSide = p.answer === 'hotter' ? from : to
+    const band = bisectorHalfPlane(from, to, coldSide, 400)
+    if (!band.length) return null
+    const ring: Ring = band.map((pt) => [pt.lon, pt.lat] as [number, number])
+    return [[ring]]
+  }
+  const latlng = poiEliminatedRegion(record)
+  return latlng ? toGeom(latlng) : null
+}
+
+// A question's eliminated area, intersected with the hiding-zone disk, as a
+// display [lat,lon] multipolygon (or null if it doesn't touch the zone).
+export function endgameClippedRegion(
+  record: QuestionRecord,
+  center: LatLng,
+  radiusMiles: number,
+): LatLngMultiPolygon | null {
+  const geom = eliminatedGeom(record)
+  if (!geom || !geom.length) return null
+  const disk: Polygon = [diskRing(center, radiusMiles, 128)]
+  let clipped: MultiPolygon
+  try {
+    clipped = polygonClipping.intersection(geom, [disk])
+  } catch {
+    return null
+  }
+  return clipped.length ? toLatLng(clipped) : null
 }

@@ -72,6 +72,11 @@ export interface QuestionRecord {
   // hider vetoed the question: no answer was given, so it eliminates nothing,
   // but it's kept (tagged) so the seeker knows they can ask it again.
   vetoed?: boolean
+  // asked during the endgame phase (answered from the hider's real position, not
+  // the station centre). Still eliminates map-wide like any question, but in
+  // endgame its shading is clipped to the hiding zone to sub-divide it. Toggleable
+  // after the fact from the history tab.
+  endgame?: boolean
 }
 
 // Manual compass / straightedge annotations the seeker draws on the map.

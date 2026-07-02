@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
@@ -18,6 +18,9 @@ interface Props {
   // how many times each question group has already been asked, keyed by
   // questionGroupKey — used to preview the scaled cost of asking once more.
   askGroupCounts: Map<string, number>
+  // whether the seeker is currently in the endgame phase (a hiding zone is
+  // locked). Used to default the "Endgame question" checkbox on.
+  endgameActive: boolean
 }
 
 // Optgroup each POI category falls under in the flattened subject dropdown, so
@@ -165,6 +168,7 @@ export default function QuestionForm({
   onSubmit,
   onPreview,
   askGroupCounts,
+  endgameActive,
 }: Props) {
   const metric = units === 'metric'
   const distUnit = metric ? 'km' : 'mi'
@@ -210,6 +214,11 @@ export default function QuestionForm({
   const [floor, setFloor] = useState<string>('')
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
   const [note, setNote] = useState<string>('')
+  // Mark this question as asked during the endgame phase. Defaults to whether a
+  // hiding zone is currently locked; re-syncs when the seeker enters/exits
+  // endgame, but the seeker can override per question before logging.
+  const [endgameFlag, setEndgameFlag] = useState<boolean>(endgameActive)
+  useEffect(() => setEndgameFlag(endgameActive), [endgameActive])
 
   // The thermometer the seeker chose (converted to miles), or NaN if invalid.
   function thermoMiles(): number {
@@ -339,6 +348,7 @@ export default function QuestionForm({
       eliminates: meta.eliminates,
       active: true,
       ...(vetoed ? { vetoed: true } : {}),
+      ...(endgameFlag ? { endgame: true } : {}),
     })
     // reset point captures but keep kind
     setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo('')
@@ -733,6 +743,16 @@ export default function QuestionForm({
         <label>Note</label>
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
+
+      {meta.eliminates && (
+        <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
+          <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
+          <span className="endgame-text">
+            Endgame question
+            <span className="muted">shading clips to the hiding zone</span>
+          </span>
+        </label>
+      )}
 
       <div className="qform-actions">
         <button className="primary" onClick={() => submit(false)}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>

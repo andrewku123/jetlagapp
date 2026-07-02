@@ -248,6 +248,9 @@ export default function App() {
   function toggleActive(id: string) {
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, active: !q.active } : q)) })
   }
+  function toggleEndgame(id: string) {
+    update({ questions: game.questions.map((q) => (q.id === id ? { ...q, endgame: !q.endgame } : q)) })
+  }
   function deleteQuestion(id: string) {
     update({ questions: game.questions.filter((q) => q.id !== id) })
   }
@@ -423,6 +426,7 @@ export default function App() {
                 onSubmit={addQuestion}
                 onPreview={setLastClick}
                 askGroupCounts={askGroupCounts}
+                endgameActive={game.endgame != null}
               />
             </div>
           )}
@@ -437,6 +441,7 @@ export default function App() {
                       {describeRecord(q, game.units)}
                       {!q.eliminates && <span className="tag">info</span>}
                       {q.vetoed && <span className="tag veto">vetoed</span>}
+                      {q.endgame && <span className="tag endgame">endgame</span>}
                     </div>
                     {!q.vetoed &&
                       (() => {
@@ -457,6 +462,15 @@ export default function App() {
                     <div className="qactions">
                       {q.eliminates && !q.vetoed && (
                         <button onClick={() => toggleActive(q.id)}>{q.active ? 'Disable' : 'Enable'}</button>
+                      )}
+                      {q.eliminates && (
+                        <button
+                          className={q.endgame ? 'on' : ''}
+                          onClick={() => toggleEndgame(q.id)}
+                          title="Endgame questions still eliminate map-wide, but their shading is clipped to the hiding zone."
+                        >
+                          {q.endgame ? 'Unmark endgame' : 'Mark endgame'}
+                        </button>
                       )}
                       <button onClick={() => deleteQuestion(q.id)}>Delete</button>
                     </div>
