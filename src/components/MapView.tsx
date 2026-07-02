@@ -18,7 +18,7 @@ import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel } from '../lib/poi'
-import { nearestPointOnFeature, MEASURE_FEATURE_LABELS, type MeasureFeatureKey } from '../lib/measureFeatures'
+import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
 import { AIRPORTS, nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { stationColor, isMultiSystem } from '../lib/style'
@@ -833,7 +833,7 @@ export default function MapView({
         if (r.kind === 'measure-feature') {
           const key = String(r.params.feature)
           const npf = nearestPointOnFeature(seeker, key)
-          if (npf) pin = { lat: npf.lat, lon: npf.lon, label: `nearest ${MEASURE_FEATURE_LABELS[key as MeasureFeatureKey] ?? 'border'}` }
+          if (npf) pin = { lat: npf.lat, lon: npf.lon, label: `nearest ${measureFeatureNoun(key)}` }
         } else if (r.kind === 'match-airport' || r.kind === 'measure-airport') {
           const code = nearestAirport(seeker).code
           const a = AIRPORTS[code]

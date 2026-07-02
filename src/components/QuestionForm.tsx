@@ -4,7 +4,7 @@ import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey,
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
-import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, distanceToFeatureMiles } from '../lib/measureFeatures'
+import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
 import { cityAt } from '../lib/cities'
@@ -613,10 +613,10 @@ export default function QuestionForm({
           {center && (() => {
             const d = distanceToFeatureMiles(center, feature)
             if (!Number.isFinite(d))
-              return <p className="blurb poi-readout">No geometry for {MEASURE_FEATURE_LABELS[feature as keyof typeof MEASURE_FEATURE_LABELS]}.</p>
+              return <p className="blurb poi-readout">No geometry for {measureFeatureNoun(feature)}.</p>
             return (
               <p className="blurb poi-readout">
-                Distance to nearest {MEASURE_FEATURE_LABELS[feature as keyof typeof MEASURE_FEATURE_LABELS]}: <b>{formatDistance(d, units)}</b>
+                Distance to nearest {measureFeatureNoun(feature)}: <b>{formatDistance(d, units)}</b>
               </p>
             )
           })()}

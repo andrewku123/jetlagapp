@@ -28,6 +28,13 @@ export const MEASURE_FEATURE_LABELS: Record<MeasureFeatureKey, string> = {
   'intl-border': 'an international border',
 }
 
+// The feature label without its leading article ("a state border …" →
+// "state border …"), for phrases like "nearest state border" that already
+// supply their own article.
+export function measureFeatureNoun(key: string): string {
+  return (MEASURE_FEATURE_LABELS[key as MeasureFeatureKey] ?? key).replace(/^an? /, '')
+}
+
 // polyline = list of vertices; a feature is one or more polylines.
 type Polyline = LatLng[]
 
