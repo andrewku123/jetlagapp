@@ -20,7 +20,7 @@ import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel } from '../lib/poi'
 import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
 import { AIRPORTS, nearestAirport } from '../lib/airports'
-import { poiEliminatedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
+import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
@@ -858,6 +858,27 @@ export default function MapView({
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
   ])
+
+  // In endgame, the board collapses to one station + its hiding zone. Endgame-
+  // flagged questions (answered from the hider's real position) sub-divide that
+  // zone: each question's eliminated area is clipped to the zone circle and
+  // shaded, so the remaining clear area is where the hider can still be. Non-
+  // endgame questions are hidden (they were answered at the station centre).
+  const endgameRegions = useMemo(() => {
+    if (!endgameStation) return []
+    const center = { lat: endgameStation.lat, lon: endgameStation.lon }
+    return records
+      .filter((r) => r.endgame && r.active && !r.vetoed && r.eliminates)
+      .map((r) => ({ id: r.id, region: endgameClippedRegion(r, center, hidingRadiusMi) }))
+      .filter((x): x is { id: string; region: LatLngMultiPolygon } => x.region != null)
+  }, [
+    endgameStation,
+    hidingRadiusMi,
+    records
+      .filter((r) => r.endgame && r.active && !r.vetoed && r.eliminates)
+      .map((r) => `${r.id}:${r.kind}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.lat ?? ''}:${r.params.lon ?? ''}:${r.params.radiusMiles ?? ''}:${r.params.fromLat ?? ''}:${r.params.fromLon ?? ''}:${r.params.toLat ?? ''}:${r.params.toLon ?? ''}:${r.params.answer}`)
+      .join('|'),
+  ])
   // measure polylines by id, so the distance label can open the line's rounding
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
@@ -1356,8 +1377,8 @@ export default function MapView({
 
         {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
             the circle; NO eliminates inside it. The circle outline always shows
-            the radius. */}
-        {records
+            the radius. Suppressed in endgame (only zone-clipped shading shows). */}
+        {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'radar')
           .map((r) => {
             const center = { lat: Number(r.params.lat), lon: Number(r.params.lon) }
@@ -1383,8 +1404,8 @@ export default function MapView({
           })}
 
         {/* thermometer boundary: perpendicular bisector of the from→to segment.
-            The hotter half-plane is the side toward `to`. */}
-        {records
+            The hotter half-plane is the side toward `to`. Suppressed in endgame. */}
+        {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'thermometer')
           .map((r) => {
             const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
@@ -1462,8 +1483,9 @@ export default function MapView({
         {/* POI Matching / Measuring: shade the eliminated area (precomputed &
             memoized in `poiRegions`). Matching shades outside/inside the seeker's
             nearest-POI Voronoi cell; Measuring shades the union of your-distance
-            circles (or its complement). A pin marks the seeker's nearest place. */}
-        {poiRegions.map((pr) => (
+            circles (or its complement). A pin marks the seeker's nearest place.
+            Suppressed in endgame (only zone-clipped shading shows). */}
+        {!endgameStation && poiRegions.map((pr) => (
           <Fragment key={pr.id}>
             {pr.region.map((poly, i) => (
               <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
@@ -1480,6 +1502,17 @@ export default function MapView({
                 </Tooltip>
               </CircleMarker>
             )}
+          </Fragment>
+        ))}
+
+        {/* Endgame: shade each endgame-flagged question's eliminated area,
+            clipped to the hiding zone, so the clear part of the zone is where the
+            hider can still be. Drawn over the zone-outside shading. */}
+        {endgameRegions.map((er) => (
+          <Fragment key={er.id}>
+            {er.region.map((poly, i) => (
+              <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
+            ))}
           </Fragment>
         ))}
 

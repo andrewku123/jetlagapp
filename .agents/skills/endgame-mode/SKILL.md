@@ -44,6 +44,31 @@ For endgame that means shade *outside* the circle, keep the inside clear:
   `L.latLng(center).toBounds(hidingRadiusMi * 1609.344 * 2.6)` once per distinct
   endgame id (manual pan/zoom afterwards is left alone).
 
+## Per-question endgame flag (zone sub-division)
+Any auto-eliminating question can be tagged as an **endgame question** — a
+`QuestionRecord.endgame?: boolean` (in `src/types.ts`). What matters is *when* it
+was asked, not its type: a pre-endgame question was answered from the station
+centre (anti-cheese rule), an endgame question from the hider's real position.
+- **Create form** (`QuestionForm.tsx`): an "Endgame question" checkbox, shown only
+  for eliminating kinds, defaulting to `endgameActive` (whether `game.endgame` is
+  set) and re-syncing via `useEffect` when that changes — overridable per question.
+- **History tab** (`App.tsx`): a **Mark/Unmark endgame** button beside
+  Disable/Delete (`toggleEndgame`), fully reversible. This handles the
+  wrong-station case: untag the ones you marked at the wrong station, then only the
+  ones you (re)mark carve up the real zone.
+- **Semantics:** endgame questions **still eliminate map-wide** (unchanged
+  `stationPasses`/`applyFilters`, so a wrong station guess doesn't lose
+  eliminations). The flag only changes *shading*: while `endgameStation` is set,
+  the normal map-wide overlays (radar/thermometer/`poiRegions`) are suppressed and
+  each endgame-flagged question's eliminated area is **clipped to the hiding-zone
+  disk** and shaded (`endgameClippedRegion` in `questionRegions.ts`), so the clear
+  part of the zone is where the hider can still be. Exiting endgame restores every
+  overlay — nothing is deleted, so an accidental exit is harmless.
+- `endgameClippedRegion` reuses the exact same eliminated geometry as the map-wide
+  shading (`eliminatedGeom`, which also builds radar/thermometer regions) and
+  intersects it with the zone disk, so sub-zone shading always agrees with the
+  elimination rule. Regression: `endgameShading.test.ts`.
+
 ## Gotchas
 - **Don't invert the shading.** A regression once shaded the *inside* of the zone;
   the rule is eliminated-area-shaded, hiding-zone-clear, matching every other
