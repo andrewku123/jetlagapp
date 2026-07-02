@@ -81,6 +81,15 @@ every render.
   at the seeker's latitude, so it matches the haversine "nearest" the engine
   uses. `answer==='yes'` eliminates **outside** the cell (world-ring minus cell),
   `'no'` eliminates the cell itself.
+  - **Bounded-cell gotcha (this shipped a "bowtie" bug):** a Voronoi cell is
+    often an *unbounded* wedge (a site on the edge of the metro — every airport,
+    and sparse POI categories like aquarium/zoo/stadium). `voronoiCellRing` must
+    clip against a **finite** frame (`CELL_FRAME`, the play-area bbox + padding),
+    NOT a huge `span`. If the cell runs to absurd coords and you then clip it to
+    `WORLD_RING` (lat ±85), the far edge snaps to lat 85 and renders as a giant
+    triangle/diagonal band across the map. Elimination stays correct (it's a
+    separate `elimination.ts` path); only the shading is wrong, so eyeball it for
+    edge sites. Regression test asserts the region's max lat stays < 40.
 - `poiMeasureEliminatedRegion(record)` — the **union of disks** (radius = the
   seeker's own nearest-POI distance) around every POI, via `polygon-clipping`.
   `'closer'` eliminates the **complement** of the union, `'further'` eliminates

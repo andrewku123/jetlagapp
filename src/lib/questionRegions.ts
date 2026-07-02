@@ -1,10 +1,10 @@
 import polygonClipping, { type MultiPolygon, type Polygon, type Ring } from 'polygon-clipping'
 import type { LatLng, QuestionRecord } from '../types'
 import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { distanceToFeatureMiles, featurePolylines } from './measureFeatures'
+import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
-import { haversineMiles } from './geo'
+import { cityAt, cityGeom } from './cities'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -41,6 +41,63 @@ function diskRing(c: LatLng, radiusMiles: number, n: number): Ring {
   return ring
 }
 
+// Buffer polylines by `radiusMiles` into the union "within radius of the line",
+// as a [lon, lat] MultiPolygon. Each segment contributes a rectangle whose two
+// long edges sit exactly `radiusMiles` off the segment, plus a disk at each
+// vertex to round the corners. Because the far edges are exact straight lines
+// (not sampled disk arcs) the shaded boundary lands precisely at the measured
+// distance, so it agrees with the per-station distance test — no scallop error.
+// Geometry is built in an equirectangular projection scaled at `refLat`, matching
+// the elimination engine's local straight-line distances.
+function bufferPolylines(lines: LatLng[][], radiusMiles: number, refLat: number): MultiPolygon {
+  const cosRef = Math.cos((refLat * Math.PI) / 180) || 1e-6
+  const r = radiusMiles * DEG_PER_MILE
+  // Round the vertex caps finely enough that their worst-case radial error
+  // (straddling the true circle) stays under ~0.02 mi even for a 400+ mi radius,
+  // where a coarse n-gon's flat edge would otherwise fall a mile or two short of
+  // the true distance and wrongly exclude near-boundary stations.
+  const EPS_MILES = 0.02
+  const capN = Math.max(24, Math.min(512, Math.ceil((Math.PI / 2) * Math.sqrt(radiusMiles / EPS_MILES))))
+  const rCap = r * ((1 + 1 / Math.cos(Math.PI / capN)) / 2)
+  const polys: Polygon[] = []
+  const capRing = (cx: number, cy: number): Ring => {
+    const ring: Ring = []
+    for (let i = 0; i < capN; i++) {
+      const t = (i / capN) * 2 * Math.PI
+      ring.push([cx + rCap * Math.cos(t), cy + rCap * Math.sin(t)])
+    }
+    return ring
+  }
+  for (const line of lines) {
+    const pv = line.map((p) => [p.lon * cosRef, p.lat] as [number, number])
+    for (let i = 1; i < pv.length; i++) {
+      const [ax, ay] = pv[i - 1]
+      const [bx, by] = pv[i]
+      let ux = bx - ax
+      let uy = by - ay
+      const len = Math.hypot(ux, uy)
+      if (len < 1e-12) continue
+      ux /= len
+      uy /= len
+      const nx = -uy * r
+      const ny = ux * r
+      polys.push([
+        [
+          [ax + nx, ay + ny],
+          [bx + nx, by + ny],
+          [bx - nx, by - ny],
+          [ax - nx, ay - ny],
+        ],
+      ])
+    }
+    for (const [vx, vy] of pv) polys.push([capRing(vx, vy)])
+  }
+  const union = robustUnion(polys)
+  return union.map((poly) =>
+    poly.map((ring) => ring.map(([x, y]) => [x / cosRef, y] as [number, number])),
+  )
+}
+
 function toLatLng(mp: MultiPolygon): LatLngMultiPolygon {
   return mp.map((poly) => poly.map((ring) => ring.map(([x, y]) => [y, x] as [number, number])))
 }
@@ -54,18 +111,25 @@ function snapRing(ring: Ring, dp: number): Ring {
   return ring.map(([x, y]) => [Math.round(x * f) / f, Math.round(y * f) / f])
 }
 
-// Union many polygons robustly: fold them in one at a time (more stable than one
-// big multi-arg union) and snap coordinates, retrying at coarser precision if the
-// clipper throws. Returns [] only if every precision fails.
+// Union many polygons robustly. Snap coordinates (the clipper's sweep line can
+// hit an "infinite loop over endpoints" on chains of overlapping circles) and
+// combine divide-and-conquer — pairwise up a balanced tree — which keeps the
+// intermediate polygons small instead of repeatedly re-clipping one giant
+// accumulator, turning an O(n²) fold into ~O(n log n). Retries at coarser
+// precision if the clipper throws. Returns [] only if every precision fails.
 function robustUnion(polys: Polygon[]): MultiPolygon {
   if (polys.length === 0) return []
   for (const dp of [7, 6, 5, 4]) {
     try {
-      let acc: MultiPolygon = [polys[0].map((r) => snapRing(r, dp))]
-      for (let i = 1; i < polys.length; i++) {
-        acc = polygonClipping.union(acc, [polys[i].map((r) => snapRing(r, dp))])
+      let layer: MultiPolygon[] = polys.map((p) => [p.map((r) => snapRing(r, dp))])
+      while (layer.length > 1) {
+        const next: MultiPolygon[] = []
+        for (let i = 0; i < layer.length; i += 2) {
+          next.push(i + 1 < layer.length ? polygonClipping.union(layer[i], layer[i + 1]) : layer[i])
+        }
+        layer = next
       }
-      return acc
+      return layer[0]
     } catch {
       // coarser snap on the next pass
     }
@@ -107,19 +171,29 @@ function clipHalfPlane(poly: P2[], a: number, b: number, c: number): P2[] {
   return out
 }
 
+// Finite lon/lat box the Voronoi cells are bounded to. A Voronoi cell can be an
+// unbounded wedge; without a finite frame it extends to absurd coordinates and,
+// once clipped to the world (lat ±85), renders as a giant triangle/bowtie across
+// the map. This box comfortably wraps the play area (bbox -122.7,37.0 →
+// -121.4,38.2) with padding, so every cell is a sane bounded polygon and the edge
+// of the frame sits well off-screen.
+const CELL_FRAME = { minLon: -124, minLat: 36, maxLon: -120, maxLat: 39 }
+
 // The Voronoi cell of `sites[idx]` — the region closer to it than to any other
-// site — as a [lon, lat] ring. Computed in an equirectangular projection scaled
-// at `refLat` so distances read straight-line, matching the elimination engine.
+// site — as a [lon, lat] ring, clipped to CELL_FRAME. Computed in an
+// equirectangular projection scaled at `refLat` so distances read straight-line,
+// matching the elimination engine.
 function voronoiCellRing(sites: LatLng[], idx: number, refLat: number): Ring | null {
   const cosRef = Math.cos((refLat * Math.PI) / 180) || 1e-6
   const proj = (p: LatLng): P2 => ({ x: p.lon * cosRef, y: p.lat })
   const p0 = proj(sites[idx])
-  const span = 200 // projected degrees; safely covers the metro before world-clip
+  const bl = proj({ lat: CELL_FRAME.minLat, lon: CELL_FRAME.minLon })
+  const tr = proj({ lat: CELL_FRAME.maxLat, lon: CELL_FRAME.maxLon })
   let poly: P2[] = [
-    { x: p0.x - span, y: p0.y - span },
-    { x: p0.x + span, y: p0.y - span },
-    { x: p0.x + span, y: p0.y + span },
-    { x: p0.x - span, y: p0.y + span },
+    { x: bl.x, y: bl.y },
+    { x: tr.x, y: bl.y },
+    { x: tr.x, y: tr.y },
+    { x: bl.x, y: tr.y },
   ]
   for (let i = 0; i < sites.length && poly.length >= 3; i++) {
     if (i === idx) continue
@@ -189,49 +263,18 @@ export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiP
 // --- Measuring a linear feature (coastline / borders): shade the corridor
 // within the seeker's own distance of the feature, or its complement. -----------
 
-// Resample a polyline to points spaced ~`spacingMiles` apart along its length
-// (endpoints always kept). Used to seed the corridor's union of disks.
-function resamplePolyline(line: LatLng[], spacingMiles: number): LatLng[] {
-  if (line.length < 2) return line.slice()
-  const out: LatLng[] = [line[0]]
-  let carry = 0
-  for (let i = 1; i < line.length; i++) {
-    const a = line[i - 1]
-    const b = line[i]
-    const segLen = haversineMiles(a, b)
-    if (segLen === 0) continue
-    let dpos = spacingMiles - carry
-    while (dpos < segLen) {
-      const t = dpos / segLen
-      out.push({ lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) })
-      dpos += spacingMiles
-    }
-    carry = (carry + segLen) % spacingMiles
-    out.push(b)
-  }
-  return out
-}
-
 export function featureMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   const p = record.params
   const key = String(p.feature)
   const lines = featurePolylines(key)
   if (!lines.length) return null
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
-  const d = distanceToFeatureMiles(seeker, key)
+  // Radius in the same seeker-centred projection as the buffer + elimination.
+  const d = projectedDistanceToFeatureMiles(seeker, key, seeker.lat)
   if (!Number.isFinite(d) || d <= 0) return null
-  // Sample density: fine enough that adjacent disks overlap, but capped so a
-  // seeker sitting almost on the feature doesn't spawn thousands of tiny disks.
-  const totalLen = lines.reduce((sum, l) => {
-    for (let i = 1; i < l.length; i++) sum += haversineMiles(l[i - 1], l[i])
-    return sum
-  }, 0)
-  const spacing = Math.max(d * 0.4, totalLen / 900, 0.35)
-  const pts: LatLng[] = []
-  for (const l of lines) pts.push(...resamplePolyline(l, spacing))
-  if (!pts.length) return null
-  const disks: Polygon[] = pts.map((c) => [diskRing(c, d, 20)])
-  const union = robustUnion(disks)
+  // Exact straight-edged buffer of the feature so the shaded boundary sits
+  // precisely at the measured distance and matches the per-station rule.
+  const union = bufferPolylines(lines, d, seeker.lat)
   if (!union.length) return null
   // Closer keeps stations within d of the feature (inside the corridor) →
   // eliminate the complement; Further keeps outside → eliminate the corridor.
@@ -295,6 +338,22 @@ export function countyMatchEliminatedRegion(record: QuestionRecord): LatLngMulti
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Matching a city (3rd admin): shade outside (Yes) / inside (No) the
+// seeker's city polygon. -----------------------------------------------------
+
+export function cityMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const name = String(p.value || '') || cityAt(seeker) || ''
+  const geom = cityGeom(name)
+  if (!geom.length) return null
+  const yes = p.answer === 'yes'
+  const elim = yes
+    ? polygonClipping.difference([WORLD_RING], geom)
+    : polygonClipping.intersection([WORLD_RING], geom)
+  return elim.length ? toLatLng(elim) : null
+}
+
 // Eliminated region for any shaded question record, or null if it has none.
 export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (!record.active || record.vetoed || !record.eliminates) return null
@@ -304,5 +363,6 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
+  if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   return null
 }

@@ -4,14 +4,14 @@ import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey,
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
-import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, distanceToFeatureMiles } from '../lib/measureFeatures'
+import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
+import { cityAt } from '../lib/cities'
 
 interface Props {
   lastClick: LatLng | null
   units: UnitSystem
-  cities: string[]
   lines: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
@@ -19,6 +19,61 @@ interface Props {
   // questionGroupKey — used to preview the scaled cost of asking once more.
   askGroupCounts: Map<string, number>
 }
+
+// Optgroup each POI category falls under in the flattened subject dropdown, so
+// the 12 categories read as one scannable list alongside airport/county/etc.
+const POI_SUBJECT_GROUP: Record<string, string> = {
+  park: 'Natural',
+  mountain: 'Natural',
+  museum: 'Places of Interest',
+  movie_theater: 'Places of Interest',
+  golf_course: 'Places of Interest',
+  amusement_park: 'Places of Interest',
+  zoo: 'Places of Interest',
+  aquarium: 'Places of Interest',
+  stadium: 'Places of Interest',
+  hospital: 'Public Utilities',
+  library: 'Public Utilities',
+  consulate: 'Public Utilities',
+}
+
+// Optgroup a non-POI matching/measuring subject falls under.
+const KIND_SUBJECT_GROUP: Partial<Record<QuestionKind, string>> = {
+  'match-airport': 'Transit',
+  'match-line': 'Transit',
+  'match-namelength': 'Transit',
+  'match-street': 'Transit',
+  'match-admin1': 'Administrative divisions',
+  'match-county': 'Administrative divisions',
+  'match-city': 'Administrative divisions',
+  'match-admin4': 'Administrative divisions',
+  'match-landmass': 'Natural',
+  'measure-airport': 'Transit',
+  'measure-hsr': 'Transit',
+  'measure-railstation': 'Transit',
+  'measure-sealevel': 'Natural',
+  'measure-water': 'Natural',
+}
+
+// Optgroup each coastline/border feature falls under when measure-feature is
+// flattened into the single Question dropdown (same treatment as POI categories).
+const FEATURE_SUBJECT_GROUP: Record<string, string> = {
+  coastline: 'Natural',
+  'county-border': 'Borders',
+  'state-border': 'Borders',
+  'intl-border': 'Borders',
+}
+
+// Dropdown label for a measure-feature: strip the leading article from the
+// data label ("a coastline" → "Coastline") and capitalize.
+function featureSubjectLabel(key: string): string {
+  const raw = (MEASURE_FEATURE_LABELS[key as keyof typeof MEASURE_FEATURE_LABELS] ?? key).replace(/^an? /, '')
+  return raw.charAt(0).toUpperCase() + raw.slice(1)
+}
+
+// Kinds that have no auto-eliminator — logged for the seeker's notes only.
+const MATCH_LOGONLY: QuestionKind[] = ['match-street', 'match-admin1', 'match-admin4', 'match-landmass']
+const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-railstation', 'measure-water']
 
 function ordinalSuffix(n: number): string {
   const t = n % 100
@@ -106,7 +161,6 @@ function CoordPicker({
 export default function QuestionForm({
   lastClick,
   units,
-  cities,
   lines,
   onSubmit,
   onPreview,
@@ -135,6 +189,7 @@ export default function QuestionForm({
     const i = label.indexOf(' — ')
     return i >= 0 ? label.slice(i + 3) : label
   }
+  const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
   // shared param state
   const [radius, setRadius] = useState<string>('0.5')
@@ -235,10 +290,30 @@ export default function QuestionForm({
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
-      case 'match-city':
+      case 'match-city': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const c = cityAt(center)
+        if (!c) return alert('That location is not inside any city in the play area.')
+        params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
       case 'match-line': {
         if (!value) return alert('Choose a value.')
         params = { value, answer: yesno }
+        break
+      }
+      case 'match-street':
+      case 'match-admin1':
+      case 'match-admin4':
+      case 'match-landmass': {
+        // Record-keeping only: log the answer (+ optional detail) but eliminate nothing.
+        params = { description: value.trim() || undefined, answer: yesno }
+        break
+      }
+      case 'measure-hsr':
+      case 'measure-railstation':
+      case 'measure-water': {
+        params = { description: value.trim() || undefined, answer: closefar }
         break
       }
       case 'inside-floor': {
@@ -319,6 +394,52 @@ export default function QuestionForm({
     </div>
   )
 
+  // Flattened subject dropdown: the two POI kinds (match-poi / measure-poi) and
+  // measure-feature each expand into one entry per category/feature, so every
+  // subject sits in the single Question dropdown rather than behind a second
+  // select. An expanded option encodes its parameter as `${kind}::${value}`.
+  interface SubjectOption { value: string; label: string; group: string }
+  const subjectOptions: SubjectOption[] = kindsInCategory.flatMap((q) => {
+    if (q.kind === 'match-poi' || q.kind === 'measure-poi') {
+      return QUESTION_POI_CATEGORIES.map((c) => ({
+        value: `${q.kind}::${c}`,
+        label: capitalize(poiCategoryLabel(c)),
+        group: POI_SUBJECT_GROUP[c] ?? 'Places of Interest',
+      }))
+    }
+    if (q.kind === 'measure-feature') {
+      return MEASURE_FEATURE_KEYS.map((k) => ({
+        value: `${q.kind}::${k}`,
+        label: featureSubjectLabel(k),
+        group: FEATURE_SUBJECT_GROUP[k] ?? 'Borders',
+      }))
+    }
+    return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
+  })
+  const subjectValue =
+    kind === 'match-poi' || kind === 'measure-poi'
+      ? `${kind}::${poiCat}`
+      : kind === 'measure-feature'
+        ? `${kind}::${feature}`
+        : kind
+  function pickSubject(v: string) {
+    const [k, param] = v.split('::')
+    setKind(k as QuestionKind)
+    if (param) {
+      if (k === 'measure-feature') setFeature(param)
+      else setPoiCat(param)
+    }
+  }
+  const subjectGroups: { group: string; opts: SubjectOption[] }[] = []
+  for (const o of subjectOptions) {
+    let g = subjectGroups.find((x) => x.group === o.group)
+    if (!g) {
+      g = { group: o.group, opts: [] }
+      subjectGroups.push(g)
+    }
+    g.opts.push(o)
+  }
+
   return (
     <div className="qform">
       <div className="row qrow-cat">
@@ -329,12 +450,16 @@ export default function QuestionForm({
           ))}
         </div>
       </div>
-      {kindsInCategory.length > 1 && (
+      {subjectOptions.length > 1 && (
         <div className="row">
           <label>Question</label>
-          <select value={kind} onChange={(e) => setKind(e.target.value as QuestionKind)}>
-            {kindsInCategory.map((q) => (
-              <option key={q.kind} value={q.kind}>{subLabel(q.label)}</option>
+          <select value={subjectValue} onChange={(e) => pickSubject(e.target.value)}>
+            {subjectGroups.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.opts.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>
@@ -454,14 +579,6 @@ export default function QuestionForm({
 
       {(kind === 'match-poi' || kind === 'measure-poi') && (
         <>
-          <div className="row">
-            <label>Place type</label>
-            <select value={poiCat} onChange={(e) => setPoiCat(e.target.value)}>
-              {QUESTION_POI_CATEGORIES.map((c) => (
-                <option key={c} value={c}>{poiCategoryLabel(c)}</option>
-              ))}
-            </select>
-          </div>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {center && (() => {
             const np = nearestPoi(center, poiCat)
@@ -492,22 +609,14 @@ export default function QuestionForm({
 
       {kind === 'measure-feature' && (
         <>
-          <div className="row">
-            <label>Feature</label>
-            <select value={feature} onChange={(e) => setFeature(e.target.value)}>
-              {MEASURE_FEATURE_KEYS.map((k) => (
-                <option key={k} value={k}>{MEASURE_FEATURE_LABELS[k]}</option>
-              ))}
-            </select>
-          </div>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {center && (() => {
             const d = distanceToFeatureMiles(center, feature)
             if (!Number.isFinite(d))
-              return <p className="blurb poi-readout">No geometry for {MEASURE_FEATURE_LABELS[feature as keyof typeof MEASURE_FEATURE_LABELS]}.</p>
+              return <p className="blurb poi-readout">No geometry for {measureFeatureNoun(feature)}.</p>
             return (
               <p className="blurb poi-readout">
-                Distance to nearest {MEASURE_FEATURE_LABELS[feature as keyof typeof MEASURE_FEATURE_LABELS]}: <b>{formatDistance(d, units)}</b>
+                Distance to nearest {measureFeatureNoun(feature)}: <b>{formatDistance(d, units)}</b>
               </p>
             )
           })()}
@@ -537,9 +646,49 @@ export default function QuestionForm({
         </>
       )}
 
-      {kind === 'match-city' && dropdown(cities)}
+      {kind === 'match-city' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const c = cityAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {c ? <>Your city: <b>{c}</b></> : 'That location is not inside any city in the play area.'}
+              </p>
+            )
+          })()}
+          {yesNo}
+        </>
+      )}
+
       {kind === 'match-line' && dropdown(lines)}
-      {(kind === 'match-city' || kind === 'match-line') && yesNo}
+      {kind === 'match-line' && yesNo}
+
+      {MATCH_LOGONLY.includes(kind) && (
+        <>
+          <div className="row">
+            <label>Detail (optional)</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="your answer, for your notes" />
+          </div>
+          {yesNo}
+        </>
+      )}
+
+      {MEASURE_LOGONLY.includes(kind) && (
+        <>
+          <div className="row">
+            <label>Detail (optional)</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="your answer, for your notes" />
+          </div>
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
+        </>
+      )}
 
       {kind === 'match-namelength' && (
         <>

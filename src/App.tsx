@@ -142,10 +142,6 @@ export default function App() {
     return { remaining: remain, eliminated: elim }
   }, [base, game.questions, game.manualEliminated, endgameStation])
 
-  const cities = useMemo(
-    () => uniqSorted(STATIONS.map((s) => s.city).filter(Boolean) as string[]),
-    [],
-  )
   const lines = useMemo(() => {
     const all = uniqSorted(STATIONS.flatMap((s) => s.lines))
     return game.dayType === 'we'
@@ -423,7 +419,6 @@ export default function App() {
               <QuestionForm
                 lastClick={lastClick}
                 units={game.units}
-                cities={cities}
                 lines={lines}
                 onSubmit={addQuestion}
                 onPreview={setLastClick}
