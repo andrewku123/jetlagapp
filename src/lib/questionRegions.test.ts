@@ -210,4 +210,16 @@ describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () =
     expect(pointInMulti(oakland.lat, oakland.lon, region)).toBe(true)
     expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(false)
   })
+
+  it('an in-play but unincorporated point (hills / bridge corridor) snaps to a city', () => {
+    // ~320 m into the Oakland hills off a BART corridor: no census place here,
+    // but it is inside the play area, so it must resolve to the nearest city
+    // rather than reading "outside the play area".
+    expect(cityAt({ lat: 37.8845, lon: -122.2311 })).toBe('Oakland city')
+  })
+
+  it('a point outside the play area is null', () => {
+    // out past the Utah line
+    expect(cityAt({ lat: 41.1621, lon: -112.4561 })).toBeNull()
+  })
 })

@@ -302,7 +302,7 @@ export default function QuestionForm({
       case 'match-city': {
         if (!center) return alert('Set your location (paste coordinates or click the map).')
         const c = cityAt(center)
-        if (!c) return alert('That location is not inside any city in the play area.')
+        if (!c) return alert('Outside the play area.')
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
@@ -663,7 +663,7 @@ export default function QuestionForm({
             const c = cityAt(center)
             return (
               <p className="blurb poi-readout">
-                {c ? <>Your city: <b>{c}</b></> : 'That location is not inside any city in the play area.'}
+                {c ? <>Your city: <b>{c}</b></> : 'Outside the play area.'}
               </p>
             )
           })()}

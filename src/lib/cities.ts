@@ -1,6 +1,7 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
 import placesRaw from '../data/places.geojson.json'
+import playAreaRaw from '../data/play-area.geojson.json'
 
 // Census-place (3rd-admin / "city") polygons used by the "Matching — city"
 // question. Both the seeker's city (from their coordinate) and each station's
@@ -42,6 +43,30 @@ function buildCities(): Record<string, CityPolys> {
 }
 
 const CITIES: Record<string, CityPolys> = buildCities()
+
+// The play-area polygon (union of kept places + transit-line bridges + filled
+// enclaves — see scripts/build_play_area.py). Parts of it are genuinely
+// unincorporated (a BART corridor over the hills, an enclave the census-place
+// set doesn't name), so a point can be in play yet inside no city polygon. We
+// snap those to the nearest city so the city-match question works everywhere in
+// play, and only report "outside the play area" when the point is truly outside.
+function buildPlayArea(): CityPolys {
+  const fc = playAreaRaw as unknown as { features: GeoFeature[] }
+  const polys: CityPolys = []
+  for (const f of fc.features) {
+    const g = f.geometry
+    if (g.type === 'Polygon') {
+      polys.push((g.coordinates as number[][][]).map((r) => r as Ring))
+    } else if (g.type === 'MultiPolygon') {
+      for (const poly of g.coordinates as number[][][][]) {
+        polys.push(poly.map((r) => r as Ring))
+      }
+    }
+  }
+  return polys
+}
+
+const PLAY_AREA: CityPolys = buildPlayArea()
 
 export function cityNames(): string[] {
   return Object.keys(CITIES)
@@ -111,14 +136,10 @@ function distToPolysM(p: LatLng, polys: CityPolys): number {
   return best
 }
 
-// The city containing `p`; if `p` is just outside every polygon (within SNAP_M),
-// the nearest city; otherwise null (out in the bay or on unincorporated land).
-export function cityAt(p: LatLng): string | null {
-  for (const [name, polys] of Object.entries(CITIES)) {
-    if (pointInPolys(p, polys)) return name
-  }
+// The nearest city to `p` by boundary distance (metres), searching every place.
+function nearestCity(p: LatLng): { name: string | null; dist: number } {
   let best: string | null = null
-  let bestD = SNAP_M
+  let bestD = Infinity
   for (const [name, polys] of Object.entries(CITIES)) {
     const d = distToPolysM(p, polys)
     if (d < bestD) {
@@ -126,5 +147,21 @@ export function cityAt(p: LatLng): string | null {
       best = name
     }
   }
-  return best
+  return { name: best, dist: bestD }
+}
+
+// The city for a point:
+//   • inside a city polygon → that city;
+//   • otherwise inside the play area (an unincorporated corridor/enclave) → the
+//     nearest city, so the question resolves everywhere in play;
+//   • just outside the play-area outline (within SNAP_M, absorbs simplification
+//     erosion) → the nearest city;
+//   • otherwise (out in the bay, or off-map) → null ("outside the play area").
+export function cityAt(p: LatLng): string | null {
+  for (const [name, polys] of Object.entries(CITIES)) {
+    if (pointInPolys(p, polys)) return name
+  }
+  if (pointInPolys(p, PLAY_AREA)) return nearestCity(p).name
+  const near = nearestCity(p)
+  return near.dist <= SNAP_M ? near.name : null
 }
