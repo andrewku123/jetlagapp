@@ -78,14 +78,106 @@ with the bay water instead. Then precompute per station, in `build_attributes.py
 question, and/or `nearestSaltwater` ('Pacific' vs 'Bay') for a Matching question,
 following the attribute pattern above.
 
+### Ordinal-region measuring (ZIP code / any polygon layer with a numeric name)
+`measure-zip` is the template for "is your <region value> smaller or larger than
+mine?" over a polygon layer where each region carries an **ordinal (numeric)**
+label (US ZIP via Census ZCTA). Pattern, mirroring `cities.ts`/`counties.ts`:
+- **Dataset:** `scripts/build_zctas.py` downloads the national Census ZCTA5
+  shapefile, clips to `play-area.geojson.json`, simplifies, drops slivers, and
+  writes `src/data/zctas.geojson.json` (`properties.name` = the 5-digit ZIP).
+  Re-run like the other `build_*` scripts.
+- **Lookup lib `src/lib/zip.ts`:** `zipAt(LatLng): string | null` does
+  point-in-polygon, then **snaps to the nearest region within `SNAP_M` (200 m)**
+  so shoreline-clip erosion at region edges never leaves a station regionless.
+  Also exports `zipCodes()` and `zipGeom(name)` (polygon-clipping-ready) for
+  shading. Both the seeker's value and each station's value are resolved through
+  the **same** `zipAt`, so shading and elimination can't disagree.
+- **Elimination:** resolve `seekerZip = s(p.value) || zipAt(seeker)` and
+  `stationZip = zipAt(station)`; return `true` (keep) if either is missing;
+  else `return (stationZip <= seekerZip) === (p.answer === 'smaller')`.
+- Only add this for maps whose regions have numeric labels (US ZIPs) — postcodes
+  elsewhere are alphanumeric and not ordinal.
+
+### Tentacle questions ("of all the X within R of me, which are you closest to?")
+Two flavours, both size-gated (never in Small; Medium = 1 mi POI subjects; Large
+adds 15 mi POI subjects + Metro Lines). The seeker sets **their own** location +
+a fixed-per-subject radius; the in-play set is everything of that subject passing
+within R of the seeker; the hider names which in-play member they're closest to.
+Key rule: a member **outside R never counts**, even if physically closer to a
+station than the answer. Elimination keeps a station iff its nearest **in-play**
+member is the answer, ties kept (`answerD <= minD + 1e-9`). If 0/1 in play, or the
+answer isn't in the in-play set → eliminate nothing (`return true`).
+
+- **POI tentacles** (`tentacle`, `src/lib/poi.ts`): `TENTACLE_CATEGORIES` lists
+  the 7 categories with fixed `radiusMi` + size gating; `poisWithinRadius(seeker,
+  cat, r)` is the in-play set; `params = { poiCat, radiusMi, fromLat, fromLon,
+  value: poiKey(answer), poiName }`. Shading = restricted-Voronoi complement of
+  the answer POI's cell over the in-play set (`tentacleEliminatedRegion`) — exact,
+  so per-station `pointInMulti === !stationPasses` holds.
+- **Metro Lines tentacle** (`tentacle-line`, `src/lib/metroLines.ts`): line
+  geometry, not points. `METRO_LINES` is derived from
+  `transit-lines.geojson.json` + `stations.json` line names (each GeoJSON feature
+  matched to its station-line by min mean distance); `id = system::color`.
+  `metroLineDistanceMiles(p, line, refLat)` = projected distance to the polyline;
+  `metroLinesWithinRadius(seeker, 15)` is the in-play set; `nearestMetroLine`.
+  Radius is the exported constant `METRO_TENTACLE_RADIUS_MI = 15` — never hardcode.
+  `params = { radiusMi, fromLat, fromLon, value: line.id, poiName: line.label }`.
+  In `QuestionForm`, gate the subject to `gameSize === 'large'` (return `[]` from
+  `subjectOptions` otherwise); it's a single subject (no `::param`), so
+  `subjectValue`/`pickSubject` fall through to the bare `kind`.
+- **Shading for polylines has no closed-form Voronoi** — sample each in-play line
+  into points (spacing `max(0.25, totalMi/600)` to bound ~600 sites), build a
+  point-Voronoi over all samples, union the answer line's sample cells = keep
+  region, shade the complement (`metroLineEliminatedRegion`). This is approximate
+  near the boundary, so the region test only asserts agreement for stations
+  `> 1 mi` from the boundary (`|answerD - minD| > 1`). **Union the cells with the
+  shared `robustUnion` helper, never an incremental pairwise fold** — the many
+  adjacent near-collinear cells along a line trip polygon-clipping's
+  "Unable to complete output ring" robustness bug; `robustUnion` (snap +
+  divide-and-conquer, retries at coarser precision) handles it.
+
+### Tie rule for ALL measuring questions ("equal → the smaller answer")
+Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,
+`measure-sealevel`, `measure-zip`) must fold an exact tie into the **smaller/closer/
+lower** answer, so a station equal to the seeker survives that answer and can never
+drop the true hider on a rounding tie. Concretely the kept side is **inclusive**
+on the small answer and **strict** on the large one:
+`return (stationVal <= seekerVal) === (answer is the 'smaller/closer/lower' one)`.
+
+### Shading must agree with the predicate (`src/lib/questionRegions.ts`)
+Any `eliminates:true` kind that shades the map needs an `<kind>EliminatedRegion`
+returning the eliminated `LatLngMultiPolygon`, wired in three places:
+1. add `if (record.kind === '<kind>') return <kind>EliminatedRegion(record)` to
+   `poiEliminatedRegion`;
+2. add the kind to `MapView`'s `isShaded()` **and** the `poiRegions` useMemo
+   dependency filter (else the shading won't recompute/appear), giving it a `pin`
+   or `pin=null` like county/city;
+3. the endgame outline + clipped-shading paths already route through
+   `poiEliminatedRegion`, so they work once (1) is done.
+For a region-union kind (zip/county/city) build the union of the eliminated-side
+polygons with the **same** `<= / >` test as the predicate — a per-station test
+`pointInMulti(shaded) === !stationPasses` then holds exactly (see
+`questionRegions.test.ts`).
+
+### Out-of-bounds features aren't offered (rulebook: outside the map ⇒ doesn't exist)
+For `measure-feature`, the Ask form's subject list is
+`AVAILABLE_MEASURE_FEATURE_KEYS = MEASURE_FEATURE_KEYS.filter(k =>
+featurePolylines(k).length > 0)` — a feature whose geometry is entirely outside
+this map's play area (e.g. the state/international border for the Bay Area) has
+empty clipped polylines and is **dropped from the dropdown** rather than returning
+null at answer time. Keep the full key in `MEASURE_FEATURE_KEYS` so it returns
+automatically for a map where it is in-bounds. This is the general rule for any
+feature/subject whose existence is map-dependent.
+
 ## Veto (hider refuses to answer)
 A question is **vetoed** when the hider refuses to answer. You only know a question
 is vetoed at *ask* time (you never get a yes/no), and the normal "Log" path forces
 you to pick an answer — so the veto action lives in the **Ask form**, not History.
 - `QuestionForm`'s `submit(vetoed)` builds the params as usual, then `delete
   params.answer` and sets `vetoed: true` when vetoed. The "**Hider vetoed**" button
-  calls `submit(true)`; it's hidden for `photo` (no hider answer). It validates the
-  identifying params (center/points/value) but not an answer.
+  calls `submit(true)`; it's shown for every kind **including `photo`** (a hider
+  can refuse a photo too). It validates the identifying params (center/points/
+  value) but not an answer.
 - A vetoed record has **no `answer`**. `describeRecord` drops the "→ answer" suffix
   when `params.answer == null`. `stationPasses` returns `true` for any vetoed record
   (eliminates nothing — same gate as inactive / non-eliminating); `MapView`'s
@@ -109,6 +201,17 @@ multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
     to inferring the bucket from `haversineMiles(A,B)` snapped to the nearest
     `THERMOMETER_OPTIONS` value. `describeRecord` shows the chosen distance
     (`Thermometer 0.5 mi → hotter`); elimination still uses the A/B points.
+    Because elimination only uses the perpendicular bisector of A→B (magnitude
+    independent), the chosen `thermometerMiles` is otherwise cosmetic — so
+    `QuestionForm.submit` **validates that `haversineMiles(A,B)` matches the chosen
+    distance** (tolerance `max(0.1 mi, 5%)`, `thermoTolMiles`) and blocks with a
+    clear alert if not; a live A↔B readout in the form shows ✓/⚠ before submit.
+  - **photo** keys on the chosen photo card (`photo:<title>`). Each photo card is
+    a *different* question, so asking two different photos does NOT stack the
+    penalty — only re-asking the same card does. The Ask form shows a dropdown of
+    `PHOTO` cards (from `questionSets.ts`) filtered to the current `gameSize`
+    (passed as a prop), plus the card's `requirement` text and an optional free
+    note (`params.description`). `describeRecord` shows `Photo: <title> — <note>`.
   - every other kind keys on `kind` alone (`match-county` ≠ `match-city`, etc.).
   - If you add a new parameterised question whose cost depends on a param, extend
     `questionGroupKey` to include that param.

@@ -146,64 +146,6 @@ alt_rows = [(a, c) for a, c in zip(alt_labels, alt_counts) if c]
 alt_table = html_hgrid(alt_rows, "Elevation band (ft)", "stations")
 nl_table = html_hgrid([(L, c) for L, c in nl_rows if c], "Name length", "stations")
 
-# ---------- black & white system map (built from the app's own data) ----------
-import math
-INPLAY = {"Alameda", "Contra Costa", "San Francisco", "San Mateo", "Santa Clara"}
-
-def _rings(geom):
-    if geom["type"] == "Polygon":
-        return geom["coordinates"]
-    if geom["type"] == "MultiPolygon":
-        return [ring for poly in geom["coordinates"] for ring in poly]
-    return []
-
-def system_map_svg(target_h=1000.0):
-    counties_gj = json.load(open(f"{REPO}/src/data/counties.geojson.json"))
-    lines_gj = json.load(open(f"{REPO}/src/data/transit-lines.geojson.json"))
-    play = [f for f in counties_gj["features"] if f["properties"]["name"] in INPLAY]
-    # bbox from in-play county polygons
-    xs, ys = [], []
-    for f in play:
-        for ring in _rings(f["geometry"]):
-            for lon, lat in ring:
-                xs.append(lon); ys.append(lat)
-    lon0, lon1 = min(xs), max(xs)
-    lat0, lat1 = min(ys), max(ys)
-    k = math.cos(math.radians((lat0 + lat1) / 2))
-    Wd, Hd = (lon1 - lon0) * k, (lat1 - lat0)
-    SC = target_h / Hd
-    VW, VH = Wd * SC, Hd * SC
-
-    def P(lon, lat):
-        return ((lon - lon0) * k * SC, (lat1 - lat) * SC)
-
-    def ring_path(ring):
-        pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in (P(lo, la) for lo, la in ring))
-        return f"M{pts}Z"
-
-    out = []
-    # county fills + outlines (light), defines the play area
-    for f in play:
-        d = "".join(ring_path(r) for r in _rings(f["geometry"]))
-        out.append(f'<path d="{d}" fill="#f2f2f2" stroke="#9a9a9a" stroke-width="1.6" '
-                   f'stroke-linejoin="round"/>')
-    # transit lines (uniform dark for a clean B&W look)
-    for f in lines_gj["features"]:
-        g = f["geometry"]
-        chains = g["coordinates"] if g["type"] == "MultiLineString" else [g["coordinates"]]
-        for ch in chains:
-            pts = " ".join(f"{x:.1f},{y:.1f}" for x, y in (P(lo, la) for lo, la in ch))
-            out.append(f'<polyline points="{pts}" fill="none" stroke="#1a1a1a" '
-                       f'stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>')
-    # station dots
-    for s in ST:
-        x, y = P(s["lon"], s["lat"])
-        out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.6" fill="#000" '
-                   f'stroke="#fff" stroke-width="0.8"/>')
-    return (f'<svg viewBox="0 0 {VW:.0f} {VH:.0f}" preserveAspectRatio="xMidYMid meet" '
-            f'class="sysmap">{"".join(out)}</svg>')
-
-MAP_SVG = system_map_svg()
 
 # ---------- HTML ----------
 def ul(items, cls="cols"):
@@ -217,23 +159,23 @@ MATCHING = [
     ("Station name length", True), ("Street or path", False),
     ("1st admin div. (state)", False), ("2nd admin div. (county)", True),
     ("3rd admin div. (city)", True), ("4th admin div. (neighborhood)", False),
-    ("Mountain", False), ("Landmass", False), ("Park", False),
-    ("Amusement park", False), ("Zoo", False), ("Aquarium", False),
-    ("Golf course", False), ("Museum", False), ("Movie theater", False),
-    ("Sports stadium", False), ("Hospital", False), ("Library", False),
-    ("Foreign consulate", False),
+    ("Mountain", True), ("Landmass", False), ("Park", True),
+    ("Amusement park", True), ("Zoo", True), ("Aquarium", True),
+    ("Golf course", True), ("Museum", True), ("Movie theater", True),
+    ("Sports stadium", True), ("Hospital", True), ("Library", True),
+    ("Foreign consulate", True),
 ]
 MEASURING = [
     ("A commercial airport", True), ("A high-speed train line", False),
-    ("A rail station", False), ("An international border", False),
-    ("A 1st admin. div. border (state)", False), ("A 2nd admin. div. border (county)", False),
+    ("A rail station", False), ("An international border", True),
+    ("A 1st admin. div. border (state)", True), ("A 2nd admin. div. border (county)", True),
     ("A 3rd admin. div. border (city)", False), ("A 4th admin. div. border (neighborhood)", False),
     ("Sea level (altitude)", True), ("A body of water", False),
-    ("A coastline", False), ("A mountain", False), ("A park", False),
-    ("An amusement park", False), ("A zoo", False), ("An aquarium", False),
-    ("A golf course", False), ("A museum", False), ("A movie theater", False),
-    ("A sports stadium", False), ("A hospital", False), ("A library", False),
-    ("A foreign consulate", False),
+    ("A coastline", True), ("A mountain", True), ("A park", True),
+    ("An amusement park", True), ("A zoo", True), ("An aquarium", True),
+    ("A golf course", True), ("A museum", True), ("A movie theater", True),
+    ("A sports stadium", True), ("A hospital", True), ("A library", True),
+    ("A foreign consulate", True),
 ]
 RADAR = ["\u00bc", "\u00bd", "1", "3", "5", "10", "25", "50", "100"]
 THERMO = ["\u00bd", "3", "10"]
@@ -330,8 +272,8 @@ CARD_TENTACLES = f"""
   <p class="prompt">"Of all the ___ within 1 mi of you, which are you closest to?" (Hider must also be within 1 mi of one.)</p>
   <p class="send"><b>Send hider:</b> &mdash; (question is about the hider).</p>
   {META_FAIL}
-  {boxes([(t, False) for t in TENTACLES])}
-  <p class="app no inline">app: not implemented</p>
+  {boxes([(t, True) for t in TENTACLES])}
+  <p class="app ok inline">app: closest-POI within radius + eliminated-area shading</p>
 </div>"""
 CARD_PHOTO = f"""
 <div class="card">
@@ -350,7 +292,7 @@ CARD_INSIDE = f"""
   <p class="prompt"><b>End game only.</b> "I'm inside ___ (building) on ___ (floor) &mdash; are you on a higher or lower floor?" &rarr; <b>Higher / Lower / Same</b>, or <b>"I can't answer"</b> if the hider is in a different building or outdoors.</p>
   <p class="send"><b>Send hider:</b> the building you are inside <b>and the floor you are on</b>.</p>
   {META_FAIL}
-  {boxes([("Floor in a building", True)])}
+  {boxes([("Floor in a building", False)])}
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
 </div>"""
 
@@ -384,13 +326,9 @@ ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
 page1_cols = f"""
 <div class="p1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}{CARD_INSIDE}</div>"""
 
-# page 2: tables + reference lists (counties in col 2), then full-width B&W map
+# page 2: tables + reference lists (counties in col 2)
 page2_ref = f"""
-<div class="ref">{alt_card}{nl_card}{ref_air}{ref_zoos}{ref_theme}{ref_cities}{ref_counties}</div>
-<div class="mapwrap">
-  <div class="maptitle">Transit system map &mdash; in-play counties</div>
-  {MAP_SVG}
-</div>"""
+<div class="ref">{alt_card}{nl_card}{ref_air}{ref_zoos}{ref_theme}{ref_cities}{ref_counties}</div>"""
 
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8">
@@ -405,28 +343,28 @@ h1 {{ font-size:19px; margin:0 0 3px; }}
 .sub {{ font-size:10px; color:#666; margin:0 0 6px; }}
 /* page 1: two balanced columns */
 .p1 {{ column-count:2; column-gap:12px; }}
-.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:7px 9px; margin:0 0 7px; background:#fafafa; width:100%; }}
+.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:6px 8px; margin:0 0 5px; background:#fafafa; width:100%; }}
 .ref .card.tbl {{ background:#fff; }}
-.card h2 {{ font-size:13.5px; margin:0 0 5px; color:#111; }}
+.card h2 {{ font-size:13px; margin:0 0 4px; color:#111; }}
 .dk {{ float:right; font-size:9.5px; font-weight:600; background:#111; color:#fff; padding:1px 6px; border-radius:8px; }}
-.prompt {{ font-size:10px; margin:2px 0; color:#222; }}
-.send {{ font-size:9.5px; margin:2px 0; color:#0c4a6e; background:#e0f2fe; border-radius:4px; padding:2px 5px; }}
-.eg {{ font-size:9.3px; margin:2px 0; padding:2px 5px; border-radius:4px; }}
+.prompt {{ font-size:9.8px; margin:1px 0; color:#222; }}
+.send {{ font-size:9.3px; margin:1.5px 0; color:#0c4a6e; background:#e0f2fe; border-radius:4px; padding:2px 5px; }}
+.eg {{ font-size:9.1px; margin:1.5px 0; padding:2px 5px; border-radius:4px; }}
 .eg.ok {{ color:#166534; background:#f0fdf4; }}
 .eg.warn {{ color:#9a3412; background:#fff7ed; }}
-.meta {{ font-size:9px; margin:2px 0 3px; color:#555; }}
+.meta {{ font-size:8.8px; margin:1.5px 0 2px; color:#555; }}
 .egm {{ color:#c2410c; font-weight:700; }}
 /* checkbox subject lists */
 ul.chk {{ list-style:none; margin:4px 0 0; padding:0; columns:2; column-gap:10px; }}
-ul.chk li {{ font-size:9.6px; margin:1.5px 0; break-inside:avoid; display:flex; align-items:flex-start; gap:4px; }}
+ul.chk li {{ font-size:9.4px; margin:1px 0; break-inside:avoid; display:flex; align-items:flex-start; gap:4px; }}
 .cb {{ display:inline-block; width:10px; height:10px; min-width:10px; border:1px solid #555; border-radius:2px; margin-top:1px; }}
 /* photo conditions: full requirement under each title, single column */
 ul.chk.photo {{ columns:1; }}
-ul.chk.photo li {{ margin:2.5px 0; }}
-.pt {{ display:block; font-size:9.6px; line-height:1.3; }}
-.pd {{ color:#444; font-size:9px; font-weight:400; }}
+ul.chk.photo li {{ margin:1.5px 0; }}
+.pt {{ display:block; font-size:9.3px; line-height:1.2; }}
+.pd {{ color:#444; font-size:8.6px; font-weight:400; }}
 /* radar/thermometer scale: checkbox above number */
-.scale {{ display:flex; flex-wrap:wrap; gap:9px; margin:5px 0 2px; }}
+.scale {{ display:flex; flex-wrap:wrap; gap:9px; margin:3px 0 1px; }}
 .sc {{ display:flex; flex-direction:column; align-items:center; }}
 .sc .num {{ font-size:11px; margin-top:3px; color:#222; }}
 .sc.unit {{ justify-content:flex-end; font-size:9.5px; color:#777; align-self:flex-end; }}
@@ -455,10 +393,6 @@ ul.plain li {{ font-size:10px; margin:0 0 4px; }}
 ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 8px; align-items:baseline; }}
 .aname {{ font-weight:700; font-size:10px; }}
 .coord {{ font-size:9px; color:#555; font-family:'IBM Plex Mono', monospace; }}
-/* black & white system map */
-.mapwrap {{ margin-top:10px; text-align:center; break-inside:avoid; }}
-.maptitle {{ font-size:11px; font-weight:600; color:#111; margin:0 0 4px; }}
-svg.sysmap {{ display:block; margin:0 auto; height:4.6in; max-width:100%; border:1px solid #e2e2e2; background:#fff; }}
 footer {{ font-size:8px; color:#888; margin-top:8px; }}
 </style></head><body>
 <h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck (Medium)</h1>
