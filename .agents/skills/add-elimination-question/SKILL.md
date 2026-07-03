@@ -37,6 +37,15 @@ just a pure predicate over `(station, record.params)`.
    (the dropdowns/answer buttons) and assemble the `params` bag + `answer` that
    `stationPasses` reads. If the question needs a map point, reuse the existing
    "use last click" pattern (the form receives `lastClick`).
+   - **Subject dropdown is flat, not nested.** The primary "Question" `<select>`
+     is built from `subjectOptions`/`subjectGroups`: each `QUESTION_CATALOG` kind
+     in the active category becomes one option, **except** `match-poi`/`measure-poi`
+     which expand into one option per `QUESTION_POI_CATEGORIES` entry (value encoded
+     `` `${kind}::${cat}` ``, grouped via `POI_SUBJECT_GROUP`; non-POI kinds via
+     `KIND_SUBJECT_GROUP`). `pickSubject` splits on `::` to set `kind` (+ `poiCat`).
+     So a new POI category shows up automatically; a new non-POI kind just needs a
+     `KIND_SUBJECT_GROUP` entry. Do **not** re-introduce a secondary "Place type"
+     select — keep every subject in the one dropdown.
 
 ## If the question needs new station data
 Add the attribute to the `Station` type and populate it in
@@ -69,14 +78,68 @@ with the bay water instead. Then precompute per station, in `build_attributes.py
 question, and/or `nearestSaltwater` ('Pacific' vs 'Bay') for a Matching question,
 following the attribute pattern above.
 
+### Ordinal-region measuring (ZIP code / any polygon layer with a numeric name)
+`measure-zip` is the template for "is your <region value> smaller or larger than
+mine?" over a polygon layer where each region carries an **ordinal (numeric)**
+label (US ZIP via Census ZCTA). Pattern, mirroring `cities.ts`/`counties.ts`:
+- **Dataset:** `scripts/build_zctas.py` downloads the national Census ZCTA5
+  shapefile, clips to `play-area.geojson.json`, simplifies, drops slivers, and
+  writes `src/data/zctas.geojson.json` (`properties.name` = the 5-digit ZIP).
+  Re-run like the other `build_*` scripts.
+- **Lookup lib `src/lib/zip.ts`:** `zipAt(LatLng): string | null` does
+  point-in-polygon, then **snaps to the nearest region within `SNAP_M` (200 m)**
+  so shoreline-clip erosion at region edges never leaves a station regionless.
+  Also exports `zipCodes()` and `zipGeom(name)` (polygon-clipping-ready) for
+  shading. Both the seeker's value and each station's value are resolved through
+  the **same** `zipAt`, so shading and elimination can't disagree.
+- **Elimination:** resolve `seekerZip = s(p.value) || zipAt(seeker)` and
+  `stationZip = zipAt(station)`; return `true` (keep) if either is missing;
+  else `return (stationZip <= seekerZip) === (p.answer === 'smaller')`.
+- Only add this for maps whose regions have numeric labels (US ZIPs) — postcodes
+  elsewhere are alphanumeric and not ordinal.
+
+### Tie rule for ALL measuring questions ("equal → the smaller answer")
+Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,
+`measure-sealevel`, `measure-zip`) must fold an exact tie into the **smaller/closer/
+lower** answer, so a station equal to the seeker survives that answer and can never
+drop the true hider on a rounding tie. Concretely the kept side is **inclusive**
+on the small answer and **strict** on the large one:
+`return (stationVal <= seekerVal) === (answer is the 'smaller/closer/lower' one)`.
+
+### Shading must agree with the predicate (`src/lib/questionRegions.ts`)
+Any `eliminates:true` kind that shades the map needs an `<kind>EliminatedRegion`
+returning the eliminated `LatLngMultiPolygon`, wired in three places:
+1. add `if (record.kind === '<kind>') return <kind>EliminatedRegion(record)` to
+   `poiEliminatedRegion`;
+2. add the kind to `MapView`'s `isShaded()` **and** the `poiRegions` useMemo
+   dependency filter (else the shading won't recompute/appear), giving it a `pin`
+   or `pin=null` like county/city;
+3. the endgame outline + clipped-shading paths already route through
+   `poiEliminatedRegion`, so they work once (1) is done.
+For a region-union kind (zip/county/city) build the union of the eliminated-side
+polygons with the **same** `<= / >` test as the predicate — a per-station test
+`pointInMulti(shaded) === !stationPasses` then holds exactly (see
+`questionRegions.test.ts`).
+
+### Out-of-bounds features aren't offered (rulebook: outside the map ⇒ doesn't exist)
+For `measure-feature`, the Ask form's subject list is
+`AVAILABLE_MEASURE_FEATURE_KEYS = MEASURE_FEATURE_KEYS.filter(k =>
+featurePolylines(k).length > 0)` — a feature whose geometry is entirely outside
+this map's play area (e.g. the state/international border for the Bay Area) has
+empty clipped polylines and is **dropped from the dropdown** rather than returning
+null at answer time. Keep the full key in `MEASURE_FEATURE_KEYS` so it returns
+automatically for a map where it is in-bounds. This is the general rule for any
+feature/subject whose existence is map-dependent.
+
 ## Veto (hider refuses to answer)
 A question is **vetoed** when the hider refuses to answer. You only know a question
 is vetoed at *ask* time (you never get a yes/no), and the normal "Log" path forces
 you to pick an answer — so the veto action lives in the **Ask form**, not History.
 - `QuestionForm`'s `submit(vetoed)` builds the params as usual, then `delete
   params.answer` and sets `vetoed: true` when vetoed. The "**Hider vetoed**" button
-  calls `submit(true)`; it's hidden for `photo` (no hider answer). It validates the
-  identifying params (center/points/value) but not an answer.
+  calls `submit(true)`; it's shown for every kind **including `photo`** (a hider
+  can refuse a photo too). It validates the identifying params (center/points/
+  value) but not an answer.
 - A vetoed record has **no `answer`**. `describeRecord` drops the "→ answer" suffix
   when `params.answer == null`. `stationPasses` returns `true` for any vetoed record
   (eliminates nothing — same gate as inactive / non-eliminating); `MapView`'s
