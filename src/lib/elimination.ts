@@ -2,7 +2,8 @@ import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
 import { nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { distanceToFeatureMiles, stationFeatureDistanceMiles } from './measureFeatures'
+import { projectedDistanceToFeatureMiles } from './measureFeatures'
+import { cityAt } from './cities'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -40,7 +41,15 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       return same === (p.answer === 'yes')
     }
     case 'match-city': {
-      const same = station.city != null && station.city === s(p.value)
+      // Resolve both sides through the same place-polygon lookup so shading and
+      // elimination agree. Prefer the stored seeker city; fall back to the
+      // seeker coordinate. The station's city comes from its coordinate too (not
+      // the baked geocoder value), so a station's shaded/kept status matches
+      // exactly where its dot sits relative to the seeker's city polygon.
+      const seekerCity = s(p.value) || cityAt({ lat: n(p.fromLat), lon: n(p.fromLon) })
+      if (!seekerCity) return true // seeker not in any city: can't eliminate
+      const stationCity = cityAt(station)
+      const same = stationCity != null && stationCity === seekerCity
       return same === (p.answer === 'yes')
     }
     case 'match-airport': {
@@ -72,8 +81,12 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
     }
     case 'measure-feature': {
       const key = s(p.feature)
-      const seekerD = distanceToFeatureMiles({ lat: n(p.fromLat), lon: n(p.fromLon) }, key)
-      const stationD = stationFeatureDistanceMiles(station, key)
+      const seeker = { lat: n(p.fromLat), lon: n(p.fromLon) }
+      // Measure both the seeker and the station in the same seeker-centred flat
+      // projection the shading buffer is built in, so eliminate/keep and the
+      // shaded boundary always agree (see projectedDistanceToFeatureMiles).
+      const seekerD = projectedDistanceToFeatureMiles(seeker, key, seeker.lat)
+      const stationD = projectedDistanceToFeatureMiles({ lat: station.lat, lon: station.lon }, key, seeker.lat)
       if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
       return (stationD < seekerD) === (p.answer === 'closer')
     }

@@ -47,6 +47,21 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
     }
     case 'photo':
       return `Photo: ${p.description || '(logged)'}`
+    case 'match-street':
+    case 'match-admin1':
+    case 'match-admin4':
+    case 'match-landmass': {
+      const detail = p.description ? ` "${String(p.description)}"` : ''
+      const subject = { 'match-street': 'street/path', 'match-admin1': 'state', 'match-admin4': 'neighborhood', 'match-landmass': 'landmass' }[r.kind]
+      return `Same ${subject}?${detail}${arrow(String(a).toUpperCase())} (log only)`
+    }
+    case 'measure-hsr':
+    case 'measure-railstation':
+    case 'measure-water': {
+      const detail = p.description ? ` "${String(p.description)}"` : ''
+      const subject = { 'measure-hsr': 'high-speed rail', 'measure-railstation': 'rail station', 'measure-water': 'body of water' }[r.kind]
+      return `Closer/further from ${subject}?${detail}${arrow(String(a))} (log only)`
+    }
     default:
       return r.kind
   }
