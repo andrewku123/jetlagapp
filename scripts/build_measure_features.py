@@ -102,6 +102,14 @@ CITIES = {
         "coast_exclude": [
             [-122.205, 37.87, -121.40, 38.35],  # Suisun Bay + Delta, east of Carquinez Strait neck
             [-122.60, 38.0021, -121.80, 38.35],  # San Pablo Bay, north of the 38.0021 cutoff
+            # Out-of-play Marin/North-Bay shore. Marin is one continuous landmass
+            # with the in-play East Bay (they join around the north of the bbox),
+            # so it can't be told apart topologically — we exclude it by region.
+            # Two boxes shaped to spare Angel Island (lon -122.446..-122.418, up
+            # to lat 37.872): box A is north of Raccoon Strait and stops at lon
+            # -122.43 (keeps Point Molate/San Pablo); box B is west of Angel.
+            [-122.70, 37.873, -122.43, 38.0021],  # Tiburon + San Pablo west shore (San Rafael/San Quentin)
+            [-122.70, 37.820, -122.448, 37.873],  # Sausalito / Richardson Bay (west of Angel Island)
         ],
         "dams": [
             [[-122.394497, 37.960102], [-122.395999, 37.958749]],  # Castro Creek (Richmond)
@@ -245,16 +253,14 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     # Drop the artificial clip-bbox edges we added only to close the ocean side.
     shore = shore.difference(clip.exterior.buffer(0.0008))
     shore = shore.intersection(clip)
-    # Keep only shore that borders IN-PLAY LAND — coast outside the play area
-    # can't eliminate anything. We key off land, not the raw play polygon,
-    # because the play area also covers the open bay water right up to
-    # out-of-play shores (Marin: Tiburon/Sausalito/Richardson Bay); a plain
-    # distance-to-play clip can't tell those from an in-play island like Angel.
-    # in-play land = play minus the bay water; a small buffer keeps the shore
-    # even where census-place polygons sit slightly inland of the OSM coast.
+    # Keep only shore near the play area — coast far outside it can't eliminate
+    # anything. A small buffer keeps every real in-play shore, including shoreline
+    # parks that aren't census places (e.g. Point Pinole). Out-of-play shore that
+    # still sits next to play water (Marin: Tiburon/Sausalito/Richardson Bay) is
+    # removed by the region excludes below, since Marin is one continuous landmass
+    # with the in-play East Bay and can't be told apart topologically.
     if play is not None and not play.is_empty:
-        inplay_land = play.difference(bayface)
-        shore = shore.intersection(inplay_land.buffer(0.0015))
+        shore = shore.intersection(play.buffer(0.004))
     if exclude is not None and not exclude.is_empty:
         shore = shore.difference(exclude)
 
