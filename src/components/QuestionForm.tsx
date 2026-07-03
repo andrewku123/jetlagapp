@@ -233,9 +233,10 @@ export default function QuestionForm({
     return Number(thermo)
   }
 
-  // How far the chosen thermometer distance may differ from the actual A↔B gap
-  // before it's flagged: 5% of the chosen distance, floored at 0.1 mi so a short
-  // thermometer isn't impossible to place by hand.
+  // The thermometer distance is a *minimum* travel: A→B must be at least the
+  // chosen distance. This is how far the actual A↔B gap may fall *short* of the
+  // chosen distance before it's flagged: 5% of it, floored at 0.1 mi so hand-
+  // placed points right at the threshold aren't rejected.
   function thermoTolMiles(chosen: number): number {
     return Math.max(0.1, chosen * 0.05)
   }
@@ -262,10 +263,10 @@ export default function QuestionForm({
         if (!Number.isFinite(tMiles) || tMiles <= 0)
           return alert('Choose which thermometer you used (a travel distance greater than 0).')
         const actualMiles = haversineMiles(ptA, ptB)
-        if (Math.abs(actualMiles - tMiles) > thermoTolMiles(tMiles))
+        if (actualMiles + thermoTolMiles(tMiles) < tMiles)
           return alert(
-            `Start A and end B are ${formatDistance(actualMiles, units)} apart, but you chose a ${formatDistance(tMiles, units)} thermometer. ` +
-            `Move A/B to match the thermometer distance, or pick the distance that matches your points.`,
+            `Start A and end B are only ${formatDistance(actualMiles, units)} apart, but a ${formatDistance(tMiles, units)} thermometer needs a travel of at least ${formatDistance(tMiles, units)}. ` +
+            `Move A/B farther apart, or pick a shorter thermometer.`,
           )
         params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, thermometerMiles: tMiles, answer: hotcold }
         break
@@ -569,12 +570,12 @@ export default function QuestionForm({
           {ptA && ptB && (() => {
             const actual = haversineMiles(ptA, ptB)
             const chosen = thermoMiles()
-            const ok = Number.isFinite(chosen) && chosen > 0 && Math.abs(actual - chosen) <= thermoTolMiles(chosen)
+            const ok = Number.isFinite(chosen) && chosen > 0 && actual + thermoTolMiles(chosen) >= chosen
             return (
               <p className={`blurb poi-readout${ok ? '' : ' warn'}`}>
                 A↔B distance: <b>{formatDistance(actual, units)}</b>
                 {Number.isFinite(chosen) && chosen > 0 && (
-                  <> {ok ? '✓ matches' : `⚠ doesn't match`} the {formatDistance(chosen, units)} thermometer</>
+                  <> {ok ? `✓ meets the ${formatDistance(chosen, units)} thermometer` : `⚠ must be at least ${formatDistance(chosen, units)}`}</>
                 )}
               </p>
             )
