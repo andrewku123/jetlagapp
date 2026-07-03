@@ -246,6 +246,24 @@ describe('stationPasses — tentacle (nearest in-radius place)', () => {
     expect(stationPasses(near, outside)).toBe(false)
     expect(stationPasses(far, outside)).toBe(true)
   })
+
+  it('a normal answer also eliminates stations outside the radius (radar "yes"), except in endgame', () => {
+    // SJ is ~40 mi from the SF seeker → well outside the 1 mi disk. Its nearest
+    // *in-play* (SF) museum is the only answer that would otherwise keep it.
+    const sj = station({ lat: 37.3352, lon: -121.8938 })
+    let nearestIdx = 0
+    let best = Infinity
+    inPlay.forEach((p, i) => {
+      const d = Math.hypot(p.lat - sj.lat, p.lon - sj.lon)
+      if (d < best) { best = d; nearestIdx = i }
+    })
+    const value = poiKey(inPlay[nearestIdx])
+    // Non-endgame: even though the answer is SJ's nearest in-play museum, SJ is
+    // outside the disk, so a normal answer eliminates it like a radar "yes".
+    expect(stationPasses(sj, record('tentacle', { ...base, value }))).toBe(false)
+    // Endgame: the outside-the-disk rule is skipped, so it survives.
+    expect(stationPasses(sj, { ...record('tentacle', { ...base, value }), endgame: true })).toBe(true)
+  })
 })
 
 describe('stationPasses — tentacle-line (nearest in-radius metro line)', () => {
@@ -293,6 +311,16 @@ describe('stationPasses — tentacle-line (nearest in-radius metro line)', () =>
   it('no in-play lines (seeker far offshore) never eliminates', () => {
     const r = record('tentacle-line', { radiusMi: 15, fromLat: 36.0, fromLon: -124.5, value: 'anything' })
     expect(stationPasses(station(seeker), r)).toBe(true)
+  })
+
+  it('a normal answer also eliminates stations outside the radius (radar "yes"), except in endgame', () => {
+    // SJ is ~40 mi from the SF seeker → outside the 15 mi disk. Answer it with the
+    // line SJ is closest to among the SF in-play set, so only the disk rule bites.
+    const sj = station({ lat: 37.3352, lon: -121.8938 })
+    const near = nearestMetroLine(sj, inPlay, seeker.lat)!
+    const value = near.line.id
+    expect(stationPasses(sj, record('tentacle-line', { ...base, value }))).toBe(false)
+    expect(stationPasses(sj, { ...record('tentacle-line', { ...base, value }), endgame: true })).toBe(true)
   })
 })
 

@@ -262,8 +262,26 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   if (idx < 0) return null
   const cell = voronoiCellRing(inPlay, idx, seeker.lat)
   if (!cell) return null
-  const elim = polygonClipping.difference([WORLD_RING], [cell])
+  // A normal answer implies the hider is within the radius (else they'd answer
+  // "not within"), so the keep region is the answer POI's Voronoi cell clipped to
+  // the seeker's disk; everything else is eliminated. Endgame questions keep the
+  // full cell (their shading is clipped to the hiding zone downstream).
+  const keep = clipKeepToDisk([[cell]], seeker, radius, record.endgame)
+  if (!keep.length) return null
+  const elim = polygonClipping.difference([WORLD_RING], keep)
   return elim.length ? toLatLng(elim) : null
+}
+
+// Clip a keep region to the seeker's radar disk, unless the question is endgame.
+function clipKeepToDisk(
+  keep: Polygon[],
+  seeker: LatLng,
+  radius: number,
+  endgame: boolean | undefined,
+): Polygon[] {
+  if (endgame || !Number.isFinite(radius)) return keep
+  const disk: Polygon = [circlePolygon(seeker, radius).map((pt) => [pt.lon, pt.lat] as [number, number])]
+  return polygonClipping.intersection(keep, [disk])
 }
 
 // Metro Lines tentacle: shade everywhere whose nearest *in-play* line is NOT the
@@ -334,7 +352,9 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
     cells.push([cell])
   }
   if (!cells.length) return null
-  const keep = robustUnion(cells)
+  // Normal answer ⇒ hider within the radius, so clip the keep region to the
+  // seeker's disk (everything outside is eliminated too); endgame keeps it full.
+  const keep = clipKeepToDisk(robustUnion(cells), seeker, radius, record.endgame)
   if (!keep.length) return null
   const elim = polygonClipping.difference([WORLD_RING], keep)
   return elim.length ? toLatLng(elim) : null

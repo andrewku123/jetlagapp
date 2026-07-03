@@ -141,6 +141,12 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       if (answerKey === TENTACLE_OUTSIDE) return haversineMiles(station, seeker) > radius
       const inPlay = poisWithinRadius(seeker, cat, radius)
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
+      // A normal (named-POI) answer means the hider is within the radius of the
+      // seeker — otherwise they'd answer "not within". So, like a radar "yes",
+      // everything outside the disk is eliminated too. Skipped for endgame
+      // questions (answered from the hider's real position) and for the 0/1-POI
+      // case (which is asked as a radar, handled by the sentinels above).
+      if (!record.endgame && inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
       for (const poi of inPlay) {
@@ -170,6 +176,10 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       if (answerId === TENTACLE_OUTSIDE) return haversineMiles(station, seeker) > radius
       const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
+      // Normal answer ⇒ hider within the radius (else they'd answer "not within"),
+      // so eliminate everything outside the disk too — like a radar "yes". Skipped
+      // for endgame and the 0/1-line radar case (handled by the sentinels above).
+      if (!record.endgame && inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
       for (const line of inPlay) {
