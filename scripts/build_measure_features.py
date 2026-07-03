@@ -241,6 +241,12 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     # Clip to the play area; remove excluded regions (Suisun Bay / Delta east of
     # Carquinez) — the shore just ends cleanly at the neck, no bridge, no sliver.
     shore = shore.intersection(clip)
+    # Keep only shore inside the actual playable area — coast outside it can't
+    # eliminate anything (Marin/North Bay/Pacific coast beyond the play area), so
+    # it's dropped. Buffer a little so the shoreline right along the play-area
+    # edge (census-place polygons sit slightly inland of the OSM coast) is kept.
+    if play is not None and not play.is_empty:
+        shore = shore.intersection(play.buffer(0.004))
     if exclude is not None and not exclude.is_empty:
         shore = shore.difference(exclude)
 
