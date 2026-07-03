@@ -1274,26 +1274,23 @@ export default function MapView({
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}
-        {endgameStation && (
-          <Fragment>
-            <Polygon
-              positions={[
-                WORLD_RING,
-                circlePolygon(
-                  { lat: endgameStation.lat, lon: endgameStation.lon },
-                  hidingRadiusMi,
-                ).map((p) => [p.lat, p.lon] as [number, number]),
-              ]}
-              pathOptions={ELIM_FILL}
-            />
-            <Circle
-              center={[endgameStation.lat, endgameStation.lon]}
-              radius={hidingRadiusMi * 1609.344}
-              interactive={false}
-              pathOptions={{ color: '#16a34a', weight: 2, fill: false }}
-            />
-          </Fragment>
-        )}
+        {endgameStation && (() => {
+          const zoneRing = circlePolygon(
+            { lat: endgameStation.lat, lon: endgameStation.lon },
+            hidingRadiusMi,
+          ).map((p) => [p.lat, p.lon] as [number, number])
+          return (
+            <Fragment>
+              <Polygon positions={[WORLD_RING, zoneRing]} pathOptions={ELIM_FILL} />
+              {/* zone outline from the same ring as the shading hole */}
+              <Polygon
+                positions={[zoneRing]}
+                interactive={false}
+                pathOptions={{ color: '#16a34a', weight: 2, fill: false }}
+              />
+            </Fragment>
+          )
+        })()}
 
         {showEliminated &&
           stationRenderer &&
@@ -1393,9 +1390,10 @@ export default function MapView({
                   positions={yes ? [WORLD_RING, ring] : [ring]}
                   pathOptions={ELIM_FILL}
                 />
-                <Circle
-                  center={[center.lat, center.lon]}
-                  radius={radiusMiles * 1609.344}
+                {/* outline built from the same ring as the shading, so the edge
+                    of the shaded area sits exactly on the drawn circle */}
+                <Polygon
+                  positions={[ring]}
                   interactive={false}
                   pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
                 />
@@ -1515,6 +1513,43 @@ export default function MapView({
             ))}
           </Fragment>
         ))}
+
+        {/* endgame: keep each endgame question's boundary line visible (radar
+            circle / thermometer bisector) so you can see the edge relative to the
+            zone, even though the shading is clipped to the zone. */}
+        {endgameStation &&
+          records
+            .filter((r) => r.endgame && r.active && !r.vetoed && r.eliminates)
+            .map((r) => {
+              if (r.kind === 'radar') {
+                const center = { lat: Number(r.params.lat), lon: Number(r.params.lon) }
+                const ring = circlePolygon(center, Number(r.params.radiusMiles)).map(
+                  (p) => [p.lat, p.lon] as [number, number],
+                )
+                return (
+                  <Polygon
+                    key={r.id + '-outline'}
+                    positions={[ring]}
+                    interactive={false}
+                    pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
+                  />
+                )
+              }
+              if (r.kind === 'thermometer') {
+                const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
+                const to = { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }
+                const ends = bisectorPolyline(from, to, LINE_LENGTH_MI)
+                return (
+                  <Polyline
+                    key={r.id + '-outline'}
+                    positions={ends.map((p) => [p.lat, p.lon]) as [number, number][]}
+                    interactive={false}
+                    pathOptions={{ color: '#7c3aed', weight: 2.5, dashArray: '6 4' }}
+                  />
+                )
+              }
+              return null
+            })}
 
         {/* manual compass / straightedge annotations */}
         {annotations.map((a) => {
