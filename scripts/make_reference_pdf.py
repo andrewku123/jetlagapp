@@ -189,6 +189,8 @@ PHOTO = [
     ("You", "Selfie mode, perpendicular to ground, arm extended, default lens, no zoom.", False),
     ("Widest street", "Must include both sides of the street; background not required.", False),
     ("Tallest structure in your sightline", "Tallest building from your perspective (not objectively tallest). Include top and both sides; top in the top 1/3 of the frame.", False),
+    ("Longest sightline", "Longest line of sight from your perspective, not the objectively longest. If not frozen, you choose where to stand, but from there it must be the longest sightline in any direction. Ground fills at least the bottom 1/3 of the frame; the terminus \u2014 the horizon, or the base of whatever cuts it off \u2014 sits in at least the top 1/3 and must be visible.", False),
+    ("Darkest area", "Darkest 2'\u00d72' section in your current sightline. Must contain 3 distinct elements. Litmus test: can someone match it if they visit the spot, allowing for lighting differences across times of day? (Screens / temporary lights don\u2019t count.)", False),
     ("Any building visible from transit station", "Stand directly outside a station entrance (pick one if several). Include roof and both sides; top of building in the top 1/3 of the frame.", True),
     ("Tallest building visible from transit station", "As above, standing directly outside a station entrance. The station itself can\u2019t count unless unrelated (e.g. MetLife building atop Grand Central).", True),
     ("Trace nearest street / path", "Street/path must be visible on a mapping app; trace intersection to intersection (photo-editing app or trace on paper).", False),
@@ -291,7 +293,7 @@ CARD_INSIDE = f"""
 <div class="card slim">
   <h2>7 &middot; Inside <span class="dk">both players indoors</span></h2>
   <p class="prompt"><b>Floor</b> <span class="dk">(draw 3, keep 1 &middot; end game only)</span>: higher/lower floor than me? &rarr; <b>Higher / Lower / Same</b> (or <b>"can't answer"</b> if outdoors / different building). Send the building <b>and your floor</b>.</p>
-  <p class="prompt"><b>Traffic</b> <span class="dk">(draw 2, keep 1)</span>: count people passing within 15 ft over 5 min, to 2 sig figs (137&rarr;140). Send your count. Can't answer outdoors.</p>
+  <p class="prompt"><b>Traffic</b> <span class="dk">(draw 3, keep 1)</span>: count people passing within 15 ft over 5 min, to 2 sig figs (137&rarr;140). Send your count. Can't answer outdoors.</p>
   {boxes([("Floor in a building", False), ("Traffic (5-min foot count)", False)])}
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
 </div>"""
@@ -340,6 +342,7 @@ doc = f"""<!doctype html><html><head><meta charset="utf-8">
 * {{ box-sizing: border-box; }}
 body {{ font-family: 'IBM Plex Sans', -apple-system, Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; }}
 h1 {{ font-size:19px; margin:0 0 3px; }}
+h1.contd {{ margin-top:10px; }}
 .sub {{ font-size:10px; color:#666; margin:0 0 6px; }}
 /* page 1: two balanced columns */
 .p1 {{ column-count:2; column-gap:12px; }}
@@ -398,8 +401,7 @@ footer {{ font-size:8px; color:#888; margin-top:8px; }}
 <h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck (Medium)</h1>
 <p class="sub">Seeker asks; hider answers truthfully &amp; then draws/keeps cards. <b>Send hider</b> = the minimum you must reveal for the question to be answerable. <span class="egm">&dagger;</span> = may be impossible in the end game. "app" = the Bay Area seeker tool auto-eliminates for it.</p>
 {page1_cols}
-<div class="page-break"></div>
-<h1>Bay Area play-area reference (continued)</h1>
+<h1 class="contd">Bay Area play-area reference (continued)</h1>
 <p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties.</p>
 {page2_ref}
 <footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. POIs from OpenStreetMap.</footer>
