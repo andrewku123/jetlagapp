@@ -355,7 +355,7 @@ export default function QuestionForm({
       }
       case 'photo': {
         if (!photoTitle) return alert('Pick which photo you asked for.')
-        params = { photoTitle, description: value.trim() || undefined }
+        params = { photoTitle }
         break
       }
     }
@@ -800,10 +800,6 @@ export default function QuestionForm({
             const card = photoCards.find((c) => c.title === photoTitle)
             return card ? <p className="blurb poi-readout">{card.requirement}</p> : null
           })()}
-          <div className="row">
-            <label>Note</label>
-            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="optional detail" />
-          </div>
         </>
       )}
 
