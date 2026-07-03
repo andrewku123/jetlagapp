@@ -255,6 +255,35 @@ const DIM_FILL = {
   fillRule: 'evenodd',
 } as const
 
+// outline for the edge of an eliminated area (same look as the radar circle
+// outline) so every shaded question shows a crisp boundary line, not just a fill
+const ELIM_OUTLINE = { color: '#3730a3', weight: 1, fill: false, interactive: false } as const
+
+// A ring is the off-screen world box (the outer ring of a "complement" shaded
+// region, e.g. eliminate-everything-outside-X). Its edge shouldn't be outlined —
+// only the meaningful inner boundary (the X hole) should get the line.
+function isWorldRing(ring: [number, number][]): boolean {
+  return ring.length > 0 && ring.every(([lat, lon]) => Math.abs(lat) >= 84 && Math.abs(lon) >= 179)
+}
+
+// Draws the boundary line of an eliminated region (any shaded question), skipping
+// the off-screen world-box ring so complement regions only outline their real
+// edge. Mirrors the radar/thermometer outline for POI/measure/feature/matching.
+function RegionOutline({ region }: { region: LatLngMultiPolygon }) {
+  return (
+    <>
+      {region.flatMap((poly, pi) =>
+        poly
+          .map((ring, ri) => ({ ring, ri }))
+          .filter(({ ring }) => !isWorldRing(ring))
+          .map(({ ring, ri }) => (
+            <Polygon key={`${pi}-${ri}`} positions={ring} pathOptions={ELIM_OUTLINE} />
+          )),
+      )}
+    </>
+  )
+}
+
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 
 function inAnnotationControl(t: HTMLElement | null | undefined): boolean {
@@ -1454,6 +1483,8 @@ export default function MapView({
             {pr.region.map((poly, i) => (
               <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
             ))}
+            {/* boundary line, like the radar circle outline */}
+            <RegionOutline region={pr.region} />
             {pr.pin && (
               <CircleMarker
                 center={[pr.pin.lat, pr.pin.lon]}
@@ -1514,7 +1545,10 @@ export default function MapView({
                   />
                 )
               }
-              return null
+              // POI / measure / feature / matching: outline the full (unclipped)
+              // eliminated boundary, like the radar circle stays whole in endgame.
+              const region = poiEliminatedRegion(r)
+              return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
             })}
 
         {/* manual compass / straightedge annotations */}
