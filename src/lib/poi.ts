@@ -134,6 +134,13 @@ export function poiCategoryLabel(key: string): string {
   return singular.toLowerCase()
 }
 
+// Plural label for a category, lowercased for mid-sentence use ("libraries",
+// "movie theaters"). Uses the stored plural so "library" doesn't become the
+// naive "librarys"; capitalize at call sites that need a leading capital.
+export function poiCategoryLabelPlural(key: string): string {
+  return (CATEGORY_LABEL[key] ?? `${key}s`).toLowerCase()
+}
+
 // A stable identity for a POI (name + rounded coords) so two independent
 // "nearest" computations agree on whether they landed on the same place.
 export function poiKey(p: { name: string; lat: number; lon: number }): string {

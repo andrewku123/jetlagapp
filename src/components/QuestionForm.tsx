@@ -3,7 +3,7 @@ import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
-import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey } from '../lib/poi'
+import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey } from '../lib/poi'
 import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
@@ -339,7 +339,7 @@ export default function QuestionForm({
         if (!tc) return alert('Pick a tentacle subject.')
         const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
         if (inPlay.length === 0)
-          return alert(`No ${poiCategoryLabel(tentCat)}s within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`)
+          return alert(`No ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`)
         const chosen = inPlay.find((poi) => poiKey(poi) === tentPoi)
         if (!chosen) return alert('Pick which in-range place the hider is closest to.')
         params = {
@@ -531,7 +531,7 @@ export default function QuestionForm({
     if (q.kind === 'tentacle') {
       return tentCats.map((c) => ({
         value: `${q.kind}::${c.key}`,
-        label: `${capitalize(poiCategoryLabel(c.key))}s within ${formatDistance(c.radiusMi, units)}`,
+        label: `${capitalize(poiCategoryLabelPlural(c.key))} within ${formatDistance(c.radiusMi, units)}`,
         group: `Within ${formatDistance(c.radiusMi, units)}`,
       }))
     }
@@ -581,7 +581,7 @@ export default function QuestionForm({
         : kind === 'match-poi'
           ? `Is your nearest ${poiCategoryLabel(poiCat)} the same as mine? Set your location; the app shows which one it treats as nearest.`
           : kind === 'tentacle'
-            ? `Of all the ${poiCategoryLabel(tentCat)}s within ${formatDistance(tentRadius, units)} of me, which are you closest to? Set your location; the app lists the in-range ${poiCategoryLabel(tentCat)}s — pick the one I answer. ${capitalize(poiCategoryLabel(tentCat))}s outside the radius don't count even if they're closer to you.`
+            ? `Of all the ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tentRadius, units)} of me, which are you closest to? Set your location; the app lists the in-range ${poiCategoryLabelPlural(tentCat)} — pick the one I answer. ${capitalize(poiCategoryLabelPlural(tentCat))} outside the radius don't count even if they're closer to you.`
             : meta.blurb
 
   return (
@@ -840,7 +840,7 @@ export default function QuestionForm({
             if (inPlay.length === 0)
               return (
                 <p className="blurb poi-readout warn">
-                  No {poiCategoryLabel(tentCat)}s within {formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.
+                  No {poiCategoryLabelPlural(tentCat)} within {formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.
                 </p>
               )
             return (
