@@ -253,6 +253,7 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   const radius = Number(p.radiusMi)
   const answerKey = String(p.value ?? '')
   if (!answerKey || !Number.isFinite(radius)) return null
+  if (record.endgame) return null // endgame tentacles eliminate nothing
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerKey === TENTACLE_INSIDE || answerKey === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerKey)
@@ -313,6 +314,7 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   const radius = Number(p.radiusMi)
   const answerId = String(p.value ?? '')
   if (!answerId || !Number.isFinite(radius)) return null
+  if (record.endgame) return null // endgame tentacles eliminate nothing
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerId === TENTACLE_INSIDE || answerId === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerId)

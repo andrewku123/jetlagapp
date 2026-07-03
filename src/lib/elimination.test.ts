@@ -247,7 +247,7 @@ describe('stationPasses — tentacle (nearest in-radius place)', () => {
     expect(stationPasses(far, outside)).toBe(true)
   })
 
-  it('a normal answer eliminates stations outside the radius (radar "yes"), even in endgame', () => {
+  it('a normal answer eliminates stations outside the radius (radar "yes"); endgame eliminates nothing', () => {
     // SJ is ~40 mi from the SF seeker → well outside the 1 mi disk. Its nearest
     // *in-play* (SF) museum is the only answer that would otherwise keep it.
     const sj = station({ lat: 37.3352, lon: -121.8938 })
@@ -259,10 +259,15 @@ describe('stationPasses — tentacle (nearest in-radius place)', () => {
     })
     const value = poiKey(inPlay[nearestIdx])
     // Even though the answer is SJ's nearest in-play museum, SJ is outside the
-    // disk, so a normal answer eliminates it like a radar "yes" — the hider must
-    // be within the radius to answer, which holds in endgame too.
+    // disk, so a normal answer eliminates it like a radar "yes".
     expect(stationPasses(sj, record('tentacle', { ...base, value }))).toBe(false)
-    expect(stationPasses(sj, { ...record('tentacle', { ...base, value }), endgame: true })).toBe(false)
+    // Endgame tentacles eliminate nothing (logged only) — SJ survives, and so
+    // does a station whose nearest in-play museum is a different one.
+    expect(stationPasses(sj, { ...record('tentacle', { ...base, value }), endgame: true })).toBe(true)
+    const at0 = station({ lat: inPlay[0].lat, lon: inPlay[0].lon })
+    const dropAnswer = record('tentacle', { ...base, value: poiKey(inPlay[1]) })
+    expect(stationPasses(at0, dropAnswer)).toBe(false)
+    expect(stationPasses(at0, { ...dropAnswer, endgame: true })).toBe(true)
   })
 })
 
@@ -313,14 +318,15 @@ describe('stationPasses — tentacle-line (nearest in-radius metro line)', () =>
     expect(stationPasses(station(seeker), r)).toBe(true)
   })
 
-  it('a normal answer eliminates stations outside the radius (radar "yes"), even in endgame', () => {
+  it('a normal answer eliminates stations outside the radius (radar "yes"); endgame eliminates nothing', () => {
     // SJ is ~40 mi from the SF seeker → outside the 15 mi disk. Answer it with the
     // line SJ is closest to among the SF in-play set, so only the disk rule bites.
     const sj = station({ lat: 37.3352, lon: -121.8938 })
     const near = nearestMetroLine(sj, inPlay, seeker.lat)!
     const value = near.line.id
     expect(stationPasses(sj, record('tentacle-line', { ...base, value }))).toBe(false)
-    expect(stationPasses(sj, { ...record('tentacle-line', { ...base, value }), endgame: true })).toBe(false)
+    // Endgame tentacles eliminate nothing (logged only).
+    expect(stationPasses(sj, { ...record('tentacle-line', { ...base, value }), endgame: true })).toBe(true)
   })
 })
 

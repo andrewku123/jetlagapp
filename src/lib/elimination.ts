@@ -128,6 +128,12 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // (p.value = poiKey) is the in-play POI the hider is closest to. Keep a
       // station iff its nearest *in-play* POI is that answer — a POI outside the
       // radius never counts, even if it is physically closer to the station.
+      // Endgame tentacles eliminate nothing. In endgame the hider answers from
+      // their real position, not the station centre, so a station can sit outside
+      // the radius (or nearest a different POI) even though the hider is inside it
+      // — the disk / closest-POI tests would wrongly drop valid stations. Rather
+      // than reason about that mismatch, endgame tentacles are logged only.
+      if (record.endgame) return true
       const cat = s(p.poiCat)
       const radius = n(p.radiusMi)
       const answerKey = s(p.value)
@@ -143,9 +149,9 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       // A normal (named-POI) answer means the hider is within the radius of the
       // seeker — otherwise they'd answer "not within". So, like a radar "yes",
-      // everything outside the disk is eliminated too. This holds even in endgame
-      // (the hider must still be within the radius to answer). Skipped only for the
-      // 0/1-POI case, which is asked as a radar (handled by the sentinels above).
+      // everything outside the disk is eliminated too. Skipped only for the 0/1-POI
+      // case, which is asked as a radar (handled by the sentinels above). (Endgame
+      // returned early above, so this only applies to non-endgame questions.)
       if (inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
@@ -167,6 +173,10 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // the hider is closest to. Keep a station iff its nearest in-play line is
       // that answer. All distances use the seeker-centred projection so the
       // keep/drop decision agrees with the shaded region.
+      // Endgame tentacles eliminate nothing (see the 'tentacle' case): the hider
+      // answers from their real position, not the station centre, so elimination
+      // would be unreliable. Logged only in endgame.
+      if (record.endgame) return true
       const radius = n(p.radiusMi)
       const answerId = s(p.value)
       if (!answerId || !Number.isFinite(radius)) return true
@@ -177,8 +187,8 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       // Normal answer ⇒ hider within the radius (else they'd answer "not within"),
-      // so eliminate everything outside the disk too — like a radar "yes". Holds
-      // even in endgame; skipped only for the 0/1-line radar case (sentinels above).
+      // so eliminate everything outside the disk too — like a radar "yes". Skipped
+      // for the 0/1-line radar case (sentinels above); endgame returned early.
       if (inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
