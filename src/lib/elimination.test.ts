@@ -119,6 +119,34 @@ describe('stationPasses — measure-poi (distance to nearest place of a type)', 
   })
 })
 
+describe('stationPasses — measure-feature (distance to a coastline / border)', () => {
+  // coastal SF station is ~0 mi from the saltwater shore; inland Antioch is ~30 mi
+  const coastal = station({ id: 'sf-embarcadero', lat: 37.7955, lon: -122.3937 })
+  const inland = station({ id: 'antioch', lat: 38.0169, lon: -121.8009 })
+  // seeker at San Jose Diridon (~10 mi from the coast)
+  const seeker = { fromLat: 37.3297, fromLon: -121.9024 }
+
+  it('coastline: keeps stations on the seeker\u2019s side of the corridor', () => {
+    const closer = record('measure-feature', { feature: 'coastline', ...seeker, answer: 'closer' })
+    expect(stationPasses(coastal, closer)).toBe(true) // 0 < 10
+    expect(stationPasses(inland, closer)).toBe(false) // 30 !< 10
+    const further = record('measure-feature', { feature: 'coastline', ...seeker, answer: 'further' })
+    expect(stationPasses(coastal, further)).toBe(false)
+    expect(stationPasses(inland, further)).toBe(true)
+  })
+
+  it('state border: the eastern station is closer to the Nevada line', () => {
+    // Antioch (east) is closer to CA\u2019s land border than SF (west)
+    const r = record('measure-feature', { feature: 'state-border', fromLat: 37.7955, fromLon: -122.3937, answer: 'closer' })
+    expect(stationPasses(inland, r)).toBe(true) // Antioch closer than an SF seeker
+  })
+
+  it('unknown feature never eliminates', () => {
+    const r = record('measure-feature', { feature: 'nonesuch', ...seeker, answer: 'closer' })
+    expect(stationPasses(coastal, r)).toBe(true)
+  })
+})
+
 describe('applyFilters', () => {
   it('partitions stations into remaining and eliminated', () => {
     const a = station({ id: 'a', city: 'San Francisco' })

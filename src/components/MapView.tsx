@@ -16,8 +16,10 @@ import {
 import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
-import type { RenderPoi, PoiPlace } from '../lib/poi'
+import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel } from '../lib/poi'
+import { nearestPointOnFeature, MEASURE_FEATURE_LABELS, type MeasureFeatureKey } from '../lib/measureFeatures'
+import { AIRPORTS, nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
@@ -813,22 +815,45 @@ export default function MapView({
   // per active record; the key changes only when a poi question is added/removed
   // or its answer/location/category changes.
   const poiRegions = useMemo(() => {
-    type PoiRegion = { id: string; region: LatLngMultiPolygon; seeker: LatLng; np: PoiPlace | null; cat: string }
+    type Pin = { lat: number; lon: number; label: string }
+    type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null }
+    const isShaded = (k: string) =>
+      k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
+      k === 'match-airport' || k === 'measure-airport' || k === 'match-county'
     const rs = records.filter(
-      (r) => r.active && !r.vetoed && r.eliminates && (r.kind === 'match-poi' || r.kind === 'measure-poi'),
+      (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
     )
     return rs
-      .map((r): PoiRegion | null => {
+      .map((r): ShadeRegion | null => {
         const region = poiEliminatedRegion(r)
+        if (!region) return null
         const seeker = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
-        const cat = String(r.params.poiCat)
-        return region ? { id: r.id, region, seeker, np: nearestPoi(seeker, cat), cat } : null
+        let pin: Pin | null = null
+        if (r.kind === 'measure-feature') {
+          const key = String(r.params.feature)
+          const npf = nearestPointOnFeature(seeker, key)
+          if (npf) pin = { lat: npf.lat, lon: npf.lon, label: `nearest ${MEASURE_FEATURE_LABELS[key as MeasureFeatureKey] ?? 'border'}` }
+        } else if (r.kind === 'match-airport' || r.kind === 'measure-airport') {
+          const code = nearestAirport(seeker).code
+          const a = AIRPORTS[code]
+          if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
+        } else if (r.kind === 'match-county') {
+          pin = null // the shaded county polygon speaks for itself
+        } else {
+          const cat = String(r.params.poiCat)
+          const np = nearestPoi(seeker, cat)
+          if (np) pin = { lat: np.lat, lon: np.lon, label: `your nearest ${poiCategoryLabel(cat)}: ${np.name}` }
+        }
+        return { id: r.id, region, pin }
       })
-      .filter((x): x is PoiRegion => x != null)
+      .filter((x): x is ShadeRegion => x != null)
   }, [
     records
-      .filter((r) => r.kind === 'match-poi' || r.kind === 'measure-poi')
-      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
+      .filter((r) =>
+        r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
+        r.kind === 'match-airport' || r.kind === 'measure-airport' || r.kind === 'match-county',
+      )
+      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
   ])
   // measure polylines by id, so the distance label can open the line's rounding
@@ -1441,15 +1466,15 @@ export default function MapView({
             {pr.region.map((poly, i) => (
               <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
             ))}
-            {pr.np && (
+            {pr.pin && (
               <CircleMarker
-                center={[pr.np.lat, pr.np.lon]}
+                center={[pr.pin.lat, pr.pin.lon]}
                 radius={6}
                 interactive={false}
                 pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
               >
                 <Tooltip direction="top" offset={[0, -6]}>
-                  your nearest {poiCategoryLabel(pr.cat)}: {pr.np.name}
+                  {pr.pin.label}
                 </Tooltip>
               </CircleMarker>
             )}

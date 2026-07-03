@@ -45,6 +45,7 @@ export type QuestionKind =
   | 'measure-airport'
   | 'measure-sealevel'
   | 'measure-poi'
+  | 'measure-feature'
   | 'inside-floor'
   | 'photo'
 

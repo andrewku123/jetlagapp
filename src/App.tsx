@@ -142,10 +142,6 @@ export default function App() {
     return { remaining: remain, eliminated: elim }
   }, [base, game.questions, game.manualEliminated, endgameStation])
 
-  const counties = useMemo(
-    () => uniqSorted(STATIONS.map((s) => s.county).filter(Boolean) as string[]),
-    [],
-  )
   const cities = useMemo(
     () => uniqSorted(STATIONS.map((s) => s.city).filter(Boolean) as string[]),
     [],
@@ -156,10 +152,6 @@ export default function App() {
       ? all.filter((l) => !WEEKEND_EXCLUDED_LINES.includes(l))
       : all
   }, [game.dayType])
-  const airports = useMemo(
-    () => uniqSorted(STATIONS.map((s) => s.nearestAirport)),
-    [],
-  )
 
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
   const manualSet = useMemo(() => new Set(game.manualEliminated), [game.manualEliminated])
@@ -431,10 +423,8 @@ export default function App() {
               <QuestionForm
                 lastClick={lastClick}
                 units={game.units}
-                counties={counties}
                 cities={cities}
                 lines={lines}
-                airports={airports}
                 onSubmit={addQuestion}
                 onPreview={setLastClick}
                 askGroupCounts={askGroupCounts}

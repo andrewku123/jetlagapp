@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { nearestAirport } from './airports'
+import { countyAt } from './counties'
 import type { QuestionRecord } from '../types'
 
 // ray-cast point-in-ring on a [lat, lon] ring
@@ -29,7 +31,10 @@ function pointInMulti(lat: number, lon: number, mp: LatLngMultiPolygon): boolean
   return false
 }
 
-function rec(kind: 'match-poi' | 'measure-poi', params: Record<string, unknown>): QuestionRecord {
+function rec(
+  kind: 'match-poi' | 'measure-poi' | 'measure-feature' | 'match-airport' | 'measure-airport' | 'match-county',
+  params: Record<string, unknown>,
+): QuestionRecord {
   return { id: 'q', kind, createdAt: 0, params, eliminates: true, active: true }
 }
 
@@ -100,5 +105,78 @@ describe('poiMeasureEliminatedRegion agrees with the elimination rule', () => {
     const region = poiMeasureEliminatedRegion(rec('measure-poi', { poiCat: cat, fromLat: SEEKER.lat, fromLon: SEEKER.lon, answer: 'further' }))!
     const near = nearestPoi(SEEKER, cat)!
     expect(pointInMulti(near.lat, near.lon, region)).toBe(true)
+  })
+})
+
+describe('featureMeasureEliminatedRegion agrees with the elimination rule', () => {
+  // seeker ~10 mi from the coast (San Jose); coastal spot ~0 mi, inland ~30 mi
+  const seeker = { fromLat: 37.3297, fromLon: -121.9024 }
+  const onCoast = { lat: 37.7955, lon: -122.3937 } // SF Embarcadero, inside the corridor
+  const inland = { lat: 38.0169, lon: -121.8009 } // Antioch, outside the corridor
+
+  it('CLOSER: shades the complement of the coastal corridor', () => {
+    const region = featureMeasureEliminatedRegion(rec('measure-feature', { feature: 'coastline', ...seeker, answer: 'closer' }))!
+    expect(region).toBeTruthy()
+    expect(pointInMulti(onCoast.lat, onCoast.lon, region)).toBe(false) // kept ⇒ unshaded
+    expect(pointInMulti(inland.lat, inland.lon, region)).toBe(true) // eliminated ⇒ shaded
+  })
+
+  it('FURTHER: shades the corridor itself', () => {
+    const region = featureMeasureEliminatedRegion(rec('measure-feature', { feature: 'coastline', ...seeker, answer: 'further' }))!
+    expect(pointInMulti(onCoast.lat, onCoast.lon, region)).toBe(true)
+    expect(pointInMulti(inland.lat, inland.lon, region)).toBe(false)
+  })
+})
+
+describe('airportMatchEliminatedRegion shades the seeker airport Voronoi cell', () => {
+  // seeker in SF → nearest airport SFO; SJC is a spot in San Jose
+  const sf = { lat: 37.7749, lon: -122.4194 }
+  const sanJose = { lat: 37.3382, lon: -121.8863 }
+
+  it('YES keeps the seeker cell (unshaded); a different-airport point is shaded', () => {
+    expect(nearestAirport(sf).code).toBe('SFO')
+    expect(nearestAirport(sanJose).code).toBe('SJC')
+    const region = airportMatchEliminatedRegion(rec('match-airport', { fromLat: sf.lat, fromLon: sf.lon, value: 'SFO', answer: 'yes' }))!
+    expect(pointInMulti(sf.lat, sf.lon, region)).toBe(false) // same airport ⇒ kept
+    expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(true) // different ⇒ eliminated
+  })
+
+  it('NO shades the seeker cell instead', () => {
+    const region = airportMatchEliminatedRegion(rec('match-airport', { fromLat: sf.lat, fromLon: sf.lon, value: 'SFO', answer: 'no' }))!
+    expect(pointInMulti(sf.lat, sf.lon, region)).toBe(true)
+    expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(false)
+  })
+})
+
+describe('airportMeasureEliminatedRegion shades the your-distance airport disks', () => {
+  const seeker = { lat: 37.7749, lon: -122.4194 } // ~11 mi from SFO
+
+  it('CLOSER: a point on top of SFO is inside the union (kept ⇒ unshaded)', () => {
+    const region = airportMeasureEliminatedRegion(rec('measure-airport', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'closer' }))!
+    expect(pointInMulti(37.6191, -122.3816, region)).toBe(false) // SFO itself: within d ⇒ kept
+  })
+
+  it('FURTHER: the union around SFO is shaded', () => {
+    const region = airportMeasureEliminatedRegion(rec('measure-airport', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }))!
+    expect(pointInMulti(37.6191, -122.3816, region)).toBe(true)
+  })
+})
+
+describe('countyMatchEliminatedRegion shades outside/inside the seeker county', () => {
+  const sf = { lat: 37.7749, lon: -122.4194 }
+  const sanJose = { lat: 37.3382, lon: -121.8863 }
+
+  it('YES keeps the seeker county (unshaded); another county is shaded', () => {
+    const county = countyAt(sf)
+    expect(county).toBe('San Francisco')
+    const region = countyMatchEliminatedRegion(rec('match-county', { fromLat: sf.lat, fromLon: sf.lon, value: 'San Francisco', answer: 'yes' }))!
+    expect(pointInMulti(sf.lat, sf.lon, region)).toBe(false)
+    expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(true)
+  })
+
+  it('NO shades the seeker county instead', () => {
+    const region = countyMatchEliminatedRegion(rec('match-county', { fromLat: sf.lat, fromLon: sf.lon, value: 'San Francisco', answer: 'no' }))!
+    expect(pointInMulti(sf.lat, sf.lon, region)).toBe(true)
+    expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(false)
   })
 })

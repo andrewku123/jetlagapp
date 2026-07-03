@@ -2,6 +2,7 @@ import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
 import { nearestPoi, nearestPoiMiles, poiKey } from './poi'
+import { distanceToFeatureMiles, stationFeatureDistanceMiles } from './measureFeatures'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -66,6 +67,13 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const cat = s(p.poiCat)
       const seekerD = nearestPoiMiles({ lat: n(p.fromLat), lon: n(p.fromLon) }, cat)
       const stationD = nearestPoiMiles(station, cat)
+      if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
+      return (stationD < seekerD) === (p.answer === 'closer')
+    }
+    case 'measure-feature': {
+      const key = s(p.feature)
+      const seekerD = distanceToFeatureMiles({ lat: n(p.fromLat), lon: n(p.fromLon) }, key)
+      const stationD = stationFeatureDistanceMiles(station, key)
       if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
       return (stationD < seekerD) === (p.answer === 'closer')
     }
