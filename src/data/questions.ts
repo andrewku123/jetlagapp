@@ -234,6 +234,9 @@ export function questionGroupKey(
   // Measuring a different linear feature (coastline vs county line) is a different
   // question; two asks of the same feature are the same question.
   if (kind === 'measure-feature') return `measure-feature:${String(params.feature)}`
+  // Each photo card is its own question, so asking two different photos does not
+  // stack the repeat-reward multiplier; only re-asking the same photo does.
+  if (kind === 'photo') return `photo:${String(params.photoTitle ?? '')}`
   if (kind === 'thermometer') {
     // Prefer the thermometer the seeker explicitly chose; two asks with the same
     // chosen thermometer are "the same question". Fall back to inferring the

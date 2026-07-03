@@ -428,6 +428,7 @@ export default function App() {
                 onPreview={setLastClick}
                 askGroupCounts={askGroupCounts}
                 endgameActive={game.endgame != null}
+                gameSize={game.gameSize}
               />
             </div>
           )}

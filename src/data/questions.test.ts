@@ -26,6 +26,19 @@ describe('questionGroupKey — thermometer keys on the chosen thermometer', () =
   })
 })
 
+describe('questionGroupKey — each photo card is its own question', () => {
+  it('two different photos do not share a group (no stacked penalty)', () => {
+    const tree = questionGroupKey('photo', { photoTitle: 'A Tree' })
+    const sky = questionGroupKey('photo', { photoTitle: 'The Sky' })
+    expect(tree).not.toBe(sky)
+  })
+  it('re-asking the same photo shares a group', () => {
+    const a = questionGroupKey('photo', { photoTitle: 'A Tree', description: 'oak' })
+    const b = questionGroupKey('photo', { photoTitle: 'A Tree' })
+    expect(a).toBe(b)
+  })
+})
+
 describe('rewardForKind', () => {
   it('returns the base reward, scaled by the ask multiplier', () => {
     expect(rewardForKind('radar')).toBe('draw 2, keep 1')

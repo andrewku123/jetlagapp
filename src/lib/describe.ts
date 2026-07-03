@@ -45,8 +45,12 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       }
       return `Inside "${p.building}"${p.floor ? ` (floor ${String(p.floor)})` : ''}${arrow(ans[String(a)] ?? String(a))}`
     }
-    case 'photo':
-      return `Photo: ${p.description || '(logged)'}`
+    case 'photo': {
+      const title = p.photoTitle ? String(p.photoTitle) : ''
+      const extra = p.description ? String(p.description) : ''
+      const body = [title, extra].filter(Boolean).join(' — ')
+      return `Photo: ${body || '(logged)'}`
+    }
     case 'match-street':
     case 'match-admin1':
     case 'match-admin4':

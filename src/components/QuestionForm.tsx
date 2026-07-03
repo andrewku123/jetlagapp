@@ -8,6 +8,7 @@ import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, dista
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
+import { PHOTO, type GameSize } from '../data/questionSets'
 
 interface Props {
   lastClick: LatLng | null
@@ -21,6 +22,8 @@ interface Props {
   // whether the seeker is currently in the endgame phase (a hiding zone is
   // locked). Used to default the "Endgame question" checkbox on.
   endgameActive: boolean
+  // current game size — decides which photo cards are askable.
+  gameSize: GameSize
 }
 
 // Optgroup each POI category falls under in the flattened subject dropdown, so
@@ -169,7 +172,10 @@ export default function QuestionForm({
   onPreview,
   askGroupCounts,
   endgameActive,
+  gameSize,
 }: Props) {
+  // photo cards askable in this game size
+  const photoCards = PHOTO.filter((c) => c.sizes.includes(gameSize))
   const metric = units === 'metric'
   const distUnit = metric ? 'km' : 'mi'
   const elevUnit = metric ? 'm' : 'ft'
@@ -210,6 +216,7 @@ export default function QuestionForm({
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
   const [feature, setFeature] = useState<string>(MEASURE_FEATURE_KEYS[0])
   const [num, setNum] = useState<string>('')
+  const [photoTitle, setPhotoTitle] = useState<string>(photoCards[0]?.title ?? '')
   const [building, setBuilding] = useState<string>('')
   const [floor, setFloor] = useState<string>('')
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
@@ -347,7 +354,8 @@ export default function QuestionForm({
         break
       }
       case 'photo': {
-        params = { description: value }
+        if (!photoTitle) return alert('Pick which photo you asked for.')
+        params = { photoTitle, description: value.trim() || undefined }
         break
       }
     }
@@ -391,6 +399,8 @@ export default function QuestionForm({
       params = { poiCat }
     } else if (kind === 'measure-feature') {
       params = { feature }
+    } else if (kind === 'photo') {
+      params = { photoTitle }
     }
     const key = questionGroupKey(kind, params)
     return (askGroupCounts.get(key) ?? 0) + 1
@@ -765,10 +775,24 @@ export default function QuestionForm({
       )}
 
       {kind === 'photo' && (
-        <div className="row">
-          <label>Describe</label>
-          <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="e.g. tallest building from station" />
-        </div>
+        <>
+          <div className="row">
+            <label>Photo</label>
+            <select value={photoTitle} onChange={(e) => setPhotoTitle(e.target.value)}>
+              {photoCards.map((c) => (
+                <option key={c.title} value={c.title}>{c.title}</option>
+              ))}
+            </select>
+          </div>
+          {(() => {
+            const card = photoCards.find((c) => c.title === photoTitle)
+            return card ? <p className="blurb poi-readout">{card.requirement}</p> : null
+          })()}
+          <div className="row">
+            <label>Note</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="optional detail" />
+          </div>
+        </>
       )}
 
       <div className="row">
