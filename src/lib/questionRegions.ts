@@ -27,19 +27,16 @@ const WORLD_RING: Ring = [
   [-179.9, 85],
 ]
 
-// A geodesic circle (equirectangular, fine at metro scale) as a [lon, lat] ring.
-// The regular n-gon is inflated to the mean of its inscribed and circumscribed
-// radius so it straddles the true circle, halving the worst-case radial error —
-// keeps boundary stations on the correct side of the shading.
+// A true geodesic circle (same spherical metric as `haversineMiles`, which the
+// per-station elimination uses) as a [lon, lat] ring. The regular n-gon is
+// inflated to the mean of its inscribed and circumscribed radius so it straddles
+// the true circle, halving the worst-case radial error — keeps boundary stations
+// on the correct side. An equirectangular n-gon drifts ~50 m off the true circle
+// at a 12 mi radius (visible at high zoom against the seeker dot), so the disk
+// must be geodesic to line up with the elimination boundary.
 function diskRing(c: LatLng, radiusMiles: number, n: number): Ring {
-  const cosLat = Math.cos((c.lat * Math.PI) / 180) || 1e-6
-  const r = radiusMiles * DEG_PER_MILE * ((1 + 1 / Math.cos(Math.PI / n)) / 2)
-  const ring: Ring = []
-  for (let i = 0; i < n; i++) {
-    const t = (i / n) * 2 * Math.PI
-    ring.push([c.lon + (r * Math.cos(t)) / cosLat, c.lat + r * Math.sin(t)])
-  }
-  return ring
+  const r = radiusMiles * ((1 + 1 / Math.cos(Math.PI / n)) / 2)
+  return circlePolygon(c, r, n).map((p) => [p.lon, p.lat] as [number, number])
 }
 
 // Buffer polylines by `radiusMiles` into the union "within radius of the line",
@@ -234,12 +231,16 @@ export function poiMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPol
 // --- Measuring: shade the union of disks (radius = seeker's own nearest-POI
 // distance) around every POI, or its complement. --------------------------------
 
-// Denser categories → more disks to union; cap the segment count so parks stay
-// responsive while sparse categories still read as clean circles.
-function diskSegments(count: number): number {
-  if (count > 800) return 24
-  if (count > 200) return 32
-  return 48
+// Segment count for a your-distance disk: fine enough that the facet error stays
+// tiny even at large radius / high zoom (a sparse category like zoo can put the
+// boundary 12 mi out, where a coarse n-gon visibly facets against the seeker
+// dot), but capped by category density so unioning 1500+ park disks stays fast.
+// n ≈ π·√(r / 2ε) keeps the worst-case sagitta under ε miles.
+function diskSegments(count: number, radiusMiles: number): number {
+  const EPS = 0.003 // miles (~5 m) target facet error
+  const need = Math.ceil(Math.PI * Math.sqrt(Math.max(radiusMiles, 0.05) / (2 * EPS)))
+  const cap = count > 800 ? 40 : count > 200 ? 72 : 256
+  return Math.max(24, Math.min(cap, need))
 }
 
 export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
@@ -250,7 +251,7 @@ export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiP
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   const d = nearestPoiMiles(seeker, cat)
   if (!Number.isFinite(d) || d <= 0) return null
-  const segs = diskSegments(list.length)
+  const segs = diskSegments(list.length, d)
   const disks: Polygon[] = list.map((poi) => [diskRing(poi, d, segs)])
   const union = polygonClipping.union(disks[0], ...disks.slice(1))
   if (!union.length) return null
@@ -314,7 +315,8 @@ export function airportMeasureEliminatedRegion(record: QuestionRecord): LatLngMu
   if (!Number.isFinite(seeker.lat) || !Number.isFinite(seeker.lon)) return null
   const d = nearestAirport(seeker).distMiles
   if (!Number.isFinite(d) || d <= 0) return null
-  const disks: Polygon[] = Object.values(AIRPORTS).map((a) => [diskRing(a, d, 48)])
+  const segs = diskSegments(Object.keys(AIRPORTS).length, d)
+  const disks: Polygon[] = Object.values(AIRPORTS).map((a) => [diskRing(a, d, segs)])
   const union = robustUnion(disks)
   if (!union.length) return null
   const closer = p.answer === 'closer'

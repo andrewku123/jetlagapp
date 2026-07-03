@@ -4,6 +4,7 @@ import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEli
 import { nearestAirport } from './airports'
 import { countyAt } from './counties'
 import { cityAt, inPlayArea } from './cities'
+import { haversineMiles } from './geo'
 import type { QuestionRecord } from '../types'
 
 // ray-cast point-in-ring on a [lat, lon] ring
@@ -106,6 +107,47 @@ describe('poiMeasureEliminatedRegion agrees with the elimination rule', () => {
     const region = poiMeasureEliminatedRegion(rec('measure-poi', { poiCat: cat, fromLat: SEEKER.lat, fromLon: SEEKER.lon, answer: 'further' }))!
     const near = nearestPoi(SEEKER, cat)!
     expect(pointInMulti(near.lat, near.lon, region)).toBe(true)
+  })
+})
+
+describe('poiMeasureEliminatedRegion boundary is geodesic (no equirectangular drift)', () => {
+  // Pleasanton seeker, ~12.3 mi from its nearest zoo (Oakland Zoo). At that
+  // radius the old equirectangular disk put the shaded boundary ~36 m off the
+  // true circle, so it rendered visibly beside the seeker dot at high zoom. The
+  // disk is now a true geodesic circle (same metric as the elimination test), so
+  // the boundary must sit on the seeker's own distance d to within a few metres.
+  const seeker = { lat: 37.699713, lon: -121.928372 }
+  const cat = 'zoo'
+  const zoo = nearestPoi(seeker, cat)!
+  const d = nearestPoiMiles(seeker, cat)
+
+  // unit direction from the zoo toward the seeker, in local equirectangular space
+  const cosLat = Math.cos((zoo.lat * Math.PI) / 180)
+  const vx = (seeker.lon - zoo.lon) * cosLat
+  const vy = seeker.lat - zoo.lat
+  const vlen = Math.hypot(vx, vy)
+  const at = (miFromSeeker: number) => {
+    const st = miFromSeeker / 69.0
+    return { lat: seeker.lat + (vy / vlen) * st, lon: seeker.lon + (vx / vlen) * st / cosLat }
+  }
+
+  it('the CLOSER shading boundary sits on d along the seeker radial (<0.01 mi drift)', () => {
+    const region = poiMeasureEliminatedRegion(
+      rec('measure-poi', { poiCat: cat, fromLat: seeker.lat, fromLon: seeker.lon, answer: 'closer' }),
+    )!
+    // bisect along the radial: outside d is eliminated (in the complement region),
+    // inside d is kept — find where membership flips and compare to d.
+    let lo = -0.5
+    let hi = 0.5
+    for (let i = 0; i < 40; i++) {
+      const m = (lo + hi) / 2
+      const p = at(m)
+      if (pointInMulti(p.lat, p.lon, region)) hi = m
+      else lo = m
+    }
+    const boundary = at((lo + hi) / 2)
+    const drift = Math.abs(haversineMiles(zoo, boundary) - d)
+    expect(drift).toBeLessThan(0.01) // <~16 m; the old equirect disk drifted ~36 m
   })
 })
 
