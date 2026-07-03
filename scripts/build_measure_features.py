@@ -85,9 +85,20 @@ CITIES = {
         # straight line across a river mouth; everything cut off from the main
         # bay (the upstream river/slough) is removed. Added one at a time as the
         # user sends precise coords.
+        # Regions clipped OUT of the coastline entirely (not "not coast"): the
+        # water there is <1 mi across upstream so it isn't coast, but we don't
+        # want a straight bridge line drawn either — the shore just ends at the
+        # neck. Each entry is a lon/lat bounding box [w, s, e, n].
+        "coast_exclude": [
+            [-122.205, 37.87, -121.40, 38.35],  # Suisun Bay + Delta, east of Carquinez Strait neck
+        ],
         "dams": [
-            [[-122.21, 38.070], [-122.21, 38.050]],  # Carquinez Strait cutoff (Suisun Bay + Delta removed; strait <1mi, play area doesn't reach here)
             [[-122.394497, 37.960102], [-122.395999, 37.958749]],  # Castro Creek (Richmond)
+            [[-122.364306, 37.909364], [-122.360530, 37.909635]],  # Albany/Golden Gate Fields
+            [[-122.329888, 37.800120], [-122.330704, 37.796797]],  # Oakland Inner Harbor / Alameda W
+            [[-122.236118, 37.750460], [-122.236161, 37.747372]],  # San Leandro Bay
+            [[-122.203567, 37.712794], [-122.202140, 37.711919]],  # San Leandro shore
+            [[-122.191615, 37.704467], [-122.190778, 37.704713]],  # San Leandro Marina / Oyster Bay
         ],
     },
 }
@@ -135,7 +146,7 @@ def _dam_polys(dams, width_deg=0.0004):
     return unary_union([LineString(seg).buffer(width_deg, cap_style=2) for seg in dams])
 
 
-def build_coastline(land, saltwater, play, bay, clip, dams=None):
+def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None):
     # Fallback for cities without a play-area/bay mask: the plain shore of the
     # land mask adjacent to saltwater (no channel removal).
     if play is None or bay is None:
@@ -202,6 +213,11 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None):
     big = unary_union([p for p in polys if p.area > 0.0008])
     shore = shore.intersection(big.boundary.buffer(0.0015))
     shore = shore.intersection(clip)
+
+    # 4b. clip out excluded regions (e.g. Suisun Bay / Delta east of Carquinez):
+    #     the shore simply ends at the boundary — no bridge line, no sliver.
+    if exclude is not None and not exclude.is_empty:
+        shore = shore.difference(exclude)
 
     # 5. drop tiny isolated shore fragments (little cove hooks / stray water
     #    dots left near a dam mouth) — real coastline merges into long lines, so
@@ -302,9 +318,13 @@ def main():
     states = load(src(cfg["states"]))
     countries = load(src(cfg["countries"]))
 
+    coast_exclude = None
+    if cfg.get("coast_exclude"):
+        coast_exclude = unary_union([box(*bb) for bb in cfg["coast_exclude"]])
+
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams")), 0.00015)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
