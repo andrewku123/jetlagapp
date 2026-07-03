@@ -821,15 +821,13 @@ export default function QuestionForm({
 
       <div className="qform-actions">
         <button className="primary" onClick={() => submit(false)}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
-        {kind !== 'photo' && (
-          <button
-            className="veto"
-            onClick={() => submit(true)}
-            title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
-          >
-            Hider vetoed
-          </button>
-        )}
+        <button
+          className="veto"
+          onClick={() => submit(true)}
+          title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
+        >
+          Hider vetoed
+        </button>
       </div>
     </div>
   )
