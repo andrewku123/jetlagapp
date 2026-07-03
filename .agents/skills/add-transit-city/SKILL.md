@@ -88,6 +88,18 @@ and adjusting a few region constants. There is no per-city code branching.
      anything else. (The wider `counties.geojson.json` set can still exist for the
      county-*border* measure feature and the dim overlay; it just isn't used for
      the match lookup.)
+   - **City (3rd admin) match must cover the whole play area, not just the named
+     places.** The play area (`play-area.geojson.json`) includes unincorporated
+     land the census-place set never names — transit-line *bridge corridors* over
+     the hills (Rockridge→Orinda, Castro Valley→Dublin) and refilled *enclaves* —
+     so a point can be in play yet inside no city polygon. `cityAt()` in
+     `cities.ts` therefore resolves **any point inside `play-area.geojson.json` to
+     the nearest city** (unbounded), falling back to a small `SNAP_M` snap just
+     outside the outline, and only returns null (→ "outside the play area") when
+     the point is genuinely outside the play area. This also means airport /
+     unincorporated stations (e.g. the 10 SFO stops) resolve to their nearest city
+     rather than being un-matchable. Keep the seeker and station lookups on the
+     SAME `cityAt()` so shading and elimination always agree.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
