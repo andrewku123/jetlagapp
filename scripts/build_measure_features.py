@@ -303,7 +303,7 @@ def main():
 
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams")), 0.0007)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams")), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
