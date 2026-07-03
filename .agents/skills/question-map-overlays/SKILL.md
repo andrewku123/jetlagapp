@@ -93,8 +93,18 @@ every render.
 - `poiMeasureEliminatedRegion(record)` — the **union of disks** (radius = the
   seeker's own nearest-POI distance) around every POI, via `polygon-clipping`.
   `'closer'` eliminates the **complement** of the union, `'further'` eliminates
-  the union. Disk segment count adapts to category size (`diskSegments`) so parks
-  stay responsive.
+  the union.
+  - **Disks must be GEODESIC, not equirectangular (this shipped a boundary-off-the-
+    seeker-dot bug).** `diskRing()` builds each disk with `circlePolygon()` (the
+    same haversine sphere `elimination.ts` uses via `nearestPoiMiles`). An
+    equirectangular n-gon drifts ~36 m off the true circle at a sparse category's
+    ~12 mi radius — right where the boundary passes through the seeker dot, so it
+    reads as an offset diagonal at high zoom. Same one-metric principle as the
+    measure-feature corridor below. (Also applies to `airportMeasureEliminatedRegion`.)
+  - **Segment count adapts to radius AND density** (`diskSegments(count, radiusMiles)`):
+    `n ≈ π·√(r/2ε)` (ε≈0.003 mi) so a far, sparse-category circle doesn't visibly
+    facet, capped by category size (40 for >800 POIs like parks, 72 for >200, else
+    256) so unioning ~1,583 park disks stays fast.
 - Both return a `LatLngMultiPolygon` (`[lat,lon][][][]`) that drops straight into
   `<Polygon positions={poly} pathOptions={ELIM_FILL} />`.
 
