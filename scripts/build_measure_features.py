@@ -62,6 +62,16 @@ CITIES = {
         # mask (subtracted from the play area to recover that land).
         "play": "data:play-area.geojson.json",
         "bay": "bay_water_mask.geojson",
+        # High-detail real shoreline: OSM `natural=coastline` ways for the whole
+        # play bbox (the exact data the CARTO basemap draws). The coarse Census
+        # water mask above is only used to decide TOPOLOGY (which water is the
+        # main bay vs. an upstream creek cut off by a dam); the drawn shore is
+        # then snapped onto these OSM lines so it lands on the real coast.
+        # Refresh with (Overpass):
+        #   [out:json][timeout:170];
+        #   way["natural"="coastline"](37.0,-122.7,38.2,-121.4);out geom;
+        # then convert each way's geometry to a LineString Feature.
+        "coastline_detail": "measure_src/osm_coastline_bayarea.geojson",
         "counties": "data:counties.geojson.json",
         "states": "measure_src/us-states.geojson",
         "countries": "measure_src/countries.geojson",
@@ -146,7 +156,7 @@ def _dam_polys(dams, width_deg=0.0004):
     return unary_union([LineString(seg).buffer(width_deg, cap_style=2) for seg in dams])
 
 
-def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None):
+def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None):
     # Fallback for cities without a play-area/bay mask: the plain shore of the
     # land mask adjacent to saltwater (no channel removal).
     if play is None or bay is None:
@@ -205,13 +215,26 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None):
         all_land = unary_union(fill).buffer(0)
         water = main.difference(unary_union([g for g in fill if g is not all_land])).buffer(0)
 
-    # 3. shore = land boundary adjacent to the (kept) water.
-    shore = all_land.boundary.intersection(water.buffer(0.0008))
+    # 3. shore. `water.boundary` is the topologically-correct shore (with the
+    #    straight mouth crossings the dams created), but it comes from the coarse
+    #    Census mask so it sits ~30 m off the real coast. If a high-detail OSM
+    #    coastline is supplied, snap the drawn shore onto it: take the OSM lines
+    #    that run along the kept shore, and fall back to the mask boundary only
+    #    where OSM has no coastline (i.e. across each dammed mouth = the bridge).
+    if detail is not None and not detail.is_empty:
+        wb = water.boundary
+        near = 0.0016   # ~180 m: OSM kept if it hugs the kept shore
+        gap = 0.0011    # ~120 m: mask boundary kept only where no OSM is near
+        shore = unary_union([detail.intersection(wb.buffer(near)),
+                             wb.difference(detail.buffer(gap))])
+    else:
+        shore = all_land.boundary.intersection(water.buffer(0.0008))
 
-    # 4. keep only shore on big landmasses — drops marsh islets / small islands.
+    # 4. keep only shore on big landmasses — drops marsh islets / small islands
+    #    (and any offshore mask edge picked up by the fallback above).
     polys = list(all_land.geoms) if all_land.geom_type == "MultiPolygon" else [all_land]
     big = unary_union([p for p in polys if p.area > 0.0008])
-    shore = shore.intersection(big.boundary.buffer(0.0015))
+    shore = shore.intersection(big.boundary.buffer(0.0025))
     shore = shore.intersection(clip)
 
     # 4b. clip out excluded regions (e.g. Suisun Bay / Delta east of Carquinez):
@@ -322,9 +345,13 @@ def main():
     if cfg.get("coast_exclude"):
         coast_exclude = unary_union([box(*bb) for bb in cfg["coast_exclude"]])
 
+    coast_detail = None
+    if cfg.get("coastline_detail"):
+        coast_detail = unary_union(feats(load(src(cfg["coastline_detail"]))))
+
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude), 0.00015)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),

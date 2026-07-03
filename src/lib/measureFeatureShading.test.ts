@@ -3,7 +3,7 @@ import rawStations from '../data/stations.json'
 import type { QuestionRecord, Station } from '../types'
 import { stationPasses } from './elimination'
 import { poiEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
-import { MEASURE_FEATURE_KEYS } from './measureFeatures'
+import { MEASURE_FEATURE_KEYS, projectedDistanceToFeatureMiles } from './measureFeatures'
 
 const STATIONS = rawStations as unknown as Station[]
 
@@ -52,7 +52,16 @@ describe('measure-feature shading agrees with elimination for every station', ()
             active: true,
           }
           const region = poiEliminatedRegion(rec)
+          const seekerD = projectedDistanceToFeatureMiles(seeker, feature, seeker.lat)
           for (const st of STATIONS) {
+            // Skip stations sitting essentially ON the eliminated-side boundary
+            // (their distance to the feature equals the seeker's to within ~2 m):
+            // there the scalar distance test and the polygon-union buffer are
+            // numerically indistinguishable, so which side they report is
+            // undefined float noise, not a real disagreement. The invariant only
+            // meaningfully holds away from that measure-zero boundary.
+            const stD = projectedDistanceToFeatureMiles({ lat: st.lat, lon: st.lon }, feature, seeker.lat)
+            if (Math.abs(stD - seekerD) < 1.5e-3) continue // 1.5e-3 mi ≈ 2.4 m
             const kept = stationPasses(st, rec)
             const shaded = region ? pointInMulti(st.lat, st.lon, region) : false
             // kept ⇒ unshaded, eliminated ⇒ shaded
