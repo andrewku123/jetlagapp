@@ -475,6 +475,18 @@ export default function QuestionForm({
     g.opts.push(o)
   }
 
+  // The catalog blurb is generic ("…the chosen coastline / border", "…your
+  // nearest place of the chosen type"); once a specific feature / POI subject is
+  // picked, name it so the seeker reads exactly what they're measuring/matching.
+  const blurbText =
+    kind === 'measure-feature'
+      ? `Compared to me, are you closer to or further from the nearest ${measureFeatureNoun(feature)}? Set your location; the app shows your distance to it.`
+      : kind === 'measure-poi'
+        ? `Compared to me, are you closer to or further from your nearest ${poiCategoryLabel(poiCat)}? Set your location; the app shows your distance to it.`
+        : kind === 'match-poi'
+          ? `Is your nearest ${poiCategoryLabel(poiCat)} the same as mine? Set your location; the app shows which one it treats as nearest.`
+          : meta.blurb
+
   return (
     <div className="qform">
       <div className="row qrow-cat">
@@ -500,7 +512,7 @@ export default function QuestionForm({
         </div>
       )}
       <p className="blurb">
-        {meta.blurb}{' '}
+        {blurbText}{' '}
         <span className="cards">
           ({previewCards}
           {previewMult > 1 && (
