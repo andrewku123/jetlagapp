@@ -81,28 +81,12 @@ CITIES = {
         # water in as land, and traces the shore straight across the mouth.
         # Endpoints sit slightly inland on each bank so the cut fully separates.
         # Ordered roughly N→S down the peninsula, then up the East Bay.
+        # User-supplied bank-to-bank endpoint pairs (lon,lat). Each draws a
+        # straight line across a river mouth; everything cut off from the main
+        # bay (the upstream river/slough) is removed. Added one at a time as the
+        # user sends precise coords.
         "dams": [
-            # --- SF & peninsula bay shore (1 mi rule) ---
-            [[-122.3905, 37.7765], [-122.3855, 37.7720]],  # Mission Ck / China Basin (King St)
-            [[-122.3880, 37.7475], [-122.3820, 37.7420]],  # Islais Creek
-            [[-122.3775, 37.7205], [-122.3720, 37.7150]],  # Yosemite Slough / Candlestick
-            [[-122.3915, 37.6540], [-122.3835, 37.6500]],  # Colma Creek / Sierra Point (SSF)
-            [[-122.3030, 37.5755], [-122.2960, 37.5695]],  # Seal Slough (San Mateo)
-            [[-122.2470, 37.5575], [-122.2380, 37.5495]],  # Belmont Slough
-            [[-122.2145, 37.5340], [-122.2050, 37.5265]],  # Seaport Blvd (Redwood City)
-            [[-122.1340, 37.4835], [-122.1250, 37.4765]],  # San Francisquito (Bay Rd / MLK)
-            [[-122.1130, 37.4640], [-122.1040, 37.4570]],  # Byxbee Park (Palo Alto)
-            [[-122.0270, 37.4660], [-122.0140, 37.4585]],  # Coyote Ck / Guadalupe (Alviso)
-            # --- East Bay shore (1 mi rule) ---
-            [[-122.1490, 37.5970], [-122.1400, 37.5890]],  # Alameda Creek (Union City/Fremont)
-            [[-122.1935, 37.6975], [-122.1890, 37.6915]],  # Oyster Bay / San Leandro Marina
-            [[-122.2470, 37.7415], [-122.2380, 37.7345]],  # Alameda / Bay Farm (Otis Dr, E estuary)
-            [[-122.3325, 37.7955], [-122.3265, 37.7900]],  # Oakland Inner Harbor (W estuary)
-            [[-122.3560, 37.9130], [-122.3470, 37.9060]],  # Harbor Channel (Richmond Marina Bay)
-            [[-122.3960, 37.9585], [-122.3890, 37.9525]],  # Castro Creek (Richmond)
-            # --- Carquinez Strait: cut off Suisun Bay + the whole Delta, whose
-            #     rivers narrow well below a mile (Bay Point / Pittsburg / Antioch).
-            [[-122.2560, 38.0720], [-122.2540, 38.0430]],  # Carquinez Strait narrows
+            [[-122.394497, 37.960102], [-122.395999, 37.958749]],  # Castro Creek (Richmond)
         ],
     },
 }
