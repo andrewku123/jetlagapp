@@ -11,26 +11,51 @@ measure | coord`. `select` is the normal "drop a seeker point" mode; `compass /
 line / bisector / measure` create **annotations** that persist in the saved game;
 `coord` is a transient read-out tool (drops a temporary dot, shows the clicked
 lat/lon at 6 dp and auto-copies it to the clipboard — no annotation, clears on
-tool switch).
+tool switch). The coord dot is rendered in its own dedicated `coordDot` pane
+(z 690, `CoordPane`) so it sits ABOVE the station dots (station SVG pane z 450)
+and the marker/tooltip panes (measure endpoints z 600 / labels z 650) — a
+`CircleMarker` in the default overlay pane (z 400) would be hidden under the very
+station you clicked to read its coordinate.
+
+**GOTCHA — a canvas renderer in a high pane blankets ALL clicks (shipped a
+"stations unclickable until refresh" bug).** The map runs with `preferCanvas`,
+so any vector (e.g. the coord dot `CircleMarker`) placed in a pane lazily gets a
+**canvas** renderer in that pane. Unlike SVG — where only the individual `<path>`s
+are hit targets and the empty svg is click-through — a canvas is one opaque
+element spanning the whole map that captures every click in its box. Because the
+`coordDot` pane sits above the station pane, that canvas swallowed every
+station/POI/map click, and it lingered after leaving the coord tool, so the map
+stayed dead until a page refresh. Fix: the coord dot is a purely visual read-out
+(copy is via the toolbar button, not the dot), so `CoordPane` sets the pane
+`pointer-events: none` and the `CircleMarker` is `interactive={false}`. **Rule:
+any pane stacked above the station pane that holds only visual (non-clickable)
+content MUST be `pointer-events: none`, or its canvas renderer will eat all
+clicks.** This is why the station pane itself uses an **SVG** renderer (see the
+`StationRenderer` note / mobile-touch-targets skill) — so a miss falls through to
+the POI layer below.
 
 ## Data model (`src/types.ts`)
 - `CircleAnnotation` — `{ type: 'circle', lat, lon, radiusMiles, color }` (compass).
 - `LineAnnotation` — `{ type: 'line' | 'bisector' | 'measure', aLat, aLon, bLat,
-  bLon, color, step? }` (two-point tools). `step` (measure only) is the rounding
-  granularity in miles; `0`/absent = exact.
+  bLon, color }` (two-point tools). The measure label always shows the exact
+  distance (2 dp) — there is no rounding option.
 - `Annotation = CircleAnnotation | LineAnnotation`, stored on
   `GameState.annotations` and persisted via `src/lib/storage.ts` (localStorage).
 
 ## Where it lives (`src/components/MapView.tsx`)
 - Toolbar state: `tool`, `radiusMi` + `compassCustom` (compass radius, incl.
-  "Custom…"), `measureStep` (measure rounding), `color`, and `pending` (the first
+  "Custom…"), `color`, and `pending` (the first
   click of a two-point tool).
 - `handleClick(p)`:
   - `compass` → emits a `circle` immediately at the clicked center.
   - `line | bisector | measure` → first click sets `pending`; second click emits
-    the annotation (carrying `step: measureStep` for `measure`).
+    the annotation.
 - Rendering: circles via Leaflet `<Circle>` (radius in metres = `miles * 1609.344`,
-  `interactive={false}`); lines via `<Polyline>`. Bisector endpoints come from
+  `interactive={false}`); lines via `<Polyline>`. Each circle also draws a dashed
+  **radius spoke** (center → edge) with the distance label at its midpoint; the
+  spoke points **due east** — it's `circlePolygon(center, r)[n/4]` (index 32 of the
+  128-point ring = bearing 90°). Use `[0]` for north, `[n/4]` east, `[n/2]` south.
+  Bisector endpoints come from
   `bisectorEndpoints()`; measure shows a permanent `<Tooltip>` label.
 - Handlers are owned by `src/App.tsx` (`addAnnotation` / `deleteAnnotation` /
   `updateAnnotation` / `clearAnnotations`) and passed down as props.
@@ -70,8 +95,8 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   snapping copies coords verbatim, points dropped on the same spot are
   bit-identical and therefore drag as a group — a shared point stays shared. Plain
   `===` coord comparison is the linkage (no anchor/id model). Single
-  (non-coincident) points behave exactly as before. The radius/step popups still
-  use `onUpdateAnnotation`; only position drags use `onMovePoint`.
+  (non-coincident) points behave exactly as before. The compass radius popup still
+  uses `onUpdateAnnotation`; only position drags use `onMovePoint`.
 - **Click-to-snap / reuse a point** — because handles are non-interactive while a
   drawing tool is active, reuse happens entirely through the **map**: `MapClicks`
   snaps any map click within **14 screen pixels** (`map.latLngToContainerPoint`,
@@ -107,9 +132,8 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   - compass center → `<RadiusEditPopup>` (a `<select>` of `RADAR_OPTIONS` +
     "Custom…" number input → `onUpdateAnnotation(id, { radiusMiles })`, with
     **Delete**). Rendered when `selectMode || tool === 'compass'`.
-  - measure line → `<MeasureEditPopup>` (rounding `<select>`: exact / ½ / 1 / 5 /
-    10 / Custom… → `onUpdateAnnotation(id, { step })`, unit-aware, with
-    **Delete**). Rendered + the polyline `interactive` only when
+  - measure line → `<MeasureEditPopup>` (just a **Delete** button; the measure
+    tool has no rounding option). Rendered + the polyline `interactive` only when
     `selectMode && a.type === 'measure'`.
   - **line / bisector have NO popup** (the old "Straightedge line | Delete" /
     "Perpendicular bisector | Delete" popups were removed at the user's request).
@@ -148,7 +172,7 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   each `<button>` carries a `data-tip` (CSS hover tooltip to the left) + `aria-label`.
 - Undo/Clear sit **horizontal when a tool is open** (panel is already wide from its
   options) and **vertical when closed** (stays slim, never widens on its own).
-- Per-tool option rows (`.draw-radius` for compass radius / measure rounding,
+- Per-tool option rows (`.draw-radius` for compass radius,
   `.draw-colors`, the coord read-out, the coordinate-entry box) are gated on
   `tool === '<mode>'`. The custom-radius `<input>` uses `flex-basis:100%` so it
   drops to its own line inside the wrapping row.
@@ -168,17 +192,17 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   mousedown-based guard if you add new immediate-draw tools.
 - **Opening a measure-endpoint popup needs `setTimeout(..., 0)`.** The measure
   endpoints (`a`/`b` markers) bind a `<Popup>` and, in Select mode, their `click`
-  handler calls `marker.openPopup()` so clicking an endpoint shows the rounding
-  editor (clicking the line body works too). Calling `openPopup()` synchronously
+  handler calls `marker.openPopup()` so clicking an endpoint shows the edit
+  (Delete) popup (clicking the line body works too). Calling `openPopup()` synchronously
   in the click handler is swallowed — the same click cycle immediately re-closes
   it (`closePopupOnClick`), so the popup never appears. Defer it one tick
   (`setTimeout(() => mk.openPopup(), 0)`) and it stays open. The compass-center
   popup happens not to hit this race, but use the deferred call if you add popups
   to other endpoint handles.
-- **The measure distance label opens the rounding popup too.** In Select mode the
+- **The measure distance label opens the edit popup too.** In Select mode the
   measure's permanent `<Tooltip>` (the `measure-label`) is `interactive` with a
-  `click` handler, so clicking the label is a third way to reach the rounding
-  editor (line body + endpoints being the other two). The popup is bound to the
+  `click` handler, so clicking the label is a third way to reach the edit
+  (Delete) popup (line body + endpoints being the other two). The popup is bound to the
   `<Polyline>`, not the tooltip, so the click can't use `e.target`: keep the
   Polyline in a `measureLineRefs` ref keyed by `a.id` and call
   `setTimeout(() => ln.openPopup(), 0)` (same close-on-click race as above). The
@@ -199,11 +223,12 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
 ## Geometry helpers (`src/lib/geo.ts`)
 - `haversineMiles(a, b)` — great-circle miles (used for the measure label and the
   radar/thermometer engine; keep it the single source of distance truth).
-- `formatMiles(miles, step = 0)` — legacy mile-only label formatter (kept for tests).
-- `formatDistance(miles, units, step = 0)` — unit-aware measure label formatter;
-  converts to km when `units === 'metric'`. `step > 0` snaps to that bucket in the
-  *display* unit, else 2 decimals. The measure tool uses this (see the
-  `units-toggle` skill).
+- `formatMiles(miles, step = 0)` — legacy mile-only label formatter (kept for tests;
+  the app no longer passes a `step`).
+- `formatDistance(miles, units)` — unit-aware measure label formatter; converts to
+  km when `units === 'metric'`, always 2 decimals. The measure tool uses this (see
+  the `units-toggle` skill). (It still accepts an optional `step` bucket arg for
+  back-compat, but the measure tool no longer passes one.)
 - `bisectorEndpoints(a, b, lengthMiles)` — endpoints of the perpendicular
   bisector of A–B (the thermometer hotter/colder boundary), via a local
   equirectangular projection. `LINE_LENGTH_MI` in MapView sets the half-length.
@@ -212,22 +237,22 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
 1. Add the mode to the `DrawTool` union and (if a new shape) an annotation type.
 2. Add a toolbar button to the `['select','compass',…]` map + its icon/label.
 3. Handle it in `handleClick` (immediate vs. two-point) and in the render loop.
-4. If it needs an option (like compass radius / measure rounding), add a small
-   `<select>` gated on `tool === '<mode>'`, store it in state, and persist any
-   per-annotation choice on the annotation object.
+4. If it needs an option (like compass radius), add a small `<select>` gated on
+   `tool === '<mode>'`, store it in state, and persist any per-annotation choice
+   on the annotation object.
 5. Keep all distances in miles via `geo.ts`; never inline a haversine.
 
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: draw each
-shape, confirm the measure label respects the rounding selector, **in Select (✋)
+shape, confirm the measure label shows the exact distance, **in Select (✋)
 mode drag an endpoint / the compass center and confirm the shape + label update
 (incl. linked drag of coincident points)**, **with a drawing tool active click an
 existing point — even directly on its handle — and confirm it snaps/reuses it**,
 **with compass active click an existing center and confirm it opens the edit bar
 instead of stacking a ring**, **drag a bisector endpoint several times and confirm
 its distance label stays glued to the A–B connector midpoint (not stranded at a
-stale spot)**, edit a placed circle's radius / a measure's rounding
-via their popups (incl. Custom…) **in Select mode**, confirm line/bisector have no
+stale spot)**, edit a placed circle's radius via its popup (incl. Custom…) /
+delete a measure via its popup **in Select mode**, confirm line/bisector have no
 popup, "Clear drawings", and reload to confirm annotations persist. For
 deterministic interaction tests (drag/snap/popup) drive real clicks via CDP and
 read `localStorage` — see the `verify-map-interactions` skill. Unit tests for the

@@ -44,14 +44,85 @@ and adjusting a few region constants. There is no per-city code branching.
    fragmentation problem affects every metro, so reuse that algorithm rather than
    rendering one feature per raw OSM way.
 
-6. **Update the map default view** in `src/components/MapView.tsx` (initial
+6. **Measuring-feature geometry** (coastline + county/state/international
+   borders) and the **county polygons** used by county Matching. These are the
+   ONLY city-specific data the Measuring/Matching questions need — the question
+   code (`src/lib/measureFeatures.ts`, `src/lib/counties.ts`, elimination +
+   shading) is fully city-agnostic and needs no change.
+   - Add a per-city entry to the `CITIES` dict at the top of
+     `scripts/build_measure_features.py`, then run `CITY=<slug> python3
+     scripts/build_measure_features.py`. Each entry supplies:
+     - `play_bbox` (lon/lat, generous buffer around all stations)
+     - `land` + `saltwater` source geojson (Census land/AREAWATER + ocean)
+     - `counties` (a FeatureCollection of the metro + neighbor county polygons;
+       reuse the same file the county Matching question reads,
+       `src/data/counties.geojson.json`, via the `data:` path prefix)
+     - `states` + `countries` source geojson (US states file + Natural Earth
+       admin-0 already in `scripts/measure_src/`)
+     - `state` + `state_neighbors` (the 1st-admin div the metro is in and the
+       adjacent ones whose shared border is the "state border"; a superset is
+       harmless — the nearest-point math ignores farther segments)
+     - `country` + `country_neighbor` (nearest international border)
+   - Output is `src/data/measure-features.geojson.json` (a FeatureCollection of
+     `MultiLineString`s keyed `coastline` / `county-border` / `state-border` /
+     `intl-border`). Any feature whose sources are missing is skipped, so a
+     landlocked/inland city can omit `coastline` or `intl-border`.
+   - Skip degenerate questions: e.g. "A Rail Station" (measuring) is useless when
+     every hiding station is itself a rail station (distance always 0). It stays
+     wired generically for cities whose station set includes non-rail stops.
+   - For the county polygons themselves, produce `src/data/counties.geojson.json`
+     as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
+     (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
+     `properties.name` for both point-in-polygon lookup and shading.
+   - **Admin divisions are per-city and only the in-play ones matter for
+     Matching.** "2nd admin division" = county in the US, borough (also a county)
+     in NYC, regional municipality / census division in Canada, etc. — same file
+     shape, different source. The hider is always in one of the divisions that
+     hold stations, so `countyAt()` in `counties.ts` only considers the names in
+     `IN_PLAY_COUNTIES` (`src/lib/playArea.ts`); a seeker anywhere else — a
+     neighbouring county or the far side of the world — is definitively "not the
+     same county" as every station, and the exact identity of that outside
+     division never changes an elimination. So **do NOT try to ship the world's
+     counties**: set `IN_PLAY_COUNTIES` to the divisions containing stations, and
+     the match-county form shows an "outside the play area" read-out / alert for
+     anything else. (The wider `counties.geojson.json` set can still exist for the
+     county-*border* measure feature and the dim overlay; it just isn't used for
+     the match lookup.)
+   - **City (3rd-admin) polygons** used by city Matching live in
+     `src/data/places.geojson.json`, built by `scripts/build_city_places.py`
+     from the state Census **place** file. Emit **every place that lies inside
+     the play area — city, town AND CDP — each clipped to the play-area
+     polygon**, not just the ones that hold stations. Two reasons:
+     - the play area (built by `build_play_area.py`) refills unincorporated
+       **CDP enclaves** (e.g. Fairview) that no station sits in, and a seeker can
+       stand in one — it must read out its real name, so it has to be in the set;
+     - clipping to the play area (already shoreline-clipped) drops the parts of
+       edge places (Tiburon, Belvedere) that stick out into greyed-out land.
+     `cityAt()` in `cities.ts` is point-in-place with a small `SNAP_M` (~150 m)
+     snap; a coordinate in a **named** place → that place, in the play area but no
+     named place → **null → the form shows "Unincorporated"** (in play, no
+     municipality to match), outside the play area → null → **"Outside the play
+     area."** (`inPlayArea()` distinguishes the two). Keep the seeker AND station
+     lookups on this SAME `cityAt()` so shading and elimination always agree.
+   - **Airport-on-unincorporated-land override:** an airport owned by a city but
+     physically on unincorporated land (SFO is owned by the City & County of San
+     Francisco but sits in San Mateo County) is folded into its owning city by
+     `unary_union`-ing the airport footprint (convex hull of that airport's
+     stations, buffered, minus any other place it laps) into that city's polygon
+     in `build_city_places.py`. That makes every airport station AND a click on
+     the airport resolve to the owning city. This is the one Bay-specific
+     override; a new metro only needs it if it has the same ownership quirk.
+     Verify **no hiding station resolves to null** after building — if one does,
+     it's on unincorporated land and either needs a CDP added or an override.
+
+7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
    `STATIONS.md`, and `public/stations-map.html`.
 
-7. **Question set**: the existing medium-game questions in `src/data/questions.ts`
+8. **Question set**: the existing medium-game questions in `src/data/questions.ts`
    are geography-generic and need no change. If the new region lacks an attribute
-   a question relies on (e.g. no airports), hide that question or ensure the
-   attribute is still populated.
+   a question relies on (e.g. no airports, no coastline), hide that question or
+   ensure the attribute is still populated.
 
 ## Multi-region (optional)
 If you want one deployment to switch between cities, generalize

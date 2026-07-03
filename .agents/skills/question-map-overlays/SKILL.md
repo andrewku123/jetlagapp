@@ -81,11 +81,30 @@ every render.
   at the seeker's latitude, so it matches the haversine "nearest" the engine
   uses. `answer==='yes'` eliminates **outside** the cell (world-ring minus cell),
   `'no'` eliminates the cell itself.
+  - **Bounded-cell gotcha (this shipped a "bowtie" bug):** a Voronoi cell is
+    often an *unbounded* wedge (a site on the edge of the metro — every airport,
+    and sparse POI categories like aquarium/zoo/stadium). `voronoiCellRing` must
+    clip against a **finite** frame (`CELL_FRAME`, the play-area bbox + padding),
+    NOT a huge `span`. If the cell runs to absurd coords and you then clip it to
+    `WORLD_RING` (lat ±85), the far edge snaps to lat 85 and renders as a giant
+    triangle/diagonal band across the map. Elimination stays correct (it's a
+    separate `elimination.ts` path); only the shading is wrong, so eyeball it for
+    edge sites. Regression test asserts the region's max lat stays < 40.
 - `poiMeasureEliminatedRegion(record)` — the **union of disks** (radius = the
   seeker's own nearest-POI distance) around every POI, via `polygon-clipping`.
   `'closer'` eliminates the **complement** of the union, `'further'` eliminates
-  the union. Disk segment count adapts to category size (`diskSegments`) so parks
-  stay responsive.
+  the union.
+  - **Disks must be GEODESIC, not equirectangular (this shipped a boundary-off-the-
+    seeker-dot bug).** `diskRing()` builds each disk with `circlePolygon()` (the
+    same haversine sphere `elimination.ts` uses via `nearestPoiMiles`). An
+    equirectangular n-gon drifts ~36 m off the true circle at a sparse category's
+    ~12 mi radius — right where the boundary passes through the seeker dot, so it
+    reads as an offset diagonal at high zoom. Same one-metric principle as the
+    measure-feature corridor below. (Also applies to `airportMeasureEliminatedRegion`.)
+  - **Segment count adapts to radius AND density** (`diskSegments(count, radiusMiles)`):
+    `n ≈ π·√(r/2ε)` (ε≈0.003 mi) so a far, sparse-category circle doesn't visibly
+    facet, capped by category size (40 for >800 POIs like parks, 72 for >200, else
+    256) so unioning ~1,583 park disks stays fast.
 - Both return a `LatLngMultiPolygon` (`[lat,lon][][][]`) that drops straight into
   `<Polygon positions={poly} pathOptions={ELIM_FILL} />`.
 
@@ -97,6 +116,62 @@ also renders a non-interactive `<CircleMarker>` on the seeker's nearest place
 **runtime** dependency (in `dependencies`, not `devDependencies`) because app code
 imports it. Keep the shading consistent with the engine truth in
 `src/lib/elimination.ts` (`match-poi` / `measure-poi` cases).
+
+## Measure-feature shading (border / coastline corridor, `measure-feature`)
+`featureMeasureEliminatedRegion(record)` in `questionRegions.ts` shades the
+corridor within the seeker's own distance of a linear feature (coastline / county
+/ state / international border). `'closer'` eliminates the **complement** of the
+corridor (world minus buffer), `'further'` eliminates the corridor itself.
+
+- **Share ONE distance metric with elimination (this shipped a wrong-diagonal-band
+  bug).** The corridor buffer and the per-station closer/further rule must measure
+  in the *same* projection, or over long distances (state line ~150 mi, intl
+  border ~450 mi) a flat-map buffer and per-point haversine drift by 1–5 mi and
+  flip boundary stations. Both now call `projectedDistanceToFeatureMiles(p, key,
+  refLat)` — a seeker-centred equirectangular projection at `seeker.lat`. Keep
+  `elimination.ts` (`measure-feature` case) and the buffer on the same function.
+- **Exact straight-edged buffer, not a disk-union.** `bufferPolylines()` builds
+  per-segment rectangles + vertex caps so the far edge is straight and lands
+  exactly at the measured distance (a sampled disk-union scallops and reads as a
+  wavy/wrong boundary). Cap resolution is adaptive
+  (`capN = clamp(ceil((π/2)·sqrt(r/ε)), 24, 512)`, ε≈0.02 mi) so a 450-mi radius
+  cap doesn't fall short of the true circle.
+- **Union performance:** union the many segment-polygons with a divide-and-conquer
+  pairwise tree (O(n log n)), not a sequential fold (O(n²)) — cuts the
+  county-border build from ~20 s to <1 s.
+- Feature polylines are Douglas–Peucker simplified at load (0.03 mi) so shading and
+  elimination see identical geometry.
+- Regression: `src/lib/measureFeatureShading.test.ts` asserts **0 station
+  mismatches** between shading (`pointInMulti(region)`) and elimination
+  (`stationPasses`) for all 4 features × closer/further × 3 seekers.
+
+## Boundary outline for every shaded question
+Radar (its `<Circle>`) and thermometer (its dashed bisector) always drew a crisp
+edge **line**; the fill-only POI/measure/feature/matching regions did not, so
+Andrew asked that *every* shaded area get "the line thru it like radar." The
+shared helper is `RegionOutline` in `MapView`, which strokes the boundary of a
+`LatLngMultiPolygon` with `ELIM_OUTLINE` (`{ color:'#3730a3', weight:1,
+fill:false, interactive:false }`), rendered right after the region's `ELIM_FILL`
+`<Polygon>`s (and in the endgame boundary block from the full unclipped region,
+so the edge stays whole like the radar circle does in endgame).
+
+- **Skip the world-box ring.** A "complement" region (eliminate everything
+  *outside* X — POI `closer`, radar `yes`, match `yes`, etc.) is
+  `difference([WORLD_RING], X)`, i.e. a polygon whose **outer ring is the
+  off-screen world box** and whose **hole(s)** are X's real edge. Outlining the
+  outer ring would draw a huge rectangle at lat ±85 / lon ±180. `RegionOutline`
+  calls `isWorldRing(ring)` (every vertex `|lat|>=84 && |lon|>=179`) and skips
+  those, so only the meaningful boundary is drawn. Non-complement regions
+  (intersection / union) have no world ring, so their outer ring is drawn.
+- Draw each ring as its own `<Polygon positions={ring} fill:false>` — a hole
+  ring stroked on its own is just its outline; no even-odd fill needed.
+- Keep it `interactive={false}` (via `ELIM_OUTLINE`) — an outline is still a
+  decoration and must not eat station clicks (see the click-through rule).
+- Verify visually per shading class, since `preferCanvas` renders these to the
+  overlay canvas (no SVG `<path>` to assert on): inject a `match-county` (`no`
+  = intersection, `yes` = complement) and a `measure-poi` via
+  `localStorage['bahs.game.v1']`, reload, and confirm the indigo line traces the
+  shaded edge and no world-box rectangle appears.
 
 ## Adding an overlay for a new question kind
 1. Add a `records.filter(...)` block keyed to the kind.

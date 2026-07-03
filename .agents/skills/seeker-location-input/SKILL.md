@@ -41,6 +41,16 @@ The custom field is labelled in the current unit (see the `units-toggle` skill)
 and converted to canonical miles before storing. Remember to reset
 `customRadius` in the post-submit reset.
 
+## Seeker-location pins on the map (click to see the question)
+Each active question's seeker point(s) are drawn as coloured pins via
+`pickedPoints` (built in `App.tsx`, rendered as `<Marker><Popup>` in `MapView`).
+The popup **label is the full `describeRecord(r, units)` text** (same as History,
+e.g. "Closer/further from airport → closer"), not a terse tag — so clicking any
+anchor tells you which question was asked there. Thermometer pushes two points
+(start/end, prefixed with the role); airport/POI-measure/POI-match push one at
+`fromLat/fromLon`. `describeRecord` takes `units`, so keep `game.units` in the
+`useMemo` deps or the popup text goes stale on a unit switch.
+
 ## Adding coordinate entry to a new question
 1. Hold the point(s) in state (`useState<LatLng | null>`).
 2. Render a `<CoordPicker>` per point instead of a bare "Use last click" row.
