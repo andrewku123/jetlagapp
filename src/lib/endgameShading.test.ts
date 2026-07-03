@@ -4,6 +4,7 @@ import rawStations from '../data/stations.json'
 import { stationPasses } from './elimination'
 import { endgameClippedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { haversineMiles } from './geo'
+import { projectedDistanceToFeatureMiles } from './measureFeatures'
 
 const STATIONS = rawStations as unknown as Station[]
 
@@ -100,6 +101,13 @@ describe('endgame shading stays inside the zone and agrees with elimination', ()
       endgame: true,
     }
     const clipped = endgameClippedRegion(rec, zone, zoneMi)
+    // Seeker's own distance to the feature: the corridor boundary sits here, and
+    // the tie rule keeps a station exactly at this distance ("closer" is
+    // inclusive). The polygon buffer only approximates that boundary (~0.02 mi
+    // near feature vertices), so skip stations whose feature distance lands in
+    // that boundary band — just like the zone-edge band below.
+    const seekerFeatD = projectedDistanceToFeatureMiles(zone, 'coastline', zone.lat)
+    const BOUNDARY_MI = 0.05
     for (const st of STATIONS) {
       const dZone = haversineMiles(st, zone)
       const shaded = clipped ? pointInMulti(st.lat, st.lon, clipped) : false
@@ -108,6 +116,8 @@ describe('endgame shading stays inside the zone and agrees with elimination', ()
         continue
       }
       if (dZone > zoneMi - 0.5) continue // skip zone-edge band (n-gon epsilon)
+      const stFeatD = projectedDistanceToFeatureMiles(st, 'coastline', zone.lat)
+      if (Math.abs(stFeatD - seekerFeatD) < BOUNDARY_MI) continue // corridor-edge band
       const eliminated = !stationPasses(st, rec)
       expect(shaded, `${st.name} in-zone shading`).toBe(eliminated)
     }

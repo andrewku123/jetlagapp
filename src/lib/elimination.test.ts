@@ -110,14 +110,47 @@ describe('stationPasses — match-poi (nearest place of a type)', () => {
 
 describe('stationPasses — measure-poi (distance to nearest place of a type)', () => {
   const here = { lat: 37.7749, lon: -122.4194 }
-  it('a co-located station is not strictly closer (tie ⇒ not "closer")', () => {
+  it('a co-located station ties the seeker; tie folds into "closer" (kept on closer, dropped on further)', () => {
     const r = record('measure-poi', { poiCat: 'park', fromLat: here.lat, fromLon: here.lon, answer: 'closer' })
-    expect(stationPasses(station(here), r)).toBe(false)
-    expect(stationPasses(station(here), { ...r, params: { ...r.params, answer: 'further' } })).toBe(true)
+    expect(stationPasses(station(here), r)).toBe(true)
+    expect(stationPasses(station(here), { ...r, params: { ...r.params, answer: 'further' } })).toBe(false)
   })
   it('unknown category never eliminates', () => {
     const r = record('measure-poi', { poiCat: 'nonesuch', fromLat: here.lat, fromLon: here.lon, answer: 'closer' })
     expect(stationPasses(station(here), r)).toBe(true)
+  })
+  it('sea level: an equal altitude ties and folds into "closer" (lower)', () => {
+    // station.elevation (16) exactly equals the seeker’s stated altitude.
+    const r = record('measure-sealevel', { value: 16, answer: 'closer' })
+    expect(stationPasses(station({ elevation: 16 }), r)).toBe(true)
+    expect(stationPasses(station({ elevation: 16 }), { ...r, params: { ...r.params, answer: 'further' } })).toBe(false)
+  })
+})
+
+describe('stationPasses — measure-zip (ZIP smaller / larger)', () => {
+  // Real ZCTA-resolved ZIPs: SF downtown 94102, Oakland 94612, San Jose 95113.
+  const sf = station({ id: 'sf', lat: 37.7793, lon: -122.4193 }) // 94102
+  const oak = station({ id: 'oak', lat: 37.8044, lon: -122.2712 }) // 94612
+  const sj = station({ id: 'sj', lat: 37.3352, lon: -121.8938 }) // 95113
+  // Seeker stands in Oakland (94612); pass the resolved ZIP as value.
+  const seeker = { fromLat: 37.8044, fromLon: -122.2712, value: '94612' }
+
+  it('"smaller" keeps ZIPs <= the seeker (tie folds into smaller)', () => {
+    const r = record('measure-zip', { ...seeker, answer: 'smaller' })
+    expect(stationPasses(sf, r)).toBe(true) // 94102 < 94612
+    expect(stationPasses(oak, r)).toBe(true) // 94612 == 94612 tie → kept
+    expect(stationPasses(sj, r)).toBe(false) // 95113 > 94612
+  })
+  it('"larger" keeps ZIPs strictly greater (equal is dropped)', () => {
+    const r = record('measure-zip', { ...seeker, answer: 'larger' })
+    expect(stationPasses(sf, r)).toBe(false)
+    expect(stationPasses(oak, r)).toBe(false) // tie is on the smaller side
+    expect(stationPasses(sj, r)).toBe(true)
+  })
+  it('falls back to the seeker coordinate when no ZIP value is stored', () => {
+    const r = record('measure-zip', { fromLat: 37.8044, fromLon: -122.2712, answer: 'smaller' })
+    expect(stationPasses(sf, r)).toBe(true)
+    expect(stationPasses(sj, r)).toBe(false)
   })
 })
 
@@ -137,10 +170,13 @@ describe('stationPasses — measure-feature (distance to a coastline / border)',
     expect(stationPasses(inland, further)).toBe(true)
   })
 
-  it('state border: the eastern station is closer to the Nevada line', () => {
-    // Antioch (east) is closer to CA\u2019s land border than SF (west)
+  it('state border is outside the Bay Area play area, so it has no geometry and never eliminates', () => {
+    // Rulebook: a feature outside the map boundary doesn't exist for the game.
+    // The CA state line is far east of the play area, so state-border is clipped
+    // to empty and any state-border question is a no-op (also not offered).
     const r = record('measure-feature', { feature: 'state-border', fromLat: 37.7955, fromLon: -122.3937, answer: 'closer' })
-    expect(stationPasses(inland, r)).toBe(true) // Antioch closer than an SF seeker
+    expect(stationPasses(inland, r)).toBe(true)
+    expect(stationPasses(coastal, r)).toBe(true)
   })
 
   it('unknown feature never eliminates', () => {

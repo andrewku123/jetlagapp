@@ -832,7 +832,7 @@ export default function MapView({
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' || k === 'match-county' ||
-      k === 'match-city'
+      k === 'match-city' || k === 'measure-zip'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
     )
@@ -850,8 +850,8 @@ export default function MapView({
           const code = nearestAirport(seeker).code
           const a = AIRPORTS[code]
           if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
-        } else if (r.kind === 'match-county' || r.kind === 'match-city') {
-          pin = null // the shaded county/city polygon speaks for itself
+        } else if (r.kind === 'match-county' || r.kind === 'match-city' || r.kind === 'measure-zip') {
+          pin = null // the shaded county/city/ZIP polygon speaks for itself
         } else {
           const cat = String(r.params.poiCat)
           const np = nearestPoi(seeker, cat)
@@ -865,7 +865,7 @@ export default function MapView({
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
         r.kind === 'match-airport' || r.kind === 'measure-airport' || r.kind === 'match-county' ||
-        r.kind === 'match-city',
+        r.kind === 'match-city' || r.kind === 'measure-zip',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),

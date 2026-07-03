@@ -46,6 +46,7 @@ export type QuestionKind =
   | 'measure-sealevel'
   | 'measure-poi'
   | 'measure-feature'
+  | 'measure-zip'
   // Record-keeping-only subjects (no auto-eliminator): logged for the seeker's
   // notes, never shade or eliminate.
   | 'match-street'
@@ -55,7 +56,9 @@ export type QuestionKind =
   | 'measure-hsr'
   | 'measure-railstation'
   | 'measure-water'
+  | 'temperature'
   | 'inside-floor'
+  | 'traffic'
   | 'photo'
 
 export interface QuestionRecord {

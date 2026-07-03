@@ -36,6 +36,8 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Closer/further from airport${arrow(String(a))}`
     case 'measure-sealevel':
       return `Altitude vs ${formatElevation(Number(p.value), units)}${arrow(String(a))}`
+    case 'measure-zip':
+      return `ZIP smaller/larger than ${p.value ? String(p.value) : 'mine'}?${arrow(String(a))}`
     case 'inside-floor': {
       const ans: Record<string, string> = {
         higher: 'higher floor',
@@ -45,6 +47,10 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       }
       return `Inside "${p.building}"${p.floor ? ` (floor ${String(p.floor)})` : ''}${arrow(ans[String(a)] ?? String(a))}`
     }
+    case 'temperature':
+      return `Temperature higher/lower?${arrow(String(a))} (log only)`
+    case 'traffic':
+      return `Traffic (foot count)${p.value != null ? ` → ${String(p.value)}` : ''} (log only)`
     case 'photo': {
       const title = p.photoTitle ? String(p.photoTitle) : ''
       const extra = p.description ? String(p.description) : ''

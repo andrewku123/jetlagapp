@@ -164,6 +164,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
   },
   // --- Measuring · Natural ---
   {
+    kind: 'measure-zip',
+    category: 'Measuring',
+    label: 'Measuring — ZIP code (smaller / larger)',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Is your current ZIP code smaller or larger than mine? Set your location; the app shows your ZIP. Ties go to “smaller” (if your ZIP equals mine, you answer smaller).',
+  },
+  {
     kind: 'measure-sealevel',
     category: 'Measuring',
     label: 'Measuring — Sea level (altitude)',
@@ -188,12 +196,28 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     blurb: 'Compared to me, are you closer to or further from your nearest place of the chosen type? Set your location; the app shows your distance to it.',
   },
   {
+    kind: 'temperature',
+    category: 'Measuring',
+    label: 'Measuring — Temperature (log only)',
+    cards: 'draw 3, keep 1',
+    eliminates: false,
+    blurb: 'Is your current temperature higher or lower than mine? Both players read a reputable weather app for their own location (use one agreed source, e.g. Google weather, to avoid app-vs-app disputes). Log only — weather is time-dependent and non-reproducible, so this eliminates nothing.',
+  },
+  {
     kind: 'inside-floor',
     category: 'Inside',
     label: 'Inside — floor in a building (endgame)',
     cards: 'draw 3, keep 1',
     eliminates: false,
     blurb: 'Endgame only. “I’m inside [building] on [floor] — are you on a higher or lower floor?” You reveal the building AND your floor. Answer Higher / Lower / Same / Can’t answer (different building or outside). Logged for reference; does not auto-eliminate stations.',
+  },
+  {
+    kind: 'traffic',
+    category: 'Inside',
+    label: 'Inside — Traffic (foot count, log only)',
+    cards: 'draw 2, keep 1',
+    eliminates: false,
+    blurb: 'Count everyone who passes within 15 feet of you over the next 5 minutes, by any method, as accurately as you can. Report to 2 significant figures (e.g. 137 → 140). Start the timer as soon as the seekers ask; report right after it ends. Log only — a crowd-density hint for the seeker; eliminates nothing.',
   },
   {
     kind: 'photo',

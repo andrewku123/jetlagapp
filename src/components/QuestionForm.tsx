@@ -4,10 +4,11 @@ import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey,
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
-import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
+import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
+import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
 
 interface Props {
@@ -59,6 +60,10 @@ const KIND_SUBJECT_GROUP: Partial<Record<QuestionKind, string>> = {
   'measure-railstation': 'Transit',
   'measure-sealevel': 'Natural',
   'measure-water': 'Natural',
+  'measure-zip': 'Administrative divisions',
+  'temperature': 'Natural',
+  'inside-floor': 'Indoors',
+  'traffic': 'Indoors',
 }
 
 // Optgroup each coastline/border feature falls under when measure-feature is
@@ -209,17 +214,19 @@ export default function QuestionForm({
   const [yesno, setYesno] = useState<'yes' | 'no'>('yes')
   const [hotcold, setHotcold] = useState<'hotter' | 'colder'>('hotter')
   const [closefar, setClosefar] = useState<'closer' | 'further'>('closer')
+  const [smalllarge, setSmalllarge] = useState<'smaller' | 'larger'>('smaller')
   const [center, setCenter] = useState<LatLng | null>(null)
   const [ptA, setPtA] = useState<LatLng | null>(null)
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
-  const [feature, setFeature] = useState<string>(MEASURE_FEATURE_KEYS[0])
+  const [feature, setFeature] = useState<string>(AVAILABLE_MEASURE_FEATURE_KEYS[0])
   const [num, setNum] = useState<string>('')
   const [photoTitle, setPhotoTitle] = useState<string>(photoCards[0]?.title ?? '')
   const [building, setBuilding] = useState<string>('')
   const [floor, setFloor] = useState<string>('')
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
+  const [hilo, setHilo] = useState<'higher' | 'lower'>('higher')
   const [note, setNote] = useState<string>('')
   // Mark this question as asked during the endgame phase. Defaults to whether a
   // hiding zone is currently locked; re-syncs when the seeker enters/exits
@@ -303,6 +310,15 @@ export default function QuestionForm({
         params = { value: meters, answer: closefar }
         break
       }
+      case 'measure-zip': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const z = zipAt(center)
+        if (!z) return alert(inPlayArea(center)
+          ? 'No ZIP code here.'
+          : 'Outside the play area.')
+        params = { value: z, fromLat: center.lat, fromLon: center.lon, answer: smalllarge }
+        break
+      }
       case 'match-namelength': {
         if (num === '') return alert('Enter your station name length.')
         params = { value: Number(num), answer: yesno }
@@ -352,6 +368,17 @@ export default function QuestionForm({
         if (!building.trim()) return alert('Enter the building you are inside.')
         if (!floor.trim()) return alert('Enter the floor you are on.')
         params = { building: building.trim(), floor: floor.trim(), answer: floorAns }
+        break
+      }
+      case 'temperature': {
+        // Log-only: record the hider's higher/lower answer for reference.
+        params = { answer: hilo }
+        break
+      }
+      case 'traffic': {
+        // Log-only: record the hider's reported foot-traffic count.
+        if (num === '') return alert("Enter the hider's reported count.")
+        params = { value: Number(num) }
         break
       }
       case 'photo': {
@@ -444,7 +471,7 @@ export default function QuestionForm({
       }))
     }
     if (q.kind === 'measure-feature') {
-      return MEASURE_FEATURE_KEYS.map((k) => ({
+      return AVAILABLE_MEASURE_FEATURE_KEYS.map((k) => ({
         value: `${q.kind}::${k}`,
         label: featureSubjectLabel(k),
         group: FEATURE_SUBJECT_GROUP[k] ?? 'Borders',
@@ -707,6 +734,31 @@ export default function QuestionForm({
         </>
       )}
 
+      {kind === 'measure-zip' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const z = zipAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {z
+                  ? <>Your ZIP: <b>{z}</b></>
+                  : inPlayArea(center)
+                    ? <>No ZIP code here.</>
+                    : 'Outside the play area.'}
+              </p>
+            )
+          })()}
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={smalllarge === 'smaller' ? 'on' : ''} onClick={() => setSmalllarge('smaller')}>Smaller</button>
+              <button className={smalllarge === 'larger' ? 'on' : ''} onClick={() => setSmalllarge('larger')}>Larger</button>
+            </div>
+          </div>
+        </>
+      )}
+
       {kind === 'match-city' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
@@ -785,6 +837,23 @@ export default function QuestionForm({
             </div>
           </div>
         </>
+      )}
+
+      {kind === 'temperature' && (
+        <div className="row">
+          <label>Answer</label>
+          <div className="seg">
+            <button className={hilo === 'higher' ? 'on' : ''} onClick={() => setHilo('higher')}>Higher</button>
+            <button className={hilo === 'lower' ? 'on' : ''} onClick={() => setHilo('lower')}>Lower</button>
+          </div>
+        </div>
+      )}
+
+      {kind === 'traffic' && (
+        <div className="row">
+          <label>Hider's count</label>
+          <input type="number" value={num} onChange={(e) => setNum(e.target.value)} placeholder="people in 5 min" />
+        </div>
       )}
 
       {kind === 'photo' && (

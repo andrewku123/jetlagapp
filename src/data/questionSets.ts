@@ -217,6 +217,8 @@ export const PHOTO: PhotoCard[] = [
   { title: 'You', requirement: 'Selfie mode, perpendicular to ground, arm extended, default lens, no zoom.', sizes: ALL },
   { title: 'Widest Street', requirement: 'Must include both sides of the street; background not required.', sizes: ALL },
   { title: 'Tallest Structure in Your Sightline', requirement: 'Tallest building from your perspective (not objectively tallest). Include top and both sides; top in the top 1/3 of the frame.', sizes: ALL },
+  { title: 'Longest Sightline', requirement: 'Longest line of sight from your perspective, not the objectively longest. If not frozen, you choose where to stand, but from there it must be the longest sightline in any direction. Ground fills at least the bottom 1/3 of the frame; the terminus — the horizon, or the base of whatever cuts it off — sits in at least the top 1/3 and must be visible.', sizes: ALL },
+  { title: 'Darkest Area', requirement: "Darkest 2'\u00d72' section in your current sightline. Must contain 3 distinct elements. Litmus test: can someone match it if they visit the spot, allowing for lighting differences across times of day? (Screens / temporary lights don't count.)", sizes: ALL },
   { title: 'Any Building Visible from Station', requirement: 'Stand directly outside a station entrance (pick one if several). Include roof and both sides; top of building in the top 1/3 of the frame.', sizes: ALL, endgameBlocked: true },
   // Add for Medium & Large
   { title: 'Tallest Building Visible from Station', requirement: 'As above, standing directly outside a station entrance. The station itself can\u2019t count unless unrelated (e.g. MetLife building atop Grand Central).', sizes: ML, endgameBlocked: true },

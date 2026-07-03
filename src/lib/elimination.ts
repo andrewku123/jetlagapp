@@ -4,6 +4,7 @@ import { AIRPORTS } from './airports'
 import { nearestPoi, nearestPoiMiles, poiKey } from './poi'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
+import { zipAt } from './zip'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -77,7 +78,11 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const seekerD = nearestPoiMiles({ lat: n(p.fromLat), lon: n(p.fromLon) }, cat)
       const stationD = nearestPoiMiles(station, cat)
       if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
-      return (stationD < seekerD) === (p.answer === 'closer')
+      // Tie rule: an equal value counts as the smaller side, so the hider
+      // answers "closer" when exactly equidistant. Keep the smaller side
+      // inclusive (<=) so an equal station survives "closer" (never dropping the
+      // true hider); "further" stays strict (>).
+      return (stationD <= seekerD) === (p.answer === 'closer')
     }
     case 'measure-feature': {
       const key = s(p.feature)
@@ -88,16 +93,33 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const seekerD = projectedDistanceToFeatureMiles(seeker, key, seeker.lat)
       const stationD = projectedDistanceToFeatureMiles({ lat: station.lat, lon: station.lon }, key, seeker.lat)
       if (!Number.isFinite(seekerD) || !Number.isFinite(stationD)) return true
-      return (stationD < seekerD) === (p.answer === 'closer')
+      // Tie folds into the smaller side ("closer"): keep <= inclusive.
+      return (stationD <= seekerD) === (p.answer === 'closer')
     }
     case 'measure-airport': {
       const seeker = nearestAirportMiles({ lat: n(p.fromLat), lon: n(p.fromLon) })
       const stationDist = Math.min(...Object.values(station.airportDist)) * (1 / 1609.344)
-      return (stationDist < seeker) === (p.answer === 'closer')
+      // Tie folds into the smaller side ("closer"): keep <= inclusive.
+      return (stationDist <= seeker) === (p.answer === 'closer')
     }
     case 'measure-sealevel': {
       if (station.elevation == null) return true // unknown: don't eliminate
-      return (station.elevation < n(p.value)) === (p.answer === 'closer')
+      // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
+      return (station.elevation <= n(p.value)) === (p.answer === 'closer')
+    }
+    case 'measure-zip': {
+      // Resolve both sides through the same ZCTA lookup so shading and
+      // elimination agree. Prefer the stored seeker ZIP; fall back to the seeker
+      // coordinate. The station's ZIP comes from its coordinate too.
+      const seekerZipStr = s(p.value) || zipAt({ lat: n(p.fromLat), lon: n(p.fromLon) }) || ''
+      const stationZipStr = zipAt(station) || ''
+      if (!seekerZipStr || !stationZipStr) return true // no ZIP data: don't eliminate
+      const seekerZip = Number(seekerZipStr)
+      const stationZip = Number(stationZipStr)
+      // Tie folds into the smaller side ("smaller"): keep <= inclusive so an
+      // equal-ZIP station survives "smaller" (never dropping the true hider);
+      // "larger" stays strict (>).
+      return (stationZip <= seekerZip) === (p.answer === 'smaller')
     }
     case 'photo':
       return true

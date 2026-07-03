@@ -111,23 +111,28 @@ def build_county_border(counties, clip):
     return unary_union(lines).intersection(clip)
 
 
-def build_state_border(states, cfg):
+def build_state_border(states, cfg, clip):
     by = state_by_name(states)
     home = by[cfg["state"]]
     neighbors = unary_union([g for name, g in by.items()
                              if name in cfg["state_neighbors"]])
     # home-state land border = the part of its boundary shared with adjacent
-    # states (excludes any coast, which no neighbor touches).
-    return home.boundary.intersection(neighbors.buffer(0.02))
+    # states (excludes any coast, which no neighbor touches). Clipped to the
+    # play area: a border outside the map doesn't exist for the game, so if the
+    # metro is nowhere near a state line this comes back empty and the question
+    # is dropped (see main()).
+    return home.boundary.intersection(neighbors.buffer(0.02)).intersection(clip)
 
 
-def build_intl_border(countries, cfg):
+def build_intl_border(countries, cfg, clip):
     by = country_by_name(countries)
     home = by.get(cfg["country"]) or by.get("United States")
     neighbor = by.get(cfg["country_neighbor"])
     if home is None or neighbor is None:
         return None
-    return home.boundary.intersection(neighbor.buffer(0.03))
+    # Clipped to the play area — an international border outside the map doesn't
+    # exist for the game (empty here → question dropped in main()).
+    return home.boundary.intersection(neighbor.buffer(0.03)).intersection(clip)
 
 
 def to_multiline(geom, simplify_deg):
@@ -183,8 +188,8 @@ def main():
     features = (
         ("coastline", to_multiline(build_coastline(land, saltwater, clip), 0.0007)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
-        ("state-border", to_multiline(build_state_border(states, cfg), 0.003)),
-        ("intl-border", to_multiline(build_intl_border(countries, cfg), 0.003)),
+        ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
+        ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
     )
 
     out = {"type": "FeatureCollection", "features": []}

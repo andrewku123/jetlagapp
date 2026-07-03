@@ -1,11 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { nearestAirport } from './airports'
 import { countyAt } from './counties'
 import { cityAt, inPlayArea } from './cities'
+import { zipAt } from './zip'
 import { haversineMiles } from './geo'
-import type { QuestionRecord } from '../types'
+import { stationPasses } from './elimination'
+import rawStations from '../data/stations.json'
+import type { QuestionRecord, Station } from '../types'
 
 // ray-cast point-in-ring on a [lat, lon] ring
 function pointInRing(lat: number, lon: number, ring: [number, number][]): boolean {
@@ -277,4 +280,32 @@ describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () =
     expect(cityAt(utah)).toBeNull()
     expect(inPlayArea(utah)).toBe(false)
   })
+})
+
+describe('zipMeasureEliminatedRegion agrees with the per-station rule', () => {
+  const STATIONS = rawStations as unknown as Station[]
+  // Seekers spread across the ZIP range so both answers shade a real split.
+  const seekers = [
+    { lat: 37.7793, lon: -122.4193 }, // SF 94102
+    { lat: 37.8044, lon: -122.2712 }, // Oakland 94612
+    { lat: 37.3352, lon: -121.8938 }, // San Jose 95113
+  ]
+  for (const seeker of seekers) {
+    for (const answer of ['smaller', 'larger'] as const) {
+      it(`${answer} @ ${seeker.lat},${seeker.lon}: every station's shading matches elimination`, () => {
+        const zip = zipAt(seeker)!
+        const r: QuestionRecord = {
+          id: 'q', kind: 'measure-zip', createdAt: 0,
+          params: { fromLat: seeker.lat, fromLon: seeker.lon, value: zip, answer },
+          eliminates: true, active: true,
+        }
+        const region = zipMeasureEliminatedRegion(r)
+        for (const st of STATIONS) {
+          const shaded = region ? pointInMulti(st.lat, st.lon, region) : false
+          const eliminated = !stationPasses(st, r)
+          expect(shaded, `${st.name} shading vs elimination`).toBe(eliminated)
+        }
+      })
+    }
+  }
 })

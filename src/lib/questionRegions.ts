@@ -5,6 +5,7 @@ import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeat
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
+import { zipAt, zipCodes, zipGeom } from './zip'
 import { bisectorHalfPlane, circlePolygon } from './geo'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
@@ -357,6 +358,29 @@ export function cityMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Measuring a ZIP code (smaller / larger): shade the union of ZCTAs on the
+// eliminated side. Each station sits in exactly one ZCTA, so shading the
+// eliminated-side ZCTAs agrees exactly with the per-station rule. -----------------
+
+export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const seekerZipStr = String(p.value || '') || zipAt(seeker) || ''
+  if (!seekerZipStr) return null
+  const seekerZip = Number(seekerZipStr)
+  const smaller = p.answer === 'smaller'
+  // A ZCTA is eliminated when its keep-test fails: keep is
+  // (zip <= seekerZip) === smaller, so eliminate the opposite side.
+  const polys: Polygon[] = []
+  for (const name of zipCodes()) {
+    const keep = (Number(name) <= seekerZip) === smaller
+    if (keep) continue
+    for (const poly of zipGeom(name)) polys.push(poly)
+  }
+  const union = robustUnion(polys)
+  return union.length ? toLatLng(union) : null
+}
+
 // Eliminated region for any shaded question record, or null if it has none.
 export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (!record.active || record.vetoed || !record.eliminates) return null
@@ -367,6 +391,7 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
+  if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
   return null
 }
 
