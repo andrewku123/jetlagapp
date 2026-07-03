@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { stationPasses, applyFilters } from './elimination'
 import { poisWithinRadius, poiKey } from './poi'
+import { metroLinesWithinRadius, nearestMetroLine, metroLineDistanceMiles, METRO_LINES } from './metroLines'
 import type { QuestionRecord, Station } from '../types'
 
 function station(overrides: Partial<Station> = {}): Station {
@@ -231,6 +232,54 @@ describe('stationPasses — tentacle (nearest in-radius place)', () => {
 
   it('no in-play POIs (seeker offshore) never eliminates', () => {
     const r = record('tentacle', { poiCat: 'museum', radiusMi: 1, fromLat: 37.70, fromLon: -122.55, value: 'anything' })
+    expect(stationPasses(station(seeker), r)).toBe(true)
+  })
+})
+
+describe('stationPasses — tentacle-line (nearest in-radius metro line)', () => {
+  // Downtown SF: many BART/Muni lines pass within 15 mi. Derive the in-play set
+  // with the same helper the engine uses so the test tracks the real geometry.
+  const seeker = { lat: 37.7749, lon: -122.4194 }
+  const inPlay = metroLinesWithinRadius(seeker, 15, seeker.lat)
+  const base = { radiusMi: 15, fromLat: seeker.lat, fromLon: seeker.lon }
+
+  it('precondition: at least two metro lines are in play', () => {
+    expect(inPlay.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('keeps a station on the answer line, drops it when the answer is a line it is far from', () => {
+    // A station sitting on the seeker point lies ~on the closest in-play line.
+    const near = nearestMetroLine(seeker, inPlay, seeker.lat)!
+    const keep = record('tentacle-line', { ...base, value: near.line.id })
+    expect(stationPasses(station(seeker), keep)).toBe(true)
+    // Pick an in-play line the station is NOT closest to → eliminated.
+    const other = inPlay.find((l) => l.id !== near.line.id)!
+    const drop = record('tentacle-line', { ...base, value: other.id })
+    // Only assert elimination when that other line is genuinely farther.
+    const dOther = metroLineDistanceMiles(seeker, other, seeker.lat)
+    if (dOther > near.d + 1e-6) expect(stationPasses(station(seeker), drop)).toBe(false)
+  })
+
+  it('a line outside the radius never counts', () => {
+    // Seeker in San Jose; VTA lines are in play, far-north BART/Muni may be out
+    // of 15 mi. An out-of-range line id is not among the in-play set → never
+    // eliminates (treated as "answer line not in play").
+    const sj = { lat: 37.3352, lon: -121.8938 }
+    const inPlaySj = metroLinesWithinRadius(sj, 15, sj.lat)
+    const outOfRange = METRO_LINES.find((l) => !inPlaySj.some((p) => p.id === l.id))
+    if (outOfRange) {
+      const r = record('tentacle-line', { radiusMi: 15, fromLat: sj.lat, fromLon: sj.lon, value: outOfRange.id })
+      expect(stationPasses(station(sj), r)).toBe(true)
+    }
+  })
+
+  it('answer not among the in-play set never eliminates', () => {
+    const r = record('tentacle-line', { ...base, value: 'not-a-real-line-id' })
+    expect(stationPasses(station(seeker), r)).toBe(true)
+  })
+
+  it('no in-play lines (seeker far offshore) never eliminates', () => {
+    const r = record('tentacle-line', { radiusMi: 15, fromLat: 36.0, fromLon: -124.5, value: 'anything' })
     expect(stationPasses(station(seeker), r)).toBe(true)
   })
 })

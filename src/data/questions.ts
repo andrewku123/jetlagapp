@@ -205,6 +205,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     blurb: 'Of all the places of the chosen type within the fixed radius of me, which one are you closest to? Set your location; the app lists the in-range places — pick the one I answer. Places outside the radius don’t count even if they’re closer to you.',
   },
   {
+    kind: 'tentacle-line',
+    category: 'Tentacles',
+    label: 'Tentacles — nearest metro line within 15 mi',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Of all the metro lines within 15 mi of me, which one are you closest to? Set your location; the app lists the in-range colored lines — pick the one I answer. Lines that don’t pass within 15 mi don’t count even if they’re closer to you. Large games only.',
+  },
+  {
     kind: 'temperature',
     category: 'Measuring',
     label: 'Measuring — Temperature (log only)',
@@ -269,6 +277,8 @@ export function questionGroupKey(
   if (kind === 'measure-feature') return `measure-feature:${String(params.feature)}`
   // Each tentacle category (e.g. museums-within-1mi) is its own question.
   if (kind === 'tentacle') return `tentacle:${String(params.poiCat)}`
+  // The metro-lines tentacle is a single question regardless of which line is answered.
+  if (kind === 'tentacle-line') return 'tentacle-line'
   // Each photo card is its own question, so asking two different photos does not
   // stack the repeat-reward multiplier; only re-asking the same photo does.
   if (kind === 'photo') return `photo:${String(params.photoTitle ?? '')}`

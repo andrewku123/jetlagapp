@@ -4,6 +4,7 @@ import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey,
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey } from '../lib/poi'
+import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
@@ -231,6 +232,8 @@ export default function QuestionForm({
   // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
   const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
   const [tentPoi, setTentPoi] = useState<string>('')
+  // metro-lines tentacle: chosen in-range line id
+  const [tentLine, setTentLine] = useState<string>('')
   const [feature, setFeature] = useState<string>(AVAILABLE_MEASURE_FEATURE_KEYS[0])
   const [num, setNum] = useState<string>('')
   const [photoTitle, setPhotoTitle] = useState<string>(photoCards[0]?.title ?? '')
@@ -349,6 +352,22 @@ export default function QuestionForm({
         }
         break
       }
+      case 'tentacle-line': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
+        if (inPlay.length === 0)
+          return alert(`No metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.`)
+        const chosen = inPlay.find((l) => l.id === tentLine)
+        if (!chosen) return alert('Pick which in-range metro line the hider is closest to.')
+        params = {
+          radiusMi: METRO_TENTACLE_RADIUS_MI,
+          fromLat: center.lat,
+          fromLon: center.lon,
+          value: chosen.id,
+          poiName: chosen.label,
+        }
+        break
+      }
       case 'match-namelength': {
         if (num === '') return alert('Enter your station name length.')
         params = { value: Number(num), answer: yesno }
@@ -432,7 +451,7 @@ export default function QuestionForm({
       ...(endgameFlag ? { endgame: true } : {}),
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi(''); setTentLine('')
   }
 
   // Preview of the hider's cost if this question were asked now: the nth ask of
@@ -515,6 +534,11 @@ export default function QuestionForm({
         label: `${capitalize(poiCategoryLabel(c.key))}s within ${formatDistance(c.radiusMi, units)}`,
         group: `Within ${formatDistance(c.radiusMi, units)}`,
       }))
+    }
+    // Metro Lines tentacle is a Large-only subject (15 mi).
+    if (q.kind === 'tentacle-line') {
+      if (gameSize !== 'large') return []
+      return [{ value: q.kind, label: `Metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`, group: `Within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}` }]
     }
     return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
   })
@@ -832,6 +856,40 @@ export default function QuestionForm({
                 </div>
                 <p className="blurb poi-readout">
                   {inPlay.length} {poiCategoryLabel(tentCat)}{inPlay.length === 1 ? '' : 's'} in range.
+                  {inPlay.length === 1 && ' Only one in range — this eliminates nothing.'}
+                </p>
+              </>
+            )
+          })()}
+        </>
+      )}
+
+      {kind === 'tentacle-line' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
+              .map((line) => ({ line, d: metroLineDistanceMiles(center, line, center.lat) }))
+              .sort((a, b) => a.d - b.d)
+            if (inPlay.length === 0)
+              return (
+                <p className="blurb poi-readout warn">
+                  No metro lines within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.
+                </p>
+              )
+            return (
+              <>
+                <div className="row">
+                  <label>Which is the hider closest to?</label>
+                  <select value={tentLine} onChange={(e) => setTentLine(e.target.value)}>
+                    <option value="">— choose the in-range line —</option>
+                    {inPlay.map(({ line, d }) => (
+                      <option key={line.id} value={line.id}>{line.label} ({formatDistance(d, units)} from you)</option>
+                    ))}
+                  </select>
+                </div>
+                <p className="blurb poi-readout">
+                  {inPlay.length} metro line{inPlay.length === 1 ? '' : 's'} in range.
                   {inPlay.length === 1 && ' Only one in range — this eliminates nothing.'}
                 </p>
               </>

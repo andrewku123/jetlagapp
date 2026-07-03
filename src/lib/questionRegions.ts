@@ -6,7 +6,8 @@ import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
 import { zipAt, zipCodes, zipGeom } from './zip'
-import { bisectorHalfPlane, circlePolygon } from './geo'
+import { bisectorHalfPlane, circlePolygon, haversineMiles } from './geo'
+import { metroLinesWithinRadius, type MetroLine } from './metroLines'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -249,6 +250,78 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   return elim.length ? toLatLng(elim) : null
 }
 
+// Metro Lines tentacle: shade everywhere whose nearest *in-play* line is NOT the
+// answer. The in-play set is the lines passing within the seeker's radius. There
+// is no closed-form Voronoi for polylines, so each in-play line is sampled into
+// points and a point-Voronoi is built over all samples; the keep region is the
+// union of the answer line's sample cells and the eliminated area is its
+// complement. Sample spacing is chosen so the total site count stays bounded,
+// which keeps the boundary within a sample-spacing of the true nearest-line
+// boundary — matched by skipping a thin band in the agreement test.
+function sampleLine(line: MetroLine, spacingMi: number): LatLng[] {
+  const out: LatLng[] = []
+  for (const poly of line.polylines) {
+    if (poly.length === 0) continue
+    out.push(poly[0])
+    let acc = 0
+    for (let i = 1; i < poly.length; i++) {
+      const seg = haversineMiles(poly[i - 1], poly[i])
+      acc += seg
+      if (acc >= spacingMi) {
+        out.push(poly[i])
+        acc = 0
+      }
+    }
+    const last = poly[poly.length - 1]
+    if (out[out.length - 1] !== last) out.push(last)
+  }
+  return out
+}
+
+export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const radius = Number(p.radiusMi)
+  const answerId = String(p.value ?? '')
+  if (!answerId || !Number.isFinite(radius)) return null
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
+  if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
+  if (!inPlay.some((l) => l.id === answerId)) return null
+
+  // Bound total samples: aim ~600 sites across all in-play lines.
+  let totalMi = 0
+  for (const l of inPlay) for (const poly of l.polylines) for (let i = 1; i < poly.length; i++) totalMi += haversineMiles(poly[i - 1], poly[i])
+  const spacingMi = Math.max(0.25, totalMi / 600)
+
+  const sites: LatLng[] = []
+  const isAnswer: boolean[] = []
+  for (const l of inPlay) {
+    const pts = sampleLine(l, spacingMi)
+    for (const pt of pts) {
+      sites.push(pt)
+      isAnswer.push(l.id === answerId)
+    }
+  }
+  if (sites.length < 2) return null
+
+  // Keep region = union of the answer line's sample cells. Union them via the
+  // shared robustUnion (snap + divide-and-conquer) — an incremental pairwise fold
+  // of the many adjacent, near-collinear cells along a line trips
+  // polygon-clipping's ring-completion robustness bug.
+  const cells: Polygon[] = []
+  for (let i = 0; i < sites.length; i++) {
+    if (!isAnswer[i]) continue
+    const cell = voronoiCellRing(sites, i, seeker.lat)
+    if (!cell) continue
+    cells.push([cell])
+  }
+  if (!cells.length) return null
+  const keep = robustUnion(cells)
+  if (!keep.length) return null
+  const elim = polygonClipping.difference([WORLD_RING], keep)
+  return elim.length ? toLatLng(elim) : null
+}
+
 // --- Measuring: shade the union of disks (radius = seeker's own nearest-POI
 // distance) around every POI, or its complement. --------------------------------
 
@@ -413,6 +486,7 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
   if (record.kind === 'tentacle') return tentacleEliminatedRegion(record)
+  if (record.kind === 'tentacle-line') return metroLineEliminatedRegion(record)
   return null
 }
 

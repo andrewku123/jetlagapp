@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, metroLineEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { metroLinesWithinRadius, nearestMetroLine, metroLineDistanceMiles } from './metroLines'
 import { poisWithinRadius } from './poi'
 import { nearestAirport } from './airports'
 import { countyAt } from './counties'
@@ -322,6 +323,67 @@ describe('tentacleEliminatedRegion agrees with the elimination rule', () => {
     }
     const region = tentacleEliminatedRegion(r)
     for (const st of STATIONS) {
+      const shaded = region ? pointInMulti(st.lat, st.lon, region) : false
+      const eliminated = !stationPasses(st, r)
+      expect(shaded, `${st.name} shading vs elimination`).toBe(eliminated)
+    }
+  })
+})
+
+describe('metroLineEliminatedRegion (sampled Voronoi) tracks the elimination rule', () => {
+  const radiusMi = 15
+  const inPlay = metroLinesWithinRadius(SEEKER, radiusMi, SEEKER.lat)
+
+  it('precondition: at least two in-play metro lines', () => {
+    expect(inPlay.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('answer line kept (unshaded), a far non-answer line shaded', () => {
+    // answer = the in-play line nearest the seeker
+    const near = nearestMetroLine(SEEKER, inPlay, SEEKER.lat)!
+    const r: QuestionRecord = {
+      id: 'q', kind: 'tentacle-line', createdAt: 0,
+      params: { radiusMi, fromLat: SEEKER.lat, fromLon: SEEKER.lon, value: near.line.id },
+      eliminates: true, active: true,
+    }
+    const region = metroLineEliminatedRegion(r)!
+    expect(region).toBeTruthy()
+    // a vertex on the answer line is in its own keep cell → not shaded
+    const onAnswer = near.line.polylines[0][0]
+    expect(pointInMulti(onAnswer.lat, onAnswer.lon, region)).toBe(false)
+    // the farthest in-play line's midpoint sits in another cell → shaded
+    let far = inPlay[0], fd = -1
+    for (const l of inPlay) {
+      const d = metroLineDistanceMiles(SEEKER, l, SEEKER.lat)
+      if (d > fd) { fd = d; far = l }
+    }
+    if (far.id !== near.line.id) {
+      const poly = far.polylines[0]
+      const mid = poly[Math.floor(poly.length / 2)]
+      expect(pointInMulti(mid.lat, mid.lon, region)).toBe(true)
+    }
+  })
+
+  it('per-station shading matches elimination away from the sampled boundary', () => {
+    const STATIONS = rawStations as unknown as Station[]
+    const answer = nearestMetroLine(SEEKER, inPlay, SEEKER.lat)!.line
+    const r: QuestionRecord = {
+      id: 'q', kind: 'tentacle-line', createdAt: 0,
+      params: { radiusMi, fromLat: SEEKER.lat, fromLon: SEEKER.lon, value: answer.id },
+      eliminates: true, active: true,
+    }
+    const region = metroLineEliminatedRegion(r)
+    for (const st of STATIONS) {
+      // margin between the station's nearest in-play line and the answer line;
+      // near the boundary the sampled shading can differ from the exact rule, so
+      // only assert where the decision is unambiguous (> 1 mi from the boundary).
+      let minD = Infinity, answerD = Infinity
+      for (const l of inPlay) {
+        const d = metroLineDistanceMiles({ lat: st.lat, lon: st.lon }, l, SEEKER.lat)
+        if (d < minD) minD = d
+        if (l.id === answer.id) answerD = d
+      }
+      if (Math.abs(answerD - minD) <= 1) continue
       const shaded = region ? pointInMulti(st.lat, st.lon, region) : false
       const eliminated = !stationPasses(st, r)
       expect(shaded, `${st.name} shading vs elimination`).toBe(eliminated)

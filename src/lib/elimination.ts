@@ -2,6 +2,7 @@ import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
 import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius } from './poi'
+import { metroLineDistanceMiles, metroLinesWithinRadius } from './metroLines'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
 import { zipAt } from './zip'
@@ -146,6 +147,29 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // The tiny epsilon folds an exact tie into "keep" so a station equidistant
       // between the answer and another POI is never wrongly eliminated.
       return answerD <= minD + 1e-9
+    }
+    case 'tentacle-line': {
+      // Metro Lines tentacle: "Of all the metro lines within <radius> of me,
+      // which are you closest to?" In-play lines are those passing within the
+      // radius of the seeker; the answer (p.value = line id) is the in-play line
+      // the hider is closest to. Keep a station iff its nearest in-play line is
+      // that answer. All distances use the seeker-centred projection so the
+      // keep/drop decision agrees with the shaded region.
+      const radius = n(p.radiusMi)
+      const answerId = s(p.value)
+      if (!answerId || !Number.isFinite(radius)) return true
+      const seeker: LatLng = { lat: n(p.fromLat), lon: n(p.fromLon) }
+      const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
+      if (inPlay.length === 0) return true // nothing in play: eliminate nothing
+      let minD = Infinity
+      let answerD = Infinity
+      for (const line of inPlay) {
+        const d = metroLineDistanceMiles({ lat: station.lat, lon: station.lon }, line, seeker.lat)
+        if (d < minD) minD = d
+        if (line.id === answerId && d < answerD) answerD = d
+      }
+      if (!Number.isFinite(answerD)) return true // answer line not in play
+      return answerD <= minD + 1e-9 // keep when answer line is (tied) nearest
     }
     case 'photo':
       return true

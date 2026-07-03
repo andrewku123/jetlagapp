@@ -44,6 +44,12 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
       return `Tentacle: nearest ${poiCategoryLabel(String(p.poiCat))}${within}${ans}`
     }
+    case 'tentacle-line': {
+      const r0 = Number(p.radiusMi)
+      const within = Number.isFinite(r0) ? ` within ${formatDistance(r0, units)}` : ''
+      const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
+      return `Tentacle: nearest metro line${within}${ans}`
+    }
     case 'inside-floor': {
       const ans: Record<string, string> = {
         higher: 'higher floor',

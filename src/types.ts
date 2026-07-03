@@ -48,6 +48,7 @@ export type QuestionKind =
   | 'measure-feature'
   | 'measure-zip'
   | 'tentacle'
+  | 'tentacle-line'
   // Record-keeping-only subjects (no auto-eliminator): logged for the seeker's
   // notes, never shade or eliminate.
   | 'match-street'
