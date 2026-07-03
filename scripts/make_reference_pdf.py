@@ -167,11 +167,12 @@ MATCHING = [
 ]
 MEASURING = [
     ("A commercial airport", True), ("A high-speed train line", False),
-    ("A rail station", False), ("An international border", True),
-    ("A 1st admin. div. border (state)", True), ("A 2nd admin. div. border (county)", True),
-    ("A 3rd admin. div. border (city)", False), ("A 4th admin. div. border (neighborhood)", False),
-    ("Sea level (altitude)", True), ("A body of water", False),
-    ("A coastline", True), ("A mountain", True), ("A park", True),
+    ("A rail station", False), ("An international border", False),
+    ("A 1st admin. div. border (state)", False), ("A 2nd admin. div. border (county)", True),
+    ("A coastline", True), ("Sea level (altitude)", True),
+    ("ZIP code (smaller / larger)", True), ("A body of water", False),
+    ("Temperature (hotter / colder)", False),
+    ("A mountain", True), ("A park", True),
     ("An amusement park", True), ("A zoo", True), ("An aquarium", True),
     ("A golf course", True), ("A museum", True), ("A movie theater", True),
     ("A sports stadium", True), ("A hospital", True), ("A library", True),
@@ -243,8 +244,8 @@ CARD_MATCHING = f"""
 CARD_MEASURING = f"""
 <div class="card">
   <h2>2 &middot; Measuring <span class="dk">draw 3, keep 1</span></h2>
-  <p class="prompt">"Compared to me, are you closer to or further from ___?" &rarr; <b>Closer / Further</b></p>
-  <p class="send"><b>Send hider:</b> your own distance to ___ (the measured feature).</p>
+  <p class="prompt">"Compared to me, are you closer to or further from ___?" &rarr; <b>Closer / Further</b> <span class="dk">(ZIP = smaller / larger; Temperature = hotter / colder)</span></p>
+  <p class="send"><b>Send hider:</b> your own distance to ___ (or your ZIP / temperature).</p>
   {META_FAIL}
   {boxes(MEASURING)}
 </div>"""
@@ -288,11 +289,10 @@ CARD_PHOTO = f"""
 
 CARD_INSIDE = f"""
 <div class="card slim">
-  <h2>7 &middot; Inside <span class="dk">draw 3, keep 1</span></h2>
-  <p class="prompt"><b>End game only.</b> "I'm inside ___ (building) on ___ (floor) &mdash; are you on a higher or lower floor?" &rarr; <b>Higher / Lower / Same</b>, or <b>"I can't answer"</b> if the hider is in a different building or outdoors.</p>
-  <p class="send"><b>Send hider:</b> the building you are inside <b>and the floor you are on</b>.</p>
-  {META_FAIL}
-  {boxes([("Floor in a building", False)])}
+  <h2>7 &middot; Inside <span class="dk">both players indoors</span></h2>
+  <p class="prompt"><b>Floor</b> <span class="dk">(draw 3, keep 1 &middot; end game only)</span>: higher/lower floor than me? &rarr; <b>Higher / Lower / Same</b> (or <b>"can't answer"</b> if outdoors / different building). Send the building <b>and your floor</b>.</p>
+  <p class="prompt"><b>Traffic</b> <span class="dk">(draw 2, keep 1)</span>: count people passing within 15 ft over 5 min, to 2 sig figs (137&rarr;140). Send your count. Can't answer outdoors.</p>
+  {boxes([("Floor in a building", False), ("Traffic (5-min foot count)", False)])}
   <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
 </div>"""
 
