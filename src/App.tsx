@@ -522,18 +522,20 @@ export default function App() {
                 </select>
               </div>
               <div className="searchbar">
-                <input
-                  type="search"
-                  className="suspect-search"
-                  placeholder="Search name, line, agency…"
-                  value={suspectQuery}
-                  onChange={(e) => setSuspectQuery(e.target.value)}
-                />
-                {suspectQuery && (
-                  <button className="search-clear" aria-label="Clear search" onClick={() => setSuspectQuery('')}>
-                    ✕
-                  </button>
-                )}
+                <div className="search-input-wrap">
+                  <input
+                    type="search"
+                    className="suspect-search"
+                    placeholder="Search name, line, agency…"
+                    value={suspectQuery}
+                    onChange={(e) => setSuspectQuery(e.target.value)}
+                  />
+                  {suspectQuery && (
+                    <button className="search-clear" aria-label="Clear search" onClick={() => setSuspectQuery('')}>
+                      ✕
+                    </button>
+                  )}
+                </div>
               </div>
               {(() => {
                 const q = suspectQuery.trim().toLowerCase()
@@ -581,18 +583,20 @@ export default function App() {
                 counts if it has the Google Maps category icon and ≥5 reviews.
               </p>
               <div className="searchbar">
-                <input
-                  type="search"
-                  className="suspect-search"
-                  placeholder="Search POI name…"
-                  value={poiQuery}
-                  onChange={(e) => setPoiQuery(e.target.value)}
-                />
-                {poiQuery && (
-                  <button className="search-clear" aria-label="Clear search" onClick={() => setPoiQuery('')}>
-                    ✕
-                  </button>
-                )}
+                <div className="search-input-wrap">
+                  <input
+                    type="search"
+                    className="suspect-search"
+                    placeholder="Search POI name…"
+                    value={poiQuery}
+                    onChange={(e) => setPoiQuery(e.target.value)}
+                  />
+                  {poiQuery && (
+                    <button className="search-clear" aria-label="Clear search" onClick={() => setPoiQuery('')}>
+                      ✕
+                    </button>
+                  )}
+                </div>
                 {poiSuggestions.length > 0 && (
                   <ul className="poi-suggest">
                     {poiSuggestions.map((p) => (
