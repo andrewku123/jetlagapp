@@ -135,6 +135,34 @@ corridor (world minus buffer), `'further'` eliminates the corridor itself.
   mismatches** between shading (`pointInMulti(region)`) and elimination
   (`stationPasses`) for all 4 features × closer/further × 3 seekers.
 
+## Boundary outline for every shaded question
+Radar (its `<Circle>`) and thermometer (its dashed bisector) always drew a crisp
+edge **line**; the fill-only POI/measure/feature/matching regions did not, so
+Andrew asked that *every* shaded area get "the line thru it like radar." The
+shared helper is `RegionOutline` in `MapView`, which strokes the boundary of a
+`LatLngMultiPolygon` with `ELIM_OUTLINE` (`{ color:'#3730a3', weight:1,
+fill:false, interactive:false }`), rendered right after the region's `ELIM_FILL`
+`<Polygon>`s (and in the endgame boundary block from the full unclipped region,
+so the edge stays whole like the radar circle does in endgame).
+
+- **Skip the world-box ring.** A "complement" region (eliminate everything
+  *outside* X — POI `closer`, radar `yes`, match `yes`, etc.) is
+  `difference([WORLD_RING], X)`, i.e. a polygon whose **outer ring is the
+  off-screen world box** and whose **hole(s)** are X's real edge. Outlining the
+  outer ring would draw a huge rectangle at lat ±85 / lon ±180. `RegionOutline`
+  calls `isWorldRing(ring)` (every vertex `|lat|>=84 && |lon|>=179`) and skips
+  those, so only the meaningful boundary is drawn. Non-complement regions
+  (intersection / union) have no world ring, so their outer ring is drawn.
+- Draw each ring as its own `<Polygon positions={ring} fill:false>` — a hole
+  ring stroked on its own is just its outline; no even-odd fill needed.
+- Keep it `interactive={false}` (via `ELIM_OUTLINE`) — an outline is still a
+  decoration and must not eat station clicks (see the click-through rule).
+- Verify visually per shading class, since `preferCanvas` renders these to the
+  overlay canvas (no SVG `<path>` to assert on): inject a `match-county` (`no`
+  = intersection, `yes` = complement) and a `measure-poi` via
+  `localStorage['bahs.game.v1']`, reload, and confirm the indigo line traces the
+  shaded edge and no world-box rectangle appears.
+
 ## Adding an overlay for a new question kind
 1. Add a `records.filter(...)` block keyed to the kind.
 2. Derive geometry from `params` (reuse `geo.ts` helpers; don't inline math).
