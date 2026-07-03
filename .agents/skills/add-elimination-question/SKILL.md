@@ -98,6 +98,44 @@ label (US ZIP via Census ZCTA). Pattern, mirroring `cities.ts`/`counties.ts`:
 - Only add this for maps whose regions have numeric labels (US ZIPs) — postcodes
   elsewhere are alphanumeric and not ordinal.
 
+### Tentacle questions ("of all the X within R of me, which are you closest to?")
+Two flavours, both size-gated (never in Small; Medium = 1 mi POI subjects; Large
+adds 15 mi POI subjects + Metro Lines). The seeker sets **their own** location +
+a fixed-per-subject radius; the in-play set is everything of that subject passing
+within R of the seeker; the hider names which in-play member they're closest to.
+Key rule: a member **outside R never counts**, even if physically closer to a
+station than the answer. Elimination keeps a station iff its nearest **in-play**
+member is the answer, ties kept (`answerD <= minD + 1e-9`). If 0/1 in play, or the
+answer isn't in the in-play set → eliminate nothing (`return true`).
+
+- **POI tentacles** (`tentacle`, `src/lib/poi.ts`): `TENTACLE_CATEGORIES` lists
+  the 7 categories with fixed `radiusMi` + size gating; `poisWithinRadius(seeker,
+  cat, r)` is the in-play set; `params = { poiCat, radiusMi, fromLat, fromLon,
+  value: poiKey(answer), poiName }`. Shading = restricted-Voronoi complement of
+  the answer POI's cell over the in-play set (`tentacleEliminatedRegion`) — exact,
+  so per-station `pointInMulti === !stationPasses` holds.
+- **Metro Lines tentacle** (`tentacle-line`, `src/lib/metroLines.ts`): line
+  geometry, not points. `METRO_LINES` is derived from
+  `transit-lines.geojson.json` + `stations.json` line names (each GeoJSON feature
+  matched to its station-line by min mean distance); `id = system::color`.
+  `metroLineDistanceMiles(p, line, refLat)` = projected distance to the polyline;
+  `metroLinesWithinRadius(seeker, 15)` is the in-play set; `nearestMetroLine`.
+  Radius is the exported constant `METRO_TENTACLE_RADIUS_MI = 15` — never hardcode.
+  `params = { radiusMi, fromLat, fromLon, value: line.id, poiName: line.label }`.
+  In `QuestionForm`, gate the subject to `gameSize === 'large'` (return `[]` from
+  `subjectOptions` otherwise); it's a single subject (no `::param`), so
+  `subjectValue`/`pickSubject` fall through to the bare `kind`.
+- **Shading for polylines has no closed-form Voronoi** — sample each in-play line
+  into points (spacing `max(0.25, totalMi/600)` to bound ~600 sites), build a
+  point-Voronoi over all samples, union the answer line's sample cells = keep
+  region, shade the complement (`metroLineEliminatedRegion`). This is approximate
+  near the boundary, so the region test only asserts agreement for stations
+  `> 1 mi` from the boundary (`|answerD - minD| > 1`). **Union the cells with the
+  shared `robustUnion` helper, never an incremental pairwise fold** — the many
+  adjacent near-collinear cells along a line trip polygon-clipping's
+  "Unable to complete output ring" robustness bug; `robustUnion` (snap +
+  divide-and-conquer, retries at coarser precision) handles it.
+
 ### Tie rule for ALL measuring questions ("equal → the smaller answer")
 Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,
 `measure-sealevel`, `measure-zip`) must fold an exact tie into the **smaller/closer/
