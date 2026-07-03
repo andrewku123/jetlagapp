@@ -88,6 +88,32 @@ and adjusting a few region constants. There is no per-city code branching.
      anything else. (The wider `counties.geojson.json` set can still exist for the
      county-*border* measure feature and the dim overlay; it just isn't used for
      the match lookup.)
+   - **City (3rd-admin) polygons** used by city Matching live in
+     `src/data/places.geojson.json`, built by `scripts/build_city_places.py`
+     from the state Census **place** file. Emit **every place that lies inside
+     the play area — city, town AND CDP — each clipped to the play-area
+     polygon**, not just the ones that hold stations. Two reasons:
+     - the play area (built by `build_play_area.py`) refills unincorporated
+       **CDP enclaves** (e.g. Fairview) that no station sits in, and a seeker can
+       stand in one — it must read out its real name, so it has to be in the set;
+     - clipping to the play area (already shoreline-clipped) drops the parts of
+       edge places (Tiburon, Belvedere) that stick out into greyed-out land.
+     `cityAt()` in `cities.ts` is point-in-place with a small `SNAP_M` (~150 m)
+     snap; a coordinate in a **named** place → that place, in the play area but no
+     named place → **null → the form shows "Unincorporated"** (in play, no
+     municipality to match), outside the play area → null → **"Outside the play
+     area."** (`inPlayArea()` distinguishes the two). Keep the seeker AND station
+     lookups on this SAME `cityAt()` so shading and elimination always agree.
+   - **Airport-on-unincorporated-land override:** an airport owned by a city but
+     physically on unincorporated land (SFO is owned by the City & County of San
+     Francisco but sits in San Mateo County) is folded into its owning city by
+     `unary_union`-ing the airport footprint (convex hull of that airport's
+     stations, buffered, minus any other place it laps) into that city's polygon
+     in `build_city_places.py`. That makes every airport station AND a click on
+     the airport resolve to the owning city. This is the one Bay-specific
+     override; a new metro only needs it if it has the same ownership quirk.
+     Verify **no hiding station resolves to null** after building — if one does,
+     it's on unincorporated land and either needs a CDP added or an override.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
