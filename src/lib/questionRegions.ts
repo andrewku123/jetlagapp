@@ -5,7 +5,7 @@ import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeat
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
-import { bisectorHalfPlane } from './geo'
+import { bisectorHalfPlane, circlePolygon } from './geo'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -389,7 +389,9 @@ function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
     const c: LatLng = { lat: Number(p.lat), lon: Number(p.lon) }
     const rMi = Number(p.radiusMiles)
     if (!Number.isFinite(rMi)) return null
-    const disk: Polygon = [diskRing(c, rMi, 96)]
+    // Same geodesic ring the radar outline/non-endgame shading use, so the
+    // clipped endgame shading edge sits exactly on the drawn circle.
+    const disk: Polygon = [circlePolygon(c, rMi).map((pt) => [pt.lon, pt.lat] as [number, number])]
     // Yes = within → eliminate outside the disk; No = eliminate the disk.
     const elim = p.answer === 'yes' ? polygonClipping.difference([WORLD_RING], disk) : [disk]
     return elim.length ? elim : null
@@ -417,7 +419,8 @@ export function endgameClippedRegion(
 ): LatLngMultiPolygon | null {
   const geom = eliminatedGeom(record)
   if (!geom || !geom.length) return null
-  const disk: Polygon = [diskRing(center, radiusMiles, 128)]
+  // Geodesic ring matching the green hiding-zone outline drawn in MapView.
+  const disk: Polygon = [circlePolygon(center, radiusMiles).map((pt) => [pt.lon, pt.lat] as [number, number])]
   let clipped: MultiPolygon
   try {
     clipped = polygonClipping.intersection(geom, [disk])
