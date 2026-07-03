@@ -86,6 +86,7 @@ CITIES = {
         # bay (the upstream river/slough) is removed. Added one at a time as the
         # user sends precise coords.
         "dams": [
+            [[-122.21, 38.070], [-122.21, 38.050]],  # Carquinez Strait cutoff (Suisun Bay + Delta removed; strait <1mi, play area doesn't reach here)
             [[-122.394497, 37.960102], [-122.395999, 37.958749]],  # Castro Creek (Richmond)
         ],
     },
