@@ -178,8 +178,10 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     #    mouth (the user's line IS the coast) with no leftover coves poking
     #    inland. Landward = the local half-plane of the dam line that does not
     #    hold the open bay. Unmarked shore keeps its full detail.
+    dam_lines = None
     if dams:
         from shapely.geometry import LineString, Point
+        dam_lines = unary_union([LineString(seg) for seg in dams])
         dam_poly = _dam_polys(dams)
         cut = water.difference(dam_poly)
         comps = list(cut.geoms) if cut.geom_type == "MultiPolygon" else [cut]
@@ -215,18 +217,24 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
         all_land = unary_union(fill).buffer(0)
         water = main.difference(unary_union([g for g in fill if g is not all_land])).buffer(0)
 
-    # 3. shore. `water.boundary` is the topologically-correct shore (with the
-    #    straight mouth crossings the dams created), but it comes from the coarse
-    #    Census mask so it sits ~30 m off the real coast. If a high-detail OSM
-    #    coastline is supplied, snap the drawn shore onto it: take the OSM lines
-    #    that run along the kept shore, and fall back to the mask boundary only
-    #    where OSM has no coastline (i.e. across each dammed mouth = the bridge).
+    # 3. shore. `water.boundary` (wb) is the topologically-correct shore (with
+    #    the straight mouth crossings the dams created), but it comes from the
+    #    coarse Census mask so it sits ~30 m off the real coast. If a high-detail
+    #    OSM coastline is supplied, snap the OPEN-BAY shore onto it while keeping
+    #    each dammed mouth a clean straight line:
+    #      • detail = OSM that hugs the kept shore, but NOT within ~250 m of a dam
+    #        line — otherwise OSM traces ~180 m up both creek banks at the mouth.
+    #      • bridges = the mask boundary wherever that OSM detail is absent — i.e.
+    #        across every dammed mouth (the straight crossing) and any gap.
     if detail is not None and not detail.is_empty:
         wb = water.boundary
-        near = 0.0016   # ~180 m: OSM kept if it hugs the kept shore
-        gap = 0.0011    # ~120 m: mask boundary kept only where no OSM is near
-        shore = unary_union([detail.intersection(wb.buffer(near)),
-                             wb.difference(detail.buffer(gap))])
+        near = 0.0016    # ~180 m: OSM kept if it hugs the kept shore
+        gap = 0.0011     # ~120 m: mask boundary kept only where no OSM is near
+        dam_zone = 0.0022  # ~250 m: suppress OSM around each dam mouth
+        osm_shore = detail.intersection(wb.buffer(near))
+        if dam_lines is not None:
+            osm_shore = osm_shore.difference(dam_lines.buffer(dam_zone))
+        shore = unary_union([osm_shore, wb.difference(osm_shore.buffer(gap))])
     else:
         shore = all_land.boundary.intersection(water.buffer(0.0008))
 
