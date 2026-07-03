@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { stationPasses, applyFilters } from './elimination'
+import { poisWithinRadius, poiKey } from './poi'
 import type { QuestionRecord, Station } from '../types'
 
 function station(overrides: Partial<Station> = {}): Station {
@@ -182,6 +183,55 @@ describe('stationPasses — measure-feature (distance to a coastline / border)',
   it('unknown feature never eliminates', () => {
     const r = record('measure-feature', { feature: 'nonesuch', ...seeker, answer: 'closer' })
     expect(stationPasses(coastal, r)).toBe(true)
+  })
+})
+
+describe('stationPasses — tentacle (nearest in-radius place)', () => {
+  // Downtown SF has several museums within 1 mi; an ocean point has none. We
+  // derive the in-play set with the same helper the engine uses so the test
+  // stays correct regardless of the exact POI data.
+  const seeker = { lat: 37.7749, lon: -122.4194 }
+  const inPlay = poisWithinRadius(seeker, 'museum', 1)
+  const base = { poiCat: 'museum', radiusMi: 1, fromLat: seeker.lat, fromLon: seeker.lon }
+
+  it('precondition: at least two museums are in play', () => {
+    expect(inPlay.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('keeps a station whose nearest in-play museum is the answer, drops it otherwise', () => {
+    // A station co-located with inPlay[0] is nearest to inPlay[0].
+    const at0 = station({ lat: inPlay[0].lat, lon: inPlay[0].lon })
+    const keep = record('tentacle', { ...base, value: poiKey(inPlay[0]) })
+    const drop = record('tentacle', { ...base, value: poiKey(inPlay[1]) })
+    expect(stationPasses(at0, keep)).toBe(true)
+    expect(stationPasses(at0, drop)).toBe(false)
+  })
+
+  it('an out-of-radius museum closer to the station never counts', () => {
+    // San Jose has its own museums; but the answer set is fixed to SF's in-play
+    // museums, so a San Jose station's nearest *in-play* museum is an SF one.
+    const sj = station({ lat: 37.3352, lon: -121.8938 })
+    // Whatever SF in-play museum is nearest to the SJ station is the only answer
+    // that keeps it; pick a different one and it is eliminated.
+    let nearestIdx = 0
+    let best = Infinity
+    inPlay.forEach((p, i) => {
+      const d = Math.hypot(p.lat - sj.lat, p.lon - sj.lon)
+      if (d < best) { best = d; nearestIdx = i }
+    })
+    const other = inPlay[(nearestIdx + 1) % inPlay.length]
+    const drop = record('tentacle', { ...base, value: poiKey(other) })
+    expect(stationPasses(sj, drop)).toBe(false)
+  })
+
+  it('answer not among the in-play set never eliminates', () => {
+    const r = record('tentacle', { ...base, value: 'not-a-real-poi-key' })
+    expect(stationPasses(station(seeker), r)).toBe(true)
+  })
+
+  it('no in-play POIs (seeker offshore) never eliminates', () => {
+    const r = record('tentacle', { poiCat: 'museum', radiusMi: 1, fromLat: 37.70, fromLon: -122.55, value: 'anything' })
+    expect(stationPasses(station(seeker), r)).toBe(true)
   })
 })
 

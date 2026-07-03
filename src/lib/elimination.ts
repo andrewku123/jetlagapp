@@ -1,7 +1,7 @@
 import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
-import { nearestPoi, nearestPoiMiles, poiKey } from './poi'
+import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius } from './poi'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
 import { zipAt } from './zip'
@@ -120,6 +120,32 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // equal-ZIP station survives "smaller" (never dropping the true hider);
       // "larger" stays strict (>).
       return (stationZip <= seekerZip) === (p.answer === 'smaller')
+    }
+    case 'tentacle': {
+      // "Of all the <cat> within <radius> of me, which are you closest to?"
+      // Only POIs within the radius of the seeker are in play; the answer
+      // (p.value = poiKey) is the in-play POI the hider is closest to. Keep a
+      // station iff its nearest *in-play* POI is that answer — a POI outside the
+      // radius never counts, even if it is physically closer to the station.
+      const cat = s(p.poiCat)
+      const radius = n(p.radiusMi)
+      const answerKey = s(p.value)
+      if (!answerKey || !Number.isFinite(radius)) return true
+      const seeker: LatLng = { lat: n(p.fromLat), lon: n(p.fromLon) }
+      const inPlay = poisWithinRadius(seeker, cat, radius)
+      if (inPlay.length === 0) return true // nothing in play: eliminate nothing
+      let minD = Infinity
+      let answerD = Infinity
+      for (const poi of inPlay) {
+        const d = haversineMiles(station, poi)
+        if (d < minD) minD = d
+        if (poiKey(poi) === answerKey && d < answerD) answerD = d
+      }
+      if (!Number.isFinite(answerD)) return true // answer not among in-play POIs
+      // Keep when the answer POI is (tied for) the station's nearest in-play POI.
+      // The tiny epsilon folds an exact tie into "keep" so a station equidistant
+      // between the answer and another POI is never wrongly eliminated.
+      return answerD <= minD + 1e-9
     }
     case 'photo':
       return true

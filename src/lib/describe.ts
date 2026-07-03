@@ -38,6 +38,12 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Altitude vs ${formatElevation(Number(p.value), units)}${arrow(String(a))}`
     case 'measure-zip':
       return `ZIP smaller/larger than ${p.value ? String(p.value) : 'mine'}?${arrow(String(a))}`
+    case 'tentacle': {
+      const r0 = Number(p.radiusMi)
+      const within = Number.isFinite(r0) ? ` within ${formatDistance(r0, units)}` : ''
+      const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
+      return `Tentacle: nearest ${poiCategoryLabel(String(p.poiCat))}${within}${ans}`
+    }
     case 'inside-floor': {
       const ans: Record<string, string> = {
         higher: 'higher floor',

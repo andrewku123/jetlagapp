@@ -47,6 +47,7 @@ export type QuestionKind =
   | 'measure-poi'
   | 'measure-feature'
   | 'measure-zip'
+  | 'tentacle'
   // Record-keeping-only subjects (no auto-eliminator): logged for the seeker's
   // notes, never shade or eliminate.
   | 'match-street'

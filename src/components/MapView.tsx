@@ -17,7 +17,7 @@ import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
-import { nearestPoi, poiCategoryLabel } from '../lib/poi'
+import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
 import { AIRPORTS, nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
@@ -832,7 +832,7 @@ export default function MapView({
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' || k === 'match-county' ||
-      k === 'match-city' || k === 'measure-zip'
+      k === 'match-city' || k === 'measure-zip' || k === 'tentacle'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
     )
@@ -852,6 +852,11 @@ export default function MapView({
           if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
         } else if (r.kind === 'match-county' || r.kind === 'match-city' || r.kind === 'measure-zip') {
           pin = null // the shaded county/city/ZIP polygon speaks for itself
+        } else if (r.kind === 'tentacle') {
+          const cat = String(r.params.poiCat)
+          const key = String(r.params.value ?? '')
+          const ans = (POI_BY_CATEGORY[cat] ?? []).find((poi) => poiKey(poi) === key)
+          if (ans) pin = { lat: ans.lat, lon: ans.lon, label: `hider's nearest ${poiCategoryLabel(cat)}: ${ans.name}` }
         } else {
           const cat = String(r.params.poiCat)
           const np = nearestPoi(seeker, cat)
@@ -865,9 +870,9 @@ export default function MapView({
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
         r.kind === 'match-airport' || r.kind === 'measure-airport' || r.kind === 'match-county' ||
-        r.kind === 'match-city' || r.kind === 'measure-zip',
+        r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle',
       )
-      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
+      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
   ])
 

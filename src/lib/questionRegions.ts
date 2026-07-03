@@ -1,6 +1,6 @@
 import polygonClipping, { type MultiPolygon, type Polygon, type Ring } from 'polygon-clipping'
 import type { LatLng, QuestionRecord } from '../types'
-import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
+import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
@@ -229,6 +229,26 @@ export function poiMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   return elim.length ? toLatLng(elim) : null
 }
 
+// Tentacle: shade everywhere whose nearest *in-play* POI is NOT the answer. The
+// in-play set is the POIs within the seeker's radius; among just those, the answer
+// POI's Voronoi cell is the keep region, so the eliminated area is its complement.
+export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const cat = String(p.poiCat)
+  const radius = Number(p.radiusMi)
+  const answerKey = String(p.value ?? '')
+  if (!answerKey || !Number.isFinite(radius)) return null
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const inPlay = poisWithinRadius(seeker, cat, radius)
+  if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
+  const idx = inPlay.findIndex((q) => poiKey(q) === answerKey)
+  if (idx < 0) return null
+  const cell = voronoiCellRing(inPlay, idx, seeker.lat)
+  if (!cell) return null
+  const elim = polygonClipping.difference([WORLD_RING], [cell])
+  return elim.length ? toLatLng(elim) : null
+}
+
 // --- Measuring: shade the union of disks (radius = seeker's own nearest-POI
 // distance) around every POI, or its complement. --------------------------------
 
@@ -392,6 +412,7 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
+  if (record.kind === 'tentacle') return tentacleEliminatedRegion(record)
   return null
 }
 

@@ -8,7 +8,7 @@ export const THERMOMETER_OPTIONS = [0.5, 3, 10]
 
 export interface QuestionMeta {
   kind: QuestionKind
-  category: 'Radar' | 'Thermometer' | 'Matching' | 'Measuring' | 'Inside' | 'Photo'
+  category: 'Radar' | 'Thermometer' | 'Matching' | 'Measuring' | 'Tentacles' | 'Inside' | 'Photo'
   label: string
   // cards the hider draws (medium game) — shown to the seeker as the cost
   cards: string
@@ -195,6 +195,15 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     eliminates: true,
     blurb: 'Compared to me, are you closer to or further from your nearest place of the chosen type? Set your location; the app shows your distance to it.',
   },
+  // --- Tentacles (expands per POI category; not available in small games) ---
+  {
+    kind: 'tentacle',
+    category: 'Tentacles',
+    label: 'Tentacles — nearest place within a radius',
+    cards: 'draw 3, keep 1',
+    eliminates: true,
+    blurb: 'Of all the places of the chosen type within the fixed radius of me, which one are you closest to? Set your location; the app lists the in-range places — pick the one I answer. Places outside the radius don’t count even if they’re closer to you.',
+  },
   {
     kind: 'temperature',
     category: 'Measuring',
@@ -258,6 +267,8 @@ export function questionGroupKey(
   // Measuring a different linear feature (coastline vs county line) is a different
   // question; two asks of the same feature are the same question.
   if (kind === 'measure-feature') return `measure-feature:${String(params.feature)}`
+  // Each tentacle category (e.g. museums-within-1mi) is its own question.
+  if (kind === 'tentacle') return `tentacle:${String(params.poiCat)}`
   // Each photo card is its own question, so asking two different photos does not
   // stack the repeat-reward multiplier; only re-asking the same photo does.
   if (kind === 'photo') return `photo:${String(params.photoTitle ?? '')}`

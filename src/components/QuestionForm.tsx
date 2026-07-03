@@ -3,7 +3,7 @@ import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
-import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
+import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey } from '../lib/poi'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
@@ -181,6 +181,9 @@ export default function QuestionForm({
 }: Props) {
   // photo cards askable in this game size
   const photoCards = PHOTO.filter((c) => c.sizes.includes(gameSize))
+  // tentacle categories askable in this game size (Small = none, so the whole
+  // Tentacles type is hidden below).
+  const tentCats = TENTACLE_CATEGORIES.filter((c) => c.sizes.includes(gameSize))
   const metric = units === 'metric'
   const distUnit = metric ? 'km' : 'mi'
   const elevUnit = metric ? 'm' : 'ft'
@@ -191,13 +194,18 @@ export default function QuestionForm({
   const categories = QUESTION_CATALOG.reduce<QuestionMeta['category'][]>(
     (acc, q) => (acc.includes(q.category) ? acc : [...acc, q.category]),
     [],
-  )
+  ).filter((c) => c !== 'Tentacles' || tentCats.length > 0)
   const [category, setCategory] = useState<QuestionMeta['category']>(meta.category)
   const kindsInCategory = QUESTION_CATALOG.filter((q) => q.category === category)
   function pickCategory(c: QuestionMeta['category']) {
     setCategory(c)
     const first = QUESTION_CATALOG.find((q) => q.category === c)!
     setKind(first.kind)
+    // Entering Tentacles: make sure the chosen category is one askable at this
+    // game size (the default museum could be gated out on some sizes).
+    if (c === 'Tentacles' && tentCats.length > 0 && !tentCats.some((t) => t.key === tentCat)) {
+      setTentCat(tentCats[0].key)
+    }
   }
   // strip the "Category — " prefix so the step-2 dropdown is just the specifics
   const subLabel = (label: string) => {
@@ -220,6 +228,9 @@ export default function QuestionForm({
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
+  // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
+  const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
+  const [tentPoi, setTentPoi] = useState<string>('')
   const [feature, setFeature] = useState<string>(AVAILABLE_MEASURE_FEATURE_KEYS[0])
   const [num, setNum] = useState<string>('')
   const [photoTitle, setPhotoTitle] = useState<string>(photoCards[0]?.title ?? '')
@@ -319,6 +330,25 @@ export default function QuestionForm({
         params = { value: z, fromLat: center.lat, fromLon: center.lon, answer: smalllarge }
         break
       }
+      case 'tentacle': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const tc = tentacleCategory(tentCat)
+        if (!tc) return alert('Pick a tentacle subject.')
+        const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
+        if (inPlay.length === 0)
+          return alert(`No ${poiCategoryLabel(tentCat)}s within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`)
+        const chosen = inPlay.find((poi) => poiKey(poi) === tentPoi)
+        if (!chosen) return alert('Pick which in-range place the hider is closest to.')
+        params = {
+          poiCat: tentCat,
+          radiusMi: tc.radiusMi,
+          fromLat: center.lat,
+          fromLon: center.lon,
+          value: poiKey(chosen),
+          poiName: chosen.name,
+        }
+        break
+      }
       case 'match-namelength': {
         if (num === '') return alert('Enter your station name length.')
         params = { value: Number(num), answer: yesno }
@@ -402,7 +432,7 @@ export default function QuestionForm({
       ...(endgameFlag ? { endgame: true } : {}),
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi('')
   }
 
   // Preview of the hider's cost if this question were asked now: the nth ask of
@@ -427,6 +457,8 @@ export default function QuestionForm({
       params = { poiCat }
     } else if (kind === 'measure-feature') {
       params = { feature }
+    } else if (kind === 'tentacle') {
+      params = { poiCat: tentCat }
     } else if (kind === 'photo') {
       params = { photoTitle }
     }
@@ -477,6 +509,13 @@ export default function QuestionForm({
         group: FEATURE_SUBJECT_GROUP[k] ?? 'Borders',
       }))
     }
+    if (q.kind === 'tentacle') {
+      return tentCats.map((c) => ({
+        value: `${q.kind}::${c.key}`,
+        label: `${capitalize(poiCategoryLabel(c.key))}s within ${formatDistance(c.radiusMi, units)}`,
+        group: `Within ${formatDistance(c.radiusMi, units)}`,
+      }))
+    }
     return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
   })
   const subjectValue =
@@ -484,12 +523,15 @@ export default function QuestionForm({
       ? `${kind}::${poiCat}`
       : kind === 'measure-feature'
         ? `${kind}::${feature}`
-        : kind
+        : kind === 'tentacle'
+          ? `${kind}::${tentCat}`
+          : kind
   function pickSubject(v: string) {
     const [k, param] = v.split('::')
     setKind(k as QuestionKind)
     if (param) {
       if (k === 'measure-feature') setFeature(param)
+      else if (k === 'tentacle') setTentCat(param)
       else setPoiCat(param)
     }
   }
@@ -506,6 +548,7 @@ export default function QuestionForm({
   // The catalog blurb is generic ("…the chosen coastline / border", "…your
   // nearest place of the chosen type"); once a specific feature / POI subject is
   // picked, name it so the seeker reads exactly what they're measuring/matching.
+  const tentRadius = tentacleCategory(tentCat)?.radiusMi ?? 1
   const blurbText =
     kind === 'measure-feature'
       ? `Compared to me, are you closer to or further from the nearest ${measureFeatureNoun(feature)}? Set your location; the app shows your distance to it.`
@@ -513,7 +556,9 @@ export default function QuestionForm({
         ? `Compared to me, are you closer to or further from your nearest ${poiCategoryLabel(poiCat)}? Set your location; the app shows your distance to it.`
         : kind === 'match-poi'
           ? `Is your nearest ${poiCategoryLabel(poiCat)} the same as mine? Set your location; the app shows which one it treats as nearest.`
-          : meta.blurb
+          : kind === 'tentacle'
+            ? `Of all the ${poiCategoryLabel(tentCat)}s within ${formatDistance(tentRadius, units)} of me, which are you closest to? Set your location; the app lists the in-range ${poiCategoryLabel(tentCat)}s — pick the one I answer. ${capitalize(poiCategoryLabel(tentCat))}s outside the radius don't count even if they're closer to you.`
+            : meta.blurb
 
   return (
     <div className="qform">
@@ -756,6 +801,42 @@ export default function QuestionForm({
               <button className={smalllarge === 'larger' ? 'on' : ''} onClick={() => setSmalllarge('larger')}>Larger</button>
             </div>
           </div>
+        </>
+      )}
+
+      {kind === 'tentacle' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const tc = tentacleCategory(tentCat)
+            if (!tc) return null
+            const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
+              .map((poi) => ({ poi, key: poiKey(poi), d: haversineMiles(center, poi) }))
+              .sort((a, b) => a.d - b.d)
+            if (inPlay.length === 0)
+              return (
+                <p className="blurb poi-readout warn">
+                  No {poiCategoryLabel(tentCat)}s within {formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.
+                </p>
+              )
+            return (
+              <>
+                <div className="row">
+                  <label>Which is the hider closest to?</label>
+                  <select value={tentPoi} onChange={(e) => setTentPoi(e.target.value)}>
+                    <option value="">— choose the in-range place —</option>
+                    {inPlay.map(({ poi, key, d }) => (
+                      <option key={key} value={key}>{poi.name} ({formatDistance(d, units)} from you)</option>
+                    ))}
+                  </select>
+                </div>
+                <p className="blurb poi-readout">
+                  {inPlay.length} {poiCategoryLabel(tentCat)}{inPlay.length === 1 ? '' : 's'} in range.
+                  {inPlay.length === 1 && ' Only one in range — this eliminates nothing.'}
+                </p>
+              </>
+            )
+          })()}
         </>
       )}
 

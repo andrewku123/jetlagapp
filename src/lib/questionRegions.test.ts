@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poisWithinRadius } from './poi'
 import { nearestAirport } from './airports'
 import { countyAt } from './counties'
 import { cityAt, inPlayArea } from './cities'
@@ -279,6 +280,52 @@ describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () =
     const utah = { lat: 41.1621, lon: -112.4561 }
     expect(cityAt(utah)).toBeNull()
     expect(inPlayArea(utah)).toBe(false)
+  })
+})
+
+describe('tentacleEliminatedRegion agrees with the elimination rule', () => {
+  // Downtown SF: several museums within 1 mi → a real restricted Voronoi.
+  const cat = 'museum'
+  const radiusMi = 1
+  const inPlay = poisWithinRadius(SEEKER, cat, radiusMi)
+
+  it('precondition: at least two in-play museums', () => {
+    expect(inPlay.length).toBeGreaterThanOrEqual(2)
+  })
+
+  it('shades the complement of the answer cell (answer POI kept, others shaded)', () => {
+    // answer = the in-play museum nearest the seeker
+    let ai = 0, best = Infinity
+    inPlay.forEach((p, i) => { const d = haversineMiles(SEEKER, p); if (d < best) { best = d; ai = i } })
+    const answer = inPlay[ai]
+    const r: QuestionRecord = {
+      id: 'q', kind: 'tentacle', createdAt: 0,
+      params: { poiCat: cat, radiusMi, fromLat: SEEKER.lat, fromLon: SEEKER.lon, value: poiKey(answer) },
+      eliminates: true, active: true,
+    }
+    const region = tentacleEliminatedRegion(r)!
+    expect(region).toBeTruthy()
+    // the answer POI is in its own cell → not shaded
+    expect(pointInMulti(answer.lat, answer.lon, region)).toBe(false)
+    // a different in-play museum sits in another cell → shaded
+    const other = inPlay[(ai + 1) % inPlay.length]
+    expect(pointInMulti(other.lat, other.lon, region)).toBe(true)
+  })
+
+  it('per-station shading matches elimination across the whole dataset', () => {
+    const STATIONS = rawStations as unknown as Station[]
+    const answer = inPlay[0]
+    const r: QuestionRecord = {
+      id: 'q', kind: 'tentacle', createdAt: 0,
+      params: { poiCat: cat, radiusMi, fromLat: SEEKER.lat, fromLon: SEEKER.lon, value: poiKey(answer) },
+      eliminates: true, active: true,
+    }
+    const region = tentacleEliminatedRegion(r)
+    for (const st of STATIONS) {
+      const shaded = region ? pointInMulti(st.lat, st.lon, region) : false
+      const eliminated = !stationPasses(st, r)
+      expect(shaded, `${st.name} shading vs elimination`).toBe(eliminated)
+    }
   })
 })
 

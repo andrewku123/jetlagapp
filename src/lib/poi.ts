@@ -1,5 +1,6 @@
 import poiData from '../data/poi.json'
 import type { LatLng } from '../types'
+import type { GameSize } from '../data/questionSets'
 import { haversineMiles } from './geo'
 
 // One entry per gathered POI category. `key` matches the keys in poi.json
@@ -82,6 +83,42 @@ export const QUESTION_POI_CATEGORIES: string[] = [
   'library',
   'consulate',
 ]
+
+// Tentacle categories: "of all the ___ within R of me, which are you closest to?"
+// Radius is fixed per category and the card is size-gated (never in small games):
+// the 1-mile set is Medium+, the 15-mile set is Large only. (Metro Lines — a
+// line-based 15-mile Large tentacle — is handled separately, not here.)
+export interface TentacleCategory {
+  key: string
+  radiusMi: number
+  sizes: GameSize[]
+}
+
+const MED_PLUS: GameSize[] = ['medium', 'large']
+const LARGE_ONLY: GameSize[] = ['large']
+
+export const TENTACLE_CATEGORIES: TentacleCategory[] = [
+  { key: 'museum', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'library', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'movie_theater', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'hospital', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'zoo', radiusMi: 15, sizes: LARGE_ONLY },
+  { key: 'aquarium', radiusMi: 15, sizes: LARGE_ONLY },
+  { key: 'amusement_park', radiusMi: 15, sizes: LARGE_ONLY },
+]
+
+export function tentacleCategory(key: string): TentacleCategory | null {
+  return TENTACLE_CATEGORIES.find((c) => c.key === key) ?? null
+}
+
+// Every POI of `categoryKey` whose straight-line distance to `p` is <= radiusMi.
+// These are the only POIs "in play" for a Tentacle from `p`; anything outside the
+// radius does not count even if it is closer to the hider.
+export function poisWithinRadius(p: LatLng, categoryKey: string, radiusMi: number): PoiPlace[] {
+  const list = POI_BY_CATEGORY[categoryKey]
+  if (!list) return []
+  return list.filter((poi) => haversineMiles(p, poi) <= radiusMi)
+}
 
 const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
   POI_CATEGORIES.map((c) => [c.key, c.label]),
