@@ -707,11 +707,15 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
     const pane = map.getPane('stations')
     if (!pane) return
     pane.style.transition = 'opacity 0.2s ease'
-    pane.style.opacity = mode === 'hidden' ? '0' : mode === 'faded' ? '0.4' : '1'
-    pane.style.pointerEvents = mode === 'hidden' ? 'none' : ''
+    pane.style.opacity = mode === 'faded' ? '0.4' : '1'
+    // 'hidden' must use display:none, not pointer-events:none — Leaflet's SVG
+    // paths carry `pointer-events: auto` (`.leaflet-interactive`), which overrides
+    // a pane-level `pointer-events: none`, so stations would stay clickable.
+    // display:none removes the whole subtree from both rendering and hit-testing.
+    pane.style.display = mode === 'hidden' ? 'none' : ''
     return () => {
       pane.style.opacity = '1'
-      pane.style.pointerEvents = ''
+      pane.style.display = ''
     }
   }, [map, mode])
   return null
