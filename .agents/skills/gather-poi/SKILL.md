@@ -1,6 +1,6 @@
 ---
 name: gather-poi
-description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, quarterly-refreshing, or extending the POI data to a new city/region.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, biannually-refreshing (every 6 months), or extending the POI data to a new city/region.
 ---
 
 # Build a Jet-Lag-ready POI database (any play area)
@@ -223,8 +223,8 @@ Carquinez Toy Train, …) used to slip past the audit and waste manual-review ti
   answer by `place_id` in `poi_bizstatus_cache.json` (statuses rarely change, so
   reruns are ~free), and writes it back into `poi_curated.json`.
 - `POI_REFRESH_ALL=1` re-queries **every** pin (not just status-less ones) to
-  catch places that closed since the last pull — worth running each quarterly
-  refresh. A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
+  catch places that closed since the last pull — worth running each biannual
+  refresh (every 6 months). A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
 - `dedup_poi.py` then drops only `CLOSED_PERMANENTLY` pins up front (one
   chokepoint for all sources). Manual `drop` overrides that target a now-
   perm-closed pin are silently skipped (not warned).
@@ -267,7 +267,7 @@ pins are *actually* gone vs just stale flags. Two tiers, weakest first:
     defunct). Flag genuinely borderline ones (NDNU/Gellert: campus sold to UC, leasing
     back ≤5 yrs) for the human rather than dropping.
   Encode confirmed-gone pins as manual `drop` overrides (perm-closed ones auto-drop
-  and need none). Re-run this per quarterly refresh on the temp-closed set only.
+  and need none). Re-run this per biannual refresh (every 6 months) on the temp-closed set only.
 
 ### 5. De-dup — `fetch_osm_polys.py` + `dedup_poi.py`
 Google lists one physical place as many pins (a hospital = main building + ER +

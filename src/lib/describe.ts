@@ -1,5 +1,6 @@
 import type { QuestionRecord, UnitSystem } from '../types'
 import { formatDistance, formatElevation } from './geo'
+import { poiCategoryLabel } from './poi'
 
 export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'): string {
   const p = r.params
@@ -24,6 +25,10 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `On line "${p.value}"?${arrow(String(a))}`
     case 'match-namelength':
       return `Name length = ${p.value}?${arrow(String(a))}`
+    case 'match-poi':
+      return `Same nearest ${poiCategoryLabel(String(p.poiCat))}${p.poiName ? ` ("${String(p.poiName)}")` : ''}?${arrow(String(a))}`
+    case 'measure-poi':
+      return `Closer/further from nearest ${poiCategoryLabel(String(p.poiCat))}${arrow(String(a))}`
     case 'measure-airport':
       return `Closer/further from airport${arrow(String(a))}`
     case 'measure-sealevel':

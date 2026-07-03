@@ -1,4 +1,6 @@
 import poiData from '../data/poi.json'
+import type { LatLng } from '../types'
+import { haversineMiles } from './geo'
 
 // One entry per gathered POI category. `key` matches the keys in poi.json
 // (the Google primaryType family); `color` is the dot color on the map.
@@ -59,4 +61,66 @@ export interface RenderPoi extends PoiPlace {
   categoryKey: string
   label: string
   color: string
+}
+
+// Categories offered by the POI Matching / Measuring questions (every Medium-deck
+// subject we have data for). Order = the dropdown order in the ask form, grouped
+// natural → places of interest → public utilities. Sparser categories are the
+// stronger map-cutters (a 2-aquarium map splits cleanly in half), so they are
+// deliberately kept rather than hidden.
+export const QUESTION_POI_CATEGORIES: string[] = [
+  'park',
+  'mountain',
+  'museum',
+  'movie_theater',
+  'golf_course',
+  'amusement_park',
+  'zoo',
+  'aquarium',
+  'stadium',
+  'hospital',
+  'library',
+  'consulate',
+]
+
+const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
+  POI_CATEGORIES.map((c) => [c.key, c.label]),
+)
+
+// Singular label for a category, for question prompts ("your nearest museum").
+// Handles the "-ies" plural (Libraries → library) before the plain "-s" strip.
+export function poiCategoryLabel(key: string): string {
+  const plural = CATEGORY_LABEL[key] ?? key
+  const singular = plural.endsWith('ies')
+    ? plural.slice(0, -3) + 'y'
+    : plural.replace(/s$/, '')
+  return singular.toLowerCase()
+}
+
+// A stable identity for a POI (name + rounded coords) so two independent
+// "nearest" computations agree on whether they landed on the same place.
+export function poiKey(p: { name: string; lat: number; lon: number }): string {
+  return `${p.name}|${p.lat.toFixed(5)}|${p.lon.toFixed(5)}`
+}
+
+// The nearest POI (straight-line) of `categoryKey` to `p`, or null if none.
+export function nearestPoi(p: LatLng, categoryKey: string): PoiPlace | null {
+  const list = POI_BY_CATEGORY[categoryKey]
+  if (!list || list.length === 0) return null
+  let best = list[0]
+  let bestD = haversineMiles(p, best)
+  for (let i = 1; i < list.length; i++) {
+    const d = haversineMiles(p, list[i])
+    if (d < bestD) {
+      bestD = d
+      best = list[i]
+    }
+  }
+  return best
+}
+
+// Straight-line miles from `p` to the nearest POI of `categoryKey` (NaN if none).
+export function nearestPoiMiles(p: LatLng, categoryKey: string): number {
+  const b = nearestPoi(p, categoryKey)
+  return b ? haversineMiles(p, b) : NaN
 }

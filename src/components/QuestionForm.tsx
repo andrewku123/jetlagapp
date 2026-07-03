@@ -2,7 +2,8 @@ import { useState } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
-import { KM_PER_MILE, FEET_PER_METER, parseLatLng } from '../lib/geo'
+import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance } from '../lib/geo'
+import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
 
 interface Props {
   lastClick: LatLng | null
@@ -148,6 +149,7 @@ export default function QuestionForm({
   const [ptA, setPtA] = useState<LatLng | null>(null)
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
+  const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
   const [num, setNum] = useState<string>('')
   const [building, setBuilding] = useState<string>('')
   const [floor, setFloor] = useState<string>('')
@@ -187,6 +189,20 @@ export default function QuestionForm({
       case 'measure-airport': {
         if (!center) return alert('Set your location by clicking the map.')
         params = { fromLat: center.lat, fromLon: center.lon, answer: closefar }
+        break
+      }
+      case 'match-poi': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const np = nearestPoi(center, poiCat)
+        if (!np) return alert('No places of that type are in the play area.')
+        params = { poiCat, fromLat: center.lat, fromLon: center.lon, poiName: np.name, answer: yesno }
+        break
+      }
+      case 'measure-poi': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!Number.isFinite(nearestPoiMiles(center, poiCat)))
+          return alert('No places of that type are in the play area.')
+        params = { poiCat, fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
       }
       case 'measure-sealevel': {
@@ -254,6 +270,8 @@ export default function QuestionForm({
       const t = thermoMiles()
       if (!Number.isFinite(t) || t <= 0) return 1
       params = { thermometerMiles: t }
+    } else if (kind === 'match-poi' || kind === 'measure-poi') {
+      params = { poiCat }
     }
     const key = questionGroupKey(kind, params)
     return (askGroupCounts.get(key) ?? 0) + 1
@@ -377,6 +395,44 @@ export default function QuestionForm({
               <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
             </div>
           </div>
+        </>
+      )}
+
+      {(kind === 'match-poi' || kind === 'measure-poi') && (
+        <>
+          <div className="row">
+            <label>Place type</label>
+            <select value={poiCat} onChange={(e) => setPoiCat(e.target.value)}>
+              {QUESTION_POI_CATEGORIES.map((c) => (
+                <option key={c} value={c}>{poiCategoryLabel(c)}</option>
+              ))}
+            </select>
+          </div>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const np = nearestPoi(center, poiCat)
+            const d = nearestPoiMiles(center, poiCat)
+            if (!np || !Number.isFinite(d))
+              return <p className="blurb poi-readout">No {poiCategoryLabel(poiCat)} in the play area.</p>
+            return (
+              <p className="blurb poi-readout">
+                {kind === 'match-poi' ? (
+                  <>Your nearest {poiCategoryLabel(poiCat)}: <b>{np.name}</b> — {formatDistance(d, units)}</>
+                ) : (
+                  <>Distance to nearest {poiCategoryLabel(poiCat)} (<b>{np.name}</b>): <b>{formatDistance(d, units)}</b></>
+                )}
+              </p>
+            )
+          })()}
+          {kind === 'match-poi' ? yesNo : (
+            <div className="row">
+              <label>Answer</label>
+              <div className="seg">
+                <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+                <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+              </div>
+            </div>
+          )}
         </>
       )}
 

@@ -41,8 +41,10 @@ export type QuestionKind =
   | 'match-airport'
   | 'match-namelength'
   | 'match-line'
+  | 'match-poi'
   | 'measure-airport'
   | 'measure-sealevel'
+  | 'measure-poi'
   | 'inside-floor'
   | 'photo'
 

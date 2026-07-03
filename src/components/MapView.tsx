@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -16,7 +16,9 @@ import {
 import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
-import type { RenderPoi } from '../lib/poi'
+import type { RenderPoi, PoiPlace } from '../lib/poi'
+import { nearestPoi, poiCategoryLabel } from '../lib/poi'
+import { poiEliminatedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
@@ -806,6 +808,29 @@ export default function MapView({
       }, 5000)
     })
   }, [records])
+  // Shaded eliminated regions for POI Matching/Measuring, mirroring radar &
+  // thermometer. These are expensive (Voronoi cell / union of disks), so memoize
+  // per active record; the key changes only when a poi question is added/removed
+  // or its answer/location/category changes.
+  const poiRegions = useMemo(() => {
+    type PoiRegion = { id: string; region: LatLngMultiPolygon; seeker: LatLng; np: PoiPlace | null; cat: string }
+    const rs = records.filter(
+      (r) => r.active && !r.vetoed && r.eliminates && (r.kind === 'match-poi' || r.kind === 'measure-poi'),
+    )
+    return rs
+      .map((r): PoiRegion | null => {
+        const region = poiEliminatedRegion(r)
+        const seeker = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
+        const cat = String(r.params.poiCat)
+        return region ? { id: r.id, region, seeker, np: nearestPoi(seeker, cat), cat } : null
+      })
+      .filter((x): x is PoiRegion => x != null)
+  }, [
+    records
+      .filter((r) => r.kind === 'match-poi' || r.kind === 'measure-poi')
+      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
+      .join('|'),
+  ])
   // measure polylines by id, so the distance label can open the line's rounding
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
@@ -1406,6 +1431,30 @@ export default function MapView({
               </Fragment>
             )
           })}
+
+        {/* POI Matching / Measuring: shade the eliminated area (precomputed &
+            memoized in `poiRegions`). Matching shades outside/inside the seeker's
+            nearest-POI Voronoi cell; Measuring shades the union of your-distance
+            circles (or its complement). A pin marks the seeker's nearest place. */}
+        {poiRegions.map((pr) => (
+          <Fragment key={pr.id}>
+            {pr.region.map((poly, i) => (
+              <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
+            ))}
+            {pr.np && (
+              <CircleMarker
+                center={[pr.np.lat, pr.np.lon]}
+                radius={6}
+                interactive={false}
+                pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
+              >
+                <Tooltip direction="top" offset={[0, -6]}>
+                  your nearest {poiCategoryLabel(pr.cat)}: {pr.np.name}
+                </Tooltip>
+              </CircleMarker>
+            )}
+          </Fragment>
+        ))}
 
         {/* manual compass / straightedge annotations */}
         {annotations.map((a) => {

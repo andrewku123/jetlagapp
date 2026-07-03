@@ -206,6 +206,9 @@ export default function App() {
       if (r.kind === 'measure-airport') {
         pts.push({ label: 'Measure (airport)', point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
       }
+      if (r.kind === 'match-poi' || r.kind === 'measure-poi') {
+        pts.push({ label: `${r.kind === 'match-poi' ? 'Match' : 'Measure'} (${String(r.params.poiCat)})`, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
+      }
     }
     if (lastClick) pts.push({ label: 'Last click', point: lastClick, color: '#111' })
     return pts

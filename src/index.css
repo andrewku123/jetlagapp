@@ -159,6 +159,8 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .blurb { font-size: 12px; color: var(--muted); margin: 4px 0 6px; }
 .blurb .cards { color: var(--accent); }
 .blurb .cards-mult { color: var(--accent); opacity: 0.85; }
+.blurb.poi-readout { color: var(--text); background: var(--panel-2, rgba(0,0,0,0.04)); border-radius: 6px; padding: 6px 8px; }
+.blurb.poi-readout .hint { font-size: 11px; }
 .hint { font-size: 12px; color: var(--muted); }
 
 .qlist, .slist { list-style: none; margin: 0; padding: 0; }
