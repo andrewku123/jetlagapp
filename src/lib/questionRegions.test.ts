@@ -3,7 +3,7 @@ import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi,
 import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { nearestAirport } from './airports'
 import { countyAt } from './counties'
-import { cityAt } from './cities'
+import { cityAt, inPlayArea } from './cities'
 import type { QuestionRecord } from '../types'
 
 // ray-cast point-in-ring on a [lat, lon] ring
@@ -211,15 +211,28 @@ describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () =
     expect(pointInMulti(sanJose.lat, sanJose.lon, region)).toBe(false)
   })
 
-  it('an in-play but unincorporated point (hills / bridge corridor) snaps to a city', () => {
-    // ~320 m into the Oakland hills off a BART corridor: no census place here,
-    // but it is inside the play area, so it must resolve to the nearest city
-    // rather than reading "outside the play area".
-    expect(cityAt({ lat: 37.8845, lon: -122.2311 })).toBe('Oakland city')
+  it('an in-play but unincorporated point (hills / bridge corridor) is null but in play', () => {
+    // ~320 m into the Oakland hills off a BART corridor: no census place names
+    // this land, so cityAt is null — but it IS inside the play area, so the form
+    // reads it as "unincorporated" rather than "outside the play area".
+    const hills = { lat: 37.8845, lon: -122.2311 }
+    expect(cityAt(hills)).toBeNull()
+    expect(inPlayArea(hills)).toBe(true)
   })
 
-  it('a point outside the play area is null', () => {
+  it('a named unincorporated CDP (Fairview) resolves to its own name', () => {
+    expect(cityAt({ lat: 37.6759, lon: -122.0472 })).toBe('Fairview CDP')
+  })
+
+  it('SFO airport land resolves to San Francisco city (SF owns SFO)', () => {
+    // International Terminal area — unincorporated San Mateo land, SF-owned.
+    expect(cityAt({ lat: 37.6156, lon: -122.3921 })).toBe('San Francisco city')
+  })
+
+  it('a point outside the play area is null and not in play', () => {
     // out past the Utah line
-    expect(cityAt({ lat: 41.1621, lon: -112.4561 })).toBeNull()
+    const utah = { lat: 41.1621, lon: -112.4561 }
+    expect(cityAt(utah)).toBeNull()
+    expect(inPlayArea(utah)).toBe(false)
   })
 })

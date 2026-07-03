@@ -7,7 +7,7 @@ import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles 
 import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { countyAt } from '../lib/counties'
-import { cityAt } from '../lib/cities'
+import { cityAt, inPlayArea } from '../lib/cities'
 
 interface Props {
   lastClick: LatLng | null
@@ -302,7 +302,9 @@ export default function QuestionForm({
       case 'match-city': {
         if (!center) return alert('Set your location (paste coordinates or click the map).')
         const c = cityAt(center)
-        if (!c) return alert('Outside the play area.')
+        if (!c) return alert(inPlayArea(center)
+          ? "Unincorporated — you're not in a city here, so there's no municipality to match."
+          : 'Outside the play area.')
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
@@ -663,7 +665,11 @@ export default function QuestionForm({
             const c = cityAt(center)
             return (
               <p className="blurb poi-readout">
-                {c ? <>Your city: <b>{c}</b></> : 'Outside the play area.'}
+                {c
+                  ? <>Your city: <b>{c}</b></>
+                  : inPlayArea(center)
+                    ? <>Your city: <b>Unincorporated</b> (no municipality to match here)</>
+                    : 'Outside the play area.'}
               </p>
             )
           })()}
