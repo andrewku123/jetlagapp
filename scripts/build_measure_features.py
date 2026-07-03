@@ -73,6 +73,37 @@ CITIES = {
         "state_neighbors": ["Nevada", "Oregon", "Arizona"],
         "country": "United States of America",
         "country_neighbor": "Mexico",
+        # River-mouth / narrow-channel "dams": each is a straight segment
+        # [[lon,lat],[lon,lat]] placed bank-to-bank across a waterway that flows
+        # into the bay/ocean but is never a full mile across (so, per the game
+        # rule, it is NOT coastline). The build cuts the saltwater at each dam,
+        # keeps only the main (largest) water body, fills the cut-off upstream
+        # water in as land, and traces the shore straight across the mouth.
+        # Endpoints sit slightly inland on each bank so the cut fully separates.
+        # Ordered roughly N→S down the peninsula, then up the East Bay.
+        "dams": [
+            # --- SF & peninsula bay shore (1 mi rule) ---
+            [[-122.3905, 37.7765], [-122.3855, 37.7720]],  # Mission Ck / China Basin (King St)
+            [[-122.3880, 37.7475], [-122.3820, 37.7420]],  # Islais Creek
+            [[-122.3775, 37.7205], [-122.3720, 37.7150]],  # Yosemite Slough / Candlestick
+            [[-122.3915, 37.6540], [-122.3835, 37.6500]],  # Colma Creek / Sierra Point (SSF)
+            [[-122.3030, 37.5755], [-122.2960, 37.5695]],  # Seal Slough (San Mateo)
+            [[-122.2470, 37.5575], [-122.2380, 37.5495]],  # Belmont Slough
+            [[-122.2145, 37.5340], [-122.2050, 37.5265]],  # Seaport Blvd (Redwood City)
+            [[-122.1340, 37.4835], [-122.1250, 37.4765]],  # San Francisquito (Bay Rd / MLK)
+            [[-122.1130, 37.4640], [-122.1040, 37.4570]],  # Byxbee Park (Palo Alto)
+            [[-122.0270, 37.4660], [-122.0140, 37.4585]],  # Coyote Ck / Guadalupe (Alviso)
+            # --- East Bay shore (1 mi rule) ---
+            [[-122.1490, 37.5970], [-122.1400, 37.5890]],  # Alameda Creek (Union City/Fremont)
+            [[-122.1935, 37.6975], [-122.1890, 37.6915]],  # Oyster Bay / San Leandro Marina
+            [[-122.2470, 37.7415], [-122.2380, 37.7345]],  # Alameda / Bay Farm (Otis Dr, E estuary)
+            [[-122.3325, 37.7955], [-122.3265, 37.7900]],  # Oakland Inner Harbor (W estuary)
+            [[-122.3560, 37.9130], [-122.3470, 37.9060]],  # Harbor Channel (Richmond Marina Bay)
+            [[-122.3960, 37.9585], [-122.3890, 37.9525]],  # Castro Creek (Richmond)
+            # --- Carquinez Strait: cut off Suisun Bay + the whole Delta, whose
+            #     rivers narrow well below a mile (Bay Point / Pittsburg / Antioch).
+            [[-122.2560, 38.0720], [-122.2540, 38.0430]],  # Carquinez Strait narrows
+        ],
     },
 }
 
@@ -111,14 +142,24 @@ def country_by_name(countries):
     return by
 
 
-def build_coastline(land, saltwater, play, bay, clip):
+def _dam_polys(dams, width_deg=0.0004):
+    """Thin polygons (square-capped, ~90 m wide, endpoints extended ~44 m) for a
+    list of [[lon,lat],[lon,lat]] dam segments. Subtracting these from the water
+    cuts each narrow channel bank-to-bank."""
+    from shapely.geometry import LineString
+    return unary_union([LineString(seg).buffer(width_deg, cap_style=2) for seg in dams])
+
+
+def build_coastline(land, saltwater, play, bay, clip, dams=None):
     # Fallback for cities without a play-area/bay mask: the plain shore of the
     # land mask adjacent to saltwater (no channel removal).
     if play is None or bay is None:
         return land.boundary.intersection(saltwater.buffer(0.0008)).intersection(clip)
 
-    # Coastline = the shore of in-play LAND that borders qualifying saltwater
-    # (ocean + enclosed bay), with sub-1-mile channels/straits removed.
+    # Coastline = the FULL-DETAIL shore of in-play LAND that borders qualifying
+    # saltwater (ocean + enclosed bay). We trace every meander of the real shore
+    # and only bridge across the specific narrow river-mouths / straits listed in
+    # cfg["dams"] (each < 1 mi across, so not coastline by the game rule).
     #
     # 1. in-play land: the OSM bay-shore mask (good Pacific/peninsula detail)
     #    unioned with (play area − bay). The play-area term fills the East Bay /
@@ -126,19 +167,26 @@ def build_coastline(land, saltwater, play, bay, clip):
     all_land = unary_union([play.difference(bay).buffer(0), land]).buffer(0)
     water = saltwater.buffer(0)
 
-    # 2. morphological opening on the water (erode by r then dilate by r) drops
-    #    every channel/strait narrower than 2r (~1 mi) and any sub-2r protrusion,
-    #    so the opened water never reaches into narrow straits (Oakland-Alameda
-    #    estuary, Carquinez strait). Along a wide shore the dilate returns the
-    #    edge to the shore, so wide bays stay captured.
-    r = 0.5 * _MILE_M
-    opened = _to_deg(_to_m(water).buffer(-r).buffer(r)).buffer(0)
+    # 2. Cut the water at every dam, keep only the main (largest) water body, and
+    #    fill the cut-off upstream water (rivers, Suisun Bay + Delta) back in as
+    #    land. The merged land's boundary then runs straight across each mouth
+    #    (down one bank → across the dam → up the other) instead of tracing up
+    #    the river. Unmarked shore keeps its full detail.
+    if dams:
+        dam_poly = _dam_polys(dams)
+        cut = water.difference(dam_poly)
+        comps = list(cut.geoms) if cut.geom_type == "MultiPolygon" else [cut]
+        comps.sort(key=lambda p: p.area, reverse=True)
+        main = comps[0]
+        upstream = unary_union(comps[1:]) if len(comps) > 1 else None
+        fill = [all_land, dam_poly]
+        if upstream is not None and not upstream.is_empty:
+            fill.append(upstream)
+        all_land = unary_union(fill).buffer(0)
+        water = main.buffer(0)
 
-    # 3. shore = land boundary adjacent to the opened (>=1 mi wide) water. Where
-    #    the opening deleted a narrow channel the shore runs straight across its
-    #    mouth instead of tracing both banks. Small pad (~275 m) closes gaps so
-    #    the shore stays visually continuous.
-    shore = all_land.boundary.intersection(opened.buffer(0.0025))
+    # 3. shore = land boundary adjacent to the (kept) water.
+    shore = all_land.boundary.intersection(water.buffer(0.0008))
 
     # 4. keep only shore on big landmasses — drops marsh islets / small islands.
     polys = list(all_land.geoms) if all_land.geom_type == "MultiPolygon" else [all_land]
@@ -239,7 +287,7 @@ def main():
 
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip), 0.0007)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams")), 0.0007)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
