@@ -1564,10 +1564,11 @@ export default function MapView({
                 />
                 {/* radius spoke: center → east edge, labelled at the spoke midpoint.
                     The label is anchored to a marker at the midpoint (not the
-                    polyline) so it re-positions when the radius is edited. */}
+                    polyline) so it re-positions when the radius is edited. Index
+                    n/4 of the 128-point ring is bearing 90° (due east). */}
                 {(() => {
-                  const edge = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[0]
-                  const mid = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles / 2)[0]
+                  const edge = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[32]
+                  const mid = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles / 2)[32]
                   return (
                     <>
                       <Polyline

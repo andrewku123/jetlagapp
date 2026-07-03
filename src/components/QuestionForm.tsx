@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
-import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance } from '../lib/geo'
+import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
 import { MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
@@ -226,6 +226,13 @@ export default function QuestionForm({
     return Number(thermo)
   }
 
+  // How far the chosen thermometer distance may differ from the actual A↔B gap
+  // before it's flagged: 5% of the chosen distance, floored at 0.1 mi so a short
+  // thermometer isn't impossible to place by hand.
+  function thermoTolMiles(chosen: number): number {
+    return Math.max(0.1, chosen * 0.05)
+  }
+
   function submit(vetoed = false) {
     let params: Record<string, unknown> = {}
     switch (kind) {
@@ -247,6 +254,12 @@ export default function QuestionForm({
         const tMiles = thermoMiles()
         if (!Number.isFinite(tMiles) || tMiles <= 0)
           return alert('Choose which thermometer you used (a travel distance greater than 0).')
+        const actualMiles = haversineMiles(ptA, ptB)
+        if (Math.abs(actualMiles - tMiles) > thermoTolMiles(tMiles))
+          return alert(
+            `Start A and end B are ${formatDistance(actualMiles, units)} apart, but you chose a ${formatDistance(tMiles, units)} thermometer. ` +
+            `Move A/B to match the thermometer distance, or pick the distance that matches your points.`,
+          )
         params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, thermometerMiles: tMiles, answer: hotcold }
         break
       }
@@ -531,6 +544,19 @@ export default function QuestionForm({
           )}
           <CoordPicker label="Start A" point={ptA} setPoint={setPtA} lastClick={lastClick} onPreview={onPreview} />
           <CoordPicker label="End B" point={ptB} setPoint={setPtB} lastClick={lastClick} onPreview={onPreview} />
+          {ptA && ptB && (() => {
+            const actual = haversineMiles(ptA, ptB)
+            const chosen = thermoMiles()
+            const ok = Number.isFinite(chosen) && chosen > 0 && Math.abs(actual - chosen) <= thermoTolMiles(chosen)
+            return (
+              <p className={`blurb poi-readout${ok ? '' : ' warn'}`}>
+                A↔B distance: <b>{formatDistance(actual, units)}</b>
+                {Number.isFinite(chosen) && chosen > 0 && (
+                  <> {ok ? '✓ matches' : `⚠ doesn't match`} the {formatDistance(chosen, units)} thermometer</>
+                )}
+              </p>
+            )
+          })()}
           <div className="row">
             <label>Result</label>
             <div className="seg">
