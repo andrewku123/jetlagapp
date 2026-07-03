@@ -11,10 +11,28 @@ measure | coord`. `select` is the normal "drop a seeker point" mode; `compass /
 line / bisector / measure` create **annotations** that persist in the saved game;
 `coord` is a transient read-out tool (drops a temporary dot, shows the clicked
 lat/lon at 6 dp and auto-copies it to the clipboard — no annotation, clears on
-tool switch). The coord dot is rendered with `pane="markerPane"` (z 600) so it
-sits ABOVE the station dots (station SVG pane z 450) — a `CircleMarker` in the
-default overlay pane (z 400) would be hidden under the very station you clicked
-to read its coordinate.
+tool switch). The coord dot is rendered in its own dedicated `coordDot` pane
+(z 690, `CoordPane`) so it sits ABOVE the station dots (station SVG pane z 450)
+and the marker/tooltip panes (measure endpoints z 600 / labels z 650) — a
+`CircleMarker` in the default overlay pane (z 400) would be hidden under the very
+station you clicked to read its coordinate.
+
+**GOTCHA — a canvas renderer in a high pane blankets ALL clicks (shipped a
+"stations unclickable until refresh" bug).** The map runs with `preferCanvas`,
+so any vector (e.g. the coord dot `CircleMarker`) placed in a pane lazily gets a
+**canvas** renderer in that pane. Unlike SVG — where only the individual `<path>`s
+are hit targets and the empty svg is click-through — a canvas is one opaque
+element spanning the whole map that captures every click in its box. Because the
+`coordDot` pane sits above the station pane, that canvas swallowed every
+station/POI/map click, and it lingered after leaving the coord tool, so the map
+stayed dead until a page refresh. Fix: the coord dot is a purely visual read-out
+(copy is via the toolbar button, not the dot), so `CoordPane` sets the pane
+`pointer-events: none` and the `CircleMarker` is `interactive={false}`. **Rule:
+any pane stacked above the station pane that holds only visual (non-clickable)
+content MUST be `pointer-events: none`, or its canvas renderer will eat all
+clicks.** This is why the station pane itself uses an **SVG** renderer (see the
+`StationRenderer` note / mobile-touch-targets skill) — so a miss falls through to
+the POI layer below.
 
 ## Data model (`src/types.ts`)
 - `CircleAnnotation` — `{ type: 'circle', lat, lon, radiusMiles, color }` (compass).
