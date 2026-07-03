@@ -100,6 +100,17 @@ multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
     to inferring the bucket from `haversineMiles(A,B)` snapped to the nearest
     `THERMOMETER_OPTIONS` value. `describeRecord` shows the chosen distance
     (`Thermometer 0.5 mi → hotter`); elimination still uses the A/B points.
+    Because elimination only uses the perpendicular bisector of A→B (magnitude
+    independent), the chosen `thermometerMiles` is otherwise cosmetic — so
+    `QuestionForm.submit` **validates that `haversineMiles(A,B)` matches the chosen
+    distance** (tolerance `max(0.1 mi, 5%)`, `thermoTolMiles`) and blocks with a
+    clear alert if not; a live A↔B readout in the form shows ✓/⚠ before submit.
+  - **photo** keys on the chosen photo card (`photo:<title>`). Each photo card is
+    a *different* question, so asking two different photos does NOT stack the
+    penalty — only re-asking the same card does. The Ask form shows a dropdown of
+    `PHOTO` cards (from `questionSets.ts`) filtered to the current `gameSize`
+    (passed as a prop), plus the card's `requirement` text and an optional free
+    note (`params.description`). `describeRecord` shows `Photo: <title> — <note>`.
   - every other kind keys on `kind` alone (`match-county` ≠ `match-city`, etc.).
   - If you add a new parameterised question whose cost depends on a param, extend
     `questionGroupKey` to include that param.
