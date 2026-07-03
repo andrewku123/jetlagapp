@@ -493,8 +493,6 @@ const handleIcon = (color: string, big = false) => {
   })
 }
 
-const MEASURE_STEPS = [0, 0.5, 1, 5, 10]
-
 function RadiusEditPopup({
   value,
   onChange,
@@ -540,51 +538,9 @@ function RadiusEditPopup({
   )
 }
 
-function MeasureEditPopup({
-  step,
-  units,
-  onChange,
-  onDelete,
-}: {
-  step: number
-  units: UnitSystem
-  onChange: (v: number) => void
-  onDelete: () => void
-}) {
-  const [custom, setCustom] = useState(!MEASURE_STEPS.includes(step))
-  const u = units === 'metric' ? 'km' : 'mi'
+function MeasureEditPopup({ onDelete }: { onDelete: () => void }) {
   return (
     <div className="popup">
-      <label>
-        round
-        <select
-          value={custom ? 'custom' : String(step)}
-          onChange={(e) => {
-            if (e.target.value === 'custom') setCustom(true)
-            else {
-              setCustom(false)
-              onChange(Number(e.target.value))
-            }
-          }}
-        >
-          <option value={0}>exact</option>
-          <option value={0.5}>½ {u}</option>
-          <option value={1}>1 {u}</option>
-          <option value={5}>5 {u}</option>
-          <option value={10}>10 {u}</option>
-          <option value="custom">Custom…</option>
-        </select>
-      </label>
-      {custom && (
-        <input
-          className="popup-input"
-          type="number"
-          min={0}
-          step="any"
-          value={step}
-          onChange={(e) => onChange(Number(e.target.value))}
-        />
-      )}
       <button onClick={onDelete}>Delete</button>
     </div>
   )
@@ -769,8 +725,6 @@ export default function MapView({
   const [radiusMi, setRadiusMi] = useState(1)
   const [compassCustom, setCompassCustom] = useState(false)
   const [color, setColor] = useState(DRAW_COLORS[0])
-  // rounding step for the measure label: 0 = exact (2 dp), else snap to this many mi
-  const [measureStep, setMeasureStep] = useState(0)
   // first click of a two-point line / bisector
   const [pending, setPending] = useState<LatLng | null>(null)
   // collapsible "enter coordinates" box for placing points without clicking
@@ -879,7 +833,7 @@ export default function MapView({
       .map((r) => `${r.id}:${r.kind}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.lat ?? ''}:${r.params.lon ?? ''}:${r.params.radiusMiles ?? ''}:${r.params.fromLat ?? ''}:${r.params.fromLon ?? ''}:${r.params.toLat ?? ''}:${r.params.toLon ?? ''}:${r.params.answer}`)
       .join('|'),
   ])
-  // measure polylines by id, so the distance label can open the line's rounding
+  // measure polylines by id, so the distance label can open the line's edit
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
   // true while a handle is being dragged: suppress snap-hover state updates so the
@@ -937,7 +891,6 @@ export default function MapView({
         bLat: b.lat,
         bLon: b.lon,
         color,
-        ...(type === 'measure' ? { step: measureStep } : {}),
       })
       setPending(null)
     } else {
@@ -980,7 +933,6 @@ export default function MapView({
         bLat: p.lat,
         bLon: p.lon,
         color,
-        ...(type === 'measure' ? { step: measureStep } : {}),
       })
       setPending(null)
     }
@@ -1107,18 +1059,6 @@ export default function MapView({
                 onChange={(e) => setRadiusMi(Number(e.target.value))}
               />
             )}
-          </label>
-        )}
-        {tool === 'measure' && (
-          <label className="draw-radius">
-            round
-            <select value={measureStep} onChange={(e) => setMeasureStep(Number(e.target.value))}>
-              <option value={0}>exact</option>
-              <option value={0.5}>½ {units === 'metric' ? 'km' : 'mi'}</option>
-              <option value={1}>1 {units === 'metric' ? 'km' : 'mi'}</option>
-              <option value={5}>5 {units === 'metric' ? 'km' : 'mi'}</option>
-              <option value={10}>10 {units === 'metric' ? 'km' : 'mi'}</option>
-            </select>
           </label>
         )}
         {tool !== 'select' && tool !== 'coord' && (
@@ -1652,7 +1592,7 @@ export default function MapView({
             a.type === 'bisector'
               ? 'Perpendicular bisector'
               : a.type === 'measure'
-                ? formatDistance(miles!, units, a.step ?? 0)
+                ? formatDistance(miles!, units)
                 : 'Straightedge line'
           return (
             <Fragment key={a.id}>
@@ -1688,7 +1628,7 @@ export default function MapView({
                     eventHandlers={
                       selectMode
                         ? {
-                            // clicking the distance label opens the same rounding
+                            // clicking the distance label opens the same edit
                             // popup as clicking the line body (deferred a tick so
                             // Leaflet's close-on-click doesn't swallow it)
                             click: () => {
@@ -1704,12 +1644,7 @@ export default function MapView({
                 )}
                 {selectMode && a.type === 'measure' && (
                   <Popup>
-                    <MeasureEditPopup
-                      step={a.step ?? 0}
-                      units={units}
-                      onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
-                      onDelete={() => onDeleteAnnotation(a.id)}
-                    />
+                    <MeasureEditPopup onDelete={() => onDeleteAnnotation(a.id)} />
                   </Popup>
                 )}
               </Polyline>
@@ -1726,8 +1661,8 @@ export default function MapView({
                     },
                     click: (e) => {
                       draggingRef.current = false
-                      // in select mode a measure endpoint opens its rounding
-                      // editor (same popup as clicking the line body); while a
+                      // in select mode a measure endpoint opens its edit
+                      // popup (same as clicking the line body); while a
                       // drawing tool is active the click reuses the point
                       if (selectMode) {
                         if (a.type === 'measure') {
@@ -1753,12 +1688,7 @@ export default function MapView({
                 >
                   {selectMode && a.type === 'measure' && (
                     <Popup>
-                      <MeasureEditPopup
-                        step={a.step ?? 0}
-                        units={units}
-                        onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
-                        onDelete={() => onDeleteAnnotation(a.id)}
-                      />
+                      <MeasureEditPopup onDelete={() => onDeleteAnnotation(a.id)} />
                     </Popup>
                   )}
                 </Marker>
@@ -1803,11 +1733,15 @@ export default function MapView({
           </Marker>
         ))}
 
-        {/* transient coordinate-tool dot: shows the lat/lon, no annotation kept */}
+        {/* transient coordinate-tool dot: shows the lat/lon, no annotation kept.
+            Rendered in markerPane (z 600) so the dot sits ABOVE the station dots
+            (station pane z 450) — otherwise a station covers exactly the point
+            you clicked to read. */}
         {tool === 'coord' && coordPin && (
           <CircleMarker
             center={[coordPin.lat, coordPin.lon]}
             radius={5}
+            pane="markerPane"
             pathOptions={{ color: '#111', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
           >
             <Tooltip permanent direction="top" offset={[0, -6]}>

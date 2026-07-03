@@ -99,8 +99,6 @@ export interface LineAnnotation {
   bLat: number
   bLon: number
   color: string
-  // measure only: rounding step in miles (0 = exact). e.g. 1 snaps to whole miles
-  step?: number
 }
 
 export type Annotation = CircleAnnotation | LineAnnotation
