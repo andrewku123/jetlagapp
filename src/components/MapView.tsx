@@ -653,10 +653,18 @@ function CoordPane() {
   const map = useMap()
   useEffect(() => {
     const name = 'coordDot'
-    if (!map.getPane(name)) {
-      const pane = map.createPane(name)
+    let pane = map.getPane(name)
+    if (!pane) {
+      pane = map.createPane(name)
       pane.style.zIndex = '690'
     }
+    // The dot is a purely visual read-out (no clicks/popup), so the whole pane
+    // must be click-through. Otherwise the canvas renderer Leaflet lazily creates
+    // for a vector in this pane is one opaque element that blankets the map and,
+    // sitting above the station pane (z 450), swallows every station/POI/map click
+    // — and it lingers after leaving the coord tool, so clicks stay dead until a
+    // page refresh.
+    pane.style.pointerEvents = 'none'
   }, [map])
   return null
 }
@@ -1762,6 +1770,7 @@ export default function MapView({
             center={[coordPin.lat, coordPin.lon]}
             radius={5}
             pane="coordDot"
+            interactive={false}
             pathOptions={{ color: '#111', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
           >
             <Tooltip permanent direction="top" offset={[0, -6]} pane="coordDot">
