@@ -1,6 +1,6 @@
 import polygonClipping, { type MultiPolygon, type Polygon, type Ring } from 'polygon-clipping'
 import type { LatLng, QuestionRecord } from '../types'
-import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius } from './poi'
+import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
@@ -230,6 +230,20 @@ export function poiMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   return elim.length ? toLatLng(elim) : null
 }
 
+// The radar disk (or its complement) eliminated by a tentacle whose answer is a
+// within/not-within sentinel — identical to a radar centred on the seeker.
+function tentacleRadarRegion(
+  seeker: LatLng,
+  radius: number,
+  answer: string,
+): LatLngMultiPolygon | null {
+  if (!Number.isFinite(radius)) return null
+  const disk: Polygon = [circlePolygon(seeker, radius).map((pt) => [pt.lon, pt.lat] as [number, number])]
+  // "within" (INSIDE) → eliminate outside the disk; "not within" (OUTSIDE) → the disk.
+  const elim = answer === TENTACLE_INSIDE ? polygonClipping.difference([WORLD_RING], disk) : [disk]
+  return elim.length ? toLatLng(elim) : null
+}
+
 // Tentacle: shade everywhere whose nearest *in-play* POI is NOT the answer. The
 // in-play set is the POIs within the seeker's radius; among just those, the answer
 // POI's Voronoi cell is the keep region, so the eliminated area is its complement.
@@ -240,6 +254,8 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   const answerKey = String(p.value ?? '')
   if (!answerKey || !Number.isFinite(radius)) return null
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  if (answerKey === TENTACLE_INSIDE || answerKey === TENTACLE_OUTSIDE)
+    return tentacleRadarRegion(seeker, radius, answerKey)
   const inPlay = poisWithinRadius(seeker, cat, radius)
   if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
   const idx = inPlay.findIndex((q) => poiKey(q) === answerKey)
@@ -284,6 +300,8 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   const answerId = String(p.value ?? '')
   if (!answerId || !Number.isFinite(radius)) return null
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  if (answerId === TENTACLE_INSIDE || answerId === TENTACLE_OUTSIDE)
+    return tentacleRadarRegion(seeker, radius, answerId)
   const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
   if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
   if (!inPlay.some((l) => l.id === answerId)) return null

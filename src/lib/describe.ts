@@ -1,6 +1,6 @@
 import type { QuestionRecord, UnitSystem } from '../types'
 import { formatDistance, formatElevation } from './geo'
-import { poiCategoryLabel } from './poi'
+import { poiCategoryLabel, isTentacleRadarAnswer, TENTACLE_INSIDE } from './poi'
 import { MEASURE_FEATURE_LABELS, type MeasureFeatureKey } from './measureFeatures'
 
 export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'): string {
@@ -41,12 +41,20 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
     case 'tentacle': {
       const r0 = Number(p.radiusMi)
       const within = Number.isFinite(r0) ? ` within ${formatDistance(r0, units)}` : ''
+      if (isTentacleRadarAnswer(String(p.value))) {
+        const rlbl = Number.isFinite(r0) ? formatDistance(r0, units) : 'radius'
+        return `Tentacle radar: hider is ${p.value === TENTACLE_INSIDE ? '' : 'not '}within ${rlbl} of you`
+      }
       const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
       return `Tentacle: nearest ${poiCategoryLabel(String(p.poiCat))}${within}${ans}`
     }
     case 'tentacle-line': {
       const r0 = Number(p.radiusMi)
       const within = Number.isFinite(r0) ? ` within ${formatDistance(r0, units)}` : ''
+      if (isTentacleRadarAnswer(String(p.value))) {
+        const rlbl = Number.isFinite(r0) ? formatDistance(r0, units) : 'radius'
+        return `Tentacle radar: hider is ${p.value === TENTACLE_INSIDE ? '' : 'not '}within ${rlbl} of you`
+      }
       const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
       return `Tentacle: nearest metro line${within}${ans}`
     }

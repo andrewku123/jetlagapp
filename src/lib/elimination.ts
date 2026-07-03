@@ -1,7 +1,7 @@
 import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
-import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius } from './poi'
+import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { metroLineDistanceMiles, metroLinesWithinRadius } from './metroLines'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
@@ -133,6 +133,12 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const answerKey = s(p.value)
       if (!answerKey || !Number.isFinite(radius)) return true
       const seeker: LatLng = { lat: n(p.fromLat), lon: n(p.fromLon) }
+      // Radar-style answers: the hider revealed only whether they are within the
+      // radius of the seeker (used when 0-or-1 POI is in play, and as the always-
+      // available "not within" answer). Keep the disk for "within", drop it for
+      // "not within" — exactly a radar yes/no centred on the seeker.
+      if (answerKey === TENTACLE_INSIDE) return haversineMiles(station, seeker) <= radius
+      if (answerKey === TENTACLE_OUTSIDE) return haversineMiles(station, seeker) > radius
       const inPlay = poisWithinRadius(seeker, cat, radius)
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       let minD = Infinity
@@ -159,6 +165,9 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const answerId = s(p.value)
       if (!answerId || !Number.isFinite(radius)) return true
       const seeker: LatLng = { lat: n(p.fromLat), lon: n(p.fromLon) }
+      // Radar-style answers (see the 'tentacle' case): within/not-within the disk.
+      if (answerId === TENTACLE_INSIDE) return haversineMiles(station, seeker) <= radius
+      if (answerId === TENTACLE_OUTSIDE) return haversineMiles(station, seeker) > radius
       const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       let minD = Infinity

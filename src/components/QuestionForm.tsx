@@ -3,7 +3,7 @@ import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
-import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey } from '../lib/poi'
+import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
 import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
@@ -340,6 +340,20 @@ export default function QuestionForm({
         const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
         if (inPlay.length === 0)
           return alert(`No ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`)
+        if (isTentacleRadarAnswer(tentPoi)) {
+          // Radar answer: hider revealed only whether they're within the radius.
+          params = {
+            poiCat: tentCat,
+            radiusMi: tc.radiusMi,
+            fromLat: center.lat,
+            fromLon: center.lon,
+            value: tentPoi,
+            poiName: `${tentPoi === TENTACLE_INSIDE ? 'within' : 'not within'} ${formatDistance(tc.radiusMi, units)}`,
+          }
+          break
+        }
+        if (inPlay.length === 1)
+          return alert(`Answer whether the hider is within ${formatDistance(tc.radiusMi, units)} of you.`)
         const chosen = inPlay.find((poi) => poiKey(poi) === tentPoi)
         if (!chosen) return alert('Pick which in-range place the hider is closest to.')
         params = {
@@ -357,6 +371,18 @@ export default function QuestionForm({
         const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
         if (inPlay.length === 0)
           return alert(`No metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.`)
+        if (isTentacleRadarAnswer(tentLine)) {
+          params = {
+            radiusMi: METRO_TENTACLE_RADIUS_MI,
+            fromLat: center.lat,
+            fromLon: center.lon,
+            value: tentLine,
+            poiName: `${tentLine === TENTACLE_INSIDE ? 'within' : 'not within'} ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`,
+          }
+          break
+        }
+        if (inPlay.length === 1)
+          return alert(`Answer whether the hider is within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of you.`)
         const chosen = inPlay.find((l) => l.id === tentLine)
         if (!chosen) return alert('Pick which in-range metro line the hider is closest to.')
         params = {
@@ -843,6 +869,23 @@ export default function QuestionForm({
                   No {poiCategoryLabelPlural(tentCat)} within {formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.
                 </p>
               )
+            if (inPlay.length === 1)
+              // Only one in range → "which are you closest to?" gives nothing, so
+              // it becomes a radar: the hider says whether they're within radius.
+              return (
+                <>
+                  <div className="row">
+                    <label>Are you within {formatDistance(tc.radiusMi, units)} of the seeker?</label>
+                    <div className="seg">
+                      <button className={tentPoi === TENTACLE_INSIDE ? 'on' : ''} onClick={() => setTentPoi(TENTACLE_INSIDE)}>Within</button>
+                      <button className={tentPoi === TENTACLE_OUTSIDE ? 'on' : ''} onClick={() => setTentPoi(TENTACLE_OUTSIDE)}>Not within</button>
+                    </div>
+                  </div>
+                  <p className="blurb poi-readout">
+                    Only one {poiCategoryLabel(tentCat)} in range, so "which are you closest to?" reveals nothing — this acts as a radar of {formatDistance(tc.radiusMi, units)} around you.
+                  </p>
+                </>
+              )
             return (
               <>
                 <div className="row">
@@ -852,11 +895,11 @@ export default function QuestionForm({
                     {inPlay.map(({ poi, key, d }) => (
                       <option key={key} value={key}>{poi.name} ({formatDistance(d, units)} from you)</option>
                     ))}
+                    <option value={TENTACLE_OUTSIDE}>— not within {formatDistance(tc.radiusMi, units)} of you (radar) —</option>
                   </select>
                 </div>
                 <p className="blurb poi-readout">
-                  {inPlay.length} {poiCategoryLabel(tentCat)}{inPlay.length === 1 ? '' : 's'} in range.
-                  {inPlay.length === 1 && ' Only one in range — this eliminates nothing.'}
+                  {inPlay.length} {poiCategoryLabelPlural(tentCat)} in range. The hider can instead answer "not within {formatDistance(tc.radiusMi, units)}" to eliminate everything within that radius.
                 </p>
               </>
             )
@@ -877,6 +920,21 @@ export default function QuestionForm({
                   No metro lines within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.
                 </p>
               )
+            if (inPlay.length === 1)
+              return (
+                <>
+                  <div className="row">
+                    <label>Are you within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of the seeker?</label>
+                    <div className="seg">
+                      <button className={tentLine === TENTACLE_INSIDE ? 'on' : ''} onClick={() => setTentLine(TENTACLE_INSIDE)}>Within</button>
+                      <button className={tentLine === TENTACLE_OUTSIDE ? 'on' : ''} onClick={() => setTentLine(TENTACLE_OUTSIDE)}>Not within</button>
+                    </div>
+                  </div>
+                  <p className="blurb poi-readout">
+                    Only one metro line in range, so "which are you closest to?" reveals nothing — this acts as a radar of {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} around you.
+                  </p>
+                </>
+              )
             return (
               <>
                 <div className="row">
@@ -886,11 +944,11 @@ export default function QuestionForm({
                     {inPlay.map(({ line, d }) => (
                       <option key={line.id} value={line.id}>{line.label} ({formatDistance(d, units)} from you)</option>
                     ))}
+                    <option value={TENTACLE_OUTSIDE}>— not within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of you (radar) —</option>
                   </select>
                 </div>
                 <p className="blurb poi-readout">
-                  {inPlay.length} metro line{inPlay.length === 1 ? '' : 's'} in range.
-                  {inPlay.length === 1 && ' Only one in range — this eliminates nothing.'}
+                  {inPlay.length} metro lines in range. The hider can instead answer "not within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)}" to eliminate everything within that radius.
                 </p>
               </>
             )

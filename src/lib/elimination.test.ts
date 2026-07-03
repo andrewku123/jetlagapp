@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { stationPasses, applyFilters } from './elimination'
-import { poisWithinRadius, poiKey } from './poi'
+import { poisWithinRadius, poiKey, TENTACLE_INSIDE, TENTACLE_OUTSIDE } from './poi'
 import { metroLinesWithinRadius, nearestMetroLine, metroLineDistanceMiles, METRO_LINES } from './metroLines'
 import type { QuestionRecord, Station } from '../types'
 
@@ -233,6 +233,17 @@ describe('stationPasses — tentacle (nearest in-radius place)', () => {
   it('no in-play POIs (seeker offshore) never eliminates', () => {
     const r = record('tentacle', { poiCat: 'museum', radiusMi: 1, fromLat: 37.70, fromLon: -122.55, value: 'anything' })
     expect(stationPasses(station(seeker), r)).toBe(true)
+  })
+
+  it('radar answer: "within" keeps the disk, "not within" drops it', () => {
+    const near = station(seeker) // on the seeker → inside the 1 mi disk
+    const far = station({ lat: 37.90, lon: -122.40 }) // ~14 mi away → outside
+    const inside = record('tentacle', { ...base, value: TENTACLE_INSIDE })
+    const outside = record('tentacle', { ...base, value: TENTACLE_OUTSIDE })
+    expect(stationPasses(near, inside)).toBe(true)
+    expect(stationPasses(far, inside)).toBe(false)
+    expect(stationPasses(near, outside)).toBe(false)
+    expect(stationPasses(far, outside)).toBe(true)
   })
 })
 

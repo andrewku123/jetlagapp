@@ -111,6 +111,21 @@ export function tentacleCategory(key: string): TentacleCategory | null {
   return TENTACLE_CATEGORIES.find((c) => c.key === key) ?? null
 }
 
+// Sentinel tentacle answers used in place of an in-range POI/line name when the
+// hider reveals only whether they are within the radius of the seeker. These
+// make a tentacle behave exactly like a radar centred on the seeker:
+//   OUTSIDE ("not within R") = radar "no"  → the disk of radius R is eliminated.
+//   INSIDE  ("within R")     = radar "yes" → everything outside the disk is.
+// The seeker uses INSIDE/OUTSIDE when only one POI is in the circle (the
+// closest-POI answer is then useless), and OUTSIDE is always offered as an
+// alternative answer. Stored as params.value on a tentacle / tentacle-line
+// record so elimination and shading recognise it.
+export const TENTACLE_OUTSIDE = '__outside__'
+export const TENTACLE_INSIDE = '__inside__'
+export function isTentacleRadarAnswer(v: string): boolean {
+  return v === TENTACLE_OUTSIDE || v === TENTACLE_INSIDE
+}
+
 // Every POI of `categoryKey` whose straight-line distance to `p` is <= radiusMi.
 // These are the only POIs "in play" for a Tentacle from `p`; anything outside the
 // radius does not count even if it is closer to the hider.
