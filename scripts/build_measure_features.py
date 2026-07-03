@@ -151,23 +151,47 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None):
     all_land = unary_union([play.difference(bay).buffer(0), land]).buffer(0)
     water = saltwater.buffer(0)
 
-    # 2. Cut the water at every dam, keep only the main (largest) water body, and
-    #    fill the cut-off upstream water (rivers, Suisun Bay + Delta) back in as
-    #    land. The merged land's boundary then runs straight across each mouth
-    #    (down one bank → across the dam → up the other) instead of tracing up
-    #    the river. Unmarked shore keeps its full detail.
+    # 2. Cut the water at every dam and fill everything on the LANDWARD side of
+    #    each dam line back in as land, so the shore runs straight across the
+    #    mouth (the user's line IS the coast) with no leftover coves poking
+    #    inland. Landward = the local half-plane of the dam line that does not
+    #    hold the open bay. Unmarked shore keeps its full detail.
     if dams:
+        from shapely.geometry import LineString, Point
         dam_poly = _dam_polys(dams)
         cut = water.difference(dam_poly)
         comps = list(cut.geoms) if cut.geom_type == "MultiPolygon" else [cut]
         comps.sort(key=lambda p: p.area, reverse=True)
-        main = comps[0]
-        upstream = unary_union(comps[1:]) if len(comps) > 1 else None
+        main = comps[0]  # the open bay/ocean
+
         fill = [all_land, dam_poly]
-        if upstream is not None and not upstream.is_empty:
-            fill.append(upstream)
+        # Any water body fully disconnected from the open bay by the dams
+        # (upstream rivers, the Delta) becomes land.
+        for c in comps[1:]:
+            fill.append(c)
+        # Plus, for each dam, the strip of open-bay water that still reaches
+        # inland past the line (little coves): everything on the landward side
+        # within a local window around the mouth.
+        for seg in dams:
+            (x0, y0), (x1, y1) = seg
+            ls = LineString(seg)
+            dx, dy = x1 - x0, y1 - y0
+            L = (dx * dx + dy * dy) ** 0.5 or 1e-9
+            # unit left normal of A->B
+            nx, ny = -dy / L, dx / L
+            mx, my = (x0 + x1) / 2, (y0 + y1) / 2
+            left_pt = Point(mx + nx * 0.003, my + ny * 0.003)
+            # landward = the side NOT containing the open bay near the mouth
+            left_is_sea = main.buffer(0.0004).contains(left_pt)
+            side = -0.02 if left_is_sea else 0.02
+            half = ls.buffer(side, single_sided=True)
+            window = ls.buffer(0.008)  # ~0.9 km around the mouth
+            landward = half.intersection(window)
+            pocket = main.intersection(landward)
+            if not pocket.is_empty:
+                fill.append(pocket)
         all_land = unary_union(fill).buffer(0)
-        water = main.buffer(0)
+        water = main.difference(unary_union([g for g in fill if g is not all_land])).buffer(0)
 
     # 3. shore = land boundary adjacent to the (kept) water.
     shore = all_land.boundary.intersection(water.buffer(0.0008))
@@ -176,7 +200,15 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None):
     polys = list(all_land.geoms) if all_land.geom_type == "MultiPolygon" else [all_land]
     big = unary_union([p for p in polys if p.area > 0.0008])
     shore = shore.intersection(big.boundary.buffer(0.0015))
-    return shore.intersection(clip)
+    shore = shore.intersection(clip)
+
+    # 5. drop tiny isolated shore fragments (little cove hooks / stray water
+    #    dots left near a dam mouth) — real coastline merges into long lines, so
+    #    any standalone piece shorter than ~300 m is an artifact.
+    merged = linemerge(shore) if not shore.is_empty else shore
+    parts = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
+    parts = [p for p in parts if not p.is_empty and p.length >= 0.003]
+    return unary_union(parts) if parts else shore
 
 
 def build_county_border(counties, clip):
