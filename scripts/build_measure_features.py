@@ -245,12 +245,16 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     # Drop the artificial clip-bbox edges we added only to close the ocean side.
     shore = shore.difference(clip.exterior.buffer(0.0008))
     shore = shore.intersection(clip)
-    # Keep only shore inside the actual playable area — coast outside it can't
-    # eliminate anything (Marin/North Bay/Pacific coast beyond the play area), so
-    # it's dropped. Buffer a little so the shoreline right along the play-area
-    # edge (census-place polygons sit slightly inland of the OSM coast) is kept.
+    # Keep only shore that borders IN-PLAY LAND — coast outside the play area
+    # can't eliminate anything. We key off land, not the raw play polygon,
+    # because the play area also covers the open bay water right up to
+    # out-of-play shores (Marin: Tiburon/Sausalito/Richardson Bay); a plain
+    # distance-to-play clip can't tell those from an in-play island like Angel.
+    # in-play land = play minus the bay water; a small buffer keeps the shore
+    # even where census-place polygons sit slightly inland of the OSM coast.
     if play is not None and not play.is_empty:
-        shore = shore.intersection(play.buffer(0.004))
+        inplay_land = play.difference(bayface)
+        shore = shore.intersection(inplay_land.buffer(0.0015))
     if exclude is not None and not exclude.is_empty:
         shore = shore.difference(exclude)
 
