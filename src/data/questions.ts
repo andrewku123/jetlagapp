@@ -217,7 +217,7 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Inside — Traffic (foot count, log only)',
     cards: 'draw 2, keep 1',
     eliminates: false,
-    blurb: 'Endgame only — you must be inside the same building as me (can’t answer if you’re in a different building or outside). Count everyone who passes within 15 feet of you over the next 5 minutes, by any method, as accurately as you can. Report to 2 significant figures (e.g. 137 → 140). Start the timer as soon as the seekers ask; report right after it ends. Log only — a crowd-density hint for the seeker; eliminates nothing.',
+    blurb: 'Both players must be indoors (can’t answer if you’re outside). Count everyone who passes within 15 feet of you over the next 5 minutes, by any method, as accurately as you can. Report to 2 significant figures (e.g. 137 → 140). Start the timer as soon as the seekers ask; report right after it ends. Log only — a crowd-density hint for the seeker; eliminates nothing.',
   },
   {
     kind: 'photo',
