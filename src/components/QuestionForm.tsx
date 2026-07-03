@@ -1,23 +1,91 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
-import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance } from '../lib/geo'
-import { QUESTION_POI_CATEGORIES, poiCategoryLabel, nearestPoi, nearestPoiMiles } from '../lib/poi'
+import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
+import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
+import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
+import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
+import { nearestAirport } from '../lib/airports'
+import { countyAt } from '../lib/counties'
+import { cityAt, inPlayArea } from '../lib/cities'
+import { zipAt } from '../lib/zip'
+import { PHOTO, type GameSize } from '../data/questionSets'
 
 interface Props {
   lastClick: LatLng | null
   units: UnitSystem
-  counties: string[]
-  cities: string[]
   lines: string[]
-  airports: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
   // how many times each question group has already been asked, keyed by
   // questionGroupKey — used to preview the scaled cost of asking once more.
   askGroupCounts: Map<string, number>
+  // whether the seeker is currently in the endgame phase (a hiding zone is
+  // locked). Used to default the "Endgame question" checkbox on.
+  endgameActive: boolean
+  // current game size — decides which photo cards are askable.
+  gameSize: GameSize
 }
+
+// Optgroup each POI category falls under in the flattened subject dropdown, so
+// the 12 categories read as one scannable list alongside airport/county/etc.
+const POI_SUBJECT_GROUP: Record<string, string> = {
+  park: 'Natural',
+  mountain: 'Natural',
+  museum: 'Places of Interest',
+  movie_theater: 'Places of Interest',
+  golf_course: 'Places of Interest',
+  amusement_park: 'Places of Interest',
+  zoo: 'Places of Interest',
+  aquarium: 'Places of Interest',
+  stadium: 'Places of Interest',
+  hospital: 'Public Utilities',
+  library: 'Public Utilities',
+  consulate: 'Public Utilities',
+}
+
+// Optgroup a non-POI matching/measuring subject falls under.
+const KIND_SUBJECT_GROUP: Partial<Record<QuestionKind, string>> = {
+  'match-airport': 'Transit',
+  'match-line': 'Transit',
+  'match-namelength': 'Transit',
+  'match-street': 'Transit',
+  'match-admin1': 'Administrative divisions',
+  'match-county': 'Administrative divisions',
+  'match-city': 'Administrative divisions',
+  'match-admin4': 'Administrative divisions',
+  'match-landmass': 'Natural',
+  'measure-airport': 'Transit',
+  'measure-hsr': 'Transit',
+  'measure-railstation': 'Transit',
+  'measure-sealevel': 'Natural',
+  'measure-water': 'Natural',
+  'measure-zip': 'Administrative divisions',
+  'temperature': 'Natural',
+  'inside-floor': 'Indoors',
+  'traffic': 'Indoors',
+}
+
+// Optgroup each coastline/border feature falls under when measure-feature is
+// flattened into the single Question dropdown (same treatment as POI categories).
+const FEATURE_SUBJECT_GROUP: Record<string, string> = {
+  coastline: 'Natural',
+  'county-border': 'Borders',
+  'state-border': 'Borders',
+  'intl-border': 'Borders',
+}
+
+// Dropdown label for a measure-feature: strip the leading article from the
+// data label ("a coastline" → "Coastline") and capitalize.
+function featureSubjectLabel(key: string): string {
+  const raw = (MEASURE_FEATURE_LABELS[key as keyof typeof MEASURE_FEATURE_LABELS] ?? key).replace(/^an? /, '')
+  return raw.charAt(0).toUpperCase() + raw.slice(1)
+}
+
+// Kinds that have no auto-eliminator — logged for the seeker's notes only.
+const MATCH_LOGONLY: QuestionKind[] = ['match-street', 'match-admin1', 'match-admin4', 'match-landmass']
+const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-railstation', 'measure-water']
 
 function ordinalSuffix(n: number): string {
   const t = n % 100
@@ -105,14 +173,18 @@ function CoordPicker({
 export default function QuestionForm({
   lastClick,
   units,
-  counties,
-  cities,
   lines,
-  airports,
   onSubmit,
   onPreview,
   askGroupCounts,
+  endgameActive,
+  gameSize,
 }: Props) {
+  // photo cards askable in this game size
+  const photoCards = PHOTO.filter((c) => c.sizes.includes(gameSize))
+  // tentacle categories askable in this game size (Small = none, so the whole
+  // Tentacles type is hidden below).
+  const tentCats = TENTACLE_CATEGORIES.filter((c) => c.sizes.includes(gameSize))
   const metric = units === 'metric'
   const distUnit = metric ? 'km' : 'mi'
   const elevUnit = metric ? 'm' : 'ft'
@@ -123,19 +195,25 @@ export default function QuestionForm({
   const categories = QUESTION_CATALOG.reduce<QuestionMeta['category'][]>(
     (acc, q) => (acc.includes(q.category) ? acc : [...acc, q.category]),
     [],
-  )
+  ).filter((c) => c !== 'Tentacles' || tentCats.length > 0)
   const [category, setCategory] = useState<QuestionMeta['category']>(meta.category)
   const kindsInCategory = QUESTION_CATALOG.filter((q) => q.category === category)
   function pickCategory(c: QuestionMeta['category']) {
     setCategory(c)
     const first = QUESTION_CATALOG.find((q) => q.category === c)!
     setKind(first.kind)
+    // Entering Tentacles: make sure the chosen category is one askable at this
+    // game size (the default museum could be gated out on some sizes).
+    if (c === 'Tentacles' && tentCats.length > 0 && !tentCats.some((t) => t.key === tentCat)) {
+      setTentCat(tentCats[0].key)
+    }
   }
   // strip the "Category — " prefix so the step-2 dropdown is just the specifics
   const subLabel = (label: string) => {
     const i = label.indexOf(' — ')
     return i >= 0 ? label.slice(i + 3) : label
   }
+  const capitalize = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s)
 
   // shared param state
   const [radius, setRadius] = useState<string>('0.5')
@@ -145,21 +223,43 @@ export default function QuestionForm({
   const [yesno, setYesno] = useState<'yes' | 'no'>('yes')
   const [hotcold, setHotcold] = useState<'hotter' | 'colder'>('hotter')
   const [closefar, setClosefar] = useState<'closer' | 'further'>('closer')
+  const [smalllarge, setSmalllarge] = useState<'smaller' | 'larger'>('smaller')
   const [center, setCenter] = useState<LatLng | null>(null)
   const [ptA, setPtA] = useState<LatLng | null>(null)
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
+  // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
+  const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
+  const [tentPoi, setTentPoi] = useState<string>('')
+  // metro-lines tentacle: chosen in-range line id
+  const [tentLine, setTentLine] = useState<string>('')
+  const [feature, setFeature] = useState<string>(AVAILABLE_MEASURE_FEATURE_KEYS[0])
   const [num, setNum] = useState<string>('')
+  const [photoTitle, setPhotoTitle] = useState<string>(photoCards[0]?.title ?? '')
   const [building, setBuilding] = useState<string>('')
   const [floor, setFloor] = useState<string>('')
   const [floorAns, setFloorAns] = useState<'higher' | 'lower' | 'same' | 'cannot'>('higher')
+  const [hilo, setHilo] = useState<'higher' | 'lower'>('higher')
   const [note, setNote] = useState<string>('')
+  // Mark this question as asked during the endgame phase. Defaults to whether a
+  // hiding zone is currently locked; re-syncs when the seeker enters/exits
+  // endgame, but the seeker can override per question before logging.
+  const [endgameFlag, setEndgameFlag] = useState<boolean>(endgameActive)
+  useEffect(() => setEndgameFlag(endgameActive), [endgameActive])
 
   // The thermometer the seeker chose (converted to miles), or NaN if invalid.
   function thermoMiles(): number {
     if (thermo === 'custom') return metric ? Number(customThermo) / KM_PER_MILE : Number(customThermo)
     return Number(thermo)
+  }
+
+  // The thermometer distance is a *minimum* travel: A→B must be at least the
+  // chosen distance. This is how far the actual A↔B gap may fall *short* of the
+  // chosen distance before it's flagged: 5% of it, floored at 0.1 mi so hand-
+  // placed points right at the threshold aren't rejected.
+  function thermoTolMiles(chosen: number): number {
+    return Math.max(0.1, chosen * 0.05)
   }
 
   function submit(vetoed = false) {
@@ -183,6 +283,12 @@ export default function QuestionForm({
         const tMiles = thermoMiles()
         if (!Number.isFinite(tMiles) || tMiles <= 0)
           return alert('Choose which thermometer you used (a travel distance greater than 0).')
+        const actualMiles = haversineMiles(ptA, ptB)
+        if (actualMiles + thermoTolMiles(tMiles) < tMiles)
+          return alert(
+            `Start A and end B are only ${formatDistance(actualMiles, units)} apart, but a ${formatDistance(tMiles, units)} thermometer needs a travel of at least ${formatDistance(tMiles, units)}. ` +
+            `Move A/B farther apart, or pick a shorter thermometer.`,
+          )
         params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, thermometerMiles: tMiles, answer: hotcold }
         break
       }
@@ -205,10 +311,87 @@ export default function QuestionForm({
         params = { poiCat, fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
       }
+      case 'measure-feature': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!Number.isFinite(distanceToFeatureMiles(center, feature)))
+          return alert('That feature has no geometry in the play area.')
+        params = { feature, fromLat: center.lat, fromLon: center.lon, answer: closefar }
+        break
+      }
       case 'measure-sealevel': {
         if (num === '') return alert(`Enter your altitude in ${elevUnit}.`)
         const meters = metric ? Number(num) : Number(num) / FEET_PER_METER
         params = { value: meters, answer: closefar }
+        break
+      }
+      case 'measure-zip': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const z = zipAt(center)
+        if (!z) return alert(inPlayArea(center)
+          ? 'No ZIP code here.'
+          : 'Outside the play area.')
+        params = { value: z, fromLat: center.lat, fromLon: center.lon, answer: smalllarge }
+        break
+      }
+      case 'tentacle': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const tc = tentacleCategory(tentCat)
+        if (!tc) return alert('Pick a tentacle subject.')
+        const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
+        if (inPlay.length === 0)
+          return alert(`No ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`)
+        if (isTentacleRadarAnswer(tentPoi)) {
+          // Radar answer: hider revealed only whether they're within the radius.
+          params = {
+            poiCat: tentCat,
+            radiusMi: tc.radiusMi,
+            fromLat: center.lat,
+            fromLon: center.lon,
+            value: tentPoi,
+            poiName: `${tentPoi === TENTACLE_INSIDE ? 'within' : 'not within'} ${formatDistance(tc.radiusMi, units)}`,
+          }
+          break
+        }
+        if (inPlay.length === 1)
+          return alert(`Answer whether the hider is within ${formatDistance(tc.radiusMi, units)} of you.`)
+        const chosen = inPlay.find((poi) => poiKey(poi) === tentPoi)
+        if (!chosen) return alert('Pick which in-range place the hider is closest to.')
+        params = {
+          poiCat: tentCat,
+          radiusMi: tc.radiusMi,
+          fromLat: center.lat,
+          fromLon: center.lon,
+          value: poiKey(chosen),
+          poiName: chosen.name,
+        }
+        break
+      }
+      case 'tentacle-line': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
+        if (inPlay.length === 0)
+          return alert(`No metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.`)
+        if (isTentacleRadarAnswer(tentLine)) {
+          params = {
+            radiusMi: METRO_TENTACLE_RADIUS_MI,
+            fromLat: center.lat,
+            fromLon: center.lon,
+            value: tentLine,
+            poiName: `${tentLine === TENTACLE_INSIDE ? 'within' : 'not within'} ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`,
+          }
+          break
+        }
+        if (inPlay.length === 1)
+          return alert(`Answer whether the hider is within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of you.`)
+        const chosen = inPlay.find((l) => l.id === tentLine)
+        if (!chosen) return alert('Pick which in-range metro line the hider is closest to.')
+        params = {
+          radiusMi: METRO_TENTACLE_RADIUS_MI,
+          fromLat: center.lat,
+          fromLon: center.lon,
+          value: chosen.id,
+          poiName: chosen.label,
+        }
         break
       }
       case 'match-namelength': {
@@ -216,12 +399,44 @@ export default function QuestionForm({
         params = { value: Number(num), answer: yesno }
         break
       }
-      case 'match-county':
-      case 'match-city':
-      case 'match-airport':
+      case 'match-airport': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        params = { value: nearestAirport(center).code, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
+      case 'match-county': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const c = countyAt(center)
+        if (!c) return alert('Outside the play area.')
+        params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
+      case 'match-city': {
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const c = cityAt(center)
+        if (!c) return alert(inPlayArea(center)
+          ? "Unincorporated — you're not in a city here, so there's no municipality to match."
+          : 'Outside the play area.')
+        params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
       case 'match-line': {
         if (!value) return alert('Choose a value.')
         params = { value, answer: yesno }
+        break
+      }
+      case 'match-street':
+      case 'match-admin1':
+      case 'match-admin4':
+      case 'match-landmass': {
+        // Record-keeping only: log the answer (+ optional detail) but eliminate nothing.
+        params = { description: value.trim() || undefined, answer: yesno }
+        break
+      }
+      case 'measure-hsr':
+      case 'measure-railstation':
+      case 'measure-water': {
+        params = { description: value.trim() || undefined, answer: closefar }
         break
       }
       case 'inside-floor': {
@@ -230,8 +445,20 @@ export default function QuestionForm({
         params = { building: building.trim(), floor: floor.trim(), answer: floorAns }
         break
       }
+      case 'temperature': {
+        // Log-only: record the hider's higher/lower answer for reference.
+        params = { answer: hilo }
+        break
+      }
+      case 'traffic': {
+        // Log-only: record the hider's reported foot-traffic count.
+        if (num === '') return alert("Enter the hider's reported count.")
+        params = { value: Number(num) }
+        break
+      }
       case 'photo': {
-        params = { description: value }
+        if (!photoTitle) return alert('Pick which photo you asked for.')
+        params = { photoTitle }
         break
       }
     }
@@ -247,9 +474,10 @@ export default function QuestionForm({
       eliminates: meta.eliminates,
       active: true,
       ...(vetoed ? { vetoed: true } : {}),
+      ...(endgameFlag ? { endgame: true } : {}),
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi(''); setTentLine('')
   }
 
   // Preview of the hider's cost if this question were asked now: the nth ask of
@@ -272,6 +500,12 @@ export default function QuestionForm({
       params = { thermometerMiles: t }
     } else if (kind === 'match-poi' || kind === 'measure-poi') {
       params = { poiCat }
+    } else if (kind === 'measure-feature') {
+      params = { feature }
+    } else if (kind === 'tentacle') {
+      params = { poiCat: tentCat }
+    } else if (kind === 'photo') {
+      params = { photoTitle }
     }
     const key = questionGroupKey(kind, params)
     return (askGroupCounts.get(key) ?? 0) + 1
@@ -300,6 +534,82 @@ export default function QuestionForm({
     </div>
   )
 
+  // Flattened subject dropdown: the two POI kinds (match-poi / measure-poi) and
+  // measure-feature each expand into one entry per category/feature, so every
+  // subject sits in the single Question dropdown rather than behind a second
+  // select. An expanded option encodes its parameter as `${kind}::${value}`.
+  interface SubjectOption { value: string; label: string; group: string }
+  const subjectOptions: SubjectOption[] = kindsInCategory.flatMap((q) => {
+    if (q.kind === 'match-poi' || q.kind === 'measure-poi') {
+      return QUESTION_POI_CATEGORIES.map((c) => ({
+        value: `${q.kind}::${c}`,
+        label: capitalize(poiCategoryLabel(c)),
+        group: POI_SUBJECT_GROUP[c] ?? 'Places of Interest',
+      }))
+    }
+    if (q.kind === 'measure-feature') {
+      return AVAILABLE_MEASURE_FEATURE_KEYS.map((k) => ({
+        value: `${q.kind}::${k}`,
+        label: featureSubjectLabel(k),
+        group: FEATURE_SUBJECT_GROUP[k] ?? 'Borders',
+      }))
+    }
+    if (q.kind === 'tentacle') {
+      return tentCats.map((c) => ({
+        value: `${q.kind}::${c.key}`,
+        label: `${capitalize(poiCategoryLabelPlural(c.key))} within ${formatDistance(c.radiusMi, units)}`,
+        group: `Within ${formatDistance(c.radiusMi, units)}`,
+      }))
+    }
+    // Metro Lines tentacle is a Large-only subject (15 mi).
+    if (q.kind === 'tentacle-line') {
+      if (gameSize !== 'large') return []
+      return [{ value: q.kind, label: `Metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`, group: `Within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}` }]
+    }
+    return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
+  })
+  const subjectValue =
+    kind === 'match-poi' || kind === 'measure-poi'
+      ? `${kind}::${poiCat}`
+      : kind === 'measure-feature'
+        ? `${kind}::${feature}`
+        : kind === 'tentacle'
+          ? `${kind}::${tentCat}`
+          : kind
+  function pickSubject(v: string) {
+    const [k, param] = v.split('::')
+    setKind(k as QuestionKind)
+    if (param) {
+      if (k === 'measure-feature') setFeature(param)
+      else if (k === 'tentacle') setTentCat(param)
+      else setPoiCat(param)
+    }
+  }
+  const subjectGroups: { group: string; opts: SubjectOption[] }[] = []
+  for (const o of subjectOptions) {
+    let g = subjectGroups.find((x) => x.group === o.group)
+    if (!g) {
+      g = { group: o.group, opts: [] }
+      subjectGroups.push(g)
+    }
+    g.opts.push(o)
+  }
+
+  // The catalog blurb is generic ("…the chosen coastline / border", "…your
+  // nearest place of the chosen type"); once a specific feature / POI subject is
+  // picked, name it so the seeker reads exactly what they're measuring/matching.
+  const tentRadius = tentacleCategory(tentCat)?.radiusMi ?? 1
+  const blurbText =
+    kind === 'measure-feature'
+      ? `Compared to me, are you closer to or further from the nearest ${measureFeatureNoun(feature)}? Set your location; the app shows your distance to it.`
+      : kind === 'measure-poi'
+        ? `Compared to me, are you closer to or further from your nearest ${poiCategoryLabel(poiCat)}? Set your location; the app shows your distance to it.`
+        : kind === 'match-poi'
+          ? `Is your nearest ${poiCategoryLabel(poiCat)} the same as mine? Set your location; the app shows which one it treats as nearest.`
+          : kind === 'tentacle'
+            ? `Of all the ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tentRadius, units)} of me, which are you closest to? Set your location; the app lists the in-range ${poiCategoryLabelPlural(tentCat)} — pick the one I answer. ${capitalize(poiCategoryLabelPlural(tentCat))} outside the radius don't count even if they're closer to you.`
+            : meta.blurb
+
   return (
     <div className="qform">
       <div className="row qrow-cat">
@@ -310,18 +620,22 @@ export default function QuestionForm({
           ))}
         </div>
       </div>
-      {kindsInCategory.length > 1 && (
+      {subjectOptions.length > 1 && (
         <div className="row">
           <label>Question</label>
-          <select value={kind} onChange={(e) => setKind(e.target.value as QuestionKind)}>
-            {kindsInCategory.map((q) => (
-              <option key={q.kind} value={q.kind}>{subLabel(q.label)}</option>
+          <select value={subjectValue} onChange={(e) => pickSubject(e.target.value)}>
+            {subjectGroups.map((g) => (
+              <optgroup key={g.group} label={g.group}>
+                {g.opts.map((o) => (
+                  <option key={o.value} value={o.value}>{o.label}</option>
+                ))}
+              </optgroup>
             ))}
           </select>
         </div>
       )}
       <p className="blurb">
-        {meta.blurb}{' '}
+        {blurbText}{' '}
         <span className="cards">
           ({previewCards}
           {previewMult > 1 && (
@@ -375,6 +689,19 @@ export default function QuestionForm({
           )}
           <CoordPicker label="Start A" point={ptA} setPoint={setPtA} lastClick={lastClick} onPreview={onPreview} />
           <CoordPicker label="End B" point={ptB} setPoint={setPtB} lastClick={lastClick} onPreview={onPreview} />
+          {ptA && ptB && (() => {
+            const actual = haversineMiles(ptA, ptB)
+            const chosen = thermoMiles()
+            const ok = Number.isFinite(chosen) && chosen > 0 && actual + thermoTolMiles(chosen) >= chosen
+            return (
+              <p className={`blurb poi-readout${ok ? '' : ' warn'}`}>
+                A↔B distance: <b>{formatDistance(actual, units)}</b>
+                {Number.isFinite(chosen) && chosen > 0 && (
+                  <> {ok ? `✓ meets the ${formatDistance(chosen, units)} thermometer` : `⚠ must be at least ${formatDistance(chosen, units)}`}</>
+                )}
+              </p>
+            )
+          })()}
           <div className="row">
             <label>Result</label>
             <div className="seg">
@@ -388,6 +715,14 @@ export default function QuestionForm({
       {kind === 'measure-airport' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const a = nearestAirport(center)
+            return (
+              <p className="blurb poi-readout">
+                Distance to nearest airport (<b>{a.code}</b>): <b>{formatDistance(a.distMiles, units)}</b>
+              </p>
+            )
+          })()}
           <div className="row">
             <label>Answer</label>
             <div className="seg">
@@ -398,16 +733,35 @@ export default function QuestionForm({
         </>
       )}
 
+      {kind === 'match-airport' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (
+            <p className="blurb poi-readout">
+              Your nearest airport: <b>{nearestAirport(center).code}</b> — {formatDistance(nearestAirport(center).distMiles, units)}
+            </p>
+          )}
+          {yesNo}
+        </>
+      )}
+
+      {kind === 'match-county' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const c = countyAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {c ? <>Your county: <b>{c}</b></> : 'Outside the play area.'}
+              </p>
+            )
+          })()}
+          {yesNo}
+        </>
+      )}
+
       {(kind === 'match-poi' || kind === 'measure-poi') && (
         <>
-          <div className="row">
-            <label>Place type</label>
-            <select value={poiCat} onChange={(e) => setPoiCat(e.target.value)}>
-              {QUESTION_POI_CATEGORIES.map((c) => (
-                <option key={c} value={c}>{poiCategoryLabel(c)}</option>
-              ))}
-            </select>
-          </div>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {center && (() => {
             const np = nearestPoi(center, poiCat)
@@ -436,6 +790,29 @@ export default function QuestionForm({
         </>
       )}
 
+      {kind === 'measure-feature' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const d = distanceToFeatureMiles(center, feature)
+            if (!Number.isFinite(d))
+              return <p className="blurb poi-readout">No geometry for {measureFeatureNoun(feature)}.</p>
+            return (
+              <p className="blurb poi-readout">
+                Distance to nearest {measureFeatureNoun(feature)}: <b>{formatDistance(d, units)}</b>
+              </p>
+            )
+          })()}
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
+        </>
+      )}
+
       {kind === 'measure-sealevel' && (
         <>
           <div className="row">
@@ -452,15 +829,180 @@ export default function QuestionForm({
         </>
       )}
 
-      {kind === 'match-county' && dropdown(counties)}
-      {kind === 'match-city' && dropdown(cities)}
-      {kind === 'match-airport' && dropdown(airports)}
+      {kind === 'measure-zip' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const z = zipAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {z
+                  ? <>Your ZIP: <b>{z}</b></>
+                  : inPlayArea(center)
+                    ? <>No ZIP code here.</>
+                    : 'Outside the play area.'}
+              </p>
+            )
+          })()}
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={smalllarge === 'smaller' ? 'on' : ''} onClick={() => setSmalllarge('smaller')}>Smaller</button>
+              <button className={smalllarge === 'larger' ? 'on' : ''} onClick={() => setSmalllarge('larger')}>Larger</button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {kind === 'tentacle' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const tc = tentacleCategory(tentCat)
+            if (!tc) return null
+            const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
+              .map((poi) => ({ poi, key: poiKey(poi), d: haversineMiles(center, poi) }))
+              .sort((a, b) => a.d - b.d)
+            if (inPlay.length === 0)
+              return (
+                <p className="blurb poi-readout warn">
+                  No {poiCategoryLabelPlural(tentCat)} within {formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.
+                </p>
+              )
+            if (inPlay.length === 1)
+              // Only one in range → "which are you closest to?" gives nothing, so
+              // it becomes a radar: the hider says whether they're within radius.
+              return (
+                <>
+                  <div className="row">
+                    <label>Are you within {formatDistance(tc.radiusMi, units)} of the seeker?</label>
+                    <div className="seg">
+                      <button className={tentPoi === TENTACLE_INSIDE ? 'on' : ''} onClick={() => setTentPoi(TENTACLE_INSIDE)}>Within</button>
+                      <button className={tentPoi === TENTACLE_OUTSIDE ? 'on' : ''} onClick={() => setTentPoi(TENTACLE_OUTSIDE)}>Not within</button>
+                    </div>
+                  </div>
+                  <p className="blurb poi-readout">
+                    Only one {poiCategoryLabel(tentCat)} in range, so "which are you closest to?" reveals nothing — this acts as a radar of {formatDistance(tc.radiusMi, units)} around you.
+                  </p>
+                </>
+              )
+            return (
+              <>
+                <div className="row">
+                  <label>Which is the hider closest to?</label>
+                  <select value={tentPoi} onChange={(e) => setTentPoi(e.target.value)}>
+                    <option value="">— choose the in-range place —</option>
+                    {inPlay.map(({ poi, key, d }) => (
+                      <option key={key} value={key}>{poi.name} ({formatDistance(d, units)} from you)</option>
+                    ))}
+                    <option value={TENTACLE_OUTSIDE}>— not within {formatDistance(tc.radiusMi, units)} of you (radar) —</option>
+                  </select>
+                </div>
+                <p className="blurb poi-readout">
+                  {inPlay.length} {poiCategoryLabelPlural(tentCat)} in range. The hider can instead answer "not within {formatDistance(tc.radiusMi, units)}" to eliminate everything within that radius.
+                </p>
+              </>
+            )
+          })()}
+        </>
+      )}
+
+      {kind === 'tentacle-line' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
+              .map((line) => ({ line, d: metroLineDistanceMiles(center, line, center.lat) }))
+              .sort((a, b) => a.d - b.d)
+            if (inPlay.length === 0)
+              return (
+                <p className="blurb poi-readout warn">
+                  No metro lines within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.
+                </p>
+              )
+            if (inPlay.length === 1)
+              return (
+                <>
+                  <div className="row">
+                    <label>Are you within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of the seeker?</label>
+                    <div className="seg">
+                      <button className={tentLine === TENTACLE_INSIDE ? 'on' : ''} onClick={() => setTentLine(TENTACLE_INSIDE)}>Within</button>
+                      <button className={tentLine === TENTACLE_OUTSIDE ? 'on' : ''} onClick={() => setTentLine(TENTACLE_OUTSIDE)}>Not within</button>
+                    </div>
+                  </div>
+                  <p className="blurb poi-readout">
+                    Only one metro line in range, so "which are you closest to?" reveals nothing — this acts as a radar of {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} around you.
+                  </p>
+                </>
+              )
+            return (
+              <>
+                <div className="row">
+                  <label>Which is the hider closest to?</label>
+                  <select value={tentLine} onChange={(e) => setTentLine(e.target.value)}>
+                    <option value="">— choose the in-range line —</option>
+                    {inPlay.map(({ line, d }) => (
+                      <option key={line.id} value={line.id}>{line.label} ({formatDistance(d, units)} from you)</option>
+                    ))}
+                    <option value={TENTACLE_OUTSIDE}>— not within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of you (radar) —</option>
+                  </select>
+                </div>
+                <p className="blurb poi-readout">
+                  {inPlay.length} metro lines in range. The hider can instead answer "not within {formatDistance(METRO_TENTACLE_RADIUS_MI, units)}" to eliminate everything within that radius.
+                </p>
+              </>
+            )
+          })()}
+        </>
+      )}
+
+      {kind === 'match-city' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const c = cityAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {c
+                  ? <>Your city: <b>{c}</b></>
+                  : inPlayArea(center)
+                    ? <>Your city: <b>Unincorporated</b> (no municipality to match here)</>
+                    : 'Outside the play area.'}
+              </p>
+            )
+          })()}
+          {yesNo}
+        </>
+      )}
+
       {kind === 'match-line' && dropdown(lines)}
-      {(kind === 'match-county' ||
-        kind === 'match-city' ||
-        kind === 'match-airport' ||
-        kind === 'match-line') &&
-        yesNo}
+      {kind === 'match-line' && yesNo}
+
+      {MATCH_LOGONLY.includes(kind) && (
+        <>
+          <div className="row">
+            <label>Detail (optional)</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="your answer, for your notes" />
+          </div>
+          {yesNo}
+        </>
+      )}
+
+      {MEASURE_LOGONLY.includes(kind) && (
+        <>
+          <div className="row">
+            <label>Detail (optional)</label>
+            <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="your answer, for your notes" />
+          </div>
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
+        </>
+      )}
 
       {kind === 'match-namelength' && (
         <>
@@ -494,11 +1036,38 @@ export default function QuestionForm({
         </>
       )}
 
-      {kind === 'photo' && (
+      {kind === 'temperature' && (
         <div className="row">
-          <label>Describe</label>
-          <input type="text" value={value} onChange={(e) => setValue(e.target.value)} placeholder="e.g. tallest building from station" />
+          <label>Answer</label>
+          <div className="seg">
+            <button className={hilo === 'higher' ? 'on' : ''} onClick={() => setHilo('higher')}>Higher</button>
+            <button className={hilo === 'lower' ? 'on' : ''} onClick={() => setHilo('lower')}>Lower</button>
+          </div>
         </div>
+      )}
+
+      {kind === 'traffic' && (
+        <div className="row">
+          <label>Hider's count</label>
+          <input type="number" value={num} onChange={(e) => setNum(e.target.value)} placeholder="people in 5 min" />
+        </div>
+      )}
+
+      {kind === 'photo' && (
+        <>
+          <div className="row">
+            <label>Photo</label>
+            <select value={photoTitle} onChange={(e) => setPhotoTitle(e.target.value)}>
+              {photoCards.map((c) => (
+                <option key={c.title} value={c.title}>{c.title}</option>
+              ))}
+            </select>
+          </div>
+          {(() => {
+            const card = photoCards.find((c) => c.title === photoTitle)
+            return card ? <p className="blurb poi-readout">{card.requirement}</p> : null
+          })()}
+        </>
       )}
 
       <div className="row">
@@ -506,17 +1075,25 @@ export default function QuestionForm({
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
 
+      {meta.eliminates && (
+        <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
+          <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
+          <span className="endgame-text">
+            Endgame question
+            <span className="muted">shading clips to the hiding zone</span>
+          </span>
+        </label>
+      )}
+
       <div className="qform-actions">
         <button className="primary" onClick={() => submit(false)}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
-        {kind !== 'photo' && (
-          <button
-            className="veto"
-            onClick={() => submit(true)}
-            title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
-          >
-            Hider vetoed
-          </button>
-        )}
+        <button
+          className="veto"
+          onClick={() => submit(true)}
+          title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
+        >
+          Hider vetoed
+        </button>
       </div>
     </div>
   )

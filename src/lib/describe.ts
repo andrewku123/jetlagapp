@@ -1,6 +1,7 @@
 import type { QuestionRecord, UnitSystem } from '../types'
 import { formatDistance, formatElevation } from './geo'
-import { poiCategoryLabel } from './poi'
+import { poiCategoryLabel, isTentacleRadarAnswer, TENTACLE_INSIDE } from './poi'
+import { MEASURE_FEATURE_LABELS, type MeasureFeatureKey } from './measureFeatures'
 
 export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'): string {
   const p = r.params
@@ -29,10 +30,34 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Same nearest ${poiCategoryLabel(String(p.poiCat))}${p.poiName ? ` ("${String(p.poiName)}")` : ''}?${arrow(String(a))}`
     case 'measure-poi':
       return `Closer/further from nearest ${poiCategoryLabel(String(p.poiCat))}${arrow(String(a))}`
+    case 'measure-feature':
+      return `Closer/further from ${MEASURE_FEATURE_LABELS[String(p.feature) as MeasureFeatureKey] ?? 'a border'}${arrow(String(a))}`
     case 'measure-airport':
       return `Closer/further from airport${arrow(String(a))}`
     case 'measure-sealevel':
       return `Altitude vs ${formatElevation(Number(p.value), units)}${arrow(String(a))}`
+    case 'measure-zip':
+      return `ZIP smaller/larger than ${p.value ? String(p.value) : 'mine'}?${arrow(String(a))}`
+    case 'tentacle': {
+      const r0 = Number(p.radiusMi)
+      const within = Number.isFinite(r0) ? ` within ${formatDistance(r0, units)}` : ''
+      if (isTentacleRadarAnswer(String(p.value))) {
+        const rlbl = Number.isFinite(r0) ? formatDistance(r0, units) : 'radius'
+        return `Tentacle radar: hider is ${p.value === TENTACLE_INSIDE ? '' : 'not '}within ${rlbl} of you`
+      }
+      const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
+      return `Tentacle: nearest ${poiCategoryLabel(String(p.poiCat))}${within}${ans}`
+    }
+    case 'tentacle-line': {
+      const r0 = Number(p.radiusMi)
+      const within = Number.isFinite(r0) ? ` within ${formatDistance(r0, units)}` : ''
+      if (isTentacleRadarAnswer(String(p.value))) {
+        const rlbl = Number.isFinite(r0) ? formatDistance(r0, units) : 'radius'
+        return `Tentacle radar: hider is ${p.value === TENTACLE_INSIDE ? '' : 'not '}within ${rlbl} of you`
+      }
+      const ans = p.poiName ? ` → "${String(p.poiName)}"` : ''
+      return `Tentacle: nearest metro line${within}${ans}`
+    }
     case 'inside-floor': {
       const ans: Record<string, string> = {
         higher: 'higher floor',
@@ -42,8 +67,31 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       }
       return `Inside "${p.building}"${p.floor ? ` (floor ${String(p.floor)})` : ''}${arrow(ans[String(a)] ?? String(a))}`
     }
-    case 'photo':
-      return `Photo: ${p.description || '(logged)'}`
+    case 'temperature':
+      return `Temperature higher/lower?${arrow(String(a))} (log only)`
+    case 'traffic':
+      return `Traffic (foot count)${p.value != null ? ` → ${String(p.value)}` : ''} (log only)`
+    case 'photo': {
+      const title = p.photoTitle ? String(p.photoTitle) : ''
+      const extra = p.description ? String(p.description) : ''
+      const body = [title, extra].filter(Boolean).join(' — ')
+      return `Photo: ${body || '(logged)'}`
+    }
+    case 'match-street':
+    case 'match-admin1':
+    case 'match-admin4':
+    case 'match-landmass': {
+      const detail = p.description ? ` "${String(p.description)}"` : ''
+      const subject = { 'match-street': 'street/path', 'match-admin1': 'state', 'match-admin4': 'neighborhood', 'match-landmass': 'landmass' }[r.kind]
+      return `Same ${subject}?${detail}${arrow(String(a).toUpperCase())} (log only)`
+    }
+    case 'measure-hsr':
+    case 'measure-railstation':
+    case 'measure-water': {
+      const detail = p.description ? ` "${String(p.description)}"` : ''
+      const subject = { 'measure-hsr': 'high-speed rail', 'measure-railstation': 'rail station', 'measure-water': 'body of water' }[r.kind]
+      return `Closer/further from ${subject}?${detail}${arrow(String(a))} (log only)`
+    }
     default:
       return r.kind
   }

@@ -1,5 +1,6 @@
 import poiData from '../data/poi.json'
 import type { LatLng } from '../types'
+import type { GameSize } from '../data/questionSets'
 import { haversineMiles } from './geo'
 
 // One entry per gathered POI category. `key` matches the keys in poi.json
@@ -24,7 +25,7 @@ export const POI_CATEGORIES: PoiCategory[] = [
   { key: 'golf_course', label: 'Golf courses', color: '#c0ca33' },
   { key: 'stadium', label: 'Sports stadiums', color: '#00897b' },
   { key: 'mountain', label: 'Mountains', color: '#607d8b' },
-  { key: 'consulate', label: 'Consulates', color: '#5e35b1' },
+  { key: 'consulate', label: 'Foreign consulates', color: '#5e35b1' },
 ]
 
 export interface PoiPlace {
@@ -83,6 +84,57 @@ export const QUESTION_POI_CATEGORIES: string[] = [
   'consulate',
 ]
 
+// Tentacle categories: "of all the ___ within R of me, which are you closest to?"
+// Radius is fixed per category and the card is size-gated (never in small games):
+// the 1-mile set is Medium+, the 15-mile set is Large only. (Metro Lines — a
+// line-based 15-mile Large tentacle — is handled separately, not here.)
+export interface TentacleCategory {
+  key: string
+  radiusMi: number
+  sizes: GameSize[]
+}
+
+const MED_PLUS: GameSize[] = ['medium', 'large']
+const LARGE_ONLY: GameSize[] = ['large']
+
+export const TENTACLE_CATEGORIES: TentacleCategory[] = [
+  { key: 'museum', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'library', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'movie_theater', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'hospital', radiusMi: 1, sizes: MED_PLUS },
+  { key: 'zoo', radiusMi: 15, sizes: LARGE_ONLY },
+  { key: 'aquarium', radiusMi: 15, sizes: LARGE_ONLY },
+  { key: 'amusement_park', radiusMi: 15, sizes: LARGE_ONLY },
+]
+
+export function tentacleCategory(key: string): TentacleCategory | null {
+  return TENTACLE_CATEGORIES.find((c) => c.key === key) ?? null
+}
+
+// Sentinel tentacle answers used in place of an in-range POI/line name when the
+// hider reveals only whether they are within the radius of the seeker. These
+// make a tentacle behave exactly like a radar centred on the seeker:
+//   OUTSIDE ("not within R") = radar "no"  → the disk of radius R is eliminated.
+//   INSIDE  ("within R")     = radar "yes" → everything outside the disk is.
+// The seeker uses INSIDE/OUTSIDE when only one POI is in the circle (the
+// closest-POI answer is then useless), and OUTSIDE is always offered as an
+// alternative answer. Stored as params.value on a tentacle / tentacle-line
+// record so elimination and shading recognise it.
+export const TENTACLE_OUTSIDE = '__outside__'
+export const TENTACLE_INSIDE = '__inside__'
+export function isTentacleRadarAnswer(v: string): boolean {
+  return v === TENTACLE_OUTSIDE || v === TENTACLE_INSIDE
+}
+
+// Every POI of `categoryKey` whose straight-line distance to `p` is <= radiusMi.
+// These are the only POIs "in play" for a Tentacle from `p`; anything outside the
+// radius does not count even if it is closer to the hider.
+export function poisWithinRadius(p: LatLng, categoryKey: string, radiusMi: number): PoiPlace[] {
+  const list = POI_BY_CATEGORY[categoryKey]
+  if (!list) return []
+  return list.filter((poi) => haversineMiles(p, poi) <= radiusMi)
+}
+
 const CATEGORY_LABEL: Record<string, string> = Object.fromEntries(
   POI_CATEGORIES.map((c) => [c.key, c.label]),
 )
@@ -95,6 +147,13 @@ export function poiCategoryLabel(key: string): string {
     ? plural.slice(0, -3) + 'y'
     : plural.replace(/s$/, '')
   return singular.toLowerCase()
+}
+
+// Plural label for a category, lowercased for mid-sentence use ("libraries",
+// "movie theaters"). Uses the stored plural so "library" doesn't become the
+// naive "librarys"; capitalize at call sites that need a leading capital.
+export function poiCategoryLabelPlural(key: string): string {
+  return (CATEGORY_LABEL[key] ?? `${key}s`).toLowerCase()
 }
 
 // A stable identity for a POI (name + rounded coords) so two independent

@@ -38,13 +38,35 @@ flag stop that can never satisfy the hourly rule.
 
 ## Game size
 
-Built for the **medium** game. The auto-elimination engine currently supports:
+Built for the **medium** game. The full medium question deck is available in the
+**Ask** tab, and most of it auto-eliminates. What the app eliminates for:
 
-- **Radar** — within 1/4, 1/2, 1, 3, 5, 10, 25, 50, 100 mi (or custom)
-- **Thermometer** — hotter / colder after traveling
-- **Matching** — county, city, nearest commercial airport, transit line, station-name length
-- **Measuring** — commercial airport, sea level (altitude)
-- **Photo** — logged for reference (does not auto-eliminate)
+- **Radar** — "are you within ___ of me?" at 1/4, 1/2, 1, 3, 5, 10, 25, 50,
+  100 mi, plus a **custom** radius allowed once per game.
+- **Thermometer** — "I've traveled at least ___ — hotter or colder?" at 1/2, 3,
+  or 10 mi (draws the perpendicular-bisector boundary and shades the colder half).
+- **Matching** — "is your nearest ___ the same as mine?" for **county**,
+  **city**, nearest **commercial airport**, **transit line**, **station-name
+  length**, and any of the 12 mapped **points of interest** (museum, library,
+  movie theater, hospital, zoo, aquarium, amusement park, park, golf course,
+  sports stadium, mountain, foreign consulate).
+- **Measuring** — "compared to me, are you closer to or further from ___?" for a
+  **commercial airport**, **sea level** (altitude), a **coastline**, a **state
+  border**, a **county border**, an **international border**, and any of the 12
+  mapped **POI** categories (as in Matching). A **ZIP code** smaller/larger
+  question is also supported.
+- **Tentacles** — "of all the ___ within 1 mi of me, which are you closest to?"
+  for **museums, libraries, movie theaters, hospitals** (keeps the stations
+  closest to the answered POI and shades the eliminated area).
+- **Photo** — logged for reference only (does not auto-eliminate, by design).
+- **Inside** — endgame-only floor question; logged for reference only.
+
+The remaining booklet subjects (e.g. street/path, 1st & 4th admin divisions,
+landmass, amusement park, zoo, aquarium, sports stadium, foreign consulate,
+high-speed-rail line, body of water) are selectable and logged for the seeker's
+notes, but don't auto-eliminate. Any question can be flagged as an **endgame
+question** — its eliminated area is then clipped to the current hiding-zone
+circle (see [TUTORIAL.md](TUTORIAL.md)).
 
 Every logged question shows the hider's card reward. Re-asking the **same**
 question costs the hider more: the nth ask of a question multiplies the reward by
@@ -54,9 +76,15 @@ The Ask form previews this cost live as you choose parameters. If the hider
 it without an answer — it's recorded but eliminates nothing, and still counts
 toward the repeat-cost tally.
 
-POI-based Matching/Measuring (parks, hospitals, museums, libraries, movie
-theaters, zoos, aquariums, golf courses, mountains, foreign consulates) and
-Tentacles are planned next.
+## POI reference tab
+
+The **POI** tab overlays the points of interest used to compose Tentacles /
+Matching / Measuring questions (museums, libraries, movie theaters, hospitals,
+zoos, aquariums, amusement parks, parks, golf courses, sports stadiums,
+mountains, foreign consulates) on the map. Each
+category can be toggled and searched by name, and the station layer can be set to
+Normal / Faded / Hidden so POIs stand out. A place counts if it carries the Google
+Maps category icon and has ≥5 reviews. POI data is gathered from OpenStreetMap.
 
 ## Satellite imagery
 

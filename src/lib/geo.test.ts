@@ -68,6 +68,22 @@ describe('circlePolygon', () => {
       expect(haversineMiles(center, p)).toBeLessThan(10.5)
     }
   })
+
+  it('places every vertex EXACTLY the radius away by haversineMiles', () => {
+    // the shading edge and the drawn outline are both built from this ring, and
+    // elimination uses haversineMiles — so vertices must be geodesically exact
+    // (not an equirectangular approximation) for them to coincide at any radius.
+    for (const center of [
+      { lat: 37.7, lon: -122.2 },
+      { lat: 37.34, lon: -121.89 },
+    ]) {
+      for (const radius of [0.5, 2, 10, 30]) {
+        for (const p of circlePolygon(center, radius)) {
+          expect(haversineMiles(center, p)).toBeCloseTo(radius, 6)
+        }
+      }
+    }
+  })
 })
 
 describe('formatElevation', () => {
