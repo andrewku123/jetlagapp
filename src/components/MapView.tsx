@@ -644,6 +644,23 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Dedicated pane for the transient coord read-out dot + its label. Placed above
+// markerPane (600) and tooltipPane (650) — Leaflet auto-stacks marker layers by
+// latitude within a shared pane, so a station dot or a measure endpoint/label at
+// the same spot could otherwise cover the exact point you clicked to read. Kept
+// below popupPane (700).
+function CoordPane() {
+  const map = useMap()
+  useEffect(() => {
+    const name = 'coordDot'
+    if (!map.getPane(name)) {
+      const pane = map.createPane(name)
+      pane.style.zIndex = '690'
+    }
+  }, [map])
+  return null
+}
+
 // Dims or hides the station pane while the POI tab is open so POI dots stand out.
 // 'faded' keeps stations clickable as faint context; 'hidden' also drops their
 // hit-testing so only POIs respond. Resets to full opacity otherwise.
@@ -1200,6 +1217,7 @@ export default function MapView({
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <StationRenderer onChange={setStationRenderer} />
+        <CoordPane />
         <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
 
@@ -1734,17 +1752,19 @@ export default function MapView({
         ))}
 
         {/* transient coordinate-tool dot: shows the lat/lon, no annotation kept.
-            Rendered in markerPane (z 600) so the dot sits ABOVE the station dots
-            (station pane z 450) — otherwise a station covers exactly the point
-            you clicked to read. */}
+            Rendered in the dedicated coordDot pane (z 690) so the dot + label sit
+            ABOVE the station dots (station pane z 450), any annotation shape, and
+            the marker/tooltip panes (measure endpoints z 600, measure labels
+            z 650) — otherwise something covers exactly the point you clicked to
+            read. */}
         {tool === 'coord' && coordPin && (
           <CircleMarker
             center={[coordPin.lat, coordPin.lon]}
             radius={5}
-            pane="markerPane"
+            pane="coordDot"
             pathOptions={{ color: '#111', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
           >
-            <Tooltip permanent direction="top" offset={[0, -6]}>
+            <Tooltip permanent direction="top" offset={[0, -6]} pane="coordDot">
               {coordPin.lat.toFixed(6)}, {coordPin.lon.toFixed(6)}
               {coordCopied ? ' ✓' : ''}
             </Tooltip>
