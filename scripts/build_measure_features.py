@@ -101,7 +101,10 @@ CITIES = {
         # neck. Each entry is a lon/lat bounding box [w, s, e, n].
         "coast_exclude": [
             [-122.205, 37.87, -121.40, 38.35],  # Suisun Bay + Delta, east of Carquinez Strait neck
-            [-122.60, 38.0021, -121.80, 38.35],  # San Pablo Bay, north of the 38.0021 cutoff
+            # (No full-width San Pablo cutoff: the play-buffer clip already drops
+            # the out-of-play north/west San Pablo shore, and a hard 38.0021 box
+            # would also strip the IN-PLAY Point Pinole / Pinole shore, which faces
+            # San Pablo Bay and rises to ~38.013.)
             # Out-of-play Marin/North-Bay shore. Marin is one continuous landmass
             # with the in-play East Bay (they join around the north of the bbox),
             # so it can't be told apart topologically — we exclude it by region.
