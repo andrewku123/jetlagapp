@@ -219,6 +219,7 @@ interface Props {
   endgameStation: Station | null
   hidingRadiusMi: number
   focusTarget: { station: Station; nonce: number } | null
+  poiFocus: { lat: number; lon: number; nonce: number } | null
   onStartEndgame: (id: string) => void
   onExitEndgame: () => void
   pois: RenderPoi[]
@@ -416,6 +417,19 @@ function MapFocus({
     const zoom = Math.max(map.getMinZoom(), endgameZoom - 1)
     map.flyTo([station.lat, station.lon], zoom, { duration: 0.6 })
   }, [map, target, radiusMi])
+  return null
+}
+
+// Re-centers the map on a POI picked from the POI tab's search suggestions.
+function MapFocusPoi({ target }: { target: { lat: number; lon: number; nonce: number } | null }) {
+  const map = useMap()
+  const lastNonce = useRef<number>(0)
+  useEffect(() => {
+    if (!target || target.nonce === lastNonce.current) return
+    lastNonce.current = target.nonce
+    const zoom = Math.max(map.getZoom(), 14)
+    map.flyTo([target.lat, target.lon], zoom, { duration: 0.6 })
+  }, [map, target])
   return null
 }
 
@@ -771,6 +785,7 @@ export default function MapView({
   endgameStation,
   hidingRadiusMi,
   focusTarget,
+  poiFocus,
   onStartEndgame,
   onExitEndgame,
   pois,
@@ -1264,6 +1279,7 @@ export default function MapView({
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
+        <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
         <CoordPane />
         <StationView mode={stationView} />

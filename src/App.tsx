@@ -96,6 +96,7 @@ export default function App() {
   // so POI dots can stand out
   const [stationView, setStationView] = useState<StationView>('normal')
   const [poiQuery, setPoiQuery] = useState('')
+  const [poiFocus, setPoiFocus] = useState<{ lat: number; lon: number; nonce: number } | null>(null)
   // bump nonce so the map re-centers even when the same station is clicked twice
   const [focusTarget, setFocusTarget] = useState<{ station: Station; nonce: number } | null>(null)
   const focusStation = (s: Station) => {
@@ -227,6 +228,27 @@ export default function App() {
         : POI_BY_CATEGORY[cat.key].length
     }
     return m
+  }, [poiQuery])
+
+  // Top matches for the POI search box, shown as a click-to-focus dropdown.
+  // Searches every category (regardless of toggle) so any place is findable.
+  const poiSuggestions = useMemo<RenderPoi[]>(() => {
+    const q = poiQuery.trim().toLowerCase()
+    if (!q) return []
+    const out: RenderPoi[] = []
+    for (const cat of POI_CATEGORIES) {
+      for (const p of POI_BY_CATEGORY[cat.key]) {
+        if (p.name.toLowerCase().includes(q))
+          out.push({ ...p, categoryKey: cat.key, label: cat.label, color: cat.color })
+      }
+    }
+    // names that start with the query rank first, then alphabetical
+    out.sort((a, b) => {
+      const sa = a.name.toLowerCase().startsWith(q) ? 0 : 1
+      const sb = b.name.toLowerCase().startsWith(q) ? 0 : 1
+      return sa - sb || a.name.localeCompare(b.name)
+    })
+    return out.slice(0, 5)
   }, [poiQuery])
 
   // Only overlay POIs while the POI tab is open, so the elimination view stays clean.
@@ -384,6 +406,7 @@ export default function App() {
             endgameStation={endgameStation}
             hidingRadiusMi={hidingRadiusMi}
             focusTarget={focusTarget}
+            poiFocus={poiFocus}
             onStartEndgame={(id) => update({ endgame: id })}
             onExitEndgame={() => update({ endgame: null })}
             pois={visiblePois}
@@ -569,6 +592,25 @@ export default function App() {
                   <button className="search-clear" aria-label="Clear search" onClick={() => setPoiQuery('')}>
                     ✕
                   </button>
+                )}
+                {poiSuggestions.length > 0 && (
+                  <ul className="poi-suggest">
+                    {poiSuggestions.map((p) => (
+                      <li key={`${p.categoryKey}:${p.name}:${p.lat},${p.lon}`}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setPoiEnabled((s) => new Set(s).add(p.categoryKey))
+                            setPoiFocus({ lat: p.lat, lon: p.lon, nonce: Date.now() })
+                          }}
+                        >
+                          <span className="dot" style={{ background: p.color }} />
+                          <span className="poi-suggest-name">{p.name}</span>
+                          <span className="poi-suggest-cat">{p.label}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </div>
               <div className="poi-actions">
