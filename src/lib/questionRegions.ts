@@ -264,22 +264,18 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   if (!cell) return null
   // A normal answer implies the hider is within the radius (else they'd answer
   // "not within"), so the keep region is the answer POI's Voronoi cell clipped to
-  // the seeker's disk; everything else is eliminated. Endgame questions keep the
-  // full cell (their shading is clipped to the hiding zone downstream).
-  const keep = clipKeepToDisk([[cell]], seeker, radius, record.endgame)
+  // the seeker's disk; everything else is eliminated. This holds even in endgame
+  // (the hider must still be within the radius).
+  const keep = clipKeepToDisk([[cell]], seeker, radius)
   if (!keep.length) return null
   const elim = polygonClipping.difference([WORLD_RING], keep)
   return elim.length ? toLatLng(elim) : null
 }
 
-// Clip a keep region to the seeker's radar disk, unless the question is endgame.
-function clipKeepToDisk(
-  keep: Polygon[],
-  seeker: LatLng,
-  radius: number,
-  endgame: boolean | undefined,
-): Polygon[] {
-  if (endgame || !Number.isFinite(radius)) return keep
+// Clip a keep region to the seeker's radar disk (a normal tentacle answer means
+// the hider is within the radius, so everything outside the disk is eliminated).
+function clipKeepToDisk(keep: Polygon[], seeker: LatLng, radius: number): Polygon[] {
+  if (!Number.isFinite(radius)) return keep
   const disk: Polygon = [circlePolygon(seeker, radius).map((pt) => [pt.lon, pt.lat] as [number, number])]
   return polygonClipping.intersection(keep, [disk])
 }
@@ -353,8 +349,8 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   }
   if (!cells.length) return null
   // Normal answer ⇒ hider within the radius, so clip the keep region to the
-  // seeker's disk (everything outside is eliminated too); endgame keeps it full.
-  const keep = clipKeepToDisk(robustUnion(cells), seeker, radius, record.endgame)
+  // seeker's disk (everything outside is eliminated too), even in endgame.
+  const keep = clipKeepToDisk(robustUnion(cells), seeker, radius)
   if (!keep.length) return null
   const elim = polygonClipping.difference([WORLD_RING], keep)
   return elim.length ? toLatLng(elim) : null
