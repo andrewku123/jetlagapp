@@ -295,10 +295,7 @@ export default function QuestionForm({
       case 'match-county': {
         if (!center) return alert('Set your location (paste coordinates or click the map).')
         const c = countyAt(center)
-        if (!c)
-          return alert(
-            "That location is outside the play area, so it isn't in any county with hiding stations — the hider can never share your county, so this question can't eliminate anything.",
-          )
+        if (!c) return alert('Outside the play area.')
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
@@ -582,11 +579,7 @@ export default function QuestionForm({
             const c = countyAt(center)
             return (
               <p className="blurb poi-readout">
-                {c ? (
-                  <>Your county: <b>{c}</b></>
-                ) : (
-                  "Outside the play area — no hider is in your county, so “same county” rules everyone out. Set a location inside the Bay Area to use this question."
-                )}
+                {c ? <>Your county: <b>{c}</b></> : 'Outside the play area.'}
               </p>
             )
           })()}
