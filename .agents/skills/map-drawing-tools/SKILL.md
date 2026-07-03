@@ -30,7 +30,11 @@ tool switch).
   - `line | bisector | measure` → first click sets `pending`; second click emits
     the annotation (carrying `step: measureStep` for `measure`).
 - Rendering: circles via Leaflet `<Circle>` (radius in metres = `miles * 1609.344`,
-  `interactive={false}`); lines via `<Polyline>`. Bisector endpoints come from
+  `interactive={false}`); lines via `<Polyline>`. Each circle also draws a dashed
+  **radius spoke** (center → edge) with the distance label at its midpoint; the
+  spoke points **due east** — it's `circlePolygon(center, r)[n/4]` (index 32 of the
+  128-point ring = bearing 90°). Use `[0]` for north, `[n/4]` east, `[n/2]` south.
+  Bisector endpoints come from
   `bisectorEndpoints()`; measure shows a permanent `<Tooltip>` label.
 - Handlers are owned by `src/App.tsx` (`addAnnotation` / `deleteAnnotation` /
   `updateAnnotation` / `clearAnnotations`) and passed down as props.

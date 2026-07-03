@@ -57,6 +57,19 @@ Keep the popup content in a shared helper so the visible dot (desktop) and the i
 
 Enlarging the **visible** dot radii on a coarse pointer was tried and reverted: it made the dots look too big and did **not** fix clicking, because the main problem was bubbling, and precision is solved by an invisible hit target instead. Keep the original visible radii (POI 4; station 5 / 6 / 11).
 
+## Hiding a pane must use `display:none`, not `pointer-events:none`
+
+The POI tab's **Stations: Hidden** toggle (`StationView` in `MapView.tsx`) has to make station dots both invisible **and** un-clickable. Setting `pane.style.pointerEvents = 'none'` on the `stations` pane does NOT work: Leaflet's SVG paths carry `pointer-events: auto` via `.leaflet-interactive` (`.leaflet-pane > svg path.leaflet-interactive { pointer-events: auto }`), and a child's `pointer-events` overrides the parent's, so the hidden stations stayed clickable.
+
+Use `pane.style.display = 'none'` instead — it removes the whole subtree from both rendering and hit-testing, and cannot be overridden by children:
+
+```ts
+pane.style.opacity = mode === 'faded' ? '0.4' : '1'   // faded stays clickable context
+pane.style.display = mode === 'hidden' ? 'none' : ''  // hidden = gone + non-interactive
+```
+
+Same principle for the coord-dot pane, but the opposite direction: a purely-visual pane above the station pane must be `pointer-events:none` so its (canvas) renderer doesn't blanket every click. Rule of thumb: to make an interactive vector pane non-clickable, hide it with `display:none`; `pointer-events:none` only reliably neutralizes a pane whose contents are non-interactive.
+
 ## Notes
 
 - The app layout is already responsive: at `<=760px` the sidebar becomes a slide-up bottom sheet and the map goes full-screen (`@media (max-width: 760px)` in `src/index.css`). No layout change needed.

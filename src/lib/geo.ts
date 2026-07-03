@@ -60,17 +60,31 @@ export function formatElevation(meters: number, units: Units): string {
 }
 
 /**
- * Approximate a geodesic circle as a ring of `n` points (equirectangular, fine
- * at metro scale). Used to shade the eliminated area outside/inside a radar.
+ * A geodesic circle as a ring of `n` points, each exactly `radiusMiles` from
+ * `center` by the same spherical metric as `haversineMiles` (R = 6371 km). Used
+ * to shade the eliminated area outside/inside a radar. Because it uses the same
+ * metric as the elimination test, every vertex sits exactly on the elimination
+ * boundary, so the shading edge lands on the drawn circle outline (which is also
+ * built from this ring) with no drift — even at large radius / high zoom.
  */
-export function circlePolygon(center: LatLng, radiusMiles: number, n = 72): LatLng[] {
-  const cos = Math.cos(toRad(center.lat)) || 1e-6
-  const degPerMile = 1 / 69.0
-  const r = radiusMiles * degPerMile
+export function circlePolygon(center: LatLng, radiusMiles: number, n = 128): LatLng[] {
+  const R = 6371000 // metres — must match haversineMeters
+  const d = (radiusMiles / MILES_PER_METER) / R // angular distance (radians)
+  const lat1 = toRad(center.lat)
+  const lon1 = toRad(center.lon)
+  const sinLat1 = Math.sin(lat1)
+  const cosLat1 = Math.cos(lat1)
+  const sinD = Math.sin(d)
+  const cosD = Math.cos(d)
+  const toDeg = (r: number) => (r * 180) / Math.PI
   const pts: LatLng[] = []
   for (let i = 0; i < n; i++) {
-    const t = (i / n) * 2 * Math.PI
-    pts.push({ lat: center.lat + r * Math.sin(t), lon: center.lon + (r * Math.cos(t)) / cos })
+    const brng = (i / n) * 2 * Math.PI
+    const lat2 = Math.asin(sinLat1 * cosD + cosLat1 * sinD * Math.cos(brng))
+    const lon2 =
+      lon1 +
+      Math.atan2(Math.sin(brng) * sinD * cosLat1, cosD - sinLat1 * Math.sin(lat2))
+    pts.push({ lat: toDeg(lat2), lon: toDeg(lon2) })
   }
   return pts
 }

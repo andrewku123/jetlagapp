@@ -117,6 +117,13 @@ export function featurePolylines(key: string): Polyline[] {
   return POLYLINES[key] ?? []
 }
 
+// The measure-features that actually have geometry inside this map's play area.
+// A feature outside the boundary doesn't exist for the game (rulebook), so e.g.
+// the Bay Area has no state / international border and those questions are not
+// offered — but they come back automatically for a city where they're in-bounds.
+export const AVAILABLE_MEASURE_FEATURE_KEYS: MeasureFeatureKey[] =
+  MEASURE_FEATURE_KEYS.filter((k) => (POLYLINES[k]?.length ?? 0) > 0)
+
 // Straight-line (miles) distance from `p` to the nearest point of segment a–b,
 // projecting locally at `p`'s latitude so the comparison matches the haversine
 // engine used everywhere else.

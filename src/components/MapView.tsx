@@ -17,10 +17,10 @@ import L from 'leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
-import { nearestPoi, poiCategoryLabel } from '../lib/poi'
+import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
 import { AIRPORTS, nearestAirport } from '../lib/airports'
-import { poiEliminatedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
+import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
@@ -219,6 +219,7 @@ interface Props {
   endgameStation: Station | null
   hidingRadiusMi: number
   focusTarget: { station: Station; nonce: number } | null
+  poiFocus: { lat: number; lon: number; nonce: number } | null
   onStartEndgame: (id: string) => void
   onExitEndgame: () => void
   pois: RenderPoi[]
@@ -254,6 +255,35 @@ const DIM_FILL = {
   interactive: false,
   fillRule: 'evenodd',
 } as const
+
+// outline for the edge of an eliminated area (same look as the radar circle
+// outline) so every shaded question shows a crisp boundary line, not just a fill
+const ELIM_OUTLINE = { color: '#3730a3', weight: 1, fill: false, interactive: false } as const
+
+// A ring is the off-screen world box (the outer ring of a "complement" shaded
+// region, e.g. eliminate-everything-outside-X). Its edge shouldn't be outlined —
+// only the meaningful inner boundary (the X hole) should get the line.
+function isWorldRing(ring: [number, number][]): boolean {
+  return ring.length > 0 && ring.every(([lat, lon]) => Math.abs(lat) >= 84 && Math.abs(lon) >= 179)
+}
+
+// Draws the boundary line of an eliminated region (any shaded question), skipping
+// the off-screen world-box ring so complement regions only outline their real
+// edge. Mirrors the radar/thermometer outline for POI/measure/feature/matching.
+function RegionOutline({ region }: { region: LatLngMultiPolygon }) {
+  return (
+    <>
+      {region.flatMap((poly, pi) =>
+        poly
+          .map((ring, ri) => ({ ring, ri }))
+          .filter(({ ring }) => !isWorldRing(ring))
+          .map(({ ring, ri }) => (
+            <Polygon key={`${pi}-${ri}`} positions={ring} pathOptions={ELIM_OUTLINE} />
+          )),
+      )}
+    </>
+  )
+}
 
 const DRAW_COLORS = ['#e8590c', '#1971c2', '#2f9e44', '#9c36b5', '#0c0c0c']
 
@@ -390,6 +420,19 @@ function MapFocus({
   return null
 }
 
+// Re-centers the map on a POI picked from the POI tab's search suggestions.
+function MapFocusPoi({ target }: { target: { lat: number; lon: number; nonce: number } | null }) {
+  const map = useMap()
+  const lastNonce = useRef<number>(0)
+  useEffect(() => {
+    if (!target || target.nonce === lastNonce.current) return
+    lastNonce.current = target.nonce
+    const zoom = Math.max(map.getZoom(), 14)
+    map.flyTo([target.lat, target.lon], zoom, { duration: 0.6 })
+  }, [map, target])
+  return null
+}
+
 // Satellite imagery clipped to the in-play county polygons. Lives in its own
 // pane so an SVG clip-path (rebuilt on every view change) can mask it to the
 // county shapes; the pane is `leaflet-zoom-hide` so the clip never lags behind
@@ -493,8 +536,6 @@ const handleIcon = (color: string, big = false) => {
   })
 }
 
-const MEASURE_STEPS = [0, 0.5, 1, 5, 10]
-
 function RadiusEditPopup({
   value,
   onChange,
@@ -540,51 +581,9 @@ function RadiusEditPopup({
   )
 }
 
-function MeasureEditPopup({
-  step,
-  units,
-  onChange,
-  onDelete,
-}: {
-  step: number
-  units: UnitSystem
-  onChange: (v: number) => void
-  onDelete: () => void
-}) {
-  const [custom, setCustom] = useState(!MEASURE_STEPS.includes(step))
-  const u = units === 'metric' ? 'km' : 'mi'
+function MeasureEditPopup({ onDelete }: { onDelete: () => void }) {
   return (
     <div className="popup">
-      <label>
-        round
-        <select
-          value={custom ? 'custom' : String(step)}
-          onChange={(e) => {
-            if (e.target.value === 'custom') setCustom(true)
-            else {
-              setCustom(false)
-              onChange(Number(e.target.value))
-            }
-          }}
-        >
-          <option value={0}>exact</option>
-          <option value={0.5}>½ {u}</option>
-          <option value={1}>1 {u}</option>
-          <option value={5}>5 {u}</option>
-          <option value={10}>10 {u}</option>
-          <option value="custom">Custom…</option>
-        </select>
-      </label>
-      {custom && (
-        <input
-          className="popup-input"
-          type="number"
-          min={0}
-          step="any"
-          value={step}
-          onChange={(e) => onChange(Number(e.target.value))}
-        />
-      )}
       <button onClick={onDelete}>Delete</button>
     </div>
   )
@@ -688,6 +687,31 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Dedicated pane for the transient coord read-out dot + its label. Placed above
+// markerPane (600) and tooltipPane (650) — Leaflet auto-stacks marker layers by
+// latitude within a shared pane, so a station dot or a measure endpoint/label at
+// the same spot could otherwise cover the exact point you clicked to read. Kept
+// below popupPane (700).
+function CoordPane() {
+  const map = useMap()
+  useEffect(() => {
+    const name = 'coordDot'
+    let pane = map.getPane(name)
+    if (!pane) {
+      pane = map.createPane(name)
+      pane.style.zIndex = '690'
+    }
+    // The dot is a purely visual read-out (no clicks/popup), so the whole pane
+    // must be click-through. Otherwise the canvas renderer Leaflet lazily creates
+    // for a vector in this pane is one opaque element that blankets the map and,
+    // sitting above the station pane (z 450), swallows every station/POI/map click
+    // — and it lingers after leaving the coord tool, so clicks stay dead until a
+    // page refresh.
+    pane.style.pointerEvents = 'none'
+  }, [map])
+  return null
+}
+
 // Dims or hides the station pane while the POI tab is open so POI dots stand out.
 // 'faded' keeps stations clickable as faint context; 'hidden' also drops their
 // hit-testing so only POIs respond. Resets to full opacity otherwise.
@@ -697,11 +721,15 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
     const pane = map.getPane('stations')
     if (!pane) return
     pane.style.transition = 'opacity 0.2s ease'
-    pane.style.opacity = mode === 'hidden' ? '0' : mode === 'faded' ? '0.4' : '1'
-    pane.style.pointerEvents = mode === 'hidden' ? 'none' : ''
+    pane.style.opacity = mode === 'faded' ? '0.4' : '1'
+    // 'hidden' must use display:none, not pointer-events:none — Leaflet's SVG
+    // paths carry `pointer-events: auto` (`.leaflet-interactive`), which overrides
+    // a pane-level `pointer-events: none`, so stations would stay clickable.
+    // display:none removes the whole subtree from both rendering and hit-testing.
+    pane.style.display = mode === 'hidden' ? 'none' : ''
     return () => {
       pane.style.opacity = '1'
-      pane.style.pointerEvents = ''
+      pane.style.display = ''
     }
   }, [map, mode])
   return null
@@ -757,6 +785,7 @@ export default function MapView({
   endgameStation,
   hidingRadiusMi,
   focusTarget,
+  poiFocus,
   onStartEndgame,
   onExitEndgame,
   pois,
@@ -769,8 +798,6 @@ export default function MapView({
   const [radiusMi, setRadiusMi] = useState(1)
   const [compassCustom, setCompassCustom] = useState(false)
   const [color, setColor] = useState(DRAW_COLORS[0])
-  // rounding step for the measure label: 0 = exact (2 dp), else snap to this many mi
-  const [measureStep, setMeasureStep] = useState(0)
   // first click of a two-point line / bisector
   const [pending, setPending] = useState<LatLng | null>(null)
   // collapsible "enter coordinates" box for placing points without clicking
@@ -820,7 +847,7 @@ export default function MapView({
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' || k === 'match-county' ||
-      k === 'match-city'
+      k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
     )
@@ -838,8 +865,15 @@ export default function MapView({
           const code = nearestAirport(seeker).code
           const a = AIRPORTS[code]
           if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
-        } else if (r.kind === 'match-county' || r.kind === 'match-city') {
-          pin = null // the shaded county/city polygon speaks for itself
+        } else if (r.kind === 'match-county' || r.kind === 'match-city' || r.kind === 'measure-zip') {
+          pin = null // the shaded county/city/ZIP polygon speaks for itself
+        } else if (r.kind === 'tentacle-line') {
+          pin = null // the shaded region + the drawn colored line speak for themselves
+        } else if (r.kind === 'tentacle') {
+          const cat = String(r.params.poiCat)
+          const key = String(r.params.value ?? '')
+          const ans = (POI_BY_CATEGORY[cat] ?? []).find((poi) => poiKey(poi) === key)
+          if (ans) pin = { lat: ans.lat, lon: ans.lon, label: `hider's nearest ${poiCategoryLabel(cat)}: ${ans.name}` }
         } else {
           const cat = String(r.params.poiCat)
           const np = nearestPoi(seeker, cat)
@@ -853,12 +887,33 @@ export default function MapView({
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
         r.kind === 'match-airport' || r.kind === 'measure-airport' || r.kind === 'match-county' ||
-        r.kind === 'match-city',
+        r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line',
       )
-      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
+      .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
   ])
-  // measure polylines by id, so the distance label can open the line's rounding
+
+  // In endgame, the board collapses to one station + its hiding zone. Endgame-
+  // flagged questions (answered from the hider's real position) sub-divide that
+  // zone: each question's eliminated area is clipped to the zone circle and
+  // shaded, so the remaining clear area is where the hider can still be. Non-
+  // endgame questions are hidden (they were answered at the station centre).
+  const endgameRegions = useMemo(() => {
+    if (!endgameStation) return []
+    const center = { lat: endgameStation.lat, lon: endgameStation.lon }
+    return records
+      .filter((r) => r.endgame && r.active && !r.vetoed && r.eliminates)
+      .map((r) => ({ id: r.id, region: endgameClippedRegion(r, center, hidingRadiusMi) }))
+      .filter((x): x is { id: string; region: LatLngMultiPolygon } => x.region != null)
+  }, [
+    endgameStation,
+    hidingRadiusMi,
+    records
+      .filter((r) => r.endgame && r.active && !r.vetoed && r.eliminates)
+      .map((r) => `${r.id}:${r.kind}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.lat ?? ''}:${r.params.lon ?? ''}:${r.params.radiusMiles ?? ''}:${r.params.fromLat ?? ''}:${r.params.fromLon ?? ''}:${r.params.toLat ?? ''}:${r.params.toLon ?? ''}:${r.params.answer}`)
+      .join('|'),
+  ])
+  // measure polylines by id, so the distance label can open the line's edit
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
   // true while a handle is being dragged: suppress snap-hover state updates so the
@@ -916,7 +971,6 @@ export default function MapView({
         bLat: b.lat,
         bLon: b.lon,
         color,
-        ...(type === 'measure' ? { step: measureStep } : {}),
       })
       setPending(null)
     } else {
@@ -959,7 +1013,6 @@ export default function MapView({
         bLat: p.lat,
         bLon: p.lon,
         color,
-        ...(type === 'measure' ? { step: measureStep } : {}),
       })
       setPending(null)
     }
@@ -1086,18 +1139,6 @@ export default function MapView({
                 onChange={(e) => setRadiusMi(Number(e.target.value))}
               />
             )}
-          </label>
-        )}
-        {tool === 'measure' && (
-          <label className="draw-radius">
-            round
-            <select value={measureStep} onChange={(e) => setMeasureStep(Number(e.target.value))}>
-              <option value={0}>exact</option>
-              <option value={0.5}>½ {units === 'metric' ? 'km' : 'mi'}</option>
-              <option value={1}>1 {units === 'metric' ? 'km' : 'mi'}</option>
-              <option value={5}>5 {units === 'metric' ? 'km' : 'mi'}</option>
-              <option value={10}>10 {units === 'metric' ? 'km' : 'mi'}</option>
-            </select>
           </label>
         )}
         {tool !== 'select' && tool !== 'coord' && (
@@ -1238,7 +1279,9 @@ export default function MapView({
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
+        <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
+        <CoordPane />
         <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
 
@@ -1253,26 +1296,23 @@ export default function MapView({
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}
-        {endgameStation && (
-          <Fragment>
-            <Polygon
-              positions={[
-                WORLD_RING,
-                circlePolygon(
-                  { lat: endgameStation.lat, lon: endgameStation.lon },
-                  hidingRadiusMi,
-                ).map((p) => [p.lat, p.lon] as [number, number]),
-              ]}
-              pathOptions={ELIM_FILL}
-            />
-            <Circle
-              center={[endgameStation.lat, endgameStation.lon]}
-              radius={hidingRadiusMi * 1609.344}
-              interactive={false}
-              pathOptions={{ color: '#16a34a', weight: 2, fill: false }}
-            />
-          </Fragment>
-        )}
+        {endgameStation && (() => {
+          const zoneRing = circlePolygon(
+            { lat: endgameStation.lat, lon: endgameStation.lon },
+            hidingRadiusMi,
+          ).map((p) => [p.lat, p.lon] as [number, number])
+          return (
+            <Fragment>
+              <Polygon positions={[WORLD_RING, zoneRing]} pathOptions={ELIM_FILL} />
+              {/* zone outline from the same ring as the shading hole */}
+              <Polygon
+                positions={[zoneRing]}
+                interactive={false}
+                pathOptions={{ color: '#16a34a', weight: 2, fill: false }}
+              />
+            </Fragment>
+          )
+        })()}
 
         {showEliminated &&
           stationRenderer &&
@@ -1356,8 +1396,8 @@ export default function MapView({
 
         {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
             the circle; NO eliminates inside it. The circle outline always shows
-            the radius. */}
-        {records
+            the radius. Suppressed in endgame (only zone-clipped shading shows). */}
+        {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'radar')
           .map((r) => {
             const center = { lat: Number(r.params.lat), lon: Number(r.params.lon) }
@@ -1372,9 +1412,10 @@ export default function MapView({
                   positions={yes ? [WORLD_RING, ring] : [ring]}
                   pathOptions={ELIM_FILL}
                 />
-                <Circle
-                  center={[center.lat, center.lon]}
-                  radius={radiusMiles * 1609.344}
+                {/* outline built from the same ring as the shading, so the edge
+                    of the shaded area sits exactly on the drawn circle */}
+                <Polygon
+                  positions={[ring]}
                   interactive={false}
                   pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
                 />
@@ -1383,8 +1424,8 @@ export default function MapView({
           })}
 
         {/* thermometer boundary: perpendicular bisector of the from→to segment.
-            The hotter half-plane is the side toward `to`. */}
-        {records
+            The hotter half-plane is the side toward `to`. Suppressed in endgame. */}
+        {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'thermometer')
           .map((r) => {
             const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
@@ -1462,12 +1503,15 @@ export default function MapView({
         {/* POI Matching / Measuring: shade the eliminated area (precomputed &
             memoized in `poiRegions`). Matching shades outside/inside the seeker's
             nearest-POI Voronoi cell; Measuring shades the union of your-distance
-            circles (or its complement). A pin marks the seeker's nearest place. */}
-        {poiRegions.map((pr) => (
+            circles (or its complement). A pin marks the seeker's nearest place.
+            Suppressed in endgame (only zone-clipped shading shows). */}
+        {!endgameStation && poiRegions.map((pr) => (
           <Fragment key={pr.id}>
             {pr.region.map((poly, i) => (
               <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
             ))}
+            {/* boundary line, like the radar circle outline */}
+            <RegionOutline region={pr.region} />
             {pr.pin && (
               <CircleMarker
                 center={[pr.pin.lat, pr.pin.lon]}
@@ -1483,6 +1527,57 @@ export default function MapView({
           </Fragment>
         ))}
 
+        {/* Endgame: shade each endgame-flagged question's eliminated area,
+            clipped to the hiding zone, so the clear part of the zone is where the
+            hider can still be. Drawn over the zone-outside shading. */}
+        {endgameRegions.map((er) => (
+          <Fragment key={er.id}>
+            {er.region.map((poly, i) => (
+              <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
+            ))}
+          </Fragment>
+        ))}
+
+        {/* endgame: keep each endgame question's boundary line visible (radar
+            circle / thermometer bisector) so you can see the edge relative to the
+            zone, even though the shading is clipped to the zone. */}
+        {endgameStation &&
+          records
+            .filter((r) => r.endgame && r.active && !r.vetoed && r.eliminates)
+            .map((r) => {
+              if (r.kind === 'radar') {
+                const center = { lat: Number(r.params.lat), lon: Number(r.params.lon) }
+                const ring = circlePolygon(center, Number(r.params.radiusMiles)).map(
+                  (p) => [p.lat, p.lon] as [number, number],
+                )
+                return (
+                  <Polygon
+                    key={r.id + '-outline'}
+                    positions={[ring]}
+                    interactive={false}
+                    pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
+                  />
+                )
+              }
+              if (r.kind === 'thermometer') {
+                const from = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
+                const to = { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }
+                const ends = bisectorPolyline(from, to, LINE_LENGTH_MI)
+                return (
+                  <Polyline
+                    key={r.id + '-outline'}
+                    positions={ends.map((p) => [p.lat, p.lon]) as [number, number][]}
+                    interactive={false}
+                    pathOptions={{ color: '#7c3aed', weight: 2.5, dashArray: '6 4' }}
+                  />
+                )
+              }
+              // POI / measure / feature / matching: outline the full (unclipped)
+              // eliminated boundary, like the radar circle stays whole in endgame.
+              const region = poiEliminatedRegion(r)
+              return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
+            })}
+
         {/* manual compass / straightedge annotations */}
         {annotations.map((a) => {
           if (a.type === 'circle') {
@@ -1496,10 +1591,11 @@ export default function MapView({
                 />
                 {/* radius spoke: center → east edge, labelled at the spoke midpoint.
                     The label is anchored to a marker at the midpoint (not the
-                    polyline) so it re-positions when the radius is edited. */}
+                    polyline) so it re-positions when the radius is edited. Index
+                    n/4 of the 128-point ring is bearing 90° (due east). */}
                 {(() => {
-                  const edge = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[0]
-                  const mid = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles / 2)[0]
+                  const edge = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles)[32]
+                  const mid = circlePolygon({ lat: a.lat, lon: a.lon }, a.radiusMiles / 2)[32]
                   return (
                     <>
                       <Polyline
@@ -1584,7 +1680,7 @@ export default function MapView({
             a.type === 'bisector'
               ? 'Perpendicular bisector'
               : a.type === 'measure'
-                ? formatDistance(miles!, units, a.step ?? 0)
+                ? formatDistance(miles!, units)
                 : 'Straightedge line'
           return (
             <Fragment key={a.id}>
@@ -1620,7 +1716,7 @@ export default function MapView({
                     eventHandlers={
                       selectMode
                         ? {
-                            // clicking the distance label opens the same rounding
+                            // clicking the distance label opens the same edit
                             // popup as clicking the line body (deferred a tick so
                             // Leaflet's close-on-click doesn't swallow it)
                             click: () => {
@@ -1636,12 +1732,7 @@ export default function MapView({
                 )}
                 {selectMode && a.type === 'measure' && (
                   <Popup>
-                    <MeasureEditPopup
-                      step={a.step ?? 0}
-                      units={units}
-                      onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
-                      onDelete={() => onDeleteAnnotation(a.id)}
-                    />
+                    <MeasureEditPopup onDelete={() => onDeleteAnnotation(a.id)} />
                   </Popup>
                 )}
               </Polyline>
@@ -1658,8 +1749,8 @@ export default function MapView({
                     },
                     click: (e) => {
                       draggingRef.current = false
-                      // in select mode a measure endpoint opens its rounding
-                      // editor (same popup as clicking the line body); while a
+                      // in select mode a measure endpoint opens its edit
+                      // popup (same as clicking the line body); while a
                       // drawing tool is active the click reuses the point
                       if (selectMode) {
                         if (a.type === 'measure') {
@@ -1685,12 +1776,7 @@ export default function MapView({
                 >
                   {selectMode && a.type === 'measure' && (
                     <Popup>
-                      <MeasureEditPopup
-                        step={a.step ?? 0}
-                        units={units}
-                        onChange={(v) => onUpdateAnnotation(a.id, { step: v })}
-                        onDelete={() => onDeleteAnnotation(a.id)}
-                      />
+                      <MeasureEditPopup onDelete={() => onDeleteAnnotation(a.id)} />
                     </Popup>
                   )}
                 </Marker>
@@ -1735,14 +1821,21 @@ export default function MapView({
           </Marker>
         ))}
 
-        {/* transient coordinate-tool dot: shows the lat/lon, no annotation kept */}
+        {/* transient coordinate-tool dot: shows the lat/lon, no annotation kept.
+            Rendered in the dedicated coordDot pane (z 690) so the dot + label sit
+            ABOVE the station dots (station pane z 450), any annotation shape, and
+            the marker/tooltip panes (measure endpoints z 600, measure labels
+            z 650) — otherwise something covers exactly the point you clicked to
+            read. */}
         {tool === 'coord' && coordPin && (
           <CircleMarker
             center={[coordPin.lat, coordPin.lon]}
             radius={5}
+            pane="coordDot"
+            interactive={false}
             pathOptions={{ color: '#111', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
           >
-            <Tooltip permanent direction="top" offset={[0, -6]}>
+            <Tooltip permanent direction="top" offset={[0, -6]} pane="coordDot">
               {coordPin.lat.toFixed(6)}, {coordPin.lon.toFixed(6)}
               {coordCopied ? ' ✓' : ''}
             </Tooltip>

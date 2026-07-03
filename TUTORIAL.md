@@ -20,9 +20,11 @@ See [README.md](README.md) for the play area and the list of supported questions
   - **satellite** — overlay aerial imagery on the play area (see §6).
   - **Reset** — clear the whole game (questions, manual eliminations, drawings).
   - The count "**N of M possible**" is your live progress.
-- **Right panel tabs:** **Ask**, **History**, **Suspects**, **Legend**.
+- **Right panel tabs:** **Ask**, **History**, **Suspects**, **POI**, **Legend**.
 
-On a phone the panel is a bottom sheet — tap the grab handle to open/close it.
+On a phone the map fills the screen and the panel becomes a slide-up bottom
+sheet — tap the **Controls** button (or the grab handle) to open/close it. Station
+and POI dots have enlarged invisible tap targets so they're easy to tap by finger.
 
 ## 2. Set up the game
 
@@ -36,9 +38,11 @@ Each time you ask the hider a question and get an answer, log it here so the app
 can eliminate stations.
 
 1. Go to the **Ask** tab.
-2. **Type** — pick a category: Radar, Thermometer, Matching, Measuring, Inside,
-   or Photo. Matching/Measuring then show a second dropdown for the specific
-   question (e.g. county, city, airport, line, name length).
+2. **Type** — pick a category from the buttons: Radar, Thermometer, Matching,
+   Measuring, Tentacles, Inside, or Photo. Categories with more than one subject
+   (Matching, Measuring, Tentacles, Photo) then show a second dropdown for the
+   specific question (e.g. county, city, airport, line, name length, a coastline,
+   nearest museum/park/hospital…).
 3. Read the **blurb** — it explains the question and shows the **hider's card
    reward**, e.g. `(draw 2, keep 1)`. This number updates live (see §5).
 4. Fill in the parameters:
@@ -46,14 +50,21 @@ can eliminate stations.
      map and press **Use last click**, or paste `lat, lon` and press **Set**.
    - **Thermometer** — set **Start A** and **End B** (the two points you traveled
      between), same click-or-paste pickers.
-   - **Measuring (airport)** / **Radar** use your location as a point; **Measuring
-     (sea level)** and **Matching (name length)** take a number; the other
+   - **Measuring** / **Matching** (airport, coastline, borders, sea level, and the
+     POI subjects) use your location as a point — click the map or paste
+     `lat, lon`; **Matching (name length)** takes a number; the admin-division
      **Matching** questions take a dropdown value.
+   - **Tentacles** — set your location; the app lists the in-range POIs of the
+     chosen category and you pick the one the hider answers.
    - **Inside** — type the building and floor.
 5. Record the hider's answer (Yes/No, Hotter/Colder, Closer/Further, …).
 6. (Optional) add a **Note**.
-7. Press **Log question & eliminate**. The app applies the filter and the
-   "possible" count drops. You'll land on the **History** tab.
+7. (Optional) tick **Endgame question** — the question still eliminates stations
+   map-wide, but its shading is clipped to the current hiding-zone circle so you
+   can pinpoint the hider inside it. It defaults on once you're in the endgame.
+8. Press **Log question & eliminate** (or **Log question** for the reference-only
+   subjects). The app applies the filter and the "possible" count drops. You'll
+   land on the **History** tab.
 
 ### If the hider vetoes
 If the hider refuses to answer (a veto), press **Hider vetoed** instead of Log.
@@ -90,7 +101,20 @@ play-area counties (land + bay; ocean and the Farallon Islands are excluded).
 Road and place names are drawn on top so streets stay readable. The **Legend**
 tab lists the imagery source and per-county capture dates.
 
-## 7. Suspects — work the candidate list
+## 7. POI — reference layer for POI questions
+
+The **POI** tab overlays the points of interest used to compose Tentacles,
+Matching and Measuring questions (museums, libraries, movie theaters, hospitals,
+zoos, aquariums, amusement parks, parks, golf courses, mountains) on the map while
+the tab is open.
+
+- Toggle any category on/off, or use **Show all** / **Hide all**.
+- **Search POI name…** filters the dots and offers a top-5 suggestion dropdown;
+  picking one flies the map to it.
+- Set the **Stations** layer to **Normal / Faded / Hidden** so the POIs stand out.
+- A place counts if it carries the Google Maps category icon and has ≥5 reviews.
+
+## 8. Suspects — work the candidate list
 
 The **Suspects** tab is the text list of stations, split into still-possible and
 eliminated.
@@ -102,7 +126,7 @@ eliminated.
   can't); **↩** restores it.
 - Clicking a station **name** flies the map to it.
 
-## 8. Endgame
+## 9. Endgame
 
 When you're down to one suspected station, open its popup on the map and choose
 **🎯 Endgame here**. The board collapses to that station and draws its **hiding
@@ -110,7 +134,7 @@ zone** — the circle the hider must be within for the endgame — shading every
 outside it. A banner shows the station and the zone radius. Choose **Exit
 endgame** (popup or banner) to go back to the full board.
 
-## 9. The map toolbox (drawing tools)
+## 10. The map toolbox (drawing tools)
 
 A slim vertical toolbar sits on the right edge of the map. Drawings are saved
 locally and survive a reload. The tools (top to bottom):
@@ -145,7 +169,7 @@ Helpful behaviors:
   press **Delete**. Lines and bisectors have no popup — remove them with Undo or
   by redrawing.
 
-## 10. Tips
+## 11. Tips
 
 - Log questions in the order you ask them; the repeat-cost multiplier counts in
   ask order.

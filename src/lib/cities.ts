@@ -1,6 +1,7 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
 import placesRaw from '../data/places.geojson.json'
+import playAreaRaw from '../data/play-area.geojson.json'
 
 // Census-place (3rd-admin / "city") polygons used by the "Matching — city"
 // question. Both the seeker's city (from their coordinate) and each station's
@@ -42,6 +43,29 @@ function buildCities(): Record<string, CityPolys> {
 }
 
 const CITIES: Record<string, CityPolys> = buildCities()
+
+// The play-area polygon (union of kept places + transit-line bridges + filled
+// enclaves — see scripts/build_play_area.py). Parts of it are genuinely
+// unincorporated (a BART corridor over the hills, an enclave the census-place
+// set doesn't name), so a point can be inside the play area yet inside no city
+// polygon — those read as "unincorporated" rather than "outside the play area".
+function buildPlayArea(): CityPolys {
+  const fc = playAreaRaw as unknown as { features: GeoFeature[] }
+  const polys: CityPolys = []
+  for (const f of fc.features) {
+    const g = f.geometry
+    if (g.type === 'Polygon') {
+      polys.push((g.coordinates as number[][][]).map((r) => r as Ring))
+    } else if (g.type === 'MultiPolygon') {
+      for (const poly of g.coordinates as number[][][][]) {
+        polys.push(poly.map((r) => r as Ring))
+      }
+    }
+  }
+  return polys
+}
+
+const PLAY_AREA: CityPolys = buildPlayArea()
 
 export function cityNames(): string[] {
   return Object.keys(CITIES)
@@ -111,8 +135,18 @@ function distToPolysM(p: LatLng, polys: CityPolys): number {
   return best
 }
 
-// The city containing `p`; if `p` is just outside every polygon (within SNAP_M),
-// the nearest city; otherwise null (out in the bay or on unincorporated land).
+// Whether `p` is inside the play area (used to tell "unincorporated" — in play
+// but in no named place — apart from "outside the play area").
+export function inPlayArea(p: LatLng): boolean {
+  return pointInPolys(p, PLAY_AREA)
+}
+
+// The Census place (city / town / CDP) containing `p`, snapping to the nearest
+// place within SNAP_M to absorb boundary/simplification erosion; otherwise null.
+// A null result inside the play area is unincorporated land (a transit corridor
+// over the hills, filled bay water); outside it is off-map. Every hiding station
+// resolves to a place (the SFO stops fold into San Francisco), so only a seeker
+// coordinate can be null.
 export function cityAt(p: LatLng): string | null {
   for (const [name, polys] of Object.entries(CITIES)) {
     if (pointInPolys(p, polys)) return name

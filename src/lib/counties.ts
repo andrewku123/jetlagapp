@@ -1,6 +1,7 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
 import countiesRaw from '../data/counties.geojson.json'
+import { IN_PLAY_COUNTIES } from './playArea'
 
 // County polygons used by the "Matching — county (2nd admin)" question. The
 // seeker's county is looked up from their coordinate (point-in-polygon), and the
@@ -72,10 +73,15 @@ function pointInPolys(p: LatLng, polys: CountyPolys): boolean {
   return false
 }
 
-// The county containing `p`, or null if it falls outside every county polygon
-// (e.g. out in the bay).
+// The in-play county containing `p`, or null if it isn't in one of the counties
+// that hold hiding stations. Only the play counties matter for the county-match
+// question: the hider is always in one of them, so a seeker anywhere else (a
+// neighbouring county or the far side of the world) is definitively "not the
+// same county" as every station — the exact identity of that outside county
+// never changes an elimination, so we don't carry the rest of the world.
 export function countyAt(p: LatLng): string | null {
   for (const [name, polys] of Object.entries(COUNTIES)) {
+    if (!IN_PLAY_COUNTIES.has(name)) continue
     if (pointInPolys(p, polys)) return name
   }
   return null

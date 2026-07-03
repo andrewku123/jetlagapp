@@ -38,7 +38,7 @@ body { background: var(--bg); color: var(--text); }
 .draw-toolbar {
   position: absolute; top: 10px; right: 10px; z-index: 1000;
   background: rgba(23, 28, 34, 0.95); border: 1px solid var(--line);
-  border-radius: 10px; padding: 6px; width: fit-content; min-width: 44px;
+  border-radius: 10px; padding: 6px; width: fit-content; min-width: 44px; max-width: 168px;
   box-shadow: 0 4px 14px rgba(0,0,0,.4); font-size: 12px;
 }
 /* icon-only tools, stacked in a slim vertical column */
@@ -161,6 +161,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .blurb .cards-mult { color: var(--accent); opacity: 0.85; }
 .blurb.poi-readout { color: var(--text); background: var(--panel-2, rgba(0,0,0,0.04)); border-radius: 6px; padding: 6px 8px; }
 .blurb.poi-readout .hint { font-size: 11px; }
+.blurb.poi-readout.warn { color: #92400e; background: rgba(245, 158, 11, 0.15); }
 .hint { font-size: 12px; color: var(--muted); }
 
 .qlist, .slist { list-style: none; margin: 0; padding: 0; }
@@ -170,6 +171,12 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .qnote { font-size: 12px; color: var(--muted); margin-top: 2px; }
 .tag { background: #463a10; color: #f5d76e; font-size: 10px; padding: 1px 5px; border-radius: 4px; margin-left: 6px; }
 .tag.veto { background: #4a1f1f; color: #ff9a9a; }
+.tag.endgame { background: #0f3d24; color: #6ee7a8; }
+.qactions button.on { background: #0f3d24; color: #6ee7a8; border-color: #16a34a; }
+.qform label.endgame-check { display: flex; align-items: flex-start; gap: 8px; width: auto; margin-top: 10px; font-size: 13px; color: var(--text); cursor: pointer; }
+.qform label.endgame-check input { flex: none; width: auto; margin: 2px 0 0; }
+.endgame-check .endgame-text { display: flex; flex-direction: column; line-height: 1.35; }
+.endgame-check .muted { color: var(--muted); font-size: 12px; }
 .qlist li.vetoed { border-color: #6b2a2a; }
 .qlist li.vetoed .qtext { text-decoration: line-through; text-decoration-color: rgba(255, 154, 154, 0.6); }
 .qreward { font-size: 12px; color: var(--accent); margin-top: 3px; }
@@ -226,6 +233,21 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .poi-actions { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
 .poi-actions button { font-size: 12px; padding: 4px 9px; cursor: pointer; }
 .poi-actions .poi-total { margin-left: auto; font-size: 12px; color: var(--muted); }
+.poi-suggest {
+  list-style: none; margin: 4px 0 0; padding: 0;
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+}
+.poi-suggest li { border-bottom: 1px solid var(--line); }
+.poi-suggest li:last-child { border-bottom: 0; }
+.poi-suggest button {
+  display: flex; align-items: center; gap: 8px; width: 100%; box-sizing: border-box;
+  background: transparent; border: 0; color: var(--text); cursor: pointer;
+  padding: 7px 9px; font-size: 13px; text-align: left;
+}
+.poi-suggest button:hover { background: var(--panel); }
+.poi-suggest .dot { width: 11px; height: 11px; border-radius: 50%; border: 1px solid rgba(255,255,255,.7); flex: none; }
+.poi-suggest .poi-suggest-name { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.poi-suggest .poi-suggest-cat { color: var(--muted); font-size: 11px; flex: none; }
 .poi-list { list-style: none; margin: 0; padding: 0; }
 .poi-list li { border-bottom: 1px solid var(--line); }
 .poi-row { display: flex; align-items: center; gap: 8px; padding: 7px 2px; font-size: 13px; cursor: pointer; }
@@ -246,7 +268,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .drag-handle-dot { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.5); cursor: grab; }
 .drag-handle-dot:active { cursor: grabbing; }
 .draw-radius-input {
-  flex-basis: 100%; width: 100%; margin: 0; box-sizing: border-box;
+  flex-basis: 100%; width: 100%; min-width: 0; margin: 0; box-sizing: border-box;
   background: var(--panel2); color: var(--text);
   border: 1px solid var(--line); border-radius: 6px; padding: 4px;
 }

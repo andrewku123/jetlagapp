@@ -21,13 +21,29 @@ Sources (all local unless noted):
   - scripts/measure_src/countries.geojson    Natural Earth 50m admin-0
 """
 import json
+import math
 import os
 
 from shapely.geometry import shape, mapping, MultiLineString, box
-from shapely.ops import unary_union, linemerge
+from shapely.ops import unary_union, linemerge, transform
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "src", "data")
+
+# Local equirectangular projection (metres) used only for the coastline's
+# morphological opening, where an isotropic buffer in metres is required.
+_REF_LAT = 37.8
+_M_PER_LAT = 111320.0
+_M_PER_LON = _M_PER_LAT * math.cos(math.radians(_REF_LAT))
+_MILE_M = 1609.34
+
+
+def _to_m(geom):
+    return transform(lambda x, y, z=None: (x * _M_PER_LON, y * _M_PER_LAT), geom)
+
+
+def _to_deg(geom):
+    return transform(lambda x, y, z=None: (x / _M_PER_LON, y / _M_PER_LAT), geom)
 
 
 # --- Per-city configuration --------------------------------------------------
@@ -41,6 +57,21 @@ CITIES = {
         "play_bbox": (-122.7, 37.0, -121.4, 38.2),  # lon/lat, generous
         "land": "bay_land.geojson",
         "saltwater": ["bay_water_mask.geojson", "pacific_ocean.geojson.json"],
+        # the game play-area polygon (used to extend in-play land past the
+        # OSM bay-shore mask into the East/South Bay) and the enclosed-bay water
+        # mask (subtracted from the play area to recover that land).
+        "play": "data:play-area.geojson.json",
+        "bay": "bay_water_mask.geojson",
+        # High-detail real shoreline: OSM `natural=coastline` ways for the whole
+        # play bbox (the exact data the CARTO basemap draws). The coarse Census
+        # water mask above is only used to decide TOPOLOGY (which water is the
+        # main bay vs. an upstream creek cut off by a dam); the drawn shore is
+        # then snapped onto these OSM lines so it lands on the real coast.
+        # Refresh with (Overpass):
+        #   [out:json][timeout:170];
+        #   way["natural"="coastline"](37.0,-122.7,38.2,-121.4);out geom;
+        # then convert each way's geometry to a LineString Feature.
+        "coastline_detail": "measure_src/osm_coastline_bayarea.geojson",
         "counties": "data:counties.geojson.json",
         "states": "measure_src/us-states.geojson",
         "countries": "measure_src/countries.geojson",
@@ -52,6 +83,69 @@ CITIES = {
         "state_neighbors": ["Nevada", "Oregon", "Arizona"],
         "country": "United States of America",
         "country_neighbor": "Mexico",
+        # River-mouth / narrow-channel "dams": each is a straight segment
+        # [[lon,lat],[lon,lat]] placed bank-to-bank across a waterway that flows
+        # into the bay/ocean but is never a full mile across (so, per the game
+        # rule, it is NOT coastline). The build cuts the saltwater at each dam,
+        # keeps only the main (largest) water body, fills the cut-off upstream
+        # water in as land, and traces the shore straight across the mouth.
+        # Endpoints sit slightly inland on each bank so the cut fully separates.
+        # Ordered roughly N→S down the peninsula, then up the East Bay.
+        # User-supplied bank-to-bank endpoint pairs (lon,lat). Each draws a
+        # straight line across a river mouth; everything cut off from the main
+        # bay (the upstream river/slough) is removed. Added one at a time as the
+        # user sends precise coords.
+        # Regions clipped OUT of the coastline entirely (not "not coast"): the
+        # water there is <1 mi across upstream so it isn't coast, but we don't
+        # want a straight bridge line drawn either — the shore just ends at the
+        # neck. Each entry is a lon/lat bounding box [w, s, e, n].
+        "coast_exclude": [
+            [-122.205, 37.87, -121.40, 38.35],  # Suisun Bay + Delta, east of Carquinez Strait neck
+            # (No full-width San Pablo cutoff: the play-buffer clip already drops
+            # the out-of-play north/west San Pablo shore, and a hard 38.0021 box
+            # would also strip the IN-PLAY Point Pinole / Pinole shore, which faces
+            # San Pablo Bay and rises to ~38.013.)
+            # Out-of-play Marin/North-Bay shore. Marin is one continuous landmass
+            # with the in-play East Bay (they join around the north of the bbox),
+            # so it can't be told apart topologically — we exclude it by region.
+            # Two boxes shaped to spare Angel Island (lon -122.446..-122.418, up
+            # to lat 37.872): box A is north of Raccoon Strait and stops at lon
+            # -122.43 (keeps Point Molate/San Pablo); box B is west of Angel.
+            [-122.70, 37.873, -122.43, 38.0021],  # Tiburon + San Pablo west shore (San Rafael/San Quentin)
+            [-122.70, 37.820, -122.448, 37.873],  # Sausalito / Richardson Bay (west of Angel Island)
+        ],
+        "dams": [
+            [[-122.394497, 37.960102], [-122.395999, 37.958749]],  # Castro Creek (Richmond)
+            [[-122.364306, 37.909364], [-122.360530, 37.909635]],  # Albany/Golden Gate Fields
+            [[-122.329888, 37.800120], [-122.330704, 37.796797]],  # Oakland Inner Harbor / Alameda W
+            [[-122.236118, 37.750460], [-122.236161, 37.747372]],  # San Leandro Bay
+            [[-122.203567, 37.712794], [-122.202140, 37.711919]],  # San Leandro shore
+            [[-122.191615, 37.704467], [-122.190778, 37.704713]],  # San Leandro Marina / Oyster Bay
+            [[-122.335317, 37.909127], [-122.335188, 37.909618]],  # Albany Bulb neck
+            [[-122.325082, 37.901830], [-122.325103, 37.900950]],  # Albany marina
+            [[-122.317700, 37.863487], [-122.317400, 37.862657]],  # Berkeley marina
+            [[-122.298474, 37.776507], [-122.301114, 37.774268]],  # San Lorenzo / Sulphur Creek
+            [[-122.329845, 37.800103], [-122.330704, 37.796848]],  # Oakland Inner Harbor (refined)
+            [[-122.236247, 37.750528], [-122.237105, 37.747575]],  # San Leandro Bay (refined)
+            [[-122.053084, 37.493060], [-122.053127, 37.490915]],  # Newark / Mowry Slough area
+            [[-122.035768, 37.463822], [-122.033107, 37.459990]],  # Newark slough
+            [[-122.063148, 37.445375], [-122.064178, 37.445971]],  # Ravenswood / Dumbarton E
+            [[-122.077074, 37.448254], [-122.078533, 37.448220]],  # Ravenswood slough
+            [[-122.089756, 37.451814], [-122.091751, 37.452104]],  # Ravenswood slough
+            [[-122.094004, 37.453313], [-122.094326, 37.454412]],  # Ravenswood slough
+            [[-122.100313, 37.457077], [-122.101707, 37.457708]],  # Ravenswood slough
+            [[-122.112275, 37.463328], [-122.113563, 37.463669]],  # Ravenswood / East Palo Alto
+            [[-122.115462, 37.465338], [-122.116385, 37.465985]],  # East Palo Alto slough
+            [[-122.201271, 37.522695], [-122.203760, 37.525077]],  # Redwood City / Bair Island
+            [[-122.223673, 37.542621], [-122.226098, 37.544373]],  # Redwood City / Bair Island
+            [[-122.228458, 37.549035], [-122.229381, 37.550498]],  # Belmont Slough
+            [[-122.243028, 37.552335], [-122.245345, 37.555992]],  # Belmont / Foster City
+            [[-122.293432, 37.571096], [-122.294998, 37.570960]],  # San Mateo / Seal Slough
+            [[-122.337570, 37.591757], [-122.338986, 37.591689]],  # Burlingame shore
+            [[-122.375679, 37.746693], [-122.376151, 37.749001]],  # SF / Islais Creek area
+            [[-122.389905, 37.776439], [-122.390571, 37.777117]],  # SF / Mission Creek
+            [[-122.389884, 37.776244], [-122.390699, 37.777228]],  # SF / Mission Creek
+        ],
     },
 }
 
@@ -90,10 +184,94 @@ def country_by_name(countries):
     return by
 
 
-def build_coastline(land, saltwater, clip):
-    # shoreline = land boundary adjacent to saltwater, within the play area
-    shore = land.boundary.intersection(saltwater.buffer(0.0008))  # ~90 m
-    return shore.intersection(clip)
+def _dam_polys(dams, width_deg=0.0004):
+    """Thin polygons (square-capped, ~90 m wide, endpoints extended ~44 m) for a
+    list of [[lon,lat],[lon,lat]] dam segments. Subtracting these from the water
+    cuts each narrow channel bank-to-bank."""
+    from shapely.geometry import LineString
+    return unary_union([LineString(seg).buffer(width_deg, cap_style=2) for seg in dams])
+
+
+def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None):
+    # Fallback for cities without a play-area/bay mask: the plain shore of the
+    # land mask adjacent to saltwater (no channel removal).
+    if play is None or bay is None:
+        return land.boundary.intersection(saltwater.buffer(0.0008)).intersection(clip)
+
+    # Build the shore DIRECTLY from the high-detail OSM `natural=coastline`
+    # (the exact data CARTO's basemap draws). linemerge stitches the 852 raw
+    # ways into one continuous ~11 deg line covering the whole coast, plus
+    # island loops. We take that continuous line as the shore, replace each
+    # marked river-mouth with a straight bank-to-bank bridge, keep real
+    # islands, then clip to the play area and drop the excluded Delta.
+    if detail is None or detail.is_empty:
+        # Fallback (no OSM detail): coarse mask shore.
+        all_land = unary_union([play.difference(bay).buffer(0), land]).buffer(0)
+        shore = all_land.boundary.intersection(saltwater.buffer(0.0008))
+        return shore.intersection(clip)
+
+    import math
+    from shapely.geometry import LineString, Point
+    from shapely.ops import polygonize, nearest_points
+
+    merged = linemerge(unary_union(detail))
+    lines = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
+    coast_all = unary_union(lines)
+
+    # Seal each marked river/slough/estuary mouth with a straight "dam" wall.
+    # Snap both user-supplied bank coords to the nearest point on the real OSM
+    # coastline, then draw the wall bank-to-bank (extended a hair past each bank
+    # so it fully crosses). A wall turns the narrow waterway behind it into a
+    # closed region separate from the open bay. A mouth whose banks are >~660 m
+    # off any coastline (not actually traced by OSM here) is skipped, not walled
+    # at the wrong place.
+    walls = []
+    if dams:
+        for seg in dams:
+            p0, p1 = Point(seg[0]), Point(seg[1])
+            q0 = nearest_points(coast_all, p0)[0]
+            q1 = nearest_points(coast_all, p1)[0]
+            if p0.distance(q0) > 0.006 or p1.distance(q1) > 0.006:
+                continue
+            dx, dy = q1.x - q0.x, q1.y - q0.y
+            L = math.hypot(dx, dy) or 1e-9
+            ux, uy = dx / L, dy / L
+            ext = 0.0006
+            walls.append(LineString([(q0.x - ux * ext, q0.y - uy * ext),
+                                     (q1.x + ux * ext, q1.y + uy * ext)]))
+
+    # Polygonize the coastline + dam walls + clip boundary into faces, then keep
+    # only the single largest WATER face — the open bay (connected out the Golden
+    # Gate to the ocean). Islands in the bay come back as holes (kept); each
+    # sealed slough / estuary / marsh interior is its own separate face (dropped),
+    # so its shore AND the islets inside it disappear. This matches "draw a line
+    # across the mouth and everything cut off from the bay is removed".
+    net = unary_union(lines + walls + [clip.exterior])
+    faces = list(polygonize(net))
+    # The bay is the face that overlaps the saltwater mask the most (a coarse
+    # rep-point-in-mask test is unreliable — far-offshore rep points fall outside
+    # the Census water polygon). The open bay + ocean is one connected face here.
+    bayface = max(faces, key=lambda f: f.intersection(saltwater).area)
+    shore = bayface.boundary
+    # Drop the artificial clip-bbox edges we added only to close the ocean side.
+    shore = shore.difference(clip.exterior.buffer(0.0008))
+    shore = shore.intersection(clip)
+    # Keep only shore near the play area — coast far outside it can't eliminate
+    # anything. A small buffer keeps every real in-play shore, including shoreline
+    # parks that aren't census places (e.g. Point Pinole). Out-of-play shore that
+    # still sits next to play water (Marin: Tiburon/Sausalito/Richardson Bay) is
+    # removed by the region excludes below, since Marin is one continuous landmass
+    # with the in-play East Bay and can't be told apart topologically.
+    if play is not None and not play.is_empty:
+        shore = shore.intersection(play.buffer(0.004))
+    if exclude is not None and not exclude.is_empty:
+        shore = shore.difference(exclude)
+
+    # Drop tiny leftover fragments (stray cove hooks / clipped nubs).
+    merged = linemerge(shore) if not shore.is_empty else shore
+    parts = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
+    parts = [g for g in parts if not g.is_empty and g.length >= 0.003]
+    return unary_union(parts) if parts else shore
 
 
 def build_county_border(counties, clip):
@@ -111,23 +289,28 @@ def build_county_border(counties, clip):
     return unary_union(lines).intersection(clip)
 
 
-def build_state_border(states, cfg):
+def build_state_border(states, cfg, clip):
     by = state_by_name(states)
     home = by[cfg["state"]]
     neighbors = unary_union([g for name, g in by.items()
                              if name in cfg["state_neighbors"]])
     # home-state land border = the part of its boundary shared with adjacent
-    # states (excludes any coast, which no neighbor touches).
-    return home.boundary.intersection(neighbors.buffer(0.02))
+    # states (excludes any coast, which no neighbor touches). Clipped to the
+    # play area: a border outside the map doesn't exist for the game, so if the
+    # metro is nowhere near a state line this comes back empty and the question
+    # is dropped (see main()).
+    return home.boundary.intersection(neighbors.buffer(0.02)).intersection(clip)
 
 
-def build_intl_border(countries, cfg):
+def build_intl_border(countries, cfg, clip):
     by = country_by_name(countries)
     home = by.get(cfg["country"]) or by.get("United States")
     neighbor = by.get(cfg["country_neighbor"])
     if home is None or neighbor is None:
         return None
-    return home.boundary.intersection(neighbor.buffer(0.03))
+    # Clipped to the play area — an international border outside the map doesn't
+    # exist for the game (empty here → question dropped in main()).
+    return home.boundary.intersection(neighbor.buffer(0.03)).intersection(clip)
 
 
 def to_multiline(geom, simplify_deg):
@@ -175,16 +358,26 @@ def main():
     land = unary_union(feats(load(src(cfg["land"]))))
     saltwater = unary_union([g for p in cfg["saltwater"]
                              for g in feats(load(src(p)))])
+    play = unary_union(feats(load(src(cfg["play"])))) if cfg.get("play") else None
+    bay = unary_union(feats(load(src(cfg["bay"])))) if cfg.get("bay") else None
     counties = feats(load(src(cfg["counties"])))
     states = load(src(cfg["states"]))
     countries = load(src(cfg["countries"]))
 
+    coast_exclude = None
+    if cfg.get("coast_exclude"):
+        coast_exclude = unary_union([box(*bb) for bb in cfg["coast_exclude"]])
+
+    coast_detail = None
+    if cfg.get("coastline_detail"):
+        coast_detail = unary_union(feats(load(src(cfg["coastline_detail"]))))
+
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, clip), 0.0007)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
-        ("state-border", to_multiline(build_state_border(states, cfg), 0.003)),
-        ("intl-border", to_multiline(build_intl_border(countries, cfg), 0.003)),
+        ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
+        ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
     )
 
     out = {"type": "FeatureCollection", "features": []}

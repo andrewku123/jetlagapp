@@ -46,6 +46,9 @@ export type QuestionKind =
   | 'measure-sealevel'
   | 'measure-poi'
   | 'measure-feature'
+  | 'measure-zip'
+  | 'tentacle'
+  | 'tentacle-line'
   // Record-keeping-only subjects (no auto-eliminator): logged for the seeker's
   // notes, never shade or eliminate.
   | 'match-street'
@@ -55,7 +58,9 @@ export type QuestionKind =
   | 'measure-hsr'
   | 'measure-railstation'
   | 'measure-water'
+  | 'temperature'
   | 'inside-floor'
+  | 'traffic'
   | 'photo'
 
 export interface QuestionRecord {
@@ -72,6 +77,11 @@ export interface QuestionRecord {
   // hider vetoed the question: no answer was given, so it eliminates nothing,
   // but it's kept (tagged) so the seeker knows they can ask it again.
   vetoed?: boolean
+  // asked during the endgame phase (answered from the hider's real position, not
+  // the station centre). Still eliminates map-wide like any question, but in
+  // endgame its shading is clipped to the hiding zone to sub-divide it. Toggleable
+  // after the fact from the history tab.
+  endgame?: boolean
 }
 
 // Manual compass / straightedge annotations the seeker draws on the map.
@@ -94,8 +104,6 @@ export interface LineAnnotation {
   bLat: number
   bLon: number
   color: string
-  // measure only: rounding step in miles (0 = exact). e.g. 1 snaps to whole miles
-  step?: number
 }
 
 export type Annotation = CircleAnnotation | LineAnnotation

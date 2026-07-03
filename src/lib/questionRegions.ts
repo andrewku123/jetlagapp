@@ -1,10 +1,13 @@
 import polygonClipping, { type MultiPolygon, type Polygon, type Ring } from 'polygon-clipping'
 import type { LatLng, QuestionRecord } from '../types'
-import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
+import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
+import { zipAt, zipCodes, zipGeom } from './zip'
+import { bisectorHalfPlane, circlePolygon, haversineMiles } from './geo'
+import { metroLinesWithinRadius, type MetroLine } from './metroLines'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -26,19 +29,16 @@ const WORLD_RING: Ring = [
   [-179.9, 85],
 ]
 
-// A geodesic circle (equirectangular, fine at metro scale) as a [lon, lat] ring.
-// The regular n-gon is inflated to the mean of its inscribed and circumscribed
-// radius so it straddles the true circle, halving the worst-case radial error —
-// keeps boundary stations on the correct side of the shading.
+// A true geodesic circle (same spherical metric as `haversineMiles`, which the
+// per-station elimination uses) as a [lon, lat] ring. The regular n-gon is
+// inflated to the mean of its inscribed and circumscribed radius so it straddles
+// the true circle, halving the worst-case radial error — keeps boundary stations
+// on the correct side. An equirectangular n-gon drifts ~50 m off the true circle
+// at a 12 mi radius (visible at high zoom against the seeker dot), so the disk
+// must be geodesic to line up with the elimination boundary.
 function diskRing(c: LatLng, radiusMiles: number, n: number): Ring {
-  const cosLat = Math.cos((c.lat * Math.PI) / 180) || 1e-6
-  const r = radiusMiles * DEG_PER_MILE * ((1 + 1 / Math.cos(Math.PI / n)) / 2)
-  const ring: Ring = []
-  for (let i = 0; i < n; i++) {
-    const t = (i / n) * 2 * Math.PI
-    ring.push([c.lon + (r * Math.cos(t)) / cosLat, c.lat + r * Math.sin(t)])
-  }
-  return ring
+  const r = radiusMiles * ((1 + 1 / Math.cos(Math.PI / n)) / 2)
+  return circlePolygon(c, r, n).map((p) => [p.lon, p.lat] as [number, number])
 }
 
 // Buffer polylines by `radiusMiles` into the union "within radius of the line",
@@ -230,15 +230,147 @@ export function poiMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   return elim.length ? toLatLng(elim) : null
 }
 
+// The radar disk (or its complement) eliminated by a tentacle whose answer is a
+// within/not-within sentinel — identical to a radar centred on the seeker.
+function tentacleRadarRegion(
+  seeker: LatLng,
+  radius: number,
+  answer: string,
+): LatLngMultiPolygon | null {
+  if (!Number.isFinite(radius)) return null
+  const disk: Polygon = [circlePolygon(seeker, radius).map((pt) => [pt.lon, pt.lat] as [number, number])]
+  // "within" (INSIDE) → eliminate outside the disk; "not within" (OUTSIDE) → the disk.
+  const elim = answer === TENTACLE_INSIDE ? polygonClipping.difference([WORLD_RING], disk) : [disk]
+  return elim.length ? toLatLng(elim) : null
+}
+
+// Tentacle: shade everywhere whose nearest *in-play* POI is NOT the answer. The
+// in-play set is the POIs within the seeker's radius; among just those, the answer
+// POI's Voronoi cell is the keep region, so the eliminated area is its complement.
+export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const cat = String(p.poiCat)
+  const radius = Number(p.radiusMi)
+  const answerKey = String(p.value ?? '')
+  if (!answerKey || !Number.isFinite(radius)) return null
+  if (record.endgame) return null // endgame tentacles eliminate nothing
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  if (answerKey === TENTACLE_INSIDE || answerKey === TENTACLE_OUTSIDE)
+    return tentacleRadarRegion(seeker, radius, answerKey)
+  const inPlay = poisWithinRadius(seeker, cat, radius)
+  if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
+  const idx = inPlay.findIndex((q) => poiKey(q) === answerKey)
+  if (idx < 0) return null
+  const cell = voronoiCellRing(inPlay, idx, seeker.lat)
+  if (!cell) return null
+  // A normal answer implies the hider is within the radius (else they'd answer
+  // "not within"), so the keep region is the answer POI's Voronoi cell clipped to
+  // the seeker's disk; everything else is eliminated. This holds even in endgame
+  // (the hider must still be within the radius).
+  const keep = clipKeepToDisk([[cell]], seeker, radius)
+  if (!keep.length) return null
+  const elim = polygonClipping.difference([WORLD_RING], keep)
+  return elim.length ? toLatLng(elim) : null
+}
+
+// Clip a keep region to the seeker's radar disk (a normal tentacle answer means
+// the hider is within the radius, so everything outside the disk is eliminated).
+function clipKeepToDisk(keep: Polygon[], seeker: LatLng, radius: number): Polygon[] {
+  if (!Number.isFinite(radius)) return keep
+  const disk: Polygon = [circlePolygon(seeker, radius).map((pt) => [pt.lon, pt.lat] as [number, number])]
+  return polygonClipping.intersection(keep, [disk])
+}
+
+// Metro Lines tentacle: shade everywhere whose nearest *in-play* line is NOT the
+// answer. The in-play set is the lines passing within the seeker's radius. There
+// is no closed-form Voronoi for polylines, so each in-play line is sampled into
+// points and a point-Voronoi is built over all samples; the keep region is the
+// union of the answer line's sample cells and the eliminated area is its
+// complement. Sample spacing is chosen so the total site count stays bounded,
+// which keeps the boundary within a sample-spacing of the true nearest-line
+// boundary — matched by skipping a thin band in the agreement test.
+function sampleLine(line: MetroLine, spacingMi: number): LatLng[] {
+  const out: LatLng[] = []
+  for (const poly of line.polylines) {
+    if (poly.length === 0) continue
+    out.push(poly[0])
+    let acc = 0
+    for (let i = 1; i < poly.length; i++) {
+      const seg = haversineMiles(poly[i - 1], poly[i])
+      acc += seg
+      if (acc >= spacingMi) {
+        out.push(poly[i])
+        acc = 0
+      }
+    }
+    const last = poly[poly.length - 1]
+    if (out[out.length - 1] !== last) out.push(last)
+  }
+  return out
+}
+
+export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const radius = Number(p.radiusMi)
+  const answerId = String(p.value ?? '')
+  if (!answerId || !Number.isFinite(radius)) return null
+  if (record.endgame) return null // endgame tentacles eliminate nothing
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  if (answerId === TENTACLE_INSIDE || answerId === TENTACLE_OUTSIDE)
+    return tentacleRadarRegion(seeker, radius, answerId)
+  const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
+  if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
+  if (!inPlay.some((l) => l.id === answerId)) return null
+
+  // Bound total samples: aim ~600 sites across all in-play lines.
+  let totalMi = 0
+  for (const l of inPlay) for (const poly of l.polylines) for (let i = 1; i < poly.length; i++) totalMi += haversineMiles(poly[i - 1], poly[i])
+  const spacingMi = Math.max(0.25, totalMi / 600)
+
+  const sites: LatLng[] = []
+  const isAnswer: boolean[] = []
+  for (const l of inPlay) {
+    const pts = sampleLine(l, spacingMi)
+    for (const pt of pts) {
+      sites.push(pt)
+      isAnswer.push(l.id === answerId)
+    }
+  }
+  if (sites.length < 2) return null
+
+  // Keep region = union of the answer line's sample cells. Union them via the
+  // shared robustUnion (snap + divide-and-conquer) — an incremental pairwise fold
+  // of the many adjacent, near-collinear cells along a line trips
+  // polygon-clipping's ring-completion robustness bug.
+  const cells: Polygon[] = []
+  for (let i = 0; i < sites.length; i++) {
+    if (!isAnswer[i]) continue
+    const cell = voronoiCellRing(sites, i, seeker.lat)
+    if (!cell) continue
+    cells.push([cell])
+  }
+  if (!cells.length) return null
+  // Normal answer ⇒ hider within the radius, so clip the keep region to the
+  // seeker's disk (everything outside is eliminated too), even in endgame.
+  const keep = clipKeepToDisk(robustUnion(cells), seeker, radius)
+  if (!keep.length) return null
+  const elim = polygonClipping.difference([WORLD_RING], keep)
+  return elim.length ? toLatLng(elim) : null
+}
+
 // --- Measuring: shade the union of disks (radius = seeker's own nearest-POI
 // distance) around every POI, or its complement. --------------------------------
 
-// Denser categories → more disks to union; cap the segment count so parks stay
-// responsive while sparse categories still read as clean circles.
-function diskSegments(count: number): number {
-  if (count > 800) return 24
-  if (count > 200) return 32
-  return 48
+// Segment count for a your-distance disk: fine enough that the facet error stays
+// tiny even at large radius / high zoom (a sparse category like zoo can put the
+// boundary 12 mi out, where a coarse n-gon visibly facets against the seeker
+// dot), but capped by category density so unioning 1500+ park disks stays fast.
+// n ≈ π·√(r / 2ε) keeps the worst-case sagitta under ε miles.
+function diskSegments(count: number, radiusMiles: number): number {
+  const EPS = 0.003 // miles (~5 m) target facet error
+  const need = Math.ceil(Math.PI * Math.sqrt(Math.max(radiusMiles, 0.05) / (2 * EPS)))
+  const cap = count > 800 ? 40 : count > 200 ? 72 : 256
+  return Math.max(24, Math.min(cap, need))
 }
 
 export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
@@ -249,7 +381,7 @@ export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiP
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   const d = nearestPoiMiles(seeker, cat)
   if (!Number.isFinite(d) || d <= 0) return null
-  const segs = diskSegments(list.length)
+  const segs = diskSegments(list.length, d)
   const disks: Polygon[] = list.map((poi) => [diskRing(poi, d, segs)])
   const union = polygonClipping.union(disks[0], ...disks.slice(1))
   if (!union.length) return null
@@ -313,7 +445,8 @@ export function airportMeasureEliminatedRegion(record: QuestionRecord): LatLngMu
   if (!Number.isFinite(seeker.lat) || !Number.isFinite(seeker.lon)) return null
   const d = nearestAirport(seeker).distMiles
   if (!Number.isFinite(d) || d <= 0) return null
-  const disks: Polygon[] = Object.values(AIRPORTS).map((a) => [diskRing(a, d, 48)])
+  const segs = diskSegments(Object.keys(AIRPORTS).length, d)
+  const disks: Polygon[] = Object.values(AIRPORTS).map((a) => [diskRing(a, d, segs)])
   const union = robustUnion(disks)
   if (!union.length) return null
   const closer = p.answer === 'closer'
@@ -354,6 +487,29 @@ export function cityMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Measuring a ZIP code (smaller / larger): shade the union of ZCTAs on the
+// eliminated side. Each station sits in exactly one ZCTA, so shading the
+// eliminated-side ZCTAs agrees exactly with the per-station rule. -----------------
+
+export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const seekerZipStr = String(p.value || '') || zipAt(seeker) || ''
+  if (!seekerZipStr) return null
+  const seekerZip = Number(seekerZipStr)
+  const smaller = p.answer === 'smaller'
+  // A ZCTA is eliminated when its keep-test fails: keep is
+  // (zip <= seekerZip) === smaller, so eliminate the opposite side.
+  const polys: Polygon[] = []
+  for (const name of zipCodes()) {
+    const keep = (Number(name) <= seekerZip) === smaller
+    if (keep) continue
+    for (const poly of zipGeom(name)) polys.push(poly)
+  }
+  const union = robustUnion(polys)
+  return union.length ? toLatLng(union) : null
+}
+
 // Eliminated region for any shaded question record, or null if it has none.
 export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (!record.active || record.vetoed || !record.eliminates) return null
@@ -364,5 +520,70 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
+  if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
+  if (record.kind === 'tentacle') return tentacleEliminatedRegion(record)
+  if (record.kind === 'tentacle-line') return metroLineEliminatedRegion(record)
   return null
+}
+
+// --- Endgame: clip a question's eliminated area to the hiding-zone disk. ---------
+// In endgame the board collapses to one station + its hiding zone; endgame-phase
+// questions (answered from the hider's real position) sub-divide that zone. We
+// reuse the exact same eliminated geometry as the map-wide shading and intersect
+// it with the zone circle so the shading always agrees with the elimination rule.
+
+// [lat,lon] display multipolygon → [lon,lat] clipping geometry (inverse toLatLng).
+function toGeom(mp: LatLngMultiPolygon): MultiPolygon {
+  return mp.map((poly) => poly.map((ring) => ring.map(([lat, lon]) => [lon, lat] as [number, number])))
+}
+
+// The eliminated region of any auto-eliminating question, in [lon,lat] geometry.
+// Radar and thermometer are built here directly (they're otherwise drawn inline in
+// MapView); everything else routes through poiEliminatedRegion.
+function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
+  if (!record.active || record.vetoed || !record.eliminates) return null
+  const p = record.params
+  if (record.kind === 'radar') {
+    const c: LatLng = { lat: Number(p.lat), lon: Number(p.lon) }
+    const rMi = Number(p.radiusMiles)
+    if (!Number.isFinite(rMi)) return null
+    // Same geodesic ring the radar outline/non-endgame shading use, so the
+    // clipped endgame shading edge sits exactly on the drawn circle.
+    const disk: Polygon = [circlePolygon(c, rMi).map((pt) => [pt.lon, pt.lat] as [number, number])]
+    // Yes = within → eliminate outside the disk; No = eliminate the disk.
+    const elim = p.answer === 'yes' ? polygonClipping.difference([WORLD_RING], disk) : [disk]
+    return elim.length ? elim : null
+  }
+  if (record.kind === 'thermometer') {
+    const from: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+    const to: LatLng = { lat: Number(p.toLat), lon: Number(p.toLon) }
+    // Eliminate the half-plane the hider moved away from: cold side.
+    const coldSide = p.answer === 'hotter' ? from : to
+    const band = bisectorHalfPlane(from, to, coldSide, 400)
+    if (!band.length) return null
+    const ring: Ring = band.map((pt) => [pt.lon, pt.lat] as [number, number])
+    return [[ring]]
+  }
+  const latlng = poiEliminatedRegion(record)
+  return latlng ? toGeom(latlng) : null
+}
+
+// A question's eliminated area, intersected with the hiding-zone disk, as a
+// display [lat,lon] multipolygon (or null if it doesn't touch the zone).
+export function endgameClippedRegion(
+  record: QuestionRecord,
+  center: LatLng,
+  radiusMiles: number,
+): LatLngMultiPolygon | null {
+  const geom = eliminatedGeom(record)
+  if (!geom || !geom.length) return null
+  // Geodesic ring matching the green hiding-zone outline drawn in MapView.
+  const disk: Polygon = [circlePolygon(center, radiusMiles).map((pt) => [pt.lon, pt.lat] as [number, number])]
+  let clipped: MultiPolygon
+  try {
+    clipped = polygonClipping.intersection(geom, [disk])
+  } catch {
+    return null
+  }
+  return clipped.length ? toLatLng(clipped) : null
 }
