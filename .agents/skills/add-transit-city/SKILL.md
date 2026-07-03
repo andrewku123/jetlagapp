@@ -74,6 +74,20 @@ and adjusting a few region constants. There is no per-city code branching.
      as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
      (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
      `properties.name` for both point-in-polygon lookup and shading.
+   - **Admin divisions are per-city and only the in-play ones matter for
+     Matching.** "2nd admin division" = county in the US, borough (also a county)
+     in NYC, regional municipality / census division in Canada, etc. — same file
+     shape, different source. The hider is always in one of the divisions that
+     hold stations, so `countyAt()` in `counties.ts` only considers the names in
+     `IN_PLAY_COUNTIES` (`src/lib/playArea.ts`); a seeker anywhere else — a
+     neighbouring county or the far side of the world — is definitively "not the
+     same county" as every station, and the exact identity of that outside
+     division never changes an elimination. So **do NOT try to ship the world's
+     counties**: set `IN_PLAY_COUNTIES` to the divisions containing stations, and
+     the match-county form shows an "outside the play area" read-out / alert for
+     anything else. (The wider `counties.geojson.json` set can still exist for the
+     county-*border* measure feature and the dim overlay; it just isn't used for
+     the match lookup.)
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
