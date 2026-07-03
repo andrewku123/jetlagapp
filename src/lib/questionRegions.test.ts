@@ -50,7 +50,7 @@ describe('poiCategoryLabel', () => {
     expect(poiCategoryLabel('museum')).toBe('museum')
     expect(poiCategoryLabel('stadium')).toBe('sports stadium')
     expect(poiCategoryLabel('movie_theater')).toBe('movie theater')
-    expect(poiCategoryLabel('consulate')).toBe('consulate')
+    expect(poiCategoryLabel('consulate')).toBe('foreign consulate')
   })
 })
 
