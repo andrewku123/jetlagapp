@@ -157,16 +157,17 @@ describe('stationPasses — measure-zip (ZIP smaller / larger)', () => {
 })
 
 describe('stationPasses — measure-feature (distance to a coastline / border)', () => {
-  // coastal SF station is ~0 mi from the saltwater shore; inland Antioch is ~30 mi
+  // coastal SF station is ~0 mi from the saltwater shore; inland Tracy is ~36 mi
+  // (past the East Bay shore, out toward the Central Valley)
   const coastal = station({ id: 'sf-embarcadero', lat: 37.7955, lon: -122.3937 })
-  const inland = station({ id: 'antioch', lat: 38.0169, lon: -121.8009 })
-  // seeker at San Jose Diridon (~10 mi from the coast)
+  const inland = station({ id: 'tracy', lat: 37.7397, lon: -121.4252 })
+  // seeker at San Jose Diridon (~11 mi from the coast)
   const seeker = { fromLat: 37.3297, fromLon: -121.9024 }
 
   it('coastline: keeps stations on the seeker\u2019s side of the corridor', () => {
     const closer = record('measure-feature', { feature: 'coastline', ...seeker, answer: 'closer' })
-    expect(stationPasses(coastal, closer)).toBe(true) // 0 < 10
-    expect(stationPasses(inland, closer)).toBe(false) // 30 !< 10
+    expect(stationPasses(coastal, closer)).toBe(true) // 0 < 11
+    expect(stationPasses(inland, closer)).toBe(false) // 36 !< 11
     const further = record('measure-feature', { feature: 'coastline', ...seeker, answer: 'further' })
     expect(stationPasses(coastal, further)).toBe(false)
     expect(stationPasses(inland, further)).toBe(true)

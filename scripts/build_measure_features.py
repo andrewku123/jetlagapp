@@ -21,13 +21,29 @@ Sources (all local unless noted):
   - scripts/measure_src/countries.geojson    Natural Earth 50m admin-0
 """
 import json
+import math
 import os
 
 from shapely.geometry import shape, mapping, MultiLineString, box
-from shapely.ops import unary_union, linemerge
+from shapely.ops import unary_union, linemerge, transform
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, "..", "src", "data")
+
+# Local equirectangular projection (metres) used only for the coastline's
+# morphological opening, where an isotropic buffer in metres is required.
+_REF_LAT = 37.8
+_M_PER_LAT = 111320.0
+_M_PER_LON = _M_PER_LAT * math.cos(math.radians(_REF_LAT))
+_MILE_M = 1609.34
+
+
+def _to_m(geom):
+    return transform(lambda x, y, z=None: (x * _M_PER_LON, y * _M_PER_LAT), geom)
+
+
+def _to_deg(geom):
+    return transform(lambda x, y, z=None: (x / _M_PER_LON, y / _M_PER_LAT), geom)
 
 
 # --- Per-city configuration --------------------------------------------------
@@ -41,6 +57,11 @@ CITIES = {
         "play_bbox": (-122.7, 37.0, -121.4, 38.2),  # lon/lat, generous
         "land": "bay_land.geojson",
         "saltwater": ["bay_water_mask.geojson", "pacific_ocean.geojson.json"],
+        # the game play-area polygon (used to extend in-play land past the
+        # OSM bay-shore mask into the East/South Bay) and the enclosed-bay water
+        # mask (subtracted from the play area to recover that land).
+        "play": "data:play-area.geojson.json",
+        "bay": "bay_water_mask.geojson",
         "counties": "data:counties.geojson.json",
         "states": "measure_src/us-states.geojson",
         "countries": "measure_src/countries.geojson",
@@ -90,9 +111,39 @@ def country_by_name(countries):
     return by
 
 
-def build_coastline(land, saltwater, clip):
-    # shoreline = land boundary adjacent to saltwater, within the play area
-    shore = land.boundary.intersection(saltwater.buffer(0.0008))  # ~90 m
+def build_coastline(land, saltwater, play, bay, clip):
+    # Fallback for cities without a play-area/bay mask: the plain shore of the
+    # land mask adjacent to saltwater (no channel removal).
+    if play is None or bay is None:
+        return land.boundary.intersection(saltwater.buffer(0.0008)).intersection(clip)
+
+    # Coastline = the shore of in-play LAND that borders qualifying saltwater
+    # (ocean + enclosed bay), with sub-1-mile channels/straits removed.
+    #
+    # 1. in-play land: the OSM bay-shore mask (good Pacific/peninsula detail)
+    #    unioned with (play area − bay). The play-area term fills the East Bay /
+    #    South Bay land that the peninsula-only mask misses.
+    all_land = unary_union([play.difference(bay).buffer(0), land]).buffer(0)
+    water = saltwater.buffer(0)
+
+    # 2. morphological opening on the water (erode by r then dilate by r) drops
+    #    every channel/strait narrower than 2r (~1 mi) and any sub-2r protrusion,
+    #    so the opened water never reaches into narrow straits (Oakland-Alameda
+    #    estuary, Carquinez strait). Along a wide shore the dilate returns the
+    #    edge to the shore, so wide bays stay captured.
+    r = 0.5 * _MILE_M
+    opened = _to_deg(_to_m(water).buffer(-r).buffer(r)).buffer(0)
+
+    # 3. shore = land boundary adjacent to the opened (>=1 mi wide) water. Where
+    #    the opening deleted a narrow channel the shore runs straight across its
+    #    mouth instead of tracing both banks. Small pad (~275 m) closes gaps so
+    #    the shore stays visually continuous.
+    shore = all_land.boundary.intersection(opened.buffer(0.0025))
+
+    # 4. keep only shore on big landmasses — drops marsh islets / small islands.
+    polys = list(all_land.geoms) if all_land.geom_type == "MultiPolygon" else [all_land]
+    big = unary_union([p for p in polys if p.area > 0.0008])
+    shore = shore.intersection(big.boundary.buffer(0.0015))
     return shore.intersection(clip)
 
 
@@ -180,13 +231,15 @@ def main():
     land = unary_union(feats(load(src(cfg["land"]))))
     saltwater = unary_union([g for p in cfg["saltwater"]
                              for g in feats(load(src(p)))])
+    play = unary_union(feats(load(src(cfg["play"])))) if cfg.get("play") else None
+    bay = unary_union(feats(load(src(cfg["bay"])))) if cfg.get("bay") else None
     counties = feats(load(src(cfg["counties"])))
     states = load(src(cfg["states"]))
     countries = load(src(cfg["countries"]))
 
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, clip), 0.0007)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip), 0.0007)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),

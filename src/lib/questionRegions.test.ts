@@ -157,10 +157,10 @@ describe('poiMeasureEliminatedRegion boundary is geodesic (no equirectangular dr
 })
 
 describe('featureMeasureEliminatedRegion agrees with the elimination rule', () => {
-  // seeker ~10 mi from the coast (San Jose); coastal spot ~0 mi, inland ~30 mi
+  // seeker ~11 mi from the coast (San Jose); coastal spot ~0 mi, inland ~36 mi
   const seeker = { fromLat: 37.3297, fromLon: -121.9024 }
   const onCoast = { lat: 37.7955, lon: -122.3937 } // SF Embarcadero, inside the corridor
-  const inland = { lat: 38.0169, lon: -121.8009 } // Antioch, outside the corridor
+  const inland = { lat: 37.7397, lon: -121.4252 } // Tracy, well past the East Bay shore
 
   it('CLOSER: shades the complement of the coastal corridor', () => {
     const region = featureMeasureEliminatedRegion(rec('measure-feature', { feature: 'coastline', ...seeker, answer: 'closer' }))!
