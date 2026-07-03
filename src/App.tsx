@@ -187,20 +187,21 @@ export default function App() {
     const pts: { label: string; point: LatLng; color: string }[] = []
     for (const r of game.questions) {
       if (!r.active || r.vetoed) continue
+      const desc = describeRecord(r, game.units)
       if (r.kind === 'thermometer') {
-        pts.push({ label: 'Thermo start', point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#2563eb' })
-        pts.push({ label: 'Thermo end', point: { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }, color: '#7c3aed' })
+        pts.push({ label: `Thermo start — ${desc}`, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#2563eb' })
+        pts.push({ label: `Thermo end — ${desc}`, point: { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }, color: '#7c3aed' })
       }
       if (r.kind === 'measure-airport') {
-        pts.push({ label: 'Measure (airport)', point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
+        pts.push({ label: desc, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
       }
       if (r.kind === 'match-poi' || r.kind === 'measure-poi') {
-        pts.push({ label: `${r.kind === 'match-poi' ? 'Match' : 'Measure'} (${String(r.params.poiCat)})`, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
+        pts.push({ label: desc, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
       }
     }
     if (lastClick) pts.push({ label: 'Last click', point: lastClick, color: '#111' })
     return pts
-  }, [game.questions, lastClick])
+  }, [game.questions, lastClick, game.units])
 
   // POIs to draw: every enabled category, name-filtered by the POI search box.
   const pois = useMemo<RenderPoi[]>(() => {
