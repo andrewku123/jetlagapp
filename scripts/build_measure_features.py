@@ -109,6 +109,10 @@ CITIES = {
             [[-122.236118, 37.750460], [-122.236161, 37.747372]],  # San Leandro Bay
             [[-122.203567, 37.712794], [-122.202140, 37.711919]],  # San Leandro shore
             [[-122.191615, 37.704467], [-122.190778, 37.704713]],  # San Leandro Marina / Oyster Bay
+            [[-122.335317, 37.909127], [-122.335188, 37.909618]],  # Albany Bulb neck
+            [[-122.325082, 37.901830], [-122.325103, 37.900950]],  # Albany marina
+            [[-122.317700, 37.863487], [-122.317400, 37.862657]],  # Berkeley marina
+            [[-122.298474, 37.776507], [-122.301114, 37.774268]],  # San Lorenzo / Sulphur Creek
         ],
     },
 }
@@ -162,137 +166,88 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     if play is None or bay is None:
         return land.boundary.intersection(saltwater.buffer(0.0008)).intersection(clip)
 
-    # Coastline = the FULL-DETAIL shore of in-play LAND that borders qualifying
-    # saltwater (ocean + enclosed bay). We trace every meander of the real shore
-    # and only bridge across the specific narrow river-mouths / straits listed in
-    # cfg["dams"] (each < 1 mi across, so not coastline by the game rule).
-    #
-    # 1. in-play land: the OSM bay-shore mask (good Pacific/peninsula detail)
-    #    unioned with (play area − bay). The play-area term fills the East Bay /
-    #    South Bay land that the peninsula-only mask misses.
-    all_land = unary_union([play.difference(bay).buffer(0), land]).buffer(0)
-    water = saltwater.buffer(0)
-    water0 = water  # the un-dammed water, to know which water we filled in as land
+    # Build the shore DIRECTLY from the high-detail OSM `natural=coastline`
+    # (the exact data CARTO's basemap draws). linemerge stitches the 852 raw
+    # ways into one continuous ~11 deg line covering the whole coast, plus
+    # island loops. We take that continuous line as the shore, replace each
+    # marked river-mouth with a straight bank-to-bank bridge, keep real
+    # islands, then clip to the play area and drop the excluded Delta.
+    if detail is None or detail.is_empty:
+        # Fallback (no OSM detail): coarse mask shore.
+        all_land = unary_union([play.difference(bay).buffer(0), land]).buffer(0)
+        shore = all_land.boundary.intersection(saltwater.buffer(0.0008))
+        return shore.intersection(clip)
 
-    # 2. Cut the water at every dam and fill everything on the LANDWARD side of
-    #    each dam line back in as land, so the shore runs straight across the
-    #    mouth (the user's line IS the coast) with no leftover coves poking
-    #    inland. Landward = the local half-plane of the dam line that does not
-    #    hold the open bay. Unmarked shore keeps its full detail.
-    dam_lines = None
+    from shapely.geometry import LineString, Point
+    from shapely.ops import substring
+
+    merged = linemerge(unary_union(detail))
+    parts = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
+    parts.sort(key=lambda g: g.length, reverse=True)
+    main = parts[0]  # the single continuous coast line
+
+    # Dam bridges: each dam is two bank coords. The stretch of the continuous
+    # shore BETWEEN the two banks is the up-river/slough excursion — we drop it
+    # and jump straight bank-to-bank, so the coast runs across the mouth. A
+    # length cap keeps this local (never removes a big real headland).
     if dams:
-        from shapely.geometry import LineString, Point
-        dam_lines = unary_union([LineString(seg) for seg in dams])
-        dam_poly = _dam_polys(dams)
-        cut = water.difference(dam_poly)
-        comps = list(cut.geoms) if cut.geom_type == "MultiPolygon" else [cut]
-        comps.sort(key=lambda p: p.area, reverse=True)
-        main = comps[0]  # the open bay/ocean
-
-        fill = [all_land, dam_poly]
-        # Any water body fully disconnected from the open bay by the dams
-        # (upstream rivers, the Delta) becomes land.
-        for c in comps[1:]:
-            fill.append(c)
-        # Plus, for each dam, the strip of open-bay water that still reaches
-        # inland past the line (little coves): everything on the landward side
-        # within a local window around the mouth.
+        intervals = []
         for seg in dams:
-            (x0, y0), (x1, y1) = seg
-            ls = LineString(seg)
-            dx, dy = x1 - x0, y1 - y0
-            L = (dx * dx + dy * dy) ** 0.5 or 1e-9
-            # unit left normal of A->B
-            nx, ny = -dy / L, dx / L
-            mx, my = (x0 + x1) / 2, (y0 + y1) / 2
-            left_pt = Point(mx + nx * 0.003, my + ny * 0.003)
-            # landward = the side NOT containing the open bay near the mouth
-            left_is_sea = main.buffer(0.0004).contains(left_pt)
-            side = -0.02 if left_is_sea else 0.02
-            half = ls.buffer(side, single_sided=True)
-            window = ls.buffer(0.008)  # ~0.9 km around the mouth
-            landward = half.intersection(window)
-            pocket = main.intersection(landward)
-            if not pocket.is_empty:
-                fill.append(pocket)
-        all_land = unary_union(fill).buffer(0)
-        water = main.difference(unary_union([g for g in fill if g is not all_land])).buffer(0)
-    # the water we turned into land (up-creek channels + coves behind each dam).
-    # Keep only substantial pockets — buffer(0) reprocessing leaves hairline
-    # slivers all along the coast that would otherwise nick the OSM shore apart.
-    filled_region = None
-    if dams:
-        diff = water0.difference(water)
-        polys = list(diff.geoms) if diff.geom_type == "MultiPolygon" else [diff]
-        filled_region = unary_union([p for p in polys if p.area > 5e-7])
+            pa, pb = Point(seg[0]), Point(seg[1])
+            a = main.project(pa)
+            b = main.project(pb)
+            # only bridge when both banks actually sit on the main coastline —
+            # if a mouth is >~600 m off, its shore isn't traced by OSM coastline
+            # here (separate creek/absent), so the dam is a no-op, not a bridge
+            # applied at the wrong spot.
+            if pa.distance(main.interpolate(a)) > 0.0055:
+                continue
+            if pb.distance(main.interpolate(b)) > 0.0055:
+                continue
+            lo, hi = sorted((a, b))
+            if 0 < hi - lo <= 0.08:  # a local mouth detour (~<9 km of shore)
+                intervals.append((lo, hi))
+        intervals.sort()
+        merged_iv = []
+        for lo, hi in intervals:
+            if merged_iv and lo <= merged_iv[-1][1]:
+                merged_iv[-1] = (merged_iv[-1][0], max(merged_iv[-1][1], hi))
+            else:
+                merged_iv.append((lo, hi))
+        if merged_iv:
+            coords = []
+            cursor = 0.0
+            for lo, hi in merged_iv:
+                if lo > cursor:
+                    piece = substring(main, cursor, lo)
+                    if not piece.is_empty:
+                        coords.extend(list(piece.coords))
+                coords.append(main.interpolate(hi).coords[0])  # straight bridge
+                cursor = hi
+            if cursor < main.length:
+                piece = substring(main, cursor, main.length)
+                if not piece.is_empty:
+                    coords.extend(list(piece.coords))
+            main = LineString(coords)
 
-    # 3. shore. `water.boundary` (wb) is the topologically-correct shore: a set
-    #    of continuous closed rings that already carry the straight mouth
-    #    crossings the dams created. It comes from the coarse Census mask, so it
-    #    sits ~30 m off the real coast. Rather than splice in OSM (which breaks
-    #    the line into disconnected pieces at every seam), we KEEP each ring whole
-    #    and just pull its vertices onto the high-detail OSM coastline:
-    #      • densify the ring to ~17 m so it can take on OSM's shape,
-    #      • move every vertex to the nearest point on the OSM shore when that is
-    #        within ~66 m — this makes the open-bay shore match CARTO exactly,
-    #      • but leave vertices within ~180 m of a dam line untouched, so each
-    #        dammed mouth keeps its clean straight crossing.
-    #    Because we only move vertices (never cut), every ring stays continuous
-    #    and the snapped OSM banks meet the straight bridge with no gap.
-    if detail is not None and not detail.is_empty:
-        from shapely.geometry import LineString, Point
-        from shapely.strtree import STRtree
-        from shapely.ops import nearest_points
-        wb = water.boundary
-        snap_detail = detail
-        if filled_region is not None and not filled_region.is_empty:
-            # drop OSM that traces up the dammed-off creeks so vertices near a
-            # mouth snap to the bay bank, never up the (now landlocked) channel.
-            snap_detail = detail.difference(filled_region.buffer(0.0003))
-        osm_geoms = (
-            list(snap_detail.geoms)
-            if snap_detail.geom_type.startswith("Multi")
-            else [snap_detail]
-        )
-        tree = STRtree(osm_geoms)
-        snap_tol = 0.0006  # ~66 m
-        dz = dam_lines.buffer(0.0016) if dam_lines is not None else None  # ~180 m
-        rings = list(wb.geoms) if wb.geom_type == "MultiLineString" else [wb]
-        snapped = []
-        for ring in rings:
-            nc = []
-            for x, y in ring.segmentize(0.00015).coords:
-                p = Point(x, y)
-                if dz is not None and dz.contains(p):
-                    nc.append((x, y))
-                    continue
-                idx = tree.query_nearest(p)
-                near_geom = osm_geoms[idx[0] if hasattr(idx, "__len__") else idx]
-                q = nearest_points(near_geom, p)[0]
-                nc.append((q.x, q.y) if p.distance(q) <= snap_tol else (x, y))
-            snapped.append(LineString(nc))
-        shore = unary_union(snapped)
-    else:
-        shore = all_land.boundary.intersection(water.buffer(0.0008))
+    # Keep real islands (sizeable closed OSM loops); drop tiny islets / stray
+    # creek fragments that OSM leaves as separate short open lines.
+    shore_parts = [main]
+    for g in parts[1:]:
+        if g.length >= 0.01 and g.is_ring:
+            shore_parts.append(g)
+    shore = unary_union(shore_parts)
 
-    # 4. keep only shore on big landmasses — drops marsh islets / small islands
-    #    (and any offshore mask edge picked up by the fallback above).
-    polys = list(all_land.geoms) if all_land.geom_type == "MultiPolygon" else [all_land]
-    big = unary_union([p for p in polys if p.area > 0.0008])
-    shore = shore.intersection(big.boundary.buffer(0.0025))
+    # Clip to the play area; remove excluded regions (Suisun Bay / Delta east of
+    # Carquinez) — the shore just ends cleanly at the neck, no bridge, no sliver.
     shore = shore.intersection(clip)
-
-    # 4b. clip out excluded regions (e.g. Suisun Bay / Delta east of Carquinez):
-    #     the shore simply ends at the boundary — no bridge line, no sliver.
     if exclude is not None and not exclude.is_empty:
         shore = shore.difference(exclude)
 
-    # 5. drop tiny isolated shore fragments (little cove hooks / stray water
-    #    dots left near a dam mouth) — real coastline merges into long lines, so
-    #    any standalone piece shorter than ~300 m is an artifact.
+    # Drop tiny leftover fragments (stray cove hooks / clipped nubs).
     merged = linemerge(shore) if not shore.is_empty else shore
     parts = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
-    parts = [p for p in parts if not p.is_empty and p.length >= 0.003]
+    parts = [g for g in parts if not g.is_empty and g.length >= 0.003]
     return unary_union(parts) if parts else shore
 
 
