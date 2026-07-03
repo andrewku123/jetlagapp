@@ -38,7 +38,7 @@ body { background: var(--bg); color: var(--text); }
 .draw-toolbar {
   position: absolute; top: 10px; right: 10px; z-index: 1000;
   background: rgba(23, 28, 34, 0.95); border: 1px solid var(--line);
-  border-radius: 10px; padding: 6px; width: fit-content; min-width: 44px;
+  border-radius: 10px; padding: 6px; width: fit-content; min-width: 44px; max-width: 168px;
   box-shadow: 0 4px 14px rgba(0,0,0,.4); font-size: 12px;
 }
 /* icon-only tools, stacked in a slim vertical column */
@@ -253,7 +253,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .drag-handle-dot { width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.5); cursor: grab; }
 .drag-handle-dot:active { cursor: grabbing; }
 .draw-radius-input {
-  flex-basis: 100%; width: 100%; margin: 0; box-sizing: border-box;
+  flex-basis: 100%; width: 100%; min-width: 0; margin: 0; box-sizing: border-box;
   background: var(--panel2); color: var(--text);
   border: 1px solid var(--line); border-radius: 6px; padding: 4px;
 }
