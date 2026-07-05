@@ -11,12 +11,30 @@ they must never intercept clicks, or stations underneath them become
 unselectable.
 
 ## Click-through rule (important)
-Every question overlay (and the thermometer markers) sets
-`interactive={false}`. Overlays render *after* the station markers, so an
-interactive overlay would sit on top and swallow clicks — this is exactly the
-"can't select stations inside a radar" bug. Keep `interactive={false}` on all of
-them. (Manual compass/line annotations are a separate, intentionally clickable
-layer — see `map-drawing-tools`.)
+Every question overlay **fill/outline** (and the thermometer boundary/A→B lines)
+sets `interactive={false}`. The shaded `<Polygon>`s render *after* the station
+markers, so an interactive fill would sit on top and swallow clicks — this is
+exactly the "can't select stations inside a radar" bug, and it would also break
+the click-to-drop-a-point pick. Keep `interactive={false}` on all fills/lines.
+(Manual compass/line annotations are a separate, intentionally clickable layer —
+see `map-drawing-tools`.)
+
+## Answer dots ARE tappable (mobile: "which question is this?")
+The small **answer pins** are the deliberate exception: each question's pin (the
+`poiRegions` pin for POI Matching/Measuring/feature/airport/tentacle, and the
+radar **centre dot**) is interactive with **both** a hover `Tooltip` (desktop
+label) **and** a tap `Popup` showing `describeRecord(record, units)`. Mobile has
+no hover, so without the popup a tapped dot revealed nothing — that was the bug.
+- County/City/ZIP/`tentacle-line` questions have no natural marker, so
+  `poiRegions` drops a small **"asked from here"** seeker dot purely so there's
+  something to tap. Every shaded question thus has at least one tappable dot.
+- These dots are tiny `radius:6` `CircleMarker`s with `bubblingMouseEvents:false`;
+  stations live in a higher pane so a station tap still wins on overlap. This does
+  **not** violate the click-through rule (the giant fills stay non-interactive; a
+  few tiny dots don't block station selection or the map pick).
+- Popup markup is `.answer-popup` (`strong` = question text, `.answer-popup-sub`
+  = the pin label) in `src/index.css`. `poiRegions` carries a `desc` field and
+  lists `units` in its memo deps so the popup respects the unit toggle.
 
 ## Shade the ELIMINATED area (not the kept area)
 The convention is to shade what a question **removes**, using the shared
