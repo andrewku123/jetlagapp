@@ -688,22 +688,30 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
-// Dedicated pane for the tappable answer/seeker dots (which question is this?).
-// Placed just above the station pane (450) so an answer dot that lands on top of a
-// station — e.g. the "nearest airport" dot sitting on the OAK Airport station — is
-// the one that takes the click, instead of the station swallowing it. There are
-// only a handful of these dots at a time, so letting them win the rare overlap is
-// the right trade-off. Kept below markerPane (600).
-function AnswerPinPane() {
+// Dedicated SVG renderer for the tappable answer/seeker dots (which question is
+// this?), in a pane just above the station pane (450). Placing it above stations
+// means an answer dot that lands on top of a station — e.g. the "nearest airport"
+// dot sitting on the OAK Airport station — wins the click instead of the station
+// swallowing it. It MUST be SVG, not the map's default canvas: the map uses
+// preferCanvas, so without an explicit SVG renderer the pin would fall back to a
+// canvas that blankets the whole pane and would then swallow every click over the
+// map (see StationRenderer). SVG keeps the pane click-through except the pin path.
+function AnswerPinRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) {
   const map = useMap()
   useEffect(() => {
-    const name = 'answerPin'
-    let pane = map.getPane(name)
+    const paneName = 'answerPin'
+    let pane = map.getPane(paneName)
     if (!pane) {
-      pane = map.createPane(name)
-      pane.style.zIndex = '500'
+      pane = map.createPane(paneName)
+      pane.style.zIndex = '500' // above stations (450), below markerPane (600)
     }
-  }, [map])
+    const renderer = L.svg({ padding: 0.5, pane: paneName }).addTo(map)
+    onChange(renderer)
+    return () => {
+      renderer.remove()
+      onChange(null)
+    }
+  }, [map, onChange])
   return null
 }
 
@@ -952,6 +960,8 @@ export default function MapView({
   // shared SVG renderer for the station markers (see StationRenderer); kept in
   // state so the markers only mount once the renderer/pane exist
   const [stationRenderer, setStationRenderer] = useState<L.SVG | null>(null)
+  // separate SVG renderer for the answer/seeker pins, in a pane above the stations
+  const [answerPinRenderer, setAnswerPinRenderer] = useState<L.SVG | null>(null)
 
   function readCoord(p: LatLng) {
     setCoordPin(p)
@@ -1307,7 +1317,7 @@ export default function MapView({
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
-        <AnswerPinPane />
+        <AnswerPinRenderer onChange={setAnswerPinRenderer} />
         <CoordPane />
         <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
@@ -1447,11 +1457,14 @@ export default function MapView({
                   pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
                 />
                 {/* tappable centre dot: radar has no marker otherwise, so on
-                    mobile there'd be no way to see which question this is */}
+                    mobile there'd be no way to see which question this is. Gated on
+                    the renderer so it mounts into the SVG answerPin pane (not the
+                    default canvas), same as the station markers. */}
+                {answerPinRenderer && (
                 <CircleMarker
                   center={[center.lat, center.lon]}
                   radius={6}
-                  pane="answerPin"
+                  renderer={answerPinRenderer}
                   bubblingMouseEvents={false}
                   pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
                 >
@@ -1465,6 +1478,7 @@ export default function MapView({
                     </div>
                   </Popup>
                 </CircleMarker>
+                )}
               </Fragment>
             )
           })}
@@ -1558,11 +1572,11 @@ export default function MapView({
             ))}
             {/* boundary line, like the radar circle outline */}
             <RegionOutline region={pr.region} />
-            {pr.pin && (
+            {pr.pin && answerPinRenderer && (
               <CircleMarker
                 center={[pr.pin.lat, pr.pin.lon]}
                 radius={6}
-                pane="answerPin"
+                renderer={answerPinRenderer}
                 bubblingMouseEvents={false}
                 pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
               >
