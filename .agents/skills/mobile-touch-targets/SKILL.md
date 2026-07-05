@@ -76,6 +76,8 @@ Each logged question drops a tappable **answer pin** (radar centre, "your neares
 
 Fix: give the answer pins their **own pane above the stations pane** (`answerPin`, z-index 500 > stations 450 < markerPane 600) so the pin wins the overlap; everywhere else the pane is click-through so stations stay clickable.
 
+Answer dots use a **tap/click `<Popup>` only — no hover `<Tooltip>`** (Andrew's preference: hovering the dot should not pop a label). Keep the popup; do not add a `Tooltip` to the radar centre dot or the `poiRegions` pin. (Permanent tooltips on thermometer A/B endpoints and the coordinate-tool dot are fine — those are deliberate labels, not hover.)
+
 The non-obvious trap: the map is `<MapContainer ... preferCanvas>`, so a `CircleMarker` with only `pane="answerPin"` (no explicit renderer) falls back to a **canvas** renderer — one opaque `<canvas>` that blankets the *whole* pane and then swallows every click over the map (breaks all station clicks). You MUST give the pin an **SVG** renderer in that pane, exactly like `StationRenderer`:
 
 ```tsx
