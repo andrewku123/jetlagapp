@@ -4,6 +4,7 @@ import QuestionForm from './components/QuestionForm'
 import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
+import { encodeElimination, decodeElimination } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
 import { rewardForKind, questionGroupKey } from './data/questions'
@@ -89,6 +90,8 @@ export default function App() {
   const [sheetOpen, setSheetOpen] = useState(false)
   const [suspectSort, setSuspectSort] = useState<'name' | 'agency'>('name')
   const [suspectQuery, setSuspectQuery] = useState('')
+  const [shareCode, setShareCode] = useState('')
+  const [shareMsg, setShareMsg] = useState<string | null>(null)
   const [poiEnabled, setPoiEnabled] = useState<Set<string>>(
     () => new Set(POI_CATEGORIES.map((c) => c.key)),
   )
@@ -286,6 +289,20 @@ export default function App() {
     else set.add(id)
     update({ manualEliminated: [...set] })
   }
+  // Bulk hand-eliminate every station in `ids` (e.g. a whole line). Interlined
+  // stations serve several lines, so this eliminates them even if they also sit
+  // on a line you haven't ruled out — that's the intent of "rule out this line".
+  function eliminateMany(ids: string[]) {
+    const set = new Set(game.manualEliminated)
+    for (const id of ids) set.add(id)
+    update({ manualEliminated: [...set] })
+  }
+  // Undo a bulk elimination: only restores stations that were eliminated BY HAND
+  // (a station still ruled out by a question stays eliminated).
+  function restoreMany(ids: string[]) {
+    const drop = new Set(ids)
+    update({ manualEliminated: game.manualEliminated.filter((id) => !drop.has(id)) })
+  }
   function resetGame() {
     if (confirm('Clear all questions, eliminations and notes?')) setGame({ ...emptyGame })
   }
@@ -312,19 +329,48 @@ export default function App() {
       )}
     </li>
   )
-  const groupedLis = (list: Station[], row: (s: Station) => JSX.Element) =>
+  const groupedLis = (
+    list: Station[],
+    row: (s: Station) => JSX.Element,
+    lineAction?: 'eliminate' | 'restore',
+  ) =>
     groupByAgencyLine(list).map((g) => (
       <Fragment key={g.agency}>
         <li className="sgroup agency">
           <span className="dot" style={{ background: SYSTEM_COLORS[g.agency] ?? '#444' }} />
           {g.agency} ({g.count})
         </li>
-        {g.lines.map((l) => (
-          <Fragment key={l.line}>
-            <li className="sgroup line">{l.line} ({l.stations.length})</li>
-            {l.stations.map(row)}
-          </Fragment>
-        ))}
+        {g.lines.map((l) => {
+          const ids = l.stations.map((s) => s.id)
+          // restore only makes sense for hand-eliminated stations in this group
+          const restorable = l.stations.filter((s) => manualSet.has(s.id)).map((s) => s.id)
+          return (
+            <Fragment key={l.line}>
+              <li className="sgroup line">
+                <span className="line-name">{l.line} ({l.stations.length})</span>
+                {lineAction === 'eliminate' && (
+                  <button
+                    className="line-bulk"
+                    onClick={() => eliminateMany(ids)}
+                    title={`Eliminate all ${ids.length} stations on ${l.line}`}
+                  >
+                    ✕ all
+                  </button>
+                )}
+                {lineAction === 'restore' && restorable.length > 0 && (
+                  <button
+                    className="line-bulk restore"
+                    onClick={() => restoreMany(restorable)}
+                    title={`Restore ${restorable.length} hand-eliminated station${restorable.length > 1 ? 's' : ''} on ${l.line}`}
+                  >
+                    ↩ all
+                  </button>
+                )}
+              </li>
+              {l.stations.map(row)}
+            </Fragment>
+          )
+        })}
       </Fragment>
     ))
   function addAnnotation(a: Annotation) {
@@ -562,16 +608,66 @@ export default function App() {
                       </>
                     ) : (
                       <>
-                        {groupedLis(fRemaining, remainingLi)}
+                        {groupedLis(fRemaining, remainingLi, 'eliminate')}
                         {fEliminated.length > 0 && (
                           <li className="sgroup elimhdr">Eliminated ({fEliminated.length})</li>
                         )}
-                        {groupedLis(fEliminated, eliminatedLi)}
+                        {groupedLis(fEliminated, eliminatedLi, 'restore')}
                       </>
                     )}
                   </ul>
                 )
               })()}
+              <details className="share-board">
+                <summary>Share / load board</summary>
+                <p className="hint">
+                  Copy a code of your current eliminations to send to a teammate, or paste one
+                  to load theirs. Loading merges into your hand-eliminations — Reset first for an exact copy.
+                </p>
+                <div className="share-row">
+                  <button
+                    onClick={() => {
+                      const code = encodeElimination(eliminated.map((s) => s.id))
+                      setShareCode(code)
+                      const p = navigator.clipboard?.writeText(code)
+                      if (p) p.then(
+                        () => setShareMsg('Copied board code to clipboard.'),
+                        () => setShareMsg('Code ready below — select and copy it.'),
+                      )
+                      else setShareMsg('Code ready below — select and copy it.')
+                    }}
+                  >
+                    Copy board code
+                  </button>
+                  <button
+                    onClick={() => {
+                      const res = decodeElimination(shareCode)
+                      if (!res.ok) {
+                        setShareMsg(res.error)
+                        return
+                      }
+                      const set = new Set(game.manualEliminated)
+                      for (const id of res.ids) set.add(id)
+                      update({ manualEliminated: [...set] })
+                      setShareMsg(`Loaded ${res.ids.length} eliminated station${res.ids.length === 1 ? '' : 's'}.`)
+                    }}
+                    disabled={!shareCode.trim()}
+                  >
+                    Load code
+                  </button>
+                </div>
+                <textarea
+                  className="share-input"
+                  placeholder="Paste a board code here, then press Load…"
+                  value={shareCode}
+                  onChange={(e) => {
+                    setShareCode(e.target.value)
+                    setShareMsg(null)
+                  }}
+                  rows={2}
+                />
+                {shareMsg && <p className="hint share-msg">{shareMsg}</p>}
+              </details>
             </div>
           )}
 

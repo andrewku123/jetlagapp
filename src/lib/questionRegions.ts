@@ -564,7 +564,18 @@ function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
     const ring: Ring = band.map((pt) => [pt.lon, pt.lat] as [number, number])
     return [[ring]]
   }
-  const latlng = poiEliminatedRegion(record)
+  // Tentacles are logged-only in endgame for *station* elimination (the hider
+  // answers from their real position, not the station centre), but the eliminated
+  // geometry itself is still valid — the hider must be within the radius and
+  // nearest the answer POI/line — so it correctly sub-divides the hiding zone.
+  // Force the non-endgame region so endgame tentacles shade the zone; the map-wide
+  // path (poiEliminatedRegion) still returns null for endgame, keeping the
+  // shown-shading vs station-elimination agreement everywhere else.
+  const forNonEndgame =
+    record.endgame && (record.kind === 'tentacle' || record.kind === 'tentacle-line')
+      ? { ...record, endgame: false }
+      : record
+  const latlng = poiEliminatedRegion(forNonEndgame)
   return latlng ? toGeom(latlng) : null
 }
 

@@ -21,6 +21,7 @@ import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/po
 import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
 import { AIRPORTS, nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
+import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
@@ -842,8 +843,10 @@ export default function MapView({
   // per active record; the key changes only when a poi question is added/removed
   // or its answer/location/category changes.
   const poiRegions = useMemo(() => {
+    // `desc` (the human question text) is shown in a tap popup so mobile users —
+    // who have no hover tooltip — can tell which question an answer dot belongs to.
     type Pin = { lat: number; lon: number; label: string }
-    type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null }
+    type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null; desc: string }
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' || k === 'match-county' ||
@@ -866,9 +869,12 @@ export default function MapView({
           const a = AIRPORTS[code]
           if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
         } else if (r.kind === 'match-county' || r.kind === 'match-city' || r.kind === 'measure-zip') {
-          pin = null // the shaded county/city/ZIP polygon speaks for itself
+          // no natural marker; drop a seeker dot so there's something to tap (mobile)
+          if (Number.isFinite(seeker.lat) && Number.isFinite(seeker.lon))
+            pin = { lat: seeker.lat, lon: seeker.lon, label: 'asked from here' }
         } else if (r.kind === 'tentacle-line') {
-          pin = null // the shaded region + the drawn colored line speak for themselves
+          if (Number.isFinite(seeker.lat) && Number.isFinite(seeker.lon))
+            pin = { lat: seeker.lat, lon: seeker.lon, label: 'asked from here' }
         } else if (r.kind === 'tentacle') {
           const cat = String(r.params.poiCat)
           const key = String(r.params.value ?? '')
@@ -879,10 +885,11 @@ export default function MapView({
           const np = nearestPoi(seeker, cat)
           if (np) pin = { lat: np.lat, lon: np.lon, label: `your nearest ${poiCategoryLabel(cat)}: ${np.name}` }
         }
-        return { id: r.id, region, pin }
+        return { id: r.id, region, pin, desc: describeRecord(r, units) }
       })
       .filter((x): x is ShadeRegion => x != null)
   }, [
+    units,
     records
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
@@ -1419,6 +1426,24 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
                 />
+                {/* tappable centre dot: radar has no marker otherwise, so on
+                    mobile there'd be no way to see which question this is */}
+                <CircleMarker
+                  center={[center.lat, center.lon]}
+                  radius={6}
+                  bubblingMouseEvents={false}
+                  pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
+                >
+                  <Tooltip direction="top" offset={[0, -6]}>
+                    {describeRecord(r, units)}
+                  </Tooltip>
+                  <Popup>
+                    <div className="answer-popup">
+                      <strong>{describeRecord(r, units)}</strong>
+                      <div className="answer-popup-sub">radar centre</div>
+                    </div>
+                  </Popup>
+                </CircleMarker>
               </Fragment>
             )
           })}
@@ -1516,12 +1541,20 @@ export default function MapView({
               <CircleMarker
                 center={[pr.pin.lat, pr.pin.lon]}
                 radius={6}
-                interactive={false}
+                bubblingMouseEvents={false}
                 pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
               >
+                {/* hover label (desktop) + tap popup (works on mobile, which has
+                    no hover) so you can always see which question this dot is */}
                 <Tooltip direction="top" offset={[0, -6]}>
                   {pr.pin.label}
                 </Tooltip>
+                <Popup>
+                  <div className="answer-popup">
+                    <strong>{pr.desc}</strong>
+                    <div className="answer-popup-sub">{pr.pin.label}</div>
+                  </div>
+                </Popup>
               </CircleMarker>
             )}
           </Fragment>

@@ -2,9 +2,10 @@ import { describe, it, expect } from 'vitest'
 import type { QuestionRecord, Station } from '../types'
 import rawStations from '../data/stations.json'
 import { stationPasses } from './elimination'
-import { endgameClippedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { endgameClippedRegion, poiEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { haversineMiles } from './geo'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
+import { poisWithinRadius, poiKey, tentacleCategory, TENTACLE_CATEGORIES } from './poi'
 
 const STATIONS = rawStations as unknown as Station[]
 
@@ -120,6 +121,59 @@ describe('endgame shading stays inside the zone and agrees with elimination', ()
       if (Math.abs(stFeatD - seekerFeatD) < BOUNDARY_MI) continue // corridor-edge band
       const eliminated = !stationPasses(st, rec)
       expect(shaded, `${st.name} in-zone shading`).toBe(eliminated)
+    }
+  })
+})
+
+// In endgame, a Tentacle question still sub-divides the hiding zone: the hider
+// answered which in-play POI they are nearest, which is geometrically valid from
+// their real position too. So endgameClippedRegion must shade (the zone minus the
+// answer POI's nearest-cell), even though the map-wide poiEliminatedRegion stays
+// null for endgame tentacles (station elimination is intentionally logged-only).
+describe('endgame tentacle sub-divides the hiding zone', () => {
+  // Find a seeker + category with ≥2 in-play POIs so the tentacle actually
+  // partitions space (a single POI keeps the whole disk → no shading).
+  function findSetup() {
+    for (const cat of TENTACLE_CATEGORIES) {
+      const tc = tentacleCategory(cat.key)!
+      for (const s of STATIONS) {
+        const inPlay = poisWithinRadius(s, cat.key, tc.radiusMi)
+        if (inPlay.length >= 2) return { seeker: { lat: s.lat, lon: s.lon }, cat: tc, inPlay }
+      }
+    }
+    return null
+  }
+
+  it('shades the zone and the map-wide path stays null', () => {
+    const setup = findSetup()
+    expect(setup, 'expected some category with ≥2 in-play POIs').not.toBeNull()
+    const { seeker, cat, inPlay } = setup!
+    const rec: QuestionRecord = {
+      id: 'q',
+      kind: 'tentacle',
+      createdAt: 0,
+      params: {
+        poiCat: cat.key,
+        radiusMi: cat.radiusMi,
+        fromLat: seeker.lat,
+        fromLon: seeker.lon,
+        value: poiKey(inPlay[0]),
+      },
+      eliminates: true,
+      active: true,
+      endgame: true,
+    }
+    // map-wide elimination shading stays null in endgame (logged-only)
+    expect(poiEliminatedRegion(rec)).toBeNull()
+    // but the zone-clipped shading is present and stays inside the zone
+    const zone = seeker
+    const zoneMi = cat.radiusMi
+    const clipped = endgameClippedRegion(rec, zone, zoneMi)
+    expect(clipped, 'endgame tentacle should sub-divide the zone').not.toBeNull()
+    for (const poly of clipped!) {
+      for (const [lat, lon] of poly[0]) {
+        expect(haversineMiles({ lat, lon }, zone)).toBeLessThan(zoneMi + 0.2)
+      }
     }
   })
 })
