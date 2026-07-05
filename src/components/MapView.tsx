@@ -1468,9 +1468,6 @@ export default function MapView({
                   bubblingMouseEvents={false}
                   pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
                 >
-                  <Tooltip direction="top" offset={[0, -6]}>
-                    {describeRecord(r, units)}
-                  </Tooltip>
                   <Popup>
                     <div className="answer-popup">
                       <strong>{describeRecord(r, units)}</strong>
@@ -1580,11 +1577,8 @@ export default function MapView({
                 bubblingMouseEvents={false}
                 pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
               >
-                {/* hover label (desktop) + tap popup (works on mobile, which has
-                    no hover) so you can always see which question this dot is */}
-                <Tooltip direction="top" offset={[0, -6]}>
-                  {pr.pin.label}
-                </Tooltip>
+                {/* tap popup only (no hover tooltip) — tap/click the dot to see
+                    which question it is; works the same on desktop and mobile */}
                 <Popup>
                   <div className="answer-popup">
                     <strong>{pr.desc}</strong>
