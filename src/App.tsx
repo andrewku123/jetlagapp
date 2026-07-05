@@ -196,12 +196,12 @@ export default function App() {
         pts.push({ label: `Thermo start — ${desc}`, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#2563eb' })
         pts.push({ label: `Thermo end — ${desc}`, point: { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }, color: '#7c3aed' })
       }
-      if (r.kind === 'measure-airport') {
-        pts.push({ label: desc, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
-      }
-      if (r.kind === 'match-poi' || r.kind === 'measure-poi') {
-        pts.push({ label: desc, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
-      }
+      // NOTE: measure-airport / match-poi / measure-poi intentionally do NOT add a
+      // seeker marker here. Their ask-location dot is drawn by `poiRegions` in
+      // MapView (a CircleMarker in the answerPin SVG pane with the rich tap popup).
+      // Adding a marker here too would stack a second dot on the exact same spot,
+      // and — being in the higher markerPane — it would swallow the click and show
+      // only its plain label instead of the question popup.
     }
     if (lastClick) pts.push({ label: 'Last click', point: lastClick, color: '#111' })
     return pts
