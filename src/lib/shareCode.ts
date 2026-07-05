@@ -2,8 +2,9 @@
 // stations are eliminated, so a co-seeker on another device can load the same
 // board state. It is a bitmask over ALL stations (sorted by id) — one bit per
 // station, set when that station is eliminated — base64url-packed with a version
-// tag and the station count so a stale code from a different dataset is rejected
-// rather than silently mis-applied.
+// tag, a map fingerprint, and the station count so a code from a different map
+// (e.g. an LA board loaded on the SF map) or dataset is rejected rather than
+// silently mis-applied.
 import rawStations from '../data/stations.json'
 import type { Station } from '../types'
 
@@ -13,7 +14,24 @@ const STATIONS = rawStations as unknown as Station[]
 // bit means which station regardless of file order.
 const ALL_IDS: string[] = STATIONS.map((s) => s.id).sort()
 
-const VERSION = 'E1'
+// Human-readable name of the current map, shown in the UI so it's clear which map
+// a board code belongs to. When a second city ships, this changes with the dataset.
+export const MAP_NAME = 'Bay Area'
+
+// A short, stable fingerprint of the station set (FNV-1a over the sorted ids), so
+// two different maps get different codes even if their station *counts* collide.
+// Auto-derived from the data — no per-city bookkeeping needed.
+function fnv1a(str: string): number {
+  let h = 0x811c9dc5
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i)
+    h = Math.imul(h, 0x01000193)
+  }
+  return h >>> 0
+}
+const MAP_FP = fnv1a(ALL_IDS.join(',')).toString(36)
+
+const VERSION = 'E2'
 const B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
 
 function bytesToBase64url(bytes: Uint8Array): string {
@@ -55,23 +73,26 @@ export function encodeElimination(eliminatedIds: Iterable<string>): string {
   ALL_IDS.forEach((id, i) => {
     if (set.has(id)) bytes[i >> 3] |= 0x80 >> (i & 7)
   })
-  return `${VERSION}.${ALL_IDS.length.toString(36)}.${bytesToBase64url(bytes)}`
+  return `${VERSION}.${MAP_FP}.${ALL_IDS.length.toString(36)}.${bytesToBase64url(bytes)}`
 }
 
 export type DecodeResult = { ok: true; ids: string[] } | { ok: false; error: string }
 
 // Decode a board code back into the list of eliminated station ids. Rejects codes
-// from a different station dataset (count mismatch) or malformed input.
+// from a different map (fingerprint mismatch), a different station dataset (count
+// mismatch), or malformed input.
 export function decodeElimination(code: string): DecodeResult {
   const parts = code.trim().split('.')
-  if (parts.length !== 3 || parts[0] !== VERSION)
+  if (parts.length !== 4 || parts[0] !== VERSION)
     return { ok: false, error: 'Not a valid board code.' }
-  const count = parseInt(parts[1], 36)
+  if (parts[1] !== MAP_FP)
+    return { ok: false, error: `This code is for a different map (this is the ${MAP_NAME} map).` }
+  const count = parseInt(parts[2], 36)
   if (!Number.isFinite(count))
     return { ok: false, error: 'Not a valid board code.' }
   if (count !== ALL_IDS.length)
     return { ok: false, error: 'This code is from a different station dataset.' }
-  const bytes = base64urlToBytes(parts[2])
+  const bytes = base64urlToBytes(parts[3])
   if (!bytes || bytes.length < Math.ceil(ALL_IDS.length / 8))
     return { ok: false, error: 'Board code looks corrupted.' }
   const ids: string[] = []

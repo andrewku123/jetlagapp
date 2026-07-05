@@ -30,16 +30,26 @@ describe('board share code', () => {
   })
 
   it('rejects malformed codes', () => {
-    for (const bad of ['', 'hello', 'E1.foo', 'E2.' + (0).toString(36) + '.AAAA']) {
+    for (const bad of ['', 'hello', 'E1.foo', 'E2.abc.AAAA' /* only 3 parts */]) {
       expect(decodeElimination(bad).ok).toBe(false)
     }
   })
 
   it('rejects a code from a different station count', () => {
     const code = encodeElimination([IDS[0]])
-    const wrong = code.replace(/^E1\.[^.]+\./, `E1.${(IDS.length + 1).toString(36)}.`)
-    const res = decodeElimination(wrong)
+    const parts = code.split('.')
+    parts[2] = (IDS.length + 1).toString(36)
+    const res = decodeElimination(parts.join('.'))
     expect(res.ok).toBe(false)
+  })
+
+  it('rejects a code from a different map (fingerprint mismatch)', () => {
+    const code = encodeElimination([IDS[0]])
+    const parts = code.split('.')
+    parts[1] = parts[1] === 'zzzz' ? 'yyyy' : 'zzzz'
+    const res = decodeElimination(parts.join('.'))
+    expect(res.ok).toBe(false)
+    if (!res.ok) expect(res.error).toMatch(/different map/i)
   })
 
   it('produces a reasonably short code', () => {

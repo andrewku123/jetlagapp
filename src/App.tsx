@@ -4,7 +4,7 @@ import QuestionForm from './components/QuestionForm'
 import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
-import { encodeElimination, decodeElimination } from './lib/shareCode'
+import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
 import { rewardForKind, questionGroupKey } from './data/questions'
@@ -618,56 +618,6 @@ export default function App() {
                   </ul>
                 )
               })()}
-              <details className="share-board">
-                <summary>Share / load board</summary>
-                <p className="hint">
-                  Copy a code of your current eliminations to send to a teammate, or paste one
-                  to load theirs. Loading merges into your hand-eliminations — Reset first for an exact copy.
-                </p>
-                <div className="share-row">
-                  <button
-                    onClick={() => {
-                      const code = encodeElimination(eliminated.map((s) => s.id))
-                      setShareCode(code)
-                      const p = navigator.clipboard?.writeText(code)
-                      if (p) p.then(
-                        () => setShareMsg('Copied board code to clipboard.'),
-                        () => setShareMsg('Code ready below — select and copy it.'),
-                      )
-                      else setShareMsg('Code ready below — select and copy it.')
-                    }}
-                  >
-                    Copy board code
-                  </button>
-                  <button
-                    onClick={() => {
-                      const res = decodeElimination(shareCode)
-                      if (!res.ok) {
-                        setShareMsg(res.error)
-                        return
-                      }
-                      const set = new Set(game.manualEliminated)
-                      for (const id of res.ids) set.add(id)
-                      update({ manualEliminated: [...set] })
-                      setShareMsg(`Loaded ${res.ids.length} eliminated station${res.ids.length === 1 ? '' : 's'}.`)
-                    }}
-                    disabled={!shareCode.trim()}
-                  >
-                    Load code
-                  </button>
-                </div>
-                <textarea
-                  className="share-input"
-                  placeholder="Paste a board code here, then press Load…"
-                  value={shareCode}
-                  onChange={(e) => {
-                    setShareCode(e.target.value)
-                    setShareMsg(null)
-                  }}
-                  rows={2}
-                />
-                {shareMsg && <p className="hint share-msg">{shareMsg}</p>}
-              </details>
             </div>
           )}
 
@@ -757,9 +707,62 @@ export default function App() {
             <div className="panel legend">
               <h3>About this map</h3>
               <p className="info">
+                <span className="info-tag">{MAP_NAME}</span>{' '}
                 <span className="info-tag">{game.gameSize}</span> game ({STATIONS.length} stations,
                 auto-set from station count).
               </p>
+              <h3>Share / load board</h3>
+              <details className="share-board" open>
+                <summary>Board code</summary>
+                <p className="hint">
+                  Copy a code of your current eliminations to send to a teammate, or paste one
+                  to load theirs. Loading merges into your hand-eliminations — Reset first for an exact copy.
+                  A code only loads on the same map ({MAP_NAME}); a code from another city's map is rejected.
+                </p>
+                <div className="share-row">
+                  <button
+                    onClick={() => {
+                      const code = encodeElimination(eliminated.map((s) => s.id))
+                      setShareCode(code)
+                      const p = navigator.clipboard?.writeText(code)
+                      if (p) p.then(
+                        () => setShareMsg('Copied board code to clipboard.'),
+                        () => setShareMsg('Code ready below — select and copy it.'),
+                      )
+                      else setShareMsg('Code ready below — select and copy it.')
+                    }}
+                  >
+                    Copy board code
+                  </button>
+                  <button
+                    onClick={() => {
+                      const res = decodeElimination(shareCode)
+                      if (!res.ok) {
+                        setShareMsg(res.error)
+                        return
+                      }
+                      const set = new Set(game.manualEliminated)
+                      for (const id of res.ids) set.add(id)
+                      update({ manualEliminated: [...set] })
+                      setShareMsg(`Loaded ${res.ids.length} eliminated station${res.ids.length === 1 ? '' : 's'}.`)
+                    }}
+                    disabled={!shareCode.trim()}
+                  >
+                    Load code
+                  </button>
+                </div>
+                <textarea
+                  className="share-input"
+                  placeholder="Paste a board code here, then press Load…"
+                  value={shareCode}
+                  onChange={(e) => {
+                    setShareCode(e.target.value)
+                    setShareMsg(null)
+                  }}
+                  rows={2}
+                />
+                {shareMsg && <p className="hint share-msg">{shareMsg}</p>}
+              </details>
               <p className="info">
                 <strong>Eligibility:</strong> hiders' stations must be served at least once an hour
                 (≤{ELIGIBLE_HEADWAY_MIN} min between trains). Eligible —{' '}
@@ -794,9 +797,9 @@ export default function App() {
                 </div>
               ))}
               <p className="hint">
-                Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name length)
-                and Measuring (airport / sea level). POI-based questions (parks, hospitals, museums, etc.) and
-                Tentacles are coming next.
+                Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name
+                length / ZIP / POI category), Measuring (airport / sea level / coastline / ZIP / POI), and
+                Tentacles. Photo and Inside questions are logged only.
               </p>
             </div>
           )}

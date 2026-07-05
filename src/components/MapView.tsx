@@ -688,6 +688,25 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Dedicated pane for the tappable answer/seeker dots (which question is this?).
+// Placed just above the station pane (450) so an answer dot that lands on top of a
+// station — e.g. the "nearest airport" dot sitting on the OAK Airport station — is
+// the one that takes the click, instead of the station swallowing it. There are
+// only a handful of these dots at a time, so letting them win the rare overlap is
+// the right trade-off. Kept below markerPane (600).
+function AnswerPinPane() {
+  const map = useMap()
+  useEffect(() => {
+    const name = 'answerPin'
+    let pane = map.getPane(name)
+    if (!pane) {
+      pane = map.createPane(name)
+      pane.style.zIndex = '500'
+    }
+  }, [map])
+  return null
+}
+
 // Dedicated pane for the transient coord read-out dot + its label. Placed above
 // markerPane (600) and tooltipPane (650) — Leaflet auto-stacks marker layers by
 // latitude within a shared pane, so a station dot or a measure endpoint/label at
@@ -1288,6 +1307,7 @@ export default function MapView({
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
+        <AnswerPinPane />
         <CoordPane />
         <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
@@ -1431,6 +1451,7 @@ export default function MapView({
                 <CircleMarker
                   center={[center.lat, center.lon]}
                   radius={6}
+                  pane="answerPin"
                   bubblingMouseEvents={false}
                   pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
                 >
@@ -1541,6 +1562,7 @@ export default function MapView({
               <CircleMarker
                 center={[pr.pin.lat, pr.pin.lon]}
                 radius={6}
+                pane="answerPin"
                 bubblingMouseEvents={false}
                 pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
               >
@@ -1605,9 +1627,17 @@ export default function MapView({
                   />
                 )
               }
-              // POI / measure / feature / matching: outline the full (unclipped)
-              // eliminated boundary, like the radar circle stays whole in endgame.
-              const region = poiEliminatedRegion(r)
+              // POI / measure / feature / matching / tentacle: outline the full
+              // (unclipped) eliminated boundary, like the radar circle stays whole
+              // in endgame. Tentacles return null map-wide in endgame (station
+              // elimination is logged-only there), so force the non-endgame region
+              // to get the geometry — same trick as eliminatedGeom in
+              // questionRegions — otherwise the border wouldn't draw.
+              const forGeom =
+                r.kind === 'tentacle' || r.kind === 'tentacle-line'
+                  ? { ...r, endgame: false }
+                  : r
+              const region = poiEliminatedRegion(forGeom)
               return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
             })}
 
