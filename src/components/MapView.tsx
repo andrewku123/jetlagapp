@@ -18,8 +18,7 @@ import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
-import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
-import { AIRPORTS, nearestAirport } from '../lib/airports'
+import { nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
@@ -886,31 +885,32 @@ export default function MapView({
         const region = poiEliminatedRegion(r)
         if (!region) return null
         const seeker = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
+        const hasSeeker = Number.isFinite(seeker.lat) && Number.isFinite(seeker.lon)
         let pin: Pin | null = null
-        if (r.kind === 'measure-feature') {
-          const key = String(r.params.feature)
-          const npf = nearestPointOnFeature(seeker, key)
-          if (npf) pin = { lat: npf.lat, lon: npf.lon, label: `nearest ${measureFeatureNoun(key)}` }
-        } else if (r.kind === 'match-airport' || r.kind === 'measure-airport') {
-          const code = nearestAirport(seeker).code
-          const a = AIRPORTS[code]
-          if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
-        } else if (r.kind === 'match-county' || r.kind === 'match-city' || r.kind === 'measure-zip') {
-          // no natural marker; drop a seeker dot so there's something to tap (mobile)
-          if (Number.isFinite(seeker.lat) && Number.isFinite(seeker.lon))
-            pin = { lat: seeker.lat, lon: seeker.lon, label: 'asked from here' }
-        } else if (r.kind === 'tentacle-line') {
-          if (Number.isFinite(seeker.lat) && Number.isFinite(seeker.lon))
-            pin = { lat: seeker.lat, lon: seeker.lon, label: 'asked from here' }
-        } else if (r.kind === 'tentacle') {
+        if (r.kind === 'tentacle') {
+          // Tentacles are the hider's reveal (their nearest POI), not a question
+          // the seeker measured from a location — so the meaningful dot is the
+          // hider's answer POI, not an ask-location.
           const cat = String(r.params.poiCat)
           const key = String(r.params.value ?? '')
           const ans = (POI_BY_CATEGORY[cat] ?? []).find((poi) => poiKey(poi) === key)
           if (ans) pin = { lat: ans.lat, lon: ans.lon, label: `hider's nearest ${poiCategoryLabel(cat)}: ${ans.name}` }
-        } else {
-          const cat = String(r.params.poiCat)
-          const np = nearestPoi(seeker, cat)
-          if (np) pin = { lat: np.lat, lon: np.lon, label: `your nearest ${poiCategoryLabel(cat)}: ${np.name}` }
+        } else if (hasSeeker) {
+          // Every seeker-asked question drops its dot at the ask location (where it
+          // was measured from), NOT at the answer airport/POI/coastline point. This
+          // keeps the dot where the seeker actually stood, and stops two questions
+          // about the same POI (e.g. a matching-zoo + a measuring-zoo) from piling
+          // their dots on top of that one POI. The answer detail still shows in the
+          // tap popup below.
+          let label = 'asked from here'
+          if (r.kind === 'match-airport' || r.kind === 'measure-airport') {
+            label = `your nearest airport: ${nearestAirport(seeker).code}`
+          } else if (r.kind === 'match-poi' || r.kind === 'measure-poi') {
+            const cat = String(r.params.poiCat)
+            const np = nearestPoi(seeker, cat)
+            if (np) label = `your nearest ${poiCategoryLabel(cat)}: ${np.name}`
+          }
+          pin = { lat: seeker.lat, lon: seeker.lon, label }
         }
         return { id: r.id, region, pin, desc: describeRecord(r, units) }
       })

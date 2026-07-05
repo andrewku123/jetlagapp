@@ -70,6 +70,43 @@ pane.style.display = mode === 'hidden' ? 'none' : ''  // hidden = gone + non-int
 
 Same principle for the coord-dot pane, but the opposite direction: a purely-visual pane above the station pane must be `pointer-events:none` so its (canvas) renderer doesn't blanket every click. Rule of thumb: to make an interactive vector pane non-clickable, hide it with `display:none`; `pointer-events:none` only reliably neutralizes a pane whose contents are non-interactive.
 
+## Making an answer/seeker dot win the click over a station under it
+
+Each logged question drops a tappable **answer pin** (radar centre, "your nearest airport" dot, POI answer, "asked from here"). When that pin lands exactly on a station — the classic case is the *nearest-airport* dot sitting on the **OAK Airport** station — the station dot swallowed the click, so on desktop *and* mobile you couldn't open the question popup.
+
+Fix: give the answer pins their **own pane above the stations pane** (`answerPin`, z-index 500 > stations 450 < markerPane 600) so the pin wins the overlap; everywhere else the pane is click-through so stations stay clickable.
+
+The non-obvious trap: the map is `<MapContainer ... preferCanvas>`, so a `CircleMarker` with only `pane="answerPin"` (no explicit renderer) falls back to a **canvas** renderer — one opaque `<canvas>` that blankets the *whole* pane and then swallows every click over the map (breaks all station clicks). You MUST give the pin an **SVG** renderer in that pane, exactly like `StationRenderer`:
+
+```tsx
+function AnswerPinRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) {
+  const map = useMap()
+  useEffect(() => {
+    const name = 'answerPin'
+    let pane = map.getPane(name) ?? map.createPane(name)
+    pane.style.zIndex = '500'                    // above stations (450)
+    const renderer = L.svg({ padding: 0.5, pane: name }).addTo(map)
+    onChange(renderer)
+    return () => { renderer.remove(); onChange(null) }
+  }, [map, onChange])
+  return null
+}
+const [answerPinRenderer, setAnswerPinRenderer] = useState<L.SVG | null>(null)
+```
+
+And — critically — **gate the pin markers on the renderer** so they mount into the SVG pane. react-leaflet fixes a `CircleMarker`'s renderer at creation time and never re-assigns it, so a pin rendered while `answerPinRenderer` is still `null` is stuck on the default canvas forever. Mount only once it exists (same pattern the station markers use):
+
+```tsx
+{pin && answerPinRenderer && (
+  <CircleMarker center={[pin.lat, pin.lon]} radius={6}
+    renderer={answerPinRenderer} bubblingMouseEvents={false} ... />
+)}
+```
+
+Where to place the pin: drop a seeker-asked question's dot at its **ask location** (`params.fromLat/fromLon`), not at the answer airport/POI/coastline point. Putting it on the answer POI both hides it under that POI's own dot and makes two questions about the same POI (e.g. a matching-zoo + a measuring-zoo) pile their dots on one spot; the answer detail still shows in the tap popup. The exception is **Tentacles**, which is the hider's reveal (no seeker ask-location) — its dot belongs on the hider's answer POI (`poiRegions` builder in `MapView.tsx`).
+
+Verify deterministically over CDP: with a `match-airport` question (`params:{fromLat,fromLon,value:'OAK',answer:'yes'}`) in `localStorage['bahs.game.v1']`, `document.elementFromPoint` at the pin centre must resolve into `.leaflet-answerPin-pane` (pin wins), while a station elsewhere still resolves into `.leaflet-stations-pane` (no blanket). See the `verify-map-interactions` skill for the CDP harness.
+
 ## Notes
 
 - The app layout is already responsive: at `<=760px` the sidebar becomes a slide-up bottom sheet and the map goes full-screen (`@media (max-width: 760px)` in `src/index.css`). No layout change needed.
