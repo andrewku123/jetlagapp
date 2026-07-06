@@ -134,6 +134,12 @@ zone** — the circle the hider must be within for the endgame — shading every
 outside it. A banner shows the station and the zone radius. Choose **Exit
 endgame** (popup or banner) to go back to the full board.
 
+The **Measuring — Rail station** question is designed for this phase: in the
+first half it eliminates nothing (every hiding station is itself a rail station,
+so your distance is 0), but in the endgame the hider answers from their real
+position, and "closer/further from the nearest rail station" carves the hiding
+zone just like the airport measuring question.
+
 ## 10. The map toolbox (drawing tools)
 
 A slim vertical toolbar sits on the right edge of the map. Drawings are saved

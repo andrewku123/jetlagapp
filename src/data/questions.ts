@@ -148,10 +148,10 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
   {
     kind: 'measure-railstation',
     category: 'Measuring',
-    label: 'Measuring — Rail station (log only)',
+    label: 'Measuring — Rail station (endgame)',
     cards: 'draw 3, keep 1',
-    eliminates: false,
-    blurb: 'Compared to me, are you closer to or further from a rail station? Log only — every hiding station in this map is itself a rail station (distance 0), so this can never eliminate; recorded for your reference.',
+    eliminates: true,
+    blurb: 'Compared to me, are you closer to or further from the nearest rail station? Inert in the first half — every hiding station is itself a rail station (distance 0), so nothing is eliminated — but useful in the endgame, where it carves the hiding zone. Set your location; the app shows your distance to the nearest station.',
   },
   // --- Measuring · Borders / coastline (expands per feature) ---
   {

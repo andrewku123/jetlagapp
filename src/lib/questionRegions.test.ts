@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, metroLineEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, railStationMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, metroLineEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { metroLinesWithinRadius, nearestMetroLine, metroLineDistanceMiles } from './metroLines'
 import { poisWithinRadius } from './poi'
 import { nearestAirport } from './airports'
@@ -39,7 +39,7 @@ function pointInMulti(lat: number, lon: number, mp: LatLngMultiPolygon): boolean
 }
 
 function rec(
-  kind: 'match-poi' | 'measure-poi' | 'measure-feature' | 'match-airport' | 'measure-airport' | 'match-county' | 'match-city',
+  kind: 'match-poi' | 'measure-poi' | 'measure-feature' | 'match-airport' | 'measure-airport' | 'measure-railstation' | 'match-county' | 'match-city',
   params: Record<string, unknown>,
 ): QuestionRecord {
   return { id: 'q', kind, createdAt: 0, params, eliminates: true, active: true }
@@ -218,6 +218,29 @@ describe('airportMeasureEliminatedRegion shades the your-distance airport disks'
   it('FURTHER: the union around SFO is shaded', () => {
     const region = airportMeasureEliminatedRegion(rec('measure-airport', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }))!
     expect(pointInMulti(37.6191, -122.3816, region)).toBe(true)
+  })
+})
+
+describe('railStationMeasureEliminatedRegion shades the your-distance rail-station disks', () => {
+  // A seeker point out over the bay, well away from any station, so the union of
+  // your-distance disks is non-trivial and a nearby station is inside it.
+  const seeker = { lat: 37.8000, lon: -122.3300 }
+  const embarcadero = { lat: 37.7929, lon: -122.3969 } // a real BART/Muni station
+
+  it('CLOSER: a station is inside the union (kept ⇒ unshaded)', () => {
+    const region = railStationMeasureEliminatedRegion(rec('measure-railstation', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'closer' }))!
+    expect(pointInMulti(embarcadero.lat, embarcadero.lon, region)).toBe(false)
+  })
+
+  it('FURTHER: the union around a station is shaded', () => {
+    const region = railStationMeasureEliminatedRegion(rec('measure-railstation', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }))!
+    expect(pointInMulti(embarcadero.lat, embarcadero.lon, region)).toBe(true)
+  })
+
+  it('a seeker sitting exactly on a station (distance 0) shades nothing', () => {
+    const s0 = (rawStations as unknown as Station[])[0]
+    const region = railStationMeasureEliminatedRegion(rec('measure-railstation', { fromLat: s0.lat, fromLon: s0.lon, answer: 'closer' }))
+    expect(region).toBeNull()
   })
 })
 

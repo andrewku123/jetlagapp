@@ -34,6 +34,8 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Closer/further from ${MEASURE_FEATURE_LABELS[String(p.feature) as MeasureFeatureKey] ?? 'a border'}${arrow(String(a))}`
     case 'measure-airport':
       return `Closer/further from airport${arrow(String(a))}`
+    case 'measure-railstation':
+      return `Closer/further from nearest rail station${arrow(String(a))}`
     case 'measure-sealevel':
       return `Altitude vs ${formatElevation(Number(p.value), units)}${arrow(String(a))}`
     case 'measure-zip':
@@ -86,10 +88,9 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       return `Same ${subject}?${detail}${arrow(String(a).toUpperCase())} (log only)`
     }
     case 'measure-hsr':
-    case 'measure-railstation':
     case 'measure-water': {
       const detail = p.description ? ` "${String(p.description)}"` : ''
-      const subject = { 'measure-hsr': 'high-speed rail', 'measure-railstation': 'rail station', 'measure-water': 'body of water' }[r.kind]
+      const subject = { 'measure-hsr': 'high-speed rail', 'measure-water': 'body of water' }[r.kind]
       return `Closer/further from ${subject}?${detail}${arrow(String(a))} (log only)`
     }
     default:

@@ -65,7 +65,11 @@ and Quick Start guide (`/docs/quick_start_guide/asking_questions`,
   Keep its prompt + "Send hider" line in sync with the app's Ask form
   (`inside-floor`), which makes the seeker enter both building and floor.
 - **`app` badge** = the seeker tool auto-eliminates for that subject (airport,
-  transit line, station-name length, county, city, sea level, radar, thermometer).
+  transit line, station-name length, county, city, sea level, radar, thermometer,
+  ZIP, coastline/county border, the POI subjects, and **rail station** — labelled
+  "(endgame only)" because it eliminates nothing in the first half). **Body of
+  water** is intentionally NOT badged: it stays log-only/manual (no clean dataset
+  matches the "named on Google" rule), so the seeker eliminates it by hand.
 
 ## Layout (current)
 - **Font:** IBM Plex Sans (+ IBM Plex Mono for coords), loaded from Google

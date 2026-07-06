@@ -45,6 +45,24 @@ describe('stationPasses — gating', () => {
   })
 })
 
+describe('stationPasses — measure-railstation (endgame)', () => {
+  // A seeker far out over the ocean is far from every rail station; a station on
+  // land is close to one, so under "closer" the station is kept and under
+  // "further" it is dropped.
+  const ocean = { lat: 37.5, lon: -123.1 }
+  it('keeps a land station when the seeker is farther from rail (closer)', () => {
+    expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'closer' }))).toBe(true)
+  })
+  it('drops that same station under "further"', () => {
+    expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'further' }))).toBe(false)
+  })
+  it('first half is inert: a hider at a station (distance ~0) survives an honest "closer"', () => {
+    const sf = station()
+    // Seeker also at a station ⇒ both ~0 from nearest rail ⇒ tie folds to closer.
+    expect(stationPasses(sf, record('measure-railstation', { fromLat: sf.lat, fromLon: sf.lon, answer: 'closer' }))).toBe(true)
+  })
+})
+
 describe('stationPasses — radar', () => {
   const here = { lat: 37.7749, lon: -122.4194 }
   it('keeps a near station on a yes within 1mi', () => {

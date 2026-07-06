@@ -3,6 +3,7 @@ import type { LatLng, QuestionRecord } from '../types'
 import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
+import { RAIL_STATIONS, nearestRailStationMiles } from './railStations'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
 import { zipAt, zipCodes, zipGeom } from './zip'
@@ -454,6 +455,27 @@ export function airportMeasureEliminatedRegion(record: QuestionRecord): LatLngMu
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Measuring a nearest rail station: shade the union of your-distance disks
+// around every rail station, or its complement. Map-wide this eliminates no
+// station (each candidate IS a rail station → distance 0, so an honest
+// "closer"/tie answer keeps them all); its value is in the endgame, where it
+// sub-divides the hiding zone. Same machinery as the airport measure. ----------
+
+export function railStationMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  if (!Number.isFinite(seeker.lat) || !Number.isFinite(seeker.lon)) return null
+  const d = nearestRailStationMiles(seeker)
+  if (!Number.isFinite(d) || d <= 0) return null
+  const segs = diskSegments(RAIL_STATIONS.length, d)
+  const disks: Polygon[] = RAIL_STATIONS.map((s) => [diskRing(s, d, segs)])
+  const union = robustUnion(disks)
+  if (!union.length) return null
+  const closer = p.answer === 'closer'
+  const elim = closer ? polygonClipping.difference([WORLD_RING], union) : union
+  return elim.length ? toLatLng(elim) : null
+}
+
 // --- Matching a county (2nd admin): shade outside (Yes) / inside (No) the
 // seeker's county polygon. -------------------------------------------------------
 
@@ -518,6 +540,7 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'measure-feature') return featureMeasureEliminatedRegion(record)
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
+  if (record.kind === 'measure-railstation') return railStationMeasureEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
