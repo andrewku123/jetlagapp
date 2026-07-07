@@ -41,4 +41,22 @@ describe('play-area scoping and question demotion', () => {
     // 7 Muni lines still discriminate, so line Matching keeps eliminating.
     expect(m.LOG_ONLY_KINDS.has('match-line')).toBe(false)
   })
+
+  it('SF Muni: border endgame-zone sliver reads its real city/county (Brisbane, San Mateo)', async () => {
+    await loadFor('sfmuni')
+    const { countyAt } = await import('../lib/counties')
+    const { cityAt, inPlayArea } = await import('../lib/cities')
+    // Bayshore/Sunnydale's 0.25 mi endgame hiding zone spills south past the SF
+    // line into Brisbane (San Mateo). That sliver is still in play, and must name
+    // its true city/county so endgame county/city carving is correct — not
+    // "unincorporated / outside the play area", nor a wrong "San Francisco".
+    const border = { lat: 37.7062, lon: -122.4048 }
+    expect(inPlayArea(border)).toBe(true)
+    expect(cityAt(border)).toBe('Brisbane city')
+    expect(countyAt(border)).toBe('San Mateo')
+    // A point just inside SF proper still resolves to San Francisco.
+    const central = { lat: 37.76, lon: -122.44 }
+    expect(cityAt(central)).toBe('San Francisco city')
+    expect(countyAt(central)).toBe('San Francisco')
+  })
 })
