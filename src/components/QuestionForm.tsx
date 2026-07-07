@@ -5,7 +5,7 @@ import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, POI_COUNTS, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
 import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
-import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
+import { MEASURE_FEATURE_KEYS, AVAILABLE_MEASURE_FEATURE_KEYS, featurePolylines, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
 import { nearestRailStation } from '../lib/railStations'
 import { countyAt } from '../lib/counties'
@@ -247,6 +247,12 @@ export default function QuestionForm({
     if (k === 'measure-poi') return n === 0
     return false
   }
+  // A measure-feature subject (coastline / a border) the active map has no
+  // in-play geometry for: "anything outside the play area doesn't exist", so it
+  // can't be measured. Kept in the dropdown as log-only rather than removed.
+  function featureDemoted(f: string): boolean {
+    return featurePolylines(f).length === 0
+  }
   // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
   const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
   const [tentPoi, setTentPoi] = useState<string>('')
@@ -345,7 +351,9 @@ export default function QuestionForm({
       }
       case 'measure-feature': {
         if (!center) return alert('Set your location (paste coordinates or click the map).')
-        if (!Number.isFinite(distanceToFeatureMiles(center, feature)))
+        // A feature with no in-play geometry is demoted to log-only (still logged
+        // for the seeker's notes, but eliminates nothing) rather than blocked.
+        if (!featureDemoted(feature) && !Number.isFinite(distanceToFeatureMiles(center, feature)))
           return alert('That feature has no geometry in the play area.')
         params = { feature, fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
@@ -579,9 +587,9 @@ export default function QuestionForm({
       }))
     }
     if (q.kind === 'measure-feature') {
-      return AVAILABLE_MEASURE_FEATURE_KEYS.map((k) => ({
+      return MEASURE_FEATURE_KEYS.map((k) => ({
         value: `${q.kind}::${k}`,
-        label: featureSubjectLabel(k),
+        label: featureSubjectLabel(k) + (featureDemoted(k) ? ' (log only)' : ''),
         group: FEATURE_SUBJECT_GROUP[k] ?? 'Borders',
       }))
     }
@@ -667,7 +675,9 @@ export default function QuestionForm({
       ? (POI_COUNTS[poiCat] ?? 0) === 0
         ? `there is no ${poiCategoryLabel(poiCat)} in the play area on this map`
         : `there is only one ${poiCategoryLabel(poiCat)} in the play area on this map`
-      : undefined
+      : kind === 'measure-feature' && featureDemoted(feature)
+        ? `there is no ${measureFeatureNoun(feature)} in the play area on this map`
+        : undefined
   // County/city on a single-value map are useless for regular elimination but
   // still carve the endgame hiding zone at a border, so their note points the
   // seeker to the "Endgame question" checkbox rather than calling them dead.
@@ -893,7 +903,7 @@ export default function QuestionForm({
           {center && (() => {
             const d = distanceToFeatureMiles(center, feature)
             if (!Number.isFinite(d))
-              return <p className="blurb poi-readout">No geometry for {measureFeatureNoun(feature)}.</p>
+              return <p className="blurb poi-readout">No {measureFeatureNoun(feature)} in the play area on this map.</p>
             return (
               <p className="blurb poi-readout">
                 Distance to nearest {measureFeatureNoun(feature)}: <b>{formatDistance(d, units)}</b>
