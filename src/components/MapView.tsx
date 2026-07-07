@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -18,9 +18,9 @@ import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
-import { nearestPointOnFeature, measureFeatureNoun } from '../lib/measureFeatures'
-import { AIRPORTS, nearestAirport } from '../lib/airports'
+import { nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
+import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
@@ -433,6 +433,14 @@ function MapFocusPoi({ target }: { target: { lat: number; lon: number; nonce: nu
   return null
 }
 
+// Exposes the live Leaflet map instance to the parent via a ref, so popup
+// action buttons can call map.closePopup() after acting.
+function MapRefCapture({ mapRef }: { mapRef: MutableRefObject<L.Map | null> }) {
+  const map = useMap()
+  mapRef.current = map
+  return null
+}
+
 // Satellite imagery clipped to the in-play county polygons. Lives in its own
 // pane so an SVG clip-path (rebuilt on every view change) can mask it to the
 // county shapes; the pane is `leaflet-zoom-hide` so the clip never lags behind
@@ -687,6 +695,33 @@ function StationRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) 
   return null
 }
 
+// Dedicated SVG renderer for the tappable answer/seeker dots (which question is
+// this?), in a pane just above the station pane (450). Placing it above stations
+// means an answer dot that lands on top of a station — e.g. the "nearest airport"
+// dot sitting on the OAK Airport station — wins the click instead of the station
+// swallowing it. It MUST be SVG, not the map's default canvas: the map uses
+// preferCanvas, so without an explicit SVG renderer the pin would fall back to a
+// canvas that blankets the whole pane and would then swallow every click over the
+// map (see StationRenderer). SVG keeps the pane click-through except the pin path.
+function AnswerPinRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) {
+  const map = useMap()
+  useEffect(() => {
+    const paneName = 'answerPin'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      pane.style.zIndex = '500' // above stations (450), below markerPane (600)
+    }
+    const renderer = L.svg({ padding: 0.5, pane: paneName }).addTo(map)
+    onChange(renderer)
+    return () => {
+      renderer.remove()
+      onChange(null)
+    }
+  }, [map, onChange])
+  return null
+}
+
 // Dedicated pane for the transient coord read-out dot + its label. Placed above
 // markerPane (600) and tooltipPane (650) — Leaflet auto-stacks marker layers by
 // latitude within a shared pane, so a station dot or a measure endpoint/label at
@@ -792,6 +827,14 @@ export default function MapView({
   stationView,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
+  // the toolbar collapses to a single 🧰 button so it barely covers the map while
+  // panning / searching / eliminating; tapping it opens the tools, closing it
+  // drops back to select (pan) mode
+  const [toolbarOpen, setToolbarOpen] = useState(false)
+  // live map instance, captured from inside <MapContainer>, so popup action
+  // buttons can close their own popup after acting (e.g. entering endgame)
+  const mapInstanceRef = useRef<L.Map | null>(null)
+  const closePopup = () => mapInstanceRef.current?.closePopup()
   // stations are only clickable in select mode; in draw modes clicks pass
   // through to the map so you can snap a point/endpoint onto a station
   const selectMode = tool === 'select'
@@ -842,11 +885,16 @@ export default function MapView({
   // per active record; the key changes only when a poi question is added/removed
   // or its answer/location/category changes.
   const poiRegions = useMemo(() => {
+    // `desc` (the human question text) is shown in a tap popup so mobile users —
+    // who have no hover tooltip — can tell which question an answer dot belongs to.
     type Pin = { lat: number; lon: number; label: string }
-    type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null }
+    type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null; desc: string }
+    // measure-railstation is deliberately absent: it eliminates no station and
+    // only shades the endgame hiding zone (see endgameRegions), never map-wide.
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
-      k === 'match-airport' || k === 'measure-airport' || k === 'match-county' ||
+      k === 'match-airport' || k === 'measure-airport' ||
+      k === 'match-county' ||
       k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
@@ -856,37 +904,43 @@ export default function MapView({
         const region = poiEliminatedRegion(r)
         if (!region) return null
         const seeker = { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }
+        const hasSeeker = Number.isFinite(seeker.lat) && Number.isFinite(seeker.lon)
         let pin: Pin | null = null
-        if (r.kind === 'measure-feature') {
-          const key = String(r.params.feature)
-          const npf = nearestPointOnFeature(seeker, key)
-          if (npf) pin = { lat: npf.lat, lon: npf.lon, label: `nearest ${measureFeatureNoun(key)}` }
-        } else if (r.kind === 'match-airport' || r.kind === 'measure-airport') {
-          const code = nearestAirport(seeker).code
-          const a = AIRPORTS[code]
-          if (a) pin = { lat: a.lat, lon: a.lon, label: `your nearest airport: ${code}` }
-        } else if (r.kind === 'match-county' || r.kind === 'match-city' || r.kind === 'measure-zip') {
-          pin = null // the shaded county/city/ZIP polygon speaks for itself
-        } else if (r.kind === 'tentacle-line') {
-          pin = null // the shaded region + the drawn colored line speak for themselves
-        } else if (r.kind === 'tentacle') {
+        if (r.kind === 'tentacle') {
+          // Tentacles are the hider's reveal (their nearest POI), not a question
+          // the seeker measured from a location — so the meaningful dot is the
+          // hider's answer POI, not an ask-location.
           const cat = String(r.params.poiCat)
           const key = String(r.params.value ?? '')
           const ans = (POI_BY_CATEGORY[cat] ?? []).find((poi) => poiKey(poi) === key)
           if (ans) pin = { lat: ans.lat, lon: ans.lon, label: `hider's nearest ${poiCategoryLabel(cat)}: ${ans.name}` }
-        } else {
-          const cat = String(r.params.poiCat)
-          const np = nearestPoi(seeker, cat)
-          if (np) pin = { lat: np.lat, lon: np.lon, label: `your nearest ${poiCategoryLabel(cat)}: ${np.name}` }
+        } else if (hasSeeker) {
+          // Every seeker-asked question drops its dot at the ask location (where it
+          // was measured from), NOT at the answer airport/POI/coastline point. This
+          // keeps the dot where the seeker actually stood, and stops two questions
+          // about the same POI (e.g. a matching-zoo + a measuring-zoo) from piling
+          // their dots on top of that one POI. The answer detail still shows in the
+          // tap popup below.
+          let label = 'asked from here'
+          if (r.kind === 'match-airport' || r.kind === 'measure-airport') {
+            label = `your nearest airport: ${nearestAirport(seeker).code}`
+          } else if (r.kind === 'match-poi' || r.kind === 'measure-poi') {
+            const cat = String(r.params.poiCat)
+            const np = nearestPoi(seeker, cat)
+            if (np) label = `your nearest ${poiCategoryLabel(cat)}: ${np.name}`
+          }
+          pin = { lat: seeker.lat, lon: seeker.lon, label }
         }
-        return { id: r.id, region, pin }
+        return { id: r.id, region, pin, desc: describeRecord(r, units) }
       })
       .filter((x): x is ShadeRegion => x != null)
   }, [
+    units,
     records
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
-        r.kind === 'match-airport' || r.kind === 'measure-airport' || r.kind === 'match-county' ||
+        r.kind === 'match-airport' || r.kind === 'measure-airport' ||
+        r.kind === 'match-county' ||
         r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
@@ -926,6 +980,8 @@ export default function MapView({
   // shared SVG renderer for the station markers (see StationRenderer); kept in
   // state so the markers only mount once the renderer/pane exist
   const [stationRenderer, setStationRenderer] = useState<L.SVG | null>(null)
+  // separate SVG renderer for the answer/seeker pins, in a pane above the stations
+  const [answerPinRenderer, setAnswerPinRenderer] = useState<L.SVG | null>(null)
 
   function readCoord(p: LatLng) {
     setCoordPin(p)
@@ -1061,7 +1117,7 @@ export default function MapView({
         <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{starred.has(st.id) ? '★ Unstar' : '☆ Star'}</button>
           {manualEliminated.has(st.id) && (
-            <button onClick={() => onToggleEliminate(st.id)}>↩ Restore</button>
+            <button onClick={() => { onToggleEliminate(st.id); closePopup() }}>↩ Restore</button>
           )}
         </div>
       </div>
@@ -1080,14 +1136,13 @@ export default function MapView({
           {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
           {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
         </div>
-        <div className="muted">Nearest airport: {st.nearestAirport}</div>
         <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
-          <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
+          <button onClick={() => { onToggleEliminate(st.id); closePopup() }}>✕ Eliminate</button>
           {endgameStation?.id === st.id ? (
-            <button onClick={onExitEndgame}>↩ Exit endgame</button>
+            <button onClick={() => { onExitEndgame(); closePopup() }}>↩ Exit endgame</button>
           ) : (
-            <button onClick={() => onStartEndgame(st.id)}>🎯 Endgame here</button>
+            <button onClick={() => { onStartEndgame(st.id); closePopup() }}>🎯 Endgame here</button>
           )}
         </div>
       </div>
@@ -1096,21 +1151,54 @@ export default function MapView({
 
   return (
     <>
-      <div className="draw-toolbar">
-        <div className="draw-tools">
-          {(['select', 'compass', 'line', 'bisector', 'measure', 'coord'] as DrawTool[]).map((t) => (
-            <button
-              key={t}
-              className={tool === t ? 'on' : ''}
-              onClick={() => selectTool(t)}
-              data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : t === 'measure' ? 'Measure' : 'Coordinates'}
-              aria-label={t}
-            >
-              {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : t === 'measure' ? '📏' : '📍'}
-            </button>
-          ))}
+      <div className={'draw-toolbar' + (toolbarOpen ? ' open' : '')}>
+        <button
+          className={'draw-toggle' + (toolbarOpen ? ' on' : '')}
+          onClick={() => {
+            setToolbarOpen((v) => {
+              const next = !v
+              if (!next) selectTool('select')
+              return next
+            })
+          }}
+          data-tip={toolbarOpen ? 'Close tools' : 'Drawing tools'}
+          aria-label="toggle drawing tools"
+        >
+          🧰
+        </button>
+        {toolbarOpen && (
+        <div className="draw-tools-row">
+          <div className="draw-tools">
+            {(['select', 'compass', 'line', 'bisector', 'measure', 'coord'] as DrawTool[]).map((t) => (
+              <button
+                key={t}
+                className={tool === t ? 'on' : ''}
+                onClick={() => selectTool(t)}
+                data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : t === 'measure' ? 'Measure' : 'Coordinates'}
+                aria-label={t}
+              >
+                {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : t === 'measure' ? '📏' : '📍'}
+              </button>
+            ))}
+          </div>
+          {/* swatches sit vertically in the empty space next to the tool column
+             (only for tools that draw a colored shape) to save vertical room */}
+          {tool !== 'select' && tool !== 'coord' && (
+            <div className="draw-colors">
+              {DRAW_COLORS.map((c) => (
+                <button
+                  key={c}
+                  className={'swatch' + (color === c ? ' on' : '')}
+                  style={{ background: c }}
+                  onClick={() => setColor(c)}
+                  aria-label={`color ${c}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
-        {tool === 'compass' && (
+        )}
+        {toolbarOpen && tool === 'compass' && (
           <label className="draw-radius">
             radius
             <select
@@ -1141,19 +1229,6 @@ export default function MapView({
             )}
           </label>
         )}
-        {tool !== 'select' && tool !== 'coord' && (
-          <div className="draw-colors">
-            {DRAW_COLORS.map((c) => (
-              <button
-                key={c}
-                className={'swatch' + (color === c ? ' on' : '')}
-                style={{ background: c }}
-                onClick={() => setColor(c)}
-                aria-label={`color ${c}`}
-              />
-            ))}
-          </div>
-        )}
         {tool === 'coord' && (
           <div className="draw-coord-readout">
             {coordPin ? (
@@ -1167,7 +1242,7 @@ export default function MapView({
                 </button>
               </>
             ) : (
-              <span className="cr-hint">Click the map to read &amp; copy coordinates.</span>
+              <span className="cr-hint">Click map to copy coords.</span>
             )}
           </div>
         )}
@@ -1228,7 +1303,7 @@ export default function MapView({
             {coordError && <div className="draw-coords-err">Couldn’t read those coordinates.</div>}
           </div>
         )}
-        {(annotations.length > 0 || pending) && (
+        {toolbarOpen && (annotations.length > 0 || pending) && (
           <div className={'draw-actions' + (tool !== 'select' ? ' open' : '')}>
             <button
               className="draw-undo"
@@ -1261,8 +1336,7 @@ export default function MapView({
       {endgameStation && (
         <div className="endgame-banner">
           <span>
-            <b>Endgame:</b> {endgameStation.name} — hider within{' '}
-            {formatDistance(hidingRadiusMi, units)}
+            <b>Endgame:</b> {endgameStation.name}
           </span>
           <button onClick={onExitEndgame}>Exit</button>
         </div>
@@ -1276,11 +1350,13 @@ export default function MapView({
           maxZoom={20}
         />
         {satellite && <SatelliteLayer />}
+        <MapRefCapture mapRef={mapInstanceRef} />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
+        <AnswerPinRenderer onChange={setAnswerPinRenderer} />
         <CoordPane />
         <StationView mode={stationView} />
         {pois.length > 0 && <PoiLayer pois={pois} interactive={selectMode} />}
@@ -1419,6 +1495,26 @@ export default function MapView({
                   interactive={false}
                   pathOptions={{ color: '#3730a3', weight: 1, fill: false }}
                 />
+                {/* tappable centre dot: radar has no marker otherwise, so on
+                    mobile there'd be no way to see which question this is. Gated on
+                    the renderer so it mounts into the SVG answerPin pane (not the
+                    default canvas), same as the station markers. */}
+                {answerPinRenderer && (
+                <CircleMarker
+                  center={[center.lat, center.lon]}
+                  radius={6}
+                  renderer={answerPinRenderer}
+                  bubblingMouseEvents={false}
+                  pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
+                >
+                  <Popup>
+                    <div className="answer-popup">
+                      <strong>{describeRecord(r, units)}</strong>
+                      <div className="answer-popup-sub">radar centre</div>
+                    </div>
+                  </Popup>
+                </CircleMarker>
+                )}
               </Fragment>
             )
           })}
@@ -1512,16 +1608,22 @@ export default function MapView({
             ))}
             {/* boundary line, like the radar circle outline */}
             <RegionOutline region={pr.region} />
-            {pr.pin && (
+            {pr.pin && answerPinRenderer && (
               <CircleMarker
                 center={[pr.pin.lat, pr.pin.lon]}
                 radius={6}
-                interactive={false}
+                renderer={answerPinRenderer}
+                bubblingMouseEvents={false}
                 pathOptions={{ color: '#3730a3', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
               >
-                <Tooltip direction="top" offset={[0, -6]}>
-                  {pr.pin.label}
-                </Tooltip>
+                {/* tap popup only (no hover tooltip) — tap/click the dot to see
+                    which question it is; works the same on desktop and mobile */}
+                <Popup>
+                  <div className="answer-popup">
+                    <strong>{pr.desc}</strong>
+                    <div className="answer-popup-sub">{pr.pin.label}</div>
+                  </div>
+                </Popup>
               </CircleMarker>
             )}
           </Fragment>
@@ -1572,9 +1674,17 @@ export default function MapView({
                   />
                 )
               }
-              // POI / measure / feature / matching: outline the full (unclipped)
-              // eliminated boundary, like the radar circle stays whole in endgame.
-              const region = poiEliminatedRegion(r)
+              // POI / measure / feature / matching / tentacle: outline the full
+              // (unclipped) eliminated boundary, like the radar circle stays whole
+              // in endgame. Tentacles return null map-wide in endgame (station
+              // elimination is logged-only there), so force the non-endgame region
+              // to get the geometry — same trick as eliminatedGeom in
+              // questionRegions — otherwise the border wouldn't draw.
+              const forGeom =
+                r.kind === 'tentacle' || r.kind === 'tentacle-line'
+                  ? { ...r, endgame: false }
+                  : r
+              const region = poiEliminatedRegion(forGeom)
               return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
             })}
 

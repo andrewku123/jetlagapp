@@ -1,6 +1,6 @@
 ---
 name: suspects-panel
-description: Work on the Suspects tab — the live list of still-possible vs eliminated stations, its search box, and the name / agency→line (interlined) sort. Use when asked to change the suspects list, its search fields, sorting, grouping, or the star/eliminate actions.
+description: Work on the Suspects tab — the live list of still-possible vs eliminated stations, its search box, the name / agency→line (interlined) sort, per-line bulk eliminate/restore, and the shareable board code. Use when asked to change the suspects list, its search fields, sorting, grouping, the star/eliminate actions, or import/export of eliminations.
 ---
 
 # Suspects panel
@@ -45,13 +45,39 @@ shows `<remaining>.length of <base>.length still possible`.
   - Eliminated render in their own grouped section under an "Eliminated (n)"
     header.
 
+## Per-line bulk eliminate / restore (agency→line sort only)
+- Each line sub-header carries a bulk button, controlled by `groupedLis`' third
+  arg `lineAction: 'eliminate' | 'restore'` (remaining groups pass `'eliminate'`,
+  eliminated groups pass `'restore'`).
+  - **✕ all** → `eliminateMany(ids)` adds every station on the line to
+    `manualEliminated`. Because of interlining a station is eliminated even if it
+    also serves a line you keep — that's the intent of "rule out this line".
+  - **↩ all** → `restoreMany(restorable)` removes only stations that are in
+    `manualSet` (hand-eliminated); question-eliminated stations stay out, so the
+    button is hidden when a line has none restorable.
+- Styles: `.sgroup.line` is now a flex row; `.line-name` + `.line-bulk`
+  (`.restore` variant) in `src/index.css`.
+
+## Shareable board code (`src/lib/shareCode.ts`)
+- A `<details className="share-board">` at the bottom of the panel: **Copy board
+  code** (encodes the current `eliminated` list to the clipboard + textarea) and
+  **Load code** (decodes the textarea, merging ids into `manualEliminated`).
+  State: `shareCode`, `shareMsg`.
+- Encoding = a bitmask over **all** station ids sorted ascending, one bit each,
+  base64url-packed, prefixed `E1.<count-base36>.`. The embedded count makes
+  `decodeElimination` reject a code from a different station dataset instead of
+  mis-applying it. Round-trip/edge cases are covered by `shareCode.test.ts`.
+- Load is a **merge** (union into hand-eliminations), so tell users to Reset for
+  an exact copy. Keep the bit order = `stations.map(id).sort()` on both ends.
+
 ## Where to change things
 - All of it is in `src/App.tsx`: `groupByAgencyLine` (module scope),
-  `suspectSort` / `suspectQuery` state, the `matches()` predicate and the
-  `tab === 'suspects'` JSX. Row renderers are `remainingLi` / `eliminatedLi`;
-  group rendering is `groupedLis`.
+  `suspectSort` / `suspectQuery` / `shareCode` state, the `matches()` predicate,
+  `toggleManual` / `eliminateMany` / `restoreMany`, and the `tab === 'suspects'`
+  JSX. Row renderers are `remainingLi` / `eliminatedLi`; group rendering is
+  `groupedLis`. Share encode/decode live in `src/lib/shareCode.ts`.
 - Styles: `.searchbar`, `.suspect-search`, `.search-clear`, `.sortbar`, `.slist`,
-  `.sgroup`, `.elimhdr` in `src/index.css`.
+  `.sgroup`, `.elimhdr`, `.line-bulk`, `.share-board` in `src/index.css`.
 
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: search

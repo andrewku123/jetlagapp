@@ -45,6 +45,25 @@ describe('stationPasses — gating', () => {
   })
 })
 
+describe('stationPasses — measure-railstation (logged-only)', () => {
+  // Rail-station measuring never eliminates from the suspect list. Map-wide every
+  // candidate IS a rail station (distance 0), so an endgame answer — asked from the
+  // hider's real position, where distance > 0 — must NOT be applied to the station
+  // set, or "further" would wipe every station once you leave the endgame. Its only
+  // effect is carving the endgame hiding zone (see questionRegions.test.ts).
+  const ocean = { lat: 37.5, lon: -123.1 }
+  it('keeps every station under "closer"', () => {
+    expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'closer' }))).toBe(true)
+  })
+  it('keeps every station under "further" (no board wipe when leaving endgame)', () => {
+    expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'further' }))).toBe(true)
+  })
+  it('keeps every station even when the record is endgame-flagged', () => {
+    const r = { ...record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'further' }), endgame: true }
+    expect(stationPasses(station(), r)).toBe(true)
+  })
+})
+
 describe('stationPasses — radar', () => {
   const here = { lat: 37.7749, lon: -122.4194 }
   it('keeps a near station on a yes within 1mi', () => {

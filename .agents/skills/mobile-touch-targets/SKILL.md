@@ -70,6 +70,71 @@ pane.style.display = mode === 'hidden' ? 'none' : ''  // hidden = gone + non-int
 
 Same principle for the coord-dot pane, but the opposite direction: a purely-visual pane above the station pane must be `pointer-events:none` so its (canvas) renderer doesn't blanket every click. Rule of thumb: to make an interactive vector pane non-clickable, hide it with `display:none`; `pointer-events:none` only reliably neutralizes a pane whose contents are non-interactive.
 
+## Making an answer/seeker dot win the click over a station under it
+
+Each logged question drops a tappable **answer pin** (radar centre, "your nearest airport" dot, POI answer, "asked from here"). When that pin lands exactly on a station — the classic case is the *nearest-airport* dot sitting on the **OAK Airport** station — the station dot swallowed the click, so on desktop *and* mobile you couldn't open the question popup.
+
+Fix: give the answer pins their **own pane above the stations pane** (`answerPin`, z-index 500 > stations 450 < markerPane 600) so the pin wins the overlap; everywhere else the pane is click-through so stations stay clickable.
+
+Answer dots use a **tap/click `<Popup>` only — no hover `<Tooltip>`** (Andrew's preference: hovering the dot should not pop a label). Keep the popup; do not add a `Tooltip` to the radar centre dot or the `poiRegions` pin. (Permanent tooltips on thermometer A/B endpoints and the coordinate-tool dot are fine — those are deliberate labels, not hover.)
+
+The non-obvious trap: the map is `<MapContainer ... preferCanvas>`, so a `CircleMarker` with only `pane="answerPin"` (no explicit renderer) falls back to a **canvas** renderer — one opaque `<canvas>` that blankets the *whole* pane and then swallows every click over the map (breaks all station clicks). You MUST give the pin an **SVG** renderer in that pane, exactly like `StationRenderer`:
+
+```tsx
+function AnswerPinRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) {
+  const map = useMap()
+  useEffect(() => {
+    const name = 'answerPin'
+    let pane = map.getPane(name) ?? map.createPane(name)
+    pane.style.zIndex = '500'                    // above stations (450)
+    const renderer = L.svg({ padding: 0.5, pane: name }).addTo(map)
+    onChange(renderer)
+    return () => { renderer.remove(); onChange(null) }
+  }, [map, onChange])
+  return null
+}
+const [answerPinRenderer, setAnswerPinRenderer] = useState<L.SVG | null>(null)
+```
+
+And — critically — **gate the pin markers on the renderer** so they mount into the SVG pane. react-leaflet fixes a `CircleMarker`'s renderer at creation time and never re-assigns it, so a pin rendered while `answerPinRenderer` is still `null` is stuck on the default canvas forever. Mount only once it exists (same pattern the station markers use):
+
+```tsx
+{pin && answerPinRenderer && (
+  <CircleMarker center={[pin.lat, pin.lon]} radius={6}
+    renderer={answerPinRenderer} bubblingMouseEvents={false} ... />
+)}
+```
+
+Where to place the pin: drop a seeker-asked question's dot at its **ask location** (`params.fromLat/fromLon`), not at the answer airport/POI/coastline point. Putting it on the answer POI both hides it under that POI's own dot and makes two questions about the same POI (e.g. a matching-zoo + a measuring-zoo) pile their dots on one spot; the answer detail still shows in the tap popup. The exception is **Tentacles**, which is the hider's reveal (no seeker ask-location) — its dot belongs on the hider's answer POI (`poiRegions` builder in `MapView.tsx`).
+
+Do NOT stack a second dot on that ask location. `App.tsx`'s `pickedPoints` also renders seeker markers (a `seeker-pin` **divIcon** `Marker`, which lives in the default **markerPane, z 600 — ABOVE the answerPin SVG pane, z 500**). If a question kind gets its dot from `poiRegions` (airport/POI/county/city/zip/…), it must NOT also be added to `pickedPoints`, or the higher markerPane marker sits exactly on top and **swallows the tap**, showing only its plain `{label}` popup instead of the rich `.answer-popup`. Symptom: the pin looks right but tapping shows a bare one-line popup. `pickedPoints` should only carry things `poiRegions` does *not* pin (e.g. thermometer A/B endpoints, the transient "Last click"). Detect it over CDP with `document.elementsFromPoint(x,y)` at the pin centre: a `DIV.seeker-pin-dot` on top means a duplicate marker is stealing the click.
+
+Verify deterministically over CDP: with a `match-airport` question (`params:{fromLat,fromLon,value:'OAK',answer:'yes'}`) in `localStorage['bahs.game.v1']`, `document.elementFromPoint` at the pin centre must resolve into `.leaflet-answerPin-pane` (pin wins), while a station elsewhere still resolves into `.leaflet-stations-pane` (no blanket). See the `verify-map-interactions` skill for the CDP harness.
+
+## Mobile-only compact header (⚙ popover)
+
+The topbar `.toggles` group (Day, Units, show-eliminated, satellite, Reset) wraps
+into 2–3 tall rows on a phone, eating vertical space over the map. Keep the header
+one short row on mobile **without touching desktop**: on mobile put **every**
+control behind a single `.settings-toggle` (⚙) — brand + count + ⚙ is all that
+shows — while desktop keeps the full inline header.
+
+- `App.tsx`: `settingsOpen` state; render the ⚙ `<button className="settings-toggle">`
+  **first**, then `<div className={'toggles-more' + (settingsOpen ? ' open' : '')}>`
+  wrapping **all** the controls in order — `DayToggle`, `UnitsToggle`, show-eliminated,
+  satellite, Reset. (Everything lives inside `.toggles-more`; nothing is left loose in
+  `.toggles`.)
+- `src/index.css`: **desktop base** = `.settings-toggle { display: none }` and
+  `.toggles-more { display: flex }` — because everything is inside `.toggles-more`,
+  desktop renders the whole header inline exactly as before, and the ⚙ is hidden.
+  Inside `@media (max-width: 760px)`: show the ⚙ (`display: inline-flex`), make
+  `.toggles` `position: relative; flex-wrap: nowrap`, and turn `.toggles-more` into
+  an absolute right-anchored popover (`top: 100%; right: 0`) that's `display:none`
+  until `.open`. Give popover labels `white-space: nowrap` so the box sizes to the
+  widest ("show eliminated"); the segmented Day/Units toggles stack fine in the column.
+- This is the general pattern for hiding header controls on phones: desktop shows
+  them inline (all inside `.toggles-more`), mobile tucks the entire group behind the ⚙.
+
 ## Notes
 
 - The app layout is already responsive: at `<=760px` the sidebar becomes a slide-up bottom sheet and the map goes full-screen (`@media (max-width: 760px)` in `src/index.css`). No layout change needed.

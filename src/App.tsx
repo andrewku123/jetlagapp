@@ -4,6 +4,7 @@ import QuestionForm from './components/QuestionForm'
 import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
+import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
 import { rewardForKind, questionGroupKey } from './data/questions'
@@ -86,9 +87,14 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('ask')
   const [showEliminated, setShowEliminated] = useState(true)
   const [satellite, setSatellite] = useState(false)
+  // on phones the secondary header controls (show-eliminated / satellite / Reset)
+  // collapse behind a ⚙ button so the topbar stays one compact row
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
   const [suspectSort, setSuspectSort] = useState<'name' | 'agency'>('name')
   const [suspectQuery, setSuspectQuery] = useState('')
+  const [shareCode, setShareCode] = useState('')
+  const [shareMsg, setShareMsg] = useState<string | null>(null)
   const [poiEnabled, setPoiEnabled] = useState<Set<string>>(
     () => new Set(POI_CATEGORIES.map((c) => c.key)),
   )
@@ -193,12 +199,12 @@ export default function App() {
         pts.push({ label: `Thermo start — ${desc}`, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#2563eb' })
         pts.push({ label: `Thermo end — ${desc}`, point: { lat: Number(r.params.toLat), lon: Number(r.params.toLon) }, color: '#7c3aed' })
       }
-      if (r.kind === 'measure-airport') {
-        pts.push({ label: desc, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
-      }
-      if (r.kind === 'match-poi' || r.kind === 'measure-poi') {
-        pts.push({ label: desc, point: { lat: Number(r.params.fromLat), lon: Number(r.params.fromLon) }, color: '#0891b2' })
-      }
+      // NOTE: measure-airport / match-poi / measure-poi intentionally do NOT add a
+      // seeker marker here. Their ask-location dot is drawn by `poiRegions` in
+      // MapView (a CircleMarker in the answerPin SVG pane with the rich tap popup).
+      // Adding a marker here too would stack a second dot on the exact same spot,
+      // and — being in the higher markerPane — it would swallow the click and show
+      // only its plain label instead of the question popup.
     }
     if (lastClick) pts.push({ label: 'Last click', point: lastClick, color: '#111' })
     return pts
@@ -286,6 +292,20 @@ export default function App() {
     else set.add(id)
     update({ manualEliminated: [...set] })
   }
+  // Bulk hand-eliminate every station in `ids` (e.g. a whole line). Interlined
+  // stations serve several lines, so this eliminates them even if they also sit
+  // on a line you haven't ruled out — that's the intent of "rule out this line".
+  function eliminateMany(ids: string[]) {
+    const set = new Set(game.manualEliminated)
+    for (const id of ids) set.add(id)
+    update({ manualEliminated: [...set] })
+  }
+  // Undo a bulk elimination: only restores stations that were eliminated BY HAND
+  // (a station still ruled out by a question stays eliminated).
+  function restoreMany(ids: string[]) {
+    const drop = new Set(ids)
+    update({ manualEliminated: game.manualEliminated.filter((id) => !drop.has(id)) })
+  }
   function resetGame() {
     if (confirm('Clear all questions, eliminations and notes?')) setGame({ ...emptyGame })
   }
@@ -312,19 +332,48 @@ export default function App() {
       )}
     </li>
   )
-  const groupedLis = (list: Station[], row: (s: Station) => JSX.Element) =>
+  const groupedLis = (
+    list: Station[],
+    row: (s: Station) => JSX.Element,
+    lineAction?: 'eliminate' | 'restore',
+  ) =>
     groupByAgencyLine(list).map((g) => (
       <Fragment key={g.agency}>
         <li className="sgroup agency">
           <span className="dot" style={{ background: SYSTEM_COLORS[g.agency] ?? '#444' }} />
           {g.agency} ({g.count})
         </li>
-        {g.lines.map((l) => (
-          <Fragment key={l.line}>
-            <li className="sgroup line">{l.line} ({l.stations.length})</li>
-            {l.stations.map(row)}
-          </Fragment>
-        ))}
+        {g.lines.map((l) => {
+          const ids = l.stations.map((s) => s.id)
+          // restore only makes sense for hand-eliminated stations in this group
+          const restorable = l.stations.filter((s) => manualSet.has(s.id)).map((s) => s.id)
+          return (
+            <Fragment key={l.line}>
+              <li className="sgroup line">
+                <span className="line-name">{l.line} ({l.stations.length})</span>
+                {lineAction === 'eliminate' && (
+                  <button
+                    className="line-bulk"
+                    onClick={() => eliminateMany(ids)}
+                    title={`Eliminate all ${ids.length} stations on ${l.line}`}
+                  >
+                    ✕ all
+                  </button>
+                )}
+                {lineAction === 'restore' && restorable.length > 0 && (
+                  <button
+                    className="line-bulk restore"
+                    onClick={() => restoreMany(restorable)}
+                    title={`Restore ${restorable.length} hand-eliminated station${restorable.length > 1 ? 's' : ''} on ${l.line}`}
+                  >
+                    ↩ all
+                  </button>
+                )}
+              </li>
+              {l.stations.map(row)}
+            </Fragment>
+          )
+        })}
       </Fragment>
     ))
   function addAnnotation(a: Annotation) {
@@ -368,17 +417,27 @@ export default function App() {
           <strong>{remaining.length}</strong> of {base.length} possible
         </div>
         <div className="toggles">
-          <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
-          <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
-          <label className="chk">
-            <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
-            show eliminated
-          </label>
-          <label className="chk">
-            <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
-            satellite
-          </label>
-          <button onClick={resetGame}>Reset</button>
+          <button
+            className={'settings-toggle' + (settingsOpen ? ' on' : '')}
+            aria-label="more settings"
+            aria-expanded={settingsOpen}
+            onClick={() => setSettingsOpen((v) => !v)}
+          >
+            ⚙
+          </button>
+          <div className={'toggles-more' + (settingsOpen ? ' open' : '')}>
+            <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
+            <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
+            <label className="chk">
+              <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
+              show eliminated
+            </label>
+            <label className="chk">
+              <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
+              satellite
+            </label>
+            <button onClick={resetGame}>Reset</button>
+          </div>
         </div>
       </header>
 
@@ -562,11 +621,11 @@ export default function App() {
                       </>
                     ) : (
                       <>
-                        {groupedLis(fRemaining, remainingLi)}
+                        {groupedLis(fRemaining, remainingLi, 'eliminate')}
                         {fEliminated.length > 0 && (
                           <li className="sgroup elimhdr">Eliminated ({fEliminated.length})</li>
                         )}
-                        {groupedLis(fEliminated, eliminatedLi)}
+                        {groupedLis(fEliminated, eliminatedLi, 'restore')}
                       </>
                     )}
                   </ul>
@@ -661,9 +720,62 @@ export default function App() {
             <div className="panel legend">
               <h3>About this map</h3>
               <p className="info">
+                <span className="info-tag">{MAP_NAME}</span>{' '}
                 <span className="info-tag">{game.gameSize}</span> game ({STATIONS.length} stations,
                 auto-set from station count).
               </p>
+              <h3>Share / load board</h3>
+              <details className="share-board" open>
+                <summary>Board code</summary>
+                <p className="hint">
+                  Copy a code of your current eliminations to send to a teammate, or paste one
+                  to load theirs. Loading merges into your hand-eliminations — Reset first for an exact copy.
+                  A code only loads on the same map ({MAP_NAME}); a code from another city's map is rejected.
+                </p>
+                <div className="share-row">
+                  <button
+                    onClick={() => {
+                      const code = encodeElimination(eliminated.map((s) => s.id))
+                      setShareCode(code)
+                      const p = navigator.clipboard?.writeText(code)
+                      if (p) p.then(
+                        () => setShareMsg('Copied board code to clipboard.'),
+                        () => setShareMsg('Code ready below — select and copy it.'),
+                      )
+                      else setShareMsg('Code ready below — select and copy it.')
+                    }}
+                  >
+                    Copy board code
+                  </button>
+                  <button
+                    onClick={() => {
+                      const res = decodeElimination(shareCode)
+                      if (!res.ok) {
+                        setShareMsg(res.error)
+                        return
+                      }
+                      const set = new Set(game.manualEliminated)
+                      for (const id of res.ids) set.add(id)
+                      update({ manualEliminated: [...set] })
+                      setShareMsg(`Loaded ${res.ids.length} eliminated station${res.ids.length === 1 ? '' : 's'}.`)
+                    }}
+                    disabled={!shareCode.trim()}
+                  >
+                    Load code
+                  </button>
+                </div>
+                <textarea
+                  className="share-input"
+                  placeholder="Paste a board code here, then press Load…"
+                  value={shareCode}
+                  onChange={(e) => {
+                    setShareCode(e.target.value)
+                    setShareMsg(null)
+                  }}
+                  rows={2}
+                />
+                {shareMsg && <p className="hint share-msg">{shareMsg}</p>}
+              </details>
               <p className="info">
                 <strong>Eligibility:</strong> hiders' stations must be served at least once an hour
                 (≤{ELIGIBLE_HEADWAY_MIN} min between trains). Eligible —{' '}
@@ -698,9 +810,9 @@ export default function App() {
                 </div>
               ))}
               <p className="hint">
-                Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name length)
-                and Measuring (airport / sea level). POI-based questions (parks, hospitals, museums, etc.) and
-                Tentacles are coming next.
+                Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name
+                length / ZIP / POI category), Measuring (airport / sea level / coastline / ZIP / POI), and
+                Tentacles. Photo and Inside questions are logged only.
               </p>
             </div>
           )}

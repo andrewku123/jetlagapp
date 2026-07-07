@@ -167,7 +167,7 @@ MATCHING = [
 ]
 MEASURING = [
     ("A commercial airport", True), ("A high-speed train line", False),
-    ("A rail station", False), ("An international border", False),
+    ("A rail station (endgame only)", True), ("An international border", False),
     ("A 1st admin. div. border (state)", False), ("A 2nd admin. div. border (county)", True),
     ("A coastline", True), ("Sea level (altitude)", True),
     ("ZIP code (smaller / larger)", True), ("A body of water", False),

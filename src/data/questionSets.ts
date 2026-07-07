@@ -100,7 +100,7 @@ export const MATCHING: SubjectCard[] = [
 export const MEASURING: SubjectCard[] = [
   { subject: 'A Commercial Airport', group: 'Transit', note: 'distance to nearest airport', sizes: ALL, appKind: 'measure-airport' },
   { subject: 'A High Speed Train Line', group: 'Transit', note: 'distance to nearest HSR line', sizes: ALL },
-  { subject: 'A Rail Station', group: 'Transit', note: 'degenerate here: every hiding spot IS a rail station, so distance is always 0', sizes: ALL },
+  { subject: 'A Rail Station', group: 'Transit', note: 'inert in the first half (every hiding spot IS a rail station, distance 0); carves the hiding zone in the endgame', sizes: ALL, appKind: 'measure-railstation' },
   { subject: 'An International Border', group: 'Borders', note: 'nearest US–Mexico line', sizes: ALL, appKind: 'measure-feature' },
   { subject: 'A 1st Admin. Div. Border', group: 'Borders', note: 'state line (CA land border, excludes the coast)', sizes: ALL, appKind: 'measure-feature' },
   { subject: 'A 2nd Admin. Div. Border', group: 'Borders', note: 'county line', sizes: ALL, appKind: 'measure-feature' },

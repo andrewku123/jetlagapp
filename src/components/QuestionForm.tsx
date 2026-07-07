@@ -7,6 +7,7 @@ import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, near
 import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
+import { nearestRailStation } from '../lib/railStations'
 import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
 import { zipAt } from '../lib/zip'
@@ -85,7 +86,7 @@ function featureSubjectLabel(key: string): string {
 
 // Kinds that have no auto-eliminator — logged for the seeker's notes only.
 const MATCH_LOGONLY: QuestionKind[] = ['match-street', 'match-admin1', 'match-admin4', 'match-landmass']
-const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-railstation', 'measure-water']
+const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-water']
 
 function ordinalSuffix(n: number): string {
   const t = n % 100
@@ -292,7 +293,8 @@ export default function QuestionForm({
         params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, thermometerMiles: tMiles, answer: hotcold }
         break
       }
-      case 'measure-airport': {
+      case 'measure-airport':
+      case 'measure-railstation': {
         if (!center) return alert('Set your location by clicking the map.')
         params = { fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
@@ -434,7 +436,6 @@ export default function QuestionForm({
         break
       }
       case 'measure-hsr':
-      case 'measure-railstation':
       case 'measure-water': {
         params = { description: value.trim() || undefined, answer: closefar }
         break
@@ -723,6 +724,28 @@ export default function QuestionForm({
               </p>
             )
           })()}
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {kind === 'measure-railstation' && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const rs = nearestRailStation(center)
+            return (
+              <p className="blurb poi-readout">
+                Distance to nearest rail station (<b>{rs.name}</b>): <b>{formatDistance(rs.distMiles, units)}</b>
+              </p>
+            )
+          })()}
+          <p className="blurb">Inert in the first half (every station is distance 0); useful in the endgame.</p>
           <div className="row">
             <label>Answer</label>
             <div className="seg">

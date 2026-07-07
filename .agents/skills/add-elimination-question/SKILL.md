@@ -136,9 +136,49 @@ answer isn't in the in-play set → eliminate nothing (`return true`).
   "Unable to complete output ring" robustness bug; `robustUnion` (snap +
   divide-and-conquer, retries at coarser precision) handles it.
 
+### Point-set measuring (nearest airport / nearest rail station)
+"Closer/further from the nearest <point>" over a **discrete point set**. The two
+instances are `measure-airport` (the 3 airports, `src/lib/airports.ts`) and
+`measure-railstation` (the 264 on-map stations, `src/lib/railStations.ts`). The
+helper module exports the point list + `nearest<Thing>Miles(p)` (min haversine).
+- **Elimination** (`stationPasses`): `seekerD = nearest…Miles(seeker)`,
+  `stationD = nearest…Miles(station)`; `return (stationD <= seekerD) === (answer
+  === 'closer')` (tie folds to closer, per the rule below). Keep on unknown.
+- **Shading** (`questionRegions.ts`, `<thing>MeasureEliminatedRegion`): the kept
+  set is every point within `seekerD` of the hider, i.e. the **union of disks of
+  radius `seekerD` centred on each point** (`diskSegments`/`diskRing` +
+  `robustUnion`). `closer` ⇒ eliminate the complement (`WORLD_RING ∖ union`),
+  `further` ⇒ eliminate the union. Return null when `seekerD <= 0` (seeker sits on
+  a point → nothing eliminated). Wire it into `poiEliminatedRegion` + MapView's
+  `isShaded()`/`poiRegions` dep filter like any shaded kind.
+- **Rail station is endgame-ONLY: logged-only for the suspect list, shades only
+  the endgame zone.** Every candidate hiding station IS a rail station (distance 0
+  to nearest rail station = itself). The catch: an endgame answer is asked from the
+  hider's *real* position (distance > 0), and if you apply it to the map-wide
+  station set — every station at distance 0 — a "further" answer eliminates EVERY
+  station (a full board wipe you notice the moment you leave the endgame). So rail
+  station must **never eliminate a station** and **never shade map-wide**; it only
+  carves the endgame hiding zone. Implement it exactly like this (mirrors the
+  endgame-tentacle pattern):
+  - `stationPasses` case `measure-railstation` → `return true` (always keep).
+  - `poiEliminatedRegion` does NOT dispatch `measure-railstation` (returns null) →
+    no map-wide shading, and it's kept OUT of MapView's `isShaded()`/`poiRegions`
+    dep filter so no map-wide dot/shade is drawn.
+  - `eliminatedGeom` (the endgame path) handles `measure-railstation` **directly**
+    (calls `railStationMeasureEliminatedRegion` itself, not via
+    `poiEliminatedRegion`), so `endgameClippedRegion` still carves the zone with
+    the union-of-disks. `endgameRegions` only runs for `r.endgame` records.
+  - Catalog entry stays `eliminates: true` (needed so the endgame shading path
+    runs), label `Measuring — Rail station (endgame)`. Do NOT precompute a
+    per-station `railStationDist` attribute — distance is computed on the fly from
+    `stations.json` via `nearestRailStationMiles`.
+  - `railStationMeasureEliminatedRegion` itself is un-gated (computes the disks for
+    any record); the endgame-only behavior is enforced by the two routing points
+    above. Return null when `seekerD <= 0`.
+
 ### Tie rule for ALL measuring questions ("equal → the smaller answer")
 Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,
-`measure-sealevel`, `measure-zip`) must fold an exact tie into the **smaller/closer/
+`measure-railstation`, `measure-sealevel`, `measure-zip`) must fold an exact tie into the **smaller/closer/
 lower** answer, so a station equal to the seeker survives that answer and can never
 drop the true hider on a rounding tie. Concretely the kept side is **inclusive**
 on the small answer and **strict** on the large one:

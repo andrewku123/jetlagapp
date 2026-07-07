@@ -54,7 +54,11 @@ Built for the **medium** game. The full medium question deck is available in the
   **commercial airport**, **sea level** (altitude), a **coastline**, a **state
   border**, a **county border**, an **international border**, and any of the 12
   mapped **POI** categories (as in Matching). A **ZIP code** smaller/larger
-  question is also supported.
+  question is also supported. A **rail station** measuring question also
+  auto-eliminates but is only useful in the **endgame** — in the first half every
+  hiding station is itself a rail station (distance 0), so it eliminates nothing;
+  in the endgame it carves the hiding zone (union of your-distance disks around
+  the 264 stations).
 - **Tentacles** — "of all the ___ within 1 mi of me, which are you closest to?"
   for **museums, libraries, movie theaters, hospitals** (keeps the stations
   closest to the answered POI and shades the eliminated area).

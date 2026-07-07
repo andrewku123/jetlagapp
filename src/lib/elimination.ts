@@ -103,6 +103,15 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // Tie folds into the smaller side ("closer"): keep <= inclusive.
       return (stationDist <= seeker) === (p.answer === 'closer')
     }
+    case 'measure-railstation':
+      // Logged-only for the suspect list: rail-station measuring never eliminates
+      // a station. Map-wide every candidate IS a rail station (distance 0 to the
+      // nearest rail station = itself), so applying an answer here is degenerate —
+      // an endgame "further" answer (asked from the hider's real position, where
+      // distance > 0) would wrongly eliminate EVERY station once you leave the
+      // endgame. Its only effect is carving the endgame hiding zone via
+      // railStationMeasureEliminatedRegion (see questionRegions.ts). Keep all.
+      return true
     case 'measure-sealevel': {
       if (station.elevation == null) return true // unknown: don't eliminate
       // Tie folds into the smaller side ("closer" = lower altitude): keep <=.

@@ -168,14 +168,48 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   merges the patch onto the matching `id`; persists via storage like the others.
 
 ## Toolbar UI conventions
-- Vertical slim icon column (`['select','compass','line','bisector','measure','coord']`),
+- **The whole toolbar collapses to a single 1×1 🧰 button** (`.draw-toggle`, state
+  `toolbarOpen` in MapView) so it barely covers the map while you're panning /
+  searching / eliminating. Tapping 🧰 opens the tool column; tapping it again
+  **closes AND calls `selectTool('select')`** (drops back to pan/select mode) so a
+  drawing tool is never left armed behind a collapsed box. Everything below the
+  toggle — the tool icon column AND the per-tool option rows — is gated on
+  `{toolbarOpen && (…)}`, so a closed toolbar renders literally just the 🧰. This
+  keeps the expanded options (radius/colors/coords/undo/clear) from ever blanketing
+  ~40% of a phone screen the way the old always-open panel did.
+- Tool icon column (`['select','compass','line','bisector','measure','coord']`),
   each `<button>` carries a `data-tip` (CSS hover tooltip to the left) + `aria-label`.
+- **The 🧰 toggle is right-aligned** at the top of the panel: `.draw-toolbar` is a
+  `display:flex; flex-direction:column` and `.draw-toggle { align-self: flex-end }`.
+- The coord tool's empty-state hint is kept short (`"Click map to copy coords."`
+  with `.cr-hint { white-space: nowrap }`) so the panel width matches the populated
+  `lat, lon` / `Copied ✓` state instead of ballooning into a 2-line blurb.
 - Undo/Clear sit **horizontal when a tool is open** (panel is already wide from its
   options) and **vertical when closed** (stays slim, never widens on its own).
 - Per-tool option rows (`.draw-radius` for compass radius,
-  `.draw-colors`, the coord read-out, the coordinate-entry box) are gated on
-  `tool === '<mode>'`. The custom-radius `<input>` uses `flex-basis:100%` so it
-  drops to its own line inside the wrapping row.
+  the coord read-out, the coordinate-entry box) are gated on
+  `toolbarOpen && tool === '<mode>'`. The custom-radius `<input>` uses
+  `flex-basis:100%` so it drops to its own line inside the wrapping row.
+- **Colour swatches sit vertically beside the tool icons**, not in a row below.
+  The tool icon column and `.draw-colors` are wrapped in `.draw-tools-row`
+  (`display:flex; flex-direction:row; align-items:center`); the swatches render
+  only for colour-drawing tools (`tool !== 'select' && tool !== 'coord'`). CSS
+  `.draw-tools-row .draw-colors { flex-direction:column; margin-top:0;
+  align-items:center; justify-content:center }` stacks them and centres them
+  vertically against the taller icon column. This uses the otherwise-empty space
+  next to the icons so the panel gains no height from the swatches. (There is only
+  ONE `.draw-colors` block now — inside `.draw-tools-row` — don't leave the old
+  horizontal one below `.draw-radius`.)
+
+## Popups auto-close after an action (`closePopup`)
+Station-popup action buttons (Star aside — Eliminate / Restore / Endgame here /
+Exit endgame) **close their own popup after acting** so the map/zone is
+immediately visible on mobile. MapView captures the live Leaflet map via a tiny
+child that calls `useMap()` (`MapRefCapture`, rendered inside `<MapContainer>`)
+into `mapInstanceRef`; `const closePopup = () => mapInstanceRef.current?.closePopup()`.
+Each action is wired `onClick={() => { onToggleEliminate(st.id); closePopup() }}`
+etc. `useMap()` only works **inside** the MapContainer subtree, hence the helper
+component — don't try to read the map instance from the outer component.
 
 ## Gotchas (learned the hard way)
 - **Popup buttons must not drop a new point.** In `compass` mode the map `click`
