@@ -70,32 +70,59 @@ and adjusting a few region constants. There is no per-city code branching.
    - Skip degenerate questions: e.g. "A Rail Station" (measuring) is useless when
      every hiding station is itself a rail station (distance always 0). It stays
      wired generically for cities whose station set includes non-rail stops.
-   - **Auto-demote map-useless questions to log-only** via `LOG_ONLY_KINDS` in
-     `src/data/regions.ts` — do NOT hand-maintain a per-city list. It's derived
-     from the active region's own data. A normally-eliminating question is
-     demoted when it can't discriminate on this map, for either reason:
-     1. **Single-valued discriminator** — every in-play station shares one value,
-        so "same as mine?" can't split. Counts distinct `county` / `city` /
-        `lines` (`<= 1` → demote `match-county` / `match-city` / `match-line`).
-     2. **Feature absent from the play area** — apply the core game rule
+   - **Auto-demote map-useless questions** via two region-derived sets in
+     `src/data/regions.ts` — do NOT hand-maintain a per-city list. Both are
+     derived from the active region's own data. There are TWO demotion tiers:
+
+     **`LOG_ONLY_KINDS` — never eliminate (useless in the regular game AND the
+     endgame).** A question lands here when:
+     1. **Feature absent from the play area** — apply the core game rule
         *"anything outside the play area is treated as if it doesn't exist."* The
         `AIRPORTS` list is scoped by point-in-play-area test (`pointInPlayArea`)
-        to the airports actually inside the active map. If none are in play
-        (`!HAS_AIRPORTS`), demote BOTH `match-airport` and `measure-airport` —
-        with no in-play airport there's no valid "nearest airport" answer. SFO/
-        OAK/SJC are all inside the Bay Area play area but all outside San
-        Francisco, so SF Muni has zero in-play airports.
-     Net: SF Muni (single county/city, no in-play airport) demotes county + city
-     + both airport questions (keeps line, 7 Muni lines); Bay Area (5 counties,
-     38 cities, 3 airports) demotes nothing. `QuestionForm` reads the set:
-     `eliminatesEffective = meta.eliminates && !LOG_ONLY_KINDS.has(kind)` drives
-     the logged record's `eliminates`, the endgame checkbox, the primary-button
-     label ("Log question" vs "Log question & eliminate"), a "(log only)" suffix
-     in the subject dropdown, an explanatory blurb note (`DEMOTION_NOTE`), and the
-     airport readout falls back to "No airport in the play area on this map."
-     Same rule generalizes to any future out-of-play feature (scope its source
-     list to the play area, demote its questions when the scoped list is empty).
-     `src/data/regions.test.ts` asserts the per-region demotion set.
+        to airports actually inside the active map. If none are in play
+        (`!HAS_AIRPORTS`), demote BOTH `match-airport` and `measure-airport`.
+        SFO/OAK/SJC are inside the Bay Area play area but all outside SF, so SF
+        Muni has zero in-play airports.
+     2. **Single NON-spatial value** — every station shares one value and the
+        attribute can't carve a hiding zone. `match-line` when the map has `<= 1`
+        distinct line.
+
+     **`ENDGAME_ELIMINATES_KINDS` — log-only in the regular game, but fully
+     eliminating in the endgame.** `match-county` / `match-city` when the map is
+     single-county / single-city (`<= 1` distinct value). They can't split the
+     station list map-wide, but county/city are *spatial* — a border station's
+     0.25 mi endgame hiding zone can straddle the boundary (Sunnydale/Bayshore
+     across the SF↔San Mateo line), so "same county/city as mine?" carves the
+     zone. Do NOT put these in `LOG_ONLY_KINDS` (that would kill zone-carving).
+
+     `QuestionForm` combines them:
+     `endgameOnlyKind = ENDGAME_ELIMINATES_KINDS.has(kind)` and
+     `eliminatesEffective = meta.eliminates && !LOG_ONLY_KINDS.has(kind) && !poiKindDemoted(...) && (!endgameOnlyKind || endgameFlag)`.
+     This drives the logged record's `eliminates`, the primary-button label
+     ("Log question" vs "Log question & eliminate"), and the dropdown suffix
+     ("(log only)" for full log-only, "(endgame only)" for endgame-only). The
+     **Endgame checkbox is shown when `eliminatesEffective || endgameOnlyKind`**
+     so an endgame-only kind can still be toggled on. `DEMOTION_NOTE` gives the
+     per-kind reason; endgame-only kinds point the seeker to the checkbox.
+
+     **Per-category POI demotion** is separate (`poiKindDemoted` in
+     `QuestionForm`, driven by `POI_COUNTS[cat]`): a POI subject with **0**
+     in-play POIs of that category is log-only for both match/measure; with
+     exactly **1** it's log-only for `match-poi` only (a lone POI can't split a
+     "nearest" match, but Measuring distances still vary). SF Muni has 0
+     amusement parks → both amusement-park questions log-only.
+
+     Net: SF Muni demotes airports + amusement park (log-only), county + city
+     (endgame-only), keeps line (7 Muni lines); Bay Area demotes nothing.
+     `src/data/regions.test.ts` asserts both per-region sets.
+
+   - **CITY/COUNTY polygons must be the TRUE municipal boundary, not the play
+     area.** `build_sfmuni_region.py` sets the SF play area = city land unioned
+     with each station's 0.25 mi endgame circle (so edge zones stay in play), but
+     the `places` (city Matching) polygon must be the un-padded `land` — using
+     `play_area` bleeds the SF polygon south across the county line into Brisbane
+     and mislabels border points as "San Francisco city", which also breaks the
+     endgame county/city carving that depends on the real border.
    - For the county polygons themselves, produce `src/data/counties.geojson.json`
      as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
      (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
