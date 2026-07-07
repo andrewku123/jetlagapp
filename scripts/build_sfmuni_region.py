@@ -137,8 +137,13 @@ print('transit-line features kept:', len(tl_out['features']))
 dump('sfmuni.transit-lines.geojson.json', tl_out)
 
 # ---------------------------------------------------------------------------
-# 5. Places (city Matching): just San Francisco, clipped to the play area.
-sf_place_geom = play_area  # SF is a consolidated city-county == play area
+# 5. Places (city Matching): just San Francisco, at its TRUE municipal boundary
+#    (`land`), NOT the play area. The play area is padded south with each edge
+#    station's 0.25 mi endgame hiding zone, which spills across the SF↔San Mateo
+#    line into Brisbane; using it here would mislabel those border points as "San
+#    Francisco city". The endgame county/city question needs the real border so it
+#    can carve the part of a border station's hiding zone that lies outside SF.
+sf_place_geom = land
 places_out = {'type': 'FeatureCollection',
               'features': [{'type': 'Feature', 'properties': {'name': 'San Francisco city'},
                             'geometry': mapping(sf_place_geom)}]}

@@ -201,17 +201,40 @@ const logOnlyStations = ACTIVE_REGION.stations as Station[]
 function distinctValueCount(vals: (string | number | null)[]): number {
   return new Set(vals.filter((v) => v != null && v !== '')).size
 }
+const singleCounty = distinctValueCount(logOnlyStations.map((s) => s.county)) <= 1
+const singleCity = distinctValueCount(logOnlyStations.map((s) => s.city)) <= 1
+const singleLine = distinctValueCount(logOnlyStations.flatMap((s) => s.lines)) <= 1
+
+// Always log-only: the question can't help in the regular game OR the endgame.
+//  - single-line: every station is on the same line (a non-spatial attribute, so
+//    it can't carve the endgame hiding zone either).
+//  - airport: no airport exists anywhere in play, so there's nothing to match or
+//    measure in either phase.
 export const LOG_ONLY_KINDS: ReadonlySet<QuestionKind> = new Set<QuestionKind>(
   (
     [
-      [distinctValueCount(logOnlyStations.map((s) => s.county)) <= 1, 'match-county'],
-      [distinctValueCount(logOnlyStations.map((s) => s.city)) <= 1, 'match-city'],
-      [distinctValueCount(logOnlyStations.flatMap((s) => s.lines)) <= 1, 'match-line'],
-      // No airport exists in the play area → these can't discriminate at all.
+      [singleLine, 'match-line'],
       [!HAS_AIRPORTS, 'match-airport'],
       [!HAS_AIRPORTS, 'measure-airport'],
     ] as [boolean, QuestionKind][]
   )
     .filter(([useless]) => useless)
+    .map(([, kind]) => kind),
+)
+
+// Log-only in the *regular* game but still fully eliminating in the *endgame*.
+// County/city Matching can't split a single-county / single-city station list,
+// but the county/city boundary is spatial: a border station's 0.25 mi hiding
+// zone can straddle it (e.g. Sunnydale/Bayshore across the SF↔San Mateo line),
+// so "same county/city?" carves the endgame zone. We only demote these to
+// endgame-only (not full log-only) so that zone-carving survives.
+export const ENDGAME_ELIMINATES_KINDS: ReadonlySet<QuestionKind> = new Set<QuestionKind>(
+  (
+    [
+      [singleCounty, 'match-county'],
+      [singleCity, 'match-city'],
+    ] as [boolean, QuestionKind][]
+  )
+    .filter(([endgameOnly]) => endgameOnly)
     .map(([, kind]) => kind),
 )

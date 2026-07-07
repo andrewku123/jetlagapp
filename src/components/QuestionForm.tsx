@@ -12,7 +12,7 @@ import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
-import { HAS_AIRPORTS, LOG_ONLY_KINDS } from '../data/regions'
+import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS } from '../data/regions'
 
 interface Props {
   lastClick: LatLng | null
@@ -247,8 +247,6 @@ export default function QuestionForm({
     if (k === 'measure-poi') return n === 0
     return false
   }
-  const eliminatesEffective =
-    meta.eliminates && !LOG_ONLY_KINDS.has(kind) && !poiKindDemoted(kind, poiCat)
   // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
   const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
   const [tentPoi, setTentPoi] = useState<string>('')
@@ -267,6 +265,19 @@ export default function QuestionForm({
   // endgame, but the seeker can override per question before logging.
   const [endgameFlag, setEndgameFlag] = useState<boolean>(endgameActive)
   useEffect(() => setEndgameFlag(endgameActive), [endgameActive])
+
+  // Whether logging this question will actually eliminate/shade. A kind is
+  // demoted to log-only when the active map can't use it: always-useless kinds
+  // (LOG_ONLY_KINDS) never eliminate; endgame-only kinds (ENDGAME_ELIMINATES_KINDS
+  // — county/city on a single-value map) eliminate only when marked as an endgame
+  // question, where they carve the border-straddling hiding zone. POI subjects
+  // demote per-category (no in-play POI of that category).
+  const endgameOnlyKind = ENDGAME_ELIMINATES_KINDS.has(kind)
+  const eliminatesEffective =
+    meta.eliminates &&
+    !LOG_ONLY_KINDS.has(kind) &&
+    !poiKindDemoted(kind, poiCat) &&
+    (!endgameOnlyKind || endgameFlag)
 
   // The thermometer the seeker chose (converted to miles), or NaN if invalid.
   function thermoMiles(): number {
@@ -586,10 +597,15 @@ export default function QuestionForm({
       if (gameSize !== 'large') return []
       return [{ value: q.kind, label: `Metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`, group: `Within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}` }]
     }
-    // A normally-eliminating kind the active map can't split on is demoted to
-    // log-only; mark it so the dropdown reads like the baked-in log-only subjects.
-    const demotedHere = q.eliminates && LOG_ONLY_KINDS.has(q.kind)
-    return [{ value: q.kind, label: subLabel(q.label) + (demotedHere ? ' (log only)' : ''), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
+    // A normally-eliminating kind the active map can't split on is demoted; mark
+    // it so the dropdown reads like the baked-in log-only subjects. County/city
+    // that still work in the endgame are tagged "(endgame only)" instead.
+    const suffix = q.eliminates && LOG_ONLY_KINDS.has(q.kind)
+      ? ' (log only)'
+      : q.eliminates && ENDGAME_ELIMINATES_KINDS.has(q.kind)
+        ? ' (endgame only)'
+        : ''
+    return [{ value: q.kind, label: subLabel(q.label) + suffix, group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
   })
   const subjectValue =
     kind === 'match-poi' || kind === 'measure-poi'
@@ -652,9 +668,14 @@ export default function QuestionForm({
         ? `there is no ${poiCategoryLabel(poiCat)} in the play area on this map`
         : `there is only one ${poiCategoryLabel(poiCat)} in the play area on this map`
       : undefined
-  const demotionNote = demoted
-    ? ` Log only on this map — ${poiDemotionReason ?? DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't eliminate; recorded for your reference.`
-    : ''
+  // County/city on a single-value map are useless for regular elimination but
+  // still carve the endgame hiding zone at a border, so their note points the
+  // seeker to the "Endgame question" checkbox rather than calling them dead.
+  const demotionNote = !demoted
+    ? ''
+    : endgameOnlyKind
+      ? ` Log only in the regular game — ${DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't split them. Check "Endgame question" to use it inside a hiding zone that straddles the border.`
+      : ` Log only on this map — ${poiDemotionReason ?? DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't eliminate; recorded for your reference.`
 
   return (
     <div className="qform">
@@ -1151,7 +1172,7 @@ export default function QuestionForm({
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
 
-      {eliminatesEffective && (
+      {(eliminatesEffective || endgameOnlyKind) && (
         <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
           <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
           <span className="endgame-text">

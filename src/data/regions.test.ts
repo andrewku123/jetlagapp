@@ -24,20 +24,20 @@ describe('play-area scoping and question demotion', () => {
     expect(Object.keys(m.AIRPORTS).sort()).toEqual(['OAK', 'SFO', 'SJC'])
     expect(m.HAS_AIRPORTS).toBe(true)
     expect([...m.LOG_ONLY_KINDS]).toEqual([])
+    expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual([])
   })
 
-  it('SF Muni has no in-play airport, so airport/county/city are log-only (line kept)', async () => {
+  it('SF Muni: no in-play airport → airports log-only; county/city endgame-only (line kept)', async () => {
     const m = await loadFor('sfmuni')
     // All three airports are outside San Francisco → the rule "outside the play
-    // area = doesn't exist" leaves the SF map with none.
+    // area = doesn't exist" leaves the SF map with none, so airport questions
+    // are useless in every phase.
     expect(Object.keys(m.AIRPORTS)).toEqual([])
     expect(m.HAS_AIRPORTS).toBe(false)
-    expect([...m.LOG_ONLY_KINDS].sort()).toEqual([
-      'match-airport',
-      'match-city',
-      'match-county',
-      'measure-airport',
-    ])
+    expect([...m.LOG_ONLY_KINDS].sort()).toEqual(['match-airport', 'measure-airport'])
+    // County/city can't split the all-SF station list, but they still carve the
+    // endgame hiding zone at the SF↔San Mateo border, so they're endgame-only.
+    expect([...m.ENDGAME_ELIMINATES_KINDS].sort()).toEqual(['match-city', 'match-county'])
     // 7 Muni lines still discriminate, so line Matching keeps eliminating.
     expect(m.LOG_ONLY_KINDS.has('match-line')).toBe(false)
   })
