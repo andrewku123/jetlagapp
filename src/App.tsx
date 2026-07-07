@@ -87,6 +87,9 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('ask')
   const [showEliminated, setShowEliminated] = useState(true)
   const [satellite, setSatellite] = useState(false)
+  // on phones the secondary header controls (show-eliminated / satellite / Reset)
+  // collapse behind a ⚙ button so the topbar stays one compact row
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [sheetOpen, setSheetOpen] = useState(false)
   const [suspectSort, setSuspectSort] = useState<'name' | 'agency'>('name')
   const [suspectQuery, setSuspectQuery] = useState('')
@@ -416,15 +419,25 @@ export default function App() {
         <div className="toggles">
           <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
           <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
-          <label className="chk">
-            <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
-            show eliminated
-          </label>
-          <label className="chk">
-            <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
-            satellite
-          </label>
-          <button onClick={resetGame}>Reset</button>
+          <button
+            className={'settings-toggle' + (settingsOpen ? ' on' : '')}
+            aria-label="more settings"
+            aria-expanded={settingsOpen}
+            onClick={() => setSettingsOpen((v) => !v)}
+          >
+            ⚙
+          </button>
+          <div className={'toggles-more' + (settingsOpen ? ' open' : '')}>
+            <label className="chk">
+              <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
+              show eliminated
+            </label>
+            <label className="chk">
+              <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
+              satellite
+            </label>
+            <button onClick={resetGame}>Reset</button>
+          </div>
         </div>
       </header>
 

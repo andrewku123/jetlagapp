@@ -24,6 +24,9 @@ body { background: var(--bg); color: var(--text); }
 .counts { font-size: 14px; color: var(--muted); }
 .counts strong { color: var(--text); font-size: 18px; }
 .toggles { margin-left: auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toggles-more { display: flex; align-items: center; gap: 12px; }
+/* the ⚙ collapse button only exists on phones (see media query) */
+.settings-toggle { display: none; }
 .chk { font-size: 13px; color: var(--muted); display: flex; gap: 5px; align-items: center; }
 .legend .info { font-size: 13px; color: var(--text); margin: 6px 0; line-height: 1.4; }
 .legend a, .panel a { color: #6cb0ff; text-decoration: underline; }
@@ -49,6 +52,15 @@ body { background: var(--bg); color: var(--text); }
   border-radius: 6px; padding: 6px 0; cursor: pointer; font-size: 16px; line-height: 1;
 }
 .draw-tools button.on { color: #fff; border-color: var(--accent); background: var(--accent); }
+/* collapse toggle: the whole toolbar is just this 🧰 box until it's opened */
+.draw-toggle {
+  width: 32px; height: 30px; display: flex; align-items: center; justify-content: center;
+  background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+  border-radius: 6px; padding: 0; cursor: pointer; font-size: 16px; line-height: 1;
+}
+.draw-toggle.on { border-color: var(--accent); background: var(--accent); }
+.draw-toggle:hover { border-color: var(--muted); }
+.draw-toolbar.open .draw-toggle { margin-bottom: 6px; }
 /* instant hover tooltip to the left of each toolbar button */
 .draw-toolbar button[data-tip] { position: relative; }
 .draw-toolbar button[data-tip]:hover::after {
@@ -315,6 +327,24 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
   .app { height: 100dvh; }
   .brand { font-size: 15px; }
   .counts strong { font-size: 17px; }
+
+  /* keep the header one compact row: Day + Units + ⚙ stay; the rest
+     (show-eliminated / satellite / Reset) drop into a popover under the ⚙ */
+  .toggles { position: relative; margin-left: auto; flex-wrap: nowrap; gap: 6px; }
+  .toggles .seg button { padding: 7px 9px; font-size: 12px; }
+  .settings-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    flex: none; width: 36px; height: 34px; font-size: 16px; line-height: 1; padding: 0;
+  }
+  .settings-toggle.on { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .toggles-more {
+    display: none; position: absolute; top: calc(100% + 8px); right: 0;
+    flex-direction: column; align-items: flex-start; gap: 12px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; box-shadow: 0 6px 20px rgba(0,0,0,.5); z-index: 1300;
+  }
+  .toggles-more.open { display: flex; }
+  .toggles-more .chk { font-size: 14px; white-space: nowrap; }
 
   /* map fills the screen; the sidebar becomes a slide-up bottom sheet */
   .body { position: relative; display: block; }

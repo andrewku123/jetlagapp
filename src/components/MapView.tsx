@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
 import {
   MapContainer,
   TileLayer,
@@ -433,6 +433,14 @@ function MapFocusPoi({ target }: { target: { lat: number; lon: number; nonce: nu
   return null
 }
 
+// Exposes the live Leaflet map instance to the parent via a ref, so popup
+// action buttons can call map.closePopup() after acting.
+function MapRefCapture({ mapRef }: { mapRef: MutableRefObject<L.Map | null> }) {
+  const map = useMap()
+  mapRef.current = map
+  return null
+}
+
 // Satellite imagery clipped to the in-play county polygons. Lives in its own
 // pane so an SVG clip-path (rebuilt on every view change) can mask it to the
 // county shapes; the pane is `leaflet-zoom-hide` so the clip never lags behind
@@ -819,6 +827,14 @@ export default function MapView({
   stationView,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
+  // the toolbar collapses to a single 🧰 button so it barely covers the map while
+  // panning / searching / eliminating; tapping it opens the tools, closing it
+  // drops back to select (pan) mode
+  const [toolbarOpen, setToolbarOpen] = useState(false)
+  // live map instance, captured from inside <MapContainer>, so popup action
+  // buttons can close their own popup after acting (e.g. entering endgame)
+  const mapInstanceRef = useRef<L.Map | null>(null)
+  const closePopup = () => mapInstanceRef.current?.closePopup()
   // stations are only clickable in select mode; in draw modes clicks pass
   // through to the map so you can snap a point/endpoint onto a station
   const selectMode = tool === 'select'
@@ -1101,7 +1117,7 @@ export default function MapView({
         <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{starred.has(st.id) ? '★ Unstar' : '☆ Star'}</button>
           {manualEliminated.has(st.id) && (
-            <button onClick={() => onToggleEliminate(st.id)}>↩ Restore</button>
+            <button onClick={() => { onToggleEliminate(st.id); closePopup() }}>↩ Restore</button>
           )}
         </div>
       </div>
@@ -1122,11 +1138,11 @@ export default function MapView({
         </div>
         <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
-          <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
+          <button onClick={() => { onToggleEliminate(st.id); closePopup() }}>✕ Eliminate</button>
           {endgameStation?.id === st.id ? (
-            <button onClick={onExitEndgame}>↩ Exit endgame</button>
+            <button onClick={() => { onExitEndgame(); closePopup() }}>↩ Exit endgame</button>
           ) : (
-            <button onClick={() => onStartEndgame(st.id)}>🎯 Endgame here</button>
+            <button onClick={() => { onStartEndgame(st.id); closePopup() }}>🎯 Endgame here</button>
           )}
         </div>
       </div>
@@ -1135,7 +1151,22 @@ export default function MapView({
 
   return (
     <>
-      <div className="draw-toolbar">
+      <div className={'draw-toolbar' + (toolbarOpen ? ' open' : '')}>
+        <button
+          className={'draw-toggle' + (toolbarOpen ? ' on' : '')}
+          onClick={() => {
+            setToolbarOpen((v) => {
+              const next = !v
+              if (!next) selectTool('select')
+              return next
+            })
+          }}
+          data-tip={toolbarOpen ? 'Close tools' : 'Drawing tools'}
+          aria-label="toggle drawing tools"
+        >
+          🧰
+        </button>
+        {toolbarOpen && (
         <div className="draw-tools">
           {(['select', 'compass', 'line', 'bisector', 'measure', 'coord'] as DrawTool[]).map((t) => (
             <button
@@ -1149,7 +1180,8 @@ export default function MapView({
             </button>
           ))}
         </div>
-        {tool === 'compass' && (
+        )}
+        {toolbarOpen && tool === 'compass' && (
           <label className="draw-radius">
             radius
             <select
@@ -1267,7 +1299,7 @@ export default function MapView({
             {coordError && <div className="draw-coords-err">Couldn’t read those coordinates.</div>}
           </div>
         )}
-        {(annotations.length > 0 || pending) && (
+        {toolbarOpen && (annotations.length > 0 || pending) && (
           <div className={'draw-actions' + (tool !== 'select' ? ' open' : '')}>
             <button
               className="draw-undo"
@@ -1314,6 +1346,7 @@ export default function MapView({
           maxZoom={20}
         />
         {satellite && <SatelliteLayer />}
+        <MapRefCapture mapRef={mapInstanceRef} />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
