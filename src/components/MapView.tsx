@@ -1242,7 +1242,7 @@ export default function MapView({
                 </button>
               </>
             ) : (
-              <span className="cr-hint">Click the map to read &amp; copy coordinates.</span>
+              <span className="cr-hint">Click map to copy coords.</span>
             )}
           </div>
         )}

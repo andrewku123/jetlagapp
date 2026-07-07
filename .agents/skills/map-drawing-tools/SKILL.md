@@ -179,6 +179,11 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
   ~40% of a phone screen the way the old always-open panel did.
 - Tool icon column (`['select','compass','line','bisector','measure','coord']`),
   each `<button>` carries a `data-tip` (CSS hover tooltip to the left) + `aria-label`.
+- **The 🧰 toggle is right-aligned** at the top of the panel: `.draw-toolbar` is a
+  `display:flex; flex-direction:column` and `.draw-toggle { align-self: flex-end }`.
+- The coord tool's empty-state hint is kept short (`"Click map to copy coords."`
+  with `.cr-hint { white-space: nowrap }`) so the panel width matches the populated
+  `lat, lon` / `Copied ✓` state instead of ballooning into a 2-line blurb.
 - Undo/Clear sit **horizontal when a tool is open** (panel is already wide from its
   options) and **vertical when closed** (stays slim, never widens on its own).
 - Per-tool option rows (`.draw-radius` for compass radius,
