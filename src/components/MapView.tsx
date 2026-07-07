@@ -1120,7 +1120,6 @@ export default function MapView({
           {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
           {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
         </div>
-        <div className="muted">Nearest airport: {st.nearestAirport}</div>
         <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
           <button onClick={() => onToggleEliminate(st.id)}>✕ Eliminate</button>
@@ -1301,8 +1300,7 @@ export default function MapView({
       {endgameStation && (
         <div className="endgame-banner">
           <span>
-            <b>Endgame:</b> {endgameStation.name} — hider within{' '}
-            {formatDistance(hidingRadiusMi, units)}
+            <b>Endgame:</b> {endgameStation.name}
           </span>
           <button onClick={onExitEndgame}>Exit</button>
         </div>
