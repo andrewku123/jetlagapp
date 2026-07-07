@@ -12,6 +12,7 @@ import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
+import { LOG_ONLY_KINDS } from '../data/regions'
 
 interface Props {
   lastClick: LatLng | null
@@ -191,6 +192,10 @@ export default function QuestionForm({
   const elevUnit = metric ? 'm' : 'ft'
   const [kind, setKind] = useState<QuestionKind>('radar')
   const meta = QUESTION_CATALOG.find((q) => q.kind === kind)!
+  // A normally-eliminating question the active map can't split on (e.g. county /
+  // city Matching on SF Muni — every station shares one value) is demoted to
+  // log-only: still logged, but it eliminates and shades nothing.
+  const eliminatesEffective = meta.eliminates && !LOG_ONLY_KINDS.has(kind)
   // category is step 1 (segmented buttons); the kind dropdown (step 2) only shows
   // for categories with more than one question.
   const categories = QUESTION_CATALOG.reduce<QuestionMeta['category'][]>(
@@ -472,7 +477,7 @@ export default function QuestionForm({
       createdAt: Date.now(),
       params,
       note: note || undefined,
-      eliminates: meta.eliminates,
+      eliminates: eliminatesEffective,
       active: true,
       ...(vetoed ? { vetoed: true } : {}),
       ...(endgameFlag ? { endgame: true } : {}),
@@ -567,7 +572,10 @@ export default function QuestionForm({
       if (gameSize !== 'large') return []
       return [{ value: q.kind, label: `Metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`, group: `Within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}` }]
     }
-    return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
+    // A normally-eliminating kind the active map can't split on is demoted to
+    // log-only; mark it so the dropdown reads like the baked-in log-only subjects.
+    const demotedHere = q.eliminates && LOG_ONLY_KINDS.has(q.kind)
+    return [{ value: q.kind, label: subLabel(q.label) + (demotedHere ? ' (log only)' : ''), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
   })
   const subjectValue =
     kind === 'match-poi' || kind === 'measure-poi'
@@ -611,6 +619,21 @@ export default function QuestionForm({
             ? `Of all the ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tentRadius, units)} of me, which are you closest to? Set your location; the app lists the in-range ${poiCategoryLabelPlural(tentCat)} — pick the one I answer. ${capitalize(poiCategoryLabelPlural(tentCat))} outside the radius don't count even if they're closer to you.`
             : meta.blurb
 
+  // A normally-eliminating Matching question can be useless on the active map
+  // (every station shares one value), in which case it's demoted to log-only
+  // (see LOG_ONLY_KINDS). Tell the seeker why so it reads like the other
+  // log-only questions instead of promising an elimination it won't do.
+  const DEMOTION_NOTE: Partial<Record<QuestionKind, string>> = {
+    'match-county': 'every station on this map is in the same county',
+    'match-city': 'every station on this map is in the same city',
+    'match-airport': 'every station on this map shares the same nearest airport',
+    'match-line': 'every station on this map is on the same line',
+  }
+  const demoted = meta.eliminates && !eliminatesEffective
+  const demotionNote = demoted
+    ? ` Log only on this map — ${DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't eliminate; recorded for your reference.`
+    : ''
+
   return (
     <div className="qform">
       <div className="row qrow-cat">
@@ -636,7 +659,7 @@ export default function QuestionForm({
         </div>
       )}
       <p className="blurb">
-        {blurbText}{' '}
+        {blurbText}{demotionNote}{' '}
         <span className="cards">
           ({previewCards}
           {previewMult > 1 && (
@@ -1098,7 +1121,7 @@ export default function QuestionForm({
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
 
-      {meta.eliminates && (
+      {eliminatesEffective && (
         <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
           <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
           <span className="endgame-text">
@@ -1109,7 +1132,7 @@ export default function QuestionForm({
       )}
 
       <div className="qform-actions">
-        <button className="primary" onClick={() => submit(false)}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
+        <button className="primary" onClick={() => submit(false)}>{eliminatesEffective ? 'Log question & eliminate' : 'Log question'}</button>
         <button
           className="veto"
           onClick={() => submit(true)}

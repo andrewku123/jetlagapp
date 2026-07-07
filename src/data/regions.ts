@@ -1,3 +1,5 @@
+import type { QuestionKind, Station } from '../types'
+
 // Region registry: the app is data-driven and region-agnostic — every question,
 // the elimination engine, the map, the board code etc. read whatever the ACTIVE
 // region supplies. A region is just a bundle of the same-shaped data files (see
@@ -138,3 +140,27 @@ export const AGENCIES: string[] = [
 export const SINGLE_AGENCY = AGENCIES.length <= 1
 export const MAP_CENTER = ACTIVE_REGION.center
 export const MAP_ZOOM = ACTIVE_REGION.zoom
+
+// Normally-eliminating Matching questions that are useless on the active map
+// because every in-play station shares one value for them, so "same as mine?"
+// can never split the suspect set (county/city Matching on SF Muni: all 132
+// stations are in San Francisco). We demote these to log-only for the region —
+// still recorded for the seeker's notes, but they shade/eliminate nothing.
+// Derived from the active region's own station data so it stays correct for any
+// future map with no hand-maintained list.
+const logOnlyStations = ACTIVE_REGION.stations as Station[]
+function distinctValueCount(vals: (string | number | null)[]): number {
+  return new Set(vals.filter((v) => v != null && v !== '')).size
+}
+export const LOG_ONLY_KINDS: ReadonlySet<QuestionKind> = new Set<QuestionKind>(
+  (
+    [
+      [distinctValueCount(logOnlyStations.map((s) => s.county)), 'match-county'],
+      [distinctValueCount(logOnlyStations.map((s) => s.city)), 'match-city'],
+      [distinctValueCount(logOnlyStations.map((s) => s.nearestAirport)), 'match-airport'],
+      [distinctValueCount(logOnlyStations.flatMap((s) => s.lines)), 'match-line'],
+    ] as [number, QuestionKind][]
+  )
+    .filter(([count]) => count <= 1)
+    .map(([, kind]) => kind),
+)
