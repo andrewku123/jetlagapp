@@ -70,21 +70,32 @@ and adjusting a few region constants. There is no per-city code branching.
    - Skip degenerate questions: e.g. "A Rail Station" (measuring) is useless when
      every hiding station is itself a rail station (distance always 0). It stays
      wired generically for cities whose station set includes non-rail stops.
-   - **Auto-demote map-useless Matching questions to log-only** via
-     `LOG_ONLY_KINDS` in `src/data/regions.ts` — do NOT hand-maintain a per-city
-     list. It's derived from the active region's own station data: any
-     normally-eliminating Matching kind whose stations have a single distinct
-     value can't split the suspect set, so it's demoted to log-only. Currently
-     checks `match-county` / `match-city` / `match-airport` / `match-line` (count
-     distinct `county` / `city` / `nearestAirport` / `lines`; `<= 1` → demote).
-     Single-city maps (SF Muni: all 132 stations in San Francisco) demote
-     county + city; multi-county maps (Bay Area: 5 counties, 38 cities) demote
-     nothing. `QuestionForm` reads the set: `eliminatesEffective = meta.eliminates
-     && !LOG_ONLY_KINDS.has(kind)` drives the logged record's `eliminates`, the
-     endgame checkbox, the primary-button label ("Log question" vs "Log question &
-     eliminate"), a "(log only)" suffix in the subject dropdown, and an
-     explanatory blurb note. Add a new discriminator to the array only if a new
-     Matching kind can go single-valued on some city.
+   - **Auto-demote map-useless questions to log-only** via `LOG_ONLY_KINDS` in
+     `src/data/regions.ts` — do NOT hand-maintain a per-city list. It's derived
+     from the active region's own data. A normally-eliminating question is
+     demoted when it can't discriminate on this map, for either reason:
+     1. **Single-valued discriminator** — every in-play station shares one value,
+        so "same as mine?" can't split. Counts distinct `county` / `city` /
+        `lines` (`<= 1` → demote `match-county` / `match-city` / `match-line`).
+     2. **Feature absent from the play area** — apply the core game rule
+        *"anything outside the play area is treated as if it doesn't exist."* The
+        `AIRPORTS` list is scoped by point-in-play-area test (`pointInPlayArea`)
+        to the airports actually inside the active map. If none are in play
+        (`!HAS_AIRPORTS`), demote BOTH `match-airport` and `measure-airport` —
+        with no in-play airport there's no valid "nearest airport" answer. SFO/
+        OAK/SJC are all inside the Bay Area play area but all outside San
+        Francisco, so SF Muni has zero in-play airports.
+     Net: SF Muni (single county/city, no in-play airport) demotes county + city
+     + both airport questions (keeps line, 7 Muni lines); Bay Area (5 counties,
+     38 cities, 3 airports) demotes nothing. `QuestionForm` reads the set:
+     `eliminatesEffective = meta.eliminates && !LOG_ONLY_KINDS.has(kind)` drives
+     the logged record's `eliminates`, the endgame checkbox, the primary-button
+     label ("Log question" vs "Log question & eliminate"), a "(log only)" suffix
+     in the subject dropdown, an explanatory blurb note (`DEMOTION_NOTE`), and the
+     airport readout falls back to "No airport in the play area on this map."
+     Same rule generalizes to any future out-of-play feature (scope its source
+     list to the play area, demote its questions when the scoped list is empty).
+     `src/data/regions.test.ts` asserts the per-region demotion set.
    - For the county polygons themselves, produce `src/data/counties.geojson.json`
      as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
      (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
