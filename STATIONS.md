@@ -1,4 +1,9 @@
-# Bay Area Hide & Seek — Eligible Stations
+# Jet Lag: Hide & Seek — Eligible Stations
+
+This is the **Bay Area** map's station list. The app also ships an **SF Muni**
+map, which is the **132 Muni rail stops** on lines J/K/L/M/N/T/F below (the "Muni"
+membership rows), scoped to the City & County of San Francisco; see
+[README.md](README.md#maps).
 
 **264 unique hideable stations** (deduped within and across systems).
 Eligible counts after the <1 hr-frequency rule: 263 weekday / 264 weekend.
