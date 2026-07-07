@@ -3,7 +3,7 @@ import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
-import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
+import { QUESTION_POI_CATEGORIES, POI_COUNTS, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
 import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
@@ -195,7 +195,11 @@ export default function QuestionForm({
   // A normally-eliminating question the active map can't split on (e.g. county /
   // city Matching on SF Muni — every station shares one value) is demoted to
   // log-only: still logged, but it eliminates and shades nothing.
-  const eliminatesEffective = meta.eliminates && !LOG_ONLY_KINDS.has(kind)
+  // POI questions are per-category: with no in-play POI of that type a Matching or
+  // Measuring question has no answer, and with a single one "same as mine?" is
+  // always yes (e.g. amusement park on SF Muni: 0 in play). Matching needs >= 2
+  // to split; Measuring only breaks with 0 (distances to one POI still vary).
+  // (eliminatesEffective is computed below, after poiCat is declared.)
   // category is step 1 (segmented buttons); the kind dropdown (step 2) only shows
   // for categories with more than one question.
   const categories = QUESTION_CATALOG.reduce<QuestionMeta['category'][]>(
@@ -235,6 +239,16 @@ export default function QuestionForm({
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
+  // A POI Matching/Measuring subject the active map can't discriminate on: no
+  // in-play POI of that category (both useless) or a single one (Matching only).
+  function poiKindDemoted(k: QuestionKind, cat: string): boolean {
+    const n = POI_COUNTS[cat] ?? 0
+    if (k === 'match-poi') return n <= 1
+    if (k === 'measure-poi') return n === 0
+    return false
+  }
+  const eliminatesEffective =
+    meta.eliminates && !LOG_ONLY_KINDS.has(kind) && !poiKindDemoted(kind, poiCat)
   // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
   const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
   const [tentPoi, setTentPoi] = useState<string>('')
@@ -549,7 +563,7 @@ export default function QuestionForm({
     if (q.kind === 'match-poi' || q.kind === 'measure-poi') {
       return QUESTION_POI_CATEGORIES.map((c) => ({
         value: `${q.kind}::${c}`,
-        label: capitalize(poiCategoryLabel(c)),
+        label: capitalize(poiCategoryLabel(c)) + (poiKindDemoted(q.kind, c) ? ' (log only)' : ''),
         group: POI_SUBJECT_GROUP[c] ?? 'Places of Interest',
       }))
     }
@@ -631,8 +645,15 @@ export default function QuestionForm({
     'match-line': 'every station on this map is on the same line',
   }
   const demoted = meta.eliminates && !eliminatesEffective
+  // POI demotions carry a category-specific reason (none / only one in play).
+  const poiDemotionReason =
+    (kind === 'match-poi' || kind === 'measure-poi') && poiKindDemoted(kind, poiCat)
+      ? (POI_COUNTS[poiCat] ?? 0) === 0
+        ? `there is no ${poiCategoryLabel(poiCat)} in the play area on this map`
+        : `there is only one ${poiCategoryLabel(poiCat)} in the play area on this map`
+      : undefined
   const demotionNote = demoted
-    ? ` Log only on this map — ${DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't eliminate; recorded for your reference.`
+    ? ` Log only on this map — ${poiDemotionReason ?? DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't eliminate; recorded for your reference.`
     : ''
 
   return (

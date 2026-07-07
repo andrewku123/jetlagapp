@@ -535,21 +535,22 @@ export default function App() {
             ))}
           </nav>
 
-          {tab === 'ask' && (
-            <div className="panel">
-              <p className="hint">Paste coordinates (lat, lon) for each seeker location — most accurate. Clicking the map drops a point you can fall back on.</p>
-              <QuestionForm
-                lastClick={lastClick}
-                units={game.units}
-                lines={lines}
-                onSubmit={addQuestion}
-                onPreview={setLastClick}
-                askGroupCounts={askGroupCounts}
-                endgameActive={game.endgame != null}
-                gameSize={game.gameSize}
-              />
-            </div>
-          )}
+          {/* The Ask panel stays mounted (just hidden) on other tabs so the
+              current question selection and its params survive a tab switch —
+              e.g. leaving "Measuring — Zoo" for POI and back keeps it selected. */}
+          <div className="panel" style={tab === 'ask' ? undefined : { display: 'none' }}>
+            <p className="hint">Paste coordinates (lat, lon) for each seeker location — most accurate. Clicking the map drops a point you can fall back on.</p>
+            <QuestionForm
+              lastClick={lastClick}
+              units={game.units}
+              lines={lines}
+              onSubmit={addQuestion}
+              onPreview={setLastClick}
+              askGroupCounts={askGroupCounts}
+              endgameActive={game.endgame != null}
+              gameSize={game.gameSize}
+            />
+          </div>
 
           {tab === 'history' && (
             <div className="panel">
