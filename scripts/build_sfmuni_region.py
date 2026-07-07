@@ -137,16 +137,34 @@ print('transit-line features kept:', len(tl_out['features']))
 dump('sfmuni.transit-lines.geojson.json', tl_out)
 
 # ---------------------------------------------------------------------------
-# 5. Places (city Matching): just San Francisco, at its TRUE municipal boundary
-#    (`land`), NOT the play area. The play area is padded south with each edge
-#    station's 0.25 mi endgame hiding zone, which spills across the SF↔San Mateo
-#    line into Brisbane; using it here would mislabel those border points as "San
-#    Francisco city". The endgame county/city question needs the real border so it
-#    can carve the part of a border station's hiding zone that lies outside SF.
-sf_place_geom = land
+# 5. Places (city Matching):
+#    - San Francisco at its TRUE municipal boundary (`land`), NOT the play area.
+#      The play area is padded south with each edge station's 0.25 mi endgame
+#      hiding zone, which spills across the SF↔San Mateo line into Brisbane; using
+#      the play area here would mislabel those border points as "San Francisco
+#      city".
+#    - Neighbouring cities (Brisbane, Daly City, …) clipped to the play area, so
+#      the part of a border station's endgame hiding zone that lies OUTSIDE SF
+#      reads its real city/county (e.g. Bayshore/Sunnydale's zone → Brisbane, San
+#      Mateo) instead of "unincorporated / outside the play area". Only the in-
+#      play sliver of each neighbour is kept (rule: outside the play area doesn't
+#      exist), and each meets SF along the real census border, so endgame
+#      county/city carving stays exact.
+neighbour_feats = []
+for f in places['features']:
+    if f['properties']['name'] == 'San Francisco city':
+        continue
+    g = shape(f['geometry']).difference(water).intersection(play_area)
+    if not g.is_empty:
+        neighbour_feats.append({'type': 'Feature',
+                                'properties': {'name': f['properties']['name']},
+                                'geometry': mapping(g)})
+print('neighbour places kept in play area:',
+      [f['properties']['name'] for f in neighbour_feats])
 places_out = {'type': 'FeatureCollection',
-              'features': [{'type': 'Feature', 'properties': {'name': 'San Francisco city'},
-                            'geometry': mapping(sf_place_geom)}]}
+              'features': [{'type': 'Feature',
+                            'properties': {'name': 'San Francisco city'},
+                            'geometry': mapping(land)}] + neighbour_feats}
 dump('sfmuni.places.geojson.json', places_out)
 
 # ---------------------------------------------------------------------------
