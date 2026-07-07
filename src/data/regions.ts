@@ -126,5 +126,15 @@ export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
 export const MAP_NAME = ACTIVE_REGION.name
+
+// Transit agencies present on the active map. On a single-agency map (e.g. SF
+// Muni, where every station is "Muni") per-station agency chips are just noise,
+// so UI can suppress them; on a multi-agency map (Bay Area) they're useful.
+export const AGENCIES: string[] = [
+  ...new Set(
+    (ACTIVE_REGION.stations as { systems?: string[] }[]).flatMap((s) => s.systems ?? []),
+  ),
+]
+export const SINGLE_AGENCY = AGENCIES.length <= 1
 export const MAP_CENTER = ACTIVE_REGION.center
 export const MAP_ZOOM = ACTIVE_REGION.zoom

@@ -10,11 +10,35 @@ Outputs src/data/sfmuni.*.json, all the exact same shape as their Bay Area
 counterparts so the region-agnostic app code needs no per-city branching.
 """
 import json
+import math
 import os
-from shapely.geometry import shape, mapping, Point
+from shapely.geometry import shape, mapping, Point, Polygon
 from shapely.ops import unary_union
 
 DATA = os.path.join(os.path.dirname(__file__), '..', 'src', 'data')
+SCRIPTS = os.path.dirname(__file__)
+
+# Endgame hiding-zone radius for a Medium game (matches SIZE_PARAMS in the app).
+HIDING_ZONE_MI = 0.25
+MILES_PER_METER = 1 / 1609.344
+
+
+def geodesic_circle(lat, lon, radius_mi, n=128):
+    """A geodesic disk of `radius_mi`, using the same spherical metric (R = 6371
+    km, destination-point formula) as the app's circlePolygon, so the play-area
+    boundary lines up exactly with the rendered green hiding-zone circle."""
+    R = 6371000.0  # metres — must match src/lib/geo.ts circlePolygon
+    d = (radius_mi / MILES_PER_METER) / R
+    lat1, lon1 = math.radians(lat), math.radians(lon)
+    pts = []
+    for i in range(n):
+        brng = 2 * math.pi * i / n
+        lat2 = math.asin(math.sin(lat1) * math.cos(d) +
+                         math.cos(lat1) * math.sin(d) * math.cos(brng))
+        lon2 = lon1 + math.atan2(math.sin(brng) * math.sin(d) * math.cos(lat1),
+                                 math.cos(d) - math.sin(lat1) * math.sin(lat2))
+        pts.append((math.degrees(lon2), math.degrees(lat2)))
+    return Polygon(pts)
 
 
 def load(name):
@@ -46,21 +70,38 @@ print('lines:', line_set)
 
 # ---------------------------------------------------------------------------
 # 2. Play area = the SF-city place polygon(s) that actually hold Muni stations
-#    (drops the detached southern sliver + tiny offshore rings with no stations).
+#    (drops the detached southern sliver + tiny offshore rings with no stations),
+#    clipped to land (the raw TIGER place includes a bay-water wedge toward
+#    Alameda), then unioned with each station's 0.25 mi endgame hiding zone so an
+#    edge station's zone (e.g. Bayshore Blvd & Sunnydale Ave) is never dimmed
+#    out of play. The final result is re-clipped to land so the zones never bulge
+#    into the bay.
 places = load('places.geojson.json')
 sf_feats = [f for f in places['features'] if f['properties']['name'] == 'San Francisco city']
 station_pts = [Point(s['lon'], s['lat']) for s in muni]
 station_hull = unary_union([p.buffer(0.004) for p in station_pts])  # ~0.28 mi
 
+# Dense water mask (SF Bay + Pacific) used by the Bay Area pipeline to trim the
+# bay wedge off TIGER polygons.
+with open(os.path.join(SCRIPTS, 'bay_water_mask.geojson')) as f:
+    water = shape(json.load(f)['geometry'])
+
 play_polys = []
 for f in sf_feats:
-    g = shape(f['geometry'])
+    g = shape(f['geometry']).difference(water)  # clip the bay wedge off
     parts = list(g.geoms) if g.geom_type == 'MultiPolygon' else [g]
     for part in parts:
         if part.intersects(station_hull):
             play_polys.append(part)
-play_area = unary_union(play_polys)
-print('play area parts:', len(play_polys), 'bounds:', [round(b, 3) for b in play_area.bounds])
+land = unary_union(play_polys)
+
+# Union each station's endgame hiding zone (slightly padded so the rendered
+# 128-gon circle sits fully inside), then re-clip to land.
+zones = unary_union([geodesic_circle(s['lat'], s['lon'], HIDING_ZONE_MI + 0.01)
+                     for s in muni])
+play_area = unary_union([land, zones]).difference(water).buffer(0)
+print('play area bounds:', [round(b, 3) for b in play_area.bounds],
+      'parts:', len(play_area.geoms) if play_area.geom_type == 'MultiPolygon' else 1)
 
 play_fc = {
     'type': 'FeatureCollection',
@@ -71,12 +112,16 @@ dump('sfmuni.play-area.geojson.json', play_fc)
 dump('sfmuni.stations.json', muni)
 
 # ---------------------------------------------------------------------------
-# 3. POIs: keep those inside the play area.
+# 3. POIs: keep those inside the play area. A tiny buffer (~40 m) keeps
+#    waterfront POIs that sit on piers just past the land clip (e.g. the USS
+#    Pampanito / SS Jeremiah O'Brien museums at Fisherman's Wharf) without
+#    re-admitting the across-the-bay islands the wedge used to include.
 poi = load('poi.json')
+poi_keep_area = play_area.buffer(0.0006)
 poi_out = {}
 kept = dropped = 0
 for cat, items in poi.items():
-    keep = [p for p in items if play_area.contains(Point(p['lon'], p['lat']))]
+    keep = [p for p in items if poi_keep_area.contains(Point(p['lon'], p['lat']))]
     poi_out[cat] = keep
     kept += len(keep)
     dropped += len(items) - len(keep)

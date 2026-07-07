@@ -11,7 +11,7 @@ import { rewardForKind, questionGroupKey } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
-import { stationsData, REGIONS, ACTIVE_REGION_ID, setActiveRegion } from './data/regions'
+import { stationsData, REGIONS, ACTIVE_REGION_ID, setActiveRegion, SINGLE_AGENCY } from './data/regions'
 
 const STATIONS = stationsData as unknown as Station[]
 
@@ -112,6 +112,11 @@ export default function App() {
 
   useEffect(() => saveGame(game), [game])
 
+  // Tab title tracks the active map (index.html ships a non-generic fallback).
+  useEffect(() => {
+    document.title = `${MAP_NAME} Hide & Seek`
+  }, [])
+
   // the station view override only applies while on the POI tab; reset it to
   // Normal on leaving so re-opening the tab always starts from Normal
   useEffect(() => {
@@ -155,6 +160,22 @@ export default function App() {
       ? all.filter((l) => !WEEKEND_EXCLUDED_LINES.includes(l))
       : all
   }, [game.dayType])
+
+  // Weekday/Weekend only matters when the two days differ for this map — i.e. the
+  // eligible-station set changes, or the map has weekday-only lines. On SF Muni
+  // (all lines run daily, same 132 eligible) it does nothing, so the toggle and
+  // the split eligibility line are hidden.
+  const dayTypeMatters = useMemo(() => {
+    const eligibleIds = (day: DayType) =>
+      STATIONS.filter((s) => s.headwayMin[day] <= ELIGIBLE_HEADWAY_MIN)
+        .map((s) => s.id)
+        .join(',')
+    const hasWeekendOnlyDiff = eligibleIds('wd') !== eligibleIds('we')
+    const hasWeekendExcludedLines = STATIONS.some((s) =>
+      s.lines.some((l) => WEEKEND_EXCLUDED_LINES.includes(l)),
+    )
+    return hasWeekendOnlyDiff || hasWeekendExcludedLines
+  }, [])
 
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
   const manualSet = useMemo(() => new Set(game.manualEliminated), [game.manualEliminated])
@@ -315,7 +336,7 @@ export default function App() {
       <button className={'star ' + (starredSet.has(s.id) ? 'on' : '')} onClick={() => toggleStar(s.id)}>★</button>
       <span className="dot" style={{ background: SYSTEM_COLORS[s.systems[0]] ?? '#444' }} />
       <button className="sname" onClick={() => focusStation(s)} title="Show on map">{s.name}</button>
-      <span className="ssys">{s.systems.join('·')}</span>
+      {!SINGLE_AGENCY && <span className="ssys">{s.systems.join('·')}</span>}
       <button className="x" onClick={() => toggleManual(s.id)} title="eliminate">✕</button>
     </li>
   )
@@ -324,7 +345,7 @@ export default function App() {
       <span className="star-spacer" />
       <span className="dot" style={{ background: '#9aa0a6' }} />
       <button className="sname" onClick={() => focusStation(s)} title="Show on map">{s.name}</button>
-      <span className="ssys">{s.systems.join('·')}</span>
+      {!SINGLE_AGENCY && <span className="ssys">{s.systems.join('·')}</span>}
       {manualSet.has(s.id) ? (
         <button className="restore" onClick={() => toggleManual(s.id)} title="restore">↩</button>
       ) : (
@@ -439,7 +460,9 @@ export default function App() {
                 ))}
               </select>
             </label>
-            <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
+            {dayTypeMatters && (
+              <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
+            )}
             <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
             <label className="chk">
               <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
@@ -791,10 +814,21 @@ export default function App() {
               </details>
               <p className="info">
                 <strong>Eligibility:</strong> hiders' stations must be served at least once an hour
-                (≤{ELIGIBLE_HEADWAY_MIN} min between trains). Eligible —{' '}
-                weekday {STATIONS.filter((s) => s.headwayMin.wd <= ELIGIBLE_HEADWAY_MIN).length},{' '}
-                weekend {STATIONS.filter((s) => s.headwayMin.we <= ELIGIBLE_HEADWAY_MIN).length}{' '}
-                of {STATIONS.length}.
+                (≤{ELIGIBLE_HEADWAY_MIN} min between trains).{' '}
+                {dayTypeMatters ? (
+                  <>
+                    Eligible — weekday{' '}
+                    {STATIONS.filter((s) => s.headwayMin.wd <= ELIGIBLE_HEADWAY_MIN).length},{' '}
+                    weekend{' '}
+                    {STATIONS.filter((s) => s.headwayMin.we <= ELIGIBLE_HEADWAY_MIN).length}{' '}
+                    of {STATIONS.length}.
+                  </>
+                ) : (
+                  <>
+                    {STATIONS.filter((s) => s.headwayMin.wd <= ELIGIBLE_HEADWAY_MIN).length}{' '}
+                    of {STATIONS.length} eligible.
+                  </>
+                )}
               </p>
               <h3>Satellite imagery</h3>
               <p className="info">
@@ -806,22 +840,22 @@ export default function App() {
                 >
                   Esri World Imagery
                 </a>{' '}
-                (Maxar / aerial), clipped to the play-area counties. It's a mosaic,
-                so the capture date varies by location — in the Bay Area it's
-                generally late 2024–2025 (e.g. San Francisco Aug 2025, Oakland Jun
-                2025, San Jose Nov 2024). Check the exact date anywhere with{' '}
+                (Maxar / aerial), clipped to the play area — a mosaic, so capture
+                dates vary by location. Check any spot with{' '}
                 <a href="https://livingatlas.arcgis.com/wayback/" target="_blank" rel="noreferrer">
                   Esri Wayback
                 </a>
                 .
               </p>
               <h3>Systems</h3>
-              {SYSTEM_ORDER.map((sys) => (
-                <div key={sys} className="legrow">
-                  <span className="dot" style={{ background: SYSTEM_COLORS[sys] }} />
-                  {sys} ({STATIONS.filter((s) => s.systems.includes(sys)).length})
-                </div>
-              ))}
+              {SYSTEM_ORDER.filter((sys) => STATIONS.some((s) => s.systems.includes(sys))).map(
+                (sys) => (
+                  <div key={sys} className="legrow">
+                    <span className="dot" style={{ background: SYSTEM_COLORS[sys] }} />
+                    {sys} ({STATIONS.filter((s) => s.systems.includes(sys)).length})
+                  </div>
+                ),
+              )}
               <p className="hint">
                 Auto-elimination supports Radar, Thermometer, Matching (county / city / airport / line / name
                 length / ZIP / POI category), Measuring (airport / sea level / coastline / ZIP / POI), and
