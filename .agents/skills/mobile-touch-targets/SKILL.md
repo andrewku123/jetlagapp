@@ -111,6 +111,29 @@ Do NOT stack a second dot on that ask location. `App.tsx`'s `pickedPoints` also 
 
 Verify deterministically over CDP: with a `match-airport` question (`params:{fromLat,fromLon,value:'OAK',answer:'yes'}`) in `localStorage['bahs.game.v1']`, `document.elementFromPoint` at the pin centre must resolve into `.leaflet-answerPin-pane` (pin wins), while a station elsewhere still resolves into `.leaflet-stations-pane` (no blanket). See the `verify-map-interactions` skill for the CDP harness.
 
+## Mobile-only compact header (⚙ popover)
+
+The topbar `.toggles` group (Day, Units, show-eliminated, satellite, Reset) wraps
+into 2–3 tall rows on a phone, eating vertical space over the map. Keep the header
+one short row on mobile **without touching desktop**: leave Day + Units always
+visible, and move the *secondary* controls (show-eliminated / satellite / Reset)
+into a `.toggles-more` block that a `.settings-toggle` (⚙) opens.
+
+- `App.tsx`: `settingsOpen` state; render the ⚙ `<button className="settings-toggle">`
+  then `<div className={'toggles-more' + (settingsOpen ? ' open' : '')}>` wrapping
+  the three secondary controls.
+- `src/index.css`: **desktop base** = `.settings-toggle { display: none }` and
+  `.toggles-more { display: flex }` (controls stay inline, header unchanged).
+  Inside `@media (max-width: 760px)`: show the ⚙ (`display: inline-flex`), make
+  `.toggles` `position: relative; flex-wrap: nowrap`, and turn `.toggles-more` into
+  an absolute right-anchored popover (`top: 100%; right: 0`) that's `display:none`
+  until `.open`. Gotcha: on 390px the Day+Units+⚙ row overflows and clips the ⚙ at
+  the right edge — shrink the seg buttons on mobile (`.toggles .seg button {
+  padding: 7px 9px; font-size: 12px }`) so it fits, and give popover labels
+  `white-space: nowrap` so their box sizes to the widest ("show eliminated").
+- This is the general pattern for hiding any secondary header control on phones:
+  desktop shows it inline, mobile tucks it behind the ⚙.
+
 ## Notes
 
 - The app layout is already responsive: at `<=760px` the sidebar becomes a slide-up bottom sheet and the map goes full-screen (`@media (max-width: 760px)` in `src/index.css`). No layout change needed.
