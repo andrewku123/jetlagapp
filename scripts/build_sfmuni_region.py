@@ -169,12 +169,23 @@ dump('sfmuni.places.geojson.json', places_out)
 
 # ---------------------------------------------------------------------------
 # 6. Counties: keep SF + immediate neighbours (only SF is in play; neighbours
-#    are kept for the out-of-play dim + the county-border measure feature).
+#    are kept so a border station's endgame hiding zone that spills across the
+#    line reads its real county — see countyAt()'s in-play-area fallback).
+#    San Francisco is a CONSOLIDATED city-county, so its county boundary is
+#    exactly its municipal land boundary: use the same high-resolution, water-
+#    clipped `land` we use for the city, NOT the coarse Census county shape
+#    (which is only ~160 vertices and reaches out across the bay to the Farallon
+#    Islands). The endgame "same county?" question draws this boundary as a
+#    reference line, so a coarse polygon renders as a visibly jagged, offshore-
+#    bulging outline. `land` makes it hug the true SF shoreline.
 counties = load('counties.geojson.json')
-KEEP_COUNTIES = {'San Francisco', 'San Mateo', 'Marin', 'Alameda', 'Contra Costa'}
+KEEP_NEIGHBOUR_COUNTIES = {'San Mateo', 'Marin', 'Alameda', 'Contra Costa'}
 counties_out = {'type': 'FeatureCollection',
-                'features': [f for f in counties['features']
-                             if f['properties']['name'] in KEEP_COUNTIES]}
+                'features': [{'type': 'Feature',
+                              'properties': {'name': 'San Francisco'},
+                              'geometry': mapping(land)}]
+                             + [f for f in counties['features']
+                                if f['properties']['name'] in KEEP_NEIGHBOUR_COUNTIES]}
 print('counties kept:', [f['properties']['name'] for f in counties_out['features']])
 dump('sfmuni.counties.geojson.json', counties_out)
 
