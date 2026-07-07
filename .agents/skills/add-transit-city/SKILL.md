@@ -70,6 +70,21 @@ and adjusting a few region constants. There is no per-city code branching.
    - Skip degenerate questions: e.g. "A Rail Station" (measuring) is useless when
      every hiding station is itself a rail station (distance always 0). It stays
      wired generically for cities whose station set includes non-rail stops.
+   - **Auto-demote map-useless Matching questions to log-only** via
+     `LOG_ONLY_KINDS` in `src/data/regions.ts` — do NOT hand-maintain a per-city
+     list. It's derived from the active region's own station data: any
+     normally-eliminating Matching kind whose stations have a single distinct
+     value can't split the suspect set, so it's demoted to log-only. Currently
+     checks `match-county` / `match-city` / `match-airport` / `match-line` (count
+     distinct `county` / `city` / `nearestAirport` / `lines`; `<= 1` → demote).
+     Single-city maps (SF Muni: all 132 stations in San Francisco) demote
+     county + city; multi-county maps (Bay Area: 5 counties, 38 cities) demote
+     nothing. `QuestionForm` reads the set: `eliminatesEffective = meta.eliminates
+     && !LOG_ONLY_KINDS.has(kind)` drives the logged record's `eliminates`, the
+     endgame checkbox, the primary-button label ("Log question" vs "Log question &
+     eliminate"), a "(log only)" suffix in the subject dropdown, and an
+     explanatory blurb note. Add a new discriminator to the array only if a new
+     Matching kind can go single-valued on some city.
    - For the county polygons themselves, produce `src/data/counties.geojson.json`
      as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
      (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
