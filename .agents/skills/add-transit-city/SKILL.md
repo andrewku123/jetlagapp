@@ -169,6 +169,40 @@ is the template) that reads the Bay Area files and:
 - writes the 8 `<slug>.*` files. Then add one `REGIONS` entry. That's it —
   keep each file the exact same shape so the elimination engine is untouched.
 
+**Subset play area = water-clip + endgame-zone union.** A raw TIGER place/county
+polygon includes bay-water wedges reaching toward neighbours (the symptom: "a bit
+of Alameda" shows in-play / a city Matching returns the wrong across-the-water
+city). Clip it: `place.difference(water)` with the same `bay_water_mask.geojson`
+the Bay Area pipeline uses. Then **union each station's 0.25 mi endgame hiding
+disk** into the play area (and re-clip to land), otherwise an edge station's
+endgame zone (e.g. Bayshore/Sunnydale on SF Muni) gets dimmed out of play. Build
+the disk with a geodesic circle at **R = 6371 km** so it matches
+`circlePolygon()` in `src/lib/geo.ts` exactly (pad ~0.01 mi so the rendered
+128-gon sits fully inside). Keep waterfront POIs that sit just offshore with a
+tiny `play_area.buffer(0.0006)` (~40 m) containment test — big enough for pier
+museums, far too small to re-admit across-the-bay islands. `scripts/build_sfmuni_region.py`
+is the worked example. Note the SF **city** polygon lives in the SHARED
+`places.geojson.json` (used by city Matching on *both* maps), so clip the wedge
+there too, not just in the `<slug>.*` copy.
+
+### Region-adaptive UI (don't hardcode per map)
+A subset/single-agency map should hide controls that are meaningless for it, but
+by a **derived condition**, never `if (region==='sfmuni')`:
+- **Agency chip** (`.ssys` in `App.tsx` suspects rows): hide when
+  `SINGLE_AGENCY` (from `regions.ts` — `AGENCIES.length <= 1`). SF Muni = 1 agency
+  ("Muni") → hidden; Bay Area = 5 → shown. The `Systems` legend list likewise
+  filters to `SYSTEM_ORDER.filter(sys => STATIONS.some(s => s.systems.includes(sys)))`
+  so zero-count agencies don't render.
+- **Weekday/Weekend toggle** (`DayToggle` in the header): compute
+  `dayTypeMatters` = the eligible-station **id set** differs between `wd`/`we`
+  (`headwayMin[day] <= ELIGIBLE_HEADWAY_MIN`) **OR** any station is on a
+  `WEEKEND_EXCLUDED_LINES` line. Hide the toggle when false and collapse the
+  legend eligibility line to a single count. SF Muni runs daily → hidden; Bay
+  Area has weekday-only Caltrain (263 vs 264 eligible) → shown.
+- **Tab title**: `index.html` ships a non-region-specific static `<title>`
+  ("Jet Lag: Hide & Seek"); a `useEffect` in `App.tsx` then sets
+  `document.title = \`${MAP_NAME} Hide & Seek\`` so it tracks the active map.
+
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test && npm run build`, then `npm run dev` and
 confirm the new region renders and the toggles/filters behave.
