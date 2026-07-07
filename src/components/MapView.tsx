@@ -1167,18 +1167,35 @@ export default function MapView({
           🧰
         </button>
         {toolbarOpen && (
-        <div className="draw-tools">
-          {(['select', 'compass', 'line', 'bisector', 'measure', 'coord'] as DrawTool[]).map((t) => (
-            <button
-              key={t}
-              className={tool === t ? 'on' : ''}
-              onClick={() => selectTool(t)}
-              data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : t === 'measure' ? 'Measure' : 'Coordinates'}
-              aria-label={t}
-            >
-              {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : t === 'measure' ? '📏' : '📍'}
-            </button>
-          ))}
+        <div className="draw-tools-row">
+          <div className="draw-tools">
+            {(['select', 'compass', 'line', 'bisector', 'measure', 'coord'] as DrawTool[]).map((t) => (
+              <button
+                key={t}
+                className={tool === t ? 'on' : ''}
+                onClick={() => selectTool(t)}
+                data-tip={t === 'select' ? 'Select' : t === 'compass' ? 'Compass' : t === 'line' ? 'Line' : t === 'bisector' ? 'Perpendicular bisector' : t === 'measure' ? 'Measure' : 'Coordinates'}
+                aria-label={t}
+              >
+                {t === 'select' ? '✋' : t === 'compass' ? '⊙' : t === 'line' ? '／' : t === 'bisector' ? '⊥' : t === 'measure' ? '📏' : '📍'}
+              </button>
+            ))}
+          </div>
+          {/* swatches sit vertically in the empty space next to the tool column
+             (only for tools that draw a colored shape) to save vertical room */}
+          {tool !== 'select' && tool !== 'coord' && (
+            <div className="draw-colors">
+              {DRAW_COLORS.map((c) => (
+                <button
+                  key={c}
+                  className={'swatch' + (color === c ? ' on' : '')}
+                  style={{ background: c }}
+                  onClick={() => setColor(c)}
+                  aria-label={`color ${c}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
         )}
         {toolbarOpen && tool === 'compass' && (
@@ -1211,19 +1228,6 @@ export default function MapView({
               />
             )}
           </label>
-        )}
-        {tool !== 'select' && tool !== 'coord' && (
-          <div className="draw-colors">
-            {DRAW_COLORS.map((c) => (
-              <button
-                key={c}
-                className={'swatch' + (color === c ? ' on' : '')}
-                style={{ background: c }}
-                onClick={() => setColor(c)}
-                aria-label={`color ${c}`}
-              />
-            ))}
-          </div>
         )}
         {tool === 'coord' && (
           <div className="draw-coord-readout">

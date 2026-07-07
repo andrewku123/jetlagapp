@@ -417,8 +417,6 @@ export default function App() {
           <strong>{remaining.length}</strong> of {base.length} possible
         </div>
         <div className="toggles">
-          <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
-          <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
           <button
             className={'settings-toggle' + (settingsOpen ? ' on' : '')}
             aria-label="more settings"
@@ -428,6 +426,8 @@ export default function App() {
             ⚙
           </button>
           <div className={'toggles-more' + (settingsOpen ? ' open' : '')}>
+            <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
+            <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
             <label className="chk">
               <input type="checkbox" checked={showEliminated} onChange={(e) => setShowEliminated(e.target.checked)} />
               show eliminated

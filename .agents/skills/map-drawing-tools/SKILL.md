@@ -182,9 +182,19 @@ either; this split-by-mode design is what actually works. Verified via CDP.)
 - Undo/Clear sit **horizontal when a tool is open** (panel is already wide from its
   options) and **vertical when closed** (stays slim, never widens on its own).
 - Per-tool option rows (`.draw-radius` for compass radius,
-  `.draw-colors`, the coord read-out, the coordinate-entry box) are gated on
+  the coord read-out, the coordinate-entry box) are gated on
   `toolbarOpen && tool === '<mode>'`. The custom-radius `<input>` uses
   `flex-basis:100%` so it drops to its own line inside the wrapping row.
+- **Colour swatches sit vertically beside the tool icons**, not in a row below.
+  The tool icon column and `.draw-colors` are wrapped in `.draw-tools-row`
+  (`display:flex; flex-direction:row; align-items:center`); the swatches render
+  only for colour-drawing tools (`tool !== 'select' && tool !== 'coord'`). CSS
+  `.draw-tools-row .draw-colors { flex-direction:column; margin-top:0;
+  align-items:center; justify-content:center }` stacks them and centres them
+  vertically against the taller icon column. This uses the otherwise-empty space
+  next to the icons so the panel gains no height from the swatches. (There is only
+  ONE `.draw-colors` block now — inside `.draw-tools-row` — don't leave the old
+  horizontal one below `.draw-radius`.)
 
 ## Popups auto-close after an action (`closePopup`)
 Station-popup action buttons (Star aside — Eliminate / Restore / Endgame here /

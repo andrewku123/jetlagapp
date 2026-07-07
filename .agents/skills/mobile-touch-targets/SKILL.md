@@ -115,24 +115,25 @@ Verify deterministically over CDP: with a `match-airport` question (`params:{fro
 
 The topbar `.toggles` group (Day, Units, show-eliminated, satellite, Reset) wraps
 into 2–3 tall rows on a phone, eating vertical space over the map. Keep the header
-one short row on mobile **without touching desktop**: leave Day + Units always
-visible, and move the *secondary* controls (show-eliminated / satellite / Reset)
-into a `.toggles-more` block that a `.settings-toggle` (⚙) opens.
+one short row on mobile **without touching desktop**: on mobile put **every**
+control behind a single `.settings-toggle` (⚙) — brand + count + ⚙ is all that
+shows — while desktop keeps the full inline header.
 
 - `App.tsx`: `settingsOpen` state; render the ⚙ `<button className="settings-toggle">`
-  then `<div className={'toggles-more' + (settingsOpen ? ' open' : '')}>` wrapping
-  the three secondary controls.
+  **first**, then `<div className={'toggles-more' + (settingsOpen ? ' open' : '')}>`
+  wrapping **all** the controls in order — `DayToggle`, `UnitsToggle`, show-eliminated,
+  satellite, Reset. (Everything lives inside `.toggles-more`; nothing is left loose in
+  `.toggles`.)
 - `src/index.css`: **desktop base** = `.settings-toggle { display: none }` and
-  `.toggles-more { display: flex }` (controls stay inline, header unchanged).
+  `.toggles-more { display: flex }` — because everything is inside `.toggles-more`,
+  desktop renders the whole header inline exactly as before, and the ⚙ is hidden.
   Inside `@media (max-width: 760px)`: show the ⚙ (`display: inline-flex`), make
   `.toggles` `position: relative; flex-wrap: nowrap`, and turn `.toggles-more` into
   an absolute right-anchored popover (`top: 100%; right: 0`) that's `display:none`
-  until `.open`. Gotcha: on 390px the Day+Units+⚙ row overflows and clips the ⚙ at
-  the right edge — shrink the seg buttons on mobile (`.toggles .seg button {
-  padding: 7px 9px; font-size: 12px }`) so it fits, and give popover labels
-  `white-space: nowrap` so their box sizes to the widest ("show eliminated").
-- This is the general pattern for hiding any secondary header control on phones:
-  desktop shows it inline, mobile tucks it behind the ⚙.
+  until `.open`. Give popover labels `white-space: nowrap` so the box sizes to the
+  widest ("show eliminated"); the segmented Day/Units toggles stack fine in the column.
+- This is the general pattern for hiding header controls on phones: desktop shows
+  them inline (all inside `.toggles-more`), mobile tucks the entire group behind the ⚙.
 
 ## Notes
 
