@@ -119,10 +119,26 @@ and adjusting a few region constants. There is no per-city code branching.
    - **CITY/COUNTY polygons must be the TRUE municipal boundary, not the play
      area.** `build_sfmuni_region.py` sets the SF play area = city land unioned
      with each station's 0.25 mi endgame circle (so edge zones stay in play), but
-     the `places` (city Matching) polygon must be the un-padded `land` — using
-     `play_area` bleeds the SF polygon south across the county line into Brisbane
-     and mislabels border points as "San Francisco city", which also breaks the
-     endgame county/city carving that depends on the real border.
+     the metro's OWN `places` (city Matching) polygon must be the un-padded `land`
+     — using `play_area` bleeds the SF polygon south across the county line into
+     Brisbane and mislabels border points as "San Francisco city", which also
+     breaks the endgame county/city carving that depends on the real border.
+   - **Include neighbour city/county slivers that fall inside the play area** so
+     the out-of-metro part of a border station's endgame zone reads its REAL
+     place, not "unincorporated / outside the play area". A 0.25 mi endgame circle
+     on an edge station (Bayshore/Sunnydale) spills past the SF↔San Mateo line
+     into Brisbane; that sliver is still in play and endgame county/city must
+     carve it. Two coordinated pieces:
+     - `build_sfmuni_region.py` adds each neighbouring Census place, clipped to
+       the play area (`place.difference(water).intersection(play_area)`), to
+       `sfmuni.places.geojson.json` alongside SF's true `land`. Each meets SF
+       along the real census border, so no station falls in a neighbour and
+       carving stays exact. (Verify: all stations still resolve to the metro
+       city, and the border point reads the neighbour — e.g. Brisbane.)
+     - `countyAt()` in `counties.ts` first tries `IN_PLAY_COUNTIES`; if the point
+       is still `inPlayArea()` but in none of them, it falls back to the real
+       neighbouring county from `counties.geojson.json` (San Mateo for the SF
+       sliver). Points genuinely outside the play area stay `null`.
    - For the county polygons themselves, produce `src/data/counties.geojson.json`
      as GeoJSON `[lon, lat]` polygons with a `properties.name` per county
      (Census TIGER county shapes, clipped to the play area). `counties.ts` reads
@@ -131,16 +147,17 @@ and adjusting a few region constants. There is no per-city code branching.
      Matching.** "2nd admin division" = county in the US, borough (also a county)
      in NYC, regional municipality / census division in Canada, etc. — same file
      shape, different source. The hider is always in one of the divisions that
-     hold stations, so `countyAt()` in `counties.ts` only considers the names in
-     `IN_PLAY_COUNTIES` (`src/lib/playArea.ts`); a seeker anywhere else — a
-     neighbouring county or the far side of the world — is definitively "not the
-     same county" as every station, and the exact identity of that outside
-     division never changes an elimination. So **do NOT try to ship the world's
-     counties**: set `IN_PLAY_COUNTIES` to the divisions containing stations, and
-     the match-county form shows an "outside the play area" read-out / alert for
-     anything else. (The wider `counties.geojson.json` set can still exist for the
-     county-*border* measure feature and the dim overlay; it just isn't used for
-     the match lookup.)
+     hold stations, so `countyAt()` in `counties.ts` first considers the names in
+     `IN_PLAY_COUNTIES` (`src/lib/playArea.ts`); a seeker on the far side of the
+     world is definitively "not the same county" as every station, and the exact
+     identity of that outside division never changes an elimination. So **do NOT
+     try to ship the world's counties**: set `IN_PLAY_COUNTIES` to the divisions
+     containing stations. The one exception is the in-play-area fallback above —
+     a point still inside the play area but outside every in-play county (a border
+     endgame sliver) resolves to its real neighbouring county so the endgame can
+     carve it; everything genuinely outside the play area still reads "outside the
+     play area". (The wider `counties.geojson.json` set also feeds the county-
+     *border* measure feature and the dim overlay.)
    - **City (3rd-admin) polygons** used by city Matching live in
      `src/data/places.geojson.json`, built by `scripts/build_city_places.py`
      from the state Census **place** file. Emit **every place that lies inside
