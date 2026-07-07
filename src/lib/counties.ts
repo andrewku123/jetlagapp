@@ -1,7 +1,7 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
-import countiesRaw from '../data/counties.geojson.json'
-import { IN_PLAY_COUNTIES } from './playArea'
+import { countiesData as countiesRaw, IN_PLAY_COUNTIES } from '../data/regions'
+import { inPlayArea } from './cities'
 
 // County polygons used by the "Matching — county (2nd admin)" question. The
 // seeker's county is looked up from their coordinate (point-in-polygon), and the
@@ -73,15 +73,23 @@ function pointInPolys(p: LatLng, polys: CountyPolys): boolean {
   return false
 }
 
-// The in-play county containing `p`, or null if it isn't in one of the counties
-// that hold hiding stations. Only the play counties matter for the county-match
-// question: the hider is always in one of them, so a seeker anywhere else (a
-// neighbouring county or the far side of the world) is definitively "not the
-// same county" as every station — the exact identity of that outside county
-// never changes an elimination, so we don't carry the rest of the world.
+// The county containing `p`. Prefers an in-play county (one that holds hiding
+// stations); the hider is always in one of these, so for the regular game these
+// are all that matter. But a border station's endgame hiding zone can straddle
+// into a neighbouring county (e.g. Bayshore/Sunnydale's zone spills from SF into
+// San Mateo/Brisbane), so if `p` is still inside the play area but not in an
+// in-play county, fall back to the real neighbouring county — that names the
+// out-of-play sliver correctly and lets the endgame county carve it. Points
+// genuinely outside the play area stay null (their county never changes an
+// elimination, so we don't carry the rest of the world).
 export function countyAt(p: LatLng): string | null {
   for (const [name, polys] of Object.entries(COUNTIES)) {
     if (!IN_PLAY_COUNTIES.has(name)) continue
+    if (pointInPolys(p, polys)) return name
+  }
+  if (!inPlayArea(p)) return null
+  for (const [name, polys] of Object.entries(COUNTIES)) {
+    if (IN_PLAY_COUNTIES.has(name)) continue
     if (pointInPolys(p, polys)) return name
   }
   return null

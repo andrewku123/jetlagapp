@@ -3,7 +3,7 @@ import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
-import { QUESTION_POI_CATEGORIES, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
+import { QUESTION_POI_CATEGORIES, POI_COUNTS, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
 import { metroLinesWithinRadius, metroLineDistanceMiles, METRO_TENTACLE_RADIUS_MI } from '../lib/metroLines'
 import { AVAILABLE_MEASURE_FEATURE_KEYS, MEASURE_FEATURE_LABELS, measureFeatureNoun, distanceToFeatureMiles } from '../lib/measureFeatures'
 import { nearestAirport } from '../lib/airports'
@@ -12,6 +12,7 @@ import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
+import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS } from '../data/regions'
 
 interface Props {
   lastClick: LatLng | null
@@ -191,6 +192,14 @@ export default function QuestionForm({
   const elevUnit = metric ? 'm' : 'ft'
   const [kind, setKind] = useState<QuestionKind>('radar')
   const meta = QUESTION_CATALOG.find((q) => q.kind === kind)!
+  // A normally-eliminating question the active map can't split on (e.g. county /
+  // city Matching on SF Muni — every station shares one value) is demoted to
+  // log-only: still logged, but it eliminates and shades nothing.
+  // POI questions are per-category: with no in-play POI of that type a Matching or
+  // Measuring question has no answer, and with a single one "same as mine?" is
+  // always yes (e.g. amusement park on SF Muni: 0 in play). Matching needs >= 2
+  // to split; Measuring only breaks with 0 (distances to one POI still vary).
+  // (eliminatesEffective is computed below, after poiCat is declared.)
   // category is step 1 (segmented buttons); the kind dropdown (step 2) only shows
   // for categories with more than one question.
   const categories = QUESTION_CATALOG.reduce<QuestionMeta['category'][]>(
@@ -230,6 +239,14 @@ export default function QuestionForm({
   const [ptB, setPtB] = useState<LatLng | null>(null)
   const [value, setValue] = useState<string>('')
   const [poiCat, setPoiCat] = useState<string>(QUESTION_POI_CATEGORIES[0])
+  // A POI Matching/Measuring subject the active map can't discriminate on: no
+  // in-play POI of that category (both useless) or a single one (Matching only).
+  function poiKindDemoted(k: QuestionKind, cat: string): boolean {
+    const n = POI_COUNTS[cat] ?? 0
+    if (k === 'match-poi') return n <= 1
+    if (k === 'measure-poi') return n === 0
+    return false
+  }
   // tentacle: selected category (a TENTACLE_CATEGORIES key) + chosen in-range POI
   const [tentCat, setTentCat] = useState<string>(TENTACLE_CATEGORIES[0].key)
   const [tentPoi, setTentPoi] = useState<string>('')
@@ -248,6 +265,19 @@ export default function QuestionForm({
   // endgame, but the seeker can override per question before logging.
   const [endgameFlag, setEndgameFlag] = useState<boolean>(endgameActive)
   useEffect(() => setEndgameFlag(endgameActive), [endgameActive])
+
+  // Whether logging this question will actually eliminate/shade. A kind is
+  // demoted to log-only when the active map can't use it: always-useless kinds
+  // (LOG_ONLY_KINDS) never eliminate; endgame-only kinds (ENDGAME_ELIMINATES_KINDS
+  // — county/city on a single-value map) eliminate only when marked as an endgame
+  // question, where they carve the border-straddling hiding zone. POI subjects
+  // demote per-category (no in-play POI of that category).
+  const endgameOnlyKind = ENDGAME_ELIMINATES_KINDS.has(kind)
+  const eliminatesEffective =
+    meta.eliminates &&
+    !LOG_ONLY_KINDS.has(kind) &&
+    !poiKindDemoted(kind, poiCat) &&
+    (!endgameOnlyKind || endgameFlag)
 
   // The thermometer the seeker chose (converted to miles), or NaN if invalid.
   function thermoMiles(): number {
@@ -472,7 +502,7 @@ export default function QuestionForm({
       createdAt: Date.now(),
       params,
       note: note || undefined,
-      eliminates: meta.eliminates,
+      eliminates: eliminatesEffective,
       active: true,
       ...(vetoed ? { vetoed: true } : {}),
       ...(endgameFlag ? { endgame: true } : {}),
@@ -544,7 +574,7 @@ export default function QuestionForm({
     if (q.kind === 'match-poi' || q.kind === 'measure-poi') {
       return QUESTION_POI_CATEGORIES.map((c) => ({
         value: `${q.kind}::${c}`,
-        label: capitalize(poiCategoryLabel(c)),
+        label: capitalize(poiCategoryLabel(c)) + (poiKindDemoted(q.kind, c) ? ' (log only)' : ''),
         group: POI_SUBJECT_GROUP[c] ?? 'Places of Interest',
       }))
     }
@@ -567,7 +597,15 @@ export default function QuestionForm({
       if (gameSize !== 'large') return []
       return [{ value: q.kind, label: `Metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`, group: `Within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}` }]
     }
-    return [{ value: q.kind, label: subLabel(q.label), group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
+    // A normally-eliminating kind the active map can't split on is demoted; mark
+    // it so the dropdown reads like the baked-in log-only subjects. County/city
+    // that still work in the endgame are tagged "(endgame only)" instead.
+    const suffix = q.eliminates && LOG_ONLY_KINDS.has(q.kind)
+      ? ' (log only)'
+      : q.eliminates && ENDGAME_ELIMINATES_KINDS.has(q.kind)
+        ? ' (endgame only)'
+        : ''
+    return [{ value: q.kind, label: subLabel(q.label) + suffix, group: KIND_SUBJECT_GROUP[q.kind] ?? 'Other' }]
   })
   const subjectValue =
     kind === 'match-poi' || kind === 'measure-poi'
@@ -611,6 +649,34 @@ export default function QuestionForm({
             ? `Of all the ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tentRadius, units)} of me, which are you closest to? Set your location; the app lists the in-range ${poiCategoryLabelPlural(tentCat)} — pick the one I answer. ${capitalize(poiCategoryLabelPlural(tentCat))} outside the radius don't count even if they're closer to you.`
             : meta.blurb
 
+  // A normally-eliminating Matching question can be useless on the active map
+  // (every station shares one value), in which case it's demoted to log-only
+  // (see LOG_ONLY_KINDS). Tell the seeker why so it reads like the other
+  // log-only questions instead of promising an elimination it won't do.
+  const DEMOTION_NOTE: Partial<Record<QuestionKind, string>> = {
+    'match-county': 'every station on this map is in the same county',
+    'match-city': 'every station on this map is in the same city',
+    'match-airport': 'there is no airport in the play area on this map',
+    'measure-airport': 'there is no airport in the play area on this map',
+    'match-line': 'every station on this map is on the same line',
+  }
+  const demoted = meta.eliminates && !eliminatesEffective
+  // POI demotions carry a category-specific reason (none / only one in play).
+  const poiDemotionReason =
+    (kind === 'match-poi' || kind === 'measure-poi') && poiKindDemoted(kind, poiCat)
+      ? (POI_COUNTS[poiCat] ?? 0) === 0
+        ? `there is no ${poiCategoryLabel(poiCat)} in the play area on this map`
+        : `there is only one ${poiCategoryLabel(poiCat)} in the play area on this map`
+      : undefined
+  // County/city on a single-value map are useless for regular elimination but
+  // still carve the endgame hiding zone at a border, so their note points the
+  // seeker to the "Endgame question" checkbox rather than calling them dead.
+  const demotionNote = !demoted
+    ? ''
+    : endgameOnlyKind
+      ? ` Log only in the regular game — ${DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't split them. Check "Endgame question" to use it inside a hiding zone that straddles the border.`
+      : ` Log only on this map — ${poiDemotionReason ?? DEMOTION_NOTE[kind] ?? 'every station shares one value'}, so this can't eliminate; recorded for your reference.`
+
   return (
     <div className="qform">
       <div className="row qrow-cat">
@@ -636,7 +702,7 @@ export default function QuestionForm({
         </div>
       )}
       <p className="blurb">
-        {blurbText}{' '}
+        {blurbText}{demotionNote}{' '}
         <span className="cards">
           ({previewCards}
           {previewMult > 1 && (
@@ -716,14 +782,19 @@ export default function QuestionForm({
       {kind === 'measure-airport' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
-          {center && (() => {
-            const a = nearestAirport(center)
-            return (
-              <p className="blurb poi-readout">
-                Distance to nearest airport (<b>{a.code}</b>): <b>{formatDistance(a.distMiles, units)}</b>
-              </p>
-            )
-          })()}
+          {center &&
+            (HAS_AIRPORTS ? (
+              (() => {
+                const a = nearestAirport(center)
+                return (
+                  <p className="blurb poi-readout">
+                    Distance to nearest airport (<b>{a.code}</b>): <b>{formatDistance(a.distMiles, units)}</b>
+                  </p>
+                )
+              })()
+            ) : (
+              <p className="blurb poi-readout">No airport in the play area on this map.</p>
+            ))}
           <div className="row">
             <label>Answer</label>
             <div className="seg">
@@ -759,11 +830,14 @@ export default function QuestionForm({
       {kind === 'match-airport' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
-          {center && (
-            <p className="blurb poi-readout">
-              Your nearest airport: <b>{nearestAirport(center).code}</b> — {formatDistance(nearestAirport(center).distMiles, units)}
-            </p>
-          )}
+          {center &&
+            (HAS_AIRPORTS ? (
+              <p className="blurb poi-readout">
+                Your nearest airport: <b>{nearestAirport(center).code}</b> — {formatDistance(nearestAirport(center).distMiles, units)}
+              </p>
+            ) : (
+              <p className="blurb poi-readout">No airport in the play area on this map.</p>
+            ))}
           {yesNo}
         </>
       )}
@@ -1098,7 +1172,7 @@ export default function QuestionForm({
         <input type="text" value={note} onChange={(e) => setNote(e.target.value)} placeholder="optional" />
       </div>
 
-      {meta.eliminates && (
+      {(eliminatesEffective || endgameOnlyKind) && (
         <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
           <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
           <span className="endgame-text">
@@ -1109,7 +1183,7 @@ export default function QuestionForm({
       )}
 
       <div className="qform-actions">
-        <button className="primary" onClick={() => submit(false)}>{meta.eliminates ? 'Log question & eliminate' : 'Log question'}</button>
+        <button className="primary" onClick={() => submit(false)}>{eliminatesEffective ? 'Log question & eliminate' : 'Log question'}</button>
         <button
           className="veto"
           onClick={() => submit(true)}

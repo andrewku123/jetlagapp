@@ -1,4 +1,4 @@
-import poiData from '../data/poi.json'
+import { poiData } from '../data/regions'
 import type { LatLng } from '../types'
 import type { GameSize } from '../data/questionSets'
 import { haversineMiles } from './geo'
