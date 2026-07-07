@@ -112,6 +112,16 @@ and adjusting a few region constants. There is no per-city code branching.
      "nearest" match, but Measuring distances still vary). SF Muni has 0
      amusement parks → both amusement-park questions log-only.
 
+     **Measure-feature demotion** (coastline / borders) works the same way but
+     must still keep the subject in the dropdown. Build the `measure-feature`
+     subject options from the UNFILTERED `MEASURE_FEATURE_KEYS`, not from
+     `AVAILABLE_MEASURE_FEATURE_KEYS` (which drops features with no in-play
+     geometry and made them silently disappear). Tag ` (log only)` when
+     `featureDemoted(f) = featurePolylines(f).length === 0`, treat those as
+     non-eliminating in `eliminatesEffective`, and allow logging them in
+     `submit()` (skip the distance-geometry check). Neither map has a state or
+     international border in play, so those stay listed as "(log only)".
+
      Net: SF Muni demotes airports + amusement park (log-only), county + city
      (endgame-only), keeps line (7 Muni lines); Bay Area demotes nothing.
      `src/data/regions.test.ts` asserts both per-region sets.
