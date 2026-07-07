@@ -1,4 +1,4 @@
-import type { QuestionKind, Station } from '../types'
+import type { LatLng, QuestionKind, Station } from '../types'
 
 // Region registry: the app is data-driven and region-agnostic — every question,
 // the elimination engine, the map, the board code etc. read whatever the ACTIVE
@@ -141,13 +141,62 @@ export const SINGLE_AGENCY = AGENCIES.length <= 1
 export const MAP_CENTER = ACTIVE_REGION.center
 export const MAP_ZOOM = ACTIVE_REGION.zoom
 
-// Normally-eliminating Matching questions that are useless on the active map
-// because every in-play station shares one value for them, so "same as mine?"
-// can never split the suspect set (county/city Matching on SF Muni: all 132
-// stations are in San Francisco). We demote these to log-only for the region —
-// still recorded for the seeker's notes, but they shade/eliminate nothing.
-// Derived from the active region's own station data so it stays correct for any
-// future map with no hand-maintained list.
+// Commercial airports the "nearest airport" questions measure from (each one's
+// Google-Maps pin). The game rule "anything outside the play area is treated as
+// if it doesn't exist" applies here: an airport off the active map is not a
+// valid answer, so only airports INSIDE the play area count. Bay Area contains
+// SFO/OAK/SJC; SF Muni (San Francisco only) contains none — so on SF Muni the
+// airport questions are demoted to log-only below.
+const AIRPORT_SITES: Record<string, LatLng> = {
+  SFO: { lat: 37.619083, lon: -122.381597 },
+  OAK: { lat: 37.719016, lon: -122.219595 },
+  SJC: { lat: 37.36351, lon: -121.928648 },
+}
+function pointInPlayArea(p: LatLng): boolean {
+  const fc = playAreaData as unknown as {
+    features: { geometry: { type: string; coordinates: number[][][] | number[][][][] } }[]
+  }
+  const inRing = (x: number, y: number, ring: number[][]): boolean => {
+    let inside = false
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const xi = ring[i][0]
+      const yi = ring[i][1]
+      const xj = ring[j][0]
+      const yj = ring[j][1]
+      if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside
+    }
+    return inside
+  }
+  const inPoly = (x: number, y: number, poly: number[][][]): boolean => {
+    if (poly.length === 0 || !inRing(x, y, poly[0])) return false
+    for (let h = 1; h < poly.length; h++) if (inRing(x, y, poly[h])) return false
+    return true
+  }
+  for (const f of fc.features) {
+    const g = f.geometry
+    if (g.type === 'Polygon') {
+      if (inPoly(p.lon, p.lat, g.coordinates as number[][][])) return true
+    } else if (g.type === 'MultiPolygon') {
+      for (const poly of g.coordinates as number[][][][]) if (inPoly(p.lon, p.lat, poly)) return true
+    }
+  }
+  return false
+}
+// Airports that actually exist on the active map (inside its play area).
+export const AIRPORTS: Record<string, LatLng> = Object.fromEntries(
+  Object.entries(AIRPORT_SITES).filter(([, p]) => pointInPlayArea(p)),
+)
+export const HAS_AIRPORTS = Object.keys(AIRPORTS).length > 0
+
+// Normally-eliminating questions that are useless on the active map, demoted to
+// log-only (still recorded for the seeker's notes, but they shade/eliminate
+// nothing). Two reasons a question is useless here:
+//  - every in-play station shares one value, so "same as mine?" can't split the
+//    set (county/city/line Matching on a single-county / single-line map); or
+//  - the feature it measures doesn't exist in the play area (no in-play airport
+//    on SF Muni, so nearest-airport Matching and Measuring can't discriminate).
+// Derived from the active region's own data so it stays correct for any future
+// map with no hand-maintained list.
 const logOnlyStations = ACTIVE_REGION.stations as Station[]
 function distinctValueCount(vals: (string | number | null)[]): number {
   return new Set(vals.filter((v) => v != null && v !== '')).size
@@ -155,12 +204,14 @@ function distinctValueCount(vals: (string | number | null)[]): number {
 export const LOG_ONLY_KINDS: ReadonlySet<QuestionKind> = new Set<QuestionKind>(
   (
     [
-      [distinctValueCount(logOnlyStations.map((s) => s.county)), 'match-county'],
-      [distinctValueCount(logOnlyStations.map((s) => s.city)), 'match-city'],
-      [distinctValueCount(logOnlyStations.map((s) => s.nearestAirport)), 'match-airport'],
-      [distinctValueCount(logOnlyStations.flatMap((s) => s.lines)), 'match-line'],
-    ] as [number, QuestionKind][]
+      [distinctValueCount(logOnlyStations.map((s) => s.county)) <= 1, 'match-county'],
+      [distinctValueCount(logOnlyStations.map((s) => s.city)) <= 1, 'match-city'],
+      [distinctValueCount(logOnlyStations.flatMap((s) => s.lines)) <= 1, 'match-line'],
+      // No airport exists in the play area → these can't discriminate at all.
+      [!HAS_AIRPORTS, 'match-airport'],
+      [!HAS_AIRPORTS, 'measure-airport'],
+    ] as [boolean, QuestionKind][]
   )
-    .filter(([count]) => count <= 1)
+    .filter(([useless]) => useless)
     .map(([, kind]) => kind),
 )

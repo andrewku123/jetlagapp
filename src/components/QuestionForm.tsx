@@ -12,7 +12,7 @@ import { countyAt } from '../lib/counties'
 import { cityAt, inPlayArea } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
-import { LOG_ONLY_KINDS } from '../data/regions'
+import { HAS_AIRPORTS, LOG_ONLY_KINDS } from '../data/regions'
 
 interface Props {
   lastClick: LatLng | null
@@ -626,7 +626,8 @@ export default function QuestionForm({
   const DEMOTION_NOTE: Partial<Record<QuestionKind, string>> = {
     'match-county': 'every station on this map is in the same county',
     'match-city': 'every station on this map is in the same city',
-    'match-airport': 'every station on this map shares the same nearest airport',
+    'match-airport': 'there is no airport in the play area on this map',
+    'measure-airport': 'there is no airport in the play area on this map',
     'match-line': 'every station on this map is on the same line',
   }
   const demoted = meta.eliminates && !eliminatesEffective
@@ -739,14 +740,19 @@ export default function QuestionForm({
       {kind === 'measure-airport' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
-          {center && (() => {
-            const a = nearestAirport(center)
-            return (
-              <p className="blurb poi-readout">
-                Distance to nearest airport (<b>{a.code}</b>): <b>{formatDistance(a.distMiles, units)}</b>
-              </p>
-            )
-          })()}
+          {center &&
+            (HAS_AIRPORTS ? (
+              (() => {
+                const a = nearestAirport(center)
+                return (
+                  <p className="blurb poi-readout">
+                    Distance to nearest airport (<b>{a.code}</b>): <b>{formatDistance(a.distMiles, units)}</b>
+                  </p>
+                )
+              })()
+            ) : (
+              <p className="blurb poi-readout">No airport in the play area on this map.</p>
+            ))}
           <div className="row">
             <label>Answer</label>
             <div className="seg">
@@ -782,11 +788,14 @@ export default function QuestionForm({
       {kind === 'match-airport' && (
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
-          {center && (
-            <p className="blurb poi-readout">
-              Your nearest airport: <b>{nearestAirport(center).code}</b> — {formatDistance(nearestAirport(center).distMiles, units)}
-            </p>
-          )}
+          {center &&
+            (HAS_AIRPORTS ? (
+              <p className="blurb poi-readout">
+                Your nearest airport: <b>{nearestAirport(center).code}</b> — {formatDistance(nearestAirport(center).distMiles, units)}
+              </p>
+            ) : (
+              <p className="blurb poi-readout">No airport in the play area on this map.</p>
+            ))}
           {yesNo}
         </>
       )}
