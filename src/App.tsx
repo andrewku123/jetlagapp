@@ -11,9 +11,9 @@ import { rewardForKind, questionGroupKey } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
-import rawStations from './data/stations.json'
+import { stationsData, REGIONS, ACTIVE_REGION_ID, setActiveRegion } from './data/regions'
 
-const STATIONS = rawStations as unknown as Station[]
+const STATIONS = stationsData as unknown as Station[]
 
 type Tab = 'ask' | 'history' | 'suspects' | 'poi' | 'legend'
 type StationView = 'normal' | 'faded' | 'hidden'
@@ -412,7 +412,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <div className="brand">🕵️ Bay Area Hide &amp; Seek</div>
+        <div className="brand">🕵️ {MAP_NAME} Hide &amp; Seek</div>
         <div className="counts">
           <strong>{remaining.length}</strong> of {base.length} possible
         </div>
@@ -426,6 +426,19 @@ export default function App() {
             ⚙
           </button>
           <div className={'toggles-more' + (settingsOpen ? ' open' : '')}>
+            <label className="region-pick">
+              map
+              <select
+                value={ACTIVE_REGION_ID}
+                onChange={(e) => setActiveRegion(e.target.value)}
+              >
+                {REGIONS.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                  </option>
+                ))}
+              </select>
+            </label>
             <DayToggle value={game.dayType} onChange={(d) => update({ dayType: d })} />
             <UnitsToggle value={game.units} onChange={(u) => update({ units: u })} />
             <label className="chk">

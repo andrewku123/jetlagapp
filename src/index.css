@@ -28,6 +28,8 @@ body { background: var(--bg); color: var(--text); }
 /* the ⚙ collapse button only exists on phones (see media query) */
 .settings-toggle { display: none; }
 .chk { font-size: 13px; color: var(--muted); display: flex; gap: 5px; align-items: center; }
+.region-pick { font-size: 13px; color: var(--muted); display: flex; gap: 5px; align-items: center; white-space: nowrap; }
+.region-pick select { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 6px; cursor: pointer; font: inherit; font-size: 13px; }
 .legend .info { font-size: 13px; color: var(--text); margin: 6px 0; line-height: 1.4; }
 .legend a, .panel a { color: #6cb0ff; text-decoration: underline; }
 .legend a:hover, .panel a:hover { color: #9ccbff; }

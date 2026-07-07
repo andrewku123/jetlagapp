@@ -24,8 +24,7 @@ import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import playAreaData from '../data/play-area.geojson.json'
-import transitData from '../data/transit-lines.geojson.json'
+import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -1342,7 +1341,7 @@ export default function MapView({
         </div>
       )}
 
-      <MapContainer center={[37.6, -122.2]} zoom={10} className="map" preferCanvas>
+      <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} className="map" preferCanvas>
         <TileLayer
           attribution='&copy; OpenStreetMap contributors &copy; CARTO'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"

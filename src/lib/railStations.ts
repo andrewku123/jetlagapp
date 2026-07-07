@@ -6,11 +6,11 @@
 // their real position inside the hiding zone: "closer/further from the nearest
 // rail station" then carves the zone (union of your-distance disks around the
 // stations), exactly like the airport measuring question.
-import rawStations from '../data/stations.json'
+import { stationsData } from '../data/regions'
 import type { Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 
-const STATIONS = rawStations as unknown as Station[]
+const STATIONS = stationsData as unknown as Station[]
 
 // The station points, as plain lat/lon, for building the your-distance disks.
 export const RAIL_STATIONS: LatLng[] = STATIONS.map((s) => ({ lat: s.lat, lon: s.lon }))

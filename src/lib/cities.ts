@@ -1,7 +1,6 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
-import placesRaw from '../data/places.geojson.json'
-import playAreaRaw from '../data/play-area.geojson.json'
+import { placesData as placesRaw, playAreaData as playAreaRaw } from '../data/regions'
 
 // Census-place (3rd-admin / "city") polygons used by the "Matching — city"
 // question. Both the seeker's city (from their coordinate) and each station's

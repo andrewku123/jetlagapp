@@ -1,6 +1,5 @@
 import type { LatLng } from '../types'
-import rawGeo from '../data/transit-lines.geojson.json'
-import rawStations from '../data/stations.json'
+import { transitLinesData as rawGeo, stationsData as rawStations } from '../data/regions'
 import type { Station } from '../types'
 
 // Metro Lines tentacle: the physical, colour-coded transit lines drawn on the

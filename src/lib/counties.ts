@@ -1,7 +1,6 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
-import countiesRaw from '../data/counties.geojson.json'
-import { IN_PLAY_COUNTIES } from './playArea'
+import { countiesData as countiesRaw, IN_PLAY_COUNTIES } from '../data/regions'
 
 // County polygons used by the "Matching — county (2nd admin)" question. The
 // seeker's county is looked up from their coordinate (point-in-polygon), and the
