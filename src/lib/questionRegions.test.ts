@@ -90,6 +90,30 @@ describe('poiMatchEliminatedRegion agrees with the elimination rule', () => {
     const region = poiMatchEliminatedRegion(rec('match-poi', { poiCat: cat, fromLat: SEEKER.lat, fromLon: SEEKER.lon, answer: 'no' }))!
     expect(pointInMulti(SEEKER.lat, SEEKER.lon, region)).toBe(true)
   })
+
+  // The Voronoi-cell boundary is a straight line, but polygon-clipping keeps only
+  // its two endpoints. A single long lat/lon segment bows off its true path once
+  // projected to Web Mercator, so the shaded edge visibly crossed kept stations
+  // (the aquarium Matching bug). The boundary must be densified so every segment
+  // through the play area is short and hugs the true bisector.
+  it('densifies the boundary so no play-area edge is long (Mercator-bow fix)', () => {
+    const region = poiMatchEliminatedRegion(rec('match-poi', { poiCat: cat, fromLat: SEEKER.lat, fromLon: SEEKER.lon, answer: 'yes' }))!
+    const inBbox = (lat: number, lon: number) => lat > 36.5 && lat < 38.5 && lon > -123.5 && lon < -121
+    let maxSeg = 0
+    for (const poly of region) {
+      for (const ring of poly) {
+        for (let i = 0; i < ring.length; i++) {
+          const [aLat, aLon] = ring[i]
+          const [bLat, bLon] = ring[(i + 1) % ring.length]
+          if (inBbox(aLat, aLon) && inBbox(bLat, bLon)) {
+            maxSeg = Math.max(maxSeg, haversineMiles({ lat: aLat, lon: aLon }, { lat: bLat, lon: bLon }))
+          }
+        }
+      }
+    }
+    expect(maxSeg).toBeGreaterThan(0) // the boundary does pass through the play area
+    expect(maxSeg).toBeLessThan(0.35) // ~0.2 mi steps → no long bowing edge
+  })
 })
 
 describe('poiMeasureEliminatedRegion agrees with the elimination rule', () => {
