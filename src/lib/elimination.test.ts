@@ -45,21 +45,22 @@ describe('stationPasses — gating', () => {
   })
 })
 
-describe('stationPasses — measure-railstation (endgame)', () => {
-  // A seeker far out over the ocean is far from every rail station; a station on
-  // land is close to one, so under "closer" the station is kept and under
-  // "further" it is dropped.
+describe('stationPasses — measure-railstation (logged-only)', () => {
+  // Rail-station measuring never eliminates from the suspect list. Map-wide every
+  // candidate IS a rail station (distance 0), so an endgame answer — asked from the
+  // hider's real position, where distance > 0 — must NOT be applied to the station
+  // set, or "further" would wipe every station once you leave the endgame. Its only
+  // effect is carving the endgame hiding zone (see questionRegions.test.ts).
   const ocean = { lat: 37.5, lon: -123.1 }
-  it('keeps a land station when the seeker is farther from rail (closer)', () => {
+  it('keeps every station under "closer"', () => {
     expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'closer' }))).toBe(true)
   })
-  it('drops that same station under "further"', () => {
-    expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'further' }))).toBe(false)
+  it('keeps every station under "further" (no board wipe when leaving endgame)', () => {
+    expect(stationPasses(station(), record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'further' }))).toBe(true)
   })
-  it('first half is inert: a hider at a station (distance ~0) survives an honest "closer"', () => {
-    const sf = station()
-    // Seeker also at a station ⇒ both ~0 from nearest rail ⇒ tie folds to closer.
-    expect(stationPasses(sf, record('measure-railstation', { fromLat: sf.lat, fromLon: sf.lon, answer: 'closer' }))).toBe(true)
+  it('keeps every station even when the record is endgame-flagged', () => {
+    const r = { ...record('measure-railstation', { fromLat: ocean.lat, fromLon: ocean.lon, answer: 'further' }), endgame: true }
+    expect(stationPasses(station(), r)).toBe(true)
   })
 })
 

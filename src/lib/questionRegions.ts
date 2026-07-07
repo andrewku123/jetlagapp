@@ -540,7 +540,9 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   if (record.kind === 'measure-feature') return featureMeasureEliminatedRegion(record)
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
-  if (record.kind === 'measure-railstation') return railStationMeasureEliminatedRegion(record)
+  // measure-railstation is intentionally NOT here: it never shades map-wide (it
+  // eliminates no station). Its region is only produced for the endgame zone clip
+  // (see eliminatedGeom), so the shown shading always agrees with elimination.
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
@@ -586,6 +588,15 @@ function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
     if (!band.length) return null
     const ring: Ring = band.map((pt) => [pt.lon, pt.lat] as [number, number])
     return [[ring]]
+  }
+  // Rail-station measuring is logged-only for map-wide station elimination and
+  // never shades map-wide (poiEliminatedRegion returns null for it), because every
+  // candidate IS a rail station (distance 0). Its only effect is in the endgame,
+  // where the hider answers from their real position and the union-of-disks region
+  // sub-divides the hiding zone — so it's routed here directly.
+  if (record.kind === 'measure-railstation') {
+    const latlng = railStationMeasureEliminatedRegion(record)
+    return latlng ? toGeom(latlng) : null
   }
   // Tentacles are logged-only in endgame for *station* elimination (the hider
   // answers from their real position, not the station centre), but the eliminated

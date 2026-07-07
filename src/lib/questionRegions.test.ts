@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { poiCategoryLabel, QUESTION_POI_CATEGORIES, POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey } from './poi'
-import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, railStationMeasureEliminatedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, metroLineEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
+import { poiMatchEliminatedRegion, poiMeasureEliminatedRegion, featureMeasureEliminatedRegion, airportMatchEliminatedRegion, airportMeasureEliminatedRegion, railStationMeasureEliminatedRegion, poiEliminatedRegion, endgameClippedRegion, countyMatchEliminatedRegion, cityMatchEliminatedRegion, zipMeasureEliminatedRegion, tentacleEliminatedRegion, metroLineEliminatedRegion, type LatLngMultiPolygon } from './questionRegions'
 import { metroLinesWithinRadius, nearestMetroLine, metroLineDistanceMiles } from './metroLines'
 import { poisWithinRadius } from './poi'
 import { nearestAirport } from './airports'
@@ -241,6 +241,16 @@ describe('railStationMeasureEliminatedRegion shades the your-distance rail-stati
     const s0 = (rawStations as unknown as Station[])[0]
     const region = railStationMeasureEliminatedRegion(rec('measure-railstation', { fromLat: s0.lat, fromLon: s0.lon, answer: 'closer' }))
     expect(region).toBeNull()
+  })
+
+  it('never shades map-wide (poiEliminatedRegion returns null) but does clip the endgame zone', () => {
+    const r = { ...rec('measure-railstation', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }), endgame: true }
+    // Map-wide path is null: it eliminates no station, so it must shade nothing.
+    expect(poiEliminatedRegion(r)).toBeNull()
+    // Endgame path still carves the hiding-zone disk around the locked station.
+    const s0 = (rawStations as unknown as Station[])[0]
+    const clipped = endgameClippedRegion(r, { lat: s0.lat, lon: s0.lon }, 3)
+    expect(clipped).not.toBeNull()
   })
 })
 

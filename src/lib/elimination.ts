@@ -1,7 +1,6 @@
 import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
-import { nearestRailStationMiles } from './railStations'
 import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { metroLineDistanceMiles, metroLinesWithinRadius } from './metroLines'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
@@ -104,18 +103,15 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // Tie folds into the smaller side ("closer"): keep <= inclusive.
       return (stationDist <= seeker) === (p.answer === 'closer')
     }
-    case 'measure-railstation': {
-      // Every candidate station IS a rail station, so its distance to the nearest
-      // rail station is 0 (itself). The honest first-half answer is therefore
-      // always "closer"/tie, which keeps every station (0 <= seekerD) — so this
-      // eliminates nothing map-wide. In the endgame the hider answers from their
-      // real position and the shaded region (union of your-distance disks) carves
-      // the hiding zone. Tie folds into the smaller side ("closer"): keep <=.
-      const seekerD = nearestRailStationMiles({ lat: n(p.fromLat), lon: n(p.fromLon) })
-      const stationD = nearestRailStationMiles({ lat: station.lat, lon: station.lon })
-      if (!Number.isFinite(seekerD)) return true
-      return (stationD <= seekerD) === (p.answer === 'closer')
-    }
+    case 'measure-railstation':
+      // Logged-only for the suspect list: rail-station measuring never eliminates
+      // a station. Map-wide every candidate IS a rail station (distance 0 to the
+      // nearest rail station = itself), so applying an answer here is degenerate —
+      // an endgame "further" answer (asked from the hider's real position, where
+      // distance > 0) would wrongly eliminate EVERY station once you leave the
+      // endgame. Its only effect is carving the endgame hiding zone via
+      // railStationMeasureEliminatedRegion (see questionRegions.ts). Keep all.
+      return true
     case 'measure-sealevel': {
       if (station.elevation == null) return true // unknown: don't eliminate
       // Tie folds into the smaller side ("closer" = lower altitude): keep <=.

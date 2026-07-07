@@ -151,17 +151,30 @@ helper module exports the point list + `nearest<Thing>Miles(p)` (min haversine).
   `further` ⇒ eliminate the union. Return null when `seekerD <= 0` (seeker sits on
   a point → nothing eliminated). Wire it into `poiEliminatedRegion` + MapView's
   `isShaded()`/`poiRegions` dep filter like any shaded kind.
-- **Rail station is inert in the first half, useful in the endgame.** Every
-  candidate hiding station IS a rail station, so its distance to the nearest rail
-  station is 0; an honest first-half answer is always "closer"/tie which keeps all
-  264 (nothing eliminated) — that's fine, it's not meant to bite there. In the
-  endgame the hider answers from their real position inside the hiding zone, and
-  the disk-union carves that zone exactly like the airport question (the endgame
-  clip already routes through `poiEliminatedRegion`, so no endgame-specific code).
-  Its catalog entry is `eliminates: true`, label `Measuring — Rail station
-  (endgame)`. Do NOT precompute a per-station `railStationDist` attribute — the
-  distance is computed on the fly from `stations.json` (both seeker and station go
-  through the same `nearestRailStationMiles`, so shading and elimination agree).
+- **Rail station is endgame-ONLY: logged-only for the suspect list, shades only
+  the endgame zone.** Every candidate hiding station IS a rail station (distance 0
+  to nearest rail station = itself). The catch: an endgame answer is asked from the
+  hider's *real* position (distance > 0), and if you apply it to the map-wide
+  station set — every station at distance 0 — a "further" answer eliminates EVERY
+  station (a full board wipe you notice the moment you leave the endgame). So rail
+  station must **never eliminate a station** and **never shade map-wide**; it only
+  carves the endgame hiding zone. Implement it exactly like this (mirrors the
+  endgame-tentacle pattern):
+  - `stationPasses` case `measure-railstation` → `return true` (always keep).
+  - `poiEliminatedRegion` does NOT dispatch `measure-railstation` (returns null) →
+    no map-wide shading, and it's kept OUT of MapView's `isShaded()`/`poiRegions`
+    dep filter so no map-wide dot/shade is drawn.
+  - `eliminatedGeom` (the endgame path) handles `measure-railstation` **directly**
+    (calls `railStationMeasureEliminatedRegion` itself, not via
+    `poiEliminatedRegion`), so `endgameClippedRegion` still carves the zone with
+    the union-of-disks. `endgameRegions` only runs for `r.endgame` records.
+  - Catalog entry stays `eliminates: true` (needed so the endgame shading path
+    runs), label `Measuring — Rail station (endgame)`. Do NOT precompute a
+    per-station `railStationDist` attribute — distance is computed on the fly from
+    `stations.json` via `nearestRailStationMiles`.
+  - `railStationMeasureEliminatedRegion` itself is un-gated (computes the disks for
+    any record); the endgame-only behavior is enforced by the two routing points
+    above. Return null when `seekerD <= 0`.
 
 ### Tie rule for ALL measuring questions ("equal → the smaller answer")
 Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,
