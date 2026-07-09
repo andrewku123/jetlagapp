@@ -769,21 +769,20 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
   return null
 }
 
-// Cosmetic water overlay (ocean / lakes / reservoirs / rivers), region-optional.
-// Drawn into a pane above the base tiles (200) but below the satellite pane (250)
-// and the dim mask (overlayPane 400), so in-play water reads vivid while
-// out-of-play water is muted by the same dim as the land. Purely visual — no
-// game logic references it.
+// Cosmetic inland-water overlay (lakes / reservoirs / channels + river lines),
+// region-optional. The Pacific is left to the basemap — a custom ocean fill drew
+// a second coastline that didn't line up with the basemap's. Drawn into a pane
+// above the base tiles (200) but below the satellite pane (250) and the dim mask
+// (overlayPane 400), so in-play water reads vivid while out-of-play water is
+// muted by the same dim as the land. Purely visual — no game logic references it.
 const WATER_FILL = '#a9d3e5'
 const WATER_LINE = '#8bbdd6'
 function waterStyle(feature?: GeoJSON.Feature): L.PathOptions {
   const kind = feature?.properties?.kind
   if (kind === 'river')
     return { color: WATER_LINE, weight: 1.3, opacity: 0.9, fill: false }
-  if (kind === 'water')
-    return { color: WATER_LINE, weight: 0.6, fillColor: WATER_FILL, fillOpacity: 1, opacity: 0.8 }
-  // ocean
-  return { stroke: false, fillColor: WATER_FILL, fillOpacity: 1 }
+  // lakes / reservoirs / channel polygons
+  return { color: WATER_LINE, weight: 0.6, fillColor: WATER_FILL, fillOpacity: 1, opacity: 0.8 }
 }
 function WaterLayer() {
   const map = useMap()

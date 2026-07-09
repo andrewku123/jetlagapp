@@ -80,28 +80,14 @@ def main():
         elif t.get("waterway") in ("river", "canal"):
             river_lines.append(LineString(c))
 
-    # --- ocean: polygonize the coastline against the frame, then keep the faces
-    # that contain a known offshore point. This is far more robust than relying on
-    # OSM way orientation (which isn't consistent across LA's coastline ways).
-    OCEAN_SEEDS = [
-        (-118.35, 33.69),  # San Pedro Bay, south of Long Beach
-        (-118.55, 33.90),  # Santa Monica Bay, off LAX
-        (-118.70, 34.02),  # open Pacific, NW frame corner
-    ]
-    ocean = None
-    if coast_lines:
-        faces = list(polygonize(unary_union(coast_lines + [FRAME.boundary])))
-        seeds = [shape({"type": "Point", "coordinates": s}) for s in OCEAN_SEEDS]
-        sea = [f for f in faces if any(f.contains(pt) for pt in seeds)]
-        if sea:
-            ocean = unary_union(sea).intersection(FRAME)
+    # No ocean polygon: the CARTO basemap already draws the Pacific, and a custom
+    # ocean fill introduced a second coastline that didn't line up with the
+    # basemap's (and dragged in tiny offshore islands). We let the basemap water
+    # show through and only overlay inland water (lakes/reservoirs/channels/rivers).
 
-    # simplify: this is a cosmetic overlay, full OSM coastline detail is overkill
+    # simplify: this is a cosmetic overlay, full OSM detail is overkill
     SIMP = 0.00025  # ~25 m
     feats = []
-    if ocean and not ocean.is_empty:
-        ocean = ocean.simplify(SIMP, preserve_topology=True)
-        feats.append({"type": "Feature", "properties": {"kind": "ocean"}, "geometry": mapping(ocean)})
 
     if water_polys:
         merged = unary_union([p for p in water_polys if p.is_valid and not p.is_empty])
