@@ -147,6 +147,32 @@ CITIES = {
             [[-122.389884, 37.776244], [-122.390699, 37.777228]],  # SF / Mission Creek
         ],
     },
+    "la": {
+        # LA Metro sits on the open Pacific (Santa Monica Bay + San Pedro Bay).
+        # Far from any state/international line, so those come back empty and the
+        # questions demote to log-only in the app (kept in the dropdown).
+        "play_bbox": (-118.80, 33.60, -117.55, 34.45),
+        # LA has no separate land-polygon mask; the OSM coastline + play area are
+        # enough to build the shore. Reuse the water mask as both the "saltwater"
+        # (topology: which face is the open ocean) and the enclosed-water "bay".
+        "land": "../../la_build/la_water_mask.geojson",  # placeholder land (unused when detail present)
+        "saltwater": ["../../la_build/la_water_mask.geojson"],
+        "play": "data:la.play-area.geojson.json",
+        "bay": "../../la_build/la_water_mask.geojson",
+        "coastline_detail": "measure_src/osm_coastline_la.geojson",
+        "counties": "data:la.counties.geojson.json",
+        "states": "measure_src/us-states.geojson",
+        "countries": "measure_src/countries.geojson",
+        "state": "California",
+        "state_neighbors": ["Nevada", "Arizona"],
+        "country": "United States of America",
+        "country_neighbor": "Mexico",
+        # Open-coast mode: keep only OSM coastline within this distance (deg) of
+        # the open-water mask (Pacific + major harbors). Drops inland river
+        # channels OSM tags as coastline (LA/San Gabriel River, Rio Hondo) and
+        # the sub-mask Marina del Rey inlet, with no per-mouth dams.
+        "coast_water_clip": 0.0015,  # ~165 m
+    },
 }
 
 
@@ -192,7 +218,30 @@ def _dam_polys(dams, width_deg=0.0004):
     return unary_union([LineString(seg).buffer(width_deg, cap_style=2) for seg in dams])
 
 
-def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None):
+def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None,
+                    water_clip=None):
+    # Open-ocean mode (cfg["coast_water_clip"]): keep only the OSM coastline that
+    # hugs the big open-water mask (Pacific + major harbors). Inland waterways
+    # that OSM tags natural=coastline (LA River, Rio Hondo, San Gabriel River)
+    # and tiny marina inlets (Marina del Rey) are NOT in that mask, so their
+    # coastline sits >water_clip from any mask water and drops out — no per-mouth
+    # dams needed. Precision stays at OSM detail (the mask is only used to select
+    # WHICH shore is ocean-facing). Used for simple open-coast metros like LA.
+    if water_clip is not None and detail is not None and not detail.is_empty:
+        merged = linemerge(unary_union(detail))
+        coast_all = unary_union(list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged])
+        near = saltwater.boundary.buffer(water_clip)
+        shore = coast_all.intersection(near)
+        if play is not None and not play.is_empty:
+            shore = shore.intersection(play.buffer(0.004))
+        if exclude is not None and not exclude.is_empty:
+            shore = shore.difference(exclude)
+        shore = shore.intersection(clip)
+        merged = linemerge(shore) if not shore.is_empty else shore
+        parts = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
+        parts = [g for g in parts if not g.is_empty and g.length >= 0.003]
+        return unary_union(parts) if parts else shore
+
     # Fallback for cities without a play-area/bay mask: the plain shore of the
     # land mask adjacent to saltwater (no channel removal).
     if play is None or bay is None:
@@ -374,7 +423,7 @@ def main():
 
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail), 0.00015)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail, cfg.get("coast_water_clip")), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
@@ -391,7 +440,8 @@ def main():
             "geometry": mapping(ml),
         })
 
-    dest = os.path.join(DATA, "measure-features.geojson.json")
+    prefix = "" if slug == "bayarea" else f"{slug}."
+    dest = os.path.join(DATA, f"{prefix}measure-features.geojson.json")
     with open(dest, "w") as f:
         json.dump(out, f)
     print("wrote", dest, os.path.getsize(dest), "bytes")

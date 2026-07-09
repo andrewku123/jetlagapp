@@ -42,6 +42,25 @@ describe('play-area scoping and question demotion', () => {
     expect(m.LOG_ONLY_KINDS.has('match-line')).toBe(false)
   })
 
+  it('LA Metro: LAX/LGB in play; single county never carves → county full log-only; multi-city stays live', async () => {
+    const m = await loadFor('la')
+    // LAX + LGB sit inside the play area; BUR/ONT/SNA fall outside, so the
+    // nearest-airport questions stay fully live.
+    expect(Object.keys(m.AIRPORTS).sort()).toEqual(['LAX', 'LGB'])
+    expect(m.HAS_AIRPORTS).toBe(true)
+    // Every station is deep inside Los Angeles County (nearest is ~3 km from the
+    // county line, far beyond the 0.25 mi endgame disk), so "same county?" can't
+    // split the map OR carve the endgame zone → full log-only, not endgame-only.
+    expect(m.LOG_ONLY_KINDS.has('match-county')).toBe(true)
+    expect(m.ENDGAME_ELIMINATES_KINDS.has('match-county')).toBe(false)
+    // The map spans many cities (LA, Long Beach, Santa Monica, …) so city
+    // Matching still discriminates and is neither log-only nor endgame-only.
+    expect(m.LOG_ONLY_KINDS.has('match-city')).toBe(false)
+    expect(m.ENDGAME_ELIMINATES_KINDS.has('match-city')).toBe(false)
+    // 8 Metro lines (A/B/C/D/E/K/G/J) still discriminate.
+    expect(m.LOG_ONLY_KINDS.has('match-line')).toBe(false)
+  })
+
   it('SF Muni: border endgame-zone sliver reads its real city/county (Brisbane, San Mateo)', async () => {
     await loadFor('sfmuni')
     const { countyAt } = await import('../lib/counties')

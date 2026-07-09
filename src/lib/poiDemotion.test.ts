@@ -33,4 +33,11 @@ describe('per-category POI question demotion', () => {
     expect(counts.zoo).toBeGreaterThanOrEqual(2)
     expect(counts.aquarium).toBeGreaterThanOrEqual(2)
   })
+
+  it('LA Metro has no POI gathered yet → every category empty (all POI questions log-only)', async () => {
+    const counts = await poiCountsFor('la')
+    // la.poi.json ships every category empty until the POI dataset lands, so all
+    // POI Matching / Measuring / Tentacle subjects auto-demote to log-only.
+    expect(Object.values(counts).every((n) => n === 0)).toBe(true)
+  })
 })
