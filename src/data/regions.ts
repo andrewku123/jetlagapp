@@ -220,6 +220,21 @@ export const AIRPORTS: Record<string, LatLng> = Object.fromEntries(
 )
 export const HAS_AIRPORTS = Object.keys(AIRPORTS).length > 0
 
+// A lon/lat frame that comfortably wraps the active play area, used to bound
+// half-plane shading (e.g. the airport-match Voronoi cell) so it renders as a
+// sane polygon instead of a world-spanning bowtie. Derived from the region's own
+// station spread (+ padding) so it follows whatever map is active — a hardcoded
+// box would misplace the shading on any other region.
+const REGION_LATS = (ACTIVE_REGION.stations as LatLng[]).map((s) => s.lat)
+const REGION_LONS = (ACTIVE_REGION.stations as LatLng[]).map((s) => s.lon)
+const FRAME_PAD = 1.5 // degrees (~100 mi) of slack past the outermost station
+export const REGION_FRAME = {
+  minLat: Math.min(...REGION_LATS) - FRAME_PAD,
+  maxLat: Math.max(...REGION_LATS) + FRAME_PAD,
+  minLon: Math.min(...REGION_LONS) - FRAME_PAD,
+  maxLon: Math.max(...REGION_LONS) + FRAME_PAD,
+}
+
 // Normally-eliminating questions that are useless on the active map, demoted to
 // log-only (still recorded for the seeker's notes, but they shade/eliminate
 // nothing). Two reasons a question is useless here:
