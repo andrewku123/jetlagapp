@@ -471,7 +471,11 @@ export function airportMatchEliminatedRegion(record: QuestionRecord): LatLngMult
   const elim = yes
     ? polygonClipping.difference([WORLD_RING], cellPoly)
     : polygonClipping.intersection([WORLD_RING], cellPoly)
-  return elim.length ? toLatLng(elim) : null
+  // Densify: the Voronoi cell edge is a single straight equirectangular bisector
+  // that bows ~0.7 mi off its true path once Leaflet draws it in Web Mercator,
+  // swallowing kept stations near the boundary (103rd / Watts on LA's LAX cell).
+  // Same fix as poiMatchEliminatedRegion.
+  return elim.length ? densifyLatLng(toLatLng(elim)) : null
 }
 
 // --- Measuring a nearest airport: shade the union of your-distance disks around
