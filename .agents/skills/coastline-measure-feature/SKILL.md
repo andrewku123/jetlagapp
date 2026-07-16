@@ -69,6 +69,33 @@ The coastline drawn on the map AND used to eliminate stations for the
   measureFeatureShading / questionRegions tests consume this file).
 - Do NOT commit the throwaway `scripts/_*.py` debug/render scripts.
 
+## Sibling use: clipping the PLAY AREA seaward edge to the shore
+The same OSM `natural=coastline` is also used to make the **play-area polygon**
+(`<slug>.play-area.geojson.json` — what clips the satellite overlay + drives the
+out-of-play dim) follow the real shore. Coastal cities' Census `place` polygons
+do NOT track the beach: some run **inland of the sand** (beach greyed out of
+play — "cut off too early") and some run **out into the water** (open ocean shown
+in play — "ocean included"). Fix both by clipping the city footprint to the
+coastline. `scripts/build_la_play_area.py` is the worked example:
+- Keep the raw union of playable Census places' **full** polygons as a committed
+  source (`scripts/la_play_area_cities.geojson.json`). Inland water (river/lake
+  channels) is already part of a city polygon and is `natural=water`, never
+  `natural=coastline`, so it is never subtracted — it stays in play automatically.
+- Build the **sea polygon**: `polygonize(coastline ∪ FRAME.boundary)` then pick
+  the face containing an offshore seed point (open Pacific). Set the FRAME's west
+  edge *just inside* the coastline dump's western limit (the LA dump stops at lon
+  -118.80) so the mainland coast closes cleanly against the frame edge — otherwise
+  the whole frame comes back as one face and nothing splits.
+- `play = (cities − sea)` (trims ocean overreach) `∪ (land ∩ cities.buffer(d) ∩
+  sea.buffer(d))` where `land = FRAME − sea` and `d ≈ 0.008°` (~0.8 km, the max
+  beach width to bridge). The fill is intersected with the **land** side, so the
+  play area can never extend seaward of the shore.
+- Verify against ground truth by fetching the **ESRI World Imagery** tiles
+  (`server.arcgisonline.com/.../World_Imagery/MapServer/tile/{z}/{y}/{x}` — the
+  exact layer the app's satellite view uses) and overlaying old vs new boundary;
+  the new edge should sit on the waterline. Check no playable port/harbour LAND
+  (Terminal Island, San Pedro) was dropped and all stations stay in play.
+
 ## Delivery
 Commit `scripts/build_measure_features.py` + `src/data/measure-features.geojson.json`
 to the feature branch and push (see repo knowledge for the PAT remote). Preview:
