@@ -67,7 +67,16 @@ CATS = [
 ]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PLAY = json.load(open(os.path.join(HERE, "..", "src", "data", "play-area.geojson.json")))
+# City-agnostic: POI_PLAY_FILE overrides the play polygon (absolute, or relative
+# to scripts/). Defaults to the app's Bay-Area play-area for backward compat; set
+# it to a region's play polygon (e.g. play_area_buffered.geojson) for other maps.
+_PLAY_FILE = os.environ.get(
+    "POI_PLAY_FILE", os.path.join(HERE, "..", "src", "data", "play-area.geojson.json"))
+if not os.path.isabs(_PLAY_FILE):
+    _PLAY_FILE = os.path.join(HERE, _PLAY_FILE)
+PLAY = json.load(open(_PLAY_FILE))
+if PLAY.get("type") == "Feature":
+    PLAY = {"type": "FeatureCollection", "features": [PLAY]}
 calls = 0
 
 

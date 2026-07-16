@@ -229,6 +229,18 @@ describe('airportMatchEliminatedRegion shades the seeker airport Voronoi cell', 
     expect(Math.max(...lats)).toBeLessThan(40)
     expect(Math.min(...lats)).toBeGreaterThan(35)
   })
+
+  // Regression: the Voronoi cell boundary is a single straight equirectangular
+  // bisector that, drawn as one long segment, bows off its true path in Web
+  // Mercator and swallows kept stations near the boundary (LA's 103rd / Watts on
+  // the LAX cell). The region must be densified into many short segments, exactly
+  // like poiMatchEliminatedRegion. An undensified cell is ~5 vertices.
+  it('densifies the cell boundary so it does not bow in Web Mercator', () => {
+    const oak = { lat: 37.719, lon: -122.2196 }
+    const region = airportMatchEliminatedRegion(rec('match-airport', { fromLat: oak.lat, fromLon: oak.lon, value: 'OAK', answer: 'no' }))!
+    const vertexCount = region.flat(2).length / 2
+    expect(vertexCount).toBeGreaterThan(50)
+  })
 })
 
 describe('airportMeasureEliminatedRegion shades the your-distance airport disks', () => {
