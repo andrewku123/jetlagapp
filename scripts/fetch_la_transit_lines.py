@@ -116,24 +116,28 @@ def main():
         print(f"  {ref} Line: {len(kept)} chain(s), "
               f"{sum(base.chain_len_m(c) for c in kept)/1609.34:.1f} mi", file=sys.stderr)
 
-    # A Line downtown Long Beach loop: OSM carries the northbound Pacific Ave leg
-    # only in the opposite-direction relation, which build_line() discards as a
-    # near-total duplicate of the mainline (its _covered check) — taking this
-    # unique loop leg with it. Add it explicitly from the saved alignment (same
-    # pattern as the Bay Area OAK connector) so the loop closes and Pacific Ave
-    # sits on the line. Its endpoints already meet the mainline (Pacific/1st and
-    # Long Beach Bl/8th), so it renders as a continuous loop.
-    try:
-        with open("scripts/la_a_loop.json") as f:
-            loop = json.load(f)
+    # Explicit downtown loops that build_line() cannot recover from OSM:
+    #   A Line (Long Beach): OSM carries the northbound Pacific Ave leg only in the
+    #     opposite-direction relation, which build_line() discards as a near-total
+    #     duplicate of the mainline (its _covered check), taking the unique loop leg
+    #     with it.
+    #   J Line (San Pedro): the stitched mainline starts mid-block on Pacific Ave
+    #     and runs Pacific->22nd->Gaffey->19th->north, so the loop's east side
+    #     (Pacific Ave between 22nd and 19th) is never drawn.
+    # Add each saved alignment as its own feature (same pattern as the Bay Area OAK
+    # connector); endpoints meet the mainline so each renders as a closed loop.
+    for fname, ref in (("scripts/la_a_loop.json", "A"), ("scripts/la_j_loop.json", "J")):
+        try:
+            with open(fname) as f:
+                loop = json.load(f)
+        except FileNotFoundError:
+            continue
         if len(loop) >= 2:
             feats.append({
                 "type": "Feature",
-                "properties": {"system": SYSTEM, "colors": [LINE_COLOR["A"]]},
+                "properties": {"system": SYSTEM, "colors": [LINE_COLOR[ref]]},
                 "geometry": {"type": "LineString", "coordinates": base.round_coords(loop)},
             })
-    except FileNotFoundError:
-        pass
 
     out = {"type": "FeatureCollection", "features": feats}
     path = "src/data/la.transit-lines.geojson.json"
