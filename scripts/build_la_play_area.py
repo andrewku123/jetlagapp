@@ -34,7 +34,7 @@ import json
 import math
 import os
 
-from shapely.geometry import LineString, Point, box, mapping, shape
+from shapely.geometry import LineString, Point, Polygon, box, mapping, shape
 from shapely.ops import linemerge, nearest_points, polygonize, unary_union
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -52,6 +52,15 @@ SEA_SEED = (-118.60, 33.85)
 RIVER_D = 0.0006  # ~65 m: reach from a playable riverbank to ~mid-channel
 FILL_D = 0.008  # ~0.8 km: max beach width bridged from the footprint to the shore
 SIMPLIFY_DEG = 0.00008  # ~9 m, keep the shore crisp
+# Enclosed water holes (harbor/marina basins, lagoons, reservoirs) up to this
+# area are filled back into play: a city's legal polygon carves out its harbor
+# water, leaving an out-of-play hole surrounded by in-play land. Per "water
+# inland of the coast is in play", fill it. Capped well below the smallest
+# non-playable enclave city (~5 km^2 ~ 0.0005 deg^2) so land enclaves stay out,
+# and above Marina del Rey (~1.3 km^2 ~ 0.00013 deg^2), the largest such basin.
+# The big central San Pedro Bay basin is NOT a hole (it opens to the ocean, so
+# it's a boundary bite) and is untouched — it stays out, as the user chose.
+HOLE_FILL_MAX = 0.0003
 ROUND = 5
 
 
@@ -95,6 +104,17 @@ def load_dams():
     return json.load(open(DAMS_FILE))["dams"]
 
 
+def fill_small_holes(play):
+    """Drop interior rings smaller than HOLE_FILL_MAX so enclosed harbor/marina
+    basins and lagoons (water a city polygon carved out) render in-play."""
+    polys = play.geoms if play.geom_type == "MultiPolygon" else [play]
+    out = []
+    for g in polys:
+        keep = [r for r in g.interiors if Polygon(r).area >= HOLE_FILL_MAX]
+        out.append(Polygon(g.exterior, keep))
+    return unary_union(out).buffer(0)
+
+
 def build_inland_water():
     fc = json.load(open(WATER))
     return unary_union([shape(f["geometry"]) for f in fc["features"]]).buffer(0)
@@ -119,6 +139,7 @@ def main():
     trimmed = cities.difference(ocean)
     beach = land.intersection(cities.buffer(FILL_D)).intersection(ocean.buffer(FILL_D))
     play = unary_union([trimmed, beach]).buffer(0)
+    play = fill_small_holes(play)
     play = play.simplify(SIMPLIFY_DEG, preserve_topology=True)
 
     def rnd(c):

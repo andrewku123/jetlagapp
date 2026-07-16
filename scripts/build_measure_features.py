@@ -180,6 +180,14 @@ CITIES = {
         # ocean border), so the coastline question and the play-area edge match.
         # Everything sealed behind a dam is treated as inland (not coast).
         "dams_file": "la_coast_dams.json",
+        # Regions where the shore is dropped from the coastline entirely (the
+        # play area is out of play there, so the beach can't eliminate anyone).
+        # [w, s, e, n] lon/lat. Hermosa Beach gap: the Santa Monica shore
+        # terminates at the north edge (33.868349) and the southern stretch
+        # resumes at the south edge (33.859814); Hermosa in between is out.
+        "coast_exclude": [
+            [-118.43, 33.859814, -118.39, 33.868349],
+        ],
     },
 }
 
