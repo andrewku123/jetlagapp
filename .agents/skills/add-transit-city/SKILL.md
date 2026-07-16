@@ -5,9 +5,70 @@ description: Extend the Hide & Seek seeker tool to a new metro area (beyond the 
 
 # Add a new transit city
 
-The app is region-agnostic: it renders and filters whatever is in
-`src/data/stations.json`. Adding a city = producing that file for the new region
-and adjusting a few region constants. There is no per-city code branching.
+The app is region-agnostic: it renders and filters whatever is in a region's
+data files. Adding a city = producing those files for the new region and adding
+**one** `REGIONS` entry. There is no per-city code branching.
+
+## Quick-start checklist (current multi-region model)
+
+The app is now multi-region: every map is **8 data files + one `REGIONS` entry**
+in `src/data/regions.ts`. The Bay Area uses unprefixed filenames; every other
+map uses a `<slug>.` prefix (e.g. `la.stations.json`). The 8 files are:
+`stations.json · poi.json · play-area.geojson.json · measure-features.geojson.json
+· places.geojson.json · counties.geojson.json · zctas.geojson.json ·
+transit-lines.geojson.json`.
+
+1. **Lock the station set** with the user (systems in scope, names, per-line
+   stop order). Then build `<slug>.stations.json` — see the detailed Steps 1–4
+   below and the `rebuild-station-dataset` skill. Enrich every station
+   (`county`, `city`, `elevation`, per-airport distance + `nearestAirport`,
+   per-day `service`/`headwayMin`).
+2. **Pick the play area WITH the user** — it drives every clip + the demotion
+   rules. Options seen so far: place-based whole-city + enclaves (Bay Area, LA)
+   vs a corridor buffer. Build `<slug>.play-area.geojson.json`, then clip
+   `places` / `counties` / `zctas` to it. LA rule the user chose: include every
+   whole city any line touches, auto-add enclosed enclaves, and if an endgame
+   disk carves into a not-yet-included city **whose county is already in play**,
+   pull in that whole city (union just the sliver if the county is NOT in play).
+3. **Geography files**: `<slug>.counties.geojson.json`,
+   `<slug>.places.geojson.json`, `<slug>.zctas.geojson.json` (Steps 3/6 below).
+4. **Measure features** (`<slug>.measure-features.geojson.json`) via the per-slug
+   entry in `scripts/build_measure_features.py` (Step 3 below). For an **open
+   ocean coast** where OSM tags inland river channels as `natural=coastline`
+   (LA: LA River / San Gabriel River), use the coastline mode that keeps only
+   segments within a small buffer of the open-water mask (`coast_water_clip`).
+5. **Transit line overlay** (`<slug>.transit-lines.geojson.json`) via
+   `fetch_transit_lines.py` + the `continuous-transit-lines` skill (Step 5).
+   Each feature needs `{system, colors[]}` props; `colors[0]` is the line color.
+6. **POI** (`<slug>.poi.json`) via the `gather-poi` skill. **Shipping without POI
+   is fine and often preferred**: create `<slug>.poi.json` with every category as
+   `[]` — the app checks `POI_COUNTS[cat]===0` and auto-demotes every POI
+   Matching/Measuring/Tentacle subject to log-only, no per-region flag. Then land
+   the curated POI later. For the audit, mirror the Bay Area POI review PR:
+   `public/poi-<slug>-review/` (copy `index.html`, only change the map
+   `setView` center/zoom; drop in `poi_merge_viz.js` + `play_area.geojson.json`).
+   `fetch_places_poi.py` takes a `POI_PLAY_FILE` env override for the play polygon.
+7. **Register the region** — add the 8 imports + one `REGIONS` entry
+   (`id, name, center, zoom, inPlayCounties`, + the 8 data objects) to
+   `src/data/regions.ts`, and a single-agency dot color in `src/lib/style.ts` if
+   the map is one agency. **Demotion is derived from the region's own geometry —
+   never a hand-maintained per-city list:**
+   - single line only → `match-line` log-only;
+   - single county/city AND no endgame disk reaches its boundary
+     (`boundaryCarves()` false) → **full log-only** (useless in both phases — LA:
+     all stations ~3 km from the county line, beyond the 0.25 mi disk → county
+     Matching log-only);
+   - single county/city whose boundary a disk **does** cross → **endgame-only**
+     (SF Muni county case);
+   - no in-play airport / no coastline / no state·intl border geometry → that
+     subject log-only (kept in the dropdown, eliminates nothing).
+   Add region assertions to `regions.test.ts` + `poiDemotion.test.ts`.
+8. **Verify + PR**: `npm run lint && npx tsc -b --noEmit && npm test && npm run
+   build`. Ship the main map as its own PR; the POI audit as a **separate,
+   review-only** PR. (The PR-preview CI only runs `npm run build`; lint/test gate
+   runs on push to `main`, so run them locally before pushing.)
+
+The rest of this doc is the detailed reference for each step.
 
 ## Steps
 
