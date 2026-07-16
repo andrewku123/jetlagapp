@@ -116,6 +116,25 @@ def main():
         print(f"  {ref} Line: {len(kept)} chain(s), "
               f"{sum(base.chain_len_m(c) for c in kept)/1609.34:.1f} mi", file=sys.stderr)
 
+    # A Line downtown Long Beach loop: OSM carries the northbound Pacific Ave leg
+    # only in the opposite-direction relation, which build_line() discards as a
+    # near-total duplicate of the mainline (its _covered check) — taking this
+    # unique loop leg with it. Add it explicitly from the saved alignment (same
+    # pattern as the Bay Area OAK connector) so the loop closes and Pacific Ave
+    # sits on the line. Its endpoints already meet the mainline (Pacific/1st and
+    # Long Beach Bl/8th), so it renders as a continuous loop.
+    try:
+        with open("scripts/la_a_loop.json") as f:
+            loop = json.load(f)
+        if len(loop) >= 2:
+            feats.append({
+                "type": "Feature",
+                "properties": {"system": SYSTEM, "colors": [LINE_COLOR["A"]]},
+                "geometry": {"type": "LineString", "coordinates": base.round_coords(loop)},
+            })
+    except FileNotFoundError:
+        pass
+
     out = {"type": "FeatureCollection", "features": feats}
     path = "src/data/la.transit-lines.geojson.json"
     with open(path, "w") as f:
