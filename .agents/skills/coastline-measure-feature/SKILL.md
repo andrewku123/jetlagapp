@@ -59,6 +59,46 @@ The coastline drawn on the map AND used to eliminate stations for the
   mouth. If a whole region is out of play, add a `coast_exclude` box instead
   (shape it to spare any in-play island nearby).
 
+## LA (dam-mode, and unifying it with the play-area ocean border)
+
+LA uses the SAME dam machinery, with three differences worth reusing:
+
+1. **Shared dam file.** LA dams live in `scripts/la_coast_dams.json`
+   (`{"dams": [[[lon,lat],[lon,lat]], ...]}`), read by BOTH
+   `scripts/build_la_play_area.py` (the play-area ocean border) AND
+   `build_measure_features.py` (the coastline question). This guarantees the
+   coastline line and the play-area's ocean edge match exactly — which is what
+   Andrew wants ("define the coastline → it defines the play-area ocean border").
+   In the LA cfg set `"dams_file": "la_coast_dams.json"` (main() injects it into
+   `cfg["dams"]`); do NOT also list `coast_water_clip` (that's the old open-coast
+   mode with no dams — dam-mode replaces it).
+
+2. **Play-area side.** `build_la_play_area.py:build_ocean(dams)` adds the dam
+   walls to the polygonize net so the sea face is cut at each mouth. The water
+   sealed behind the dams = `build_ocean([]).difference(build_ocean(dams))`; add
+   it to the footprint so those harbor basins/channels render in-play (satellite)
+   instead of grey. Rebuild the play area FIRST, then measure-features (which
+   reads the updated play area).
+
+3. **Reproducible saltwater (no out-of-repo mask).** The old LA cfg pointed
+   `land`/`saltwater`/`bay` at `../../la_build/la_water_mask.geojson`, which is
+   NOT in the repo and is gone. Replace with committed
+   `scripts/la_ocean.geojson.json` = the raw sea face flooded from the OSM
+   coastline (`build_la_play_area.build_ocean([])`), used only as the topology
+   reference to pick the open-ocean polygonized face. Regenerate with:
+   `python3 -c "import build_la_play_area as m,json; from shapely.geometry import mapping; json.dump({'type':'FeatureCollection','features':[{'type':'Feature','properties':{},'geometry':mapping(m.build_ocean([]))}]}, open('la_ocean.geojson.json','w'))"`.
+
+Rule for which mouths to dam: Andrew's rule is "if one bank has playable area,
+keep the water in (up to ~mid-channel); if both banks non-playable, leave out."
+For harbors, dam the narrow inner-channel mouths to pull the jagged inter-dock
+channels in; leaving the outer breakwater/harbor entrances undammed keeps the big
+central basin out (its shore then follows the dock faces — inherently jagged, and
+that's expected). Verify "extends to the play-area end" by checking the
+ocean-facing play boundary is fully covered:
+`play.boundary.intersection(build_ocean(dams).buffer(0.0006)).difference(coast.buffer(0.0015))`
+should have no segments longer than ~0.002°. LA rebuild:
+`CITY=la python3 scripts/build_measure_features.py`.
+
 ## Verify before pushing
 - Rebuild: `cd <repo> && CITY=bayarea python scripts/build_measure_features.py`
 - Check specific regions by summing `LineString.intersection(box).length` over the
