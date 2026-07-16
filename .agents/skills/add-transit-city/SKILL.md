@@ -344,6 +344,19 @@ by a **derived condition**, never `if (region==='sfmuni')`:
   ("Jet Lag: Hide & Seek"); a `useEffect` in `App.tsx` then sets
   `document.title = \`${MAP_NAME} Hide & Seek\`` so it tracks the active map.
 
+### Beware hardcoded lon/lat frames (they misplace shading off-region)
+Half-plane overlays (the airport-match Voronoi cell in `questionRegions.ts`, and
+any future bisector/wedge shading) must be clipped to a **finite frame that wraps
+the active play area**, or they render as a world-spanning bowtie. That frame must
+be region-derived, never a hardcoded box: `CELL_FRAME` was once literally the Bay
+Area bbox, so on LA the cell was clipped ~400 mi north and the shaded region landed
+off in the ocean — elimination stayed correct (it uses the exact half-plane, not
+the frame), so the bug was visual-only and easy to miss. Fix pattern: export
+`REGION_FRAME` from `regions.ts`, computed from `ACTIVE_REGION.stations` min/max
+lat/lon + ~1.5° padding, and use it as the frame. When adding a region,
+sanity-check that any shaded Matching/Measuring question actually paints over the
+new play area, not just that the right stations drop.
+
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test && npm run build`, then `npm run dev` and
 confirm the new region renders and the toggles/filters behave.
