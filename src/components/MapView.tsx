@@ -24,7 +24,7 @@ import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { playAreaData, transitLinesData as transitData, waterData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
+import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -769,46 +769,6 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
   return null
 }
 
-// Cosmetic inland-water overlay (lakes / reservoirs / channels + river lines),
-// region-optional. The Pacific is left to the basemap — a custom ocean fill drew
-// a second coastline that didn't line up with the basemap's. Drawn into a pane
-// above the base tiles (200) but below the satellite pane (250) and the dim mask
-// (overlayPane 400), so in-play water reads vivid while out-of-play water is
-// muted by the same dim as the land. Purely visual — no game logic references it.
-const WATER_FILL = '#a9d3e5'
-const WATER_LINE = '#8bbdd6'
-function waterStyle(feature?: GeoJSON.Feature): L.PathOptions {
-  const kind = feature?.properties?.kind
-  if (kind === 'river')
-    return { color: WATER_LINE, weight: 1.3, opacity: 0.9, fill: false }
-  // lakes / reservoirs / channel polygons
-  return { color: WATER_LINE, weight: 0.6, fillColor: WATER_FILL, fillOpacity: 1, opacity: 0.8 }
-}
-function WaterLayer() {
-  const map = useMap()
-  const [pane, setPane] = useState<string | null>(null)
-  useEffect(() => {
-    if (!waterData) return
-    const name = 'water'
-    let p = map.getPane(name)
-    if (!p) {
-      p = map.createPane(name)
-      p.style.zIndex = '210' // above base tiles (200), below satellite (250) + dim (400)
-      p.classList.add('leaflet-zoom-hide')
-    }
-    setPane(name)
-  }, [map])
-  if (!waterData || !pane) return null
-  return (
-    <GeoJSON
-      data={waterData as GeoJSON.GeoJsonObject}
-      style={waterStyle as never}
-      interactive={false}
-      pane={pane}
-    />
-  )
-}
-
 // Transit lines drawn into a dedicated pane that fades in once mounted. As a
 // vector overlay they paint a beat after the base tiles, so without this they
 // "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
@@ -1388,7 +1348,6 @@ export default function MapView({
           subdomains="abcd"
           maxZoom={20}
         />
-        <WaterLayer />
         {satellite && <SatelliteLayer />}
         <MapRefCapture mapRef={mapInstanceRef} />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />

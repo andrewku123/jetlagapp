@@ -44,7 +44,6 @@ import laPlaces from './la.places.geojson.json'
 import laCounties from './la.counties.geojson.json'
 import laZctas from './la.zctas.geojson.json'
 import laTransit from './la.transit-lines.geojson.json'
-import laWater from './la.water.geojson.json'
 
 export interface RegionData {
   id: string
@@ -64,8 +63,6 @@ export interface RegionData {
   counties: unknown
   zctas: unknown
   transitLines: unknown
-  /** Optional cosmetic water overlay (ocean/lakes/rivers); no game logic. */
-  water?: unknown
 }
 
 export const REGIONS: RegionData[] = [
@@ -113,7 +110,6 @@ export const REGIONS: RegionData[] = [
     counties: laCounties,
     zctas: laZctas,
     transitLines: laTransit,
-    water: laWater,
   },
 ]
 
@@ -158,7 +154,6 @@ export const placesData = ACTIVE_REGION.places
 export const countiesData = ACTIVE_REGION.counties
 export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
-export const waterData = ACTIVE_REGION.water
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
 export const MAP_NAME = ACTIVE_REGION.name
 
