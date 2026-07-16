@@ -152,13 +152,21 @@ CITIES = {
         # Far from any state/international line, so those come back empty and the
         # questions demote to log-only in the app (kept in the dropdown).
         "play_bbox": (-118.80, 33.60, -117.55, 34.45),
-        # LA has no separate land-polygon mask; the OSM coastline + play area are
-        # enough to build the shore. Reuse the water mask as both the "saltwater"
-        # (topology: which face is the open ocean) and the enclosed-water "bay".
-        "land": "../../la_build/la_water_mask.geojson",  # placeholder land (unused when detail present)
-        "saltwater": ["../../la_build/la_water_mask.geojson"],
+        # LA has no separate land-polygon mask; the OSM coastline + a flooded
+        # open-ocean polygon are enough. `la_ocean.geojson.json` is the raw sea
+        # face flooded from the OSM coastline (scripts/build_la_play_area.py's
+        # build_ocean([]) — reaches into the harbors); it's used only as the
+        # topology reference for "which polygonized face is the open ocean".
+        # Reproducible from committed data (the old out-of-repo la_build mask is
+        # gone). Regenerate: python3 -c "import build_la_play_area as m, json;
+        # from shapely.geometry import mapping;
+        # json.dump({'type':'FeatureCollection','features':[{'type':'Feature',
+        # 'properties':{},'geometry':mapping(m.build_ocean([]))}]},
+        # open('la_ocean.geojson.json','w'))".
+        "land": "la_ocean.geojson.json",
+        "saltwater": ["la_ocean.geojson.json"],
         "play": "data:la.play-area.geojson.json",
-        "bay": "../../la_build/la_water_mask.geojson",
+        "bay": "la_ocean.geojson.json",
         "coastline_detail": "measure_src/osm_coastline_la.geojson",
         "counties": "data:la.counties.geojson.json",
         "states": "measure_src/us-states.geojson",
@@ -167,11 +175,11 @@ CITIES = {
         "state_neighbors": ["Nevada", "Arizona"],
         "country": "United States of America",
         "country_neighbor": "Mexico",
-        # Open-coast mode: keep only OSM coastline within this distance (deg) of
-        # the open-water mask (Pacific + major harbors). Drops inland river
-        # channels OSM tags as coastline (LA/San Gabriel River, Rio Hondo) and
-        # the sub-mask Marina del Rey inlet, with no per-mouth dams.
-        "coast_water_clip": 0.0015,  # ~165 m
+        # Dam mode: the shore is drawn straight across each harbor/river mouth in
+        # la_coast_dams.json (the SAME file build_la_play_area.py uses for the
+        # ocean border), so the coastline question and the play-area edge match.
+        # Everything sealed behind a dam is treated as inland (not coast).
+        "dams_file": "la_coast_dams.json",
     },
 }
 
@@ -401,6 +409,8 @@ def main():
     if slug not in CITIES:
         raise SystemExit(f"unknown CITY={slug!r}; known: {', '.join(CITIES)}")
     cfg = CITIES[slug]
+    if cfg.get("dams_file"):
+        cfg = {**cfg, "dams": load(src(cfg["dams_file"]))["dams"]}
     lon0, lat0, lon1, lat1 = cfg["play_bbox"]
     clip = box(lon0, lat0, lon1, lat1)
 

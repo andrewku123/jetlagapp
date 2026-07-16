@@ -31,15 +31,17 @@ Two corrections are applied to the raw city footprint:
 Run: python3 scripts/build_la_play_area.py
 """
 import json
+import math
 import os
 
-from shapely.geometry import Point, box, mapping, shape
-from shapely.ops import linemerge, polygonize, unary_union
+from shapely.geometry import LineString, Point, box, mapping, shape
+from shapely.ops import linemerge, nearest_points, polygonize, unary_union
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CITIES = os.path.join(HERE, "la_play_area_cities.geojson.json")
 WATER = os.path.join(HERE, "la_inland_water.geojson.json")
 COAST = os.path.join(HERE, "measure_src", "osm_coastline_la.geojson")
+DAMS_FILE = os.path.join(HERE, "la_coast_dams.json")
 OUT = os.path.join(HERE, "..", "src", "data", "la.play-area.geojson.json")
 
 # The OSM coastline dump reaches to lon -118.80; keep the frame just inside it so
@@ -53,16 +55,44 @@ SIMPLIFY_DEG = 0.00008  # ~9 m, keep the shore crisp
 ROUND = 5
 
 
-def build_ocean():
+def dam_walls(coast_all, dams):
+    """Straight bank-to-bank walls across each user-supplied harbor/river mouth.
+    Both bank points are snapped to the nearest spot on the real OSM coastline
+    (skipped if >~660 m off — that mouth isn't traced there) and the wall is
+    extended a hair past each bank so it fully separates the water behind it."""
+    walls = []
+    for seg in dams:
+        p0, p1 = Point(seg[0]), Point(seg[1])
+        q0 = nearest_points(coast_all, p0)[0]
+        q1 = nearest_points(coast_all, p1)[0]
+        if p0.distance(q0) > 0.006 or p1.distance(q1) > 0.006:
+            continue
+        dx, dy = q1.x - q0.x, q1.y - q0.y
+        L = math.hypot(dx, dy) or 1e-9
+        ux, uy = dx / L, dy / L
+        ext = 0.0006
+        walls.append(LineString([(q0.x - ux * ext, q0.y - uy * ext),
+                                 (q1.x + ux * ext, q1.y + uy * ext)]))
+    return walls
+
+
+def build_ocean(dams):
     fc = json.load(open(COAST))
     lines = [shape(f["geometry"]) for f in fc["features"]]
     merged = linemerge(unary_union(lines)).intersection(FRAME)
-    faces = list(polygonize(unary_union([merged, FRAME.boundary])))
+    walls = dam_walls(unary_union(lines), dams) if dams else []
+    faces = list(polygonize(unary_union([merged, *walls, FRAME.boundary])))
     seed = Point(*SEA_SEED)
     sea = [f for f in faces if f.contains(seed)]
     if not sea:
         raise SystemExit("no sea face found — check SEA_SEED / coastline data")
     return unary_union(sea).buffer(0)
+
+
+def load_dams():
+    if not os.path.exists(DAMS_FILE):
+        return []
+    return json.load(open(DAMS_FILE))["dams"]
 
 
 def build_inland_water():
@@ -74,9 +104,17 @@ def main():
     footprint = shape(json.load(open(CITIES))["features"][0]["geometry"]).buffer(0)
     water = build_inland_water()
     river_fill = water.intersection(footprint.buffer(RIVER_D))
-    cities = unary_union([footprint, river_fill]).buffer(0)
 
-    ocean = build_ocean()
+    dams = load_dams()
+    ocean = build_ocean(dams)
+    # Water sealed behind the dams (harbor basins/channels inland of the drawn
+    # coastline) is what the raw open-ocean fill reached but the dammed one no
+    # longer does. Per the rule "everything inland of the coastline is in play",
+    # add it to the footprint so those basins render in-play instead of grey.
+    harbor_fill = build_ocean([]).difference(ocean) if dams else None
+    parts = [footprint, river_fill] + ([harbor_fill] if harbor_fill else [])
+    cities = unary_union(parts).buffer(0)
+
     land = FRAME.difference(ocean)
     trimmed = cities.difference(ocean)
     beach = land.intersection(cities.buffer(FILL_D)).intersection(ocean.buffer(FILL_D))
