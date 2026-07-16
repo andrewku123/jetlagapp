@@ -99,6 +99,33 @@ ocean-facing play boundary is fully covered:
 should have no segments longer than ~0.002°. LA rebuild:
 `CITY=la python3 scripts/build_measure_features.py`.
 
+### Enclosed harbor/marina basins vs. the open basin (two different fixes)
+A greyed water body inside the play area is one of two things — check which:
+- **Interior hole** (fully enclosed by in-play land, e.g. Marina del Rey, the
+  downtown Long Beach basins, an inland reservoir): the city's Census polygon
+  carved out its harbor water; the ocean flood does NOT reach it. Do NOT dam it.
+  `build_la_play_area.py:fill_small_holes()` drops interior rings below
+  `HOLE_FILL_MAX` (~0.0003 deg² ≈ 3 km²) so they render in-play. The cap sits
+  above Marina del Rey (~1.3 km²) but below the smallest non-playable enclave
+  city (~5 km²), so land enclaves stay out. Diagnose with
+  `[Polygon(r).area for g in play.geoms for r in g.interiors]`.
+- **Open ocean bite** (opens to the sea, e.g. the central San Pedro Bay basin):
+  it's part of `build_ocean(dams)`, a concavity in the boundary, NOT an interior
+  ring — hole-filling never touches it, so it stays out (which is what Andrew
+  wants for the central basin). To pull one of these in you'd add a dam.
+Quick test: `ocean.contains(pt)` true → open bite (dam it to include);
+false but greyed → interior hole (fill_small_holes handles it).
+
+### Dropping an out-of-play beach stretch (coast_exclude)
+Where the play area pulls inland and a beach is out of play, the coastline should
+have a gap there (the `play.buffer(0.004)` clip alone can bridge it via a nearby
+in-play sliver). Add a `[w,s,e,n]` box to the city cfg's `coast_exclude`; in
+dam-mode it's applied as `shore.difference(exclude)`. Andrew gives the gap as the
+two shore points where the coastline should terminate (the stretch coming from
+one direction ends at one point, the other stretch resumes at the other) — make
+the box span exactly those two latitudes (e.g. LA Hermosa Beach:
+`[-118.43, 33.859814, -118.39, 33.868349]`).
+
 ## Verify before pushing
 - Rebuild: `cd <repo> && CITY=bayarea python scripts/build_measure_features.py`
 - Check specific regions by summing `LineString.intersection(box).length` over the
