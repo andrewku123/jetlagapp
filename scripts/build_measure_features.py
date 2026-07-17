@@ -180,6 +180,10 @@ CITIES = {
         # ocean border), so the coastline question and the play-area edge match.
         # Everything sealed behind a dam is treated as inland (not coast).
         "dams_file": "la_coast_dams.json",
+        # Recreational ocean piers whose decks jut past the drawn coastline; their
+        # OSM footprints are carved into the polygonize net so the shore traces
+        # around each pier (same file the play-area build adds back as land).
+        "piers_file": "la_piers.geojson.json",
         # Regions where the shore is dropped from the coastline entirely (the
         # play area is out of play there, so the beach can't eliminate anyone).
         # [w, s, e, n] lon/lat. Hermosa Beach gap: the Santa Monica shore
@@ -235,7 +239,7 @@ def _dam_polys(dams, width_deg=0.0004):
 
 
 def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None,
-                    water_clip=None):
+                    water_clip=None, piers=None):
     # Open-ocean mode (cfg["coast_water_clip"]): keep only the OSM coastline that
     # hugs the big open-water mask (Pacific + major harbors). Inland waterways
     # that OSM tags natural=coastline (LA River, Rio Hondo, San Gabriel River)
@@ -311,7 +315,17 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     # sealed slough / estuary / marsh interior is its own separate face (dropped),
     # so its shore AND the islets inside it disappear. This matches "draw a line
     # across the mouth and everything cut off from the bay is removed".
-    net = unary_union(lines + walls + [clip.exterior])
+    # Pier footprints (LA ocean piers) are carved into the net so the pier deck
+    # becomes its own face separated from the open ocean; the bay-face boundary
+    # then traces around each pier outline instead of running straight past it
+    # along the beach.
+    pier_lines = []
+    if piers is not None and not piers.is_empty:
+        pgeoms = piers.geoms if piers.geom_type == "MultiPolygon" else [piers]
+        for pg in pgeoms:
+            pier_lines.append(pg.exterior)
+            pier_lines.extend(pg.interiors)
+    net = unary_union(lines + walls + pier_lines + [clip.exterior])
     faces = list(polygonize(net))
     # The bay is the face that overlaps the saltwater mask the most (a coarse
     # rep-point-in-mask test is unreliable — far-offshore rep points fall outside
@@ -439,9 +453,13 @@ def main():
     if cfg.get("coastline_detail"):
         coast_detail = unary_union(feats(load(src(cfg["coastline_detail"]))))
 
+    piers = None
+    if cfg.get("piers_file"):
+        piers = unary_union(feats(load(src(cfg["piers_file"])))).buffer(0)
+
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail, cfg.get("coast_water_clip")), 0.00015)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail, cfg.get("coast_water_clip"), piers), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
