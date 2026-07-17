@@ -185,9 +185,9 @@ function build(key){
       dot(g,o[0],o[1],{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'),p);
     });
   }
-  // Merges are reviewed for every category except parks, so only parks still
-  // draw the absorbed child dots + spokes; elsewhere just show the kept pin.
-  const showKids=(key==='park');
+  // Show every absorbed child dot + its dashed spoke to the kept pin, so a
+  // merge's real POI location stays visible for review in all categories.
+  const showKids=true;
   d.groups.forEach(grp=>{
     const R=grp.rep;
     const oR=od(R);
