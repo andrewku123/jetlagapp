@@ -52,6 +52,7 @@
     </div>
     <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
     <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
+    <div class="ctl"><label><input type="checkbox" id="border"> highlight border POIs (≤<span id="bkm">1</span> km from edge)</label></div>
     <div id="cats"></div>
     <div class="tot" id="tot"></div>
     <div class="leg">
@@ -61,6 +62,7 @@
       <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
       <div><span class="sw" style="background:#1abc9c;display:inline-block"></span> <b>merged away</b> — into parent park</div>
       <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
+      <div><span class="sw" style="background:transparent;border:2px solid #ffcc00;display:inline-block"></span> <b>near the play-area edge</b> (toggle above)</div>
       <div style="margin-top:6px">Grey line links each absorbed pin → its representative. Click any dot for its name + reviews.</div>
     </div>
   </div>
@@ -83,14 +85,43 @@ L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain}
 // Play-area boundary: the union of transit-served city/town/CDP polygons that
 // POIs are clipped to (see scripts/build_play_area.py). Pins outside it are
 // dropped before they ever reach this map.
+let PA_GEO=null;
 fetch('play_area.geojson.json?cb='+Date.now()).then(r=>r.json()).then(geo=>{
+  PA_GEO=geo;
   L.geoJSON(geo,{interactive:false,style:{color:'#1d4ed8',weight:1.5,
     fill:true,fillColor:'#1d4ed8',fillOpacity:0.04}}).addTo(map).bringToBack();
 }).catch(()=>{});
+
+// A pin is a "border" pin if it lies within BORDER_M metres of the play-area
+// boundary. Computed once (lazily, on first toggle) in a local equirectangular
+// projection; each pin gets p.__b so build()/dot() can halo it.
+const BORDER_M=1000; let borderDone=false;
+function computeBorder(geo){
+  if(borderDone||!geo)return;
+  const latRef=34.05, kx=111320*Math.cos(latRef*Math.PI/180), ky=110540, TH=BORDER_M, TH2=TH*TH;
+  const segs=[];
+  (geo.features||[]).forEach(f=>{const gm=f.geometry; if(!gm)return;
+    const polys=gm.type==='MultiPolygon'?gm.coordinates:[gm.coordinates];
+    polys.forEach(poly=>poly.forEach(r=>{for(let i=0;i<r.length-1;i++)
+      segs.push([r[i][0]*kx,r[i][1]*ky,r[i+1][0]*kx,r[i+1][1]*ky]);}));});
+  const seg2=(px,py,x1,y1,x2,y2)=>{const dx=x2-x1,dy=y2-y1,L2=dx*dx+dy*dy||1;
+    let t=((px-x1)*dx+(py-y1)*dy)/L2; t=t<0?0:t>1?1:t;
+    const cx=x1+t*dx,cy=y1+t*dy; return (px-cx)**2+(py-cy)**2;};
+  const tag=p=>{const px=p.lon*kx, py=p.lat*ky; let best=Infinity;
+    for(let i=0;i<segs.length;i++){const s=segs[i];
+      if(px<Math.min(s[0],s[2])-TH||px>Math.max(s[0],s[2])+TH||
+         py<Math.min(s[1],s[3])-TH||py>Math.max(s[1],s[3])+TH)continue;
+      const d=seg2(px,py,s[0],s[1],s[2],s[3]);
+      if(d<best){best=d; if(best<=TH2)break;}}
+    p.__b=best<=TH2;};
+  Object.values(window.VIZ).forEach(d=>{(d.singles||[]).forEach(tag);
+    (d.groups||[]).forEach(grp=>{tag(grp.rep);(grp.kids||[]).forEach(tag);});});
+  borderDone=true;
+}
 map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
   Object.keys(enabled).forEach(refresh);});
 
-const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false}, jump={v:false};
+const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false}, jump={v:false}, halo={v:false};
 // touch devices: tiny dots are hard to tap, so add a large invisible hit-area
 // marker behind each visible dot, bound to the same popup.
 const TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
@@ -101,6 +132,8 @@ function dot(g,lat,lon,style,pop,p){
     if(jump.v&&p){m.on('click',()=>window.open(gmaps(p),'_blank','noopener'));}
     else{m.bindPopup(pop);}
     return m.addTo(g);};
+  if(halo.v&&p&&p.__b){L.circleMarker([lat,lon],{radius:(style.radius||4)+6,
+    color:'#ffcc00',weight:3,fill:false,opacity:1}).addTo(g);}
   if(TOUCH){mk([lat,lon],{radius:Math.max(style.radius+10,15),
     stroke:false,fillOpacity:0,fillColor:'#000'});}
   return mk([lat,lon],style);
@@ -165,6 +198,9 @@ document.getElementById('none').onclick=()=>{Object.keys(window.VIZ).forEach(k=>
 document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
   Object.keys(window.VIZ).forEach(k=>refresh(k));};
 document.getElementById('jump').onchange=e=>{jump.v=e.target.checked;
+  Object.keys(window.VIZ).forEach(k=>refresh(k));};
+document.getElementById('border').onchange=e=>{halo.v=e.target.checked;
+  if(halo.v)computeBorder(PA_GEO);
   Object.keys(window.VIZ).forEach(k=>refresh(k));};
 
 // ---- search ----
