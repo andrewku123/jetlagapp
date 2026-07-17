@@ -126,6 +126,29 @@ one direction ends at one point, the other stretch resumes at the other) — mak
 the box span exactly those two latitudes (e.g. LA Hermosa Beach:
 `[-118.43, 33.859814, -118.39, 33.868349]`).
 
+## Including ocean piers (LA)
+Recreational ocean piers jut past the shore; to make their decks in-play AND have
+both the coastline and the play-area edge trace the real pier outline (NOT a
+circular buffer):
+- Commit the pier deck polygons as OSM `man_made=pier` footprints in
+  `scripts/la_piers.geojson.json` (a FeatureCollection; `properties.name` per pier).
+  Only recreational OPEN-OCEAN piers, and only those that get clipped seaward by
+  the shore. LA set: Santa Monica, Venice Fishing, Manhattan Beach, Redondo Beach,
+  Belmont. EXCLUDE Hermosa (coastline gap), Orange County (Seal Beach/Huntington),
+  and harbor berths / unnamed docks (Marina del Rey, San Pedro).
+- `build_measure_features.py`: add `"piers_file"` to the city cfg, load it in
+  `main()`, pass `piers=` to `build_coastline`. Inside, carve each pier's
+  `exterior`+`interiors` into the polygonize `net` so the deck becomes its own
+  face and `bayface.boundary` traces around it.
+- `build_la_play_area.py`: `load_piers()`, compute `ocean_for_play =
+  ocean.difference(piers)` and use THAT for `land`/`trimmed` (keep `harbor_fill`
+  on the true dammed `ocean` so piers don't leak into harbor semantics), then add
+  the pier polygons to the play union so decks read as land.
+- Rebuild BOTH (`build_la_play_area.py` then `CITY=la build_measure_features.py`);
+  verify with point-in-polygon that the pier's POIs flip out→in play. When the
+  play area changes, re-sync `public/poi-la-review/play_area.geojson.json` and
+  re-add any POIs deleted earlier that are now back in play.
+
 ## Verify before pushing
 - Rebuild: `cd <repo> && CITY=bayarea python scripts/build_measure_features.py`
 - Check specific regions by summing `LineString.intersection(box).length` over the
