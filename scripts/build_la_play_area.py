@@ -42,6 +42,11 @@ CITIES = os.path.join(HERE, "la_play_area_cities.geojson.json")
 WATER = os.path.join(HERE, "la_inland_water.geojson.json")
 COAST = os.path.join(HERE, "measure_src", "osm_coastline_la.geojson")
 DAMS_FILE = os.path.join(HERE, "la_coast_dams.json")
+# Recreational ocean piers (Santa Monica, Venice, Manhattan Beach, Redondo,
+# Belmont) whose decks jut past the drawn coastline into open water. Their OSM
+# footprint polygons are added back as in-play land so the shore traces around
+# each pier instead of chopping it off at the beach.
+PIERS_FILE = os.path.join(HERE, "la_piers.geojson.json")
 OUT = os.path.join(HERE, "..", "src", "data", "la.play-area.geojson.json")
 
 # The OSM coastline dump reaches to lon -118.80; keep the frame just inside it so
@@ -120,6 +125,13 @@ def build_inland_water():
     return unary_union([shape(f["geometry"]) for f in fc["features"]]).buffer(0)
 
 
+def load_piers():
+    if not os.path.exists(PIERS_FILE):
+        return None
+    fc = json.load(open(PIERS_FILE))
+    return unary_union([shape(f["geometry"]) for f in fc["features"]]).buffer(0)
+
+
 def main():
     footprint = shape(json.load(open(CITIES))["features"][0]["geometry"]).buffer(0)
     water = build_inland_water()
@@ -135,10 +147,18 @@ def main():
     parts = [footprint, river_fill] + ([harbor_fill] if harbor_fill else [])
     cities = unary_union(parts).buffer(0)
 
-    land = FRAME.difference(ocean)
-    trimmed = cities.difference(ocean)
+    # Carve the pier decks out of the open ocean so the shore trims around them
+    # (leaving the deck as land); harbor_fill above keeps the true dammed ocean.
+    piers = load_piers()
+    ocean_for_play = ocean.difference(piers).buffer(0) if piers is not None else ocean
+
+    land = FRAME.difference(ocean_for_play)
+    trimmed = cities.difference(ocean_for_play)
     beach = land.intersection(cities.buffer(FILL_D)).intersection(ocean.buffer(FILL_D))
-    play = unary_union([trimmed, beach]).buffer(0)
+    parts_play = [trimmed, beach]
+    if piers is not None:
+        parts_play.append(piers)
+    play = unary_union(parts_play).buffer(0)
     play = fill_small_holes(play)
     play = play.simplify(SIMPLIFY_DEG, preserve_topology=True)
 
