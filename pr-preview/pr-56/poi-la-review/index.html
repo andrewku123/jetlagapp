@@ -52,7 +52,7 @@
     </div>
     <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
     <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
-    <div class="ctl"><label><input type="checkbox" id="border"> highlight border POIs (≤<span id="bkm">1</span> km from edge)</label></div>
+    <div class="ctl"><label><input type="checkbox" id="border"> highlight border POIs (≤<span id="bkm">400</span> m from edge)</label></div>
     <div id="cats"></div>
     <div class="tot" id="tot"></div>
     <div class="leg">
@@ -95,7 +95,7 @@ fetch('play_area.geojson.json?cb='+Date.now()).then(r=>r.json()).then(geo=>{
 // A pin is a "border" pin if it lies within BORDER_M metres of the play-area
 // boundary. Computed once (lazily, on first toggle) in a local equirectangular
 // projection; each pin gets p.__b so build()/dot() can halo it.
-const BORDER_M=1000; let borderDone=false;
+const BORDER_M=400; let borderDone=false;
 function computeBorder(geo){
   if(borderDone||!geo)return;
   const latRef=34.05, kx=111320*Math.cos(latRef*Math.PI/180), ky=110540, TH=BORDER_M, TH2=TH*TH;
