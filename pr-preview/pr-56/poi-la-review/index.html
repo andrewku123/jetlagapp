@@ -150,12 +150,39 @@ function popup(p,kind){return `<div class="lp"><b>${esc(p.n)}</b><br>${p.r} revi
   +`<a href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a><br>`
   +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span></div>`}
 
+// REVIEW-MAP ONLY: pins in the SAME category that sit on top of each other are
+// impossible to tell apart, so we fan them out a few metres purely for display
+// (p.__dy/__dx render offsets). Real coordinates in the data are never changed,
+// and this file is the standalone audit map only — nothing here ships in the app.
+function od(p){return [p.lat+(p.__dy||0),p.lon+(p.__dx||0)];}
+function computeFan(){
+  const TH=30, latRef=34.05, kx=111320*Math.cos(latRef*Math.PI/180), ky=110540;
+  Object.values(window.VIZ).forEach(d=>{
+    const P=[]; (d.singles||[]).forEach(p=>P.push(p));
+    (d.groups||[]).forEach(gr=>{P.push(gr.rep);(gr.kids||[]).forEach(k=>P.push(k));});
+    const used=new Array(P.length).fill(false);
+    for(let i=0;i<P.length;i++){
+      if(used[i])continue; const cl=[i]; used[i]=true;
+      for(let j=i+1;j<P.length;j++){ if(used[j])continue;
+        const dx=(P[i].lon-P[j].lon)*kx, dy=(P[i].lat-P[j].lat)*ky;
+        if(dx*dx+dy*dy<=TH*TH){cl.push(j);used[j]=true;}}
+      if(cl.length<2)continue;
+      const rad=Math.max(6,1.43*cl.length); // metres; grows with cluster size
+      cl.forEach((idx,n)=>{ const a=2*Math.PI*n/cl.length;
+        const p=P[idx];
+        p.__dy=(rad*Math.sin(a))/ky;
+        p.__dx=(rad*Math.cos(a))/(111320*Math.cos(p.lat*Math.PI/180));});
+    }
+  });
+}
+computeFan();
+
 function build(key){
   const d=window.VIZ[key]; const g=L.layerGroup(); const col=COLORS[key]||'#555';
   const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0; // darken fills + dark borders on terrain
   if(!onlyMerged.v){
-    d.singles.forEach(p=>{
-      dot(g,p.lat,p.lon,{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'),p);
+    d.singles.forEach(p=>{const o=od(p);
+      dot(g,o[0],o[1],{radius:3,color:t?'#444':'#999',weight:1,fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6},popup(p,'untouched'),p);
     });
   }
   // Merges are reviewed for every category except parks, so only parks still
@@ -163,14 +190,16 @@ function build(key){
   const showKids=(key==='park');
   d.groups.forEach(grp=>{
     const R=grp.rep;
+    const oR=od(R);
     if(showKids)grp.kids.forEach(k=>{
       const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':k.src==='bigpark'?'#1abc9c':'#c0392b';
       const col2=dark(base,sf);
       const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':k.src==='bigpark'?'merged (into parent park)':'merged (name match)';
-      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
-      dot(g,k.lat,k.lon,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1},popup(k,klabel),k);
+      const ok=od(k);
+      L.polyline([oR,ok],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
+      dot(g,ok[0],ok[1],{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1},popup(k,klabel),k);
     });
-    dot(g,R.lat,R.lon,{radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1},popup(R,'kept'),R);
+    dot(g,oR[0],oR[1],{radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1},popup(R,'kept'),R);
   });
   return g;
 }
