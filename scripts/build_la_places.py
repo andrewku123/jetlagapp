@@ -26,14 +26,19 @@ PLACE_STEM = "tl_2023_06_place"
 SIMPLIFY_DEG = 0.0002
 MIN_AREA_DEG2 = 1e-7
 
-# River-fold tuning: rivers/washes are unincorporated gaps in the Census places,
-# so we fold each river's in-play area into the cities on its banks (split down
-# the middle) to keep the city-matching shading gap-free. Cosmetic only:
-# elimination still resolves each station through the same polygons.
+# Gap-fold tuning: the Census places leave unincorporated gaps inside the play
+# area -- river/wash channels, and tiny enclosed holes/slivers (e.g. an
+# un-annexed parcel surrounded by a city). Both shade as "not my city", so the
+# seeker's own spot can look eliminated. We fold these gaps into the cities on
+# their banks (split down the middle via a nearest-boundary raster). We only
+# fill rivers + SMALL enclosed gaps; large gaps (big parks, real unincorporated
+# land, water) are left alone. Cosmetic only: elimination still resolves each
+# station through the same polygons.
 RIVER_CELL_M = 12.0       # raster resolution of the fill split
 RIVER_BOUND_STEP_M = 15.0  # city-boundary sampling step for nearest-bank test
 RIVER_NEAR_M = 130.0       # a bank city must be within this of a fill cell
 RIVER_MIN_COMP_KM2 = 0.0008
+SMALL_GAP_MAX_KM2 = 0.01   # non-river gap components below this get filled in
 
 
 def polygonal(g):
@@ -64,20 +69,32 @@ def load_play_area():
     return g.buffer(0) if not g.is_valid else g
 
 
-def fold_rivers(clipped, play):
-    """Fold each river/wash's in-play area into the cities on its banks so the
-    matching shading has no unincorporated-channel gaps. Splits the fill region
-    down the middle between opposite banks via a nearest-city-boundary raster.
-    Mutates `clipped` in place; returns km2 folded."""
+def fold_gaps(clipped, play):
+    """Fold river channels and small enclosed gaps into the cities on their banks
+    so the matching shading has no distracting unincorporated slivers. Splits
+    each fill region down the middle between opposite banks via a nearest-city-
+    boundary raster. Mutates `clipped` in place; returns km2 folded."""
     import numpy as np
     from scipy.spatial import cKDTree
     names = list(clipped)
     geoms = [clipped[n] for n in names]
     cities = unary_union(geoms)
-    riv = fetch_la_rivers.load()
-    ru = unary_union([shape(f["geometry"]).buffer(0) for f in riv["features"]]).intersection(play)
-    fill = ru.difference(cities)
-    if fill.is_empty:
+
+    # (a) river/wash channels (any size -- wide ones get split down the middle)
+    riv_fill = Polygon()
+    try:
+        riv = fetch_la_rivers.load()
+        ru = unary_union([shape(f["geometry"]).buffer(0) for f in riv["features"]]).intersection(play)
+        riv_fill = ru.difference(cities)
+    except Exception as e:
+        print(f"WARNING: river channels not folded ({e})", file=sys.stderr)
+
+    # (b) small enclosed gaps/holes (below SMALL_GAP_MAX_KM2); leave big gaps
+    # (parks, real unincorporated land, water) as-is
+    all_gap = play.difference(cities)
+    small = [c for c in (all_gap.geoms if all_gap.geom_type == "MultiPolygon" else [all_gap])
+             if 0 < c.area * 111 * 92 < SMALL_GAP_MAX_KM2]
+    if riv_fill.is_empty and not small:
         return 0.0
 
     lat0 = play.centroid.y
@@ -105,8 +122,10 @@ def fold_rivers(clipped, play):
 
     cdx = RIVER_CELL_M / mlon
     cdy = RIVER_CELL_M / mlat
-    comps = [c for c in (fill.geoms if fill.geom_type == "MultiPolygon" else [fill])
-             if c.area * 111 * 92 > RIVER_MIN_COMP_KM2]
+    # rivers get the raster split (wide channels divided down the middle between
+    # opposite-bank cities)
+    comps = [c for c in (riv_fill.geoms if riv_fill.geom_type == "MultiPolygon" else [riv_fill])
+             if not c.is_empty and c.area * 111 * 92 > RIVER_MIN_COMP_KM2]
     from collections import defaultdict
     city_cells = defaultdict(list)
     for comp in comps:
@@ -135,6 +154,21 @@ def fold_rivers(clipped, play):
     for ci, parts in city_cells.items():
         u = unary_union(parts).buffer(cdx * 0.6).buffer(-cdx * 0.6)  # close raster seams
         u = polygonal(u.simplify(cdx * 0.5, preserve_topology=True))  # thin raster vertices
+        if u.is_empty:
+            continue
+        folded += u.area
+        clipped[names[ci]] = polygonal(unary_union([clipped[names[ci]], u]).intersection(play))
+
+    # small enclosed gaps: assign each whole component to the nearest-boundary
+    # city (keeps the original smooth outline -- no raster vertex bloat)
+    city_whole = defaultdict(list)
+    for comp in small:
+        rp = comp.representative_point()
+        d, k = tree.query([rp.x * mlon, rp.y * mlat])
+        if d <= RIVER_NEAR_M:
+            city_whole[int(allidx[k])].append(comp)
+    for ci, parts in city_whole.items():
+        u = polygonal(unary_union(parts))
         if u.is_empty:
             continue
         folded += u.area
@@ -173,10 +207,10 @@ def main():
         simp[name] = g
 
     try:
-        folded = fold_rivers(simp, play)
-        print(f"folded river channels into banks: {folded:.2f} km2", file=sys.stderr)
-    except Exception as e:  # numpy/scipy missing or Overpass down: ship without polish
-        print(f"WARNING: river fold skipped ({e}); channels stay as thin gaps", file=sys.stderr)
+        folded = fold_gaps(simp, play)
+        print(f"folded river/small gaps into banks: {folded:.2f} km2", file=sys.stderr)
+    except Exception as e:  # numpy/scipy missing: ship without the gap polish
+        print(f"WARNING: gap fold skipped ({e}); channels/holes stay as gaps", file=sys.stderr)
 
     out = {"type": "FeatureCollection", "features": []}
     for name in sorted(simp):
