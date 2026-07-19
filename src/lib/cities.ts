@@ -1,6 +1,6 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
-import { placesData as placesRaw, playAreaData as playAreaRaw } from '../data/regions'
+import { placesData as placesRaw, playAreaData as playAreaRaw, CITY_SNAP_M } from '../data/regions'
 
 // Census-place (3rd-admin / "city") polygons used by the "Matching — city"
 // question. Both the seeker's city (from their coordinate) and each station's
@@ -20,7 +20,9 @@ interface GeoFeature {
 // the nearest place — absorbs shoreline-clip / simplification erosion at
 // boundaries (e.g. a station sitting ~100 m outside its city outline). Genuinely
 // unincorporated points (e.g. SFO airport land, ~300 m+ from any city) stay null.
-const SNAP_M = 150
+// Per-region (see RegionData.citySnapM): LA uses a tight value so county-island
+// gaps aren't wrongly snapped into a neighbouring city.
+const SNAP_M = CITY_SNAP_M
 
 function buildCities(): Record<string, CityPolys> {
   const out: Record<string, CityPolys> = {}
