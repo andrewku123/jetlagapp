@@ -255,6 +255,33 @@ The rest of this doc is the detailed reference for each step.
      override; a new metro only needs it if it has the same ownership quirk.
      Verify **no hiding station resolves to null** after building — if one does,
      it's on unincorporated land and either needs a CDP added or an override.
+   - **Gap-folding (cosmetic, keeps shading gap-free):** after the play area is
+     expanded (e.g. into river channels/piers), the Census places leave narrow
+     unincorporated slivers — river/wash channels and tiny enclosed holes (an
+     un-annexed parcel ringed by a city). All shade as "not my city", so the
+     seeker's own dot can look eliminated. Fold them into the cities on their
+     banks (`fold_gaps()` in the LA builder): **simplify the city polygons FIRST**
+     (that's what opens the channels as gaps), THEN fold — folding before simplify
+     just gets re-eroded. Rivers (from OSM `natural=water`/`waterway=riverbank`,
+     see `fetch_la_rivers.py`) are split down the middle between opposite banks via
+     a nearest-city-boundary raster; small enclosed holes (`< ~0.01 km²`) are
+     assigned **whole** to the nearest city (no raster → no vertex bloat). Only
+     fold rivers + SMALL holes; leave big parks / real unincorporated land / water
+     alone. Purely cosmetic: elimination still resolves each station through the
+     same polygons (verify station→city diffs = 0 vs before).
+   - **Per-region snap tolerance (`RegionData.citySnapM`, default 150 m):** the
+     snap in `cityAt()` that rescues points just outside a simplified boundary ALSO
+     wrongly pulls genuinely-unincorporated county islands (e.g. an un-annexed
+     parcel 97 m from the city, by the LA River / Forest Lawn) into the
+     neighbouring city. Tighten it per region when the places are clean: count how
+     many hiding stations sit outside all polygons AND within the snap band — if
+     **zero rely on snap** (LA: only 1 station is outside, at 178 m, already beyond
+     snap), set `citySnapM` to just above the simplification tolerance (LA uses
+     **40 m** for `SIMPLIFY_DEG ≈ 22 m`) so islands read **Unincorporated** while
+     boundary erosion is still absorbed. `cities.ts` reads `CITY_SNAP_M` from the
+     active region (`regions.ts`); default stays 150 m for Bay Area / SF Muni,
+     whose edge stations (Colma 107 m, Bayshore/NASA 64 m) still need it. Confirm
+     station→city assignments are unchanged before/after.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
