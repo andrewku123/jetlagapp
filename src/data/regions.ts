@@ -55,6 +55,15 @@ export interface RegionData {
   zoom: number
   /** 2nd-admin divisions that hold stations (used by county Matching + dim). */
   inPlayCounties: string[]
+  /**
+   * How far (metres) a point outside every place polygon still snaps to the
+   * nearest place in the city Matching lookup (see cities.ts). Absorbs boundary
+   * simplification erosion; too large and genuinely-unincorporated spots read as
+   * a neighbouring city. Defaults to 150. LA's places are cleaner + no station
+   * relies on snap, so it uses a tight value so county-island gaps (e.g. by the
+   * LA River / Forest Lawn) correctly read as unincorporated.
+   */
+  citySnapM?: number
   stations: unknown
   poi: unknown
   playArea: unknown
@@ -102,6 +111,7 @@ export const REGIONS: RegionData[] = [
     center: [34.05, -118.25],
     zoom: 10,
     inPlayCounties: ['Los Angeles'],
+    citySnapM: 40,
     stations: laStations,
     poi: laPoi,
     playArea: laPlayArea,
@@ -156,6 +166,8 @@ export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
 export const MAP_NAME = ACTIVE_REGION.name
+// Snap tolerance (metres) for the city Matching place lookup; see RegionData.
+export const CITY_SNAP_M = ACTIVE_REGION.citySnapM ?? 150
 
 // Transit agencies present on the active map. On a single-agency map (e.g. SF
 // Muni, where every station is "Muni") per-station agency chips are just noise,
