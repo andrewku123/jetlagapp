@@ -406,6 +406,49 @@ plus **0 separate-override violations** and **0 over-merges** (a pair the target
 keeps apart that auto-logic joins) as hard gates. Current Bay Area: 18/32
 hospital merges auto-caught, generic counts unchanged.
 
+#### The OSM footprint pass runs on EVERY category (not just parks)
+The `dedup_poi.py` OSM-footprint pass (step 3 above) is category-agnostic: **run
+`fetch_osm_polys.py` + the OSM pass for all point-based categories** — hospital,
+museum, library, movie_theater, zoo, aquarium, amusement_park **and** park — not
+parks alone. It is the single most effective same-place collapse for hospitals
+(one campus = main building + ER + entrances + departments + co-located clinics),
+so skipping it on the non-park categories leaves obvious in-building duplicates in
+the set. `fetch_osm_polys.py` derives its bbox from the play polygon, so a new
+city needs no edits; just make sure `TAGS`/`osm_polys_<cat>.json` cover every
+category (hospital `amenity=hospital`, museum `tourism=museum`, library
+`amenity=library`, movie_theater `amenity=cinema`, zoo `tourism=zoo`, aquarium
+`tourism=aquarium`, amusement_park `tourism=theme_park`+`leisure=water_park`).
+
+#### Incremental OSM pass — applying it WITHOUT re-running the pipeline
+Once the review map (`poi_merge_viz.js`) has accumulated hand edits (deletes,
+rep-switches, manual merges/unmerges), **do NOT re-run the full `dedup_poi.py`** —
+it regenerates `poi_merge_viz.js` from scratch and wipes every manual change. To
+add the OSM footprint pass to categories that never got it (or to a fresh
+category) on top of the curated map, run an **incremental** merge that mutates the
+existing `poi_merge_viz.js` in place. Reference helpers used for the LA build:
+`_fetch_osm_polys_la.py` (per-category footprint cache) + `_osm_merge_other_cats.py`.
+Rules the incremental pass MUST follow:
+- Plan merges from **current visible group reps + singles only** (never re-merge
+  pins already folded away), reusing the same "reps sharing one OSM polygon
+  collapse; keep the smallest/most-distinctive-named footprint" logic as
+  `dedup_poi.py`'s OSM pass.
+- **Preserve** every existing kid, coordinate, and id; append each absorbed rep as
+  a new `src:"osm"` child (manual rep-switches stay `src:"manual"`). Merged-away
+  children keep their **original** coords (the review map still shows the dot).
+- Only touch the categories the reviewer names. **Exclude any category still under
+  manual review** (parks were held back until the reviewer finished them) so the
+  pass can't undo in-flight hand work.
+- **Dry-run to a per-category CSV first** (kept vs merged name/coords, footprint
+  name + area, whether the merged pin was itself a group), surface suspicious
+  clusters (an odd rep kept because the real flagship pin isn't in the data, or a
+  huge umbrella polygon — e.g. a >600 km² NRA — swallowing distinct pins), THEN
+  `--apply`. Over-merging is fine to apply if flagged: it's easier to `unmerge`
+  later than to decide every merge up front.
+- After applying, recompute each category's `before`/`after` and **assert zero
+  duplicate Google place ids**, exactly as the manual-edit batches do.
+Fold these same OSM merges back into `poi_dedup_overrides.json` (as `merge`
+entries) so a future clean pipeline run reproduces them.
+
 ### 6. Review — interactive map
 Deploy `poi_merge_viz.html` + `poi_merge_viz.js` to `public/poi-review/` (see the
 `deploy-hideandseek` skill / PR-preview). Multiple reviewers open one URL; legend:
