@@ -21,66 +21,17 @@ Writes: poi_full_curated.json, poi_full_review.md
 """
 import os, json, math
 
+# The category rulebook (labels, review exemptions, icon allowlist + golf rescue)
+# lives in poi_geo so discovery, curation and the refresh cycle share one copy.
+from poi_geo import (ALLOW, GOLF_CLUB_PRIMARIES, GOLF_NAME_EXCLUDE,  # noqa: F401
+                     KEEP_ALL, LABEL, MIN_REVIEWS, keep_by_type)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 raw = json.load(open(os.path.join(HERE, "poi_full.json")))
 # Cheap mode (POI_NO_REVIEWS=1): the pull omitted review counts to bill at the
 # cheaper Pro SKU, so the >=5-review rule can't be applied here -- keep every
 # icon-matching place and let the reviewer drop low-review ones by hand.
 NO_REVIEWS = os.environ.get("POI_NO_REVIEWS", "").lower() in ("1", "true", "yes")
-MIN_REVIEWS = 5
-
-LABEL = {
-    "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
-    "hospital": "Hospitals", "zoo": "Zoos", "aquarium": "Aquariums",
-    "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
-    "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
-}
-# categories exempt from the >=5-review rule: mountains (natural features rarely
-# have reviews) and stadiums (curated to a manual professional keep-list below,
-# and pulled in no-reviews mode -- legitimacy comes from the keep-list, not reviews)
-KEEP_ALL = {"mountain", "stadium"}
-
-# --- icon allowlist -------------------------------------------------------
-# We pull broadly (includedTypes matches the place's full `types` array), then
-# keep only places whose `primaryType` is the icon Google actually shows. This
-# drops the noise the broad pull introduces (urgent-care clinics typed as
-# hospitals, shopping malls typed as movie theaters, pet stores as aquariums,
-# zoos/Union Square as parks, Topgolf/disc-golf/Golf Galaxy as golf, etc.).
-ALLOW = {
-    "museum": {"museum", "art_museum", "history_museum", "art_gallery"},
-    "library": {"library"},
-    "movie_theater": {"movie_theater"},
-    "hospital": {"hospital", "general_hospital", "medical_center"},
-    "zoo": {"zoo"},
-    "aquarium": {"aquarium"},
-    "amusement_park": {"amusement_park", "water_park", "amusement_center"},
-    "park": {"park", "city_park", "national_park", "state_park", "dog_park",
-             "garden", "botanical_garden", "nature_preserve"},
-    "golf_course": {"golf_course"},   # + club rescue, see keep_by_type()
-    "consulate": {"embassy"},         # honorary consulates are
-                                      # local_government_office -> excluded
-    "mountain": {"mountain_peak"},
-    "stadium": {"stadium", "arena"},  # the sports-venue icon; reviewer then
-                                      # limits to professional-sports home venues
-}
-# real golf/country clubs Google mis-primaries (e.g. SF Golf Club = sports_club)
-GOLF_CLUB_PRIMARIES = {"sports_club", "association_or_organization", "country_club"}
-GOLF_NAME_EXCLUDE = ("driving range", "topgolf", "top golf", "mini golf",
-                     "miniature golf", "disc golf", "golf galaxy", "indoor golf")
-
-
-def keep_by_type(key, p):
-    pt = p.get("primaryType")
-    name = (p.get("name") or "").lower()
-    if key == "golf_course":
-        if any(x in name for x in GOLF_NAME_EXCLUDE):
-            return False
-        if pt == "golf_course":
-            return True
-        return pt in GOLF_CLUB_PRIMARIES and ("golf" in name or "country club" in name)
-    allow = ALLOW.get(key)
-    return True if allow is None else pt in allow
-
 # --- human judgement: nested sub-areas to REMOVE (part of a bigger attraction) -
 NESTED_REMOVE = {
     "zoo": {

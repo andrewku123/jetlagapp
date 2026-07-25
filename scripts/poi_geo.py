@@ -15,6 +15,83 @@ BUFFERED_PLAY = os.path.join(HERE, "play_area_buffered.geojson")
 APP_PLAY = os.path.join(HERE, "..", "src", "data", "play-area.geojson.json")
 DEFAULT_PLAY = BUFFERED_PLAY if os.path.exists(BUFFERED_PLAY) else APP_PLAY
 
+# --- the category rulebook (shared by discovery, curation and refresh) --------
+# Discovery searches `includedTypes` (matches a place's whole `types` array) so
+# icon-but-secondary-type places aren't missed; curation then keeps only places
+# whose `primaryType` is the icon Google actually draws. Both halves live here so
+# a refresh can never drift from the original pull.
+
+PARK_TYPES = ["park", "national_park", "state_park", "dog_park",
+              "garden", "botanical_garden"]
+
+# (category key, includedTypes, tentacle radius in mi or None)
+CATS = [
+    ("museum", ["museum"], 1),
+    ("library", ["library"], 1),
+    ("movie_theater", ["movie_theater"], 1),
+    ("hospital", ["hospital"], 1),
+    ("zoo", ["zoo"], 15),
+    ("aquarium", ["aquarium"], 15),
+    ("amusement_park", ["amusement_park"], 15),
+    ("park", PARK_TYPES, None),
+    ("golf_course", ["golf_course"], None),
+    ("consulate", ["embassy"], None),       # real consulates; honorary ones are
+                                            # government_office, so excluded
+    ("mountain", ["mountain_peak"], None),  # natural peaks (kept regardless of
+                                            # review count -- see curation)
+    ("stadium", ["stadium", "arena"], None),  # sports venues; curation keeps the
+                                            # stadium/arena icon, then the reviewer
+                                            # limits to professional-sports homes
+]
+
+LABEL = {
+    "museum": "Museums", "library": "Libraries", "movie_theater": "Movie Theaters",
+    "hospital": "Hospitals", "zoo": "Zoos", "aquarium": "Aquariums",
+    "amusement_park": "Amusement Parks", "park": "Parks", "golf_course": "Golf Courses",
+    "consulate": "Consulates", "mountain": "Mountains", "stadium": "Sports Stadiums",
+}
+
+MIN_REVIEWS = 5
+# exempt from the >=5-review rule: mountains (natural features rarely have
+# reviews) and stadiums (limited to a manual professional keep-list instead)
+KEEP_ALL = {"mountain", "stadium"}
+
+ALLOW = {
+    "museum": {"museum", "art_museum", "history_museum", "art_gallery"},
+    "library": {"library"},
+    "movie_theater": {"movie_theater"},
+    "hospital": {"hospital", "general_hospital", "medical_center"},
+    "zoo": {"zoo"},
+    "aquarium": {"aquarium"},
+    "amusement_park": {"amusement_park", "water_park", "amusement_center"},
+    "park": {"park", "city_park", "national_park", "state_park", "dog_park",
+             "garden", "botanical_garden", "nature_preserve"},
+    "golf_course": {"golf_course"},   # + club rescue, see keep_by_type()
+    "consulate": {"embassy"},         # honorary consulates are
+                                      # local_government_office -> excluded
+    "mountain": {"mountain_peak"},
+    "stadium": {"stadium", "arena"},  # the sports-venue icon; reviewer then
+                                      # limits to professional-sports home venues
+}
+# real golf/country clubs Google mis-primaries (e.g. SF Golf Club = sports_club)
+GOLF_CLUB_PRIMARIES = {"sports_club", "association_or_organization", "country_club"}
+GOLF_NAME_EXCLUDE = ("driving range", "topgolf", "top golf", "mini golf",
+                     "miniature golf", "disc golf", "golf galaxy", "indoor golf")
+
+
+def keep_by_type(key, p):
+    """Does place `p` carry category `key`'s Google icon? (+ the golf rescue)"""
+    pt = p.get("primaryType")
+    name = (p.get("name") or "").lower()
+    if key == "golf_course":
+        if any(x in name for x in GOLF_NAME_EXCLUDE):
+            return False
+        if pt == "golf_course":
+            return True
+        return pt in GOLF_CLUB_PRIMARIES and ("golf" in name or "country club" in name)
+    allow = ALLOW.get(key)
+    return True if allow is None else pt in allow
+
 
 def load_play(path=DEFAULT_PLAY):
     g = json.load(open(path))
