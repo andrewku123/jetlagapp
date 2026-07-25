@@ -1,26 +1,31 @@
 #!/usr/bin/env python3
 """Build the compact POI data file the app's POI tab loads.
 
-Two inputs, one output shape — `src/data/<region>.poi.json`, keyed by category,
-each a list of `{n: name, lat, lon, t: primaryType, r: userRatingCount}` with
-coordinates rounded to 6 dp (category labels/colors live in `src/lib/poi.ts`):
+Every region has the same output shape — `REGIONS[region]["poi"]`, keyed by
+category, each a list of `{n: name, lat, lon, t: primaryType, r: userRatingCount}`
+with coordinates rounded to 6 dp (labels/colors live in `src/lib/poi.ts`):
 
-    python3 build_poi_data.py                       # Bay Area, from poi_curated.json
-    python3 build_poi_data.py --region la           # from the curated review map
+    python3 build_poi_data.py --region la
+    python3 build_poi_data.py --region bay            # its registry source: deduped
+    python3 build_poi_data.py --region la --source deduped
 
-`--region` is the "apply to the app" step of a city whose manual pass is done: it
-reads the **review map** (`poi_merge_viz.js`), which is the authoritative record
-of that pass — every delete, merge and representative swap is already applied to
-it — and keeps exactly what a reviewer sees on it: group representatives and
-un-grouped singles, never merged-away children (one campus = one POI, at the
-representative's own pin, so "nearest hospital" can't be answered by a lab door).
+This is the "apply to the app" step of a city whose manual pass is done. The
+default source is the **review map** (`REGIONS[region]["viz"]`), the authoritative
+record of that pass — every delete, merge and representative swap is already
+applied to it — and we keep exactly what a reviewer sees on it: group
+representatives and un-grouped singles, never merged-away children (one campus =
+one POI, at the representative's own pin, so "nearest hospital" can't be answered
+by a lab door).
 
-The review map lives on the review branch (it is deployed as a preview site and
-deliberately not merged), so from another checkout point `--viz` at it.
+A region whose review map predates review counts sets `"applyFrom": "deduped"`
+instead (the Bay Area: its map carries no per-place `primaryType`, so its
+`poi_deduped.json` keeps the real `t` values). Both sources are validated the same
+way, and
+`--region bay --source viz` reproduces the committed Bay place set exactly, which
+is what validates the review-map path.
 
-`--region bay` reproduces the committed Bay Area place set exactly, which is what
-validates this path — but the review map carries no per-place `primaryType`, so
-the Bay file is still built from its curated JSON to keep the real `t` values.
+A review map deployed only as a preview site (not merged) can be pointed at with
+`--viz`.
 """
 import argparse
 import json
@@ -28,6 +33,7 @@ import math
 import os
 import sys
 
+import poi_geo
 import poi_ledger as L
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -44,8 +50,13 @@ CANON_TYPE = {"consulate": "embassy", "mountain": "mountain_peak"}
 EDGE_TOLERANCE_M = 150
 
 
-def from_curated(path):
-    """Legacy path: the Bay Area's curated dataset from curate_places_poi.py."""
+def from_deduped(path):
+    """The de-dup survivors (`poi_deduped.json`), with their real Google types.
+
+    Note this is the *deduped* file, not the curated one: curation is pre-clip and
+    pre-merge, so building from it would ship out-of-play pins and every campus
+    fragment.
+    """
     curated = json.load(open(path))
     return {key: [{"n": p["name"], "lat": p["lat"], "lon": p["lon"],
                    "t": p.get("primaryType"), "r": p.get("userRatingCount") or 0}
@@ -66,61 +77,17 @@ def from_viz(obj):
     return out
 
 
-def rings_of(play):
-    rings = []
-    for feat in play["features"]:
-        g = feat["geometry"]
-        polys = g["coordinates"] if g["type"] == "MultiPolygon" else [g["coordinates"]]
-        rings += [p[0] for p in polys]
-    return rings
-
-
-def in_play(rings, lat, lon):
-    inside = False
-    for ring in rings:
-        c = False
-        for i in range(len(ring) - 1):
-            (x1, y1), (x2, y2) = ring[i], ring[i + 1]
-            if (y1 > lat) != (y2 > lat) and lon < x1 + (lat - y1) / (y2 - y1) * (x2 - x1):
-                c = not c
-        inside ^= c
-    return inside or edge_distance_m(rings, lat, lon) <= EDGE_TOLERANCE_M
-
-
-def edge_distance_m(rings, lat, lon):
-    """Metres from (lat,lon) to the nearest play-area boundary segment."""
-    best, coslat = float("inf"), math.cos(math.radians(lat))
-    for ring in rings:
-        for i in range(len(ring) - 1):
-            (x1, y1), (x2, y2) = ring[i], ring[i + 1]
-            ax, ay = (x1 - lon) * 111320 * coslat, (y1 - lat) * 111320
-            bx, by = (x2 - lon) * 111320 * coslat, (y2 - lat) * 111320
-            dx, dy = bx - ax, by - ay
-            t = 0.0 if dx == dy == 0 else max(0, min(1, -(ax * dx + ay * dy) / (dx * dx + dy * dy)))
-            best = min(best, math.hypot(ax + t * dx, ay + t * dy))
-    return best
-
-
-def main():
-    ap = argparse.ArgumentParser(description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("curated", nargs="?", help="curated JSON (default poi_curated.json)")
-    ap.add_argument("--region", choices=sorted(L.REGIONS),
-                    help="build from that region's curated review map instead")
-    ap.add_argument("--viz", help="review map path, if not the region's default")
-    ap.add_argument("--out", help="output path, if not the region's default")
-    a = ap.parse_args()
-
-    if a.region:
-        path = a.viz or L.viz_path(a.region)
-        with open(path, encoding="utf-8") as f:
+def build(region, source=None, viz=None, deduped=None):
+    """The region's app POI data, validated. Raises SystemExit on a bad dataset."""
+    source = source or L.REGIONS[region].get("applyFrom", "viz")
+    if source == "viz":
+        with open(viz or L.viz_path(region), encoding="utf-8") as f:
             out = from_viz(L.parse_viz(f.read()))
-        dest = a.out or os.path.join(HERE, "..", L.REGIONS[a.region]["poi"])
-        rings = rings_of(json.load(open(os.path.join(L.ROOT, L.REGIONS[a.region]["play"]))))
     else:
-        out = from_curated(a.curated or os.path.join(HERE, "poi_curated.json"))
-        dest = a.out or os.path.join(HERE, "..", "src", "data", "poi.json")
-        rings = None
+        out = from_deduped(deduped or poi_geo.work(region, "poi_deduped.json"))
+    in_play = poi_geo.make_in_play(
+        poi_geo.load_play(region, path=poi_geo.repo_path(region, "play")),
+        tolerance_m=EDGE_TOLERANCE_M)
 
     for cat, places in out.items():
         for p in places:
@@ -132,11 +99,25 @@ def main():
         if len(set(spots)) != len(spots):
             dupe = next(s for s in spots if spots.count(s) > 1)
             sys.exit(f"{cat}: duplicate POI {dupe}")
-        if rings:
-            stray = [p for p in places if not in_play(rings, p["lat"], p["lon"])]
-            if stray:
-                sys.exit(f"{cat}: {len(stray)} POI outside the play area, "
-                         f"e.g. {stray[0]['n']} at {stray[0]['lat']},{stray[0]['lon']}")
+        stray = [p for p in places if not in_play(p["lon"], p["lat"])]
+        if stray:
+            sys.exit(f"{cat}: {len(stray)} POI outside the play area, "
+                     f"e.g. {stray[0]['n']} at {stray[0]['lat']},{stray[0]['lon']}")
+    return out
+
+
+def main():
+    ap = poi_geo.add_region_arg(
+        argparse.ArgumentParser(description=__doc__,
+                                formatter_class=argparse.RawDescriptionHelpFormatter))
+    ap.add_argument("--source", choices=("viz", "deduped"),
+                    help="override the region's `applyFrom`")
+    ap.add_argument("--viz", help="review map path, if not the region's default")
+    ap.add_argument("--deduped", help="deduped JSON, if not the region's default")
+    ap.add_argument("--out", help="output path, if not the region's default")
+    a = ap.parse_args()
+    out = build(a.region, a.source, a.viz, a.deduped)
+    dest = a.out or poi_geo.repo_path(a.region, "poi")
 
     with open(dest, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, separators=(",", ":"))

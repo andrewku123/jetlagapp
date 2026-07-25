@@ -101,31 +101,66 @@ from existing transit geometry, no POI gather.
   (APIs & Services → Places API (New) → Quotas → *requests per day*, e.g. 500) and
   a **budget alert** (Billing → Budgets). The pipeline also caps calls in-script.
 
+## Adding a city = one registry entry
+
+Every stage takes `--region <key>` and reads its paths from **`REGIONS` in
+`scripts/poi_geo.py`** — the single place a new city is defined:
+
+```python
+"la": {
+    "label": "LA Metro",
+    "suffix": ".la",                                   # working files: poi_full.la.json ...
+    "play": "src/data/la.play-area.geojson.json",      # the app's play polygon
+    "viz": "scripts/poi_merge_viz.la.js",              # committed review map
+    "vizPreview": "public/poi-la-review/poi_merge_viz.js",   # served copy, while under review
+    "ledger": "scripts/poi_decisions.la.json",
+    "poi": "src/data/la.poi.json",                     # what the app loads
+    "counties": ["Los Angeles"],                       # for address-only registries
+    "geonamesCountry": "US",
+    "pendingCats": [],                                 # categories still under first review
+}
+```
+
+Rules that keep it general — follow them when touching any stage:
+- **No script hard-codes a city.** Paths come from `poi_geo.repo_path` /
+  `poi_geo.work`; the latter appends the region's `suffix`, so two cities' scratch
+  files never collide (the Bay Area's `suffix` is `""`, which is why its files keep
+  their historical names).
+- **No baked latitude.** Anything metric derives from the play polygon
+  (`poi_geo.m2_per_deg2`, `make_in_play`, `bbox`), since a Bay-latitude constant
+  mis-sizes LA footprints by ~5%.
+- **No human decision in Python.** Per-city keep-lists and exclusions live in
+  `poi_curate_overrides[.<region>].json` / `poi_dedup_overrides[.<region>].json`.
+- `export POI_REGION=la` once instead of passing `--region` to every stage.
+
 ## The pipeline (run from `scripts/`)
 
 ```bash
-cd scripts
+cd scripts && export POI_REGION=la          # every stage also takes --region
 # 0. Build the play area from the eligible stations (FREE; see "Defining the play area")
 python3 build_play_area.py   # stations.json -> play_area.geojson(+_buffered), app play-area.geojson.json
 # 1. Google discovery (paid; use cheap mode by default — see Cost)
-POI_NO_REVIEWS=1 GOOGLE_PLACES_API_KEY=... python3 fetch_places_poi.py   # -> poi_full.json
+POI_NO_REVIEWS=1 GOOGLE_PLACES_API_KEY=... python3 fetch_places_poi.py   # -> poi_full.la.json
 # 2. FREE OSM recall safety net: what Google's pull missed
-python3 osm_gap_audit.py                                  # -> osm_gap_candidates.json (+ .md)
+python3 osm_gap_audit.py                                  # -> osm_gap_candidates.la.json (+ .md)
 #    authoritative registries (3rd source: GeoNames peaks, CMS hospitals, CSV intake)
-python3 authoritative_candidates.py                      # -> auth_gap_candidates.json (FREE)
+python3 authoritative_candidates.py                      # -> auth_gap_candidates.la.json (FREE)
 # 3. Cheap icon-verify both candidate sets (no review fields), then fold survivors in
-GOOGLE_PLACES_API_KEY=... python3 verify_gap_icons.py     # OSM gaps -> poi_gap_verified.json
+GOOGLE_PLACES_API_KEY=... python3 verify_gap_icons.py     # OSM gaps -> poi_gap_verified.la.json
 GOOGLE_PLACES_API_KEY=... CAND_FILE=auth_gap_candidates.json OUT_FILE=poi_auth_verified.json \
   CACHE_FILE=poi_auth_cache.json SOURCE_TAG=authoritative python3 verify_gap_icons.py
-POI_NO_REVIEWS=1 python3 curate_places_poi.py             # -> poi_curated.json (+ poi_review.md)
-python3 apply_gap_backfill.py                             # folds poi_gap_verified.json in
+POI_NO_REVIEWS=1 python3 curate_places_poi.py             # -> poi_curated.la.json (+ poi_review.la.md)
+python3 apply_gap_backfill.py                             # folds poi_gap_verified.la.json in
 IN_FILE=poi_auth_verified.json SOURCE_TAG=authoritative python3 apply_gap_backfill.py
 # 3b. Auto-drop closed places: query each pin's Google businessStatus (cheap; cached)
-GOOGLE_PLACES_API_KEY=... python3 refresh_business_status.py   # annotates poi_curated.json
+GOOGLE_PLACES_API_KEY=... python3 refresh_business_status.py   # annotates poi_curated.la.json
 # 4. De-dup (OSM footprints + name + manual overrides; drops CLOSED_* pins)
-python3 fetch_osm_polys.py                                # -> osm_polys_<cat>.json (FREE)
-python3 dedup_poi.py                                      # -> poi_deduped.json, poi_merge_viz.js
+python3 fetch_osm_polys.py                                # -> osm_polys_<cat>.la.json (FREE)
+python3 dedup_poi.py                                      # -> poi_deduped.la.json + the review map
 ```
+
+`CAND_FILE`/`OUT_FILE`/`IN_FILE` name the *base* file; the region's suffix is
+applied for you, so the same command line works for every city.
 
 ### 1. `fetch_places_poi.py` — Google discovery
 - Reads the play polygon; searches its bbox with a **recursive quadtree** (any
@@ -420,9 +455,10 @@ category (hospital `amenity=hospital`, museum `tourism=museum`, library
 `tourism=aquarium`, amusement_park `tourism=theme_park`+`leisure=water_park`).
 
 #### Incremental OSM pass — applying it WITHOUT re-running the pipeline
-Once the review map (`poi_merge_viz.js`) has accumulated hand edits (deletes,
-rep-switches, manual merges/unmerges), **do NOT re-run the full `dedup_poi.py`** —
-it regenerates `poi_merge_viz.js` from scratch and wipes every manual change. To
+Once the review map has accumulated hand edits (deletes, rep-switches, manual
+merges/unmerges), **do NOT re-run the full `dedup_poi.py`** — it regenerates the
+map from scratch and wipes every manual change. Once the region has a ledger the
+rerun refuses outright (`--force` overrides, and loses the pass). To
 add the OSM footprint pass to categories that never got it (or to a fresh
 category) on top of the curated map, run an **incremental** merge that mutates the
 existing `poi_merge_viz.js` in place. Reference helpers used for the LA build:
@@ -509,7 +545,7 @@ per entry.
 ```bash
 python3 build_poi_data.py --region la      # -> src/data/la.poi.json
 ```
-The **review map is the input**, not `poi_deduped.json`: every delete, merge and
+The **review map is the input** (`applyFrom: "viz"`, the default): every delete, merge and
 rep swap of the manual pass is already applied to it, so the app data is exactly
 "what a reviewer sees" — group **representatives + singles, never merged-away
 children** (one campus = one POI, at the rep's own pin, so "nearest hospital"
@@ -518,8 +554,18 @@ build **fails** on a duplicate `(name,lat,lon)` or any POI outside the play area
 — an out-of-play POI would make "nearest X" unanswerable, so it must be deleted
 in the review pass, not silently shipped.
 
-The review map lives on the (never-merged) review branch, so from a main checkout
-pass `--viz path/to/poi_merge_viz.js`.
+**Commit the review map and the ledger** (`viz` + `ledger` in the registry) with
+the app data: they are the audit record of the pass, and committing them is what
+makes `build_poi_data.py --region <x>` reproduce the app file from a plain main
+checkout — `test_poi_pipeline.py` asserts exactly that for every region. While a
+city is still under review its map also lives at `vizPreview` on the review branch
+(that copy wins when present, so edits land where the preview shows them); from a
+checkout with neither, pass `--viz path/to/poi_merge_viz.js`.
+
+A region whose review map predates review counts sets `applyFrom: "deduped"` and
+builds from `poi_deduped.json` instead (the Bay Area — its map carries no
+per-place `primaryType`). Never build from `poi_curated.json`: curation is
+pre-clip and pre-merge, so it would ship out-of-play pins and campus fragments.
 
 Nothing else needs wiring: `regions.ts` already imports `<region>.poi.json`, and
 each POI question **auto-demotes per category** off `POI_COUNTS` — 0 in play =

@@ -24,9 +24,10 @@ import os, sys, json, math, time, urllib.request, urllib.error
 import poi_geo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REGION = poi_geo.region_from_argv()
 KEY = os.environ["GOOGLE_PLACES_API_KEY"]
 URL = "https://places.googleapis.com/v1/places:searchText"
-in_play = poi_geo.make_in_play(poi_geo.load_play())
+in_play = poi_geo.make_in_play(poi_geo.load_play(REGION))
 CAND_FILE = os.environ.get("CAND_FILE", "osm_gap_candidates.json")
 OUT_FILE = os.environ.get("OUT_FILE", "poi_gap_verified.json")
 CACHE_FILE = os.environ.get("CACHE_FILE", "poi_gap_cache.json")
@@ -100,8 +101,8 @@ def search_text(name, lat, lon):
 
 
 def main():
-    cands = json.load(open(os.path.join(HERE, CAND_FILE)))
-    cache_path = os.path.join(HERE, CACHE_FILE)
+    cands = json.load(open(poi_geo.work(REGION, CAND_FILE)))
+    cache_path = poi_geo.work(REGION, CACHE_FILE)
     cache = json.load(open(cache_path)) if os.path.exists(cache_path) else {}
 
     verified = {}
@@ -149,7 +150,7 @@ def main():
                 seen.add(p["id"]); uniq.append(p)
         verified[key] = uniq
 
-    json.dump(verified, open(os.path.join(HERE, OUT_FILE), "w"), indent=1)
+    json.dump(verified, open(poi_geo.work(REGION, OUT_FILE), "w"), indent=1)
     print(f"\ntotal API calls: {calls}")
     print("verified per category:",
           {k: len(v) for k, v in verified.items() if v})

@@ -17,7 +17,10 @@ Output : poi_deduped_reviewed.json + review_topup_cache.json
 """
 import os, sys, json, time, urllib.request, urllib.error
 
+import poi_geo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
+REGION = poi_geo.region_from_argv()
 KEY = os.environ["GOOGLE_PLACES_API_KEY"]
 MIN_REVIEWS = 5
 KEEP_ALL = {"mountain"}          # kept regardless of review count
@@ -46,8 +49,8 @@ def details(pid):
 
 
 def main():
-    data = json.load(open(os.path.join(HERE, "poi_deduped.json")))
-    cache_path = os.path.join(HERE, "review_topup_cache.json")
+    data = json.load(open(poi_geo.work(REGION, "poi_deduped.json")))
+    cache_path = poi_geo.work(REGION, "review_topup_cache.json")
     cache = json.load(open(cache_path)) if os.path.exists(cache_path) else {}
     calls = 0
 
@@ -76,9 +79,10 @@ def main():
         out[key] = {"count": len(kept), "places": kept} if isinstance(blk, dict) else kept
         print(f"{key:15s} survivors={len(places):5d} kept(>= {MIN_REVIEWS})={len(kept):5d}")
 
-    json.dump(out, open(os.path.join(HERE, "poi_deduped_reviewed.json"), "w"), indent=1)
+    out_path = poi_geo.work(REGION, "poi_deduped_reviewed.json")
+    json.dump(out, open(out_path, "w"), indent=1)
     print(f"\ntotal Place Details calls: {calls}")
-    print("wrote poi_deduped_reviewed.json")
+    print("wrote", os.path.basename(out_path))
 
 
 if __name__ == "__main__":

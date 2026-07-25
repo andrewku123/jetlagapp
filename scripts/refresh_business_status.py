@@ -26,9 +26,12 @@ Cache:        poi_bizstatus_cache.json   (place_id -> businessStatus)
 """
 import os, json, time, urllib.request, urllib.error
 
+import poi_geo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
-CUR = os.path.join(HERE, "poi_curated.json")
-CACHE = os.path.join(HERE, "poi_bizstatus_cache.json")
+REGION = poi_geo.region_from_argv()
+CUR = poi_geo.work(REGION, "poi_curated.json")
+CACHE = poi_geo.work(REGION, "poi_bizstatus_cache.json")
 KEY = os.environ["GOOGLE_PLACES_API_KEY"]
 REFRESH_ALL = os.environ.get("POI_REFRESH_ALL", "").lower() in ("1", "true", "yes")
 

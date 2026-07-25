@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Curate the full-area POI pull (poi_full.json) into the final dataset.
+"""Curate a region's full-area POI pull into its curated dataset.
+
+    python3 curate_places_poi.py --region la
 
 Rulebook rule: a place counts iff it has the category's Google icon
 (`primaryType`, already enforced at pull time) AND has >=5 Google reviews.
@@ -16,73 +18,48 @@ We also drop permanently-closed places. Beyond that the only edits are:
    FLAGGED (kept by default per the rule; the players can drop under the
    "legitimate unless all players agree otherwise" clause).
 
-Reads:  poi_full.json
-Writes: poi_full_curated.json, poi_full_review.md
+Reads:  the region's `poi_full[.<region>].json` and its curation overrides
+Writes: the region's `poi_curated[.<region>].json` + `poi_review[.<region>].md`
 """
 import os, json, math
 
+import poi_geo
 # The category rulebook (labels, review exemptions, icon allowlist + golf rescue)
 # lives in poi_geo so discovery, curation and the refresh cycle share one copy.
 from poi_geo import (ALLOW, GOLF_CLUB_PRIMARIES, GOLF_NAME_EXCLUDE,  # noqa: F401
                      KEEP_ALL, LABEL, MIN_REVIEWS, keep_by_type)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-raw = json.load(open(os.path.join(HERE, "poi_full.json")))
+REGION = poi_geo.region_from_argv()
+raw = json.load(open(poi_geo.work(REGION, "poi_full.json")))
 # Cheap mode (POI_NO_REVIEWS=1): the pull omitted review counts to bill at the
 # cheaper Pro SKU, so the >=5-review rule can't be applied here -- keep every
 # icon-matching place and let the reviewer drop low-review ones by hand.
 NO_REVIEWS = os.environ.get("POI_NO_REVIEWS", "").lower() in ("1", "true", "yes")
-# --- human judgement: nested sub-areas to REMOVE (part of a bigger attraction) -
-NESTED_REMOVE = {
-    "zoo": {
-        "California Trail at Oakland Zoo", "African Savanna",
-        "Condor and Jaguar Pavilion", "Giraffe Enclosure", "House of Bugs",
-        "Reptile and Amphibian Discovery Room",
-    },
-    "amusement_park": {
-        "South Bay Shores", "Planet Snoopy",
-        "California's Great America Passenger Drop Off Area",
-        "NorCal County Fair", "Great Barrier Reef", "County Fair Picnic Grove",
-        "Water Play Area", "Water Oasis",
-    },
-}
-# closed by name (businessStatus didn't catch it)
-NAME_CLOSED = {"FB OUTDOOR (PERM CLOSED)"}
 
-# --- STADIUM: professional-venue keep-list (manual, human-reviewed, per city) -
-# The icon rule surfaces EVERY stadium/arena, but the rulebook subject is
-# "professional sports", which Google can't encode -- the overwhelming majority
-# of icon hits are college / high-school / amateur fields. So the reviewer keeps
-# only the home venues *currently played in* by a pro / minor / independent-league
-# team (no historic venues). Keyed by Google place_id (stable; the display name
-# can drift -- e.g. Levi's shows a Super Bowl placeholder -- so we also relabel).
-# For a NEW CITY: re-run discovery, then replace this dict with that city's
-# currently-active pro/minor/indie home venues. Empty dict => keep all (e.g. when
-# a city has none curated yet) is NOT assumed; an empty list drops the category.
-STADIUM_PRO = {
-    "ChIJ_T25cNd_j4ARehGmHe0pT84": "Oracle Park",        # SF Giants (MLB)
-    "ChIJ6QBEf8Z_j4AR40Gh2OOTZ30": "Chase Center",       # Warriors NBA / Valkyries WNBA
-    "ChIJ3_DFJ8jJj4ARGH0fLjdaRRE": "Levi's Stadium",     # 49ers (NFL); Google name drifts
-    "ChIJq56TmaDMj4ARJJCpWy9v-i0": "SAP Center",         # Sharks NHL / Panthers IFL
-    "ChIJGXZh0aHLj4ARX-9DpASeh5w": "PayPal Park",        # Earthquakes MLS / Bay FC NWSL
-    "ChIJvZrKLy8zjoARKFobE55105U": "Excite Ballpark",    # San Jose Giants (MiLB)
-    "ChIJ8WOAG8OFj4AR1W_wwL7JV3A": "Oakland Coliseum",   # Oakland Roots (USL Championship)
-    "ChIJJx_xws8zjoARo9omW6ZKHGg": "Tech CU Arena",      # San Jose Barracuda (AHL)
-}
+# --- per-city human judgement, as data ---------------------------------------
+# These lists are a *city's* reviewed decisions, not pipeline logic, so they live
+# in `poi_curate_overrides[.<region>].json` rather than in code:
+#   nestedRemove  {cat: [name]}  a pin that is really part of a bigger same-category
+#                                attraction ("Giraffe Enclosure" inside Oakland Zoo)
+#   nameClosed    [name]         closed, but businessStatus didn't say so
+#   flagReview    {cat: [name]}  kept per the rule, but printed for a human eyeball
+#   stadiumPro    {place_id: name}  see below
+OVR_PATH = poi_geo.work(REGION, "poi_curate_overrides.json")
+OVR = json.load(open(OVR_PATH)) if os.path.exists(OVR_PATH) else {}
+NESTED_REMOVE = {k: set(v) for k, v in OVR.get("nestedRemove", {}).items()}
+NAME_CLOSED = set(OVR.get("nameClosed", []))
+FLAG_REVIEW = {k: set(v) for k, v in OVR.get("flagReview", {}).items()}
 
-# --- flagged but KEPT (human eyeball; rule keeps them) ----------------------
-FLAG_REVIEW = {
-    "golf_course": {  # likely driving range / practice center, you wanted these out
-        "Norcal Golf Center", "Palm Tree Golf and Event Center",
-        "The Pleasanton Golf Center - Golf Course", "Mariners Point Golf Center",
-        "Lone Tree Golf & Event Center",
-    },
-    "aquarium": {"Aquatic Experts"},
-    "amusement_park": {
-        "ABC Tree Farms & Pick of the Patch Pumpkins ECR",
-        "Ortega park splash park", "Water Light Public Plaza",
-    },
-}
+# STADIUM: the icon rule surfaces EVERY stadium/arena, but the rulebook subject is
+# "professional sports", which Google can't encode -- the overwhelming majority of
+# icon hits are college / high-school / amateur fields. So a city lists the home
+# venues *currently played in* by a pro / minor / independent-league team (no
+# historic venues), keyed by Google place_id (stable; display names drift -- e.g.
+# Levi's shows a Super Bowl placeholder -- so the list relabels too).
+# A city with no list yet keeps every icon hit and says so: dropping the category
+# silently would hide the work, and keeping junk is visible on the review map.
+STADIUM_PRO = OVR.get("stadiumPro")
 
 
 def hav(a, b, c, d):
@@ -112,8 +89,8 @@ def proximity_nested(kept):
     return flagged
 
 
-curated, md = {}, ["# Full-area POI dataset — icon + >=5-review rule\n",
-                   "Coverage = the 5-county play-area polygon. Coordinates are the Google pin.\n"]
+curated, md = {}, [f"# {poi_geo.REGIONS[REGION]['label']} POI dataset — icon + >=5-review rule\n",
+                   "Coverage = the play-area polygon. Coordinates are the Google pin.\n"]
 summary = []
 SPARSE = {"zoo", "aquarium", "amusement_park", "golf_course"}
 
@@ -126,8 +103,11 @@ for key in [k for k in LABEL if k in raw]:
            and p["name"] not in NAME_CLOSED]
     typed = [p for p in ge5 if keep_by_type(key, p)]
     off_icon = len(ge5) - len(typed)
-    if key == "stadium":   # professional-venue keep-list + relabel (see STADIUM_PRO)
+    if key == "stadium" and STADIUM_PRO is not None:   # keep-list + relabel
         typed = [dict(p, name=STADIUM_PRO[p["id"]]) for p in typed if p["id"] in STADIUM_PRO]
+    elif key == "stadium":
+        print(f"  ! no professional-venue keep-list in {os.path.basename(OVR_PATH)} — "
+              f"keeping all {len(typed)} stadium/arena icons for the review map")
     nested = NESTED_REMOVE.get(key, set())
     removed = [p for p in typed if p["name"] in nested]
     kept = [p for p in typed if p["name"] not in nested]
@@ -158,13 +138,15 @@ for key in [k for k in LABEL if k in raw]:
                   f"({p.get('rating')}★) · `{p.get('primaryType')}`")
     md.append("\n</details>\n")
 
-json.dump(curated, open(os.path.join(HERE, "poi_full_curated.json"), "w"), indent=2)
+cur_path = poi_geo.work(REGION, "poi_curated.json")
+md_path = poi_geo.work(REGION, "poi_review.md")
+json.dump(curated, open(cur_path, "w"), indent=2)
 
 hdr = ["| Category | Raw in play | >=5 reviews | off-icon dropped | nested removed | **final** |",
        "|---|---|---|---|---|---|"]
 for name, rawn, g5, offi, rem, fin in summary:
     hdr.append(f"| {name} | {rawn} | {g5} | {offi} | {rem} | **{fin}** |")
 md = [md[0], md[1], "\n".join(hdr), "\n"] + md[2:]
-open(os.path.join(HERE, "poi_full_review.md"), "w").write("\n".join(md))
+open(md_path, "w").write("\n".join(md))
 print("\n".join(hdr))
-print("\nwrote poi_full_curated.json + poi_full_review.md")
+print(f"\nwrote {os.path.basename(cur_path)} + {os.path.basename(md_path)}")

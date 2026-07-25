@@ -23,19 +23,19 @@ import os, csv, json, math, re, urllib.request, urllib.parse, zipfile, io
 import poi_geo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-play = poi_geo.load_play()
+REGION = poi_geo.region_from_argv()
+play = poi_geo.load_play(REGION)
 S, W, N, E = poi_geo.bbox_swne(play)
 in_play = poi_geo.make_in_play(play)
 cx = (W + E) / 2.0          # play-area centroid: used as a coarse search bias
 cy = (S + N) / 2.0          # for address-only sources (no coords of their own)
-curated = json.load(open(os.path.join(HERE, "poi_curated.json")))
+curated = json.load(open(poi_geo.work(REGION, "poi_curated.json")))
 
-# Address-only US sources can't be bbox-filtered, so pre-filter by the admin
-# areas (counties) that intersect the play area; the icon-check + in_play then
-# trims precisely. Per-city input — swap for a new play area.
-US_COUNTIES = {"ALAMEDA", "CONTRA COSTA", "MARIN", "NAPA", "SAN FRANCISCO",
-               "SAN MATEO", "SANTA CLARA", "SOLANO", "SONOMA"}
-GEONAMES_COUNTRY = "US"     # GeoNames dump to use (US.zip, CA.zip, ...)
+# Address-only sources can't be bbox-filtered, so pre-filter by the admin areas
+# (counties) the play area covers; the icon-check + in_play then trims precisely.
+# Both come from the region registry — see poi_geo.REGIONS.
+US_COUNTIES = {c.upper() for c in poi_geo.REGIONS[REGION]["counties"]}
+GEONAMES_COUNTRY = poi_geo.REGIONS[REGION]["geonamesCountry"]  # US.zip, CA.zip, ...
 
 
 def norm(s):
@@ -65,7 +65,7 @@ def already_have(cat, name, lat, lon):
 
 # ---- automated source: GeoNames peaks -------------------------------------
 def geonames_mountains():
-    cache = os.path.join(HERE, f"geonames_{GEONAMES_COUNTRY}.zip")
+    cache = os.path.join(HERE, f"geonames_{GEONAMES_COUNTRY}.zip")  # shared by all regions
     if not os.path.exists(cache):
         url = f"https://download.geonames.org/export/dump/{GEONAMES_COUNTRY}.zip"
         print("  downloading", url)
@@ -150,7 +150,7 @@ def main():
         cand[cat] = keep
         total += len(keep)
         print(f"{cat:15s} raw={len(items):5d} new(gap)={len(keep):5d}")
-    json.dump(cand, open(os.path.join(HERE, "auth_gap_candidates.json"), "w"),
+    json.dump(cand, open(poi_geo.work(REGION, "auth_gap_candidates.json"), "w"),
               indent=1)
     print(f"\ntotal new authoritative candidates: {total}")
     print("wrote auth_gap_candidates.json  (feed to verify_gap_icons.py)")

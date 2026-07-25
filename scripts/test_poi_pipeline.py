@@ -5,14 +5,23 @@ Plain `python3 test_poi_pipeline.py` — no pytest, nothing installed, no networ
 and no billable API call: the refresh is exercised against a hand-built sweep.
 """
 import copy
+import json
+import os
 import sys
 
 import build_poi_data as B
 import poi_curate as C
 import registry_audit as A
-import poi_geo
+import poi_geo as G
 import poi_ledger as L
 import poi_refresh as R
+
+# The ops tests run against a synthetic region so they don't drift as real cities
+# progress: LA's hospital pass is finished now, so its survivors seed `keep`, and
+# `pending` (a category still under first review) needs a region that says so.
+T = "_test"
+G.REGIONS[T] = dict(G.REGIONS["la"], label="Test", suffix="._test",
+                    pendingCats=["hospital"])
 
 FAILED = []
 
@@ -101,8 +110,8 @@ print("\nledger sync")
 
 
 def ledger_from(obj, **over):
-    led = {"region": "la", "places": {}}
-    C.sync_ledger("la", led, obj)
+    led = {"region": T, "places": {}}
+    C.sync_ledger(T, led, obj)
     for k, v in over.items():
         led["places"][f"google:{k}"].update(v)
     return led
@@ -117,7 +126,7 @@ check("hospitals seed as 'pending' (first manual pass unfinished)",
       led["places"]["google:a"]["decision"] == "pending")
 
 C.op_delete(o, C.resolve(o, [("Solo", None)]))
-C.sync_ledger("la", led, o)
+C.sync_ledger(T, led, o)
 rec = led["places"]["google:s"]
 check("a curated delete is a sticky manual drop by default",
       rec["decision"] == "drop" and rec["reason"] == "manual" and not L.retestable(rec), rec)
@@ -125,7 +134,7 @@ check("a curated delete is a sticky manual drop by default",
 o3 = viz()
 led3 = ledger_from(o3)
 C.op_delete(o3, C.resolve(o3, [("Solo", None)]))
-C.sync_ledger("la", led3, o3, "review_failed")
+C.sync_ledger(T, led3, o3, "review_failed")
 check("--reason review_failed keeps a dropped pin re-testable",
       L.retestable(led3["places"]["google:s"]))
 
@@ -139,7 +148,7 @@ check("reject resolves a name against the ledger",
       C.ledger_keys(led3, [("Rep A", None)]) == ["google:a"])
 
 o2 = viz()                          # a human puts the pin back on the review map
-C.sync_ledger("la", led, o2)
+C.sync_ledger(T, led, o2)
 check("a human putting a dropped pin back on the map restores it (loudly)",
       led["places"]["google:s"]["decision"] == "pending")
 
@@ -162,7 +171,7 @@ check("merging just the rep leaves its kids behind as standalone pins",
 o = viz()
 led = ledger_from(o)
 C.op_swap(o, C.resolve(o, [("Kid A1", None)])[0])
-C.sync_ledger("la", led, o)
+C.sync_ledger(T, led, o)
 check("a swap re-points every sibling at the new rep",
       led["places"]["google:a"]["decision"] == "merged"
       and led["places"]["google:a"]["mergedInto"] == "google:a1"
@@ -182,7 +191,7 @@ def place(i, name, cat_type="hospital", reviews=50, status="OPERATIONAL", lat=34
 
 
 def base_ledger():
-    return {"region": "la", "places": {
+    return {"region": T, "places": {
         "google:keep1": {"cat": "hospital", "name": "Kept Hospital", "lat": 34.0, "lon": -118.0,
                          "decision": "pending", "mergedInto": None, "reason": None,
                          "reviewGate": "passed", "closed": None, "firstSeen": "2026-07-01",
@@ -205,7 +214,7 @@ def base_ledger():
 def run(sweep_places, led=None, details=None, cat="hospital"):
     led = led or base_ledger()
     raw = {cat: {"places": sweep_places, "sweptAt": L.today(), "calls": 1}}
-    q = R.reconcile("la", led, raw, details or {}, write=False)
+    q = R.reconcile(T, led, raw, details or {}, write=False)
     return led, q
 
 
@@ -291,15 +300,15 @@ led = base_ledger()
 led["places"]["google:keep1"]["reviewGate"] = "unknown"
 raw = {"hospital": {"places": [place("keep1", "Kept Hospital")], "sweptAt": L.today(), "calls": 1}}
 check("the sweep covers the gate, so Place Details is only for pins it missed",
-      R.details_targets("la", led, raw, "keep") == [])
+      R.details_targets(T, led, raw, "keep") == [])
 raw["hospital"]["places"] = []
 check("a live pin the sweep missed is a Place Details target",
-      R.details_targets("la", led, raw, "keep") == ["google:keep1"])
+      R.details_targets(T, led, raw, "keep") == ["google:keep1"])
 led["places"]["google:keep1"]["reviewGate"] = "passed"
-check("a passed gate is never re-bought", R.details_targets("la", led, raw, "keep") == [])
+check("a passed gate is never re-bought", R.details_targets(T, led, raw, "keep") == [])
 check("re-testable drops are only re-priced when asked for",
-      R.details_targets("la", led, raw, "keep") == []
-      and R.details_targets("la", led, raw, "keep+retest") == ["google:legacy1"])
+      R.details_targets(T, led, raw, "keep") == []
+      and R.details_targets(T, led, raw, "keep+retest") == ["google:legacy1"])
 
 
 # -------------------------------------------------------- app data build
@@ -315,12 +324,40 @@ check("a category with no Google type of its own gets the canonical one",
       ["consulate"][0]["t"] == "embassy")
 
 square = [[-118.1, 33.9], [-117.9, 33.9], [-117.9, 34.1], [-118.1, 34.1], [-118.1, 33.9]]
-rings = B.rings_of({"features": [{"geometry": {"type": "Polygon", "coordinates": [square]}}]})
-check("a POI inside the play area is in play", B.in_play(rings, 34.0, -118.0))
+play = {"features": [{"geometry": {"type": "Polygon", "coordinates": [square]}}]}
+hit = G.make_in_play(play, tolerance_m=B.EDGE_TOLERANCE_M)
+check("a POI inside the play area is in play", hit(-118.0, 34.0))
 check("a POI just off a simplified boundary still counts",
-      B.in_play(rings, 34.1 + 100 / 111320, -118.0))
+      hit(-118.0, 34.1 + 100 / 111320))
 check("a POI well outside the play area does not",
-      not B.in_play(rings, 34.1 + 400 / 111320, -118.0))
+      not hit(-118.0, 34.1 + 400 / 111320))
+check("a strict check has no tolerance at all",
+      not G.make_in_play(play)(-118.0, 34.1 + 1 / 111320))
+
+# the same registry drives every stage, so a new city is one entry
+check("each region's working files are namespaced, and the Bay Area keeps its own",
+      os.path.basename(G.work("la", "poi_full.json")) == "poi_full.la.json"
+      and os.path.basename(G.work("bay", "poi_full.json")) == "poi_full.json")
+check("every region wires up the whole pipeline",
+      all({"play", "viz", "ledger", "poi", "counties", "suffix"} <= set(r)
+          for r in G.REGIONS.values()))
+led_done = {"region": "la", "places": {}}
+C.sync_ledger("la", led_done, viz())      # LA: no category still under first pass
+check("a finished pass seeds its survivors as confirmed keeps",
+      led_done["places"]["google:a"]["decision"] == "keep")
+
+# The apply step, end to end: each region rebuilds its committed app data exactly.
+for _r in ("bay", "la"):
+    _built = B.build(_r)
+    _committed = json.load(open(G.repo_path(_r, "poi")))
+    check(f"{_r}: the app's POI file is reproducible from its review record",
+          _built == _committed,
+          f"{sum(map(len, _built.values()))} vs {sum(map(len, _committed.values()))}")
+
+bay_play = {"features": [{"geometry": {"type": "Polygon", "coordinates": [
+    [[-122.5, 37.4], [-122.0, 37.4], [-122.0, 38.0], [-122.5, 38.0], [-122.5, 37.4]]]}}]}
+check("footprint area scales at each region's own latitude (LA ~5% larger than the Bay)",
+      1.03 < G.m2_per_deg2(play) / G.m2_per_deg2(bay_play) < 1.07)
 
 
 # ------------------------------------------------------- the real LA ledger

@@ -38,6 +38,7 @@ import unicodedata
 import urllib.request
 import zipfile
 
+import poi_geo
 import poi_ledger as L
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -148,24 +149,11 @@ def audit(region, cat, entries):
     obj = L.load_viz(region)
     if cat not in obj:
         raise SystemExit(f"no category '{cat}' in the {region} review map")
-    play = json.load(open(os.path.join(L.ROOT, L.REGIONS[region]["play"])))
-    rings = []
-    for feat in play["features"]:
-        geom = feat["geometry"]
-        polys = (geom["coordinates"] if geom["type"] == "MultiPolygon"
-                 else [geom["coordinates"]])
-        rings += [p[0] for p in polys]
+    play = poi_geo.load_play(region, path=poi_geo.repo_path(region, "play"))
+    hit = poi_geo.make_in_play(play)
 
     def in_play(lat, lon):
-        inside = False
-        for ring in rings:
-            c = False
-            for i in range(len(ring) - 1):
-                (x1, y1), (x2, y2) = ring[i], ring[i + 1]
-                if (y1 > lat) != (y2 > lat) and lon < x1 + (lat - y1) / (y2 - y1) * (x2 - x1):
-                    c = not c
-            inside ^= c
-        return inside
+        return hit(lon, lat)
 
     c = obj[cat]
     visible = [g["rep"] for g in c["groups"]] + c["singles"]

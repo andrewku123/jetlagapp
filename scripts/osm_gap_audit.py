@@ -1,13 +1,17 @@
 """Free OSM-vs-ours recall audit. For each category, find named OSM places that
 have no matching pin near one of ours -> candidates that searchNearby missed.
-No Google API calls. Writes osm_gap_audit.md + osm_gap_candidates.json.
+No Google API calls. Writes the region's osm_gap_audit[.<region>].md +
+osm_gap_candidates[.<region>].json.
+
+    python3 osm_gap_audit.py --region la
 """
 import os, json, math, re, urllib.request, urllib.parse, time
 import poi_geo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-curated = json.load(open(os.path.join(HERE, "poi_curated.json")))
-_play = poi_geo.load_play()
+REGION = poi_geo.region_from_argv()
+curated = json.load(open(poi_geo.work(REGION, "poi_curated.json")))
+_play = poi_geo.load_play(REGION)
 BBOX_SWNE = poi_geo.bbox_swne(_play)          # derived from the play polygon
 IN_PLAY = poi_geo.make_in_play(_play)         # city-agnostic point-in-polygon
 
@@ -94,7 +98,7 @@ for k, o, s, g in summary:
     md.append(f"| {k} | {o} | {s} | {g} |")
 md.append(f"| **total** | — | — | **{sum(g for *_, g in summary)}** |")
 
-open(os.path.join(HERE, "osm_gap_audit.md"), "w").write("\n".join(md))
-json.dump(candidates, open(os.path.join(HERE, "osm_gap_candidates.json"), "w"), indent=1)
+open(poi_geo.work(REGION, "osm_gap_audit.md"), "w").write("\n".join(md))
+json.dump(candidates, open(poi_geo.work(REGION, "osm_gap_candidates.json"), "w"), indent=1)
 print("\nwrote osm_gap_audit.md + osm_gap_candidates.json; total gap =",
       sum(g for *_, g in summary))

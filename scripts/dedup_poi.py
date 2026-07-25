@@ -21,10 +21,12 @@ Anything else that is merely *close* (distinct, unrelated names) is KEPT and,
 if it shares any significant token with a neighbour, surfaced in the review
 file under "close clusters to eyeball" -- never auto-merged.
 
-Reads:  poi_curated.json   (full-area, icon + >=5 reviews)
-Writes: poi_deduped.json, poi_dedup_review.md
-Usage:  python dedup_poi.py [NAME_D] [SUB_D]
+Reads:  the region's `poi_curated[.<region>].json` (icon + >=5 reviews)
+Writes: its `poi_deduped[.<region>].json`, `poi_dedup_review[.<region>].md`, and
+        the review map the reviewer then edits (`REGIONS[region]["viz"]`)
+Usage:  python dedup_poi.py [--region la] [NAME_D] [SUB_D]
 """
+import argparse
 import os, re, json, sys, math
 from collections import defaultdict
 from shapely import wkt as shp_wkt
@@ -32,7 +34,19 @@ from shapely.geometry import Point, shape as shp_shape
 from shapely.prepared import prep
 from shapely import STRtree
 
+import poi_geo
+import poi_ledger
+
 HERE = os.path.dirname(os.path.abspath(__file__))
+_ap = poi_geo.add_region_arg(argparse.ArgumentParser())
+_ap.add_argument("name_d", nargs="?", type=float, default=300.0)
+_ap.add_argument("sub_d", nargs="?", type=float, default=400.0)
+_ap.add_argument("--force", action="store_true",
+                 help="regenerate a review map that already carries a manual pass")
+# parse_known_args: the tuning scripts import this module for its heuristics and
+# pass argv of their own.
+ARGS, _ = _ap.parse_known_args()
+REGION = ARGS.region
 
 # Categories whose pins must lie strictly inside the play-area city polygons.
 # Everything else gets a small shoreline buffer so pier/waterfront pins inside an
@@ -43,8 +57,8 @@ NATURAL_CATS = {"park", "mountain"}
 def load_play_area():
     """Return (prepared_raw, prepared_buffered) play-area polygons, or (None,None)
     if not built yet (filter is then a no-op)."""
-    raw = os.path.join(HERE, "play_area.geojson")
-    buf = os.path.join(HERE, "play_area_buffered.geojson")
+    raw = poi_geo.work(REGION, "play_area.geojson")
+    buf = poi_geo.work(REGION, "play_area_buffered.geojson")
     if not os.path.exists(raw):
         return None, None
     g_raw = shp_shape(json.load(open(raw))["geometry"])
@@ -61,7 +75,7 @@ def in_play(p, cat, pa_raw, pa_buf):
 
 def load_osm(cat):
     """Load cached OSM footprints for a category -> dict(tree, geoms, names)."""
-    path = os.path.join(HERE, f"osm_polys_{cat}.json")
+    path = poi_geo.work(REGION, f"osm_polys_{cat}.json")
     if not os.path.exists(path):
         return None
     feats = json.load(open(path))
@@ -75,15 +89,17 @@ def load_osm(cat):
             continue
         geoms.append(g)
         fnames.append(f.get("name", ""))
-        areas.append(g.area * DEG2_M2)   # deg^2 -> m^2 (equirect. @ bay lat)
+        areas.append(g.area * DEG2_M2)   # deg^2 -> m^2 at this region's latitude
     if not geoms:
         return None
     return {"tree": STRtree(geoms), "geoms": geoms, "names": fnames,
             "areas": areas}
 
 
-# equirectangular deg^2 -> m^2 around the bay (~37.7N); good enough to size parks
-DEG2_M2 = (111320.0 * math.cos(math.radians(37.7))) * 110574.0
+# equirectangular deg^2 -> m^2 at the region's own mid latitude; good enough to
+# size parks, and a fixed latitude would mis-size every other city's footprints
+# (37.7N vs 34.0N is ~5%, which straddles the big-park container thresholds).
+DEG2_M2 = poi_geo.m2_per_deg2(poi_geo.load_play(REGION))
 # big-park container thresholds: fold interior sub-park pins into the one
 # flagship pin of any park whose OSM polygon area is in this range. The upper
 # cap excludes the 135 km^2 "Golden Gate National Recreation Area" umbrella so
@@ -126,9 +142,9 @@ FOLD_WEAK = {
 }
 
 
-SRC = os.path.join(HERE, "poi_curated.json")
-NAME_D = float(sys.argv[1]) if len(sys.argv) > 1 else 300.0   # same-name merge
-SUB_D = float(sys.argv[2]) if len(sys.argv) > 2 else 400.0    # sub-part absorb
+SRC = poi_geo.work(REGION, "poi_curated.json")
+NAME_D = ARGS.name_d   # same-name merge
+SUB_D = ARGS.sub_d     # sub-part absorb
 CO_D = 60.0          # two real pins this close are the same point -> merge
 SUBSET_MAXREV = 50   # only absorb a subset-named pin if it's minor (< this)
 # campus heuristics (cut future manual merges of hospital department/satellite
@@ -794,7 +810,7 @@ def load_overrides(places, key, overrides, closed_names=frozenset()):
 
 def main():
     curated = json.load(open(SRC))
-    ovr_path = os.path.join(HERE, "poi_dedup_overrides.json")
+    ovr_path = poi_geo.work(REGION, "poi_dedup_overrides.json")
     overrides = {k: v for k, v in json.load(open(ovr_path)).items()
                  if not k.startswith("_")} if os.path.exists(ovr_path) else {}
     out = {}
@@ -905,16 +921,26 @@ def main():
                     "before": len(places), "after": len(kept_places)}
 
     md = [md[0], md[1], "\n".join(table), "\n"] + md[2:]
-    open(os.path.join(HERE, "poi_dedup_review.md"), "w").write("\n".join(md))
-    json.dump(out, open(os.path.join(HERE, "poi_deduped.json"), "w"), indent=1)
-    with open(os.path.join(HERE, "poi_merge_viz.js"), "w") as f:
+    dedup_path = poi_geo.work(REGION, "poi_deduped.json")
+    md_path = poi_geo.work(REGION, "poi_dedup_review.md")
+    viz_path = poi_ledger.viz_path(REGION)        # the map the reviewer edits
+    # Re-running de-dup regenerates that map from scratch. Once a region has a
+    # ledger its map carries a human pass (deletes, merges, rep swaps) that no
+    # rerun can reconstruct, so refuse rather than silently discard it.
+    if os.path.exists(poi_ledger.ledger_path(REGION)) and not ARGS.force:
+        sys.exit(f"{os.path.basename(viz_path)} has a reviewed ledger — "
+                 f"rerun with --force to regenerate it and lose that manual pass")
+    open(md_path, "w").write("\n".join(md))
+    json.dump(out, open(dedup_path, "w"), indent=1)
+    os.makedirs(os.path.dirname(viz_path), exist_ok=True)
+    with open(viz_path, "w") as f:
         f.write("window.VIZ=")
         json.dump(viz, f)
         f.write(";")
     print("\n".join(table))
     if pa_raw is not None:
         print(f"\nplay-area clip: dropped {oop_total} POIs outside the city polygons")
-    print("\nwrote poi_deduped.json + poi_dedup_review.md + poi_merge_viz.js")
+    print(f"\nwrote {os.path.basename(dedup_path)} + {os.path.basename(md_path)} + {viz_path}")
 
 
 if __name__ == "__main__":

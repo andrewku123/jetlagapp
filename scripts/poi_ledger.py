@@ -60,30 +60,15 @@ import os
 import subprocess
 import unicodedata
 
+import poi_geo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 VIZ_PREFIX = "window.VIZ="
 
-# Per-region wiring. A new city adds one entry; nothing else in the pipeline
-# hard-codes a city.
-REGIONS = {
-    "la": {
-        "viz": "public/poi-la-review/poi_merge_viz.js",
-        "play": "src/data/la.play-area.geojson.json",
-        "ledger": "scripts/poi_decisions.la.json",
-        "poi": "src/data/la.poi.json",
-        # Categories whose first manual pass is still unfinished: survivors are
-        # seeded `pending` (not yet human-confirmed) instead of `keep`.
-        "pendingCats": ["hospital"],
-    },
-    "bay": {
-        "viz": "scripts/poi_merge_viz.js",
-        "play": "src/data/play-area.geojson.json",
-        "ledger": "scripts/poi_decisions.bay.json",
-        "poi": "src/data/poi.json",
-        "pendingCats": [],
-    },
-}
+# Per-region wiring lives in poi_geo — one registry for the whole pipeline, from
+# the Google sweep to the app data, so a new city is a single entry there.
+REGIONS = poi_geo.REGIONS
 
 REVIEW_THRESHOLD = 5
 GATE_EXEMPT_CATS = ["mountain"]  # peaks are kept regardless of review count
@@ -108,6 +93,17 @@ def norm(name):
 
 
 def viz_path(region):
+    """The region's review map.
+
+    A city under review keeps a copy under `public/` so GitHub Pages can serve the
+    interactive map from its (unmerged) review branch; that copy is the one the
+    reviewer is actually looking at, so when it exists it wins and every edit lands
+    where the preview will show it. On main only the committed copy exists, which
+    is what makes the app's POI data reproducible.
+    """
+    preview = REGIONS[region].get("vizPreview")
+    if preview and os.path.exists(os.path.join(ROOT, preview)):
+        return os.path.join(ROOT, preview)
     return os.path.join(ROOT, REGIONS[region]["viz"])
 
 
