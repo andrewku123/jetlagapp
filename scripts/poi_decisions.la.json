@@ -5282,14 +5282,15 @@
    "name": "For a New Start LLC",
    "lat": 33.9887416,
    "lon": -118.27509660000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ4xTISwDDwoARXpi7ObKzSIM": {
    "cat": "park",
@@ -19021,14 +19022,15 @@
    "name": "Tri-State Community Healthcare Center",
    "lat": 33.9790127,
    "lon": -118.3305657,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJIQc6TwC7woARUG576nsWVKA": {
    "cat": "park",
@@ -42293,14 +42295,15 @@
    "name": "For a New Start LLC",
    "lat": 34.046547499999996,
    "lon": -118.2619062,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJdQp3UAC_woARZQSfYochZEM": {
    "cat": "hospital",
