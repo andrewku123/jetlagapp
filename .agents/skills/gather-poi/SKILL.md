@@ -1,6 +1,6 @@
 ---
 name: gather-poi
-description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, biannually-refreshing (every 6 months), or extending the POI data to a new city/region.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Also covers the recurring refresh (2nd and subsequent checks) — a sticky decision-ledger diff so re-checks only surface new/changed/closed pins. Use when (re)building, biannually-refreshing (every 6 months), re-checking existing POI data, or extending it to a new city/region.
 ---
 
 # Build a Jet-Lag-ready POI database (any play area)
@@ -719,6 +719,89 @@ Google-search's own recall holes; mitigations, strongest first:
 3. Human spot-checks on the review map (you already do this).
 No automated pipeline is provably complete; two independent sources + manual
 review is the practical ceiling.
+
+## The refresh cycle (2nd and subsequent checks)
+
+The first build curates everything by hand. **Every later check must be a diff, not
+a re-review**: a place already confirmed a hospital stays confirmed, a merge stays
+merged, a deletion stays deleted. What changes between cycles is (a) new places,
+(b) review counts that crossed the >=5 gate, (c) closures/renames. Only those reach
+a human. Run it **every 6 months**.
+
+### The decision ledger (`poi_decisions.json`) — the thing that makes this cheap
+
+One record per pin, keyed by a **stable id**, written by curate/de-dup and by the
+manual review passes:
+
+```json
+{"google:ChIJ...": {"cat":"hospital","decision":"keep",
+                    "merged_into":null,"reason":null,
+                    "name_seen":"Providence Little Company of Mary - San Pedro",
+                    "review_gate":"passed","closed":null,"checked":"2026-07"}}
+```
+- **Key**: `google:<place_id>` when there is one, else `osm:<type>/<id>`. `place_id`
+  is the one Google field **exempt from the caching restrictions** (storable
+  indefinitely; refresh at least every 12 months). OSM ids are free to store.
+- **`decision`**: `keep` | `drop` (+`reason`) | `merged` (+`merged_into` parent key)
+  | `pending`. Decisions are **sticky**: a re-scan can never resurrect a dropped or
+  merged pin — that is the whole point. Merged children keep their own record so a
+  rescan recognizes them instead of re-adding them as "new".
+- **`review_gate`**: `passed` | `unknown`. **Monotonic** — review counts only go up,
+  so once a pin clears >=5 it never needs checking again. Store the **boolean, not
+  the count**: Google's terms forbid caching their content long-term, and the
+  derived pass/fail is our own decision, not their data.
+
+### The cycle
+
+0. **Play area** — only if `stations.json` changed (`build_play_area.py`, free).
+1. **Free re-pull first.** Full OSM sweep (`osm_gap_audit.py`, `fetch_osm_polys.py`).
+   OSM costs nothing, so never gate it — re-pull all of it, every cycle, and diff
+   against the ledger.
+2. **One paid Google sweep — do NOT gate this one, and buy the review count in it.**
+   Search SKUs bill **per call (<=20 places), not per place**:
+   `Nearby Search Pro $32/1k` vs `Nearby Search Enterprise $35/1k`, and
+   `places.userRatingCount` is what moves Pro→Enterprise. So folding review counts
+   into the discovery sweep costs **+9% on the sweep, ~$0.0018/place** — roughly
+   **11x cheaper than buying the same number via Place Details ($0.02/pin)**. Field
+   mask for a refresh sweep:
+   `places.id,places.displayName,places.location,places.primaryType,places.types,places.businessStatus,places.userRatingCount`
+   (`businessStatus` is a Pro-tier field, so the closure check rides along free).
+   Never request `places.reviews` — that is Enterprise+**Atmosphere** ($40/1k) and
+   the gate only needs the *count*.
+3. **Paid Place Details, gated — this is where "only under 5" applies.** Query
+   `Place Details Enterprise` ($20/1k = **$0.02/pin**) only for pins that are
+   `decision=keep` **and** `review_gate=unknown` **and** the sweep didn't return
+   (i.e. the sweep couldn't price them). Never spend on: gate-passed pins, dropped
+   pins, merged children, or **mountains** (kept regardless of reviews).
+4. **Closures.** `CLOSED_PERMANENTLY` -> auto-drop (already a chokepoint in
+   `dedup_poi.py`). `CLOSED_TEMPORARILY` -> manual queue, never auto-drop (Google's
+   temp flag is routinely stale — see the verification section above).
+   **Vanished from the sweep != closed**: search coverage wobbles, so a pin that
+   simply stops being returned goes to the manual queue too.
+5. **Renames re-open a decision.** If a *dropped* pin comes back with a
+   `displayName` different from `name_seen`, re-queue it — a listing that was a fake
+   or mis-tagged suite can become a real business. That is the **only** path by
+   which a drop returns.
+
+### What a human actually sees
+
+Three queues, nothing else — everything with an unchanged sticky decision is
+invisible:
+- **NEW** — ids not in the ledger that pass icon + >=5 (the normal review/merge pass).
+- **CHANGED** — renamed, newly closed, or newly gate-passed pins.
+- **GONE** — perm-closed (auto-dropped, listed for the record) and vanished pins.
+
+This is a good fit for a scheduled Devin automation: run steps 0-4 every 6 months
+and deliver the three queues.
+
+### Sizing (LA, 2026-07)
+
+3,249 candidate pins / 2,318 visible after de-dup. Worst case — every visible pin
+needing a Details top-up — is `2318 * $0.02 = ~$46` one-off; after the first gated
+pass only the sub-5 remainder recurs. The sweep, not the review data, remains the
+cost driver (Bay Area's first full sweep was ~$190), so the savings come from
+**not re-sweeping categories/areas that didn't change** and from never re-buying a
+gate that already passed. Set the console quota cap + budget alert first, as always.
 
 ## Authoritative source registry (per category, per country)
 
