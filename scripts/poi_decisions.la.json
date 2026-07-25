@@ -14076,13 +14076,14 @@
    "lat": 34.0376189,
    "lon": -118.2656842,
    "decision": "merged",
-   "mergedInto": "google:ChIJU01NZgDHwoARkAjinF1z3qc",
+   "mergedInto": "google:ChIJM9J-ccbHwoARlaXxTFx9ck4",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJCyqyJZrbwoARYAxotyN8RMM": {
    "cat": "park",
@@ -23149,14 +23150,15 @@
    "name": "Dignity Health - California Hospital Medical Center",
    "lat": 34.0375121,
    "lon": -118.26625679999998,
-   "decision": "merged",
-   "mergedInto": "google:ChIJU01NZgDHwoARkAjinF1z3qc",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJM9O9Yqi7woARWWJqT8v6068": {
    "cat": "golf_course",
@@ -30286,14 +30288,15 @@
    "name": "ER Dignity Health Hospital",
    "lat": 34.0376,
    "lon": -118.26666999999999,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJM9J-ccbHwoARlaXxTFx9ck4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "name",
+   "reason": null
   },
   "google:ChIJU0ApdLyVwoARUi1IGTQiMCk": {
    "cat": "museum",
@@ -50789,13 +50792,14 @@
    "lat": 34.037396699999995,
    "lon": -118.26572709999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJU01NZgDHwoARkAjinF1z3qc",
+   "mergedInto": "google:ChIJM9J-ccbHwoARlaXxTFx9ck4",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJm18MbkIy3YARre27UZ5fVqU": {
    "cat": "library",
@@ -62442,13 +62446,14 @@
    "lat": 34.0371668,
    "lon": -118.26576,
    "decision": "merged",
-   "mergedInto": "google:ChIJU01NZgDHwoARkAjinF1z3qc",
+   "mergedInto": "google:ChIJM9J-ccbHwoARlaXxTFx9ck4",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJxZOIeACdwoARIm5kDaIFvBY": {
    "cat": "museum",
