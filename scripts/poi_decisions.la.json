@@ -102,13 +102,14 @@
    "lat": 34.0759241,
    "lon": -118.3832932,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ-3esjX27woARAwTCREs_NLk": {
    "cat": "consulate",
@@ -341,13 +342,14 @@
    "lat": 34.075232,
    "lon": -118.3801756,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ-Qcl-im9woARmoYErByGC7E": {
    "cat": "museum",
@@ -1241,13 +1243,14 @@
    "lat": 34.0754978,
    "lon": -118.3803405,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ06XAqGGWwoARPL37ZhGjkYs": {
    "cat": "movie_theater",
@@ -1269,13 +1272,14 @@
    "lat": 34.0737717,
    "lon": -118.3797464,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ07J67pZL3YARjSTzYmhDHGA": {
    "cat": "hospital",
@@ -1465,13 +1469,14 @@
    "lat": 34.0747274,
    "lon": -118.37904019999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ0TDNx7gnw4ARqQWaRlKxFeo": {
    "cat": "park",
@@ -2520,13 +2525,14 @@
    "lat": 34.0740781,
    "lon": -118.3809386,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ1beFUE25woARUThn443WvhI": {
    "cat": "hospital",
@@ -2534,13 +2540,14 @@
    "lat": 34.073983999999996,
    "lon": -118.3809276,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ1c9-41bNwoARO5he1lYTglc": {
    "cat": "hospital",
@@ -2915,13 +2922,14 @@
    "lat": 34.0668003,
    "lon": -118.38442229999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ23n-kwKzwoAR9MedvCRPOf4": {
    "cat": "hospital",
@@ -3013,13 +3021,14 @@
    "lat": 34.074588299999995,
    "lon": -118.3789769,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ25mtqc_OwoARsBT8slEw58I": {
    "cat": "park",
@@ -4906,13 +4915,14 @@
    "lat": 34.076299299999995,
    "lon": -118.3808249,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ4TOsHgC7woARyzGz1FKV7DI": {
    "cat": "park",
@@ -5032,13 +5042,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ4Y7saNPGwoARUXXdWl8vymg": {
    "cat": "park",
@@ -7643,13 +7654,14 @@
    "lat": 34.0749961,
    "lon": -118.38056379999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ78Czp98t3YARMr5VvUKbKhQ": {
    "cat": "park",
@@ -7727,13 +7739,14 @@
    "lat": 34.0703433,
    "lon": -118.3755099,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ7QoNS0m5woAR7esHGsWtMfU": {
    "cat": "hospital",
@@ -8945,13 +8958,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ8WnJ5kW5woAR5aRQQQrK6hc": {
    "cat": "consulate",
@@ -9744,13 +9758,14 @@
    "lat": 34.0672885,
    "lon": -118.37660079999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ98nGanLDwoARKVc_aDQ4ajM": {
    "cat": "library",
@@ -9771,14 +9786,15 @@
    "name": "Cedars-Sinai Medical Center",
    "lat": 34.0762438,
    "lon": -118.37993599999999,
-   "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ99_hvwfDwoARaYrkFLwiNS8": {
    "cat": "park",
@@ -10038,13 +10054,14 @@
    "lat": 34.066691999999996,
    "lon": -118.386326,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ9Vafs1ewwoARMpqS4H1oc28": {
    "cat": "park",
@@ -11342,13 +11359,14 @@
    "lat": 34.0730187,
    "lon": -118.3824396,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJAQBAzbXAwoAR_qDAXwpcHmw": {
    "cat": "park",
@@ -12184,13 +12202,14 @@
    "lat": 34.0770026,
    "lon": -118.38616999999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJAf6abay-woARYaSeteo4dQA": {
    "cat": "hospital",
@@ -12198,13 +12217,14 @@
    "lat": 34.076940799999996,
    "lon": -118.3863377,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJAf6abay-woARtJ9iVfwHfX4": {
    "cat": "hospital",
@@ -12212,13 +12232,14 @@
    "lat": 34.0769926,
    "lon": -118.38610369999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJAfb90nXMwoARLrrHSRC79-E": {
    "cat": "hospital",
@@ -12451,13 +12472,14 @@
    "lat": 34.0750324,
    "lon": -118.38059690000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJB5c2fcuQwoARJJOSjQpV10U": {
    "cat": "hospital",
@@ -12746,13 +12768,14 @@
    "lat": 34.0750241,
    "lon": -118.3805547,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJBY3SxlHHwoARaI7JDzcC-WI": {
    "cat": "library",
@@ -12802,13 +12825,14 @@
    "lat": 34.0737354,
    "lon": -118.3792403,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJBYRRYFvDwoARy7_7S2XWzHE": {
    "cat": "movie_theater",
@@ -14515,13 +14539,14 @@
    "lat": 34.0740781,
    "lon": -118.3809386,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJDSqdRh-3woARQGwm6JRvzcI": {
    "cat": "park",
@@ -18184,13 +18209,14 @@
    "lat": 34.0672655,
    "lon": -118.3834246,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJHQAmqUa5woARIxFjFwfdgnc": {
    "cat": "park",
@@ -18789,13 +18815,14 @@
    "lat": 34.0649167,
    "lon": -118.37674460000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJI0PIagCxwoARE6Y_8zAPb0k": {
    "cat": "park",
@@ -18845,13 +18872,14 @@
    "lat": 34.073848999999996,
    "lon": -118.38052809999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJI3XX2Wm7woARx-sxn1f62A4": {
    "cat": "park",
@@ -20642,13 +20670,14 @@
    "lat": 34.0672885,
    "lon": -118.37660079999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJJekBjNjMwoARL0q8gSMuhxE": {
    "cat": "hospital",
@@ -22749,13 +22778,14 @@
    "lat": 34.0740781,
    "lon": -118.3809386,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJLyvVTvsx3YAROMrAOK5ZzpI": {
    "cat": "park",
@@ -22889,13 +22919,14 @@
    "lat": 34.074686199999995,
    "lon": -118.37970879999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJM30eTujJwoARzeZgdiWsXl0": {
    "cat": "park",
@@ -24418,13 +24449,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJNYIrUE_LwoARUjLked7R59I": {
    "cat": "hospital",
@@ -25050,13 +25082,14 @@
    "lat": 34.075232,
    "lon": -118.3801756,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJO3ILvEWxwoARO8H7pieIVSM": {
    "cat": "park",
@@ -26397,13 +26430,14 @@
    "lat": 34.075232,
    "lon": -118.3801756,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJPXiJob4y3YAROHIvrLoM5IQ": {
    "cat": "hospital",
@@ -26915,13 +26949,14 @@
    "lat": 34.075789799999995,
    "lon": -118.38258040000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJQ3XV2Se9woARhQXkWcunDVA": {
    "cat": "park",
@@ -28515,13 +28550,14 @@
    "lat": 34.0699438,
    "lon": -118.38351080000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJRf7dYXDHwoARPn7ofeU4MKU": {
    "cat": "hospital",
@@ -28908,13 +28944,14 @@
    "lat": 34.073848999999996,
    "lon": -118.38052809999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJSQCtcRjDwoARr-R7j7vXwT8": {
    "cat": "park",
@@ -31179,13 +31216,14 @@
    "lat": 34.075849999999996,
    "lon": -118.38254920000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJUf1CbK2-woARQH2rgFCCwPM": {
    "cat": "hospital",
@@ -31193,13 +31231,14 @@
    "lat": 34.075899,
    "lon": -118.38248,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJUf1CbK2-woARpB2KaQbJfdM": {
    "cat": "hospital",
@@ -31207,13 +31246,14 @@
    "lat": 34.0759269,
    "lon": -118.3824887,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJUfKIP6ovw4ARCeN20c0AlRA": {
    "cat": "park",
@@ -33679,13 +33719,14 @@
    "lat": 34.0700195,
    "lon": -118.3834816,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJWUW_zl3bwoARhqfsueTAB9s": {
    "cat": "hospital",
@@ -33735,13 +33776,14 @@
    "lat": 34.0663605,
    "lon": -118.38741279999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJWVk1mL2WwoARN4Y5PhzRkWY": {
    "cat": "park",
@@ -34240,13 +34282,14 @@
    "lat": 34.073947,
    "lon": -118.38049499999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJWyqcczSZwoARXHx99acI0kc": {
    "cat": "hospital",
@@ -34324,13 +34367,14 @@
    "lat": 34.0730143,
    "lon": -118.37616680000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJX-UCBxovw4ARb7n685hfcUg": {
    "cat": "park",
@@ -35430,13 +35474,14 @@
    "lat": 34.073946899999996,
    "lon": -118.38049509999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJXym-Cay3woARW8ND_LPFDBo": {
    "cat": "golf_course",
@@ -35458,13 +35503,14 @@
    "lat": 34.068424199999995,
    "lon": -118.38343499999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJXzARBf3HwoARJyT7uZSV-G4": {
    "cat": "museum",
@@ -35668,13 +35714,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJY3Z5AQDbwoARtw8dtSRfwLk": {
    "cat": "park",
@@ -35921,13 +35968,14 @@
    "lat": 34.0749961,
    "lon": -118.38056379999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJYSO9bwCXwoARikmS9ED1wT0": {
    "cat": "hospital",
@@ -36721,13 +36769,14 @@
    "lat": 34.074917899999996,
    "lon": -118.380619,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZ4ZssbK-woARmHxq3KdOcCc": {
    "cat": "hospital",
@@ -36735,13 +36784,14 @@
    "lat": 34.0746567,
    "lon": -118.37901889999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZ6A3bADJwoARw3DdpIxmD3U": {
    "cat": "park",
@@ -37143,13 +37193,14 @@
    "lat": 34.0746567,
    "lon": -118.37901889999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZX4LLk25woARFTlEX5RxPaU": {
    "cat": "hospital",
@@ -37157,13 +37208,14 @@
    "lat": 34.0747948,
    "lon": -118.37902299999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZX4LLk25woARRAliy9bMkos": {
    "cat": "hospital",
@@ -37171,13 +37223,14 @@
    "lat": 34.076369299999996,
    "lon": -118.38084539999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZX4LLk25woARa9faST5b3A0": {
    "cat": "hospital",
@@ -37185,13 +37238,14 @@
    "lat": 34.074746999999995,
    "lon": -118.37898399999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZX4LLk25woARo5JuUGDs9I0": {
    "cat": "hospital",
@@ -37199,13 +37253,14 @@
    "lat": 34.0746567,
    "lon": -118.37901889999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZXmsrjwz3YARp4w62oQSNDY": {
    "cat": "park",
@@ -37787,13 +37842,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ_7JRNRPDwoARfoh2wm5q1No": {
    "cat": "library",
@@ -39345,13 +39401,14 @@
    "lat": 34.067333,
    "lon": -118.38792919999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJa8c7hNq7woAR6GIDAkWqEF0": {
    "cat": "park",
@@ -39401,13 +39458,14 @@
    "lat": 34.074607,
    "lon": -118.379223,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJaQF2aDEmw4AR0qCYg-PHKSc": {
    "cat": "hospital",
@@ -40551,13 +40609,14 @@
    "lat": 34.0740781,
    "lon": -118.3809386,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJb8U4MACXwoARfKoRMMtqh90": {
    "cat": "park",
@@ -40945,13 +41004,14 @@
    "lat": 34.0750072,
    "lon": -118.3828082,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJb__P_w-_woARwxICJ8qNLN0": {
    "cat": "hospital",
@@ -40959,13 +41019,14 @@
    "lat": 34.074917899999996,
    "lon": -118.380619,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJba35aj0y3YARyQzytK_cTp0": {
    "cat": "golf_course",
@@ -41632,13 +41693,14 @@
    "lat": 34.0747274,
    "lon": -118.37904019999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJcWnOHdDHwoARx5t3qgV-bQM": {
    "cat": "park",
@@ -41716,13 +41778,14 @@
    "lat": 34.06669490000001,
    "lon": -118.3910023,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJcZzFJFrGwoARhAne6B5BMBE": {
    "cat": "hospital",
@@ -42320,13 +42383,14 @@
    "lat": 34.0760028,
    "lon": -118.38238150000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJdR5z89DJwoARwizfbiss2gM": {
    "cat": "park",
@@ -43051,13 +43115,14 @@
    "lat": 34.068348,
    "lon": -118.37509150000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJe-_uV-4x3YARaP-ppuASYLo": {
    "cat": "park",
@@ -45689,13 +45754,14 @@
    "lat": 34.0763387,
    "lon": -118.38148439999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJgduVTQC3woARc2Bx8hnVX80": {
    "cat": "park",
@@ -46503,13 +46569,14 @@
    "lat": 34.0750241,
    "lon": -118.3805547,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJhVt8A7G4woARN_14QVLRp-Y": {
    "cat": "museum",
@@ -47149,13 +47216,14 @@
    "lat": 34.076299299999995,
    "lon": -118.3808249,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJiQmX7HQnw4ARMtXaznlqqMw": {
    "cat": "park",
@@ -47823,13 +47891,14 @@
    "lat": 34.0658051,
    "lon": -118.376785,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJj65NBQAx3YARLpanNAhGPks": {
    "cat": "park",
@@ -48131,13 +48200,14 @@
    "lat": 34.0740781,
    "lon": -118.3809386,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJjXBxYdPGwoARq2VfAa4AkQ4": {
    "cat": "park",
@@ -48565,13 +48635,14 @@
    "lat": 34.074917899999996,
    "lon": -118.380619,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJk-7w_rfHwoARlpt7VeNlv3Y": {
    "cat": "museum",
@@ -50656,13 +50727,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJm-4M02qXwoAR5ayJKOBjFj4": {
    "cat": "hospital",
@@ -51121,13 +51193,14 @@
    "lat": 34.0754344,
    "lon": -118.3800768,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJmQn9XrPHwoARtA_ISR01few": {
    "cat": "park",
@@ -52245,13 +52318,14 @@
    "lat": 34.067333,
    "lon": -118.38792919999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJnYpoT-HEwoARmURIlAq2vLM": {
    "cat": "park",
@@ -52665,13 +52739,14 @@
    "lat": 34.0758626,
    "lon": -118.3814132,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJo4z7XSi5woARNEhUOafOyQU": {
    "cat": "museum",
@@ -53002,13 +53077,14 @@
    "lat": 34.0770543,
    "lon": -118.3793042,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJoW3G5LTHwoAR1gyOzKLU-NA": {
    "cat": "library",
@@ -53577,13 +53653,14 @@
    "lat": 34.075153,
    "lon": -118.3802766,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJp7F7CybNwoARNwl0SUCraXE": {
    "cat": "hospital",
@@ -54630,13 +54707,14 @@
    "lat": 34.076299299999995,
    "lon": -118.3808249,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJq4rKQQCxwoARqsYsXkM66z0": {
    "cat": "park",
@@ -55947,13 +56025,14 @@
    "lat": 34.0750175,
    "lon": -118.38059000000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJqfw1EQC9woAR_cWqGN_oxHs": {
    "cat": "park",
@@ -57181,13 +57260,14 @@
    "lat": 34.0749961,
    "lon": -118.38056379999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJs3qM8syDwoARnsJrfeIcQzY": {
    "cat": "park",
@@ -57209,13 +57289,14 @@
    "lat": 34.0653572,
    "lon": -118.3775558,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJs4KaZwC9woAR2kn1UsekHsY": {
    "cat": "park",
@@ -57280,13 +57361,14 @@
    "lat": 34.0737717,
    "lon": -118.3797464,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJs7xhVjcx3YARz58LxX8_NT0": {
    "cat": "library",
@@ -57686,13 +57768,14 @@
    "lat": 34.077059,
    "lon": -118.37931010000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJsaLDPki7woARE2jJ0PS_1UU": {
    "cat": "hospital",
@@ -58946,13 +59029,14 @@
    "lat": 34.0747274,
    "lon": -118.37904019999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJtwHrFWfZwoARIOom3bHmFHY": {
    "cat": "park",
@@ -59255,13 +59339,14 @@
    "lat": 34.0746919,
    "lon": -118.37897230000002,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJu9shXQDbwoAR9O5OkUa03Kk": {
    "cat": "park",
@@ -60195,13 +60280,14 @@
    "lat": 34.0758873,
    "lon": -118.381559,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJvREVrPbJwoARtXEU9Tc8uyU": {
    "cat": "library",
@@ -61274,13 +61360,14 @@
    "lat": 34.074917899999996,
    "lon": -118.380619,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJwSJFTSzTwoARyWVxIlKO8GI": {
    "cat": "park",
@@ -61696,13 +61783,14 @@
    "lat": 34.0771328,
    "lon": -118.38188249999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJwctUG0_GwoAROZBOlLcg5AU": {
    "cat": "park",
@@ -62172,13 +62260,14 @@
    "lat": 34.070327899999995,
    "lon": -118.37538400000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJx9r6_PaxwoAR59_T2WrtLBo": {
    "cat": "park",
@@ -62481,13 +62570,14 @@
    "lat": 34.0746821,
    "lon": -118.3788037,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJxZVuw2eawoARQt9SzLYrfDI": {
    "cat": "park",
@@ -62747,14 +62837,15 @@
    "name": "Cedar-Sinai Medical Center",
    "lat": 34.0748483,
    "lon": -118.378889,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "name",
+   "reason": null
   },
   "google:ChIJxxggbXW1woARzkA9nWenCi4": {
    "cat": "movie_theater",
@@ -63758,13 +63849,14 @@
    "lat": 34.075799599999996,
    "lon": -118.3825533,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJyxmxdAAt3YARKoTuUWO2YWM": {
    "cat": "park",
@@ -63927,13 +64019,14 @@
    "lat": 34.0737401,
    "lon": -118.3808045,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJz2yR3Ky3woARQDKZ6Ci4hQ4": {
    "cat": "park",
@@ -64362,13 +64455,14 @@
    "lat": 34.0756368,
    "lon": -118.3799781,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJzV46LgCdwoARMowSJJ5ExTw": {
    "cat": "park",
@@ -64698,13 +64792,14 @@
    "lat": 34.0739203,
    "lon": -118.38051229999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJzdGjRE25woARkaR8wtyI5gc": {
    "cat": "hospital",
@@ -64712,13 +64807,14 @@
    "lat": 34.0738287,
    "lon": -118.38043829999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJzdGjRE25woARlg1mtDOXyeo": {
    "cat": "hospital",
@@ -64726,13 +64822,14 @@
    "lat": 34.073947,
    "lon": -118.38049019999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJzdGjRE25woARtx_d8mWZ5mA": {
    "cat": "hospital",
@@ -64740,13 +64837,14 @@
    "lat": 34.073947,
    "lon": -118.38049019999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJze0eRgC7woARkg5M2wGvCRw": {
    "cat": "hospital",
@@ -64951,13 +65049,14 @@
    "lat": 34.0747274,
    "lon": -118.37904019999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJxxFyYgC5woARri-CaJQf368",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJzzMrbADTwoAR0zgaZS1WwuE": {
    "cat": "park",
