@@ -1845,13 +1845,14 @@
    "lat": 34.0648474,
    "lon": -118.4471591,
    "decision": "merged",
-   "mergedInto": "google:ChIJMbpiz4W8woARcxRv7wykGpY",
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ0y-ioo_JwoARN4c3bHE-zpo": {
    "cat": "park",
@@ -2223,13 +2224,14 @@
    "lat": 34.066455,
    "lon": -118.44633049999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJMbpiz4W8woARcxRv7wykGpY",
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ1RmHSQCZwoAR4eRI_qwHaUc": {
    "cat": "museum",
@@ -20246,13 +20248,14 @@
    "lat": 34.064282899999995,
    "lon": -118.44235619999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJMbpiz4W8woARcxRv7wykGpY",
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJJUC3kWq1woARrAu1Ze_nGk4": {
    "cat": "park",
@@ -23656,14 +23659,15 @@
    "name": "UCLA Mattel Children's Hospital",
    "lat": 34.0665972,
    "lon": -118.44654009999999,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "name",
+   "reason": null
   },
   "google:ChIJMbwFdDQ13YARH27aUTRdTQ8": {
    "cat": "golf_course",
@@ -36898,14 +36902,15 @@
    "name": "Ronald Reagan UCLA Medical Center",
    "lat": 34.066399,
    "lon": -118.44635099999998,
-   "decision": "merged",
-   "mergedInto": "google:ChIJMbpiz4W8woARcxRv7wykGpY",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJZQYe1Nkz3YARgR4TUTZame8": {
    "cat": "hospital",
