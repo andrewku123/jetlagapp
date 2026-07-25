@@ -12267,14 +12267,15 @@
    "name": "Clínica",
    "lat": 34.024744999999996,
    "lon": -118.1564119,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJAyl1Hoe_woARAvI6EWmT_mY": {
    "cat": "park",
@@ -17014,14 +17015,15 @@
    "name": "Synergex Med",
    "lat": 34.052894099999996,
    "lon": -118.29199059999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJG6kWS0K7woAREMGRnRRWyvI": {
    "cat": "hospital",
@@ -25750,14 +25752,15 @@
    "name": "Synergex Med",
    "lat": 33.9160282,
    "lon": -118.1257914,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJOyJHeWHawoARK3swuBNvEFc": {
    "cat": "park",
@@ -53654,14 +53657,15 @@
    "name": "Synergex Med",
    "lat": 33.9896141,
    "lon": -118.37995249999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJpSdZRwCVwoARS3c4_JTZmNA": {
    "cat": "museum",
@@ -56986,14 +56990,15 @@
    "name": "Clínica",
    "lat": 33.9116662,
    "lon": -118.23941710000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJs23TXX7KwoARfHXATN9NxtQ": {
    "cat": "hospital",
