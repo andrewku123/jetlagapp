@@ -21132,28 +21132,30 @@
    "name": "American Access Care",
    "lat": 33.9852865,
    "lon": -118.3868432,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJKQyyWVG3woARnqamKoGs4C4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "name",
+   "reason": null
   },
   "google:ChIJKQyyWVG3woARnqamKoGs4C4": {
    "cat": "hospital",
    "name": "Pacific Interventional Vascular Access Center",
    "lat": 33.985286699999996,
    "lon": -118.38682379999997,
-   "decision": "merged",
-   "mergedInto": "google:ChIJKQyyWVG3woARCIbICGkWM0M",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJKR960PQ13YAR-ZqV3iLMZVA": {
    "cat": "hospital",
