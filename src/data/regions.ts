@@ -53,6 +53,13 @@ export interface RegionData {
   /** 2nd-admin divisions that hold stations (used by county Matching + dim). */
   inPlayCounties: string[]
   /**
+   * 1st-admin divisions (states) the play area spans. No station carries a state
+   * of its own — nothing in the app is keyed on it — so this exists purely so the
+   * State Matching copy names the right state instead of a hardcoded one, and
+   * tells the truth on a map that crosses a state line.
+   */
+  states: string[]
+  /**
    * How far (metres) a point outside every place polygon still snaps to the
    * nearest place in the city Matching lookup (see cities.ts). Absorbs boundary
    * simplification erosion; too large and genuinely-unincorporated spots read as
@@ -78,6 +85,7 @@ export const REGIONS: RegionData[] = [
     center: [37.6, -122.2],
     zoom: 10,
     inPlayCounties: ['Alameda', 'Contra Costa', 'San Francisco', 'San Mateo', 'Santa Clara'],
+    states: ['California'],
     stations: baStations,
     poi: baPoi,
     playArea: baPlayArea,
@@ -93,6 +101,7 @@ export const REGIONS: RegionData[] = [
     center: [37.76, -122.44],
     zoom: 12,
     inPlayCounties: ['San Francisco'],
+    states: ['California'],
     stations: sfStations,
     poi: sfPoi,
     playArea: sfPlayArea,
@@ -108,6 +117,7 @@ export const REGIONS: RegionData[] = [
     center: [34.05, -118.25],
     zoom: 10,
     inPlayCounties: ['Los Angeles'],
+    states: ['California'],
     citySnapM: 40,
     stations: laStations,
     poi: laPoi,
@@ -162,6 +172,7 @@ export const countiesData = ACTIVE_REGION.counties
 export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
+export const MAP_STATES = ACTIVE_REGION.states
 export const MAP_NAME = ACTIVE_REGION.name
 // Snap tolerance (metres) for the city Matching place lookup; see RegionData.
 export const CITY_SNAP_M = ACTIVE_REGION.citySnapM ?? 150
