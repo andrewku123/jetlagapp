@@ -22,7 +22,10 @@ Writes: poi_full.json
 """
 import os, sys, json, math, time, urllib.request, urllib.error
 
-KEY = os.environ["GOOGLE_PLACES_API_KEY"]
+import poi_geo
+from poi_geo import CATS, PARK_TYPES  # noqa: F401  (the shared category rulebook)
+
+KEY = os.environ.get("GOOGLE_PLACES_API_KEY", "")
 URL = "https://places.googleapis.com/v1/places:searchNearby"
 
 # Cheap mode: drop `rating`+`userRatingCount` from the field mask. Those two
@@ -43,31 +46,13 @@ MAX = 20
 MAX_RADIUS = 50000.0
 MIN_RADIUS = 25.0
 
-PARK_TYPES = ["park", "national_park", "state_park", "dog_park",
-              "garden", "botanical_garden"]
-
-# (category key, includedTypes, tentacle radius in mi or None)
-CATS = [
-    ("museum", ["museum"], 1),
-    ("library", ["library"], 1),
-    ("movie_theater", ["movie_theater"], 1),
-    ("hospital", ["hospital"], 1),
-    ("zoo", ["zoo"], 15),
-    ("aquarium", ["aquarium"], 15),
-    ("amusement_park", ["amusement_park"], 15),
-    ("park", PARK_TYPES, None),
-    ("golf_course", ["golf_course"], None),
-    ("consulate", ["embassy"], None),       # real consulates; honorary ones are
-                                            # government_office, so excluded
-    ("mountain", ["mountain_peak"], None),  # natural peaks (kept regardless of
-                                            # review count -- see curation)
-    ("stadium", ["stadium", "arena"], None),  # sports venues; curation keeps the
-                                            # stadium/arena icon, then the reviewer
-                                            # limits to professional-sports homes
-]
-
 HERE = os.path.dirname(os.path.abspath(__file__))
-PLAY = json.load(open(os.path.join(HERE, "..", "src", "data", "play-area.geojson.json")))
+# POI_PLAY_FILE / POI_OUT let a second city (or a refresh sweep) reuse this pull
+# without editing the script; both default to the app's current play area.
+PLAY_FILE = os.environ.get("POI_PLAY_FILE",
+                           os.path.join(HERE, "..", "src", "data", "play-area.geojson.json"))
+OUT_FILE = os.environ.get("POI_OUT", os.path.join(HERE, "poi_full.json"))
+PLAY = json.load(open(PLAY_FILE))
 calls = 0
 
 
@@ -153,7 +138,9 @@ def search_box(types, lat0, lat1, lon0, lon1, out):
 
 
 def main():
-    out_path = os.path.join(HERE, "poi_full.json")
+    if not KEY:
+        sys.exit("set GOOGLE_PLACES_API_KEY (this pull is billable)")
+    out_path = OUT_FILE
     result = json.load(open(out_path)) if os.path.exists(out_path) else {}
     for key, types, tradius in CATS:
         if key in result:
