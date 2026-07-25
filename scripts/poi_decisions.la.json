@@ -18012,14 +18012,15 @@
    "name": "Helipad Hospital",
    "lat": 34.0578085,
    "lon": -118.2081173,
-   "decision": "merged",
-   "mergedInto": "google:ChIJl9YownXGwoARQB-wmzyy1gY",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": "manual"
   },
   "google:ChIJH1cE6UTDwoARs5NiwaLiHAU": {
    "cat": "library",
@@ -29447,15 +29448,15 @@
    "name": "Helipad Hospital",
    "lat": 34.0763703,
    "lon": -118.38078989999998,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJSwfWSACzwoARSszOAZGUF6c": {
    "cat": "park",
