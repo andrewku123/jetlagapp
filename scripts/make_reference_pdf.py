@@ -10,31 +10,35 @@ Rules that apply to every question (answer window consequences, what to send the
 hider, tie-breaks, the end-game escape hatch) live once in the header strip
 instead of being repeated on each card.
 
-    python3 scripts/make_reference_pdf.py --size medium --region bay
+    python3 scripts/make_reference_pdf.py --region bay
 """
-import argparse, json, collections, html, os, re
+import argparse, json, collections, html, os, re, sys
 
-REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SCRIPTS = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(SCRIPTS)
+sys.path.insert(0, SCRIPTS)
+from poi_geo import load_play, make_in_play
 
 # ---------- region ----------
-# Only the file prefix differs per region; everything else is derived from the
-# data, so a new city needs one entry here and nothing else in this script.
+# A map *is* a game size — how big the play area is decides which questions the
+# book allows — so `size` lives here and the deck follows from `--region` alone.
+# Only the file prefix differs otherwise, so a new city is one entry.
 REGIONS = {
-    "bay": {"label": "Bay Area", "prefix": ""},
-    "la": {"label": "LA Metro", "prefix": "la."},
-    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni."},
+    "bay": {"label": "Bay Area", "prefix": "", "size": "medium"},
+    "la": {"label": "LA Metro", "prefix": "la.", "size": "medium"},
+    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni.", "size": "medium"},
 }
 SIZES = ("small", "medium", "large")
 
 ap = argparse.ArgumentParser(description=__doc__)
-ap.add_argument("--size", default="medium", choices=SIZES,
-                help="game size; gates which questions exist (default medium)")
 ap.add_argument("--region", default="bay", choices=sorted(REGIONS),
-                help="which map's reference page to print (default bay)")
+                help="which map to print; also sets the game size (default bay)")
+ap.add_argument("--size", default=None, choices=SIZES,
+                help="override the map's own size (rarely needed)")
 ap.add_argument("--out", default=None, help="output PDF path")
 ARGS = ap.parse_args()
-SIZE = ARGS.size
 REGION = REGIONS[ARGS.region]
+SIZE = ARGS.size or REGION["size"]
 BIG = SIZE in ("medium", "large")  # "add for Medium & Large"
 LARGE = SIZE == "large"
 
@@ -70,8 +74,9 @@ alt_labels = [f"{i*BIN}\u2013{(i+1)*BIN}" for i in range(nbins)]
 nl = collections.Counter(s["nameLength"] for s in ST)
 nl_rows = [(L, nl.get(L, 0)) for L in range(min(nl), max(nl) + 1)]
 
-# airports: coordinates mirror AIRPORT_SITES in src/data/regions.ts; only the
-# ones the stations actually measure to (i.e. in this play area) are printed.
+# airports: mirrors AIRPORT_SITES in src/data/regions.ts. "Anything outside the
+# play area doesn't exist", so an airport is only a valid answer on maps whose
+# polygon contains it — stations carry airportDist to every site regardless.
 AIRPORT_SITES = {
     "SFO": ("San Francisco Intl", 37.619083, -122.381597),
     "OAK": ("SF Bay Oakland Intl", 37.719016, -122.219595),
@@ -79,10 +84,11 @@ AIRPORT_SITES = {
     "LAX": ("Los Angeles Intl", 33.942560, -118.408530),
     "LGB": ("Long Beach", 33.817650, -118.152270),
 }
-codes = sorted({c for s in ST for c in (s.get("airportDist") or {})},
-               key=lambda c: (-airport_counts[c], c))
-AIRPORTS = [(f"{c} \u2014 {AIRPORT_SITES[c][0]}", f"{AIRPORT_SITES[c][1]:.6f}, {AIRPORT_SITES[c][2]:.6f}")
-            for c in codes if c in AIRPORT_SITES]
+in_play = make_in_play(load_play(path=data("play-area.geojson.json")))
+AIRPORTS = [(f"{c} \u2014 {name}", f"{lat:.6f}, {lon:.6f}")
+            for c, (name, lat, lon) in sorted(
+                AIRPORT_SITES.items(), key=lambda kv: (-airport_counts[kv[0]], kv[0]))
+            if in_play(lon, lat)]
 
 # extremes: the stations that bound the play area, useful for sanity-checking a
 # radar circle or a thermometer bisector before committing to it. Ties are all
@@ -279,9 +285,13 @@ alt_card = tblcard("Stations by altitude", f"{nstat} stations",
                          "Elevation band (ft) &rarr; stations"))
 nl_card = tblcard("Stations by name length", f"{nstat} stations",
                   hgrid([(L, c) for L, c in nl_rows if c], "Name length &rarr; stations"))
-air_card = tblcard("Stations by nearest airport", f"{len(AIRPORTS)} airports",
-                   hgrid(sorted(airport_counts.items(), key=lambda kv: -kv[1]),
-                         "Airport &rarr; stations", nrows=1))
+# no airport in play -> the airport questions are log-only in the app, so
+# neither airport block is printed (mirrors HAS_AIRPORTS in regions.ts).
+air_card = tblcard(
+    "Stations by nearest airport", f"{len(AIRPORTS)} airports",
+    hgrid([(c, airport_counts[c]) for c, _ in
+           ((a.split(" \u2014 ")[0], b) for a, b in AIRPORTS)],
+          "Airport &rarr; stations", nrows=1)) if AIRPORTS else ""
 
 airports_html = ('<ul class="plain air">' + "".join(
     f'<li><span class="aname">{html.escape(a)}</span><span class="coord">{c}</span></li>'
@@ -306,7 +316,7 @@ ref = "".join([
     alt_card, nl_card, air_card,
     rblock("Stations per line", len(line_counts), counted_list(line_counts)),
     rblock("Counties (in play)", len(county_counts), counted_list(county_counts)),
-    rblock("Commercial airports", len(AIRPORTS), airports_html),
+    rblock("Commercial airports", len(AIRPORTS), airports_html) if AIRPORTS else "",
     rblock("POIs in play", sum(n for _, n in poi_rows), poi_html),
     rblock("Edges of the play area", len(EXTREMES), extremes_html),
     rblock("Cities / municipalities", len(city_counts), counted_list(city_counts)),

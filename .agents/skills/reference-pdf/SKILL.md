@@ -17,11 +17,14 @@ own data — no Overpass call, no hand-maintained lists.
 
 ## Run
 ```bash
-python3 scripts/make_reference_pdf.py --size medium --region bay
+python3 scripts/make_reference_pdf.py --region bay
 # -> ./jetlag_reference_bay_medium.pdf   (git-ignored deliverable)
 ```
-`--size small|medium|large`, `--region bay|la|sfmuni`, optional `--out PATH`.
-Requires `pip install playwright` and the CDP Chrome on `localhost:29229`.
+**A map is a game size**: `REGIONS[region]["size"]` decides the deck, so
+`--region` alone prints the right card and a new map declares its size in that
+one entry (all three maps are `medium` today). `--size small|medium|large`
+overrides it; `--out PATH` overrides the filename. Requires
+`pip install playwright` and the CDP Chrome on `localhost:29229`.
 
 ## Size is the gate, not a copy edit
 Every size difference is data on the question, never a separate template. Each
@@ -76,9 +79,15 @@ Built only from `src/data/<prefix>stations.json` and `<prefix>poi.json`:
 station-count grids (altitude band, name length, nearest airport), stations per
 line, counties, in-play airports with coordinates, the POI inventory, the play
 area's edge stations, cities, and a blank **question log** to fill in during
-play. Airport coordinates mirror `AIRPORT_SITES` in `src/data/regions.ts`; only
-codes the stations actually measure to are printed, so a new map needs no edit
-here.
+play (Andrew's call: the app logs questions, but this is the paper backup if the
+board is reset).
+
+**Airports are filtered by the play-area polygon, not by the station data.**
+Every station carries `airportDist` to every site in `AIRPORT_SITES`, so keying
+off that printed SFO/OAK/SJC on the SF Muni card while the app treats SF Muni as
+having no airport at all. Load the region's polygon through
+`poi_geo.make_in_play` and keep only sites inside it; with none in play, drop
+**both** airport blocks (mirrors `HAS_AIRPORTS` in `src/data/regions.ts`).
 
 Do **not** re-add raw-OSM POI lists: they disagreed with the curated POI data
 the app eliminates on (e.g. OSM gave 3 Bay zoos vs the app's 5, missing SF Zoo).
