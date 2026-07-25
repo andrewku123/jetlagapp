@@ -24804,13 +24804,14 @@
    "lat": 34.1323396,
    "lon": -118.04416999999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJk9Nl37jbwoARRpt_MaA6xZM",
+   "mergedInto": "google:ChIJbQgYSr_bwoAROrxp7CfrC40",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJO-C3qDXfwoARPF-jmHjeBtI": {
    "cat": "mountain",
@@ -30883,13 +30884,14 @@
    "lat": 34.1348726,
    "lon": -118.04207389999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJk9Nl37jbwoARRpt_MaA6xZM",
+   "mergedInto": "google:ChIJbQgYSr_bwoAROrxp7CfrC40",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJU_sToPfHwoAROkNg2obePvk": {
    "cat": "museum",
@@ -40614,14 +40616,15 @@
    "name": "USC Arcadia Hospital",
    "lat": 34.134468399999996,
    "lon": -118.04162459999998,
-   "decision": "merged",
-   "mergedInto": "google:ChIJk9Nl37jbwoARRpt_MaA6xZM",
-   "mergeSrc": "osm",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJbR_-hgaXwoARoOgskBeY-84": {
    "cat": "park",
@@ -48861,14 +48864,15 @@
    "name": "Arcadia Child Health Council",
    "lat": 34.1332167,
    "lon": -118.0435419,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJbQgYSr_bwoAROrxp7CfrC40",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "osm",
+   "reason": null
   },
   "google:ChIJkQU5gNS6woARNPtFwOKpK9A": {
    "cat": "library",
