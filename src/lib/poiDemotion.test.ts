@@ -34,10 +34,14 @@ describe('per-category POI question demotion', () => {
     expect(counts.aquarium).toBeGreaterThanOrEqual(2)
   })
 
-  it('LA Metro has no POI gathered yet → every category empty (all POI questions log-only)', async () => {
+  it('LA Metro has every category in play, and only the zoo demotes', async () => {
     const counts = await poiCountsFor('la')
-    // la.poi.json ships every category empty until the POI dataset lands, so all
-    // POI Matching / Measuring / Tentacle subjects auto-demote to log-only.
-    expect(Object.values(counts).every((n) => n === 0)).toBe(true)
+    // The curated LA pass covers all 12 categories, so Measuring works on every
+    // subject. The LA Zoo is the county's only one, so "is your nearest zoo the
+    // same as mine?" is always yes → that one Matching subject is log-only.
+    expect(Object.values(counts).every((n) => n > 0)).toBe(true)
+    expect(counts.zoo).toBe(1)
+    expect(Object.entries(counts).filter(([, n]) => n <= 1).map(([k]) => k)).toEqual(['zoo'])
+    expect(counts.hospital).toBeGreaterThan(200)
   })
 })

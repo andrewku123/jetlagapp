@@ -458,8 +458,31 @@ manual override**. Reviewers send merge/separate corrections → record them in
 on load, so corrections show without a hard refresh).
 
 ### 7. Apply to the app
-Once reviewers sign off, write `poi_deduped.json` into the app's `poi.json` and
-wire the categories into the POI tab (see `build_poi_data.py` / the POI-tab PR).
+```bash
+python3 build_poi_data.py --region la      # -> src/data/la.poi.json
+```
+The **review map is the input**, not `poi_deduped.json`: every delete, merge and
+rep swap of the manual pass is already applied to it, so the app data is exactly
+"what a reviewer sees" — group **representatives + singles, never merged-away
+children** (one campus = one POI, at the rep's own pin, so "nearest hospital"
+can't be answered by a lab door). Output is `{n,lat,lon,t,r}` per category. The
+build **fails** on a duplicate `(name,lat,lon)` or any POI outside the play area
+— an out-of-play POI would make "nearest X" unanswerable, so it must be deleted
+in the review pass, not silently shipped.
+
+The review map lives on the (never-merged) review branch, so from a main checkout
+pass `--viz path/to/poi_merge_viz.js`.
+
+Nothing else needs wiring: `regions.ts` already imports `<region>.poi.json`, and
+each POI question **auto-demotes per category** off `POI_COUNTS` — 0 in play =
+Matching *and* Measuring log-only, exactly 1 = Matching log-only (its answer is
+always "yes"; LA's single zoo is the live example). So a category the reviewer
+emptied degrades gracefully instead of asking an unanswerable question.
+
+A city pulled in cheap mode has no per-place `primaryType`/`userRatingCount`, so
+`t` gets the category's canonical Google type and `r` is 0 (= unknown, matching
+the ledger's `reviewGate: unknown`). Neither field drives gameplay; the first
+paid refresh fills the real counts.
 
 ## Defining the play area (which cities are in play)
 

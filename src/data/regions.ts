@@ -33,9 +33,6 @@ import sfZctas from './sfmuni.zctas.geojson.json'
 import sfTransit from './sfmuni.transit-lines.geojson.json'
 
 // --- LA Metro (Metro Rail A/B/C/D/E/K + Busway G/J, Los Angeles County) -------
-// POI is not gathered yet, so la.poi.json ships every category empty: the POI
-// Matching/Measuring/Tentacle questions auto-demote to log-only (POI_COUNTS===0)
-// until the POI dataset lands in a follow-up.
 import laStations from './la.stations.json'
 import laPoi from './la.poi.json'
 import laPlayArea from './la.play-area.geojson.json'

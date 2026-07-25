@@ -7,6 +7,7 @@ and no billable API call: the refresh is exercised against a hand-built sweep.
 import copy
 import sys
 
+import build_poi_data as B
 import poi_curate as C
 import poi_geo
 import poi_ledger as L
@@ -298,6 +299,27 @@ check("a passed gate is never re-bought", R.details_targets("la", led, raw, "kee
 check("re-testable drops are only re-priced when asked for",
       R.details_targets("la", led, raw, "keep") == []
       and R.details_targets("la", led, raw, "keep+retest") == ["google:legacy1"])
+
+
+# -------------------------------------------------------- app data build
+print("\napp data build")
+app = B.from_viz(viz())["hospital"]
+check("only representatives and singles reach the app",
+      sorted(p["n"] for p in app) == ["Dupe", "Dupe", "Rep A", "Rep B", "Solo"])
+check("a merged-away child is not a POI", not any(p["n"].startswith("Kid") for p in app))
+check("the representative keeps its own coordinates",
+      next(p for p in app if p["n"] == "Rep A")["lat"] == 34.0)
+check("a category with no Google type of its own gets the canonical one",
+      B.from_viz({"consulate": {"groups": [], "singles": [pin("C", "c")]}})
+      ["consulate"][0]["t"] == "embassy")
+
+square = [[-118.1, 33.9], [-117.9, 33.9], [-117.9, 34.1], [-118.1, 34.1], [-118.1, 33.9]]
+rings = B.rings_of({"features": [{"geometry": {"type": "Polygon", "coordinates": [square]}}]})
+check("a POI inside the play area is in play", B.in_play(rings, 34.0, -118.0))
+check("a POI just off a simplified boundary still counts",
+      B.in_play(rings, 34.1 + 100 / 111320, -118.0))
+check("a POI well outside the play area does not",
+      not B.in_play(rings, 34.1 + 400 / 111320, -118.0))
 
 
 # ------------------------------------------------------- the real LA ledger

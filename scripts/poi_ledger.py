@@ -71,6 +71,7 @@ REGIONS = {
         "viz": "public/poi-la-review/poi_merge_viz.js",
         "play": "src/data/la.play-area.geojson.json",
         "ledger": "scripts/poi_decisions.la.json",
+        "poi": "src/data/la.poi.json",
         # Categories whose first manual pass is still unfinished: survivors are
         # seeded `pending` (not yet human-confirmed) instead of `keep`.
         "pendingCats": ["hospital"],
@@ -79,6 +80,7 @@ REGIONS = {
         "viz": "scripts/poi_merge_viz.js",
         "play": "src/data/play-area.geojson.json",
         "ledger": "scripts/poi_decisions.bay.json",
+        "poi": "src/data/poi.json",
         "pendingCats": [],
     },
 }
