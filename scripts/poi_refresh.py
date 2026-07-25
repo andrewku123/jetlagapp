@@ -209,7 +209,7 @@ def details_targets(region, led, raw, scope):
             continue                       # never re-buy a gate that already passed
         if rec["decision"] in ("keep", "pending"):
             out.append(k)
-        elif scope == "keep+recheck" and rec.get("recheckOnce"):
+        elif scope == "keep+retest" and L.retestable(rec):
             out.append(k)
     return out
 
@@ -244,9 +244,11 @@ def reconcile(region, led, raw, details, write):
     """Diff the sweep against the ledger. Returns the human queues.
 
     Sticky rules enforced here:
-      * a `drop`/`merged` decision is never resurrected by a scan;
-      * the one exception is the legacy first-pass seed (`recheckOnce`), which gets
-        exactly one re-test against the >=5-review rule and is then sticky;
+      * a decision a human made -- `manual` drop, `merged` -- is never resurrected
+        by a scan; only a rename re-opens it;
+      * a drop that was only a **review failure** (`review_failed`, and the
+        `legacy_first_pass` seed of a city curated before the ledger) is re-tested
+        every refresh until it clears >=5 reviews, is deleted by hand, or is merged;
       * closure and disappearance are *manual* signals -- only CLOSED_PERMANENTLY
         auto-drops, because Google's temporary flag is routinely stale and a pin
         missing from one sweep is usually search wobble, not a closed business.
@@ -296,11 +298,15 @@ def reconcile(region, led, raw, details, write):
             decision = rec["decision"]
 
             if decision == "drop":
-                if rec.pop("recheckOnce", None) and icon and gate_ok and status != CLOSED_PERM:
-                    # legacy first-pass deletion that clears the review rule today:
-                    # re-test it once, then it is sticky whatever the human decides
-                    q["RECHECK"].append(entry(rec, k, "deleted in the first pass, now >=5 reviews",
-                                              {"reviews": n, "newName": pl["name"] if renamed else None}))
+                if L.retestable(rec):
+                    # died for want of reviews, not on the merits: keep re-testing
+                    # until it passes, or a human deletes/merges it for good
+                    if icon and gate_ok and status != CLOSED_PERM:
+                        q["RECHECK"].append(entry(
+                            rec, k, "dropped for <5 reviews, now clears the rule",
+                            {"reviews": n, "newName": pl["name"] if renamed else None}))
+                    if renamed:
+                        rec["name"] = pl["name"]
                 elif renamed:
                     q["CHANGED"].append(entry(rec, k, "deleted pin was renamed — re-judge",
                                               {"reviews": n, "newName": pl["name"]}))
@@ -386,8 +392,8 @@ def main():
                     help="required for any billable phase")
     ap.add_argument("--max-calls", type=int, default=8000, help="sweep call cap")
     ap.add_argument("--max-details", type=int, default=500, help="per-place call cap")
-    ap.add_argument("--details-scope", default="keep", choices=["keep", "keep+recheck"],
-                    help="'keep+recheck' also re-prices first-pass deletions the sweep missed")
+    ap.add_argument("--details-scope", default="keep", choices=["keep", "keep+retest"],
+                    help="'keep+retest' also re-prices review-failure drops the sweep missed")
     ap.add_argument("--write", action="store_true", help="apply ledger updates in reconcile")
     a = ap.parse_args()
 
@@ -404,10 +410,10 @@ def main():
         unknown = sum(1 for r in led["places"].values()
                       if r["decision"] in ("keep", "pending")
                       and r.get("reviewGate") != "passed" and r["cat"] not in poi_geo.KEEP_ALL)
-        recheck = sum(1 for r in led["places"].values() if r.get("recheckOnce"))
+        recheck = sum(1 for r in led["places"].values() if L.retestable(r))
         swept = ", ".join(sorted(raw)) or "nothing yet"
         print(f"region {a.region}: {len(led['places'])} ledger places, {live} live, "
-              f"{unknown} awaiting a review-count check, {recheck} legacy drops to re-test once")
+              f"{unknown} awaiting a review-count check, {recheck} re-testable drops")
         print(f"sweep cache: {swept}")
         print(f"\nphase 1 sweep    ~{a.max_calls} calls max  -> up to "
               f"${a.max_calls * USD_PER_SWEEP_CALL:.2f} (prices review counts for every "

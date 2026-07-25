@@ -20,9 +20,8 @@ Shape (`poi_decisions.<region>.json`):
           "decision": "keep" | "pending" | "merged" | "drop",
           "mergedInto": "google:ChIJ..." | null,
           "mergeSrc": "name" | "bigpark" | null,
-          "reason": "legacy_first_pass" | "manual" | ...,
+          "reason": "review_failed" | "legacy_first_pass" | "manual" | ...,
           "reviewGate": "passed" | "unknown",
-          "recheckOnce": true,          # legacy drops only; see below
           "closed": null | "CLOSED_TEMPORARILY" | "CLOSED_PERMANENTLY",
           "firstSeen": "2026-07-16", "decidedAt": "2026-07-24",
           "lastSeen": "2026-07-24"      # last refresh sweep that returned it
@@ -35,16 +34,21 @@ Key facts encoded here:
 - **`reviewGate` is a boolean, not a count.** Review counts only rise, so once a
   pin clears >=5 it never needs checking again — and storing our derived pass/fail
   rather than Google's number keeps us inside their content-caching terms.
-- **Decisions are sticky.** `drop`/`merged` survive every later scan. The single
-  exception is the legacy seed: pins deleted during a city's *first* manual pass
-  can't be told apart ("<5 reviews" vs "not really a hospital"), so they are seeded
-  `recheckOnce: true` and get exactly one re-test on the next refresh. After that
-  refresh clears the flag they are sticky like everything else.
+- **Stickiness depends on *why* a pin died, not on which city it is in.** A place
+  a human deleted (`manual`) or merged away is sticky: no scan ever offers it back,
+  only a rename re-opens it. A place that died because it **failed the review rule**
+  (`review_failed`, and `legacy_first_pass` below) is not sticky — it is re-tested on
+  every refresh, for ever, until it crosses >=5 reviews (then it surfaces in
+  `RECHECK`), is deleted by hand, or is merged. Re-testing is free: the discovery
+  sweep already prices every place it returns.
 
 Seeding a region (`seed`) reconstructs all of this from the review map's **git
 history**: every revision of `poi_merge_viz.js` is a snapshot of the curation, so
 the union over all revisions is every pin ever seen, the latest revision is the
-survivors, and the revision where a pin disappears dates its deletion.
+survivors, and the revision where a pin disappears dates its deletion. A pass done
+before the ledger existed did not record *why* each pin was deleted ("<5 reviews" vs
+"not really a hospital"), so those drops seed as `legacy_first_pass` and are treated
+as review failures — re-testable, exactly like `review_failed`.
 
     python3 poi_ledger.py seed --region la
     python3 poi_ledger.py stats --region la
@@ -81,6 +85,16 @@ REGIONS = {
 
 REVIEW_THRESHOLD = 5
 GATE_EXEMPT_CATS = ["mountain"]  # peaks are kept regardless of review count
+
+# Drops that a refresh may re-open, because the place was never judged on its
+# merits -- it just didn't have enough reviews yet. Any other reason is sticky.
+# `legacy_first_pass`: a city curated before the ledger existed, where the reason
+# behind each deletion wasn't recorded.
+REVIEW_FAIL_REASONS = {"review_failed", "legacy_first_pass"}
+
+
+def retestable(rec):
+    return rec["decision"] == "drop" and rec.get("reason") in REVIEW_FAIL_REASONS
 
 
 # ---------------------------------------------------------------- viz file I/O
@@ -214,11 +228,10 @@ def seed(region, gate="passed"):
     for k, r in places.items():
         alive = "goneAt" not in r
         if not alive:
-            # A first-pass deletion: we can't tell "<5 reviews" from "not really a
-            # hospital", so it gets exactly one re-test on the next refresh.
+            # A pre-ledger deletion: we can't tell "<5 reviews" from "not really a
+            # hospital", so it counts as a review failure and stays re-testable.
             rec = {"decision": "drop", "reason": "legacy_first_pass",
-                   "reviewGate": "unknown", "recheckOnce": True,
-                   "decidedAt": r["goneAt"]}
+                   "reviewGate": "unknown", "decidedAt": r["goneAt"]}
         elif r["role"] == "kid":
             rec = {"decision": "merged", "mergedInto": r["mergedInto"],
                    "mergeSrc": r.get("mergeSrc"), "reviewGate": gate,
@@ -240,9 +253,11 @@ def seed(region, gate="passed"):
            "source": {"viz": cfg["viz"], "revisions": len(revs), "headRev": revs[-1][0][:10]},
            "note": ("Seeded from the review map's git history. Survivors in "
                     f"{cfg['pendingCats'] or 'no category'} are 'pending' (first manual pass "
-                    "unfinished); every other survivor is human-confirmed. Legacy drops carry "
-                    "recheckOnce=True — the next refresh re-tests them against the >=5-review "
-                    "rule once, then they are sticky forever."),
+                    "unfinished); every other survivor is human-confirmed. Drops are "
+                    "'legacy_first_pass' — the pass predates this ledger, so the reason behind "
+                    "each deletion is unknown and they are treated as review failures: every "
+                    "refresh re-tests them until they clear >=5 reviews, are deleted by hand, "
+                    "or are merged."),
            "places": out}
     save_ledger(region, led)
     return led
@@ -263,8 +278,10 @@ def stats(led):
     tot = [sum(rows[(c, k)] for c in cats) for k in kinds]
     print(f"{'TOTAL':{w}}" + "".join(f"{v:>9}" for v in tot) + f"{sum(tot):>9}")
     gate = Counter(r["reviewGate"] for r in led["places"].values())
-    recheck = sum(1 for r in led["places"].values() if r.get("recheckOnce"))
-    print(f"\nreviewGate: {dict(gate)}   legacy drops to re-test once: {recheck}")
+    sticky = sum(1 for r in led["places"].values()
+                 if r["decision"] == "drop" and not retestable(r))
+    print(f"\nreviewGate: {dict(gate)}   re-testable drops: "
+          f"{sum(1 for r in led['places'].values() if retestable(r))}   sticky drops: {sticky}")
 
 
 def main():

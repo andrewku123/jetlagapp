@@ -15,6 +15,13 @@ next scan.
     python3 poi_curate.py unmerge --region la --name "Cedars-Sinai Gastroenterology"
     python3 poi_curate.py swap    --region la --to "Kindred Hospital Paramount"
 
+    # clearing an UNDER5 batch: these died for want of reviews, so keep them
+    # re-testable instead of sticky
+    python3 poi_curate.py delete --region la --file under5.txt --reason review_failed
+
+    # kill a refresh queue item for good without ever putting it on the map
+    python3 poi_curate.py reject --region la --key google:ChIJ... --note "chiropractic suite"
+
 `--file` takes one name per line; a leading "- " is stripped, "# " comments and
 blank lines are ignored, and a trailing coordinate disambiguates a duplicated name:
 
@@ -27,8 +34,11 @@ Rules that keep a batch safe:
 - Deleting a group's representative does **not** delete kids that weren't listed:
   each surviving kid is promoted to its own standalone pin, and the promotion is
   reported.
-- Ledger decisions written here are **sticky** (`reason: manual`): unlike the
-  legacy first-pass seed, a refresh never re-tests them.
+- Ledger decisions written here are **sticky** by default (`reason: manual`): a
+  refresh never offers them back, and only a rename re-opens them. Pass
+  `--reason review_failed` for pins that are only being dropped because they are
+  under 5 reviews — those stay re-testable for ever, so they come back the moment
+  they earn the reviews.
 """
 import argparse
 import os
@@ -215,9 +225,7 @@ def sync_ledger(region, led, obj, reason="manual"):
             print(f"  NOTE: '{pin['n']}' was a {rec.get('reason')} drop and is on the map "
                   f"again — restoring it as {new}")
         if was != new or rec.get("mergedInto") != into:
-            rec.update(decision=new, mergedInto=into, decidedAt=day)
-            rec["reason"] = reason if new == "merged" else None
-            rec.pop("recheckOnce", None)
+            rec.update(decision=new, mergedInto=into, reason=None, decidedAt=day)
             changes[new if new != "pending" else "keep"] += 1
         rec["name"] = pin["n"]
         rec["mergeSrc"] = pin.get("src") if role == "kid" else None
@@ -225,15 +233,44 @@ def sync_ledger(region, led, obj, reason="manual"):
         if k in alive or rec.get("decision") == "drop":
             continue
         rec.update(decision="drop", reason=reason, mergedInto=None, decidedAt=day)
-        rec.pop("recheckOnce", None)     # a human looked at it: sticky from now on
         changes["drop"] += 1
     return changes
+
+
+def reject(led, keys, note):
+    """Sticky-drop ledger records that were never on the map (refresh queue items)."""
+    day, out = L.today(), []
+    for k in keys:
+        rec = led["places"].get(k)
+        if rec is None:
+            raise SystemExit(f"no ledger record for {k}")
+        rec.update(decision="drop", reason="manual", mergedInto=None, decidedAt=day)
+        if note:
+            rec["note"] = note
+        out.append(rec)
+    return out
+
+
+def ledger_keys(led, targets):
+    """Resolve --name/--at against the ledger (queue items aren't on the map)."""
+    keys = []
+    for name, at in targets:
+        hits = [k for k, r in led["places"].items()
+                if L.norm(r["name"]) == L.norm(name)
+                and (at is None or (abs(r["lat"] - at[0]) < 3e-4 and abs(r["lon"] - at[1]) < 3e-4))]
+        if len(hits) != 1:
+            for k in hits:
+                r = led["places"][k]
+                print(f"    {k}  {r['cat']:14} {r['lat']:.5f},{r['lon']:.5f}  {r['decision']}")
+            raise SystemExit(f"{'no' if not hits else len(hits)} ledger match(es) for {name!r}")
+        keys += hits
+    return keys
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("delete", "merge", "unmerge", "swap"):
+    for name in ("delete", "merge", "unmerge", "swap", "reject"):
         p = sub.add_parser(name)
         p.add_argument("--region", default="la", choices=sorted(L.REGIONS))
         p.add_argument("--cat", help="restrict name matching to one category")
@@ -245,6 +282,13 @@ def main():
             p.add_argument("--into", required=True, help="the surviving representative")
         if name == "swap":
             p.add_argument("--to", required=True, help="merged-away pin to promote to rep")
+        if name == "delete":
+            p.add_argument("--reason", default="manual", choices=["manual", "review_failed"],
+                           help="'review_failed' stays re-testable; 'manual' is sticky")
+        if name == "reject":
+            p.add_argument("--key", action="append", default=[],
+                           help="ledger key, e.g. google:ChIJ... (repeatable)")
+            p.add_argument("--note", help="why, for the record")
     a = ap.parse_args()
 
     targets = [(n, parse_at(a.at) if a.at else None) for n in a.name]
@@ -252,8 +296,20 @@ def main():
         with open(a.file, encoding="utf-8") as f:
             targets += [t for t in (parse_line(line) for line in f) if t]
 
-    obj = L.load_viz(a.region)
     led = L.load_ledger(a.region)
+
+    if a.cmd == "reject":
+        keys = a.key + ledger_keys(led, targets)
+        for rec in reject(led, keys, a.note):
+            print(f"sticky drop: {rec['cat']} · {rec['name']}")
+        if a.dry_run:
+            print("\n--dry-run: nothing written")
+            return
+        L.save_ledger(a.region, led)
+        print(f"\nwrote {L.REGIONS[a.region]['ledger']}")
+        return
+
+    obj = L.load_viz(a.region)
 
     if a.cmd == "delete":
         hits = resolve(obj, targets, a.cat)
@@ -278,7 +334,7 @@ def main():
         print(f"swapped rep: {old['n']} -> {hits[0][2]['n']} "
               f"({len(hits[0][3]['kids'])} merged-away pin(s))")
 
-    changes = sync_ledger(a.region, led, obj)
+    changes = sync_ledger(a.region, led, obj, getattr(a, "reason", "manual"))
     print("ledger: " + ", ".join(f"{k}+{v}" for k, v in changes.items() if v))
     for cat in sorted({h[0] for h in hits}):
         L.recount(obj[cat])
