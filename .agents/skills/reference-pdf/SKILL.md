@@ -1,113 +1,99 @@
 ---
 name: reference-pdf
 description: >-
-  Generate the printable Jet Lag: Hide & Seek (Medium) reference card PDF — a
-  front-page question deck (Matching/Measuring/Radar/Thermometer/Tentacles/Photo
-  with checkboxes, draw/keep, answer windows, end-game flags, the minimum the
-  seeker must reveal, and full per-condition photo requirements) plus play-area
-  reference lists and station histograms. Use when asked to (re)build, restyle,
-  or update that PDF.
+  Generate the printable Jet Lag: Hide & Seek reference card PDF for any game
+  size (small/medium/large) and any map — a front-page question deck
+  (Matching/Measuring/Radar/Thermometer/Tentacles/Photo/Inside with checkboxes,
+  draw/keep, answer windows, end-game flags and full per-condition photo
+  requirements) plus a play-area reference page built from that map's own
+  station and POI data. Use when asked to (re)build, restyle, or update that PDF.
 ---
 
 # Reference-card PDF
 
-Two-page (front deck + back reference) Letter PDF for the **Medium** game,
-generated from the app's station data + OpenStreetMap POIs.
-
-## Files
-- `scripts/fetch_poi.py` — queries Overpass for POIs (peaks, golf, theme parks,
-  zoos, hospitals, water/bays/reservoirs) within the 5 in-play counties; writes
-  `/tmp/poi.json`. Run this first (or whenever the POI lists need refreshing).
-- `scripts/make_reference_pdf.py` — builds `/tmp/reference.html` then renders
-  `jetlag_reference_medium.pdf` (in the repo root) via Playwright over the
-  Chrome CDP endpoint.
+Two-page Letter PDF: page 1 the question deck for one **game size**, page 2 the
+**play-area reference** for one **region**. Everything is derived from the app's
+own data — no Overpass call, no hand-maintained lists.
 
 ## Run
 ```bash
-python3 scripts/fetch_poi.py            # -> /tmp/poi.json (skip if fresh)
-python3 scripts/make_reference_pdf.py   # -> ./jetlag_reference_medium.pdf
+python3 scripts/make_reference_pdf.py --size medium --region bay
+# -> ./jetlag_reference_bay_medium.pdf   (git-ignored deliverable)
 ```
-The PDF is a **deliverable**, not app code — it is git-ignored / not committed.
+`--size small|medium|large`, `--region bay|la|sfmuni`, optional `--out PATH`.
+Requires `pip install playwright` and the CDP Chrome on `localhost:29229`.
 
-## Front page — the question deck (source of truth)
-Specs come from the official **Investigation Book** (lifack.ch `/investigation/*`)
-and Quick Start guide (`/docs/quick_start_guide/asking_questions`,
-`/the_end_game`). Keep these exact:
-- **Draw/keep:** Matching 3/1, Measuring 3/1, Radar 2/1, Thermometer 2/1,
-  Tentacles 4/2, Photo **draw 1** (no keep).
-- **Medium subject sets:** Matching & Measuring have **no size gate** — include
-  all 20 subjects each. Radar = all 9 distances (¼…100 mi). Thermometer =
-  ½/3/10 mi (drop the Large-only 50). Tentacles = the 1-mile set only
-  (Museums, Libraries, Movie theaters, Hospitals); the 15-mile set is Large-only.
-  Photo = All-Games + Medium/Large set = 14 conditions (drop the 4 Large-only).
-  Measuring includes admin-division borders **1st-4th** (state/county/city/
-  neighborhood) — don't drop the 3rd & 4th.
-- **Photo conditions** are stored as `(title, requirement, endgame_blocked)` and
-  rendered with the full requirement text under each title (verbatim from the
-  official photo cards) — titles alone are not enough.
-- **Checkboxes** (`<span class="cb">`) precede every subject. For Radar &
-  Thermometer the checkbox sits **above** each number (`.scale`/`.sc`).
-- **Answer window / consequence of failing:** ≤5 min (Photo ≤10 min in Medium);
-  miss it → hider's clock pauses until answered and they draw **no** card.
-- **End game:** all non-photo questions are completable; only Photo conditions
-  that need the station or a fixed venue are blocked (marked `†`) — there
-  "I cannot answer" is valid and the hider **still draws a card**.
-- **"Send hider":** the minimum the seeker must reveal for the question to be
-  answerable — Matching = your nearest ___; Measuring = your distance to ___;
-  Radar = location pin + radius; Thermometer = start & stop points; Tentacles /
-  Photo = nothing (about the hider / hider sends the photo); Inside = the
-  building you're in **and the floor you're on**.
-- **Card 7 — Inside (`CARD_INSIDE`)** is an app-only endgame question (not in the
-  official Medium deck): "I'm inside ___ (building) on ___ (floor) — higher or
-  lower floor?" → Higher/Lower/Same or "I can't answer". `app: logged only (no
-  auto-eliminate)`. It's appended to the page-1 multicol after Photo and (because
-  Photo fills column 2) spills onto its own page — the deck is currently 3 pages.
-  Keep its prompt + "Send hider" line in sync with the app's Ask form
-  (`inside-floor`), which makes the seeker enter both building and floor.
-- **`app` badge** = the seeker tool auto-eliminates for that subject (airport,
-  transit line, station-name length, county, city, sea level, radar, thermometer,
-  ZIP, coastline/county border, the POI subjects, and **rail station** — labelled
-  "(endgame only)" because it eliminates nothing in the first half). **Body of
-  water** is intentionally NOT badged: it stays log-only/manual (no clean dataset
-  matches the "named on Google" rule), so the seeker eliminates it by hand.
+## Size is the gate, not a copy edit
+Every size difference is data on the question, never a separate template. Each
+subject carries a gate and `keep()` decides:
 
-## Layout (current)
-- **Font:** IBM Plex Sans (+ IBM Plex Mono for coords), loaded from Google
-  Fonts via `<link>`; the render waits on `document.fonts.ready` before
-  `page.pdf`. Verify with `document.fonts.check('14px "IBM Plex Sans"')`.
-- **Page 1** is a 2-column flex (`.p1` / `.col`, `flex:1`): col1 = questions
-  1-3 (Matching, Measuring, Radar); col2 = questions 4-6 (Thermometer,
-  Tentacles, Photo). Flex does NOT paginate cleanly — each column must fit
-  within one page or the trailing card spills. Keep page-1 spacing tight.
-- **Page 2** = both station tables + reference lists in `.ref { column-count:2 }`.
-  `.rblock { break-inside:auto }` + `h3 { break-after:avoid }` lets long lists
-  flow across the column break so everything packs onto one page.
-- **Station profiles are horizontal grid TABLES, not graphs** (`html_hgrid`):
-  laid out **3 rows × n columns**, each cell = bin label (small, on top) over
-  its station count (bold). altitude = elevation band; name-length = length.
-  Zero-count rows are filtered out. The old `svg_*` / `html_table` helpers are
-  unused.
-- **Reference lists included:** airports, counties, zoos, amusement parks,
-  cities. **Golf, mountains, hospitals, and bodies of water are intentionally
-  excluded** (per request). They're still fetched/curated — just not rendered.
-- **Airports**: name left, coords right (`ul.plain.air li` flex, wraps below).
-- **Radar** has a **Custom** checkbox after the presets (`scale(RADAR,
-  custom=True)`), labelled once-per-game in the prompt.
+| gate | meaning |
+|---|---|
+| `ALL` | every size |
+| `ML` | "add for Medium & Large" |
+| `LG` | "add for Large" |
+| `OWN` | **our** question, not in the official book — every size |
 
-## Reference data
-Built from `src/data/stations.json` (counties, cities, altitude + name-length
-tables) and `/tmp/poi.json`. Curation: mountains = named
-peaks ≥ 1,500 ft. Cities, amusement parks, zoos are full.
+What that produces (verified against the investigation book):
+- **Matching / Measuring** — no size gate; the full subject list in all sizes.
+- **Radar** — all 9 distances (¼…100 mi) in all sizes, plus **Custom**: the
+  seekers may name any distance, same draw 2 / keep 1 cost, no per-game limit.
+- **Thermometer** — ½ + 3 mi all games; **+10** for Medium & Large; **+50** for
+  Large.
+- **Tentacles** — **does not exist in small games** (the whole card is dropped
+  and the remaining cards renumber). Medium = the 1-mile set (Museums,
+  Libraries, Movie theaters, Hospitals); Large adds the 15-mile set (Metro
+  lines, Zoos, Aquariums, Amusement parks).
+- **Photo** — 6 all-games + 8 Medium/Large + 4 Large-only, and the window is
+  **10 min in Small/Medium, 20 min in Large** (everything else is 5 min).
+- **Our own questions are size-independent** and must stay in every deck:
+  Inside (Floor, Traffic), Measuring ZIP code + Temperature, Sports stadium
+  (both Matching and Measuring), Photo Longest sightline + Darkest area.
 
-## Gotchas
-- **Render with Playwright, not the `google-chrome` CLI.** In this environment
-  `google-chrome` is a CDP wrapper that won't write a file; connect over CDP
-  (`http://localhost:29229`) and call `page.pdf(...)`. Set `@page { margin:0 }`
-  and pass the margins to `page.pdf` (otherwise margins double).
-- **Page-1 is a 2-column flex** (`.p1` with two `.col`s) so questions land in
-  fixed columns; flex does NOT paginate well, so if a column's content exceeds
-  one page the last card spills onto page 2 — keep page-1 spacing tight.
-- **Margins:** `@page { margin:0 }` + `page.pdf(margin=0.5in all sides)` gives a
-  true 0.5in printable border. Don't set both CSS and pdf margins to non-zero.
-- Overpass is rate-limited; `fetch_poi.py` retries 4×. Reuse `/tmp/poi.json`
-  when it's recent instead of re-querying.
+Verbatim card text (including the Large-only photos and the 15-mile tentacles)
+is transcribed at <https://jetlag.denull.ru/en/rules/questions/>; lifack.ch's
+investigation book lists the titles and size buckets but not the requirements.
+
+## Front page
+- **Rules that apply to every question are stated once** in the `.rules` header
+  strip, never per card: the missed-window penalty, "send the hider
+  coordinates, never place names", the tie rule (equal distance → **closer**,
+  same floor → **lower**), and the `†` end-game escape hatch.
+- Each card header carries only its **draw/keep** badge and its **answer
+  window** badge (`≤ 5 min`). No per-card "send hider" line, no "app"
+  auto-eliminate badges — the tool's behaviour is not printed on the card.
+- **Photo and Inside** use `detail_boxes()`: checkbox + bold title with the
+  requirement underneath. Plain subject lists use `boxes()`; Radar/Thermometer
+  use `scale()`, which puts the checkbox **above** each number.
+- **Inside** is ours: both sub-questions are draw 3, keep 1, both need both
+  players indoors, Floor additionally needs the **same building** and has no
+  "Same" answer (a tie answers Lower).
+- Cards are numbered after assembly (`n · Title`) so a dropped card can't leave
+  a gap.
+
+## Reference page
+Built only from `src/data/<prefix>stations.json` and `<prefix>poi.json`:
+station-count grids (altitude band, name length, nearest airport), stations per
+line, counties, in-play airports with coordinates, the POI inventory, the play
+area's edge stations, cities, and a blank **question log** to fill in during
+play. Airport coordinates mirror `AIRPORT_SITES` in `src/data/regions.ts`; only
+codes the stations actually measure to are printed, so a new map needs no edit
+here.
+
+Do **not** re-add raw-OSM POI lists: they disagreed with the curated POI data
+the app eliminates on (e.g. OSM gave 3 Bay zoos vs the app's 5, missing SF Zoo).
+Print counts from the app's own POI file instead.
+
+## Layout gotchas
+- **Render with Playwright, not the `google-chrome` CLI** — here `google-chrome`
+  is a CDP wrapper that won't write a file. Connect to
+  `http://localhost:29229`, `emulate_media("print")`, then `page.pdf`.
+- **Margins:** `@page { margin:0.5in }` + `prefer_css_page_size=True`. Don't set
+  margins in both CSS and `page.pdf`, they double.
+- `.p1 { column-count:2 }` with `break-inside:avoid` cards: the deck reflows on
+  its own, so a Large deck (20 photo conditions) still lands on one page. If a
+  card ever spills, tighten spacing rather than moving cards between columns.
+- Fonts: IBM Plex Sans/Mono from Google Fonts; the render awaits
+  `document.fonts.ready`.
+- Check the result by rasterising, not by eye on the HTML:
+  `pdftoppm -r 110 -png out.pdf /tmp/page`.
