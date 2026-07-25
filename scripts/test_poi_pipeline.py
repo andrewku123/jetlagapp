@@ -9,6 +9,7 @@ import sys
 
 import build_poi_data as B
 import poi_curate as C
+import registry_audit as A
 import poi_geo
 import poi_ledger as L
 import poi_refresh as R
@@ -347,6 +348,35 @@ if la:
     check("no merge points at a dropped or merged pin",
           all(places[r["mergedInto"]]["decision"] not in ("drop", "merged")
               for r in places.values() if r.get("mergedInto")))
+
+
+# --------------------------------------------------- registry cross-check
+print("\nregistry audit")
+check("a one-word pin name never claims a registry entry",
+      not A.related("Tarzana", "Tarzana Treatment Center"))
+check("a name that contains the other's words matches",
+      A.related("Olive View-UCLA Medical Center", "LAC Olive View UCLA Medical Center"))
+check("unrelated names of the same length don't match",
+      not A.related("Saint Francis Medical Center", "Saint Mary Medical Center"))
+if la:
+    hosp = L.load_viz("la")["hospital"]
+    rep = hosp["groups"][0]["rep"]
+    kid = hosp["groups"][0]["kids"][0]
+    entries = [
+        {"name": rep["n"], "city": "", "lat": rep["lat"], "lon": rep["lon"]},
+        {"name": kid["n"], "city": "", "lat": kid["lat"], "lon": kid["lon"]},
+        {"name": "Nowhere Hospital", "city": "", "lat": 34.05, "lon": -118.30},
+        {"name": "Pacific Ocean Hospital", "city": "", "lat": 33.0, "lon": -122.0},
+    ]
+    b = A.audit("la", "hospital", entries)
+    got = {k: [e["name"] if isinstance(e, dict) else e[0]["name"] for e in v]
+           for k, v in b.items()}
+    check("a registry entry on a visible pin reads covered", rep["n"] in got["covered"])
+    check("a registry entry on a merged-away pin reads merged",
+          kid["n"] in got["merged"] or kid["n"] in got["covered"])
+    check("an undiscovered facility reads missing", got["missing"] == ["Nowhere Hospital"])
+    check("entries outside the play area are not counted as gaps",
+          got["out"] == ["Pacific Ocean Hospital"])
 
 print("\n" + (f"{len(FAILED)} FAILED: " + ", ".join(FAILED) if FAILED else "all tests passed"))
 sys.exit(1 if FAILED else 0)
