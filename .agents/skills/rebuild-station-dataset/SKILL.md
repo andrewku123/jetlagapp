@@ -63,26 +63,40 @@ in place.
 
 ### 3c. `compute_headways.py` — service frequency (`headwayMin`)
 
-Adds `headwayMin: {wd, we}` (typical midday minutes between departures, best
-direction; `999` = no regular midday service) to every station. This is what the
+Adds `headwayMin: {wd, we}` to every station. This is what the
 app's **frequency eligibility** rule uses (`ELIGIBLE_HEADWAY_MIN = 60` in
 `src/data/questionSets.ts`): a station is a valid hiding spot only if
 `headwayMin[day] <= 60` — i.e. served at least once an hour. This is the
 canonical Jet Lag rule (their largest game, Japan, still required "served by at
 least one train an hour"), so it's **flat across all sizes**, not size-scaled.
+
+**The rule is the LONGEST gap, PER DIRECTION — not an average, not combined.**
+A station qualifies only if *every* travel direction has a departure at least
+once an hour throughout the game day (default window `07:30–22:00`, sentinelled
+at both edges so the first/last train must also fall within an hour of the
+window ends). So the stored value is the **worst** direction:
+`headwayMin[day] = max over directions of (longest gap in that direction)`, and
+`headwayMin[day] <= 60` is true iff both directions run ≥ hourly. Use `max`
+(worst wait), never median/average — one 90-min midday gap in one direction
+disqualifies the station even if the rest of the day is every 30 min. `999` =
+that direction has no usable service (fails). This is why peak-directional
+commuter rail (e.g. LA Metrolink) fails almost everywhere: each single
+direction is only served every ~2 h off-peak. See `scripts/compute_headways.py`
+(`gtfs_headways()` for GTFS feeds, `constant_headways()` for frequent
+fixed-frequency metro/light-rail).
 It's a game restriction derived from the data, not a user toggle (the old
 `≥hourly` checkbox is gone). Game size is still auto-derived from station count
 (`sizeForStationCount`) but only drives the question deck, not eligibility.
 A TODO in `questionSets.ts` notes a future auto-relax for genuinely sparse maps;
 the Bay Area never triggers it (247 of 248 qualify at ≤60).
 
-How each system gets its headway (kept in the `hideandseek` data dir as
-`compute_headways.py`):
-- **BART**: computed from the local GTFS (`gtfs/bart`) — resolves the active
-  service for a representative weekday + Saturday, takes the median consecutive
-  midday (10:00–15:00) gap per direction, and the station's value is the **min
-  across directions** (best service). Multi-platform stations aggregate platforms
-  within 300 m.
+How each system gets its headway (`scripts/compute_headways.py` in-repo; the Bay
+Area system-specific wiring also has a copy in the `hideandseek` data dir):
+- **GTFS systems (BART, Metrolink, any rail feed)**: `gtfs_headways()` resolves
+  the active service for a representative weekday + Saturday and, per direction,
+  takes the **longest** consecutive gap inside the game window; the station's
+  value is the **max across directions** (worst-served direction). Multi-platform
+  stations should aggregate platforms within 300 m.
 - **Caltrain**: reuses the authoritative `wd_gap`/`we_gap` already in
   `caltrain_service.json` (nearest stop within 600 m).
 - **Muni rail & VTA light rail**: representative published midday headways
