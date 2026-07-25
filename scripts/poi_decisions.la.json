@@ -15285,14 +15285,15 @@
    "name": "Kaiser Permanente Los Angeles Medical Center",
    "lat": 34.0983837,
    "lon": -118.29391249999998,
-   "decision": "merged",
-   "mergedInto": "google:ChIJGaRjMK3AwoARkoZeJ8RBESM",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJE6JXUYnZwoARFtc3dH5TvuY": {
    "cat": "library",
