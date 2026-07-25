@@ -117,8 +117,24 @@ check("hospitals seed as 'pending' (first manual pass unfinished)",
 C.op_delete(o, C.resolve(o, [("Solo", None)]))
 C.sync_ledger("la", led, o)
 rec = led["places"]["google:s"]
-check("a curated delete becomes a sticky manual drop",
-      rec["decision"] == "drop" and rec["reason"] == "manual" and "recheckOnce" not in rec, rec)
+check("a curated delete is a sticky manual drop by default",
+      rec["decision"] == "drop" and rec["reason"] == "manual" and not L.retestable(rec), rec)
+
+o3 = viz()
+led3 = ledger_from(o3)
+C.op_delete(o3, C.resolve(o3, [("Solo", None)]))
+C.sync_ledger("la", led3, o3, "review_failed")
+check("--reason review_failed keeps a dropped pin re-testable",
+      L.retestable(led3["places"]["google:s"]))
+
+led3 = ledger_from(viz())
+C.reject(led3, ["google:s"], "chiropractic suite")
+check("reject sticky-drops a queue item that was never on the map",
+      led3["places"]["google:s"]["decision"] == "drop"
+      and not L.retestable(led3["places"]["google:s"])
+      and led3["places"]["google:s"]["note"] == "chiropractic suite")
+check("reject resolves a name against the ledger",
+      C.ledger_keys(led3, [("Rep A", None)]) == ["google:a"])
 
 o2 = viz()                          # a human puts the pin back on the review map
 C.sync_ledger("la", led, o2)
@@ -159,7 +175,7 @@ def base_ledger():
                            "decidedAt": "2026-07-01", "lastSeen": "2026-07-01"},
         "google:legacy1": {"cat": "hospital", "name": "First-pass Delete", "lat": 34.0, "lon": -118.0,
                            "decision": "drop", "reason": "legacy_first_pass", "mergedInto": None,
-                           "reviewGate": "unknown", "recheckOnce": True, "closed": None,
+                           "reviewGate": "unknown", "closed": None,
                            "firstSeen": "2026-07-01", "decidedAt": "2026-07-10", "lastSeen": None},
         "google:manual1": {"cat": "hospital", "name": "Manual Delete", "lat": 34.0, "lon": -118.0,
                            "decision": "drop", "reason": "manual", "mergedInto": None,
@@ -187,12 +203,20 @@ check("a merged-away pin is skipped entirely",
       all("Merged Away" not in names(q, k) for k in q))
 check("a manual (post-ledger) deletion is never re-queued",
       all("Manual Delete" not in names(q, k) for k in q))
-check("a first-pass deletion that now clears >=5 reviews is re-tested once",
+check("a review-failure drop that now clears >=5 reviews is re-offered",
       names(q, "RECHECK") == ["First-pass Delete"], names(q, "RECHECK"))
-check("the one-time re-test flag is consumed", "recheckOnce" not in led["places"]["google:legacy1"])
+check("it stays dropped until a human acts on the queue",
+      led["places"]["google:legacy1"]["decision"] == "drop")
 led2, q2 = run([place("legacy1", "First-pass Delete")], led=led)
-check("a re-tested first-pass deletion is sticky on the next refresh",
-      q2["RECHECK"] == [] and led["places"]["google:legacy1"]["decision"] == "drop")
+check("and it keeps being offered on every later refresh",
+      names(q2, "RECHECK") == ["First-pass Delete"])
+led3, q3 = run([place("legacy1", "First-pass Delete", reviews=2)])
+check("a review-failure drop still under 5 stays silent",
+      q3["RECHECK"] == [] and L.retestable(led3["places"]["google:legacy1"]))
+led4 = base_ledger()
+C.reject(led4, ["google:legacy1"], None)
+_, q4 = run([place("legacy1", "First-pass Delete")], led=led4)
+check("rejecting it by hand stops the re-testing for good", q4["RECHECK"] == [])
 
 led, q = run([place("new2", "Fresh Clinic", reviews=2)])
 check("a new place under 5 reviews is recorded but not queued",
@@ -255,9 +279,9 @@ check("a live pin the sweep missed is a Place Details target",
       R.details_targets("la", led, raw, "keep") == ["google:keep1"])
 led["places"]["google:keep1"]["reviewGate"] = "passed"
 check("a passed gate is never re-bought", R.details_targets("la", led, raw, "keep") == [])
-check("first-pass deletions are only re-priced when asked for",
+check("re-testable drops are only re-priced when asked for",
       R.details_targets("la", led, raw, "keep") == []
-      and R.details_targets("la", led, raw, "keep+recheck") == ["google:legacy1"])
+      and R.details_targets("la", led, raw, "keep+retest") == ["google:legacy1"])
 
 
 # ------------------------------------------------------- the real LA ledger
@@ -279,8 +303,8 @@ if la:
           all(places[k]["decision"] == "merged" and places[k]["mergedInto"] in places for k in kids))
     check("everything else is a drop",
           all(r["decision"] == "drop" for k, r in places.items() if k not in alive))
-    check("first-pass drops are flagged for exactly one re-test",
-          all(r.get("recheckOnce") for r in places.values()
+    check("pre-ledger drops are re-testable review failures",
+          all(L.retestable(r) for r in places.values()
               if r.get("reason") == "legacy_first_pass"))
     check("no merge points at a dropped or merged pin",
           all(places[r["mergedInto"]]["decision"] not in ("drop", "merged")
