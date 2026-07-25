@@ -1,6 +1,6 @@
 ---
 name: gather-poi
-description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Also covers the recurring refresh (2nd and subsequent checks) — a sticky decision-ledger diff so re-checks only surface new/changed/closed pins. Use when (re)building, biannually-refreshing (every 6 months), re-checking existing POI data, or extending it to a new city/region.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, cross-check the finished pass against official registries, and apply to the app. Also covers the recurring refresh (2nd and subsequent checks) — a sticky decision-ledger diff so re-checks only surface new/changed/closed pins. Use when (re)building, biannually-refreshing (every 6 months), re-checking existing POI data, or extending it to a new city/region.
 ---
 
 # Build a Jet-Lag-ready POI database (any play area)
@@ -457,6 +457,54 @@ manual override**. Reviewers send merge/separate corrections → record them in
 `poi_dedup_overrides.json` and re-run `dedup_poi.py` (the map cache-busts its data
 on load, so corrections show without a hard refresh).
 
+### 6b. `registry_audit.py` — cross-check the finished pass against the registry
+**Run this on every category that has a reputable registry, at the end of the
+manual pass and again every refresh.** The review map shows you what you *have*;
+the only thing a human cannot eyeball off a 250-pin map is what is **missing**.
+So take the official list of every X in the play area and ask where each one
+landed — `covered` (a visible pin sits on it) / `merged` (only merged-away pins
+are there — check the rep is sane) / `dropped` (with the ledger's reason — was
+that right?) / `missing` (never discovered).
+
+```bash
+python3 registry_audit.py --region la --cat hospital --csv auth_lists/chhs_la.csv
+python3 registry_audit.py --region bay --cat mountain --source geonames
+```
+`--csv` takes any file with `name[,lat,lon][,city]`; `--source` runs a built-in
+fetcher (`cms`, `geonames`). Registry entries outside the play area are excluded
+by the same polygon test the pipeline uses, so the count it checks is the count
+that matters. Matching is 500 m by coordinate, else a name-containment match
+within 2 km — with a **two-word floor**, because a pin called just "Tarzana"
+otherwise claims every registry entry with Tarzana in its name.
+
+**A `missing` verdict is not automatically a bug — resolve each one on Google
+Maps before acting.** Discovery asks Google for places whose `types` include the
+category, so a facility Google files under another type is invisible to us *by
+construction*, and correctly so: the game's rule is "what a seeker sees on Google
+Maps". If the place carries the category icon, it's a real recall hole — add it to
+`auth_lists/` and re-run the icon-check. If it doesn't, the registry and Google
+disagree and **Google wins**; leave it out.
+
+Worked example (LA hospitals, 2026-07 — CHHS licensed general-acute + acute-psych,
+open, 137 entries → 104 in play): **97 covered, 1 merged, 1 dropped, 5 missing.**
+Every one of the six non-covered turned out to be a Google *category* disagreement,
+not a hole — verified pin by pin on Google Maps:
+
+| facility | Google category | verdict |
+|---|---|---|
+| Rancho Los Amigos National Rehab Center | Rehabilitation center | correctly out (we had deleted its 3 hospital-icon sub-pins) |
+| Metropolitan State Hospital (DSH) | Mental health service | correctly out |
+| BHC Alhambra Hospital | Mental health clinic | correctly out |
+| Tarzana Treatment Centers | Addiction treatment center | correctly out |
+| Kaiser Permanente Mental Health Center | Medical clinic | correctly out |
+| Joyce Eisenberg-Keefer Medical Center | Public medical center, **4 reviews** | out on the review rule too |
+
+So: state licensure and Google's icon are different taxonomies — psychiatric,
+rehab and addiction hospitals are licensed hospitals that Google almost never
+types as `hospital`. The audit's value is that it turns "are we missing
+something?" into a short list you can settle in ten minutes, with a written reason
+per entry.
+
 ### 7. Apply to the app
 Once reviewers sign off, write `poi_deduped.json` into the app's `poi.json` and
 wire the categories into the POI tab (see `build_poi_data.py` / the POI-tab PR).
@@ -822,6 +870,10 @@ standalone pins instead of taking them down with it.
    `displayName` different from `name_seen`, re-queue it — a listing that was a fake
    or mis-tagged suite can become a real business. That is the **only** path by
    which a drop returns.
+6. **Registry cross-check (free).** Re-run `registry_audit.py` per category that
+   has a registry (see the table below) — registries gain and lose entries too, so
+   this is how a hospital that opened since the last cycle surfaces even if Google's
+   sweep and OSM both missed it. Only `dropped`/`missing` need eyes.
 
 ### Running it
 
@@ -865,22 +917,29 @@ gate that already passed. Set the console quota cap + budget alert first, as alw
 
 ## Authoritative source registry (per category, per country)
 
-The third discovery source. Feed any of these through `authoritative_candidates.py`
-(built-in for the starred ones) or the generic `auth_lists/*.csv` intake, then the
-icon-check. Verified reachable as of this writing; deep links rot — search the
-agency if a URL 404s.
+These serve **two** purposes, and every source below is usable for both:
+1. **Discovery (before curation)** — feed through `authoritative_candidates.py`
+   (built-in for the starred ones) or the generic `auth_lists/*.csv` intake, then
+   the icon-check, to widen recall.
+2. **Cross-check (after curation, and every refresh)** — feed the same list to
+   `registry_audit.py` (step 6b) to find what the finished map is missing.
+
+Verified reachable as of this writing; deep links rot — search the agency if a URL
+404s.
 
 **United States**
 | category | source | access |
 |---|---|---|
 | mountain ★ | USGS GNIS / GeoNames `US.zip` | `download.geonames.org/export/dump/US.zip` (coords) |
-| hospital ★ | CMS Hospital General Information | `data.cms.gov` dataset `xubh-q36u` (JSON API; address) |
+| hospital ★ | CMS Hospital General Information | `data.cms.gov` dataset `xubh-q36u` (JSON API; address) — Medicare-certified only, so it under-counts psych/rehab |
+| hospital (best for a cross-check) | **state licensing registry** — every state licenses its hospitals, with coordinates. CA: CHHS "Health Facility Locations" | `data.chhs.ca.gov/dataset/healthcare-facility-locations` → filter `COUNTY_NAME`, `FAC_FDR in (GENERAL ACUTE CARE HOSPITAL, ACUTE PSYCHIATRIC HOSPITAL)`, `FAC_STATUS_TYPE_CODE=OPEN`, keep `FACNAME,CITY,LATITUDE,LONGITUDE` → `auth_lists/<state>_<area>.csv`. **Prefer this over CMS for the audit: it has real coords and includes the psych/rehab hospitals CMS omits.** |
 | hospital (alt) | HIFLD Hospitals | hifld-geoplatform (ArcGIS; coords) — endpoint moves |
 | museum ★ | IMLS MUDF via the ArcGIS "GLAMs" layer | `fetch_imls_arcgis.py` queries the GLAMs FeatureServer by bbox (`TYPE_MAIN='MUS'`, coords) → `auth_lists/museum.csv`. **Use the ArcGIS layer, not imls.gov (which timed out / 000 from this env). +38 net-new in the Bay Area — biggest single-source lift; but over-inclusive, needs manual pruning.** |
 | library | IMLS PLS via the ArcGIS "Public Library Outlet" layer | `fetch_imls_arcgis.py` queries the PLS FeatureServer by bbox (real per-outlet coords) → `auth_lists/library.csv`. **Only +2 net-new — clean but redundant with OSM+Google; low priority.** |
 | zoo / aquarium ★ | AZA current accreditation list | `fetch_zoos_aza.py` scrapes aza.org → `auth_lists/zoo_aquarium.csv` |
 | consulate ★ | US Congressional Directory "Foreign Diplomatic Offices" (govinfo) | `fetch_consulates_fco.py` parses the PDF → `auth_lists/consulate.csv` |
 | park | USGS PAD-US / TPL ParkServe | usgs.gov PAD-US; tpl.org — **GIS boundaries, not Google park-icon POIs; OSM already has thousands; opt-in only (skipped — would mostly drop at icon-check)** |
+| stadium | the leagues themselves (MLB/NBA/WNBA/NFL/NHL/MLS/NWSL/MiLB/USL venue lists) | no registry, but the professional keep-list *is* the authoritative set — cross-check the manual `STADIUM_PRO` list against each league's team/venue page (see "Sports stadiums") |
 
 **Canada** (verified reachable)
 | category | source | access |
@@ -894,7 +953,14 @@ agency if a URL 404s.
 
 **No authoritative public list anywhere** (rely on Google + OSM): `movie_theater`,
 `golf_course`, `amusement_park` — there's no government registry; only commercial
-or community sites (e.g. Cinema Treasures), which we don't treat as authoritative.
+or community sites (Cinema Treasures; chain locators for AMC/Regal/Cinemark; state
+golf-association club directories; state amusement-ride permit units, which publish
+inspections but not a POI list), none of which we treat as authoritative. Skip the
+cross-check for these three and rely on the OSM diff, which is the same idea for
+free.
+
+So the cross-check applies to **9 of 12** categories: hospital, museum, library,
+zoo, aquarium, consulate, mountain, stadium, and (optionally) park.
 
 To add a country: point `GEONAMES_COUNTRY` at its dump, set the admin-area
 pre-filter, and drop its registries as CSVs. Everything else is unchanged.
