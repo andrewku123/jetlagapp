@@ -142,6 +142,22 @@ check("a human putting a dropped pin back on the map restores it (loudly)",
       led["places"]["google:s"]["decision"] == "pending")
 
 o = viz()
+C.op_merge(o, C.resolve(o, [("Rep B", None)])[0],
+           C.resolve(o, [("Kid A1", None), ("Kid A2", None), ("Rep A", None)]))
+b = [g for g in o["hospital"]["groups"] if g["rep"]["n"] == "Rep B"][0]
+check("a merge can swallow a whole group, rep last",
+      sorted(k["n"] for k in b["kids"]) == ["Kid A1", "Kid A2", "Kid B1", "Rep A"]
+      and [g["rep"]["n"] for g in o["hospital"]["groups"]] == ["Rep B"],
+      [k["n"] for k in b["kids"]])
+
+o = viz()
+C.op_merge(o, C.resolve(o, [("Solo", None)])[0], C.resolve(o, [("Rep A", None)]))
+check("merging just the rep leaves its kids behind as standalone pins",
+      sorted(s["n"] for s in o["hospital"]["singles"]) == ["Dupe", "Dupe", "Kid A1", "Kid A2"]
+      and all("src" not in s for s in o["hospital"]["singles"]),
+      [s["n"] for s in o["hospital"]["singles"]])
+
+o = viz()
 led = ledger_from(o)
 C.op_swap(o, C.resolve(o, [("Kid A1", None)])[0])
 C.sync_ledger("la", led, o)
