@@ -140,19 +140,32 @@ def op_delete(obj, hits):
     return promoted
 
 
-def _detach(obj, cat, role, pin, group):
-    """Pull a pin out of the structure without deleting it."""
+def _detach(obj, cat, pin):
+    """Pull a pin out of the structure without deleting it.
+
+    Looks the pin up by identity rather than trusting the role it had when the
+    batch was resolved: one merge can move a whole group (its kids first, then its
+    rep), and by the time the rep's turn comes the group may already be gone.
+    """
     c = obj[cat]
-    if role == "single":
-        c["singles"].remove(pin)
-    elif role == "kid":
-        group["kids"].remove(pin)
-        if not group["kids"]:
-            c["groups"].remove(group)
-            c["singles"].append(group["rep"])
-    else:
-        c["groups"].remove(group)
-        c["singles"].extend(group["kids"])
+    for i, s in enumerate(c["singles"]):
+        if s is pin:
+            del c["singles"][i]
+            return
+    for g in list(c["groups"]):
+        if g["rep"] is pin:
+            c["groups"].remove(g)
+            c["singles"].extend(g["kids"])
+            for k in g["kids"]:
+                k.pop("src", None)
+            return
+        if any(k is pin for k in g["kids"]):
+            g["kids"] = [k for k in g["kids"] if k is not pin]
+            if not g["kids"]:
+                c["groups"].remove(g)
+                c["singles"].append(g["rep"])
+            return
+    raise SystemExit(f"'{pin['n']}' is no longer on the map")
 
 
 def op_merge(obj, rep_hit, kid_hits):
@@ -168,7 +181,7 @@ def op_merge(obj, rep_hit, kid_hits):
             raise SystemExit(f"cannot merge across categories ({kcat} -> {cat})")
         if kpin is rep:
             continue
-        _detach(obj, kcat, krole, kpin, kgroup)
+        _detach(obj, kcat, kpin)
         kpin["src"] = "manual"
         group["kids"].append(kpin)
     return group
@@ -178,7 +191,7 @@ def op_unmerge(obj, hits):
     for cat, role, pin, group in hits:
         if role != "kid":
             raise SystemExit(f"'{pin['n']}' is not a merged-away pin (it is a {role})")
-        _detach(obj, cat, role, pin, group)
+        _detach(obj, cat, pin)
         pin.pop("src", None)
         obj[cat]["singles"].append(pin)
 
