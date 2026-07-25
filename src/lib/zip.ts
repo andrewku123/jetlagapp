@@ -1,6 +1,6 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
-import zctasRaw from '../data/zctas.geojson.json'
+import { zctasData as zctasRaw } from '../data/regions'
 
 // ZCTA (ZIP Code Tabulation Area) polygons used by the "Measuring — ZIP code"
 // question. Both the seeker's ZIP (from their coordinate) and each station's ZIP

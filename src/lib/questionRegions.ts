@@ -3,6 +3,7 @@ import type { LatLng, QuestionRecord } from '../types'
 import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
+import { REGION_FRAME } from '../data/regions'
 import { RAIL_STATIONS, nearestRailStationMiles } from './railStations'
 import { countyAt, countyGeom } from './counties'
 import { cityAt, cityGeom } from './cities'
@@ -103,6 +104,41 @@ function toLatLng(mp: MultiPolygon): LatLngMultiPolygon {
   return mp.map((poly) => poly.map((ring) => ring.map(([x, y]) => [y, x] as [number, number])))
 }
 
+// Subdivide long polygon edges into short segments. A Voronoi cell boundary is a
+// single straight equirectangular line, but polygon-clipping collapses it to just
+// its two endpoints — and a straight lat/lon segment spanning many miles bows off
+// its true path once projected to Web Mercator, so the drawn edge can cut across
+// stations sitting on its correct side (the aquarium Matching shading crossing
+// kept stations near Van Ness). Splitting each edge into <= ~0.2 mi steps keeps
+// every inserted vertex exactly on the true straight boundary (linear lat/lon
+// interpolation stays on the equirectangular line the cell was built in) while
+// making each rendered segment short enough to hug it — the same fix as the
+// sampled thermometer bisector. Capped so the offscreen world-spanning outer ring
+// doesn't explode into thousands of points.
+const DENSIFY_STEP_DEG = 0.003 // ~0.2 mi
+const DENSIFY_MAX_SUBDIV = 400
+function densifyLatLng(mp: LatLngMultiPolygon): LatLngMultiPolygon {
+  return mp.map((poly) =>
+    poly.map((ring) => {
+      if (ring.length < 2) return ring
+      const out: [number, number][] = []
+      for (let i = 0; i < ring.length; i++) {
+        const [aLat, aLon] = ring[i]
+        const [bLat, bLon] = ring[(i + 1) % ring.length]
+        out.push([aLat, aLon])
+        const dLat = bLat - aLat
+        const dLon = bLon - aLon
+        const n = Math.min(DENSIFY_MAX_SUBDIV, Math.floor(Math.hypot(dLat, dLon) / DENSIFY_STEP_DEG))
+        for (let k = 1; k < n; k++) {
+          const t = k / n
+          out.push([aLat + dLat * t, aLon + dLon * t])
+        }
+      }
+      return out
+    }),
+  )
+}
+
 // Snap a ring's vertices to a coordinate grid. polygon-clipping's sweep line can
 // hit an "infinite loop over endpoints" on chains of overlapping circles (as a
 // corridor of disks along a wiggly coastline produces); snapping to a coarse grid
@@ -175,10 +211,11 @@ function clipHalfPlane(poly: P2[], a: number, b: number, c: number): P2[] {
 // Finite lon/lat box the Voronoi cells are bounded to. A Voronoi cell can be an
 // unbounded wedge; without a finite frame it extends to absurd coordinates and,
 // once clipped to the world (lat ±85), renders as a giant triangle/bowtie across
-// the map. This box comfortably wraps the play area (bbox -122.7,37.0 →
-// -121.4,38.2) with padding, so every cell is a sane bounded polygon and the edge
-// of the frame sits well off-screen.
-const CELL_FRAME = { minLon: -124, minLat: 36, maxLon: -120, maxLat: 39 }
+// the map. REGION_FRAME is derived from the active region's own station spread
+// (+ padding) so it wraps whatever play area is active — a hardcoded box would
+// misplace the shading on any other region (e.g. it clipped LA's cell to the Bay
+// Area). Every cell is thus a sane bounded polygon whose frame edge sits off-screen.
+const CELL_FRAME = REGION_FRAME
 
 // The Voronoi cell of `sites[idx]` — the region closer to it than to any other
 // site — as a [lon, lat] ring, clipped to CELL_FRAME. Computed in an
@@ -228,7 +265,7 @@ export function poiMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   const elim = yes
     ? polygonClipping.difference([WORLD_RING], cellPoly)
     : polygonClipping.intersection([WORLD_RING], cellPoly)
-  return elim.length ? toLatLng(elim) : null
+  return elim.length ? densifyLatLng(toLatLng(elim)) : null
 }
 
 // The radar disk (or its complement) eliminated by a tentacle whose answer is a
@@ -271,7 +308,7 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   const keep = clipKeepToDisk([[cell]], seeker, radius)
   if (!keep.length) return null
   const elim = polygonClipping.difference([WORLD_RING], keep)
-  return elim.length ? toLatLng(elim) : null
+  return elim.length ? densifyLatLng(toLatLng(elim)) : null
 }
 
 // Clip a keep region to the seeker's radar disk (a normal tentacle answer means
@@ -356,7 +393,7 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   const keep = clipKeepToDisk(robustUnion(cells), seeker, radius)
   if (!keep.length) return null
   const elim = polygonClipping.difference([WORLD_RING], keep)
-  return elim.length ? toLatLng(elim) : null
+  return elim.length ? densifyLatLng(toLatLng(elim)) : null
 }
 
 // --- Measuring: shade the union of disks (radius = seeker's own nearest-POI
@@ -434,7 +471,11 @@ export function airportMatchEliminatedRegion(record: QuestionRecord): LatLngMult
   const elim = yes
     ? polygonClipping.difference([WORLD_RING], cellPoly)
     : polygonClipping.intersection([WORLD_RING], cellPoly)
-  return elim.length ? toLatLng(elim) : null
+  // Densify: the Voronoi cell edge is a single straight equirectangular bisector
+  // that bows ~0.7 mi off its true path once Leaflet draws it in Web Mercator,
+  // swallowing kept stations near the boundary (103rd / Watts on LA's LAX cell).
+  // Same fix as poiMatchEliminatedRegion.
+  return elim.length ? densifyLatLng(toLatLng(elim)) : null
 }
 
 // --- Measuring a nearest airport: shade the union of your-distance disks around

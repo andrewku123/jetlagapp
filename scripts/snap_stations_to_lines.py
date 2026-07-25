@@ -1,88 +1,167 @@
-"""Snap station markers onto their own system's drawn transit-line overlay.
+#!/usr/bin/env python3
+"""Snap each LA station coordinate to the closest point on the transit line(s) it
+serves, so the dot sits exactly on the drawn line. The station coordinate is the
+single source of truth for BOTH the rendered dot and the game logic, so snapping
+it moves both together (the user's "snap both to the line").
 
-Where a line runs a one-way couplet (northbound and southbound on different
-parallel streets), OSM stores a separate stop for each direction. The overlay
-draws one direction's track while a station's coordinate may come from the
-other, leaving the dot a block off the line (e.g. VTA downtown San Jose:
-1st/2nd Street couplet). This nudges any station that sits more than SNAP_TOL_M
-from its system's overlay onto the nearest point of that overlay, so the dot
-always lands on the drawn line. Stations already on their line (the vast
-majority) are untouched.
-
-Operates in place on the built app data; airport distances are recomputed for
-moved stations (county/city/elevation move <100 m and are left as-is).
+Coordinate-derived baked fields are re-derived from the snapped point so the game
+stays consistent with where the dot now sits:
+  - airportDist / nearestAirport : pure haversine (R = 6,371,000 m, matches build)
+  - county / city                : local point-in-polygon on the bundled geojson
+Fields resolved from the coordinate at runtime (match-city via cityAt, measure-zip
+via zipAt) need no baking. Elevation moves sub-metre for these tiny snaps and is
+left as-is (no offline DEM). Run from repo root: python3 scripts/snap_stations_to_lines.py
 """
-import json, math
+import json
+import math
+import os
 
-DATA = "/home/ubuntu/repos/bayarea-hideandseek/src/data"
-STATIONS = f"{DATA}/stations.json"
-LINES = f"{DATA}/transit-lines.geojson.json"
+HERE = os.path.dirname(__file__)
+DATA = os.path.join(HERE, "..", "src", "data")
 
-SNAP_TOL_M = 40.0    # leave stations already this close to their line alone
-SNAP_MAX_M = 400.0   # don't drag a station from further than this (safety)
+R = 6371000.0
+AIRPORTS = {"LAX": (33.94256, -118.40853), "LGB": (33.81765, -118.15227)}
+CITY_SNAP_M = 150.0  # mirror cityAt()'s boundary-erosion snap
 
-AIRPORTS = {
-    "SFO": (37.619083, -122.381597),
-    "OAK": (37.719016, -122.219595),
-    "SJC": (37.363510, -121.928648),
+# transit-line feature colour -> line name (empirically derived, see session)
+CMAP = {
+    "#0072bc": "A Line", "#e3131b": "B Line", "#58a738": "C Line",
+    "#a05da5": "D Line", "#f7b618": "E Line", "#fc4c02": "G Line",
+    "#adb8bf": "J Line", "#e96bb0": "K Line",
 }
 
 
+def load(name):
+    with open(os.path.join(DATA, name)) as fh:
+        return json.load(fh)
+
+
 def hav(a, b):
-    R = 6371000.0
-    dlat = math.radians(b[0] - a[0]); dlon = math.radians(b[1] - a[1])
-    x = math.sin(dlat / 2) ** 2 + math.cos(math.radians(a[0])) * math.cos(math.radians(b[0])) * math.sin(dlon / 2) ** 2
-    return 2 * R * math.asin(math.sqrt(x))
+    la1, lo1, la2, lo2 = map(math.radians, [a[0], a[1], b[0], b[1]])
+    dla, dlo = la2 - la1, lo2 - lo1
+    h = math.sin(dla / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin(dlo / 2) ** 2
+    return 2 * R * math.asin(math.sqrt(h))
 
 
-def _mpd(lat):
-    return 111320.0 * math.cos(math.radians(lat)), 110540.0
+def line_parts(feat):
+    g = feat["geometry"]
+    return [g["coordinates"]] if g["type"] == "LineString" else g["coordinates"]
 
 
-def nearest_on_segment(p, a, b):
-    """Nearest point (lat, lon) on segment a-b to p, and its distance (m),
-    using a local planar approximation around p."""
-    mx, my = _mpd(p[0])
-    px, py = p[1] * mx, p[0] * my
-    ax, ay = a[1] * mx, a[0] * my
-    bx, by = b[1] * mx, b[0] * my
-    dx, dy = bx - ax, by - ay
-    L2 = dx * dx + dy * dy
-    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / L2))
-    cx, cy = ax + t * dx, ay + t * dy
-    dist = math.hypot(px - cx, py - cy)
-    return (cy / my, cx / mx), dist
+def snap(lat, lon, lines, byline):
+    """Nearest point (lat, lon) on the union of the station's own lines."""
+    cr = math.cos(math.radians(lat))
+    px, py = lon * cr, lat
+    best = (float("inf"), lat, lon)
+    for ln in lines:
+        for part in byline.get(ln, []):
+            for i in range(len(part) - 1):
+                ax, ay = part[i][0] * cr, part[i][1]
+                bx, by = part[i + 1][0] * cr, part[i + 1][1]
+                dx, dy = bx - ax, by - ay
+                if dx == 0 and dy == 0:
+                    t = 0.0
+                else:
+                    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)))
+                qx, qy = ax + t * dx, ay + t * dy
+                d = math.hypot(px - qx, py - qy)
+                if d < best[0]:
+                    best = (d, qy, qx / cr)
+    return best[1], best[2]
+
+
+def ring_contains(lat, lon, ring):
+    inside = False
+    j = len(ring) - 1
+    for i in range(len(ring)):
+        xi, yi = ring[i][0], ring[i][1]
+        xj, yj = ring[j][0], ring[j][1]
+        if (yi > lat) != (yj > lat) and lon < (xj - xi) * (lat - yi) / (yj - yi) + xi:
+            inside = not inside
+        j = i
+    return inside
+
+
+def polys_of(feat):
+    g = feat["geometry"]
+    if g["type"] == "Polygon":
+        return [g["coordinates"]]
+    if g["type"] == "MultiPolygon":
+        return g["coordinates"]
+    return []
+
+
+def contains(lat, lon, feat):
+    for poly in polys_of(feat):
+        if not ring_contains(lat, lon, poly[0]):
+            continue
+        if not any(ring_contains(lat, lon, poly[h]) for h in range(1, len(poly))):
+            return True
+    return False
+
+
+def dist_to_feat_m(lat, lon, feat):
+    cr = math.cos(math.radians(lat))
+    px, py = lon * cr, lat
+    best = float("inf")
+    for poly in polys_of(feat):
+        for ring in poly:
+            for i in range(len(ring) - 1):
+                ax, ay = ring[i][0] * cr, ring[i][1]
+                bx, by = ring[i + 1][0] * cr, ring[i + 1][1]
+                dx, dy = bx - ax, by - ay
+                if dx == 0 and dy == 0:
+                    t = 0.0
+                else:
+                    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)))
+                d = math.hypot(px - (ax + t * dx), py - (ay + t * dy)) * 111320.0
+                if d < best:
+                    best = d
+    return best
+
+
+def place_at(lat, lon, places, fallback):
+    for f in places["features"]:
+        if contains(lat, lon, f):
+            return f["properties"]["name"]
+    best, best_d = fallback, CITY_SNAP_M
+    for f in places["features"]:
+        d = dist_to_feat_m(lat, lon, f)
+        if d < best_d:
+            best_d, best = d, f["properties"]["name"]
+    return best
+
+
+def county_at(lat, lon, counties, fallback):
+    for f in counties["features"]:
+        if contains(lat, lon, f):
+            return f["properties"]["name"]
+    return fallback
 
 
 def main():
-    stations = json.load(open(STATIONS))
-    geo = json.load(open(LINES))
-    lines_by_sys = {}
-    for f in geo["features"]:
-        lines_by_sys.setdefault(f["properties"]["system"], []).append(f["geometry"]["coordinates"])
+    sts = load("la.stations.json")
+    tl = load("la.transit-lines.geojson.json")
+    places = load("la.places.geojson.json")
+    counties = load("la.counties.geojson.json")
+    byline = {CMAP[f["properties"]["colors"][0]]: line_parts(f) for f in tl["features"]}
 
     moved = 0
-    for s in stations:
-        best_pt, best_d = None, 1e18
-        for sys in s["systems"]:
-            for line in lines_by_sys.get(sys, []):
-                for i in range(len(line) - 1):
-                    pt, d = nearest_on_segment((s["lat"], s["lon"]),
-                                               (line[i][1], line[i][0]),
-                                               (line[i + 1][1], line[i + 1][0]))
-                    if d < best_d:
-                        best_d, best_pt = d, pt
-        if best_pt is None or best_d <= SNAP_TOL_M or best_d > SNAP_MAX_M:
-            continue
-        s["lat"], s["lon"] = round(best_pt[0], 6), round(best_pt[1], 6)
-        dist = {k: round(hav((s["lat"], s["lon"]), v), 1) for k, v in AIRPORTS.items()}
-        s["airportDist"] = dist
-        s["nearestAirport"] = min(dist, key=dist.get)
-        moved += 1
-        print(f"snapped {s['name']:28} ({s['systems']})  {best_d:.0f} m -> on line")
+    for s in sts:
+        nlat, nlon = snap(s["lat"], s["lon"], s["lines"], byline)
+        d = hav((s["lat"], s["lon"]), (nlat, nlon))
+        if d > 0.5:
+            moved += 1
+        s["lat"] = round(nlat, 6)
+        s["lon"] = round(nlon, 6)
+        s["airportDist"] = {k: round(hav((nlat, nlon), v), 1) for k, v in AIRPORTS.items()}
+        s["nearestAirport"] = min(AIRPORTS, key=lambda k: s["airportDist"][k])
+        s["county"] = county_at(nlat, nlon, counties, s.get("county"))
+        s["city"] = place_at(nlat, nlon, places, s.get("city"))
 
-    json.dump(stations, open(STATIONS, "w"), indent=1)
-    print(f"done: {moved} station(s) snapped onto their overlay; {len(stations)} total")
+    with open(os.path.join(DATA, "la.stations.json"), "w") as fh:
+        json.dump(sts, fh, ensure_ascii=False)
+    print(f"snapped {moved}/{len(sts)} stations (>0.5 m); rebaked airport/city/county")
 
 
 if __name__ == "__main__":

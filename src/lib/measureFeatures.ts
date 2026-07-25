@@ -1,6 +1,6 @@
 import type { LatLng } from '../types'
 import { haversineMiles } from './geo'
-import featuresRaw from '../data/measure-features.geojson.json'
+import { measureFeaturesData as featuresRaw } from '../data/regions'
 
 // Linear geographic features used by the "Measuring — border / coastline"
 // question: the seeker and every station are compared by straight-line distance

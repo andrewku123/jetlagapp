@@ -59,6 +59,96 @@ The coastline drawn on the map AND used to eliminate stations for the
   mouth. If a whole region is out of play, add a `coast_exclude` box instead
   (shape it to spare any in-play island nearby).
 
+## LA (dam-mode, and unifying it with the play-area ocean border)
+
+LA uses the SAME dam machinery, with three differences worth reusing:
+
+1. **Shared dam file.** LA dams live in `scripts/la_coast_dams.json`
+   (`{"dams": [[[lon,lat],[lon,lat]], ...]}`), read by BOTH
+   `scripts/build_la_play_area.py` (the play-area ocean border) AND
+   `build_measure_features.py` (the coastline question). This guarantees the
+   coastline line and the play-area's ocean edge match exactly — which is what
+   Andrew wants ("define the coastline → it defines the play-area ocean border").
+   In the LA cfg set `"dams_file": "la_coast_dams.json"` (main() injects it into
+   `cfg["dams"]`); do NOT also list `coast_water_clip` (that's the old open-coast
+   mode with no dams — dam-mode replaces it).
+
+2. **Play-area side.** `build_la_play_area.py:build_ocean(dams)` adds the dam
+   walls to the polygonize net so the sea face is cut at each mouth. The water
+   sealed behind the dams = `build_ocean([]).difference(build_ocean(dams))`; add
+   it to the footprint so those harbor basins/channels render in-play (satellite)
+   instead of grey. Rebuild the play area FIRST, then measure-features (which
+   reads the updated play area).
+
+3. **Reproducible saltwater (no out-of-repo mask).** The old LA cfg pointed
+   `land`/`saltwater`/`bay` at `../../la_build/la_water_mask.geojson`, which is
+   NOT in the repo and is gone. Replace with committed
+   `scripts/la_ocean.geojson.json` = the raw sea face flooded from the OSM
+   coastline (`build_la_play_area.build_ocean([])`), used only as the topology
+   reference to pick the open-ocean polygonized face. Regenerate with:
+   `python3 -c "import build_la_play_area as m,json; from shapely.geometry import mapping; json.dump({'type':'FeatureCollection','features':[{'type':'Feature','properties':{},'geometry':mapping(m.build_ocean([]))}]}, open('la_ocean.geojson.json','w'))"`.
+
+Rule for which mouths to dam: Andrew's rule is "if one bank has playable area,
+keep the water in (up to ~mid-channel); if both banks non-playable, leave out."
+For harbors, dam the narrow inner-channel mouths to pull the jagged inter-dock
+channels in; leaving the outer breakwater/harbor entrances undammed keeps the big
+central basin out (its shore then follows the dock faces — inherently jagged, and
+that's expected). Verify "extends to the play-area end" by checking the
+ocean-facing play boundary is fully covered:
+`play.boundary.intersection(build_ocean(dams).buffer(0.0006)).difference(coast.buffer(0.0015))`
+should have no segments longer than ~0.002°. LA rebuild:
+`CITY=la python3 scripts/build_measure_features.py`.
+
+### Enclosed harbor/marina basins vs. the open basin (two different fixes)
+A greyed water body inside the play area is one of two things — check which:
+- **Interior hole** (fully enclosed by in-play land, e.g. Marina del Rey, the
+  downtown Long Beach basins, an inland reservoir): the city's Census polygon
+  carved out its harbor water; the ocean flood does NOT reach it. Do NOT dam it.
+  `build_la_play_area.py:fill_small_holes()` drops interior rings below
+  `HOLE_FILL_MAX` (~0.0003 deg² ≈ 3 km²) so they render in-play. The cap sits
+  above Marina del Rey (~1.3 km²) but below the smallest non-playable enclave
+  city (~5 km²), so land enclaves stay out. Diagnose with
+  `[Polygon(r).area for g in play.geoms for r in g.interiors]`.
+- **Open ocean bite** (opens to the sea, e.g. the central San Pedro Bay basin):
+  it's part of `build_ocean(dams)`, a concavity in the boundary, NOT an interior
+  ring — hole-filling never touches it, so it stays out (which is what Andrew
+  wants for the central basin). To pull one of these in you'd add a dam.
+Quick test: `ocean.contains(pt)` true → open bite (dam it to include);
+false but greyed → interior hole (fill_small_holes handles it).
+
+### Dropping an out-of-play beach stretch (coast_exclude)
+Where the play area pulls inland and a beach is out of play, the coastline should
+have a gap there (the `play.buffer(0.004)` clip alone can bridge it via a nearby
+in-play sliver). Add a `[w,s,e,n]` box to the city cfg's `coast_exclude`; in
+dam-mode it's applied as `shore.difference(exclude)`. Andrew gives the gap as the
+two shore points where the coastline should terminate (the stretch coming from
+one direction ends at one point, the other stretch resumes at the other) — make
+the box span exactly those two latitudes (e.g. LA Hermosa Beach:
+`[-118.43, 33.859814, -118.39, 33.868349]`).
+
+## Including ocean piers (LA)
+Recreational ocean piers jut past the shore; to make their decks in-play AND have
+both the coastline and the play-area edge trace the real pier outline (NOT a
+circular buffer):
+- Commit the pier deck polygons as OSM `man_made=pier` footprints in
+  `scripts/la_piers.geojson.json` (a FeatureCollection; `properties.name` per pier).
+  Only recreational OPEN-OCEAN piers, and only those that get clipped seaward by
+  the shore. LA set: Santa Monica, Venice Fishing, Manhattan Beach, Redondo Beach,
+  Belmont. EXCLUDE Hermosa (coastline gap), Orange County (Seal Beach/Huntington),
+  and harbor berths / unnamed docks (Marina del Rey, San Pedro).
+- `build_measure_features.py`: add `"piers_file"` to the city cfg, load it in
+  `main()`, pass `piers=` to `build_coastline`. Inside, carve each pier's
+  `exterior`+`interiors` into the polygonize `net` so the deck becomes its own
+  face and `bayface.boundary` traces around it.
+- `build_la_play_area.py`: `load_piers()`, compute `ocean_for_play =
+  ocean.difference(piers)` and use THAT for `land`/`trimmed` (keep `harbor_fill`
+  on the true dammed `ocean` so piers don't leak into harbor semantics), then add
+  the pier polygons to the play union so decks read as land.
+- Rebuild BOTH (`build_la_play_area.py` then `CITY=la build_measure_features.py`);
+  verify with point-in-polygon that the pier's POIs flip out→in play. When the
+  play area changes, re-sync `public/poi-la-review/play_area.geojson.json` and
+  re-add any POIs deleted earlier that are now back in play.
+
 ## Verify before pushing
 - Rebuild: `cd <repo> && CITY=bayarea python scripts/build_measure_features.py`
 - Check specific regions by summing `LineString.intersection(box).length` over the
@@ -68,6 +158,33 @@ The coastline drawn on the map AND used to eliminate stations for the
 - `npm run lint && npm run test && npm run build` (147 tests must pass; the
   measureFeatureShading / questionRegions tests consume this file).
 - Do NOT commit the throwaway `scripts/_*.py` debug/render scripts.
+
+## Sibling use: clipping the PLAY AREA seaward edge to the shore
+The same OSM `natural=coastline` is also used to make the **play-area polygon**
+(`<slug>.play-area.geojson.json` — what clips the satellite overlay + drives the
+out-of-play dim) follow the real shore. Coastal cities' Census `place` polygons
+do NOT track the beach: some run **inland of the sand** (beach greyed out of
+play — "cut off too early") and some run **out into the water** (open ocean shown
+in play — "ocean included"). Fix both by clipping the city footprint to the
+coastline. `scripts/build_la_play_area.py` is the worked example:
+- Keep the raw union of playable Census places' **full** polygons as a committed
+  source (`scripts/la_play_area_cities.geojson.json`). Inland water (river/lake
+  channels) is already part of a city polygon and is `natural=water`, never
+  `natural=coastline`, so it is never subtracted — it stays in play automatically.
+- Build the **sea polygon**: `polygonize(coastline ∪ FRAME.boundary)` then pick
+  the face containing an offshore seed point (open Pacific). Set the FRAME's west
+  edge *just inside* the coastline dump's western limit (the LA dump stops at lon
+  -118.80) so the mainland coast closes cleanly against the frame edge — otherwise
+  the whole frame comes back as one face and nothing splits.
+- `play = (cities − sea)` (trims ocean overreach) `∪ (land ∩ cities.buffer(d) ∩
+  sea.buffer(d))` where `land = FRAME − sea` and `d ≈ 0.008°` (~0.8 km, the max
+  beach width to bridge). The fill is intersected with the **land** side, so the
+  play area can never extend seaward of the shore.
+- Verify against ground truth by fetching the **ESRI World Imagery** tiles
+  (`server.arcgisonline.com/.../World_Imagery/MapServer/tile/{z}/{y}/{x}` — the
+  exact layer the app's satellite view uses) and overlaying old vs new boundary;
+  the new edge should sit on the waterline. Check no playable port/harbour LAND
+  (Terminal Island, San Pedro) was dropped and all stations stay in play.
 
 ## Delivery
 Commit `scripts/build_measure_features.py` + `src/data/measure-features.geojson.json`

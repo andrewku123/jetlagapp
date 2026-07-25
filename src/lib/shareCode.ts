@@ -5,18 +5,18 @@
 // tag, a map fingerprint, and the station count so a code from a different map
 // (e.g. an LA board loaded on the SF map) or dataset is rejected rather than
 // silently mis-applied.
-import rawStations from '../data/stations.json'
+import { stationsData, MAP_NAME } from '../data/regions'
 import type { Station } from '../types'
 
-const STATIONS = rawStations as unknown as Station[]
+const STATIONS = stationsData as unknown as Station[]
 
 // The canonical bit order: every station id, sorted, so both ends agree on which
 // bit means which station regardless of file order.
 const ALL_IDS: string[] = STATIONS.map((s) => s.id).sort()
 
 // Human-readable name of the current map, shown in the UI so it's clear which map
-// a board code belongs to. When a second city ships, this changes with the dataset.
-export const MAP_NAME = 'Bay Area'
+// a board code belongs to. Comes from the active region.
+export { MAP_NAME }
 
 // A short, stable fingerprint of the station set (FNV-1a over the sorted ids), so
 // two different maps get different codes even if their station *counts* collide.

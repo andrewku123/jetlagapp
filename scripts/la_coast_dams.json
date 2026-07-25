@@ -1,0 +1,14 @@
+{
+  "_comment": "LA coastline dams: bank-to-bank [[lon,lat],[lon,lat]] segments that draw the coastline straight across a harbor/river mouth. Water sealed inland of a dam becomes play area. Source coords supplied by Andrew as lat,lon,lat,lon. Consumed by build_la_play_area.py (ocean border) and build_measure_features.py (coastline question).",
+  "dams": [
+    [[-118.115795, 33.740159], [-118.117694, 33.740418]],
+    [[-118.120290, 33.736448], [-118.122071, 33.737331]],
+    [[-118.180865, 33.760784], [-118.180532, 33.760160]],
+    [[-118.182965, 33.758492], [-118.183537, 33.757912]],
+    [[-118.186787, 33.756708], [-118.187850, 33.751659]],
+    [[-118.214307, 33.745628], [-118.217890, 33.744397]],
+    [[-118.243318, 33.742903], [-118.243049, 33.741783]],
+    [[-118.260098, 33.723483], [-118.264904, 33.722609]],
+    [[-118.267565, 33.721912], [-118.271298, 33.720449]]
+  ]
+}

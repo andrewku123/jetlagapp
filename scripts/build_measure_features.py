@@ -147,6 +147,52 @@ CITIES = {
             [[-122.389884, 37.776244], [-122.390699, 37.777228]],  # SF / Mission Creek
         ],
     },
+    "la": {
+        # LA Metro sits on the open Pacific (Santa Monica Bay + San Pedro Bay).
+        # Far from any state/international line, so those come back empty and the
+        # questions demote to log-only in the app (kept in the dropdown).
+        "play_bbox": (-118.80, 33.60, -117.55, 34.45),
+        # LA has no separate land-polygon mask; the OSM coastline + a flooded
+        # open-ocean polygon are enough. `la_ocean.geojson.json` is the raw sea
+        # face flooded from the OSM coastline (scripts/build_la_play_area.py's
+        # build_ocean([]) — reaches into the harbors); it's used only as the
+        # topology reference for "which polygonized face is the open ocean".
+        # Reproducible from committed data (the old out-of-repo la_build mask is
+        # gone). Regenerate: python3 -c "import build_la_play_area as m, json;
+        # from shapely.geometry import mapping;
+        # json.dump({'type':'FeatureCollection','features':[{'type':'Feature',
+        # 'properties':{},'geometry':mapping(m.build_ocean([]))}]},
+        # open('la_ocean.geojson.json','w'))".
+        "land": "la_ocean.geojson.json",
+        "saltwater": ["la_ocean.geojson.json"],
+        "play": "data:la.play-area.geojson.json",
+        "bay": "la_ocean.geojson.json",
+        "coastline_detail": "measure_src/osm_coastline_la.geojson",
+        "counties": "data:la.counties.geojson.json",
+        "states": "measure_src/us-states.geojson",
+        "countries": "measure_src/countries.geojson",
+        "state": "California",
+        "state_neighbors": ["Nevada", "Arizona"],
+        "country": "United States of America",
+        "country_neighbor": "Mexico",
+        # Dam mode: the shore is drawn straight across each harbor/river mouth in
+        # la_coast_dams.json (the SAME file build_la_play_area.py uses for the
+        # ocean border), so the coastline question and the play-area edge match.
+        # Everything sealed behind a dam is treated as inland (not coast).
+        "dams_file": "la_coast_dams.json",
+        # Recreational ocean piers whose decks jut past the drawn coastline; their
+        # OSM footprints are carved into the polygonize net so the shore traces
+        # around each pier (same file the play-area build adds back as land).
+        "piers_file": "la_piers.geojson.json",
+        # Regions where the shore is dropped from the coastline entirely (the
+        # play area is out of play there, so the beach can't eliminate anyone).
+        # [w, s, e, n] lon/lat. Hermosa Beach gap: the Santa Monica shore
+        # terminates at the north edge (33.868349) and the southern stretch
+        # resumes at the south edge (33.859814); Hermosa in between is out.
+        "coast_exclude": [
+            [-118.43, 33.859814, -118.39, 33.868349],
+        ],
+    },
 }
 
 
@@ -192,7 +238,30 @@ def _dam_polys(dams, width_deg=0.0004):
     return unary_union([LineString(seg).buffer(width_deg, cap_style=2) for seg in dams])
 
 
-def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None):
+def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, detail=None,
+                    water_clip=None, piers=None):
+    # Open-ocean mode (cfg["coast_water_clip"]): keep only the OSM coastline that
+    # hugs the big open-water mask (Pacific + major harbors). Inland waterways
+    # that OSM tags natural=coastline (LA River, Rio Hondo, San Gabriel River)
+    # and tiny marina inlets (Marina del Rey) are NOT in that mask, so their
+    # coastline sits >water_clip from any mask water and drops out — no per-mouth
+    # dams needed. Precision stays at OSM detail (the mask is only used to select
+    # WHICH shore is ocean-facing). Used for simple open-coast metros like LA.
+    if water_clip is not None and detail is not None and not detail.is_empty:
+        merged = linemerge(unary_union(detail))
+        coast_all = unary_union(list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged])
+        near = saltwater.boundary.buffer(water_clip)
+        shore = coast_all.intersection(near)
+        if play is not None and not play.is_empty:
+            shore = shore.intersection(play.buffer(0.004))
+        if exclude is not None and not exclude.is_empty:
+            shore = shore.difference(exclude)
+        shore = shore.intersection(clip)
+        merged = linemerge(shore) if not shore.is_empty else shore
+        parts = list(merged.geoms) if merged.geom_type == "MultiLineString" else [merged]
+        parts = [g for g in parts if not g.is_empty and g.length >= 0.003]
+        return unary_union(parts) if parts else shore
+
     # Fallback for cities without a play-area/bay mask: the plain shore of the
     # land mask adjacent to saltwater (no channel removal).
     if play is None or bay is None:
@@ -246,7 +315,17 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     # sealed slough / estuary / marsh interior is its own separate face (dropped),
     # so its shore AND the islets inside it disappear. This matches "draw a line
     # across the mouth and everything cut off from the bay is removed".
-    net = unary_union(lines + walls + [clip.exterior])
+    # Pier footprints (LA ocean piers) are carved into the net so the pier deck
+    # becomes its own face separated from the open ocean; the bay-face boundary
+    # then traces around each pier outline instead of running straight past it
+    # along the beach.
+    pier_lines = []
+    if piers is not None and not piers.is_empty:
+        pgeoms = piers.geoms if piers.geom_type == "MultiPolygon" else [piers]
+        for pg in pgeoms:
+            pier_lines.append(pg.exterior)
+            pier_lines.extend(pg.interiors)
+    net = unary_union(lines + walls + pier_lines + [clip.exterior])
     faces = list(polygonize(net))
     # The bay is the face that overlaps the saltwater mask the most (a coarse
     # rep-point-in-mask test is unreliable — far-offshore rep points fall outside
@@ -352,6 +431,8 @@ def main():
     if slug not in CITIES:
         raise SystemExit(f"unknown CITY={slug!r}; known: {', '.join(CITIES)}")
     cfg = CITIES[slug]
+    if cfg.get("dams_file"):
+        cfg = {**cfg, "dams": load(src(cfg["dams_file"]))["dams"]}
     lon0, lat0, lon1, lat1 = cfg["play_bbox"]
     clip = box(lon0, lat0, lon1, lat1)
 
@@ -372,9 +453,13 @@ def main():
     if cfg.get("coastline_detail"):
         coast_detail = unary_union(feats(load(src(cfg["coastline_detail"]))))
 
+    piers = None
+    if cfg.get("piers_file"):
+        piers = unary_union(feats(load(src(cfg["piers_file"])))).buffer(0)
+
     print(f"building features for {slug}…")
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail), 0.00015)),
+        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail, cfg.get("coast_water_clip"), piers), 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
@@ -391,7 +476,8 @@ def main():
             "geometry": mapping(ml),
         })
 
-    dest = os.path.join(DATA, "measure-features.geojson.json")
+    prefix = "" if slug == "bayarea" else f"{slug}."
+    dest = os.path.join(DATA, f"{prefix}measure-features.geojson.json")
     with open(dest, "w") as f:
         json.dump(out, f)
     print("wrote", dest, os.path.getsize(dest), "bytes")

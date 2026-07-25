@@ -94,6 +94,34 @@ other folded in as an alias), split them:
 3. Write with `json.dump(..., indent=1, ensure_ascii=False)` — the file keeps
    literal UTF-8 (en-dashes), so `ensure_ascii=True` would rewrite the whole file.
 
+### LA case: unmerge a busway (J/G) stop folded into a rail station
+LA `la.stations.json` records folded each downtown **J Line (Silver) busway** stop
+into the adjacent Metro rail station as an `aka` (so a single record carried
+`A/B/D/J`). These are physically **separate** stops a block or two apart, so split
+each busway stop into its own **J-only** record:
+1. From the rail station remove `"J Line"` from `lines` and delete **all** busway
+   `aka`s (they belong to the J line, not the rail platform), e.g. Pershing
+   Square→`Olive / 5th`, Union Station→`Union Station Patsaouras Bus Plaza`,
+   Grand Av Arts / Bunker Hill→`Grand / 3rd`. Pico had **two** J aka names for the
+   two directions — `Figueroa / Pico` (northbound) and `Flower / Pico`
+   (southbound) — so both move to the J line: the new J station is
+   `Figueroa / Pico` with `Flower / Pico` as its `aka`, and rail Pico ends up with
+   no busway `aka`.
+2. Append a new J-only record (`systems:["Metro"]`, `lines:["J Line"]`) at the end
+   with a fresh id; use `headwayMin {wd:10, we:15}` like other J stops, copy
+   `elevation` from the sibling rail station, compute `airportDist` by haversine to
+   the LAX/LGB pins, and `county`/`city` by point-in-polygon against
+   `la.counties.geojson.json`/`la.places.geojson.json`.
+   Get the true busway-stop coordinate from OSM (LACMTA-network `node`s named e.g.
+   "Olive Street & 5th Street") or a user-supplied coordinate.
+
+**Do NOT re-run `snap_stations_to_lines.py`.** It rewrites *every* station's
+`lat/lon` onto the nearest overlay line — that is what wrongly moved Pacific Ave
+~396 m onto the wrong side of the A Line loop. The station coordinate is the
+source of truth for game logic; fix a mislocated dot by fixing the **overlay**
+(`fetch_la_transit_lines.py`, e.g. the `la_a_loop.json` A Line loop leg), not by
+snapping the station.
+
 After any merge or split: update the station-count assertions in
 `src/data/stations.test.ts` (total, per-system membership, eligible wd/we), rerun
 `npm test`, and regenerate the PDF.

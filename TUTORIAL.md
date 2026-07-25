@@ -1,19 +1,36 @@
-# Tutorial — Bay Area Hide & Seek seeker tool
+# Tutorial — Jet Lag: Hide & Seek seeker tool
 
 A step-by-step guide to playing [Jet Lag: Hide and Seek](https://jetlag.denull.ru/en/rules)
 as the **seeker** with this app. The app never talks to the hider — you type in
 each question you ask and the answer you get back, and it eliminates the stations
 that are no longer possible so you can see where the hider can still be.
 
-See [README.md](README.md) for the play area and the list of supported questions.
+See [README.md](README.md) for the maps, play area, and the list of supported
+questions.
+
+## 0. Pick a map
+
+The **map** picker in the top bar chooses which map you're playing:
+
+- **Bay Area** — the full regional map (BART/Caltrain/VTA/Muni/AirTrain, 264
+  stations, five counties). Default.
+- **SF Muni** — a day-pass map scoped to San Francisco (the 7 Muni rail lines,
+  132 stations, one county/city).
+
+Each map keeps its **own saved board**, so switching maps never mixes state, and
+you can hand off a game by its board code (a code from one map won't load on the
+other). Some questions are automatically demoted on SF Muni — see §12.
 
 ## 1. The screen at a glance
 
 - **Map** (left / main): every eligible station as a dot. Possible stations are
   solid; eliminated ones are dimmed (toggle with **show eliminated**).
 - **Top bar:**
+  - **map** — which map you're playing (Bay Area / SF Muni; see §0).
   - **Weekday / Weekend** — which service day you're playing. It changes which
-    stations are eligible (some stops only run often enough on one of them).
+    stations are eligible (some stops only run often enough on one of them). This
+    toggle is **hidden** on maps where the service day makes no difference (e.g.
+    SF Muni, where the same 132 stations run both days).
   - **mi/ft / km/m** — imperial or metric for every distance and elevation in the
     app (inputs and labels both switch).
   - **show eliminated** — show or hide the dimmed, ruled-out stations.
@@ -63,8 +80,12 @@ can eliminate stations.
    map-wide, but its shading is clipped to the current hiding-zone circle so you
    can pinpoint the hider inside it. It defaults on once you're in the endgame.
 8. Press **Log question & eliminate** (or **Log question** for the reference-only
-   subjects). The app applies the filter and the "possible" count drops. You'll
-   land on the **History** tab.
+   and demoted subjects — see §12). The app applies the filter and the "possible"
+   count drops. You'll land on the **History** tab.
+
+Switching to another tab (POI/Suspects/Legend/History) and back to **Ask** keeps
+your current selection and parameters, so you don't lose a half-composed
+question.
 
 ### If the hider vetoes
 If the hider refuses to answer (a veto), press **Hider vetoed** instead of Log.
@@ -140,6 +161,13 @@ so your distance is 0), but in the endgame the hider answers from their real
 position, and "closer/further from the nearest rail station" carves the hiding
 zone just like the airport measuring question.
 
+**County / City Matching are endgame tools on single-county / single-city maps.**
+On SF Muni every station is in the same county and city, so those questions can't
+split the board in the regular game (they're `(endgame only)` — see §12). But a
+border station's hiding zone can straddle the county/city line (e.g.
+Bayshore/Sunnydale across the SF↔San Mateo line), so ticking **Endgame question**
+and asking "same county/city?" carves the zone along that boundary.
+
 ## 10. The map toolbox (drawing tools)
 
 A slim vertical toolbar sits on the right edge of the map. Drawings are saved
@@ -182,3 +210,23 @@ Helpful behaviors:
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
 - **Reset** wipes everything — only use it to start a brand-new game.
+
+## 12. Demoted questions (per map)
+
+Some questions can't tell any stations apart on a given map, so the app **demotes**
+them automatically (worked out from that map's own data — nothing hand-listed).
+The game rule is that anything outside the play area doesn't exist, so a feature
+that's off the map can't be an answer.
+
+- **`(log only)`** — you can still record it for your notes, but it eliminates and
+  shades **nothing**, in the regular game and the endgame. On **SF Muni** this
+  covers **nearest commercial airport** (both Matching and Measuring — SFO/OAK/SJC
+  are all outside San Francisco), **transit line** Matching (one system), and any
+  POI category with no in-play locations (e.g. amusement parks).
+- **`(endgame only)`** — log-only in the regular game, but it **does** eliminate
+  once you're in the endgame. This is **County** and **City** Matching on SF Muni
+  (see §9): useless map-wide, but they carve a border station's hiding zone.
+
+The Ask form marks the subject with the tag, the button changes to **Log
+question**, and the blurb tells you why. On the **Bay Area** map nothing is
+demoted.

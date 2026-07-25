@@ -108,6 +108,24 @@ every render.
     triangle/diagonal band across the map. Elimination stays correct (it's a
     separate `elimination.ts` path); only the shading is wrong, so eyeball it for
     edge sites. Regression test asserts the region's max lat stays < 40.
+  - **Long-edge Mercator-bow gotcha (aquarium Matching shipped this).** Half-plane
+    clipping collapses each Voronoi bisector edge to just its two endpoints, so a
+    sparse category (2 aquariums → one bisector spanning the whole `CELL_FRAME`,
+    lon −124→−120 / lat 36→39) draws as a single ~250-mi lat/lon chord that **bows
+    up to ~1.4 km once projected to Web Mercator**, cutting across kept stations on
+    their correct side (pink crossing purple). Elimination (haversine) is fine —
+    only the drawn edge is wrong, and it's invisible on dense-POI categories (short
+    local cells) so it hides until a sparse category on a dense/zoomed map. Fix:
+    `densifyLatLng` subdivides every ring edge into ≤ ~0.2 mi segments
+    (`DENSIFY_STEP_DEG = 0.003`) by **linear lat/lon interpolation** (stays exactly
+    on the equirectangular bisector the cell was built in), so each rendered
+    segment hugs the true line (per-segment bow <1 m). Cap subdivisions
+    (`DENSIFY_MAX_SUBDIV`) so the world-spanning outer ring doesn't explode. Same
+    principle as the sampled thermometer bisector. Regression test asserts no
+    boundary segment inside the play-area bbox exceeds 0.35 mi. Beware: a
+    plausible-looking "measure the bow across the small viewport → 1.7 m,
+    negligible" test is WRONG — measure across the actual `CELL_FRAME` and compare
+    the drawn Mercator chord (not two true bisectors, which trivially agree).
 - `poiMeasureEliminatedRegion(record)` — the **union of disks** (radius = the
   seeker's own nearest-POI distance) around every POI, via `polygon-clipping`.
   `'closer'` eliminates the **complement** of the union, `'further'` eliminates
