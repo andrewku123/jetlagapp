@@ -728,28 +728,58 @@ merged, a deletion stays deleted. What changes between cycles is (a) new places,
 (b) review counts that crossed the >=5 gate, (c) closures/renames. Only those reach
 a human. Run it **every 6 months**.
 
-### The decision ledger (`poi_decisions.json`) — the thing that makes this cheap
+### The decision ledger (`poi_decisions.<region>.json`) — what makes this cheap
 
-One record per pin, keyed by a **stable id**, written by curate/de-dup and by the
-manual review passes:
+`poi_ledger.py`. One record per pin, keyed by a **stable id**, written by the seed
+and by every curation batch:
 
 ```json
-{"google:ChIJ...": {"cat":"hospital","decision":"keep",
-                    "merged_into":null,"reason":null,
-                    "name_seen":"Providence Little Company of Mary - San Pedro",
-                    "review_gate":"passed","closed":null,"checked":"2026-07"}}
+{"google:ChIJ...": {"cat":"hospital","name":"Providence Little Company of Mary - San Pedro",
+                    "lat":33.74,"lon":-118.29,
+                    "decision":"keep","mergedInto":null,"mergeSrc":null,"reason":null,
+                    "reviewGate":"passed","closed":null,
+                    "firstSeen":"2026-07-16","decidedAt":"2026-07-24","lastSeen":"2026-07-24"}}
 ```
 - **Key**: `google:<place_id>` when there is one, else `osm:<type>/<id>`. `place_id`
   is the one Google field **exempt from the caching restrictions** (storable
   indefinitely; refresh at least every 12 months). OSM ids are free to store.
-- **`decision`**: `keep` | `drop` (+`reason`) | `merged` (+`merged_into` parent key)
-  | `pending`. Decisions are **sticky**: a re-scan can never resurrect a dropped or
-  merged pin — that is the whole point. Merged children keep their own record so a
-  rescan recognizes them instead of re-adding them as "new".
-- **`review_gate`**: `passed` | `unknown`. **Monotonic** — review counts only go up,
+- **`decision`**: `keep` | `pending` (visible but the manual pass hasn't reached it)
+  | `merged` (+`mergedInto` parent key) | `drop` (+`reason`). Decisions are
+  **sticky**: a re-scan can never resurrect a dropped or merged pin — that is the
+  whole point. Merged children keep their own record so a rescan recognizes them
+  instead of re-adding them as "new".
+- **`reviewGate`**: `passed` | `unknown`. **Monotonic** — review counts only go up,
   so once a pin clears >=5 it never needs checking again. Store the **boolean, not
   the count**: Google's terms forbid caching their content long-term, and the
   derived pass/fail is our own decision, not their data.
+- **`reason: auto_discovered`** marks a pin a sweep found but no human has seen (it
+  was under 5 reviews when discovered). It stays silent until it crosses the gate,
+  then surfaces in `NEW` exactly once.
+
+**Seeding a city that was curated before the ledger existed.** Every revision of
+`poi_merge_viz.js` is a snapshot of the curation, so `poi_ledger.py seed` replays the
+git history: union of all revisions = every pin ever seen, head = survivors, and the
+revision where a pin disappears dates its deletion. The catch is that those first-pass
+deletions don't record *why* (`<5 reviews` vs "not really a hospital"), so they seed
+with **`recheckOnce: true`** and get exactly one re-test against the >=5 rule (queue
+`RECHECK`); the refresh consumes the flag and they are sticky forever after. This is a
+**one-time migration only** — every deletion made after the ledger exists is a real
+sticky deletion, never a review-failure candidate.
+
+### Never edit the review map alone
+
+`poi_curate.py` applies a manual batch to the map **and** the ledger in one command —
+a deletion applied only to `poi_merge_viz.js` silently returns on the next scan.
+
+```bash
+python3 poi_curate.py delete  --region la --file batch.txt   # '- Name @ lat,lon' lines
+python3 poi_curate.py merge   --region la --into "Surviving Rep" --name "Dupe A"
+python3 poi_curate.py unmerge --region la --name "Wrongly merged pin"
+python3 poi_curate.py swap    --region la --to "Better rep (a merged-away pin)"
+```
+It refuses to guess: an ambiguous name aborts the whole batch and prints the
+candidates with Maps links. Deleting a group's rep promotes the **unlisted** kids to
+standalone pins instead of taking them down with it.
 
 ### The cycle
 
@@ -783,16 +813,36 @@ manual review passes:
    or mis-tagged suite can become a real business. That is the **only** path by
    which a drop returns.
 
+### Running it
+
+`poi_refresh.py` is steps 2-5. Nothing bills without `--confirm-spend`, and every
+phase caches to disk, so an interrupted run never re-buys what it already has.
+
+```bash
+python3 poi_refresh.py --region la                                   # plan + cost estimate
+python3 poi_refresh.py --region la --phase sweep   --confirm-spend
+python3 poi_refresh.py --region la --phase details --confirm-spend --max-details 500
+python3 poi_refresh.py --region la --phase reconcile --write         # queues + ledger update
+```
+
 ### What a human actually sees
 
-Three queues, nothing else — everything with an unchanged sticky decision is
+Five queues, nothing else — everything with an unchanged sticky decision is
 invisible:
-- **NEW** — ids not in the ledger that pass icon + >=5 (the normal review/merge pass).
-- **CHANGED** — renamed, newly closed, or newly gate-passed pins.
+- **NEW** — ids not in the ledger that pass icon + >=5, plus pins that just crossed
+  the gate (the normal review/merge pass).
+- **UNDER5** — visible pins now known to be under 5 reviews; drop them per the rulebook.
+- **CHANGED** — renamed or temporarily closed; judge by hand.
 - **GONE** — perm-closed (auto-dropped, listed for the record) and vanished pins.
+- **RECHECK** — one-time only, and only for a city seeded from a pre-ledger manual
+  pass (see above).
 
 This is a good fit for a scheduled Devin automation: run steps 0-4 every 6 months
-and deliver the three queues.
+and deliver the queues.
+
+Regression tests for all of it (sticky drops, the one-time re-test, closures,
+renames, vanished pins, gating) are in `scripts/test_poi_pipeline.py` — plain
+`python3`, no network, no billable call.
 
 ### Sizing (LA, 2026-07)
 
