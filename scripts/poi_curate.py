@@ -304,7 +304,10 @@ def main():
             p.add_argument("--note", help="why, for the record")
     a = ap.parse_args()
 
-    targets = [(n, parse_at(a.at) if a.at else None) for n in a.name]
+    fallback = parse_at(a.at) if a.at else None
+    # --name accepts the same 'Name @ lat,lon' form as --file / --into / --to,
+    # so one command can disambiguate several same-named pins.
+    targets = [(nm, at or fallback) for nm, at in (parse_line(n) for n in a.name)]
     if a.file:
         with open(a.file, encoding="utf-8") as f:
             targets += [t for t in (parse_line(line) for line in f) if t]
