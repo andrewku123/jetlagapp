@@ -1,6 +1,6 @@
 ---
 name: gather-poi
-description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Use when (re)building, biannually-refreshing (every 6 months), or extending the POI data to a new city/region.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, and apply to the app. Also covers the recurring refresh (2nd and subsequent checks) — a sticky decision-ledger diff so re-checks only surface new/changed/closed pins. Use when (re)building, biannually-refreshing (every 6 months), re-checking existing POI data, or extending it to a new city/region.
 ---
 
 # Build a Jet-Lag-ready POI database (any play area)
@@ -719,6 +719,149 @@ Google-search's own recall holes; mitigations, strongest first:
 3. Human spot-checks on the review map (you already do this).
 No automated pipeline is provably complete; two independent sources + manual
 review is the practical ceiling.
+
+## The refresh cycle (2nd and subsequent checks)
+
+The first build curates everything by hand. **Every later check must be a diff, not
+a re-review**: a place already confirmed a hospital stays confirmed, a merge stays
+merged, a deletion stays deleted. What changes between cycles is (a) new places,
+(b) review counts that crossed the >=5 gate, (c) closures/renames. Only those reach
+a human. Run it **every 6 months**.
+
+### The decision ledger (`poi_decisions.<region>.json`) — what makes this cheap
+
+`poi_ledger.py`. One record per pin, keyed by a **stable id**, written by the seed
+and by every curation batch:
+
+```json
+{"google:ChIJ...": {"cat":"hospital","name":"Providence Little Company of Mary - San Pedro",
+                    "lat":33.74,"lon":-118.29,
+                    "decision":"keep","mergedInto":null,"mergeSrc":null,"reason":null,
+                    "reviewGate":"passed","closed":null,
+                    "firstSeen":"2026-07-16","decidedAt":"2026-07-24","lastSeen":"2026-07-24"}}
+```
+- **Key**: `google:<place_id>` when there is one, else `osm:<type>/<id>`. `place_id`
+  is the one Google field **exempt from the caching restrictions** (storable
+  indefinitely; refresh at least every 12 months). OSM ids are free to store.
+- **`decision`**: `keep` | `pending` (visible but the manual pass hasn't reached it)
+  | `merged` (+`mergedInto` parent key) | `drop` (+`reason`). Merged children keep
+  their own record so a rescan recognizes them instead of re-adding them as "new".
+- **Stickiness depends on *why* a pin died** — never on which city it's in:
+  - `reason: manual` (a human judged it: "that's a chiropractic suite") and
+    `merged` → **sticky**. No scan ever offers it back; only a rename re-opens it.
+  - `reason: review_failed` (it only died for want of reviews) → **not sticky**.
+    Re-tested on *every* refresh, for ever, until it clears >=5 reviews (→ `RECHECK`),
+    is deleted by hand, or is merged. Re-testing is free — the sweep already prices
+    every place it returns — and a still-failing pin stays silent, so there's no
+    queue noise. This is why `poi_curate.py delete` takes `--reason`.
+- **`reviewGate`**: `passed` | `unknown`. **Monotonic** — review counts only go up,
+  so once a pin clears >=5 it never needs checking again. Store the **boolean, not
+  the count**: Google's terms forbid caching their content long-term, and the
+  derived pass/fail is our own decision, not their data.
+- **`reason: auto_discovered`** marks a pin a sweep found but no human has seen (it
+  was under 5 reviews when discovered). It stays silent until it crosses the gate,
+  then surfaces in `NEW` exactly once.
+
+**Seeding a city that was curated before the ledger existed.** Every revision of
+`poi_merge_viz.js` is a snapshot of the curation, so `poi_ledger.py seed` replays the
+git history: union of all revisions = every pin ever seen, head = survivors, and the
+revision where a pin disappears dates its deletion. Those pre-ledger deletions don't
+record *why* (`<5 reviews` vs "not really a hospital"), so they seed as
+`legacy_first_pass` and are treated as review failures — re-testable for ever, like
+`review_failed`. Clear them out over time by rejecting the ones that were really
+category calls (`poi_curate.py reject`), which makes them sticky.
+
+### Never edit the review map alone
+
+`poi_curate.py` applies a manual batch to the map **and** the ledger in one command —
+a deletion applied only to `poi_merge_viz.js` silently returns on the next scan.
+
+```bash
+python3 poi_curate.py delete  --region la --file batch.txt   # '- Name @ lat,lon' lines
+python3 poi_curate.py delete  --region la --file under5.txt --reason review_failed
+python3 poi_curate.py merge   --region la --into "Surviving Rep" --name "Dupe A"
+python3 poi_curate.py unmerge --region la --name "Wrongly merged pin"
+python3 poi_curate.py swap    --region la --to "Better rep (a merged-away pin)"
+python3 poi_curate.py reject  --region la --key google:ChIJ... --note "chiropractic suite"
+```
+`--reason review_failed` when you're only clearing an `UNDER5` batch, so those pins
+come back if they earn the reviews; the default `manual` is sticky. `reject` kills a
+queue item for good **without** putting it on the map.
+It refuses to guess: an ambiguous name aborts the whole batch and prints the
+candidates with Maps links. Deleting a group's rep promotes the **unlisted** kids to
+standalone pins instead of taking them down with it.
+
+### The cycle
+
+0. **Play area** — only if `stations.json` changed (`build_play_area.py`, free).
+1. **Free re-pull first.** Full OSM sweep (`osm_gap_audit.py`, `fetch_osm_polys.py`).
+   OSM costs nothing, so never gate it — re-pull all of it, every cycle, and diff
+   against the ledger.
+2. **One paid Google sweep — do NOT gate this one, and buy the review count in it.**
+   Search SKUs bill **per call (<=20 places), not per place**:
+   `Nearby Search Pro $32/1k` vs `Nearby Search Enterprise $35/1k`, and
+   `places.userRatingCount` is what moves Pro→Enterprise. So folding review counts
+   into the discovery sweep costs **+9% on the sweep, ~$0.0018/place** — roughly
+   **11x cheaper than buying the same number via Place Details ($0.02/pin)**. Field
+   mask for a refresh sweep:
+   `places.id,places.displayName,places.location,places.primaryType,places.types,places.businessStatus,places.userRatingCount`
+   (`businessStatus` is a Pro-tier field, so the closure check rides along free).
+   Never request `places.reviews` — that is Enterprise+**Atmosphere** ($40/1k) and
+   the gate only needs the *count*.
+3. **Paid Place Details, gated — this is where "only under 5" applies.** Query
+   `Place Details Enterprise` ($20/1k = **$0.02/pin**) only for pins that are
+   `decision=keep` **and** `review_gate=unknown` **and** the sweep didn't return
+   (i.e. the sweep couldn't price them). Never spend on: gate-passed pins, dropped
+   pins, merged children, or **mountains** (kept regardless of reviews).
+4. **Closures.** `CLOSED_PERMANENTLY` -> auto-drop (already a chokepoint in
+   `dedup_poi.py`). `CLOSED_TEMPORARILY` -> manual queue, never auto-drop (Google's
+   temp flag is routinely stale — see the verification section above).
+   **Vanished from the sweep != closed**: search coverage wobbles, so a pin that
+   simply stops being returned goes to the manual queue too.
+5. **Renames re-open a decision.** If a *dropped* pin comes back with a
+   `displayName` different from `name_seen`, re-queue it — a listing that was a fake
+   or mis-tagged suite can become a real business. That is the **only** path by
+   which a drop returns.
+
+### Running it
+
+`poi_refresh.py` is steps 2-5. Nothing bills without `--confirm-spend`, and every
+phase caches to disk, so an interrupted run never re-buys what it already has.
+
+```bash
+python3 poi_refresh.py --region la                                   # plan + cost estimate
+python3 poi_refresh.py --region la --phase sweep   --confirm-spend
+python3 poi_refresh.py --region la --phase details --confirm-spend --max-details 500
+python3 poi_refresh.py --region la --phase reconcile --write         # queues + ledger update
+```
+
+### What a human actually sees
+
+Five queues, nothing else — everything with an unchanged sticky decision is
+invisible:
+- **NEW** — ids not in the ledger that pass icon + >=5, plus pins that just crossed
+  the gate (the normal review/merge pass).
+- **UNDER5** — visible pins now known to be under 5 reviews; drop them per the rulebook.
+- **CHANGED** — renamed or temporarily closed; judge by hand.
+- **GONE** — perm-closed (auto-dropped, listed for the record) and vanished pins.
+- **RECHECK** — a review-failure drop that now clears >=5 reviews. It keeps
+  reappearing here until you act: put it back on the map, or `reject` it.
+
+This is a good fit for a scheduled Devin automation: run steps 0-4 every 6 months
+and deliver the queues.
+
+Regression tests for all of it (sticky drops, the one-time re-test, closures,
+renames, vanished pins, gating) are in `scripts/test_poi_pipeline.py` — plain
+`python3`, no network, no billable call.
+
+### Sizing (LA, 2026-07)
+
+3,249 candidate pins / 2,318 visible after de-dup. Worst case — every visible pin
+needing a Details top-up — is `2318 * $0.02 = ~$46` one-off; after the first gated
+pass only the sub-5 remainder recurs. The sweep, not the review data, remains the
+cost driver (Bay Area's first full sweep was ~$190), so the savings come from
+**not re-sweeping categories/areas that didn't change** and from never re-buying a
+gate that already passed. Set the console quota cap + budget alert first, as always.
 
 ## Authoritative source registry (per category, per country)
 
