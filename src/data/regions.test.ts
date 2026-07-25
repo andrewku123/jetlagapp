@@ -13,6 +13,12 @@ async function loadFor(id: string) {
   return await import('./regions')
 }
 
+async function blurbFor(id: string, kind: string) {
+  await loadFor(id)
+  const { QUESTION_CATALOG } = await import('./questions')
+  return QUESTION_CATALOG.find((q) => q.kind === kind)!.blurb
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.resetModules()
@@ -59,6 +65,34 @@ describe('play-area scoping and question demotion', () => {
     expect(m.ENDGAME_ELIMINATES_KINDS.has('match-city')).toBe(false)
     // 8 Metro lines (A/B/C/D/E/K/G/J) still discriminate.
     expect(m.LOG_ONLY_KINDS.has('match-line')).toBe(false)
+  })
+
+  it('the airport blurb names the active map\'s own airports', async () => {
+    expect(await blurbFor('bayarea', 'match-airport')).toContain('(SFO/OAK/SJC)')
+    expect(await blurbFor('la', 'match-airport')).toContain('(LAX/LGB)')
+    // No airport in play → the question is log-only anyway, and the blurb must
+    // not name airports the seeker can't reach.
+    expect(await blurbFor('sfmuni', 'match-airport')).toBe(
+      'Is your nearest commercial airport the same as mine?',
+    )
+  })
+
+  it('the state blurb names the active map\'s own state', async () => {
+    for (const id of ['bayarea', 'sfmuni', 'la']) {
+      expect(await blurbFor(id, 'match-admin1')).toContain('is in California')
+    }
+    // A map spanning a state line can't claim uniformity, so it gives the other
+    // reason instead of naming a state.
+    vi.resetModules()
+    vi.doMock('./regions', async () => ({
+      ...(await vi.importActual<typeof import('./regions')>('./regions')),
+      MAP_STATES: ['Illinois', 'Indiana'],
+    }))
+    const { QUESTION_CATALOG } = await import('./questions')
+    expect(QUESTION_CATALOG.find((q) => q.kind === 'match-admin1')!.blurb).toContain(
+      'no per-station state data',
+    )
+    vi.doUnmock('./regions')
   })
 
   it('SF Muni: border endgame-zone sliver reads its real city/county (Brisbane, San Mateo)', async () => {

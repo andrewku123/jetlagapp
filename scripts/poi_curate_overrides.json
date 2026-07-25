@@ -1,0 +1,63 @@
+{
+  "_": "Bay Area curation overrides — a reviewer's per-city judgement calls, read by curate_places_poi.py. Another city keeps its own poi_curate_overrides.<region>.json.",
+  "nestedRemove": {
+    "zoo": [
+      "California Trail at Oakland Zoo",
+      "African Savanna",
+      "Condor and Jaguar Pavilion",
+      "Giraffe Enclosure",
+      "House of Bugs",
+      "Reptile and Amphibian Discovery Room"
+    ],
+    "amusement_park": [
+      "South Bay Shores",
+      "Planet Snoopy",
+      "California's Great America Passenger Drop Off Area",
+      "NorCal County Fair",
+      "Great Barrier Reef",
+      "County Fair Picnic Grove",
+      "Water Play Area",
+      "Water Oasis"
+    ]
+  },
+  "nameClosed": [
+    "FB OUTDOOR (PERM CLOSED)"
+  ],
+  "flagReview": {
+    "golf_course": [
+      "Norcal Golf Center",
+      "Palm Tree Golf and Event Center",
+      "The Pleasanton Golf Center - Golf Course",
+      "Mariners Point Golf Center",
+      "Lone Tree Golf & Event Center"
+    ],
+    "aquarium": [
+      "Aquatic Experts"
+    ],
+    "amusement_park": [
+      "ABC Tree Farms & Pick of the Patch Pumpkins ECR",
+      "Ortega park splash park",
+      "Water Light Public Plaza"
+    ]
+  },
+  "stadiumPro": {
+    "ChIJ_T25cNd_j4ARehGmHe0pT84": "Oracle Park",
+    "ChIJ6QBEf8Z_j4AR40Gh2OOTZ30": "Chase Center",
+    "ChIJ3_DFJ8jJj4ARGH0fLjdaRRE": "Levi's Stadium",
+    "ChIJq56TmaDMj4ARJJCpWy9v-i0": "SAP Center",
+    "ChIJGXZh0aHLj4ARX-9DpASeh5w": "PayPal Park",
+    "ChIJvZrKLy8zjoARKFobE55105U": "Excite Ballpark",
+    "ChIJ8WOAG8OFj4AR1W_wwL7JV3A": "Oakland Coliseum",
+    "ChIJJx_xws8zjoARo9omW6ZKHGg": "Tech CU Arena"
+  },
+  "stadiumProNotes": {
+    "Oracle Park": "SF Giants (MLB)",
+    "Chase Center": "Warriors NBA / Valkyries WNBA",
+    "Levi's Stadium": "49ers (NFL); Google name drifts to a Super Bowl placeholder",
+    "SAP Center": "Sharks NHL / Panthers IFL",
+    "PayPal Park": "Earthquakes MLS / Bay FC NWSL",
+    "Excite Ballpark": "San Jose Giants (MiLB)",
+    "Oakland Coliseum": "Oakland Roots (USL Championship)",
+    "Tech CU Arena": "San Jose Barracuda (AHL)"
+  }
+}

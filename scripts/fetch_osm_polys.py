@@ -12,7 +12,8 @@ from shapely.ops import polygonize, unary_union
 import poi_geo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BBOX = poi_geo.bbox_swne(poi_geo.load_play())   # S,W,N,E from the play polygon
+REGION = poi_geo.region_from_argv()
+BBOX = poi_geo.bbox_swne(poi_geo.load_play(REGION))  # S,W,N,E from the play polygon
 UA = {"User-Agent": "jetlag-poi/1.0 (dedup footprints)"}
 ENDPOINTS = ["https://overpass-api.de/api/interpreter",
              "https://overpass.kumi.systems/api/interpreter"]
@@ -100,7 +101,7 @@ def main():
         print(f"fetching {cat} ...", flush=True)
         js = fetch(cat)
         feats = to_polys(js)
-        json.dump(feats, open(os.path.join(HERE, f"osm_polys_{cat}.json"), "w"))
+        json.dump(feats, open(poi_geo.work(REGION, f"osm_polys_{cat}.json"), "w"))
         print(f"  {cat}: {len(feats)} polygons", flush=True)
         time.sleep(3)
 

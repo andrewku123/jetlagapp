@@ -173,7 +173,7 @@ def flatten(p):
 
 
 def run_sweep(region, max_calls):
-    play = poi_geo.load_play(os.path.join(ROOT, L.REGIONS[region]["play"]))
+    play = poi_geo.load_play(region, path=poi_geo.repo_path(region, "play"))
     in_play = poi_geo.make_in_play(play)
     bbox = poi_geo.bbox(play)
     p = paths(region)

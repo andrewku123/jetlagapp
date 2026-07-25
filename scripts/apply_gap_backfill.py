@@ -11,12 +11,15 @@ authoritative-list backfills:
 """
 import os, json, math
 
+import poi_geo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
+REGION = poi_geo.region_from_argv()
 IN_FILE = os.environ.get("IN_FILE", "poi_gap_verified.json")
 SOURCE_TAG = os.environ.get("SOURCE_TAG", "osm_backfill")
-cur_path = os.path.join(HERE, "poi_curated.json")
+cur_path = poi_geo.work(REGION, "poi_curated.json")
 curated = json.load(open(cur_path))
-verified = json.load(open(os.path.join(HERE, IN_FILE)))
+verified = json.load(open(poi_geo.work(REGION, IN_FILE)))
 
 
 def m(a, b, c, d):

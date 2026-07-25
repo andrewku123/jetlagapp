@@ -12,11 +12,12 @@ Then we report:
 """
 import json, os
 import dedup_poi as D
+import poi_geo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-curated = json.load(open(os.path.join(HERE, "poi_curated.json")))
+curated = json.load(open(D.SRC))
 overrides = {k: v for k, v in json.load(
-    open(os.path.join(HERE, "poi_dedup_overrides.json"))).items()
+    open(poi_geo.work(D.REGION, "poi_dedup_overrides.json"))).items()
     if not k.startswith("_")}
 
 

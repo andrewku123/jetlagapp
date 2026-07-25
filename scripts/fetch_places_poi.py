@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-"""Gather all POI categories used by Tentacles + Matching + Measuring over the
-full 5-county play area (point-in-polygon), via Google Places API (New).
+"""Gather all POI categories used by Tentacles + Matching + Measuring over a
+region's whole play area (point-in-polygon), via Google Places API (New).
+
+    python3 fetch_places_poi.py --region la
 
 Matching/Measuring have no radius (you compare your NEAREST X), so coverage must
 be the entire playable area, not just near a station. We search the play-area
@@ -16,9 +18,9 @@ private golf clubs are primaryType `sports_club` but have `golf_course` in
 the icon pin (`location`).
 
 Env: GOOGLE_PLACES_API_KEY
-Reads:  ../src/data/play-area.geojson.json  (the map's play-area polygon =
-        the search region; swap this file to gather a different city)
-Writes: poi_full.json
+Reads:  the region's play-area polygon (`poi_geo.REGIONS`) — that is the search
+        area; a different city is `--region`, never an edited file.
+Writes: the region's `poi_full[.<region>].json`
 """
 import os, sys, json, math, time, urllib.request, urllib.error
 
@@ -47,43 +49,12 @@ MAX_RADIUS = 50000.0
 MIN_RADIUS = 25.0
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-# POI_PLAY_FILE / POI_OUT let a second city (or a refresh sweep) reuse this pull
-# without editing the script; both default to the app's current play area.
-PLAY_FILE = os.environ.get("POI_PLAY_FILE",
-                           os.path.join(HERE, "..", "src", "data", "play-area.geojson.json"))
-OUT_FILE = os.environ.get("POI_OUT", os.path.join(HERE, "poi_full.json"))
-PLAY = json.load(open(PLAY_FILE))
+REGION = poi_geo.region_from_argv()
+OUT_FILE = poi_geo.work(REGION, "poi_full.json")
+PLAY = poi_geo.load_play(REGION)
+BBOX = poi_geo.bbox(PLAY)               # lat0, lat1, lon0, lon1
+in_play = poi_geo.make_in_play(PLAY)    # even-odd over every ring, holes included
 calls = 0
-
-
-def rings_of(geom):
-    polys = [geom["coordinates"]] if geom["type"] == "Polygon" else geom["coordinates"]
-    for poly in polys:
-        for ring in poly:
-            yield ring
-
-
-ALL_RINGS = [r for f in PLAY["features"] for r in rings_of(f["geometry"])]
-xs = [p[0] for r in ALL_RINGS for p in r]
-ys = [p[1] for r in ALL_RINGS for p in r]
-BBOX = (min(ys), max(ys), min(xs), max(xs))  # lat0, lat1, lon0, lon1
-
-
-def in_play(lon, lat):
-    # even-odd ray casting over every ring (counties are non-overlapping and
-    # holes -- e.g. carved-out ocean -- are extra rings, so even-odd is correct)
-    inside = False
-    for ring in ALL_RINGS:
-        n = len(ring)
-        j = n - 1
-        for i in range(n):
-            xi, yi = ring[i]
-            xj, yj = ring[j]
-            if ((yi > lat) != (yj > lat)) and \
-               (lon < (xj - xi) * (lat - yi) / (yj - yi) + xi):
-                inside = not inside
-            j = i
-    return inside
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -166,7 +137,7 @@ def main():
         ge5 = sum(1 for x in kept if (x["userRatingCount"] or 0) >= 5)
         print(f"{key:15s} raw_in_bbox={len(found):5d} in_play={len(kept):5d} "
               f">=5rev={ge5:5d} calls={calls}", flush=True)
-    print(f"\ntotal API calls: {calls}\nwrote {out_path}")
+    print(f"\ntotal API calls: {calls}\nwrote {out_path} ({REGION})")
 
 
 if __name__ == "__main__":
