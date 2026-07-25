@@ -14832,13 +14832,14 @@
    "lat": 34.1291938,
    "lon": -117.97281480000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJR_WEdQDZwoARlmYo_T0lgOk",
+   "mergedInto": "google:ChIJRTf0CQDZwoAR3gOjpll33JY",
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJD_kFaVeTwoAR6giuDLKYgRA": {
    "cat": "hospital",
@@ -27995,14 +27996,15 @@
    "name": "City of Hope Duarte",
    "lat": 34.1308448,
    "lon": -117.9697616,
-   "decision": "merged",
-   "mergedInto": "google:ChIJR_WEdQDZwoARlmYo_T0lgOk",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJRTjINVXJwoAR5A2iGfYAIKo": {
    "cat": "park",
@@ -28205,14 +28207,15 @@
    "name": "City of Hope",
    "lat": 34.1291643,
    "lon": -117.9725842,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJRTf0CQDZwoAR3gOjpll33JY",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "name",
+   "reason": null
   },
   "google:ChIJRaKRNZ3PwoARzBu_LVhCOa8": {
    "cat": "park",
@@ -32224,13 +32227,14 @@
    "lat": 34.1285083,
    "lon": -117.9740255,
    "decision": "merged",
-   "mergedInto": "google:ChIJR_WEdQDZwoARlmYo_T0lgOk",
+   "mergedInto": "google:ChIJRTf0CQDZwoAR3gOjpll33JY",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJVVWF2XnKwoAR8M5XHtRwe48": {
    "cat": "consulate",
@@ -61390,13 +61394,14 @@
    "lat": 34.1300597,
    "lon": -117.96968369999999,
    "decision": "merged",
-   "mergedInto": "google:ChIJR_WEdQDZwoARlmYo_T0lgOk",
+   "mergedInto": "google:ChIJRTf0CQDZwoAR3gOjpll33JY",
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJwYGujVu4woARgNUV--PQ2FI": {
    "cat": "library",
