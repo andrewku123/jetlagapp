@@ -85,23 +85,25 @@ AIRPORTS = [(f"{c} \u2014 {AIRPORT_SITES[c][0]}", f"{AIRPORT_SITES[c][1]:.6f}, {
             for c in codes if c in AIRPORT_SITES]
 
 # extremes: the stations that bound the play area, useful for sanity-checking a
-# radar circle or a thermometer bisector before committing to it.
-def _ext(key, reverse=False):
-    return sorted((s for s in ST if s.get(key) is not None),
-                  key=lambda s: s[key], reverse=reverse)[0]
+# radar circle or a thermometer bisector before committing to it. Ties are all
+# printed — naming one of two equally-short stations would be a lie.
+def _ext(key, top=False, fmt=None):
+    vals = [s for s in ST if s.get(key) is not None]
+    best = (max if top else min)(s[key] for s in vals)
+    tied = sorted((s["name"] for s in vals if s[key] == best))
+    shown = " \u00b7 ".join(tied[:3]) + (f" +{len(tied)-3}" if len(tied) > 3 else "")
+    return f"{shown} ({fmt(best)})" if fmt else shown
 
 
-hi, lo = _ext("elevation", True), _ext("elevation")
-long_n, short_n = _ext("nameLength", True), _ext("nameLength")
 EXTREMES = [
-    ("Highest", f"{hi['name']} ({hi['elevation']*M2FT:,.0f} ft)"),
-    ("Lowest", f"{lo['name']} ({lo['elevation']*M2FT:,.0f} ft)"),
-    ("Longest name", f"{long_n['name']} ({long_n['nameLength']})"),
-    ("Shortest name", f"{short_n['name']} ({short_n['nameLength']})"),
-    ("Northernmost", _ext("lat", True)["name"]),
-    ("Southernmost", _ext("lat")["name"]),
-    ("Easternmost", _ext("lon", True)["name"]),
-    ("Westernmost", _ext("lon")["name"]),
+    ("Highest", _ext("elevation", True, lambda v: f"{v*M2FT:,.0f} ft")),
+    ("Lowest", _ext("elevation", False, lambda v: f"{v*M2FT:,.0f} ft")),
+    ("Longest name", _ext("nameLength", True, str)),
+    ("Shortest name", _ext("nameLength", False, str)),
+    ("Northernmost", _ext("lat", True)),
+    ("Southernmost", _ext("lat")),
+    ("Easternmost", _ext("lon", True)),
+    ("Westernmost", _ext("lon")),
 ]
 
 POI_LABELS = [

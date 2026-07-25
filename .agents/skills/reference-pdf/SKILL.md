@@ -82,7 +82,12 @@ here.
 
 Do **not** re-add raw-OSM POI lists: they disagreed with the curated POI data
 the app eliminates on (e.g. OSM gave 3 Bay zoos vs the app's 5, missing SF Zoo).
-Print counts from the app's own POI file instead.
+Print counts from the app's own POI file instead. `scripts/fetch_poi.py` (the
+Overpass query that used to feed those lists) is no longer part of this build.
+
+The edge-of-play-area block prints **every tied station**, not the first one the
+sort happens to return — ties are common on name length (3 LA stations are 4
+characters).
 
 ## Layout gotchas
 - **Render with Playwright, not the `google-chrome` CLI** — here `google-chrome`
