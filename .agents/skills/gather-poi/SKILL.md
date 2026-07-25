@@ -744,10 +744,16 @@ and by every curation batch:
   is the one Google field **exempt from the caching restrictions** (storable
   indefinitely; refresh at least every 12 months). OSM ids are free to store.
 - **`decision`**: `keep` | `pending` (visible but the manual pass hasn't reached it)
-  | `merged` (+`mergedInto` parent key) | `drop` (+`reason`). Decisions are
-  **sticky**: a re-scan can never resurrect a dropped or merged pin — that is the
-  whole point. Merged children keep their own record so a rescan recognizes them
-  instead of re-adding them as "new".
+  | `merged` (+`mergedInto` parent key) | `drop` (+`reason`). Merged children keep
+  their own record so a rescan recognizes them instead of re-adding them as "new".
+- **Stickiness depends on *why* a pin died** — never on which city it's in:
+  - `reason: manual` (a human judged it: "that's a chiropractic suite") and
+    `merged` → **sticky**. No scan ever offers it back; only a rename re-opens it.
+  - `reason: review_failed` (it only died for want of reviews) → **not sticky**.
+    Re-tested on *every* refresh, for ever, until it clears >=5 reviews (→ `RECHECK`),
+    is deleted by hand, or is merged. Re-testing is free — the sweep already prices
+    every place it returns — and a still-failing pin stays silent, so there's no
+    queue noise. This is why `poi_curate.py delete` takes `--reason`.
 - **`reviewGate`**: `passed` | `unknown`. **Monotonic** — review counts only go up,
   so once a pin clears >=5 it never needs checking again. Store the **boolean, not
   the count**: Google's terms forbid caching their content long-term, and the
@@ -759,12 +765,11 @@ and by every curation batch:
 **Seeding a city that was curated before the ledger existed.** Every revision of
 `poi_merge_viz.js` is a snapshot of the curation, so `poi_ledger.py seed` replays the
 git history: union of all revisions = every pin ever seen, head = survivors, and the
-revision where a pin disappears dates its deletion. The catch is that those first-pass
-deletions don't record *why* (`<5 reviews` vs "not really a hospital"), so they seed
-with **`recheckOnce: true`** and get exactly one re-test against the >=5 rule (queue
-`RECHECK`); the refresh consumes the flag and they are sticky forever after. This is a
-**one-time migration only** — every deletion made after the ledger exists is a real
-sticky deletion, never a review-failure candidate.
+revision where a pin disappears dates its deletion. Those pre-ledger deletions don't
+record *why* (`<5 reviews` vs "not really a hospital"), so they seed as
+`legacy_first_pass` and are treated as review failures — re-testable for ever, like
+`review_failed`. Clear them out over time by rejecting the ones that were really
+category calls (`poi_curate.py reject`), which makes them sticky.
 
 ### Never edit the review map alone
 
@@ -773,10 +778,15 @@ a deletion applied only to `poi_merge_viz.js` silently returns on the next scan.
 
 ```bash
 python3 poi_curate.py delete  --region la --file batch.txt   # '- Name @ lat,lon' lines
+python3 poi_curate.py delete  --region la --file under5.txt --reason review_failed
 python3 poi_curate.py merge   --region la --into "Surviving Rep" --name "Dupe A"
 python3 poi_curate.py unmerge --region la --name "Wrongly merged pin"
 python3 poi_curate.py swap    --region la --to "Better rep (a merged-away pin)"
+python3 poi_curate.py reject  --region la --key google:ChIJ... --note "chiropractic suite"
 ```
+`--reason review_failed` when you're only clearing an `UNDER5` batch, so those pins
+come back if they earn the reviews; the default `manual` is sticky. `reject` kills a
+queue item for good **without** putting it on the map.
 It refuses to guess: an ambiguous name aborts the whole batch and prints the
 candidates with Maps links. Deleting a group's rep promotes the **unlisted** kids to
 standalone pins instead of taking them down with it.
@@ -834,8 +844,8 @@ invisible:
 - **UNDER5** — visible pins now known to be under 5 reviews; drop them per the rulebook.
 - **CHANGED** — renamed or temporarily closed; judge by hand.
 - **GONE** — perm-closed (auto-dropped, listed for the record) and vanished pins.
-- **RECHECK** — one-time only, and only for a city seeded from a pre-ledger manual
-  pass (see above).
+- **RECHECK** — a review-failure drop that now clears >=5 reviews. It keeps
+  reappearing here until you act: put it back on the map, or `reject` it.
 
 This is a good fit for a scheduled Devin automation: run steps 0-4 every 6 months
 and deliver the queues.
