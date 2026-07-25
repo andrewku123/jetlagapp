@@ -1,5 +1,11 @@
 import type { QuestionKind } from '../types'
 import { haversineMiles } from '../lib/geo'
+import { AIRPORTS } from './regions'
+
+// The airports the active map actually contains, in the order they're declared,
+// so the blurb names the ones a seeker can reach on this map (and nothing at all
+// on a map with none) rather than a fixed list.
+const AIRPORT_CODES = Object.keys(AIRPORTS).join('/')
 
 export const RADAR_OPTIONS = [0.25, 0.5, 1, 3, 5, 10, 25, 50, 100]
 // Medium game thermometer travel distances (informational; elimination uses the
@@ -52,7 +58,9 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Matching — Nearest commercial airport',
     cards: 'draw 3, keep 1',
     eliminates: true,
-    blurb: 'Is your nearest commercial airport (SFO/OAK/SJC) the same as mine?',
+    blurb: AIRPORT_CODES
+      ? `Is your nearest commercial airport (${AIRPORT_CODES}) the same as mine?`
+      : 'Is your nearest commercial airport the same as mine?',
   },
   {
     kind: 'match-line',

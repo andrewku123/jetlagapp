@@ -13,6 +13,12 @@ async function loadFor(id: string) {
   return await import('./regions')
 }
 
+async function airportBlurb(id: string) {
+  await loadFor(id)
+  const { QUESTION_CATALOG } = await import('./questions')
+  return QUESTION_CATALOG.find((q) => q.kind === 'match-airport')!.blurb
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.resetModules()
@@ -59,6 +65,16 @@ describe('play-area scoping and question demotion', () => {
     expect(m.ENDGAME_ELIMINATES_KINDS.has('match-city')).toBe(false)
     // 8 Metro lines (A/B/C/D/E/K/G/J) still discriminate.
     expect(m.LOG_ONLY_KINDS.has('match-line')).toBe(false)
+  })
+
+  it('the airport blurb names the active map\'s own airports', async () => {
+    expect(await airportBlurb('bayarea')).toContain('(SFO/OAK/SJC)')
+    expect(await airportBlurb('la')).toContain('(LAX/LGB)')
+    // No airport in play → the question is log-only anyway, and the blurb must
+    // not name airports the seeker can't reach.
+    expect(await airportBlurb('sfmuni')).toBe(
+      'Is your nearest commercial airport the same as mine?',
+    )
   })
 
   it('SF Muni: border endgame-zone sliver reads its real city/county (Brisbane, San Mateo)', async () => {
