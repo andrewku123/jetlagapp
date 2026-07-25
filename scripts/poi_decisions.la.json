@@ -510,14 +510,15 @@
    "name": "Acu Clinic",
    "lat": 34.0322367,
    "lon": -118.2506357,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ-VMfJf0tw4ARVMSZ_JgTPlQ": {
    "cat": "park",
@@ -608,14 +609,15 @@
    "name": "MORAX , INC",
    "lat": 34.0539608,
    "lon": -118.30935040000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ-X7PpW_LwoARXXOn01utyTg": {
    "cat": "park",
@@ -678,14 +680,15 @@
    "name": "Woori Medical Center",
    "lat": 34.0526254,
    "lon": -118.2899861,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ-ZqjBWqxwoAR8x62Y71QIdY": {
    "cat": "movie_theater",
@@ -1314,14 +1317,15 @@
    "name": "A Medical Corporation",
    "lat": 34.059288699999996,
    "lon": -118.4112663,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJ07bbSvK7woARs134e7h9SZ4": {
    "cat": "hospital",
@@ -1329,13 +1333,14 @@
    "lat": 34.059288699999996,
    "lon": -118.4112663,
    "decision": "merged",
-   "mergedInto": "google:ChIJ07bbSvK7woAR6wvdVa-Hpuk",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ07nbQgC_woARabXSqtg0QiM": {
    "cat": "museum",
@@ -1638,14 +1643,15 @@
    "name": "farmacia centroAmericana",
    "lat": 34.0544781,
    "lon": -118.27531099999997,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ0YdJWl8x3YAR7RhdSZh03xg": {
    "cat": "park",
@@ -1751,13 +1757,14 @@
    "lat": 34.0650951,
    "lon": -118.4463487,
    "decision": "merged",
-   "mergedInto": "google:ChIJ4STUJIS8woARPvv-Kvb6RIU",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ0cejmaK8woAR9NzOFX3kHs4": {
    "cat": "park",
@@ -3287,14 +3294,15 @@
    "name": "Chugay Cosmetic Surgery Medical Clinic Inc.",
    "lat": 34.067634,
    "lon": -118.40690009999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ2ZDSGgm9woARKberejcDsJE": {
    "cat": "park",
@@ -3372,13 +3380,14 @@
    "lat": 34.097751599999995,
    "lon": -118.2925843,
    "decision": "merged",
-   "mergedInto": "google:ChIJGaRjMK3AwoARkoZeJ8RBESM",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ2a0hXTUz3YARaKHCEirmge0": {
    "cat": "hospital",
@@ -3623,14 +3632,15 @@
    "name": "24hr Community Pharmacy",
    "lat": 34.0245266,
    "lon": -118.24349089999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ3-QUybeXwoARpP_I07Ozr_Y": {
    "cat": "hospital",
@@ -4492,14 +4502,15 @@
    "name": "Kadri Center for Advanced Rhinology",
    "lat": 34.0679582,
    "lon": -118.406502,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ42krBEDNwoARDKb1ulmFqYQ": {
    "cat": "amusement_park",
@@ -4872,14 +4883,15 @@
    "name": "UCLA Medical Plaza",
    "lat": 34.065152399999995,
    "lon": -118.44593210000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJ4SUBaAA13YARe43QnyxpeZQ": {
    "cat": "park",
@@ -5998,13 +6010,14 @@
    "lat": 34.0976843,
    "lon": -118.29657750000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJGaRjMK3AwoARkoZeJ8RBESM",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ5WjmIgC7woARYC7qNqpAOMo": {
    "cat": "park",
@@ -6279,14 +6292,15 @@
    "name": "Trouble Shooters Unlimited",
    "lat": 34.0834803,
    "lon": -118.372818,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ5dxw01_LwoAR8gI6-mSs6bU": {
    "cat": "park",
@@ -6461,14 +6475,15 @@
    "name": "Work BH",
    "lat": 34.0669383,
    "lon": -118.375914,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ622BsAgx3YARowK-epVh6CA": {
    "cat": "park",
@@ -6489,14 +6504,15 @@
    "name": "Steve C. Chen, MD",
    "lat": 34.0685645,
    "lon": -118.40520490000002,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJdUIEHQi8woARvFjOA-JNcTw",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJ62xcLOG-woARyUh-usiaT5c": {
    "cat": "park",
@@ -6657,14 +6673,15 @@
    "name": "Downtown L.A. Research Center, Inc",
    "lat": 34.0525567,
    "lon": -118.2628417,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ66OgqsPMwoARB6svWAJWEbs": {
    "cat": "park",
@@ -7456,14 +7473,15 @@
    "name": "Crocker Campus",
    "lat": 34.044239,
    "lon": -118.24217230000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ6yFuXKMx3YARFEH_qIRgOYw": {
    "cat": "park",
@@ -7753,28 +7771,30 @@
    "name": "Pain Center",
    "lat": 34.069849999999995,
    "lon": -118.37527000000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJ7QoQ1FW5woARGswHsSRz-SE": {
    "cat": "hospital",
    "name": "SAT Health Center",
    "lat": 34.0673963,
    "lon": -118.3903395,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ7QoQ1FW5woARk3jTNakdoIQ": {
    "cat": "library",
@@ -8579,14 +8599,15 @@
    "name": "Beverly Hills Wellness Center | Dr. Aaron Orpelli",
    "lat": 34.0623581,
    "lon": -118.3986472,
-   "decision": "merged",
-   "mergedInto": "google:ChIJBQniu-O7woARlM41hot2mQo",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJ84Fo8iEuw4ARuzZR8oIwiMA": {
    "cat": "museum",
@@ -8761,14 +8782,15 @@
    "name": "Outreach Care Medical Group",
    "lat": 34.0902769,
    "lon": -118.3101672,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ8Si0Iom5woARhuP3WrjSklU": {
    "cat": "museum",
@@ -9393,14 +9415,15 @@
    "name": "barlow respiratory hospital",
    "lat": 34.1008677,
    "lon": -118.34132749999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ8z1Qsd26woAR_kIW46rb_8o": {
    "cat": "park",
@@ -9715,14 +9738,15 @@
    "name": "Seoul National University Hospital LA Office",
    "lat": 34.0623108,
    "lon": -118.3061813,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ97iLXEnGwoARjlCU-nNwduU": {
    "cat": "park",
@@ -10053,15 +10077,15 @@
    "name": "reflux surgery",
    "lat": 34.066691999999996,
    "lon": -118.386326,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJ9Vafs1ewwoARMpqS4H1oc28": {
    "cat": "park",
@@ -11358,15 +11382,15 @@
    "name": "Caped KIDsaders Children's Hospital Foundation",
    "lat": 34.0730187,
    "lon": -118.3824396,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJAQBAzbXAwoAR_qDAXwpcHmw": {
    "cat": "park",
@@ -11653,42 +11677,45 @@
    "name": "Ucla Pediatric Gastroenterology",
    "lat": 34.0648474,
    "lon": -118.4471591,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJAQDwKIS8woARIuQH-aVDuII": {
    "cat": "hospital",
    "name": "California Heart & Lung Surgery Medical Center",
    "lat": 34.0654341,
    "lon": -118.4456849,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJAQDwKIS8woARp2BkDt2txDI": {
    "cat": "hospital",
    "name": "UCLA Neuropsychiatric and Biobehavioral Health Services",
    "lat": 34.0643265,
    "lon": -118.44609530000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJAQDwXYmzwoARRFiY_UUotY8": {
    "cat": "park",
@@ -11779,14 +11806,15 @@
    "name": "Sdgoiiruv",
    "lat": 34.0598975,
    "lon": -118.2655611,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJASrIZhWxwoARFa_VIErlY90": {
    "cat": "library",
@@ -12571,14 +12599,15 @@
    "name": "Cedars-Sinai Imaging",
    "lat": 34.0660228,
    "lon": -118.38084539999998,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJB9UULA6_woARougr98q94K0": {
    "cat": "park",
@@ -12613,14 +12642,15 @@
    "name": "Cedar Sinia",
    "lat": 34.0701384,
    "lon": -118.37528329999998,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJBQGQ3wDHwoAR4s7tlU4tVA0": {
    "cat": "library",
@@ -12669,14 +12699,15 @@
    "name": "Beverly Hills Medical Tower",
    "lat": 34.0569884,
    "lon": -118.3970703,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJBR6MfgDPwoAR0h2pw0pJVEc": {
    "cat": "park",
@@ -12796,14 +12827,15 @@
    "name": "TRISTAR GLOBAL MEDICAL, INC",
    "lat": 34.0691217,
    "lon": -118.40676930000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJBY6DwMG-woARC3kcHBaffb8": {
    "cat": "movie_theater",
@@ -13078,14 +13110,15 @@
    "name": "The Church",
    "lat": 34.0839134,
    "lon": -118.28962759999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJBemCzdLGwoARm0a0qKMRRgc": {
    "cat": "hospital",
@@ -13415,14 +13448,15 @@
    "name": "DoctorReza",
    "lat": 34.0416593,
    "lon": -118.42949929999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJC6QstQ8xw4ARnajvQda1eIc": {
    "cat": "museum",
@@ -13527,14 +13561,15 @@
    "name": "Eve Surgical Center",
    "lat": 34.059204,
    "lon": -118.3882498,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJCQnL1krJwoARU7h-HHLA0b0": {
    "cat": "park",
@@ -13625,14 +13660,15 @@
    "name": "LA ACC Veteran’s Affairs",
    "lat": 34.0520292,
    "lon": -118.2385001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJweJWmrDHwoAROwZX5Sif9UM",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJCUZGLuPHwoARyJCCTb7KVNg": {
    "cat": "library",
@@ -14962,14 +14998,15 @@
    "name": "Center for Healthy Communities",
    "lat": 34.0591006,
    "lon": -118.2360078,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJDc82-ibFwoARB0TyoNdchbY": {
    "cat": "library",
@@ -15355,14 +15392,15 @@
    "name": "BreatheMyo",
    "lat": 34.0604887,
    "lon": -118.43748280000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJE7_MSQDBwoARdSLFMwSR7ng": {
    "cat": "park",
@@ -15663,14 +15701,15 @@
    "name": "Bully Drugs",
    "lat": 34.0975709,
    "lon": -118.3192192,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJEYeaNwDJwoAR3_CLAkjvcxE": {
    "cat": "museum",
@@ -15803,14 +15842,15 @@
    "name": "Medical Concierge Network",
    "lat": 34.0761903,
    "lon": -118.39595089999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJEdLXkSS6woAR0twSB88iTks": {
    "cat": "park",
@@ -16182,14 +16222,15 @@
    "name": "BH Wound Care",
    "lat": 34.0672224,
    "lon": -118.39180130000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJF7lhan23woARwjCicHj5fEY": {
    "cat": "park",
@@ -16393,14 +16434,15 @@
    "name": "Cedars-Sinai OB-GYN - Los Feliz",
    "lat": 34.106178,
    "lon": -118.2871395,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJFWKqb-_JwoAR6ufYMIzzZzw": {
    "cat": "hospital",
@@ -16632,14 +16674,15 @@
    "name": "LABCORP- BY APPOINTMENTS ONLY",
    "lat": 34.0696751,
    "lon": -118.40364360000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJFf1T2XAz3YAR8DJp7Y8DIYg": {
    "cat": "park",
@@ -18814,15 +18857,15 @@
    "name": "Beverly Hills Male Medical Center",
    "lat": 34.0649167,
    "lon": -118.37674460000001,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJI0PIagCxwoARE6Y_8zAPb0k": {
    "cat": "park",
@@ -18928,14 +18971,15 @@
    "name": "lowtsolution",
    "lat": 34.066393399999995,
    "lon": -118.3798569,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJI5p8TJLFwoAR1zxaR5ADiWo": {
    "cat": "library",
@@ -19280,14 +19324,15 @@
    "name": "UCLA Health Primary and Specialty Care",
    "lat": 34.0477529,
    "lon": -118.2586667,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJIVmsb8qkwoARqX3H23npZHE": {
    "cat": "library",
@@ -20177,14 +20222,15 @@
    "name": "The Dogtor",
    "lat": 34.0588444,
    "lon": -118.44213130000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJJQxRUN_ZwoARPQo20QFHu_M": {
    "cat": "park",
@@ -20219,14 +20265,15 @@
    "name": "Loker Medical Arts Pavilion",
    "lat": 34.0359647,
    "lon": -118.2664432,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJJReFyafHwoARl_X2nWyLofw": {
    "cat": "park",
@@ -20332,14 +20379,15 @@
    "name": "Division of Interventional Neuroradiology",
    "lat": 34.0648067,
    "lon": -118.44338889999997,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJJVQHrwO5woARbb8Uu5agQgQ": {
    "cat": "consulate",
@@ -20669,15 +20717,15 @@
    "name": "Beverly Hills Dermatology",
    "lat": 34.0672885,
    "lon": -118.37660079999999,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJJekBjNjMwoARL0q8gSMuhxE": {
    "cat": "hospital",
@@ -22174,14 +22222,15 @@
    "name": "California Rehabilitation Institute",
    "lat": 34.0591418,
    "lon": -118.4118926,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJL8RRluct3YAR6jtvytPAtJs": {
    "cat": "park",
@@ -22244,14 +22293,15 @@
    "name": "Piedra’s Surgical",
    "lat": 34.069673,
    "lon": -118.40369539999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJLRYLNrmkwoARpAuvmSjzlEA": {
    "cat": "park",
@@ -22749,14 +22799,15 @@
    "name": "Bone Biologics",
    "lat": 34.068287999999995,
    "lon": -118.39004269999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJLxqTE7u8woARaryh2lGl6OM": {
    "cat": "park",
@@ -22989,14 +23040,15 @@
    "name": "Ryan Gorji, MD",
    "lat": 34.0669074,
    "lon": -118.39063449999999,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJqblUfFa5woARA5-Rg9-MLt4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJM4GU7wCxwoARIqUhFU2dhzI": {
    "cat": "park",
@@ -23115,14 +23167,15 @@
    "name": "Welltower",
    "lat": 34.068344100000004,
    "lon": -118.40579219999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJM8RbIACxwoAR7ZFc5YLMnQE": {
    "cat": "park",
@@ -23256,14 +23309,15 @@
    "name": "주치의병원",
    "lat": 34.0674019,
    "lon": -118.3831642,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJMQxJJEa_woARWhjkxTKYw0A": {
    "cat": "park",
@@ -23592,14 +23646,15 @@
    "name": "Ucla Medical Center-Chn",
    "lat": 34.0652172,
    "lon": -118.44314360000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJMYhRDKDLwoARL2EffsYhqlg": {
    "cat": "park",
@@ -24280,14 +24335,15 @@
    "name": "生殖医学医院",
    "lat": 34.065005899999996,
    "lon": -118.3733892,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJNQPV2-bGwoARyik5whifyBk": {
    "cat": "park",
@@ -25208,14 +25264,15 @@
    "name": "Hillsides Community Center",
    "lat": 34.077628499999996,
    "lon": -118.26109330000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJO6k0awCDwoARUvUWXUZlD-c": {
    "cat": "park",
@@ -25602,14 +25659,15 @@
    "name": "Fresenius Medical Care",
    "lat": 34.0258301,
    "lon": -118.19615150000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJOaYkpXAuw4ARDGsNkdRSNBM": {
    "cat": "park",
@@ -25714,14 +25772,15 @@
    "name": "California Psychiatry",
    "lat": 34.0562201,
    "lon": -118.42502850000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJOdOBkMTOwoARJpxjsOpTqIY": {
    "cat": "library",
@@ -26289,14 +26348,15 @@
    "name": "Keck Medicine of USC - Downtown Los Angeles - USC Healthcare Center",
    "lat": 34.0464032,
    "lon": -118.2604282,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJPSsKFHfPwoARvVXgViAUPWs": {
    "cat": "park",
@@ -26934,14 +26994,15 @@
    "name": "AmeriPharma Infusion Center at Wallace & Lee Center",
    "lat": 34.0663704,
    "lon": -118.3828082,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJQ3QIQq2-woARRh6WqwLPgGg": {
    "cat": "hospital",
@@ -27201,14 +27262,15 @@
    "name": "Cedars",
    "lat": 34.06361770000001,
    "lon": -118.37028120000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJQUtNSVPYwoARMzI0rRcaTkA": {
    "cat": "library",
@@ -27482,14 +27544,15 @@
    "name": "northbridge hospital medical center",
    "lat": 34.0593863,
    "lon": -118.4112085,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJQewZFACPwoAR_CAt6m4N0Co": {
    "cat": "hospital",
@@ -28353,14 +28416,15 @@
    "name": "ARK MEDICAL, INC",
    "lat": 34.0646096,
    "lon": -118.37564649999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJRcD89qnAwoARweCUMA4HsV4": {
    "cat": "library",
@@ -28535,14 +28599,15 @@
    "name": "Breast Health Services Building",
    "lat": 34.077059,
    "lon": -118.37931010000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJRf20uqa5woARhxD40tyKUc8": {
    "cat": "hospital",
@@ -28803,14 +28868,15 @@
    "name": "Cornelius B. Penberthy Child Study Center",
    "lat": 34.0592195,
    "lon": -118.29328699999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJS6aI1KS7woARUFwqE0MphC0": {
    "cat": "park",
@@ -29042,14 +29108,15 @@
    "name": "PCP",
    "lat": 34.0340294,
    "lon": -118.1613584,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ7U6LyXfPwoARtglKkUpbSO8",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJSUfzcYKlwoARzTIS1EzjqWU": {
    "cat": "park",
@@ -29182,14 +29249,15 @@
    "name": "myPlace Health",
    "lat": 34.065464999999996,
    "lon": -118.27049629999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJSaZNNADFwoARkb2Pi4eXSy8": {
    "cat": "park",
@@ -29238,14 +29306,15 @@
    "name": "MBI Health services",
    "lat": 34.0446391,
    "lon": -118.24382449999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJScLE57wlw4ARpQHnYZMDVsw": {
    "cat": "mountain",
@@ -29379,13 +29448,14 @@
    "lat": 34.0763703,
    "lon": -118.38078989999998,
    "decision": "merged",
-   "mergedInto": "google:ChIJVVUFg62-woARb0HbEgNhSoQ",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJSwfWSACzwoARSszOAZGUF6c": {
    "cat": "park",
@@ -29406,14 +29476,15 @@
    "name": "Hollywood Medical Group",
    "lat": 34.094024,
    "lon": -118.32556179999997,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJSwmYeO-5woARTSMIa5lqz1k": {
    "cat": "park",
@@ -29504,14 +29575,15 @@
    "name": "Foot &Ankle Clinic",
    "lat": 34.0639365,
    "lon": -118.27244179999998,
-   "decision": "merged",
-   "mergedInto": "google:ChIJw_7jrwvHwoARIH1CtYefdAs",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "osm",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": "manual"
   },
   "google:ChIJT-hZnTq7woARJQJHorqI-fI": {
    "cat": "park",
@@ -29742,14 +29814,15 @@
    "name": "Evans Medical Clinic",
    "lat": 34.05874540000001,
    "lon": -118.3983049,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJT7yWPgCZwoARiwUplMrS7wM": {
    "cat": "park",
@@ -30022,14 +30095,15 @@
    "name": "JAY BULLOCH L.AC, M.T.O.M",
    "lat": 34.0664182,
    "lon": -118.38241289999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJT_SgTgAt3YARHSHhdp3FaO4": {
    "cat": "park",
@@ -31330,14 +31404,15 @@
    "name": "Inspire Africa Initiative",
    "lat": 34.0647137,
    "lon": -118.276507,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJUzjHqyWPwoARwZenKSUtTAg": {
    "cat": "hospital",
@@ -31667,14 +31742,15 @@
    "name": "Halsen Down",
    "lat": 34.101549999999996,
    "lon": -118.3112968,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJVR3iYACDwoARRewVl-kvCoY": {
    "cat": "park",
@@ -31793,14 +31869,15 @@
    "name": "Synergy Hematology Oncology",
    "lat": 34.0771267,
    "lon": -118.38184959999998,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJVVUJ8ke_woAR6lRc3T3mMwY": {
    "cat": "library",
@@ -32425,28 +32502,30 @@
    "name": "My surgical Solutions",
    "lat": 34.091084099999996,
    "lon": -118.39266780000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJVVWVC6C-woARQw7puj8r1TU": {
    "cat": "hospital",
    "name": "MRKH Surgeons",
    "lat": 34.091084099999996,
    "lon": -118.39266780000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJVVWVEau3woARoh5FHiwCqeY": {
    "cat": "park",
@@ -32551,14 +32630,15 @@
    "name": "종합 병원(신약국,류물리치료,서울메디칼 등)",
    "lat": 34.0644887,
    "lon": -118.28673939999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJVVWVp-PHwoARx8oi0IGAIeU": {
    "cat": "park",
@@ -32593,14 +32673,15 @@
    "name": "Pure Health Integrative Medicine",
    "lat": 34.0596366,
    "lon": -118.38604600000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJVVXBt58x3YARBl2Xvc5XVL4": {
    "cat": "park",
@@ -33775,15 +33856,15 @@
    "name": "Surgery",
    "lat": 34.0663605,
    "lon": -118.38741279999999,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJWVk1mL2WwoARN4Y5PhzRkWY": {
    "cat": "park",
@@ -34675,28 +34756,30 @@
    "name": "Beverly Hills Medical Center",
    "lat": 34.0690005,
    "lon": -118.4039646,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJXQLwLgi8woARPlacbqyjRSM": {
    "cat": "hospital",
    "name": "BEVERLY HILLS AMBULATORY SURGERY CENTERS",
    "lat": 34.068487,
    "lon": -118.40704740000001,
-   "decision": "merged",
-   "mergedInto": "google:ChIJXQCy-Ae8woARNaPejNyZlks",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": "manual"
   },
   "google:ChIJXQZXFWnDwoARhS21ybuxAhE": {
    "cat": "library",
@@ -35263,14 +35346,15 @@
    "name": "SocolMD",
    "lat": 34.065006,
    "lon": -118.37338899999997,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJXdOHu8wx3YAREOBD6rLuNNQ": {
    "cat": "park",
@@ -35502,9 +35586,9 @@
    "name": "Beverly Hills Medical Plaza",
    "lat": 34.068424199999995,
    "lon": -118.38343499999999,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
@@ -36151,14 +36235,15 @@
    "name": "Los Angeles Men's Health Center",
    "lat": 34.0579306,
    "lon": -118.41133539999998,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJYWMB8YfYwoARhIhH0Xk2N6Q": {
    "cat": "museum",
@@ -36264,13 +36349,14 @@
    "lat": 34.059318,
    "lon": -118.41123270000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJlxLoYgC7woARnQmS6pStXtA",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJYcOgVPzGwoARw4tXadIWc0g": {
    "cat": "park",
@@ -37281,28 +37367,30 @@
    "name": "Koa Medical Center Inc",
    "lat": 34.052262299999995,
    "lon": -118.3163375,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJZYS5aSO_woARZi19MVESHJA": {
    "cat": "hospital",
    "name": "Night work 2",
    "lat": 34.0922943,
    "lon": -118.3525183,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJZZ5MQ3S7woARDullWEpdozo": {
    "cat": "hospital",
@@ -37477,14 +37565,15 @@
    "name": "UCLA DTLA HEMATOLOGY ONCOLOGY",
    "lat": 34.0483595,
    "lon": -118.25875970000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJZdTZXh2WwoARsKmVA-Ntz70": {
    "cat": "library",
@@ -37701,14 +37790,15 @@
    "name": "Premier TMS Centers of Los Angeles",
    "lat": 34.0673862,
    "lon": -118.39158419999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ_19MU9GkwoARQsaOELW-oYI": {
    "cat": "park",
@@ -38584,14 +38674,15 @@
    "name": "JCRUZTHERAPY",
    "lat": 34.0566828,
    "lon": -118.44222799999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ___PfEi7woARZMHC8h2y4gg": {
    "cat": "library",
@@ -38850,28 +38941,30 @@
    "name": "Medical Screening",
    "lat": 34.0963479,
    "lon": -118.3712818,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ___vXgrHwoARy1R67LWMXpI": {
    "cat": "hospital",
    "name": "Sheba Optimum Care",
    "lat": 34.0621419,
    "lon": -118.2728985,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ___viyW2woARHdAHWaomses": {
    "cat": "hospital",
@@ -39203,14 +39296,15 @@
    "name": "Elite Medical Center",
    "lat": 34.0634222,
    "lon": -118.3676069,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJa0cVlYoz3YARbqrSgr381kQ": {
    "cat": "park",
@@ -39766,14 +39860,15 @@
    "name": "Decon Medical Inc",
    "lat": 34.0682635,
    "lon": -118.3835235,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJaWpUjbyWwoARCfs6tQK6YfQ": {
    "cat": "park",
@@ -40341,14 +40436,15 @@
    "name": "Instituto Of Internal medicine",
    "lat": 34.0491051,
    "lon": -118.2590353,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJb2FsZ369woARC-5aQ1NEpIc": {
    "cat": "park",
@@ -41047,14 +41143,15 @@
    "name": "Medix Medical Management",
    "lat": 34.0595997,
    "lon": -118.38606130000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJbaq_WJDSwoARY6wylewCeyo": {
    "cat": "park",
@@ -41496,14 +41593,15 @@
    "name": "Emma's Children",
    "lat": 34.067432,
    "lon": -118.39027899999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJc8uXJwAx3YARi80R9DfPtUc": {
    "cat": "park",
@@ -41622,14 +41720,15 @@
    "name": "Dr. Alma robles",
    "lat": 34.062128099999995,
    "lon": -118.3332478,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJcSoorRTHwoARGMiZjF8Ayws": {
    "cat": "park",
@@ -41777,15 +41876,15 @@
    "name": "Regenerative Health, Beverly Hills",
    "lat": 34.06669490000001,
    "lon": -118.3910023,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJcZzFJFrGwoARhAne6B5BMBE": {
    "cat": "hospital",
@@ -42199,14 +42298,15 @@
    "name": "RadNet Imaging Centers",
    "lat": 34.0660234,
    "lon": -118.3807812,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJd4xMWG7JwoARz8DaX5uHFLU": {
    "cat": "library",
@@ -42706,14 +42806,15 @@
    "name": "CAD Medical Services",
    "lat": 34.0617884,
    "lon": -118.33924760000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJdZbSPDg23YAR6yR-akC2g4E": {
    "cat": "museum",
@@ -42903,14 +43004,15 @@
    "name": "UCLA Simulation Center (Rosenfeld Hall)",
    "lat": 34.0666224,
    "lon": -118.4447554,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJdbx-eXe_woARc_qytrsIGs0": {
    "cat": "park",
@@ -43114,9 +43216,9 @@
    "name": "Sollis Health - Beverly Hills",
    "lat": 34.068348,
    "lon": -118.37509150000001,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
@@ -43634,14 +43736,15 @@
    "name": "Wendy and Leonard Goldberg Medical Building",
    "lat": 34.0645258,
    "lon": -118.44606440000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJeX7ZQ0cvw4AR1YR3JojOiwE": {
    "cat": "mountain",
@@ -43956,14 +44059,15 @@
    "name": "AROmotion",
    "lat": 34.0757981,
    "lon": -118.36706629999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJew6NOaHQwoARzDyj7VG8t08": {
    "cat": "park",
@@ -43998,14 +44102,15 @@
    "name": "BH Cellular Medicine",
    "lat": 34.0693754,
    "lon": -118.4001737,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJex1G7SPJwoARhilrueUhhiM": {
    "cat": "park",
@@ -44166,14 +44271,15 @@
    "name": "The Doctor",
    "lat": 34.039261599999996,
    "lon": -118.2656524,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJf3DdGgCRwoAROw5ErBmuXag": {
    "cat": "museum",
@@ -45304,14 +45410,15 @@
    "name": "벌몬양로보건센타",
    "lat": 34.0575604,
    "lon": -118.2925395,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJgQaSCAW0woARp2yWgYlwq6Q": {
    "cat": "hospital",
@@ -45332,14 +45439,15 @@
    "name": "El Callao estado bolivar",
    "lat": 34.0832064,
    "lon": -118.38339819999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJgSFevMEz3YAR0AKIxKTIfc4": {
    "cat": "park",
@@ -45459,14 +45567,15 @@
    "name": "Brace 4U",
    "lat": 34.0244169,
    "lon": -118.2435731,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJgWfiPTomw4ARyTcKqz8pKio": {
    "cat": "park",
@@ -45613,14 +45722,15 @@
    "name": "240 S. La Cienega Medical Building - Beverly Hills",
    "lat": 34.0639672,
    "lon": -118.3759432,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJgaFafgwmw4AR54aKwqvSGkw": {
    "cat": "park",
@@ -45697,14 +45807,15 @@
    "name": "Bemer Therapy",
    "lat": 34.0654075,
    "lon": -118.2881335,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJgcI7UFu_woARSqZVqQ4Byxg": {
    "cat": "hospital",
@@ -46484,14 +46595,15 @@
    "name": "Vanity Medical & Wellness Tours",
    "lat": 34.0691217,
    "lon": -118.40676930000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJhURJPb4ow4ARBUBq4QOequQ": {
    "cat": "library",
@@ -49282,27 +49394,29 @@
    "lat": 34.098423,
    "lon": -118.29441310000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJkXvAcKvAwoARY93QzJfy7bQ",
-   "mergeSrc": "osm",
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJkXvAcKvAwoARY93QzJfy7bQ": {
    "cat": "hospital",
    "name": "Pediatrics Hospital",
    "lat": 34.098423,
    "lon": -118.29441310000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJkY48SnqdwoARlHJ8FjHCJh8": {
    "cat": "park",
@@ -49394,14 +49508,15 @@
    "name": "BBL Booty Injections Center",
    "lat": 34.0627785,
    "lon": -118.35351329999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJk_M4NAA33YARol8h1QM3DHM": {
    "cat": "park",
@@ -49732,14 +49847,15 @@
    "name": "Pico Patient Wellness",
    "lat": 34.047471,
    "lon": -118.2861445,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJkyrqXbjHwoAR1bJ76zx89B8": {
    "cat": "stadium",
@@ -50054,14 +50170,15 @@
    "name": "Kyung Dong Acupuncture Clinic",
    "lat": 34.027161899999996,
    "lon": -118.2010041,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJlR1q-jwx3YAR3ul3eTMZtz8": {
    "cat": "park",
@@ -50264,14 +50381,15 @@
    "name": "Infusion for Health- Downtown Los Angeles",
    "lat": 34.0519988,
    "lon": -118.26406619999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJlWP5v2kx3YARbpEOSZhmYJE": {
    "cat": "aquarium",
@@ -50488,14 +50606,15 @@
    "name": "Ucla Occupational Medicine",
    "lat": 34.058653299999996,
    "lon": -118.44313529999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJlck3DJEx3YARGgh4jnAupys": {
    "cat": "park",
@@ -50516,14 +50635,15 @@
    "name": "Cenegenics Beverly Hills",
    "lat": 34.0691688,
    "lon": -118.4050305,
-   "decision": "merged",
-   "mergedInto": "google:ChIJXQCy-Ae8woARNaPejNyZlks",
-   "mergeSrc": "name",
+   "decision": "pending",
+   "mergedInto": null,
+   "mergeSrc": null,
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJlcvFRka5woARFIB6SASgEqw": {
    "cat": "consulate",
@@ -50670,14 +50790,15 @@
    "name": "The acupuncture wellness center , Inc",
    "lat": 34.0593451,
    "lon": -118.41121020000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJlxQCmlXBwoARrDx4po8rA8o": {
    "cat": "park",
@@ -51053,13 +51174,14 @@
    "lat": 34.098934799999995,
    "lon": -118.29409150000001,
    "decision": "merged",
-   "mergedInto": "google:ChIJkXvAcKvAwoARY93QzJfy7bQ",
-   "mergeSrc": "osm",
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJm6xiQg6bwoARAtyi7nZE0E4": {
    "cat": "park",
@@ -51516,14 +51638,15 @@
    "name": "Serrano Medical Bldg",
    "lat": 34.068853,
    "lon": -118.30632999999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJm_fCK_KVwoARECTVqK0veE0": {
    "cat": "movie_theater",
@@ -51642,14 +51765,15 @@
    "name": "Green Leaf",
    "lat": 34.0537072,
    "lon": -118.32315919999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJme1eNTIx3YARHnMmdoCSRtM": {
    "cat": "park",
@@ -51966,28 +52090,30 @@
    "name": "UCLA CNS",
    "lat": 34.0658937,
    "lon": -118.4433608,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJn2kJFaG9woAR8ybXxWpd3JE": {
    "cat": "hospital",
    "name": "Emergency room",
    "lat": 34.0665039,
    "lon": -118.44653099999998,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJn30N5b3LwoARRp1C5ZJSQnE": {
    "cat": "park",
@@ -52317,15 +52443,15 @@
    "name": "Wilshire Ambulatory Surgery Center",
    "lat": 34.067333,
    "lon": -118.38792919999999,
-   "decision": "merged",
-   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
+   "decision": "drop",
+   "mergedInto": null,
    "mergeSrc": "name",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "reason": null
+   "reason": "manual"
   },
   "google:ChIJnYpoT-HEwoARmURIlAq2vLM": {
    "cat": "park",
@@ -52795,14 +52921,15 @@
    "name": "Patient Medical Care",
    "lat": 34.0629583,
    "lon": -118.1347398,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJo61ACtrSwoAR8ttZ_KXsp9U": {
    "cat": "library",
@@ -54552,14 +54679,15 @@
    "name": "Marrow Matters",
    "lat": 34.0803829,
    "lon": -118.3909947,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJq1AnHn-XwoARv0RZziWA9fc": {
    "cat": "park",
@@ -54665,13 +54793,14 @@
    "lat": 34.059342799999996,
    "lon": -118.4112215,
    "decision": "merged",
-   "mergedInto": "google:ChIJlxLoYgC7woARnQmS6pStXtA",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJq45RbfPHwoARjf3rIfZ4_vs": {
    "cat": "park",
@@ -54791,14 +54920,15 @@
    "name": "Mark Goodson Building, Suite 901",
    "lat": 34.0703767,
    "lon": -118.3754279,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJq6o-UGm8woARWPcLBcBXCtA": {
    "cat": "park",
@@ -55898,14 +56028,15 @@
    "name": "The Coding Network",
    "lat": 34.0611755,
    "lon": -118.3915188,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJqbWssx3IwoARMHRV3khjPZ0": {
    "cat": "park",
@@ -56138,14 +56269,15 @@
    "name": "Bijanpour Psychiatric Medical Group",
    "lat": 34.0324215,
    "lon": -118.38940720000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJr0-_LAC7woARsFzrJB4yUvA": {
    "cat": "library",
@@ -56250,14 +56382,15 @@
    "name": "California Sports and Rehab",
    "lat": 34.035423,
    "lon": -118.2592578,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJr4M4f6KEwoARhRXrM1K17Oo": {
    "cat": "park",
@@ -57006,14 +57139,15 @@
    "name": "Once in a Licetime Lice Removal Treatment Center",
    "lat": 34.0638447,
    "lon": -118.3837362,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJrwiHfgC7woARX1qlZP1pqI8": {
    "cat": "park",
@@ -58063,13 +58197,14 @@
    "lat": 34.097986399999996,
    "lon": -118.2921727,
    "decision": "merged",
-   "mergedInto": "google:ChIJGaRjMK3AwoARkoZeJ8RBESM",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJt1e0FxUx3YARuD1jX5F2MOw": {
    "cat": "museum",
@@ -58846,14 +58981,15 @@
    "name": "High Desert Womens Memorial Medical Center",
    "lat": 34.0768927,
    "lon": -118.25709040000001,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJtdoNCuXHwoARvvewTAHChfI": {
    "cat": "hospital",
@@ -58944,14 +59080,15 @@
    "name": "내병원",
    "lat": 34.0648625,
    "lon": -118.28756469999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJtf3cLEnMwoAR1EdRWS-gmmQ": {
    "cat": "park",
@@ -59142,13 +59279,14 @@
    "lat": 34.098838199999996,
    "lon": -118.2954537,
    "decision": "merged",
-   "mergedInto": "google:ChIJGaRjMK3AwoARkoZeJ8RBESM",
-   "mergeSrc": "name",
+   "mergedInto": "google:ChIJE64Um6zAwoARGgmXamvKujk",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
    "firstSeen": "2026-07-09",
-   "lastSeen": "2026-07-25"
+   "lastSeen": "2026-07-25",
+   "reason": null
   },
   "google:ChIJtzaBZUKQwoARdFxfNWJ4pAk": {
    "cat": "park",
@@ -59225,14 +59363,15 @@
    "name": "International Orbital Institute",
    "lat": 34.0684098,
    "lon": -118.38339590000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJXyuvhVG5woARHnqd3GjZnLc",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJu3eue7uWwoARr4jO6xWxTr4": {
    "cat": "park",
@@ -59621,7 +59760,7 @@
    "lon": -118.4112215,
    "decision": "merged",
    "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
-   "mergeSrc": "name",
+   "mergeSrc": "manual",
    "reviewGate": "passed",
    "decidedAt": "2026-07-25",
    "closed": null,
@@ -59746,14 +59885,15 @@
    "name": "Aaskasean Illusions",
    "lat": 34.067432,
    "lon": -118.39027899999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJuf8QQgDHwoARLoS9ejXinCM": {
    "cat": "park",
@@ -60869,14 +61009,15 @@
    "name": "Gym membership",
    "lat": 34.0533789,
    "lon": -118.2662241,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJvfvDz9ybwoARop_zlIbfvXI": {
    "cat": "hospital",
@@ -61135,14 +61276,15 @@
    "name": "Nutrition Journey",
    "lat": 34.062155,
    "lon": -118.415826,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJw4DCAdrX3IAR-1_GYNuCOfc": {
    "cat": "movie_theater",
@@ -61163,14 +61305,15 @@
    "name": "Heal",
    "lat": 34.0592746,
    "lon": -118.41122910000001,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ3T_8aJG7woARWIYbdaO5bh4",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJw5EMdbTEwoAR1Bn4B9qi5Vg": {
    "cat": "park",
@@ -61669,14 +61812,15 @@
    "name": "Cardiology Medical",
    "lat": 34.0639234,
    "lon": -118.27241799999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJw_p-3LLHwoARlSKm5-xKvOs": {
    "cat": "park",
@@ -61739,14 +61883,15 @@
    "name": "Medscape",
    "lat": 34.0672299,
    "lon": -118.40128209999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJwcOw-YK4woARAoxqO8F13yE": {
    "cat": "consulate",
@@ -62119,14 +62264,15 @@
    "name": "8767 Wilshire Blvd",
    "lat": 34.0672655,
    "lon": -118.3834246,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJ98qZvfS_woARcT4B8X0uYFI",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJx3U6WQAx3YARL9QuJO1WSo8": {
    "cat": "park",
@@ -63063,14 +63209,15 @@
    "name": "The Migraine Institute",
    "lat": 34.067589,
    "lon": -118.39819469999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJy4Sh1pW6woARjreLLK7bWvA": {
    "cat": "hospital",
@@ -63091,14 +63238,15 @@
    "name": "Clinica",
    "lat": 34.033331499999996,
    "lon": -118.158628,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJy6XgkZTEwoARqj-h9UrU6PY": {
    "cat": "hospital",
@@ -63245,14 +63393,15 @@
    "name": "imabigboi",
    "lat": 34.0573402,
    "lon": -118.25868749999998,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJySxqv-3DwoAR7I2BDti7bvs": {
    "cat": "park",
@@ -63497,14 +63646,15 @@
    "name": "Pilonidal Cyst Center",
    "lat": 34.0665626,
    "lon": -118.3865184,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJyYrBmbC5woARW049Cyj6Wws": {
    "cat": "amusement_park",
@@ -63877,14 +64027,15 @@
    "name": "Moon",
    "lat": 34.0805399,
    "lon": -118.34421259999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJyyi4vhO-woARtY2NTUlSOGI": {
    "cat": "hospital",
@@ -64964,14 +65115,15 @@
    "name": "Stein Eye Institute, Oculoplastics Division",
    "lat": 34.0652761,
    "lon": -118.44462229999999,
-   "decision": "pending",
+   "decision": "merged",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-25",
-   "mergedInto": null,
+   "mergedInto": "google:ChIJZQ9c8IW8woARA7ZLKfVusSg",
    "closed": null,
    "firstSeen": "2026-07-09",
    "lastSeen": "2026-07-25",
-   "mergeSrc": null
+   "mergeSrc": "manual",
+   "reason": null
   },
   "google:ChIJzxhZb3XHwoARBKBPIdpy56Y": {
    "cat": "park",
