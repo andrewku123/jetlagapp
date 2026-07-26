@@ -28,6 +28,8 @@ poi_full_curated.json
 poi_full_review.md
 poi_merge_viz.json
 
+# WMATA rail GTFS (re-downloaded by build_dc_stations.py with a free API key)
+wmata_rail_gtfs*
 # Census TIGER place shapefile cache (re-downloaded on demand by build_play_area.py)
 _census_place/
 # Census national ZCTA shapefile cache (~530 MB, re-downloaded by build_region_geo.py)

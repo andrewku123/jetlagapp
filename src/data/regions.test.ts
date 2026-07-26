@@ -97,6 +97,24 @@ describe('play-area scoping and question demotion', () => {
     expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual([])
   })
 
+  it('every DC station carries the fields the app reads at load', async () => {
+    const stations = (await import('./dc.stations.json')).default as unknown as Station[]
+    expect(stations.length).toBe(98)
+    for (const s of stations) {
+      // headwayMin is read on first render (eligibility filter), so a station
+      // missing it blanks the whole app rather than degrading.
+      expect(typeof s.headwayMin.wd).toBe('number')
+      expect(typeof s.headwayMin.we).toBe('number')
+      expect(typeof s.service.wd.served).toBe('boolean')
+      expect(s.state).toBeTruthy()
+      expect(s.county).toBeTruthy()
+      expect(s.lines.length).toBeGreaterThan(0)
+    }
+    // Metrorail's worst branch gap is ~20 min, so every station is eligible on
+    // both day types — the map has no "weekend-only ineligible" stations.
+    expect(Math.max(...stations.map((s) => Math.max(s.headwayMin.wd, s.headwayMin.we)))).toBeLessThanOrEqual(20)
+  })
+
   it('DC: a coordinate resolves to its real state, county and city across the river', async () => {
     await loadFor('dc')
     const { stateAt } = await import('../lib/states')

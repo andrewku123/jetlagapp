@@ -9,9 +9,13 @@ export const SYSTEM_COLORS: Record<string, string> = {
   // LA Metro is single-agency: every station dot is one purple so the
   // per-line colored overlay (A/B/C/D/E/K/G/J) reads clearly on top.
   Metro: '#7b2d8b',
+  // WMATA Metrorail, likewise single-agency. Near-black rather than WMATA's
+  // brand brown: the six line colors it sits on include red, silver/grey and
+  // yellow, and a dot has to stay legible against all of them.
+  Metrorail: '#1f2937',
 }
 
-export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Metro']
+export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Metro', 'Metrorail']
 
 // Lines that don't run on weekends; hidden from the transit-line question in
 // Weekend mode. Caltrain Express ("Baby Bullet") and Limited are weekday-only.
