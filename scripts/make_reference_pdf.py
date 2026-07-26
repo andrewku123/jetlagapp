@@ -1,337 +1,326 @@
 #!/usr/bin/env python3
-"""Generate the Jet Lag: Hide & Seek (Medium) reference card PDF.
+"""Generate the Jet Lag: Hide & Seek reference card PDF for a game size + region.
 
-Front page: the question deck in 3 columns (2 categories each), with draw/keep
-and comprehensive photo conditions. Back: comprehensive play-area reference lists
-(airports, counties, cities, water, mountains, golf, amusement parks, hospitals)
-plus a vertical histogram of stations by altitude and a horizontal histogram of
-stations by station-name length.
+Page 1 is the question deck: every question card for the chosen size, with its
+draw/keep cost, answer window and checkbox subject list. Page 2 is the play-area
+reference: station profiles (altitude, name length, nearest airport, line),
+counties, cities, airports and the in-play POI inventory.
+
+Rules that apply to every question (answer window consequences, what to send the
+hider, tie-breaks, the end-game escape hatch) live once in the header strip
+instead of being repeated on each card.
+
+    python3 scripts/make_reference_pdf.py --region bay
 """
-import json, collections, html, subprocess, os, re
+import argparse, json, collections, html, os, re, sys
 
-REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ST = json.load(open(f"{REPO}/src/data/stations.json"))
-POI = json.load(open("/tmp/poi.json"))
+SCRIPTS = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(SCRIPTS)
+sys.path.insert(0, SCRIPTS)
+from poi_geo import load_play, make_in_play
+
+# ---------- region ----------
+# A map *is* a game size — how big the play area is decides which questions the
+# book allows — so `size` lives here and the deck follows from `--region` alone.
+# Only the file prefix differs otherwise, so a new city is one entry.
+REGIONS = {
+    "bay": {"label": "Bay Area", "prefix": "", "size": "medium"},
+    "la": {"label": "LA Metro", "prefix": "la.", "size": "medium"},
+    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni.", "size": "medium"},
+}
+SIZES = ("small", "medium", "large")
+
+ap = argparse.ArgumentParser(description=__doc__)
+ap.add_argument("--region", default="bay", choices=sorted(REGIONS),
+                help="which map to print; also sets the game size (default bay)")
+ap.add_argument("--size", default=None, choices=SIZES,
+                help="override the map's own size (rarely needed)")
+ap.add_argument("--out", default=None, help="output PDF path")
+ARGS = ap.parse_args()
+REGION = REGIONS[ARGS.region]
+SIZE = ARGS.size or REGION["size"]
+BIG = SIZE in ("medium", "large")  # "add for Medium & Large"
+LARGE = SIZE == "large"
+
+
+def data(name):
+    return os.path.join(REPO, "src", "data", REGION["prefix"] + name)
+
+
+ST = json.load(open(data("stations.json")))
+POI = json.load(open(data("poi.json")))
 M2FT = 3.28084
 
 # ---------- station-derived data ----------
 def clean_city(c):
     return re.sub(r"\s+(city|town|CDP)$", "", c).strip()
 
-counties = sorted({s["county"] for s in ST if s.get("county")})
-cities = sorted({clean_city(s["city"]) for s in ST if s.get("city")})
 
-# altitude histogram (feet), vertical
+county_counts = collections.Counter(s["county"] for s in ST if s.get("county"))
+city_counts = collections.Counter(clean_city(s["city"]) for s in ST if s.get("city"))
+airport_counts = collections.Counter(s["nearestAirport"] for s in ST if s.get("nearestAirport"))
+line_counts = collections.Counter(l for s in ST for l in s.get("lines", []))
+
+# altitude histogram (feet)
 elevs_ft = [s["elevation"] * M2FT for s in ST if s.get("elevation") is not None]
-ALT_BINS = list(range(0, 550, 50))  # 0..500 ft in 50-ft bins
-alt_counts = [0] * (len(ALT_BINS) - 1)
+BIN = 50
+nbins = max(1, int(max(elevs_ft) // BIN) + 1) if elevs_ft else 1
+alt_counts = [0] * nbins
 for e in elevs_ft:
-    idx = min(int(e // 50), len(alt_counts) - 1)
-    alt_counts[idx] += 1
-alt_labels = [f"{ALT_BINS[i]}\u2013{ALT_BINS[i+1]}" for i in range(len(alt_counts))]
+    alt_counts[min(int(e // BIN), nbins - 1)] += 1
+alt_labels = [f"{i*BIN}\u2013{(i+1)*BIN}" for i in range(nbins)]
 
-# name-length histogram, horizontal
+# name-length histogram
 nl = collections.Counter(s["nameLength"] for s in ST)
-nl_min, nl_max = min(nl), max(nl)
-nl_rows = [(L, nl.get(L, 0)) for L in range(nl_min, nl_max + 1)]
+nl_rows = [(L, nl.get(L, 0)) for L in range(min(nl), max(nl) + 1)]
 
-# ---------- POI curation ----------
-peaks = []  # (name, ele_ft)
-water = {"bay": set(), "lake": set(), "reservoir": set(), "lagoon": set()}
-golf, theme, hospital, zoos = set(), set(), set(), set()
-for el in POI["elements"]:
-    t = el.get("tags", {}); n = t.get("name")
-    if not n:
-        continue
-    if t.get("natural") == "peak":
-        ele = t.get("ele")
-        try:
-            ele = float(ele) * M2FT
-        except (TypeError, ValueError):
-            ele = None
-        peaks.append((n, ele))
-    elif t.get("leisure") == "golf_course":
-        golf.add(n)
-    elif t.get("tourism") == "theme_park":
-        theme.add(n)
-    elif t.get("amenity") == "hospital":
-        hospital.add(n)
-    elif t.get("tourism") == "zoo":
-        zoos.add(n)
-    elif t.get("natural") == "bay":
-        water["bay"].add(n)
-    elif t.get("water") in ("lake", "reservoir", "lagoon") or t.get("natural") == "water":
-        ws = t.get("water")
-        if ws in water:
-            water[ws].add(n)
+# airports: mirrors AIRPORT_SITES in src/data/regions.ts. "Anything outside the
+# play area doesn't exist", so an airport is only a valid answer on maps whose
+# polygon contains it — stations carry airportDist to every site regardless.
+AIRPORT_SITES = {
+    "SFO": ("San Francisco Intl", 37.619083, -122.381597),
+    "OAK": ("SF Bay Oakland Intl", 37.719016, -122.219595),
+    "SJC": ("San Jose Mineta Intl", 37.363510, -121.928648),
+    "LAX": ("Los Angeles Intl", 33.942560, -118.408530),
+    "LGB": ("Long Beach", 33.817650, -118.152270),
+}
+in_play = make_in_play(load_play(path=data("play-area.geojson.json")))
+AIRPORTS = [(f"{c} \u2014 {name}", f"{lat:.6f}, {lon:.6f}")
+            for c, (name, lat, lon) in sorted(
+                AIRPORT_SITES.items(), key=lambda kv: (-airport_counts[kv[0]], kv[0]))
+            if in_play(lon, lat)]
 
-# mountains: named peaks >= 1500 ft, sorted by elevation desc (notable summits)
-peaks_named = sorted({(n, e) for n, e in peaks if e is not None and e >= 1500},
-                     key=lambda p: -p[1])
-mountains = [f"{n} ({int(e):,} ft)" for n, e in peaks_named]
+# extremes: the stations that bound the play area, useful for sanity-checking a
+# radar circle or a thermometer bisector before committing to it. Ties are all
+# printed — naming one of two equally-short stations would be a lie.
+def _ext(key, top=False, fmt=None):
+    vals = [s for s in ST if s.get(key) is not None]
+    best = (max if top else min)(s[key] for s in vals)
+    tied = sorted((s["name"] for s in vals if s[key] == best))
+    shown = " \u00b7 ".join(tied[:3]) + (f" +{len(tied)-3}" if len(tied) > 3 else "")
+    return f"{shown} ({fmt(best)})" if fmt else shown
 
-# bodies of water: drop minor coves/sloughs/harbors/ponds; keep bays, straits,
-# named lakes, lagoons and reservoirs.
-DROP = re.compile(r"(Cove|Slough|Harbor|Harbour|Channel|Basin|Forebay|Pond|Dam|"
-                  r"Arroyo|River|Strait Yacht|Yacht|Marina|estuarial)", re.I)
-bodies = set()
-for n in water["bay"]:
-    if not DROP.search(n) and ("Bay" in n or "Strait" in n or "Break" in n or "Lagoon" in n):
-        bodies.add(n)
-for n in water["lake"] | water["lagoon"]:
-    if not DROP.search(n):
-        bodies.add(n)
-for n in water["reservoir"]:
-    if not DROP.search(n) and ("Reservoir" in n or "Lake" in n):
-        bodies.add(n)
-bodies = sorted(bodies)
-golf = sorted(golf)
-theme = sorted(theme)
-hospital = sorted(hospital)
-zoos = sorted(zoos)
 
-AIRPORTS = [
-    ("SFO \u2014 San Francisco Intl", "37.619083, -122.381597"),
-    ("OAK \u2014 SF Bay Oakland Intl", "37.719016, -122.219595"),
-    ("SJC \u2014 San Jose Mineta Intl", "37.363510, -121.928648"),
+EXTREMES = [
+    ("Highest", _ext("elevation", True, lambda v: f"{v*M2FT:,.0f} ft")),
+    ("Lowest", _ext("elevation", False, lambda v: f"{v*M2FT:,.0f} ft")),
+    ("Longest name", _ext("nameLength", True, str)),
+    ("Shortest name", _ext("nameLength", False, str)),
+    ("Northernmost", _ext("lat", True)),
+    ("Southernmost", _ext("lat")),
+    ("Easternmost", _ext("lon", True)),
+    ("Westernmost", _ext("lon")),
 ]
 
-# ---------- SVG histograms ----------
-def svg_vertical(counts, labels, caption, color="#2563eb", w=520, h=210, pad_l=24, pad_b=42, pad_t=14):
-    n = len(counts); mx = max(counts) or 1
-    plot_w = w - pad_l - 8; plot_h = h - pad_b - pad_t
-    bw = plot_w / n
-    bars = []
-    for i, c in enumerate(counts):
-        bh = plot_h * c / mx
-        x = pad_l + i * bw + bw * 0.12
-        y = pad_t + (plot_h - bh)
-        bars.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bw*0.76:.1f}" height="{bh:.1f}" fill="{color}"/>')
-        if c:
-            bars.append(f'<text x="{x+bw*0.38:.1f}" y="{y-2:.1f}" font-size="8" text-anchor="middle" fill="#444">{c}</text>')
-        bars.append(f'<text x="{x+bw*0.38:.1f}" y="{h-pad_b+12:.1f}" font-size="7.5" text-anchor="end" fill="#555" transform="rotate(-45 {x+bw*0.38:.1f} {h-pad_b+12:.1f})">{labels[i]}</text>')
-    axis = (f'<line x1="{pad_l}" y1="{pad_t}" x2="{pad_l}" y2="{pad_t+plot_h:.1f}" stroke="#999"/>'
-            f'<line x1="{pad_l}" y1="{pad_t+plot_h:.1f}" x2="{w-8}" y2="{pad_t+plot_h:.1f}" stroke="#999"/>')
-    cap = f'<text x="{w/2:.0f}" y="{h-4}" font-size="9" text-anchor="middle" fill="#333">{caption}</text>'
-    return f'<svg viewBox="0 0 {w} {h}" width="100%" >{axis}{"".join(bars)}{cap}</svg>'
-
-def svg_horizontal(rows, caption, color="#c2410c", w=520, rh=12, pad_l=44, pad_r=26, pad_t=6):
-    mx = max(c for _, c in rows) or 1
-    h = pad_t * 2 + rh * len(rows) + 16
-    plot_w = w - pad_l - pad_r
-    out = []
-    for i, (L, c) in enumerate(rows):
-        y = pad_t + i * rh
-        bw = plot_w * c / mx
-        out.append(f'<text x="{pad_l-3}" y="{y+rh-2:.1f}" font-size="7.5" text-anchor="end" fill="#555">{L}</text>')
-        out.append(f'<rect x="{pad_l}" y="{y+1:.1f}" width="{bw:.1f}" height="{rh-3:.1f}" fill="{color}"/>')
-        if c:
-            out.append(f'<text x="{pad_l+bw+3:.1f}" y="{y+rh-2:.1f}" font-size="7.5" fill="#444">{c}</text>')
-    out.append(f'<text x="{pad_l+plot_w/2:.0f}" y="{h-3}" font-size="9" text-anchor="middle" fill="#333">{caption}</text>')
-    return f'<svg viewBox="0 0 {w} {h}" width="100%">{"".join(out)}</svg>'
-
-# station profiles rendered as horizontal grid tables (3 rows x n columns)
-def html_hgrid(rows, lab_head, val_head, nrows=3):
-    cells = [f'<span class="lab">{html.escape(str(a))}</span>'
-             f'<span class="val">{c}</span>' for a, c in rows]
-    ncols = -(-len(cells) // nrows)
-    cells += [""] * (nrows * ncols - len(cells))
-    body = "".join(
-        "<tr>" + "".join(f"<td>{cells[r * ncols + col]}</td>" for col in range(ncols)) + "</tr>"
-        for r in range(nrows))
-    cap = f'<caption>{lab_head} &rarr; {val_head}</caption>'
-    return f'<table class="hg">{cap}<tbody>{body}</tbody></table>'
-
-alt_rows = [(a, c) for a, c in zip(alt_labels, alt_counts) if c]
-alt_table = html_hgrid(alt_rows, "Elevation band (ft)", "stations")
-nl_table = html_hgrid([(L, c) for L, c in nl_rows if c], "Name length", "stations")
-
-
-# ---------- HTML ----------
-def ul(items, cls="cols"):
-    lis = "".join(f"<li>{html.escape(i)}</li>" for i in items)
-    return f'<ul class="{cls}">{lis}</ul>'
-
-# ---------- question deck (Medium) ----------
-# subjects: (label, app_supported); source = official Investigation Book.
-MATCHING = [
-    ("Commercial airport", True), ("Transit line", True),
-    ("Station name length", True), ("Street or path", False),
-    ("1st admin div. (state)", False), ("2nd admin div. (county)", True),
-    ("3rd admin div. (city)", True), ("4th admin div. (neighborhood)", False),
-    ("Mountain", True), ("Landmass", False), ("Park", True),
-    ("Amusement park", True), ("Zoo", True), ("Aquarium", True),
-    ("Golf course", True), ("Museum", True), ("Movie theater", True),
-    ("Sports stadium", True), ("Hospital", True), ("Library", True),
-    ("Foreign consulate", True),
+POI_LABELS = [
+    ("park", "Parks"), ("museum", "Museums"), ("library", "Libraries"),
+    ("movie_theater", "Movie theaters"), ("hospital", "Hospitals"),
+    ("golf_course", "Golf courses"), ("consulate", "Foreign consulates"),
+    ("mountain", "Mountains"), ("amusement_park", "Amusement parks"),
+    ("stadium", "Sports stadiums"), ("zoo", "Zoos"), ("aquarium", "Aquariums"),
 ]
-MEASURING = [
-    ("A commercial airport", True), ("A high-speed train line", False),
-    ("A rail station (endgame only)", True), ("An international border", False),
-    ("A 1st admin. div. border (state)", False), ("A 2nd admin. div. border (county)", True),
-    ("A coastline", True), ("Sea level (altitude)", True),
-    ("ZIP code (smaller / larger)", True), ("A body of water", False),
-    ("Temperature (hotter / colder)", False),
-    ("A mountain", True), ("A park", True),
-    ("An amusement park", True), ("A zoo", True), ("An aquarium", True),
-    ("A golf course", True), ("A museum", True), ("A movie theater", True),
-    ("A sports stadium", True), ("A hospital", True), ("A library", True),
-    ("A foreign consulate", True),
-]
+
+# ---------- question deck ----------
+# gate: 'all' = every size, 'ml' = medium & large, 'lg' = large only,
+# 'own' = our own question, not in the official book -> every size.
+ALL, ML, LG, OWN = "all", "ml", "lg", "own"
+
+
+def keep(gate):
+    return gate in (ALL, OWN) or (gate == ML and BIG) or (gate == LG and LARGE)
+
+
+def gated(items):
+    return [i for i in items if keep(i[-1])]
+
+
+MATCHING = gated([
+    ("Commercial airport", ALL), ("Transit line", ALL),
+    ("Station name length", ALL), ("Street or path", ALL),
+    ("1st admin div. (state)", ALL), ("2nd admin div. (county)", ALL),
+    ("3rd admin div. (city)", ALL), ("4th admin div. (neighborhood)", ALL),
+    ("Mountain", ALL), ("Landmass", ALL), ("Park", ALL),
+    ("Amusement park", ALL), ("Zoo", ALL), ("Aquarium", ALL),
+    ("Golf course", ALL), ("Museum", ALL), ("Movie theater", ALL),
+    ("Sports stadium", OWN), ("Hospital", ALL), ("Library", ALL),
+    ("Foreign consulate", ALL),
+])
+MEASURING = gated([
+    ("A commercial airport", ALL), ("A high-speed train line", ALL),
+    ("A rail station", ALL), ("An international border", ALL),
+    ("A 1st admin. div. border (state)", ALL),
+    ("A 2nd admin. div. border (county)", ALL),
+    ("A coastline", ALL), ("Sea level (altitude)", ALL),
+    ("A body of water", ALL), ("A mountain", ALL), ("A park", ALL),
+    ("An amusement park", ALL), ("A zoo", ALL), ("An aquarium", ALL),
+    ("A golf course", ALL), ("A museum", ALL), ("A movie theater", ALL),
+    ("A sports stadium", OWN), ("A hospital", ALL), ("A library", ALL),
+    ("A foreign consulate", ALL),
+    ("ZIP code (smaller / larger)", OWN), ("Temperature (hotter / colder)", OWN),
+])
 RADAR = ["\u00bc", "\u00bd", "1", "3", "5", "10", "25", "50", "100"]
-THERMO = ["\u00bd", "3", "10"]
-TENTACLES = ["Museums", "Libraries", "Movie theaters", "Hospitals"]
-# photo (Medium = All-Games + Medium/Large set): (title, requirement, endgame_blocked?)
-# requirements are verbatim from the official photo cards.
-PHOTO = [
-    ("Tree", "Must include the entire tree.", False),
-    ("The sky", "Place phone on ground, shoot directly up, no zoom.", False),
-    ("You", "Selfie mode, perpendicular to ground, arm extended, default lens, no zoom.", False),
-    ("Widest street", "Must include both sides of the street; background not required.", False),
-    ("Tallest structure in your sightline", "Tallest building from your perspective (not objectively tallest). Include top and both sides; top in the top 1/3 of the frame.", False),
-    ("Longest sightline", "Longest line of sight from your perspective, not the objectively longest. If not frozen, you choose where to stand, but from there it must be the longest sightline in any direction. Ground fills at least the bottom 1/3 of the frame; the terminus \u2014 the horizon, or the base of whatever cuts it off \u2014 sits in at least the top 1/3 and must be visible.", False),
-    ("Darkest area", "Darkest 2'\u00d72' section in your current sightline. Must contain 3 distinct elements. Litmus test: can someone match it if they visit the spot, allowing for lighting differences across times of day? (Screens / temporary lights don\u2019t count.)", False),
-    ("Any building visible from transit station", "Stand directly outside a station entrance (pick one if several). Include roof and both sides; top of building in the top 1/3 of the frame.", True),
-    ("Tallest building visible from transit station", "As above, standing directly outside a station entrance. The station itself can\u2019t count unless unrelated (e.g. MetLife building atop Grand Central).", True),
-    ("Trace nearest street / path", "Street/path must be visible on a mapping app; trace intersection to intersection (photo-editing app or trace on paper).", False),
-    ("2 buildings", "Bottom up to four stories.", False),
-    ("Restaurant interior", "No zoom. Take the picture through the window from outside.", True),
-    ("Train platform", "5'\u00d75' section with 3 distinct elements.", True),
-    ("Park", "No zoom, perpendicular to ground. Must stand 5 feet from any obstruction.", True),
-    ("Grocery store aisle", "No zoom. Stand at the end of the aisle, shoot directly down.", True),
-    ("Place of worship", "5'\u00d75' section with 3 distinct elements (litmus test: could someone match it by visiting the spot?).", True),
+THERMO = [v for v, g in [("\u00bd", ALL), ("3", ALL), ("10", ML), ("50", LG)] if keep(g)]
+TENTACLES_1MI = ["Museums", "Libraries", "Movie theaters", "Hospitals"] if BIG else []
+TENTACLES_15MI = ["Metro lines", "Zoos", "Aquariums", "Amusement parks"] if LARGE else []
+
+# (title, requirement, blocked in the end game?, gate) — requirements verbatim
+# from the investigation book.
+PHOTO = gated([
+    ("Tree", "Must include the entire tree.", False, ALL),
+    ("The sky", "Place phone on ground, shoot directly up, no zoom.", False, ALL),
+    ("You", "Selfie mode, perpendicular to ground, arm extended, default lens, no zoom.", False, ALL),
+    ("Widest street", "Must include both sides of the street; background not required.", False, ALL),
+    ("Tallest structure in your sightline", "Tallest building from your perspective (not objectively tallest). Include top and both sides; top in the top 1/3 of the frame.", False, ALL),
+    ("Any building visible from transit station", "Stand directly outside a station entrance (pick one if several). Include roof and both sides; top of building in the top 1/3 of the frame.", True, ALL),
+    ("Longest sightline", "Longest line of sight from your perspective, not the objectively longest. If not frozen, you choose where to stand, but from there it must be the longest sightline in any direction. Ground fills at least the bottom 1/3 of the frame; the terminus \u2014 the horizon, or the base of whatever cuts it off \u2014 sits in at least the top 1/3 and must be visible.", False, OWN),
+    ("Darkest area", "Darkest 2'\u00d72' section in your current sightline. Must contain 3 distinct elements. Litmus test: can someone match it if they visit the spot, allowing for lighting differences across times of day? (Screens / temporary lights don\u2019t count.)", False, OWN),
+    ("Tallest building visible from transit station", "As above, standing directly outside a station entrance. The station itself can\u2019t count unless unrelated (e.g. MetLife building atop Grand Central).", True, ML),
+    ("Trace nearest street / path", "Street/path must be visible on a mapping app; trace intersection to intersection (photo-editing app or trace on paper).", False, ML),
+    ("2 buildings", "Bottom up to four stories.", False, ML),
+    ("Restaurant interior", "No zoom. Take the picture through the window from outside.", True, ML),
+    ("Train platform", "5'\u00d75' section with 3 distinct elements.", True, ML),
+    ("Park", "No zoom, perpendicular to ground. Must stand 5 feet from any obstruction.", True, ML),
+    ("Grocery store aisle", "No zoom. Stand at the end of the aisle, shoot directly down.", True, ML),
+    ("Place of worship", "5'\u00d75' section with 3 distinct elements (litmus test: could someone match it by visiting the spot?).", True, ML),
+    ("\u00bd mile of streets traced", "Must be continuous, include 5 turns, no doubling back. North\u2013south oriented. Must be traceable on a map.", False, LG),
+    ("Tallest mountain visible from transit station", "Tallest from your perspective. Max 3\u00d7 zoom; top in the top 1/3 of the frame.", True, LG),
+    ("Biggest body of water in your zone", "Max 3\u00d7 zoom. Must include both sides or the horizon. Counts partially if only a portion is inside.", False, LG),
+    ("5 buildings", "Bottom up to four stories.", False, LG),
+])
+INSIDE = [
+    ("Floor in a building", "Higher or lower floor than mine? Both players must be in the same building; a tie answers <b>lower</b>. Send your floor.", False),
+    ("Traffic (5-min foot count)", "Count the people passing within 15 ft of you over 5 minutes, rounded to 2 significant figures (137 \u2192 140). Send your own count.", False),
 ]
+PHOTO_WINDOW = "20 min" if LARGE else "10 min"
 
+# ---------- HTML helpers ----------
 def boxes(items):
-    out = []
-    for label, app in items:
-        badge = ' <span class="app ok">app</span>' if app else ''
-        out.append(f'<li><span class="cb"></span>{html.escape(label)}{badge}</li>')
-    return "<ul class=\"chk\">" + "".join(out) + "</ul>"
+    lis = "".join(f'<li><span class="cb"></span>{html.escape(label)}</li>'
+                  for label, _ in items)
+    return f'<ul class="chk">{lis}</ul>'
 
-def photo_boxes(items):
-    out = []
-    for title, req, eg in items:
+
+def detail_boxes(items):
+    """Checkbox + bold title with its requirement underneath (photo & inside)."""
+    lis = []
+    for title, req, eg in ((i[0], i[1], i[2]) for i in items):
         mark = ' <span class="egm">&dagger;</span>' if eg else ''
-        out.append(f'<li><span class="cb"></span><span class="pt">'
+        lis.append(f'<li><span class="cb"></span><span class="pt">'
                    f'<b>{html.escape(title)}</b>{mark}<br>'
-                   f'<span class="pd">{html.escape(req)}</span></span></li>')
-    return "<ul class=\"chk photo\">" + "".join(out) + "</ul>"
+                   f'<span class="pd">{req}</span></span></li>')
+    return f'<ul class="chk detail">{"".join(lis)}</ul>'
+
 
 def scale(items, unit="mi", custom=False):
-    cells = "".join(
-        f'<div class="sc"><span class="cb"></span><span class="num">{v}</span></div>'
-        for v in items)
-    custom_cell = ('<div class="sc"><span class="cb"></span>'
-                   '<span class="num">Custom</span></div>') if custom else ''
-    return (f'<div class="scale">{cells}<div class="sc unit">{unit}</div>'
-            f'{custom_cell}</div>')
+    cells = "".join(f'<div class="sc"><span class="cb"></span>'
+                    f'<span class="num">{v}</span></div>' for v in items)
+    extra = ('<div class="sc"><span class="cb"></span>'
+             '<span class="num">Custom</span></div>') if custom else ''
+    return f'<div class="scale">{cells}<div class="sc unit">{unit}</div>{extra}</div>'
 
-# per-card meta lines
-META_FAIL = ('<p class="meta"><b>Answer window</b> &le; 5 min &middot; '
-             'fail to answer in time &rarr; hider\u2019s clock pauses until answered '
-             '&amp; they draw <b>no</b> card.</p>')
-META_FAIL_PHOTO = ('<p class="meta"><b>Answer window</b> &le; 10 min (Medium) &middot; '
-                   'fail to answer in time &rarr; hider\u2019s clock pauses until answered '
-                   '&amp; they draw <b>no</b> card.</p>')
 
-CARD_MATCHING = f"""
-<div class="card">
-  <h2>1 &middot; Matching <span class="dk">draw 3, keep 1</span></h2>
-  <p class="prompt">"Is your nearest ___ the same as mine?" &rarr; <b>Yes / No</b></p>
-  <p class="send"><b>Send hider:</b> your own nearest ___ (the matching subject).</p>
-  {META_FAIL}
-  {boxes(MATCHING)}
-</div>"""
-CARD_MEASURING = f"""
-<div class="card">
-  <h2>2 &middot; Measuring <span class="dk">draw 3, keep 1</span></h2>
-  <p class="prompt">"Compared to me, are you closer to or further from ___?" &rarr; <b>Closer / Further</b> <span class="dk">(ZIP = smaller / larger; Temperature = hotter / colder)</span></p>
-  <p class="send"><b>Send hider:</b> your own distance to ___ (or your ZIP / temperature).</p>
-  {META_FAIL}
-  {boxes(MEASURING)}
-</div>"""
-CARD_RADAR = f"""
-<div class="card slim">
-  <h2>3 &middot; Radar <span class="dk">draw 2, keep 1</span></h2>
-  <p class="prompt">"Are you within ___ of me?" &rarr; <b>Yes / No</b> &middot; Yes = keep inside circle, No = keep outside. <b>Custom</b> radius allowed <b>once per game</b>.</p>
-  <p class="send"><b>Send hider:</b> your location pin (circle center) + the radius.</p>
-  {META_FAIL}
-  {scale(RADAR, custom=True)}
-  <p class="app ok inline">app: radar + custom radius, eliminated-area shading</p>
-</div>"""
-CARD_THERMO = f"""
-<div class="card slim">
-  <h2>4 &middot; Thermometer <span class="dk">draw 2, keep 1</span></h2>
-  <p class="prompt">"I've just traveled (at least) ___ &mdash; am I hotter or colder?" hotter = closer, colder = further; eliminates the colder half (perpendicular bisector).</p>
-  <p class="send"><b>Send hider:</b> where you started and where you stopped.</p>
-  {META_FAIL}
-  {scale(THERMO)}
-  <p class="app ok inline">app: thermometer + boundary line &amp; shading</p>
-</div>"""
-CARD_TENTACLES = f"""
-<div class="card slim">
-  <h2>5 &middot; Tentacles <span class="dk">draw 4, keep 2</span></h2>
-  <p class="prompt">"Of all the ___ within 1 mi of you, which are you closest to?" (Hider must also be within 1 mi of one.)</p>
-  <p class="send"><b>Send hider:</b> &mdash; (question is about the hider).</p>
-  {META_FAIL}
-  {boxes([(t, True) for t in TENTACLES])}
-  <p class="app ok inline">app: closest-POI within radius + eliminated-area shading</p>
-</div>"""
-CARD_PHOTO = f"""
-<div class="card">
-  <h2>6 &middot; Photo <span class="dk">draw 1</span></h2>
-  <p class="prompt">Hider sends a photo meeting the stated condition (no zoom / no obscuring). Reveals surroundings without coordinates.</p>
-  <p class="send"><b>Send hider:</b> &mdash; (the hider sends the photo).</p>
-  <p class="eg warn"><b>End game:</b> conditions marked <span class="egm">&dagger;</span> need the station / a specific venue &mdash; if the hider can\u2019t reach it, \u201cI cannot answer\u201d is valid and they <b>still draw a card</b>.</p>
-  {META_FAIL_PHOTO}
-  {photo_boxes(PHOTO)}
-  <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
-</div>"""
+def card(title, cost, window, body, prompt=None, slim=False):
+    p = f'<p class="prompt">{prompt}</p>' if prompt else ''
+    return (f'<div class="card{" slim" if slim else ""}">'
+            f'<h2>{title} <span class="dk">{cost}</span>'
+            f'<span class="tm">&le; {window}</span></h2>{p}{body}</div>')
 
-CARD_INSIDE = f"""
-<div class="card slim">
-  <h2>7 &middot; Inside <span class="dk">both players indoors</span></h2>
-  <p class="prompt"><b>Floor</b> <span class="dk">(draw 3, keep 1 &middot; end game only)</span>: higher/lower floor than me? &rarr; <b>Higher / Lower / Same</b> (or <b>"can't answer"</b> if outdoors / different building). Send the building <b>and your floor</b>.</p>
-  <p class="prompt"><b>Traffic</b> <span class="dk">(draw 3, keep 1)</span>: count people passing within 15 ft over 5 min, to 2 sig figs (137&rarr;140). Send your count. Can't answer outdoors.</p>
-  {boxes([("Floor in a building", False), ("Traffic (5-min foot count)", False)])}
-  <p class="app ok inline">app: logged only (no auto-eliminate, by design)</p>
-</div>"""
 
-alt_card = f"""
-<div class="card tbl">
-  <h2>Stations by altitude <span class="dk">{len(ST)} stations</span></h2>
-  {alt_table}
-</div>"""
-nl_card = f"""
-<div class="card tbl">
-  <h2>Stations by name length <span class="dk">{len(ST)} stations</span></h2>
-  {nl_table}
-</div>"""
+cards = []
+cards.append(card("Matching", "draw 3, keep 1", "5 min", boxes(MATCHING),
+                  prompt='"Is your nearest ___ the same as mine?"'))
+cards.append(card("Measuring", "draw 3, keep 1", "5 min", boxes(MEASURING),
+                  prompt='"Compared to me, are you closer to or further from ___?"'))
+cards.append(card("Radar", "draw 2, keep 1", "5 min", scale(RADAR, custom=True), slim=True,
+                  prompt='"Are you within ___ of me?" Yes = keep inside the circle, '
+                         'No = keep outside. <b>Custom</b>: seekers may name any distance.'))
+cards.append(card("Thermometer", "draw 2, keep 1", "5 min", scale(THERMO), slim=True,
+                  prompt='"I\u2019ve just traveled (at least) ___ &mdash; am I hotter or colder?"'))
+if TENTACLES_1MI:
+    body = ('<p class="grp">Within 1 mile</p>' + boxes([(t, None) for t in TENTACLES_1MI]))
+    if TENTACLES_15MI:
+        body += ('<p class="grp">Within 15 miles</p>'
+                 + boxes([(t, None) for t in TENTACLES_15MI]))
+    cards.append(card("Tentacles", "draw 4, keep 2", "5 min", body, slim=True,
+                      prompt='"Of all the ___ within ___ of you, which are you closest to?" '
+                             '(The hider must also be within that distance.)'))
+cards.append(card("Photo", "draw 1", PHOTO_WINDOW, detail_boxes(PHOTO)))
+cards.append(card("Inside", "draw 3, keep 1", "5 min", detail_boxes(INSIDE), slim=True,
+                  prompt='Both players must be indoors. If the hider is outdoors '
+                         '(or, for Floor, in another building) they answer '
+                         '<b>"I can\u2019t answer"</b>.'))
+# number the cards in the order they print
+cards = [c.replace("<h2>", f"<h2>{i} &middot; ", 1) for i, c in enumerate(cards, 1)]
+
+# ---------- reference page ----------
+def hgrid(rows, caption, nrows=3):
+    cells = [f'<span class="lab">{html.escape(str(a))}</span><span class="val">{c}</span>'
+             for a, c in rows]
+    ncols = -(-len(cells) // nrows)
+    cells += [""] * (nrows * ncols - len(cells))
+    body = "".join("<tr>" + "".join(f"<td>{cells[r*ncols+col]}</td>" for col in range(ncols))
+                   + "</tr>" for r in range(nrows))
+    return f'<table class="hg"><caption>{caption}</caption><tbody>{body}</tbody></table>'
+
+
+def tblcard(title, badge, body):
+    return (f'<div class="card tbl"><h2>{title} <span class="dk">{badge}</span></h2>'
+            f'{body}</div>')
+
 
 def rblock(title, count, body):
     return (f'<div class="rblock"><h3>{title} <span class="cnt">{count}</span></h3>'
             f'{body}</div>')
 
+
+def counted_list(counter):
+    lis = "".join(f'<li>{html.escape(k)} <span class="n">{v}</span></li>'
+                  for k, v in sorted(counter.items()))
+    return f'<ul class="cols cnts">{lis}</ul>'
+
+
+nstat = len(ST)
+alt_card = tblcard("Stations by altitude", f"{nstat} stations",
+                   hgrid([(a, c) for a, c in zip(alt_labels, alt_counts) if c],
+                         "Elevation band (ft) &rarr; stations"))
+nl_card = tblcard("Stations by name length", f"{nstat} stations",
+                  hgrid([(L, c) for L, c in nl_rows if c], "Name length &rarr; stations"))
+# no airport in play -> the airport questions are log-only in the app, so
+# neither airport block is printed (mirrors HAS_AIRPORTS in regions.ts).
+air_card = tblcard(
+    "Stations by nearest airport", f"{len(AIRPORTS)} airports",
+    hgrid([(c, airport_counts[c]) for c, _ in
+           ((a.split(" \u2014 ")[0], b) for a, b in AIRPORTS)],
+          "Airport &rarr; stations", nrows=1)) if AIRPORTS else ""
+
 airports_html = ('<ul class="plain air">' + "".join(
-    f'<li><span class="aname">{html.escape(a)}</span>'
-    f'<span class="coord">{c}</span></li>' for a, c in AIRPORTS) + '</ul>')
+    f'<li><span class="aname">{html.escape(a)}</span><span class="coord">{c}</span></li>'
+    for a, c in AIRPORTS) + '</ul>')
 
-ref_air = rblock("Commercial airports", 3, airports_html)
-ref_counties = rblock("Counties (in play)", len(counties), ul(counties))
-ref_zoos = rblock("Zoos", len(zoos), ul(zoos))
-ref_theme = rblock("Amusement parks", len(theme), ul(theme))
-ref_cities = rblock("Cities / municipalities", len(cities), ul(cities))
-ref_water = rblock("Bodies of water", len(bodies), ul(bodies))
+poi_rows = [(lab, len(POI.get(k, []))) for k, lab in POI_LABELS]
+poi_html = ('<ul class="cols cnts">' + "".join(
+    f'<li>{lab} <span class="n">{n}</span></li>' for lab, n in poi_rows) + '</ul>')
 
-# page 1: questions in two columns (Q1-3 | Q4-6)
-page1_cols = f"""
-<div class="p1">{CARD_MATCHING}{CARD_MEASURING}{CARD_RADAR}{CARD_THERMO}{CARD_TENTACLES}{CARD_PHOTO}{CARD_INSIDE}</div>"""
+extremes_html = ('<ul class="plain ext">' + "".join(
+    f'<li><span class="elab">{k}</span><span class="eval">{html.escape(v)}</span></li>'
+    for k, v in EXTREMES) + '</ul>')
 
-# page 2: tables + reference lists (counties in col 2)
-page2_ref = f"""
-<div class="ref">{alt_card}{nl_card}{ref_air}{ref_zoos}{ref_theme}{ref_cities}{ref_counties}</div>"""
+# blank grid to keep the running board on paper: what was asked, what came back.
+log_rows = "".join(
+    "<tr>" + f'<td class="num">{i}</td>' + "<td></td>" * 3 + "</tr>" for i in range(1, 15))
+log_html = (f'<table class="log"><thead><tr><th></th><th>Question asked</th>'
+            f'<th>Answer</th><th>Suspects left</th></tr></thead>'
+            f'<tbody>{log_rows}</tbody></table>')
 
+ref = "".join([
+    alt_card, nl_card, air_card,
+    rblock("Stations per line", len(line_counts), counted_list(line_counts)),
+    rblock("Counties (in play)", len(county_counts), counted_list(county_counts)),
+    rblock("Commercial airports", len(AIRPORTS), airports_html) if AIRPORTS else "",
+    rblock("POIs in play", sum(n for _, n in poi_rows), poi_html),
+    rblock("Edges of the play area", len(EXTREMES), extremes_html),
+    rblock("Cities / municipalities", len(city_counts), counted_list(city_counts)),
+])
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -341,42 +330,41 @@ doc = f"""<!doctype html><html><head><meta charset="utf-8">
 @page {{ size: letter; margin: 0.5in; }}
 * {{ box-sizing: border-box; }}
 body {{ font-family: 'IBM Plex Sans', -apple-system, Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; }}
-h1 {{ font-size:19px; margin:0 0 3px; }}
-h1.contd {{ margin-top:10px; }}
-.sub {{ font-size:10px; color:#666; margin:0 0 6px; }}
-/* page 1: two balanced columns */
+h1 {{ font-size:19px; margin:0 0 4px; }}
+/* rules that apply to every question, stated once */
+.rules {{ display:flex; gap:6px; margin:0 0 6px; }}
+.rules div {{ flex:1; font-size:8.6px; line-height:1.25; color:#333; background:#f4f4f5;
+  border:1px solid #e4e4e7; border-radius:5px; padding:3px 6px; }}
+.rules b {{ color:#111; }}
 .p1 {{ column-count:2; column-gap:12px; }}
-.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:6px 8px; margin:0 0 5px; background:#fafafa; width:100%; }}
+.card {{ break-inside:avoid; border:1px solid #e2e2e2; border-radius:6px; padding:6px 8px;
+  margin:0 0 5px; background:#fafafa; width:100%; }}
 .ref .card.tbl {{ background:#fff; }}
 .card h2 {{ font-size:13px; margin:0 0 4px; color:#111; }}
-.dk {{ float:right; font-size:9.5px; font-weight:600; background:#111; color:#fff; padding:1px 6px; border-radius:8px; }}
-.prompt {{ font-size:9.8px; margin:1px 0; color:#222; }}
-.send {{ font-size:9.3px; margin:1.5px 0; color:#0c4a6e; background:#e0f2fe; border-radius:4px; padding:2px 5px; }}
-.eg {{ font-size:9.1px; margin:1.5px 0; padding:2px 5px; border-radius:4px; }}
-.eg.ok {{ color:#166534; background:#f0fdf4; }}
-.eg.warn {{ color:#9a3412; background:#fff7ed; }}
-.meta {{ font-size:8.8px; margin:1.5px 0 2px; color:#555; }}
+.dk {{ float:right; font-size:9.5px; font-weight:600; background:#111; color:#fff;
+  padding:1px 6px; border-radius:8px; }}
+.tm {{ float:right; font-size:9.5px; font-weight:600; color:#111; background:#fff;
+  border:1px solid #cbcbcb; padding:0 6px; border-radius:8px; margin-right:4px; }}
+.prompt {{ font-size:9.8px; margin:1px 0 2px; color:#222; }}
+.grp {{ font-size:8.8px; font-weight:600; color:#555; margin:4px 0 0; }}
 .egm {{ color:#c2410c; font-weight:700; }}
 /* checkbox subject lists */
 ul.chk {{ list-style:none; margin:4px 0 0; padding:0; columns:2; column-gap:10px; }}
-ul.chk li {{ font-size:9.4px; margin:1px 0; break-inside:avoid; display:flex; align-items:flex-start; gap:4px; }}
-.cb {{ display:inline-block; width:10px; height:10px; min-width:10px; border:1px solid #555; border-radius:2px; margin-top:1px; }}
-/* photo conditions: full requirement under each title, single column */
-ul.chk.photo {{ columns:1; }}
-ul.chk.photo li {{ margin:1.5px 0; }}
+ul.chk li {{ font-size:9.4px; margin:1px 0; break-inside:avoid; display:flex;
+  align-items:flex-start; gap:4px; }}
+.cb {{ display:inline-block; width:10px; height:10px; min-width:10px; border:1px solid #555;
+  border-radius:2px; margin-top:1px; }}
+ul.chk.detail {{ columns:1; }}
+ul.chk.detail li {{ margin:1.5px 0; }}
 .pt {{ display:block; font-size:9.3px; line-height:1.2; }}
 .pd {{ color:#444; font-size:8.6px; font-weight:400; }}
-/* radar/thermometer scale: checkbox above number */
+/* radar / thermometer scales: checkbox above the number */
 .scale {{ display:flex; flex-wrap:wrap; gap:9px; margin:3px 0 1px; }}
 .sc {{ display:flex; flex-direction:column; align-items:center; }}
 .sc .num {{ font-size:11px; margin-top:3px; color:#222; }}
 .sc.unit {{ justify-content:flex-end; font-size:9.5px; color:#777; align-self:flex-end; }}
-.app {{ font-size:8.5px; padding:0 5px; border-radius:6px; margin-left:3px; }}
-.app.ok {{ background:#dcfce7; color:#166534; }}
-.app.no {{ background:#f1f1f1; color:#999; }}
-.app.inline {{ display:inline-block; margin:5px 0 0; }}
 .page-break {{ break-before:page; }}
-/* station-profile horizontal grid tables (3 rows x n cols) */
+/* station-profile grids */
 table.hg {{ width:100%; border-collapse:collapse; margin-top:4px; table-layout:fixed; }}
 table.hg caption {{ caption-side:top; text-align:left; font-size:9px; color:#666; margin-bottom:3px; }}
 table.hg td {{ border:1px solid #e2e2e2; padding:3px 2px; text-align:center; vertical-align:middle; }}
@@ -384,34 +372,62 @@ table.hg .lab {{ display:block; font-size:8.3px; color:#555; line-height:1.1; }}
 table.hg .val {{ display:block; font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; }}
 /* reference lists */
 .ref {{ column-count:2; column-gap:16px; }}
-.rblock {{ break-inside:auto; margin-bottom:9px; }}
-.rblock h3 {{ font-size:12px; margin:0 0 4px; color:#111; border-bottom:1px solid #ddd; padding-bottom:2px; break-after:avoid; }}
+.rblock {{ break-inside:avoid; margin-bottom:9px; }}
+.rblock h3 {{ font-size:12px; margin:0 0 4px; color:#111; border-bottom:1px solid #ddd;
+  padding-bottom:2px; break-after:avoid; }}
 .card.tbl {{ break-inside:avoid; }}
 .cnt {{ float:right; font-size:9px; color:#fff; background:#c2410c; padding:0 6px; border-radius:8px; }}
 ul.cols {{ columns:2; column-gap:10px; margin:0; padding-left:15px; }}
 ul.cols li {{ font-size:9px; margin:1px 0; break-inside:avoid; }}
+ul.cnts {{ list-style:none; padding-left:0; }}
+ul.cnts li {{ display:flex; justify-content:space-between; gap:6px; border-bottom:1px dotted #e5e5e5; }}
+ul.cnts .n {{ font-variant-numeric:tabular-nums; color:#444; font-weight:600; }}
 ul.plain {{ list-style:none; margin:0; padding:0; }}
 ul.plain li {{ font-size:10px; margin:0 0 4px; }}
-/* airports: name left, coords on the right, wrapping below if tight */
-ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 8px; align-items:baseline; }}
+ul.plain.air li {{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 8px;
+  align-items:baseline; }}
 .aname {{ font-weight:700; font-size:10px; }}
+ul.plain.ext li {{ display:flex; justify-content:space-between; gap:8px; font-size:9px;
+  border-bottom:1px dotted #e5e5e5; margin:0 0 2px; }}
+.elab {{ color:#666; }}
+.eval {{ font-weight:600; text-align:right; }}
+/* running board: blank rows to fill in during play */
+table.log {{ width:100%; border-collapse:collapse; margin-top:2px; }}
+table.log th {{ font-size:8.5px; color:#666; font-weight:600; text-align:left;
+  border-bottom:1px solid #ddd; padding:1px 4px; }}
+table.log td {{ border:1px solid #e2e2e2; height:15px; }}
+table.log td.num {{ width:16px; font-size:8px; color:#999; text-align:center; }}
+table.log th:nth-child(2) {{ width:52%; }} table.log th:nth-child(4) {{ width:16%; }}
 .coord {{ font-size:9px; color:#555; font-family:'IBM Plex Mono', monospace; }}
 footer {{ font-size:8px; color:#888; margin-top:8px; }}
 </style></head><body>
-<h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck (Medium)</h1>
-<p class="sub">Seeker asks; hider answers truthfully &amp; then draws/keeps cards. <b>Send hider</b> = the minimum you must reveal for the question to be answerable. <span class="egm">&dagger;</span> = may be impossible in the end game. "app" = the Bay Area seeker tool auto-eliminates for it.</p>
-{page1_cols}
-<h1 class="contd">Bay Area play-area reference (continued)</h1>
-<p class="sub">In-play counties: {", ".join(counties)}. POI lists from OpenStreetMap within those counties.</p>
-{page2_ref}
-<footer>Question subjects, draw/keep, answer windows &amp; end-game rules from the official Jet Lag: Hide &amp; Seek Investigation Book + Quick Start guide. POIs from OpenStreetMap.</footer>
+<h1>Jet Lag: Hide &amp; Seek &mdash; Question Deck ({SIZE.title()}) &middot; {REGION['label']}</h1>
+<div class="rules">
+  <div><b>Answer window</b> is on each card. Miss it and the hider\u2019s clock pauses
+    until they answer &mdash; and they draw <b>no</b> card.</div>
+  <div><b>Send the hider coordinates</b>, never place names: your position, your
+    nearest subject, your start and stop points.</div>
+  <div><b>Ties go to the lower answer</b> &mdash; equal distance is <b>closer</b>,
+    the same floor is <b>lower</b>.</div>
+  <div><span class="egm">&dagger;</span> <b>End game:</b> needs the station or a set
+    venue. If the hider can\u2019t reach it, \u201cI cannot answer\u201d is valid and they
+    <b>still draw a card</b>.</div>
+</div>
+<div class="p1">{"".join(cards)}</div>
+<div class="ref page-break">{ref}</div>
+<div class="rblock"><h3>Question log</h3>{log_html}</div>
+<footer>Question subjects, draw/keep costs, answer windows &amp; end-game rules from the
+official Jet Lag: Hide &amp; Seek investigation book and quick start guide. Station and POI
+figures are this map\u2019s own data.</footer>
 </body></html>"""
 
 open("/tmp/reference.html", "w").write(doc)
-print("counts: cities", len(cities), "water", len(bodies), "mountains", len(mountains),
-      "golf", len(golf), "theme", len(theme), "hospital", len(hospital))
+print(f"size={SIZE} region={ARGS.region} cards={len(cards)} "
+      f"matching={len(MATCHING)} measuring={len(MEASURING)} thermo={len(THERMO)} "
+      f"tentacles={len(TENTACLES_1MI)+len(TENTACLES_15MI)} photo={len(PHOTO)} "
+      f"stations={nstat} pois={sum(n for _, n in poi_rows)}")
 
-OUT = os.path.join(REPO, "jetlag_reference_medium.pdf")
+OUT = ARGS.out or os.path.join(REPO, f"jetlag_reference_{ARGS.region}_{SIZE}.pdf")
 from playwright.sync_api import sync_playwright
 with sync_playwright() as p:
     b = p.chromium.connect_over_cdp("http://localhost:29229")
