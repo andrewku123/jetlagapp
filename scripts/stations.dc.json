@@ -1,0 +1,2423 @@
+[
+ {
+  "name": "Addison Road",
+  "lat": 38.886722,
+  "lon": -76.894406,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Anacostia",
+  "lat": 38.862192,
+  "lon": -76.995332,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Archives",
+  "lat": 38.893682,
+  "lon": -77.021915,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "F02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Arlington Cemetery",
+  "lat": 38.884619,
+  "lon": -77.063085,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [
+   "C06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Ashburn",
+  "lat": 39.004971,
+  "lon": -77.491197,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N15"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Ballston\u2013MU",
+  "lat": 38.882006,
+  "lon": -77.111514,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Benning Road",
+  "lat": 38.890447,
+  "lon": -76.937533,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Bethesda",
+  "lat": 38.984377,
+  "lon": -77.094167,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Braddock Road",
+  "lat": 38.814146,
+  "lon": -77.05367,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Branch Avenue",
+  "lat": 38.826852,
+  "lon": -76.912084,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Brookland\u2013CUA",
+  "lat": 38.933211,
+  "lon": -76.994534,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Capitol Heights",
+  "lat": 38.889268,
+  "lon": -76.913165,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Capitol South",
+  "lat": 38.885143,
+  "lon": -77.006065,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Cheverly",
+  "lat": 38.916631,
+  "lon": -76.916656,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Clarendon",
+  "lat": 38.887075,
+  "lon": -77.09525,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Cleveland Park",
+  "lat": 38.935516,
+  "lon": -77.058443,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "College Park\u2013University of Maryland",
+  "lat": 38.978459,
+  "lon": -76.928268,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Columbia Heights",
+  "lat": 38.928685,
+  "lon": -77.032806,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Congress Heights",
+  "lat": 38.845134,
+  "lon": -76.988078,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Court House",
+  "lat": 38.890783,
+  "lon": -77.085643,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Crystal City",
+  "lat": 38.857904,
+  "lon": -77.05029,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Deanwood",
+  "lat": 38.908074,
+  "lon": -76.935342,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Downtown Largo",
+  "lat": 38.900484,
+  "lon": -76.844648,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Dunn Loring\u2013Merrifield",
+  "lat": 38.883353,
+  "lon": -77.22812,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line"
+  ],
+  "aka": [
+   "K07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Dupont Circle",
+  "lat": 38.909745,
+  "lon": -77.043562,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "East Falls Church",
+  "lat": 38.885976,
+  "lon": -77.156824,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Eastern Market",
+  "lat": 38.884249,
+  "lon": -76.995823,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Eisenhower Avenue",
+  "lat": 38.800345,
+  "lon": -77.071133,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Yellow Line"
+  ],
+  "aka": [
+   "C14"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Farragut North",
+  "lat": 38.903296,
+  "lon": -77.039734,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Farragut West",
+  "lat": 38.90135,
+  "lon": -77.040446,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Federal Center Southwest",
+  "lat": 38.885118,
+  "lon": -77.015082,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Federal Triangle",
+  "lat": 38.893458,
+  "lon": -77.02803,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Foggy Bottom\u2013GWU",
+  "lat": 38.900873,
+  "lon": -77.05035,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Forest Glen",
+  "lat": 39.015285,
+  "lon": -77.043148,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Fort Totten",
+  "lat": 38.951772,
+  "lon": -77.002419,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Red Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "B06",
+   "E06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Franconia\u2013Springfield",
+  "lat": 38.766338,
+  "lon": -77.168399,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [
+   "J03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Friendship Heights",
+  "lat": 38.959484,
+  "lon": -77.084996,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Gallery Place",
+  "lat": 38.898563,
+  "lon": -77.022244,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Red Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "B01",
+   "F01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Georgia Avenue\u2013Petworth",
+  "lat": 38.936937,
+  "lon": -77.024166,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Glenmont",
+  "lat": 39.061784,
+  "lon": -77.053557,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Greenbelt",
+  "lat": 39.011057,
+  "lon": -76.911221,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Greensboro",
+  "lat": 38.921112,
+  "lon": -77.234005,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Grosvenor\u2013Strathmore",
+  "lat": 39.029082,
+  "lon": -77.10381,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Herndon",
+  "lat": 38.952837,
+  "lon": -77.385256,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Huntington",
+  "lat": 38.793827,
+  "lon": -77.07529,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Yellow Line"
+  ],
+  "aka": [
+   "C15"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Hyattsville Crossing",
+  "lat": 38.965337,
+  "lon": -76.956682,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Innovation Center",
+  "lat": 38.961024,
+  "lon": -77.416084,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Judiciary Square",
+  "lat": 38.896086,
+  "lon": -77.016681,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "King Street\u2013Old Town",
+  "lat": 38.806531,
+  "lon": -77.061046,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C13"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "L'Enfant Plaza",
+  "lat": 38.885141,
+  "lon": -77.022239,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Green Line",
+   "Orange Line",
+   "Silver Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "D03",
+   "F03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Landover",
+  "lat": 38.933497,
+  "lon": -76.891262,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Loudoun Gateway",
+  "lat": 38.992249,
+  "lon": -77.461003,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N14"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "McLean",
+  "lat": 38.924531,
+  "lon": -77.210104,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "McPherson Square",
+  "lat": 38.901363,
+  "lon": -77.032006,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Medical Center",
+  "lat": 38.99885,
+  "lon": -77.096837,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Metro Center",
+  "lat": 38.898066,
+  "lon": -77.028315,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Red Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "A01",
+   "C01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Minnesota Avenue",
+  "lat": 38.899161,
+  "lon": -76.946739,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Morgan Boulevard",
+  "lat": 38.893744,
+  "lon": -76.868343,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Mount Vernon Square",
+  "lat": 38.905528,
+  "lon": -77.021933,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Navy Yard\u2013Ballpark",
+  "lat": 38.876475,
+  "lon": -77.005921,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Naylor Road",
+  "lat": 38.851128,
+  "lon": -76.956676,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "New Carrollton",
+  "lat": 38.94801,
+  "lon": -76.871877,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D13"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "NoMa\u2013Gallaudet U",
+  "lat": 38.907025,
+  "lon": -77.003153,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B35"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "North Bethesda",
+  "lat": 39.048151,
+  "lon": -77.11283,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Pentagon",
+  "lat": 38.869131,
+  "lon": -77.054076,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Pentagon City",
+  "lat": 38.863042,
+  "lon": -77.059427,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Potomac Avenue",
+  "lat": 38.881297,
+  "lon": -76.9852,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Potomac Yard",
+  "lat": 38.833245,
+  "lon": -77.046432,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Reston Town Center",
+  "lat": 38.952823,
+  "lon": -77.360653,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Rhode Island Avenue\u2013Brentwood",
+  "lat": 38.92082,
+  "lon": -76.995973,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Rockville",
+  "lat": 39.084152,
+  "lon": -77.146064,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A14"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Ronald Reagan Washington National Airport",
+  "lat": 38.853416,
+  "lon": -77.044042,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Rosslyn",
+  "lat": 38.895979,
+  "lon": -77.070909,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Shady Grove",
+  "lat": 39.119912,
+  "lon": -77.164659,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A15"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Shaw\u2013Howard University",
+  "lat": 38.913471,
+  "lon": -77.021917,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Silver Spring",
+  "lat": 38.993839,
+  "lon": -77.031326,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Smithsonian",
+  "lat": 38.888516,
+  "lon": -77.028557,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Southern Avenue",
+  "lat": 38.84139,
+  "lon": -76.974875,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Spring Hill",
+  "lat": 38.929259,
+  "lon": -77.241933,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Stadium\u2013Armory",
+  "lat": 38.888334,
+  "lon": -76.977086,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Suitland",
+  "lat": 38.844484,
+  "lon": -76.932666,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Takoma",
+  "lat": 38.97563,
+  "lon": -77.017897,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Tenleytown\u2013AU",
+  "lat": 38.948066,
+  "lon": -77.079305,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Twinbrook",
+  "lat": 39.062682,
+  "lon": -77.121209,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A13"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Tysons",
+  "lat": 38.920601,
+  "lon": -77.222318,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "U Street",
+  "lat": 38.916995,
+  "lon": -77.027393,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Union Station",
+  "lat": 38.897766,
+  "lon": -77.007414,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Van Dorn Street",
+  "lat": 38.799308,
+  "lon": -77.129111,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [
+   "J02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Van Ness\u2013UDC",
+  "lat": 38.94417,
+  "lon": -77.063476,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Vienna/Fairfax\u2013GMU",
+  "lat": 38.877601,
+  "lon": -77.272288,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line"
+  ],
+  "aka": [
+   "K08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Virginia Square\u2013GMU",
+  "lat": 38.882944,
+  "lon": -77.103309,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Washington Dulles International Airport",
+  "lat": 38.955788,
+  "lon": -77.448319,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Waterfront",
+  "lat": 38.876443,
+  "lon": -77.017508,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "West Falls Church\u2013VT",
+  "lat": 38.900793,
+  "lon": -77.188965,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line"
+  ],
+  "aka": [
+   "K06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "West Hyattsville",
+  "lat": 38.955228,
+  "lon": -76.96952,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Wheaton",
+  "lat": 39.038686,
+  "lon": -77.050741,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Wiehle\u2013Reston East",
+  "lat": 38.947749,
+  "lon": -77.340075,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ },
+ {
+  "name": "Woodley Park",
+  "lat": 38.925025,
+  "lon": -77.052363,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  }
+ }
+]

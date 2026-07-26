@@ -1,30 +1,35 @@
-"""Enrich stations.json with attributes needed by the elimination engine.
+"""Enrich a region's station list with the attributes the elimination engine needs.
 
-Adds per station: nameLength, county, city, elevation (m), distance to each
-commercial airport (SFO/OAK/SJC) and nearest airport. Writes enriched file to
-the app's data dir.
+Adds per station: id, nameLength, county, city, elevation (m), distance to each
+of the region's commercial airports and the nearest one. Writes the enriched file
+to the app's data dir.
+
+Adding a city is one entry in `poi_geo.REGIONS` (`stations`, `agencies`,
+`airports`), then:
+
+    python3 scripts/build_attributes.py --region dc
+
+It reads the raw station list the city's builder wrote (scripts/stations.dc.json
+from build_dc_stations.py) and writes the enriched file the app imports.
 """
-import json, math, time, sys, re, urllib.request, urllib.parse
+import argparse, json, math, os, time, sys, re, urllib.request, urllib.parse
 
-SRC = 'stations.json'
-OUT = '/home/ubuntu/repos/bayarea-hideandseek/src/data/stations.json'
+import poi_geo
 
-# Agency suffix appended by build_stations.py to disambiguate stations that share
-# a display name across systems (e.g. "San Bruno (BART)" vs "San Bruno (Caltrain)").
-# The name-length question should count the *base* name only, so strip just this
-# agency parenthetical — never descriptive ones like "(Ocean Beach)".
-_AGENCY_SUFFIX = re.compile(r'\s*\((?:BART|Caltrain|VTA|Muni)\)\s*$')
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 
-def name_length(name):
-    return len(_AGENCY_SUFFIX.sub('', name))
 
-# Coordinates of each airport's Google Maps pin/icon (the point the official
-# game rules measure from), per andrewku.
-AIRPORTS = {
-    'SFO': (37.619083, -122.381597),
-    'OAK': (37.719016, -122.219595),
-    'SJC': (37.363510, -121.928648),
-}
+# `agencies` lists the system names a station builder may append to disambiguate
+# same-named stations across agencies ("San Bruno (BART)"): the name-length
+# question counts the *base* name, so only that parenthetical is stripped —
+# never a descriptive one like "(Ocean Beach)".
+def name_length(name, agencies):
+    if not agencies:
+        return len(name)
+    suffix = re.compile(r'\s*\((?:' + '|'.join(map(re.escape, agencies)) + r')\)\s*$')
+    return len(suffix.sub('', name))
+
 
 def hav(a, b):
     R = 6371000.0
@@ -70,10 +75,10 @@ def usgs_elev(lat, lon):
         print('elev err', lat, lon, e, file=sys.stderr)
         return None
 
-def load_cache():
+def load_cache(path):
     cache = {}
     try:
-        prev = json.load(open('stations_enriched.json'))
+        prev = json.load(open(path))
         for p in prev:
             if p.get('county') is not None or p.get('elevation') is not None:
                 cache[(round(p['lat'], 5), round(p['lon'], 5))] = (
@@ -83,8 +88,18 @@ def load_cache():
     return cache
 
 def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    region = poi_geo.add_region_arg(ap).parse_args().region
+    cfg = poi_geo.REGIONS[region]
+    if 'airports' not in cfg:
+        sys.exit(f"{region}: no `agencies`/`airports` in poi_geo.REGIONS — its "
+                 "station file is built elsewhere")
+    SRC = poi_geo.work(region, 'stations.json')
+    OUT = poi_geo.repo_path(region, 'stations')
+    AIRPORTS = cfg['airports']
     st = json.load(open(SRC))
-    cache = load_cache()
+    CACHE = poi_geo.work(region, 'stations_enriched.json')
+    cache = load_cache(CACHE)
     out = []
     hits = 0
     for i, s in enumerate(st):
@@ -97,7 +112,8 @@ def main():
             dist = {k: round(hav((lat, lon), v), 1) for k, v in AIRPORTS.items()}
             nearest = min(dist, key=dist.get)
             rec = dict(s)
-            rec['id'] = f's{i:03d}'; rec['nameLength'] = name_length(s['name'])
+            rec['id'] = f's{i:03d}'
+            rec['nameLength'] = name_length(s['name'], cfg['agencies'])
             rec['county'] = cc; rec['city'] = city; rec['elevation'] = elev
             rec['airportDist'] = dist; rec['nearestAirport'] = nearest
             out.append(rec)
@@ -111,7 +127,7 @@ def main():
         nearest = min(dist, key=dist.get)
         rec = dict(s)
         rec['id'] = f's{i:03d}'
-        rec['nameLength'] = name_length(s['name'])
+        rec['nameLength'] = name_length(s['name'], cfg['agencies'])
         rec['county'] = (county or '').replace(' County', '') or None
         rec['city'] = city
         rec['elevation'] = elev
@@ -119,10 +135,9 @@ def main():
         rec['nearestAirport'] = nearest
         out.append(rec)
         print(f"{i+1}/{len(st)} {s['name']:30} {rec['county']} / {city} elev={elev}", file=sys.stderr)
-    import os
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     json.dump(out, open(OUT, 'w'), indent=1)
-    json.dump(out, open('stations_enriched.json', 'w'), indent=1)
+    json.dump(out, open(CACHE, 'w'), indent=1)
     print('wrote', OUT, len(out))
 
 if __name__ == '__main__':

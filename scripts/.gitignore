@@ -30,6 +30,8 @@ poi_merge_viz.json
 
 # Census TIGER place shapefile cache (re-downloaded on demand by build_play_area.py)
 _census_place/
+# Census national ZCTA shapefile cache (~530 MB, re-downloaded by build_region_geo.py)
+_census_zcta/
 # Census TIGER AREAWATER + OSM coastline shapefile cache (re-fetched on demand
 # by build_water_mask.py / build_bay_land.py)
 _cache/

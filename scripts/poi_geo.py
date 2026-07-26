@@ -40,6 +40,60 @@ REGIONS = {
         # Categories whose first manual pass is still unfinished: survivors seed
         # `pending` (not yet human-confirmed) instead of `keep`.
         "pendingCats": [],
+        # --- map build (stations + geometry) ---
+        "states": [("06", "California")],
+        "stations": "src/data/stations.json",
+        "transitLines": "src/data/transit-lines.geojson.json",
+        "places": "src/data/places.geojson.json",
+        "countiesGeo": "src/data/counties.geojson.json",
+        "zctas": "src/data/zctas.geojson.json",
+        # `agencies`/`airports` drive build_attributes.py, so they only exist on
+        # the regions whose station file that script builds (LA's came from the
+        # Metro GTFS import). Airport coordinates are each one's Google Maps pin
+        # — the point the official rules measure from — not the aerodrome
+        # centroid, and must match AIRPORT_SITES in src/data/regions.ts.
+        "agencies": ["BART", "Caltrain", "VTA", "Muni"],
+        "airports": {"SFO": (37.619083, -122.381597),
+                     "OAK": (37.719016, -122.219595),
+                     "SJC": (37.363510, -121.928648)},
+        # Dense bay+ocean water (build_water_mask.py): legal city limits reach
+        # into the bay, so each place is clipped back to the real shore.
+        "waterMask": "scripts/bay_water_mask.geojson",
+        "displayWater": "bay",
+        # Farallon Islands: legally San Francisco, ~27 mi out in the Pacific.
+        "islandLonCutoff": -122.6,
+    },
+    "dc": {
+        "label": "Washington DC",
+        "suffix": ".dc",
+        "play": "src/data/dc.play-area.geojson.json",
+        "viz": "scripts/poi_merge_viz.dc.js",
+        "ledger": "scripts/poi_decisions.dc.json",
+        "poi": "src/data/dc.poi.json",
+        "counties": ["District of Columbia", "Arlington", "Alexandria city",
+                     "Fairfax", "Loudoun", "Montgomery", "Prince George's"],
+        "geonamesCountry": "US",
+        "pendingCats": [],
+        # --- map build (stations + geometry); see build_region_geo.py ---
+        "states": [("11", "District of Columbia"), ("24", "Maryland"),
+                   ("51", "Virginia")],
+        "stations": "src/data/dc.stations.json",
+        "transitLines": "src/data/dc.transit-lines.geojson.json",
+        "places": "src/data/dc.places.geojson.json",
+        "countiesGeo": "src/data/dc.counties.geojson.json",
+        "zctas": "src/data/dc.zctas.geojson.json",
+        "agencies": ["Metrorail"],
+        # BWI is kept even though it sits outside the play area: the app filters
+        # airports to the ones inside the polygon (regions.ts), so carrying the
+        # distance costs nothing if that boundary ever moves.
+        "airports": {"DCA": (38.850108, -77.039176),
+                     "IAD": (38.952248, -77.457889),
+                     "BWI": (39.177414, -76.668394)},
+        # Metrorail's counties run out to Purcellville, Damascus and the
+        # Patuxent — thousands of square miles the trains never reach — so the
+        # play-area curation is seeded by dropping every candidate place no
+        # station comes within this distance of.
+        "autoDropBeyondMi": 2.0,
     },
     "la": {
         "label": "LA Metro",
@@ -54,6 +108,16 @@ REGIONS = {
         "counties": ["Los Angeles"],
         "geonamesCountry": "US",
         "pendingCats": [],
+        # --- map build (stations + geometry) ---
+        # LA's play area predates the opt-out curation: it is a hand-curated
+        # city footprint corrected for rivers and the coast
+        # (build_la_play_area.py), so build_play_area.py does not run for LA.
+        "states": [("06", "California")],
+        "stations": "src/data/la.stations.json",
+        "transitLines": "src/data/la.transit-lines.geojson.json",
+        "places": "src/data/la.places.geojson.json",
+        "countiesGeo": "src/data/la.counties.geojson.json",
+        "zctas": "src/data/la.zctas.geojson.json",
     },
 }
 

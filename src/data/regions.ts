@@ -42,6 +42,16 @@ import laCounties from './la.counties.geojson.json'
 import laZctas from './la.zctas.geojson.json'
 import laTransit from './la.transit-lines.geojson.json'
 
+// --- Washington DC (WMATA Metrorail, DC + the inner MD/VA suburbs) -----------
+import dcStations from './dc.stations.json'
+import dcPoi from './dc.poi.json'
+import dcPlayArea from './dc.play-area.geojson.json'
+import dcMeasure from './dc.measure-features.geojson.json'
+import dcPlaces from './dc.places.geojson.json'
+import dcCounties from './dc.counties.geojson.json'
+import dcZctas from './dc.zctas.geojson.json'
+import dcTransit from './dc.transit-lines.geojson.json'
+
 export interface RegionData {
   id: string
   /** Human-readable name; shown in the picker and baked into the board code. */
@@ -128,6 +138,32 @@ export const REGIONS: RegionData[] = [
     zctas: laZctas,
     transitLines: laTransit,
   },
+  {
+    id: 'dc',
+    name: 'Washington DC',
+    center: [38.9, -77.05],
+    zoom: 10,
+    // Seven county-equivalents hold stations, across three 1st-admin divisions —
+    // the first map where "same state?" is a real question rather than copy.
+    inPlayCounties: [
+      'District of Columbia',
+      'Arlington',
+      'Alexandria city',
+      'Fairfax',
+      'Loudoun',
+      'Montgomery',
+      "Prince George's",
+    ],
+    states: ['District of Columbia', 'Maryland', 'Virginia'],
+    stations: dcStations,
+    poi: dcPoi,
+    playArea: dcPlayArea,
+    measureFeatures: dcMeasure,
+    places: dcPlaces,
+    counties: dcCounties,
+    zctas: dcZctas,
+    transitLines: dcTransit,
+  },
 ]
 
 export const DEFAULT_REGION_ID = 'bayarea'
@@ -201,6 +237,9 @@ const AIRPORT_SITES: Record<string, LatLng> = {
   SJC: { lat: 37.36351, lon: -121.928648 },
   LAX: { lat: 33.94256, lon: -118.40853 },
   LGB: { lat: 33.81765, lon: -118.15227 },
+  DCA: { lat: 38.850108, lon: -77.039176 },
+  IAD: { lat: 38.952248, lon: -77.457889 },
+  BWI: { lat: 39.177414, lon: -76.668394 },
 }
 interface NamedFeature {
   properties?: { name?: string }

@@ -1,0 +1,3501 @@
+[
+ {
+  "name": "Addison Road",
+  "lat": 38.886722,
+  "lon": -76.894406,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s000",
+  "nameLength": 12,
+  "county": "Prince George's",
+  "city": "Walker Mill CDP",
+  "elevation": 40.1,
+  "airportDist": {
+   "DCA": 13178.2,
+   "IAD": 49290.0,
+   "BWI": 37761.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Anacostia",
+  "lat": 38.862192,
+  "lon": -76.995332,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s001",
+  "nameLength": 9,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 8.8,
+  "airportDist": {
+   "DCA": 4027.2,
+   "IAD": 41257.7,
+   "BWI": 45014.6
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Archives",
+  "lat": 38.893682,
+  "lon": -77.021915,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "F02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s002",
+  "nameLength": 8,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 3.7,
+  "airportDist": {
+   "DCA": 5070.4,
+   "IAD": 38273.6,
+   "BWI": 43905.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Arlington Cemetery",
+  "lat": 38.884619,
+  "lon": -77.063085,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [
+   "C06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s003",
+  "nameLength": 18,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 5.8,
+  "airportDist": {
+   "DCA": 4360.1,
+   "IAD": 34974.2,
+   "BWI": 47140.7
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Ashburn",
+  "lat": 39.004971,
+  "lon": -77.491197,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N15"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s004",
+  "nameLength": 7,
+  "county": "Loudoun",
+  "city": "Ashburn CDP",
+  "elevation": 91.1,
+  "airportDist": {
+   "DCA": 42725.0,
+   "IAD": 6531.4,
+   "BWI": 73553.5
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Ballston\u2013MU",
+  "lat": 38.882006,
+  "lon": -77.111514,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s005",
+  "nameLength": 11,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 81.0,
+  "airportDist": {
+   "DCA": 7197.5,
+   "IAD": 30968.0,
+   "BWI": 50438.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Benning Road",
+  "lat": 38.890447,
+  "lon": -76.937533,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s006",
+  "nameLength": 12,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 23.9,
+  "airportDist": {
+   "DCA": 9876.8,
+   "IAD": 45537.8,
+   "BWI": 39479.0
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Bethesda",
+  "lat": 38.984377,
+  "lon": -77.094167,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s007",
+  "nameLength": 8,
+  "county": "Montgomery",
+  "city": "Bethesda CDP",
+  "elevation": 106.4,
+  "airportDist": {
+   "DCA": 15669.7,
+   "IAD": 31647.3,
+   "BWI": 42560.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Braddock Road",
+  "lat": 38.814146,
+  "lon": -77.05367,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s008",
+  "nameLength": 13,
+  "county": "Alexandria city",
+  "city": "Alexandria city",
+  "elevation": 15.1,
+  "airportDist": {
+   "DCA": 4191.2,
+   "IAD": 38209.6,
+   "BWI": 52347.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Branch Avenue",
+  "lat": 38.826852,
+  "lon": -76.912084,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s009",
+  "nameLength": 13,
+  "county": "Prince George's",
+  "city": "Camp Springs CDP",
+  "elevation": 76.3,
+  "airportDist": {
+   "DCA": 11307.3,
+   "IAD": 49253.9,
+   "BWI": 44304.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Brookland\u2013CUA",
+  "lat": 38.933211,
+  "lon": -76.994534,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s010",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 46.4,
+  "airportDist": {
+   "DCA": 10015.8,
+   "IAD": 40128.9,
+   "BWI": 39120.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Capitol Heights",
+  "lat": 38.889268,
+  "lon": -76.913165,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s011",
+  "nameLength": 15,
+  "county": "Prince George's",
+  "city": "Capitol Heights town",
+  "elevation": 30.3,
+  "airportDist": {
+   "DCA": 11746.1,
+   "IAD": 47642.3,
+   "BWI": 38387.0
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Capitol South",
+  "lat": 38.885143,
+  "lon": -77.006065,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s012",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 13.2,
+  "airportDist": {
+   "DCA": 4836.7,
+   "IAD": 39794.8,
+   "BWI": 43667.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Cheverly",
+  "lat": 38.916631,
+  "lon": -76.916656,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s013",
+  "nameLength": 8,
+  "county": "Prince George's",
+  "city": "Cheverly town",
+  "elevation": 11.3,
+  "airportDist": {
+   "DCA": 12929.8,
+   "IAD": 46980.9,
+   "BWI": 36062.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Clarendon",
+  "lat": 38.887075,
+  "lon": -77.09525,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s014",
+  "nameLength": 9,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 81.1,
+  "airportDist": {
+   "DCA": 6361.1,
+   "IAD": 32199.0,
+   "BWI": 49006.6
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Cleveland Park",
+  "lat": 38.935516,
+  "lon": -77.058443,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s015",
+  "nameLength": 14,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 64.5,
+  "airportDist": {
+   "DCA": 9642.2,
+   "IAD": 34595.4,
+   "BWI": 43101.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "College Park\u2013University of Maryland",
+  "lat": 38.978459,
+  "lon": -76.928268,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s016",
+  "nameLength": 35,
+  "county": "Prince George's",
+  "city": "College Park city",
+  "elevation": 19.0,
+  "airportDist": {
+   "DCA": 17197.9,
+   "IAD": 45882.0,
+   "BWI": 31505.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Columbia Heights",
+  "lat": 38.928685,
+  "lon": -77.032806,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s017",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 58.9,
+  "airportDist": {
+   "DCA": 8754.7,
+   "IAD": 36857.5,
+   "BWI": 41893.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Congress Heights",
+  "lat": 38.845134,
+  "lon": -76.988078,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s018",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 55.2,
+  "airportDist": {
+   "DCA": 4459.5,
+   "IAD": 42365.3,
+   "BWI": 46130.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Court House",
+  "lat": 38.890783,
+  "lon": -77.085643,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s019",
+  "nameLength": 11,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 71.9,
+  "airportDist": {
+   "DCA": 6053.0,
+   "IAD": 32920.4,
+   "BWI": 48110.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Crystal City",
+  "lat": 38.857904,
+  "lon": -77.05029,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s020",
+  "nameLength": 12,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 15.9,
+  "airportDist": {
+   "DCA": 1295.2,
+   "IAD": 36796.8,
+   "BWI": 48484.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Deanwood",
+  "lat": 38.908074,
+  "lon": -76.935342,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s021",
+  "nameLength": 8,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 11.3,
+  "airportDist": {
+   "DCA": 11060.3,
+   "IAD": 45466.3,
+   "BWI": 37794.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Downtown Largo",
+  "lat": 38.900484,
+  "lon": -76.844648,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s022",
+  "nameLength": 14,
+  "county": "Prince George's",
+  "city": "Lake Arbor CDP",
+  "elevation": 43.8,
+  "airportDist": {
+   "DCA": 17746.9,
+   "IAD": 53359.4,
+   "BWI": 34350.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Dunn Loring\u2013Merrifield",
+  "lat": 38.883353,
+  "lon": -77.22812,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line"
+  ],
+  "aka": [
+   "K07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s023",
+  "nameLength": 22,
+  "county": "Fairfax",
+  "city": "Merrifield CDP",
+  "elevation": 114.7,
+  "airportDist": {
+   "DCA": 16770.7,
+   "IAD": 21303.5,
+   "BWI": 58366.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Dupont Circle",
+  "lat": 38.909745,
+  "lon": -77.043562,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s024",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 27.2,
+  "airportDist": {
+   "DCA": 6642.2,
+   "IAD": 36149.1,
+   "BWI": 43995.7
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "East Falls Church",
+  "lat": 38.885976,
+  "lon": -77.156824,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s025",
+  "nameLength": 17,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 91.9,
+  "airportDist": {
+   "DCA": 10938.5,
+   "IAD": 27068.5,
+   "BWI": 53198.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Eastern Market",
+  "lat": 38.884249,
+  "lon": -76.995823,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s026",
+  "nameLength": 14,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 23.2,
+  "airportDist": {
+   "DCA": 5338.5,
+   "IAD": 40684.1,
+   "BWI": 43157.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Eisenhower Avenue",
+  "lat": 38.800345,
+  "lon": -77.071133,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Yellow Line"
+  ],
+  "aka": [
+   "C14"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s027",
+  "nameLength": 17,
+  "county": "Alexandria city",
+  "city": "Alexandria city",
+  "elevation": 6.2,
+  "airportDist": {
+   "DCA": 6187.3,
+   "IAD": 37499.2,
+   "BWI": 54493.6
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Farragut North",
+  "lat": 38.903296,
+  "lon": -77.039734,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s028",
+  "nameLength": 14,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 16.6,
+  "airportDist": {
+   "DCA": 5914.4,
+   "IAD": 36578.8,
+   "BWI": 44244.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Farragut West",
+  "lat": 38.90135,
+  "lon": -77.040446,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s029",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 21.8,
+  "airportDist": {
+   "DCA": 5698.9,
+   "IAD": 36551.3,
+   "BWI": 44438.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Federal Center Southwest",
+  "lat": 38.885118,
+  "lon": -77.015082,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s030",
+  "nameLength": 24,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 3.8,
+  "airportDist": {
+   "DCA": 4416.6,
+   "IAD": 39029.4,
+   "BWI": 44194.0
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Federal Triangle",
+  "lat": 38.893458,
+  "lon": -77.02803,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s031",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 2.9,
+  "airportDist": {
+   "DCA": 4915.9,
+   "IAD": 37756.8,
+   "BWI": 44292.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Foggy Bottom\u2013GWU",
+  "lat": 38.900873,
+  "lon": -77.05035,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s032",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 16.6,
+  "airportDist": {
+   "DCA": 5727.1,
+   "IAD": 35713.7,
+   "BWI": 45097.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Forest Glen",
+  "lat": 39.015285,
+  "lon": -77.043148,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s033",
+  "nameLength": 11,
+  "county": "Montgomery",
+  "city": "Forest Glen CDP",
+  "elevation": 112.8,
+  "airportDist": {
+   "DCA": 18370.1,
+   "IAD": 36526.8,
+   "BWI": 37025.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Fort Totten",
+  "lat": 38.951772,
+  "lon": -77.002419,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Red Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "B06",
+   "E06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s034",
+  "nameLength": 11,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 50.3,
+  "airportDist": {
+   "DCA": 11743.5,
+   "IAD": 39386.0,
+   "BWI": 38225.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Franconia\u2013Springfield",
+  "lat": 38.766338,
+  "lon": -77.168399,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [
+   "J03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s035",
+  "nameLength": 21,
+  "county": "Fairfax",
+  "city": "Springfield CDP",
+  "elevation": 57.6,
+  "airportDist": {
+   "DCA": 14564.9,
+   "IAD": 32490.6,
+   "BWI": 62910.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Friendship Heights",
+  "lat": 38.959484,
+  "lon": -77.084996,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s036",
+  "nameLength": 18,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 97.5,
+  "airportDist": {
+   "DCA": 12792.0,
+   "IAD": 32253.5,
+   "BWI": 43367.6
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Gallery Place",
+  "lat": 38.898563,
+  "lon": -77.022244,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Red Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "B01",
+   "F01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s037",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 13.8,
+  "airportDist": {
+   "DCA": 5583.8,
+   "IAD": 38155.6,
+   "BWI": 43536.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Georgia Avenue\u2013Petworth",
+  "lat": 38.936937,
+  "lon": -77.024166,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s038",
+  "nameLength": 23,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 60.7,
+  "airportDist": {
+   "DCA": 9741.9,
+   "IAD": 37548.0,
+   "BWI": 40726.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Glenmont",
+  "lat": 39.061784,
+  "lon": -77.053557,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s039",
+  "nameLength": 8,
+  "county": "Montgomery",
+  "city": "Glenmont CDP",
+  "elevation": 135.0,
+  "airportDist": {
+   "DCA": 23570.1,
+   "IAD": 36999.0,
+   "BWI": 35628.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Greenbelt",
+  "lat": 39.011057,
+  "lon": -76.911221,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s040",
+  "nameLength": 9,
+  "county": "Prince George's",
+  "city": "Greenbelt city",
+  "elevation": 26.6,
+  "airportDist": {
+   "DCA": 21042.7,
+   "IAD": 47702.7,
+   "BWI": 27952.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Greensboro",
+  "lat": 38.921112,
+  "lon": -77.234005,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s041",
+  "nameLength": 10,
+  "county": "Fairfax",
+  "city": "Tysons CDP",
+  "elevation": 140.0,
+  "airportDist": {
+   "DCA": 18620.0,
+   "IAD": 19671.2,
+   "BWI": 56549.5
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Grosvenor\u2013Strathmore",
+  "lat": 39.029082,
+  "lon": -77.10381,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s042",
+  "nameLength": 20,
+  "county": "Montgomery",
+  "city": "North Bethesda CDP",
+  "elevation": 84.4,
+  "airportDist": {
+   "DCA": 20671.2,
+   "IAD": 31771.9,
+   "BWI": 41032.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Herndon",
+  "lat": 38.952837,
+  "lon": -77.385256,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s043",
+  "nameLength": 7,
+  "county": "Fairfax",
+  "city": "Reston CDP",
+  "elevation": 115.2,
+  "airportDist": {
+   "DCA": 32052.5,
+   "IAD": 6281.1,
+   "BWI": 66738.1
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Huntington",
+  "lat": 38.793827,
+  "lon": -77.07529,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Yellow Line"
+  ],
+  "aka": [
+   "C15"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s044",
+  "nameLength": 10,
+  "county": "Fairfax",
+  "city": "Huntington CDP",
+  "elevation": 23.5,
+  "airportDist": {
+   "DCA": 6996.6,
+   "IAD": 37514.5,
+   "BWI": 55282.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Hyattsville Crossing",
+  "lat": 38.965337,
+  "lon": -76.956682,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s045",
+  "nameLength": 20,
+  "county": "Prince George's",
+  "city": "Hyattsville city",
+  "elevation": 29.6,
+  "airportDist": {
+   "DCA": 14667.0,
+   "IAD": 43361.2,
+   "BWI": 34285.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Innovation Center",
+  "lat": 38.961024,
+  "lon": -77.416084,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s046",
+  "nameLength": 17,
+  "county": "Fairfax",
+  "city": "McNair CDP",
+  "elevation": 106.3,
+  "airportDist": {
+   "DCA": 34867.9,
+   "IAD": 3744.2,
+   "BWI": 68886.7
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Judiciary Square",
+  "lat": 38.896086,
+  "lon": -77.016681,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s047",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 10.7,
+  "airportDist": {
+   "DCA": 5470.8,
+   "IAD": 38675.2,
+   "BWI": 43398.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "King Street\u2013Old Town",
+  "lat": 38.806531,
+  "lon": -77.061046,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C13"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s048",
+  "nameLength": 20,
+  "county": "Alexandria city",
+  "city": "Alexandria city",
+  "elevation": 11.0,
+  "airportDist": {
+   "DCA": 5202.7,
+   "IAD": 37981.0,
+   "BWI": 53407.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "L'Enfant Plaza",
+  "lat": 38.885141,
+  "lon": -77.022239,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Green Line",
+   "Orange Line",
+   "Silver Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "D03",
+   "F03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s049",
+  "nameLength": 14,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 8.2,
+  "airportDist": {
+   "DCA": 4162.3,
+   "IAD": 38421.3,
+   "BWI": 44613.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Landover",
+  "lat": 38.933497,
+  "lon": -76.891262,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s050",
+  "nameLength": 8,
+  "county": "Prince George's",
+  "city": "Landover CDP",
+  "elevation": 24.9,
+  "airportDist": {
+   "DCA": 15806.8,
+   "IAD": 49048.7,
+   "BWI": 33255.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Loudoun Gateway",
+  "lat": 38.992249,
+  "lon": -77.461003,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N14"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s051",
+  "nameLength": 15,
+  "county": "Loudoun",
+  "city": "Ashburn CDP",
+  "elevation": 82.8,
+  "airportDist": {
+   "DCA": 39768.3,
+   "IAD": 4456.0,
+   "BWI": 71441.8
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "McLean",
+  "lat": 38.924531,
+  "lon": -77.210104,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s052",
+  "nameLength": 6,
+  "county": "Fairfax",
+  "city": "Tysons CDP",
+  "elevation": 98.8,
+  "airportDist": {
+   "DCA": 16951.4,
+   "IAD": 21651.4,
+   "BWI": 54578.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "McPherson Square",
+  "lat": 38.901363,
+  "lon": -77.032006,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s053",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 17.4,
+  "airportDist": {
+   "DCA": 5733.0,
+   "IAD": 37272.5,
+   "BWI": 43913.7
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Medical Center",
+  "lat": 38.99885,
+  "lon": -77.096837,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s054",
+  "nameLength": 14,
+  "county": "Montgomery",
+  "city": "Bethesda CDP",
+  "elevation": 98.3,
+  "airportDist": {
+   "DCA": 17275.2,
+   "IAD": 31638.2,
+   "BWI": 41971.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Metro Center",
+  "lat": 38.898066,
+  "lon": -77.028315,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Red Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "A01",
+   "C01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s055",
+  "nameLength": 12,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 11.2,
+  "airportDist": {
+   "DCA": 5414.9,
+   "IAD": 37645.9,
+   "BWI": 43945.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Minnesota Avenue",
+  "lat": 38.899161,
+  "lon": -76.946739,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s056",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 12.7,
+  "airportDist": {
+   "DCA": 9684.2,
+   "IAD": 44609.4,
+   "BWI": 39181.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Morgan Boulevard",
+  "lat": 38.893744,
+  "lon": -76.868343,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "G04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s057",
+  "nameLength": 16,
+  "county": "Prince George's",
+  "city": "Summerfield CDP",
+  "elevation": 65.1,
+  "airportDist": {
+   "DCA": 15564.8,
+   "IAD": 51414.0,
+   "BWI": 35960.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Mount Vernon Square",
+  "lat": 38.905528,
+  "lon": -77.021933,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E01"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s058",
+  "nameLength": 19,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 26.3,
+  "airportDist": {
+   "DCA": 6340.6,
+   "IAD": 38066.9,
+   "BWI": 42968.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Navy Yard\u2013Ballpark",
+  "lat": 38.876475,
+  "lon": -77.005921,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s059",
+  "nameLength": 18,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 6.8,
+  "airportDist": {
+   "DCA": 4109.3,
+   "IAD": 40001.3,
+   "BWI": 44382.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Naylor Road",
+  "lat": 38.851128,
+  "lon": -76.956676,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s060",
+  "nameLength": 11,
+  "county": "Prince George's",
+  "city": "Hillcrest Heights CDP",
+  "elevation": 51.8,
+  "airportDist": {
+   "DCA": 7145.1,
+   "IAD": 44806.0,
+   "BWI": 44007.7
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "New Carrollton",
+  "lat": 38.94801,
+  "lon": -76.871877,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D13"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s061",
+  "nameLength": 14,
+  "county": "Prince George's",
+  "city": null,
+  "elevation": 32.1,
+  "airportDist": {
+   "DCA": 18113.9,
+   "IAD": 50677.8,
+   "BWI": 30973.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "NoMa\u2013Gallaudet U",
+  "lat": 38.907025,
+  "lon": -77.003153,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B35"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s062",
+  "nameLength": 16,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 20.1,
+  "airportDist": {
+   "DCA": 7055.4,
+   "IAD": 39655.0,
+   "BWI": 41710.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "North Bethesda",
+  "lat": 39.048151,
+  "lon": -77.11283,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s063",
+  "nameLength": 14,
+  "county": "Montgomery",
+  "city": "North Bethesda CDP",
+  "elevation": 117.7,
+  "airportDist": {
+   "DCA": 22924.0,
+   "IAD": 31667.6,
+   "BWI": 40949.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Pentagon",
+  "lat": 38.869131,
+  "lon": -77.054076,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s064",
+  "nameLength": 8,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 10.1,
+  "airportDist": {
+   "DCA": 2477.7,
+   "IAD": 36141.1,
+   "BWI": 47803.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Pentagon City",
+  "lat": 38.863042,
+  "lon": -77.059427,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s065",
+  "nameLength": 13,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 13.6,
+  "airportDist": {
+   "DCA": 2267.9,
+   "IAD": 35876.4,
+   "BWI": 48612.0
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Potomac Avenue",
+  "lat": 38.881297,
+  "lon": -76.9852,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s066",
+  "nameLength": 14,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 20.1,
+  "airportDist": {
+   "DCA": 5819.4,
+   "IAD": 41649.3,
+   "BWI": 42813.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Potomac Yard",
+  "lat": 38.833245,
+  "lon": -77.046432,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C11"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s067",
+  "nameLength": 12,
+  "county": "Alexandria city",
+  "city": "Alexandria city",
+  "elevation": 6.7,
+  "airportDist": {
+   "DCA": 1977.6,
+   "IAD": 37988.8,
+   "BWI": 50315.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Reston Town Center",
+  "lat": 38.952823,
+  "lon": -77.360653,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N09"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s068",
+  "nameLength": 18,
+  "county": "Fairfax",
+  "city": "Reston CDP",
+  "elevation": 125.4,
+  "airportDist": {
+   "DCA": 30072.3,
+   "IAD": 8408.5,
+   "BWI": 64773.8
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Rhode Island Avenue\u2013Brentwood",
+  "lat": 38.92082,
+  "lon": -76.995973,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s069",
+  "nameLength": 29,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 37.8,
+  "airportDist": {
+   "DCA": 8706.7,
+   "IAD": 40104.6,
+   "BWI": 40178.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Rockville",
+  "lat": 39.084152,
+  "lon": -77.146064,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A14"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s070",
+  "nameLength": 9,
+  "county": "Montgomery",
+  "city": "Rockville city",
+  "elevation": 132.1,
+  "airportDist": {
+   "DCA": 27616.5,
+   "IAD": 30673.2,
+   "BWI": 42486.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Ronald Reagan Washington National Airport",
+  "lat": 38.853416,
+  "lon": -77.044042,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "C10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s071",
+  "nameLength": 41,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 10.0,
+  "airportDist": {
+   "DCA": 559.3,
+   "IAD": 37459.8,
+   "BWI": 48489.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Rosslyn",
+  "lat": 38.895979,
+  "lon": -77.070909,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "C05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s072",
+  "nameLength": 7,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 23.1,
+  "airportDist": {
+   "DCA": 5793.4,
+   "IAD": 34056.3,
+   "BWI": 46775.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Shady Grove",
+  "lat": 39.119912,
+  "lon": -77.164659,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A15"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s073",
+  "nameLength": 11,
+  "county": "Montgomery",
+  "city": "Redland CDP",
+  "elevation": 143.8,
+  "airportDist": {
+   "DCA": 31901.1,
+   "IAD": 31448.4,
+   "BWI": 43269.3
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Shaw\u2013Howard University",
+  "lat": 38.913471,
+  "lon": -77.021917,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s074",
+  "nameLength": 22,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 24.0,
+  "airportDist": {
+   "DCA": 7202.3,
+   "IAD": 37955.8,
+   "BWI": 42349.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Silver Spring",
+  "lat": 38.993839,
+  "lon": -77.031326,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s075",
+  "nameLength": 13,
+  "county": "Montgomery",
+  "city": "Silver Spring CDP",
+  "elevation": 93.2,
+  "airportDist": {
+   "DCA": 15996.6,
+   "IAD": 37164.2,
+   "BWI": 37388.6
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Smithsonian",
+  "lat": 38.888516,
+  "lon": -77.028557,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s076",
+  "nameLength": 11,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 9.6,
+  "airportDist": {
+   "DCA": 4368.6,
+   "IAD": 37812.3,
+   "BWI": 44718.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Southern Avenue",
+  "lat": 38.84139,
+  "lon": -76.974875,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s077",
+  "nameLength": 15,
+  "county": "Prince George's",
+  "city": "Hillcrest Heights CDP",
+  "elevation": 39.0,
+  "airportDist": {
+   "DCA": 5652.4,
+   "IAD": 43579.9,
+   "BWI": 45796.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Spring Hill",
+  "lat": 38.929259,
+  "lon": -77.241933,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N05"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s078",
+  "nameLength": 11,
+  "county": "Fairfax",
+  "city": "Tysons CDP",
+  "elevation": 120.8,
+  "airportDist": {
+   "DCA": 19631.8,
+   "IAD": 18851.5,
+   "BWI": 56693.0
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Stadium\u2013Armory",
+  "lat": 38.888334,
+  "lon": -76.977086,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line",
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "D08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s079",
+  "nameLength": 14,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 18.0,
+  "airportDist": {
+   "DCA": 6852.9,
+   "IAD": 42197.9,
+   "BWI": 41763.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Suitland",
+  "lat": 38.844484,
+  "lon": -76.932666,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s080",
+  "nameLength": 8,
+  "county": "Prince George's",
+  "city": "Suitland CDP",
+  "elevation": 81.0,
+  "airportDist": {
+   "DCA": 9245.0,
+   "IAD": 47005.0,
+   "BWI": 43495.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Takoma",
+  "lat": 38.97563,
+  "lon": -77.017897,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s081",
+  "nameLength": 6,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 88.7,
+  "airportDist": {
+   "DCA": 14078.3,
+   "IAD": 38129.8,
+   "BWI": 37598.3
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Tenleytown\u2013AU",
+  "lat": 38.948066,
+  "lon": -77.079305,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s082",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 119.3,
+  "airportDist": {
+   "DCA": 11432.6,
+   "IAD": 32741.5,
+   "BWI": 43692.1
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Twinbrook",
+  "lat": 39.062682,
+  "lon": -77.121209,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A13"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s083",
+  "nameLength": 9,
+  "county": "Montgomery",
+  "city": "Rockville city",
+  "elevation": 117.0,
+  "airportDist": {
+   "DCA": 24678.5,
+   "IAD": 31576.5,
+   "BWI": 41093.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Tysons",
+  "lat": 38.920601,
+  "lon": -77.222318,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s084",
+  "nameLength": 6,
+  "county": "Fairfax",
+  "city": "Tysons CDP",
+  "elevation": 130.5,
+  "airportDist": {
+   "DCA": 17683.9,
+   "IAD": 20676.7,
+   "BWI": 55709.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "U Street",
+  "lat": 38.916995,
+  "lon": -77.027393,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s085",
+  "nameLength": 8,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 28.2,
+  "airportDist": {
+   "DCA": 7507.1,
+   "IAD": 37441.3,
+   "BWI": 42422.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Union Station",
+  "lat": 38.897766,
+  "lon": -77.007414,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s086",
+  "nameLength": 13,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 15.0,
+  "airportDist": {
+   "DCA": 5970.2,
+   "IAD": 39436.9,
+   "BWI": 42711.6
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Van Dorn Street",
+  "lat": 38.799308,
+  "lon": -77.129111,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [
+   "J02"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s087",
+  "nameLength": 15,
+  "county": "Fairfax",
+  "city": "Rose Hill CDP",
+  "elevation": 40.8,
+  "airportDist": {
+   "DCA": 9623.2,
+   "IAD": 33154.8,
+   "BWI": 57906.9
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Van Ness\u2013UDC",
+  "lat": 38.94417,
+  "lon": -77.063476,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s088",
+  "nameLength": 12,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 77.5,
+  "airportDist": {
+   "DCA": 10668.5,
+   "IAD": 34119.8,
+   "BWI": 42851.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Vienna/Fairfax\u2013GMU",
+  "lat": 38.877601,
+  "lon": -77.272288,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line"
+  ],
+  "aka": [
+   "K08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s089",
+  "nameLength": 18,
+  "county": "Fairfax",
+  "city": "Oakton CDP",
+  "elevation": 105.0,
+  "airportDist": {
+   "DCA": 20413.2,
+   "IAD": 18076.3,
+   "BWI": 61907.7
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Virginia Square\u2013GMU",
+  "lat": 38.882944,
+  "lon": -77.103309,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line",
+   "Silver Line"
+  ],
+  "aka": [
+   "K03"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s090",
+  "nameLength": 19,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 77.9,
+  "airportDist": {
+   "DCA": 6645.4,
+   "IAD": 31629.7,
+   "BWI": 49833.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Washington Dulles International Airport",
+  "lat": 38.955788,
+  "lon": -77.448319,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N12"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s091",
+  "nameLength": 39,
+  "county": "Loudoun",
+  "city": null,
+  "elevation": 85.5,
+  "airportDist": {
+   "DCA": 37303.6,
+   "IAD": 916.4,
+   "BWI": 71701.2
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Waterfront",
+  "lat": 38.876443,
+  "lon": -77.017508,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line"
+  ],
+  "aka": [
+   "F04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s092",
+  "nameLength": 10,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 6.0,
+  "airportDist": {
+   "DCA": 3477.7,
+   "IAD": 39022.6,
+   "BWI": 45049.4
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "West Falls Church\u2013VT",
+  "lat": 38.900793,
+  "lon": -77.188965,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Orange Line"
+  ],
+  "aka": [
+   "K06"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s093",
+  "nameLength": 20,
+  "county": "Fairfax",
+  "city": "Idylwood CDP",
+  "elevation": 106.9,
+  "airportDist": {
+   "DCA": 14138.6,
+   "IAD": 23956.4,
+   "BWI": 54474.8
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "West Hyattsville",
+  "lat": 38.955228,
+  "lon": -76.96952,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Green Line",
+   "Yellow Line"
+  ],
+  "aka": [
+   "E07"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s094",
+  "nameLength": 16,
+  "county": "Prince George's",
+  "city": "Hyattsville city",
+  "elevation": 16.1,
+  "airportDist": {
+   "DCA": 13151.4,
+   "IAD": 42231.1,
+   "BWI": 35864.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Wheaton",
+  "lat": 39.038686,
+  "lon": -77.050741,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "B10"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s095",
+  "nameLength": 7,
+  "county": "Montgomery",
+  "city": "Wheaton CDP",
+  "elevation": 134.5,
+  "airportDist": {
+   "DCA": 20992.8,
+   "IAD": 36474.9,
+   "BWI": 36418.2
+  },
+  "nearestAirport": "DCA"
+ },
+ {
+  "name": "Wiehle\u2013Reston East",
+  "lat": 38.947749,
+  "lon": -77.340075,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Silver Line"
+  ],
+  "aka": [
+   "N08"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s096",
+  "nameLength": 18,
+  "county": "Fairfax",
+  "city": "Reston CDP",
+  "elevation": 119.5,
+  "airportDist": {
+   "DCA": 28212.0,
+   "IAD": 10200.3,
+   "BWI": 63365.5
+  },
+  "nearestAirport": "IAD"
+ },
+ {
+  "name": "Woodley Park",
+  "lat": 38.925025,
+  "lon": -77.052363,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Red Line"
+  ],
+  "aka": [
+   "A04"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s097",
+  "nameLength": 12,
+  "county": "District of Columbia",
+  "city": "Washington city",
+  "elevation": 50.6,
+  "airportDist": {
+   "DCA": 8408.2,
+   "IAD": 35204.1,
+   "BWI": 43439.1
+  },
+  "nearestAirport": "DCA"
+ }
+]
