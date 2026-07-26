@@ -104,6 +104,13 @@ characters).
   `http://localhost:29229`, `emulate_media("print")`, then `page.pdf`.
 - **Margins:** `@page { margin:0.5in }` + `prefer_css_page_size=True`. Don't set
   margins in both CSS and `page.pdf`, they double.
+- **A reference block must not split across the two columns** — a "Stations per
+  line" or "Commercial airports" list half in each column reads as two separate
+  lists. `.rblock { break-inside:avoid }` keeps each whole. That costs packing
+  density, so **if a bigger map's lists push the reference onto a third page,
+  set `.rblock { break-inside:auto }`** and accept the wrap: 3 pages is worse
+  than a split list. Check with `pdfinfo out.pdf | grep Pages` after adding a
+  map — all three current maps fit in 2 pages with `avoid`.
 - `.p1 { column-count:2 }` with `break-inside:avoid` cards: the deck reflows on
   its own, so a Large deck (20 photo conditions) still lands on one page. If a
   card ever spills, tighten spacing rather than moving cards between columns.

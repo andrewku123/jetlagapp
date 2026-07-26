@@ -372,7 +372,7 @@ table.hg .lab {{ display:block; font-size:8.3px; color:#555; line-height:1.1; }}
 table.hg .val {{ display:block; font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; }}
 /* reference lists */
 .ref {{ column-count:2; column-gap:16px; }}
-.rblock {{ break-inside:auto; margin-bottom:9px; }}
+.rblock {{ break-inside:avoid; margin-bottom:9px; }}
 .rblock h3 {{ font-size:12px; margin:0 0 4px; color:#111; border-bottom:1px solid #ddd;
   padding-bottom:2px; break-after:avoid; }}
 .card.tbl {{ break-inside:avoid; }}
