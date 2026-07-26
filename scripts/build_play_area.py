@@ -209,9 +209,16 @@ def unincorporated_fill(spec, places, to_m):
     — the curator says how far out it reaches, in place names rather than a
     hand-traced ring, and it re-derives if the Census geometry changes.
 
-    spec: {"seed": <geojson under scripts/>, "bounded_by": [place NAMELSADs]}
+    The seed is either a polygon (`seed`, a GeoJSON file under scripts/) or a
+    point inside the land to keep (`seed_point`) — New Carrollton's station sits
+    in a pocket the places around it leave open, which has no feature of its own.
+
+    spec: {"seed"|"seed_point": ..., "bounded_by": [place NAMELSADs]}
     """
-    seed = shape(json.load(open(os.path.join(HERE, spec["seed"])))["geometry"])
+    if "seed" in spec:
+        seed = shape(json.load(open(os.path.join(HERE, spec["seed"])))["geometry"])
+    else:
+        seed = Point(*spec["seed_point"])
     missing = [n for n in spec["bounded_by"] if n not in places]
     if missing:
         sys.exit(f"unincorporated_fill: unknown bounding place(s) {missing}")
@@ -220,7 +227,10 @@ def unincorporated_fill(spec, places, to_m):
                                        if d["geom"].intersects(hull)]))
     parts = [gap] if gap.geom_type == "Polygon" else list(getattr(gap, "geoms", []))
     touching = [p for p in parts if p.intersects(seed.buffer(1e-9))]
-    return transform(to_m, unary_union(touching + [seed]))
+    if not touching:
+        sys.exit(f"unincorporated_fill: seed {spec.get('seed', spec.get('seed_point'))} "
+                 "is inside a place, nothing unincorporated to add")
+    return transform(to_m, unary_union(touching + ([seed] if seed.geom_type != "Point" else [])))
 
 
 def transit_bridges(city_m, to_m):
@@ -512,8 +522,8 @@ def main():
         extra.append(Polygon(ring))
     for uf in ov.get("unincorporated_fills", []):
         extra.append(unincorporated_fill(uf, places, to_m))
-        print(f"added unincorporated fill: {uf['seed']} out to "
-              f"{len(uf['bounded_by'])} places")
+        print(f"added unincorporated fill: {uf.get('seed', uf.get('seed_point'))} "
+              f"out to {', '.join(uf['bounded_by'])}")
     if extra:
         print(f"added {len(extra)} manual corridor/fill region(s)")
         union_m = unary_union([union_m] + extra)
@@ -543,6 +553,26 @@ def main():
 
     union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
+
+    # A place the candidate scan never saw can still end up enclosed by the play
+    # area — Falls Church is a Virginia independent city, so it is not inside
+    # Fairfax County and was invisible to the county-scoped candidate set even
+    # though Arlington and Fairfax's places ring it. Its land is in play either
+    # way (fill_holes), but it is absent from the curation list, so say so.
+    stray = []
+    for d, sh in load_places():
+        nm = d["NAMELSAD"]
+        if nm in places or any(k.startswith(nm + " [") for k in places):
+            continue
+        g = shape(sh.__geo_interface__)
+        if not g.is_valid:
+            g = g.buffer(0)
+        if g.intersects(union_ll) and g.intersection(union_ll).area >= ENCLAVE_FILL_FRAC * g.area:
+            stray.append(nm)
+    if stray:
+        print("WARN enclosed by the play area but not a candidate place — add to "
+              f"`extra_counties`+`keep` to curate it: {', '.join(sorted(stray))}",
+              file=sys.stderr)
 
     sfx = CFG["suffix"]  # "" for the Bay Area's historical filenames
     feat = {"type": "Feature", "properties": {"name": "play-area"},

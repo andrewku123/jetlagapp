@@ -79,6 +79,18 @@
     "Hutchison CDP",
     "McNair CDP"
    ]
+  },
+  {
+   "_why": "New Carrollton station sits ~430 m outside every place, in the pocket the places it is named after leave open.",
+   "seed_point": [
+    -76.871877,
+    38.94801
+   ],
+   "bounded_by": [
+    "New Carrollton city",
+    "Lanham CDP",
+    "Seabrook CDP"
+   ]
   }
  ]
 }
