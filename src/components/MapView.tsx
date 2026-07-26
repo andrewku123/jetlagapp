@@ -893,7 +893,7 @@ export default function MapView({
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' ||
-      k === 'match-county' ||
+      k === 'match-admin1' || k === 'match-county' ||
       k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
@@ -939,7 +939,7 @@ export default function MapView({
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
         r.kind === 'match-airport' || r.kind === 'measure-airport' ||
-        r.kind === 'match-county' ||
+        r.kind === 'match-admin1' || r.kind === 'match-county' ||
         r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)

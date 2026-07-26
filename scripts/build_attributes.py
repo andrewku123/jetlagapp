@@ -1,8 +1,9 @@
 """Enrich a region's station list with the attributes the elimination engine needs.
 
 Adds per station: id, nameLength, county, city, elevation (m), distance to each
-of the region's commercial airports and the nearest one. Writes the enriched file
-to the app's data dir.
+of the region's commercial airports and the nearest one — plus `state` on a map
+that spans more than one (read off the region's own state polygons, so it agrees
+with the shading the app draws). Writes the enriched file to the app's data dir.
 
 Adding a city is one entry in `poi_geo.REGIONS` (`stations`, `agencies`,
 `airports`), then:
@@ -75,6 +76,39 @@ def usgs_elev(lat, lon):
         print('elev err', lat, lon, e, file=sys.stderr)
         return None
 
+def state_lookup(cfg):
+    """name -> [rings] for a multi-state map, so each station carries the state
+    its dot sits in. Single-state maps get None (the question is log-only there)."""
+    if 'statesGeo' not in cfg:
+        return None
+    fc = json.load(open(os.path.join(ROOT, cfg['statesGeo'])))
+    out = []
+    for f in fc['features']:
+        g = f['geometry']
+        polys = ([g['coordinates']] if g['type'] == 'Polygon' else g['coordinates'])
+        out.append((f['properties']['name'], polys))
+    return out
+
+
+def in_ring(lat, lon, ring):
+    inside = False
+    j = len(ring) - 1
+    for i in range(len(ring)):
+        xi, yi = ring[i]; xj, yj = ring[j]
+        if (yi > lat) != (yj > lat) and lon < (xj - xi) * (lat - yi) / (yj - yi) + xi:
+            inside = not inside
+        j = i
+    return inside
+
+
+def state_at(states, lat, lon):
+    for name, polys in states:
+        for poly in polys:
+            if in_ring(lat, lon, poly[0]) and not any(in_ring(lat, lon, h) for h in poly[1:]):
+                return name
+    return None
+
+
 def load_cache(path):
     cache = {}
     try:
@@ -97,6 +131,7 @@ def main():
     SRC = poi_geo.work(region, 'stations.json')
     OUT = poi_geo.repo_path(region, 'stations')
     AIRPORTS = cfg['airports']
+    states = state_lookup(cfg)
     st = json.load(open(SRC))
     CACHE = poi_geo.work(region, 'stations_enriched.json')
     cache = load_cache(CACHE)
@@ -116,6 +151,8 @@ def main():
             rec['nameLength'] = name_length(s['name'], cfg['agencies'])
             rec['county'] = cc; rec['city'] = city; rec['elevation'] = elev
             rec['airportDist'] = dist; rec['nearestAirport'] = nearest
+            if states:
+                rec['state'] = state_at(states, lat, lon)
             out.append(rec)
             print(f"{i+1}/{len(st)} {s['name']:30} CACHED", file=sys.stderr)
             continue
@@ -133,6 +170,8 @@ def main():
         rec['elevation'] = elev
         rec['airportDist'] = dist
         rec['nearestAirport'] = nearest
+        if states:
+            rec['state'] = state_at(states, lat, lon)
         out.append(rec)
         print(f"{i+1}/{len(st)} {s['name']:30} {rec['county']} / {city} elev={elev}", file=sys.stderr)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

@@ -18,6 +18,8 @@ export interface Station {
   nameLength: number
   county: string | null
   city: string | null
+  // 1st admin division, only on a map that spans more than one (see statesGeo).
+  state?: string | null
   elevation: number | null
   airportDist: Record<string, number>
   nearestAirport: string

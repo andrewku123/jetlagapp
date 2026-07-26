@@ -33,7 +33,8 @@
    "IAD": 49290.0,
    "BWI": 37761.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Anacostia",
@@ -68,7 +69,8 @@
    "IAD": 41257.7,
    "BWI": 45014.6
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Archives",
@@ -104,7 +106,8 @@
    "IAD": 38273.6,
    "BWI": 43905.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Arlington Cemetery",
@@ -139,7 +142,8 @@
    "IAD": 34974.2,
    "BWI": 47140.7
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Ashburn",
@@ -174,7 +178,8 @@
    "IAD": 6531.4,
    "BWI": 73553.5
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Ballston\u2013MU",
@@ -210,7 +215,8 @@
    "IAD": 30968.0,
    "BWI": 50438.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Benning Road",
@@ -246,7 +252,8 @@
    "IAD": 45537.8,
    "BWI": 39479.0
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Bethesda",
@@ -281,7 +288,8 @@
    "IAD": 31647.3,
    "BWI": 42560.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Braddock Road",
@@ -317,7 +325,8 @@
    "IAD": 38209.6,
    "BWI": 52347.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Branch Avenue",
@@ -352,7 +361,8 @@
    "IAD": 49253.9,
    "BWI": 44304.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Brookland\u2013CUA",
@@ -387,7 +397,8 @@
    "IAD": 40128.9,
    "BWI": 39120.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Capitol Heights",
@@ -423,7 +434,8 @@
    "IAD": 47642.3,
    "BWI": 38387.0
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Capitol South",
@@ -460,7 +472,8 @@
    "IAD": 39794.8,
    "BWI": 43667.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Cheverly",
@@ -496,7 +509,8 @@
    "IAD": 46980.9,
    "BWI": 36062.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Clarendon",
@@ -532,7 +546,8 @@
    "IAD": 32199.0,
    "BWI": 49006.6
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Cleveland Park",
@@ -567,7 +582,8 @@
    "IAD": 34595.4,
    "BWI": 43101.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "College Park\u2013University of Maryland",
@@ -603,7 +619,8 @@
    "IAD": 45882.0,
    "BWI": 31505.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Columbia Heights",
@@ -639,7 +656,8 @@
    "IAD": 36857.5,
    "BWI": 41893.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Congress Heights",
@@ -674,7 +692,8 @@
    "IAD": 42365.3,
    "BWI": 46130.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Court House",
@@ -710,7 +729,8 @@
    "IAD": 32920.4,
    "BWI": 48110.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Crystal City",
@@ -746,7 +766,8 @@
    "IAD": 36796.8,
    "BWI": 48484.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Deanwood",
@@ -782,7 +803,8 @@
    "IAD": 45466.3,
    "BWI": 37794.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Downtown Largo",
@@ -818,7 +840,8 @@
    "IAD": 53359.4,
    "BWI": 34350.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Dunn Loring\u2013Merrifield",
@@ -853,7 +876,8 @@
    "IAD": 21303.5,
    "BWI": 58366.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Dupont Circle",
@@ -888,7 +912,8 @@
    "IAD": 36149.1,
    "BWI": 43995.7
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "East Falls Church",
@@ -924,7 +949,8 @@
    "IAD": 27068.5,
    "BWI": 53198.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Eastern Market",
@@ -961,7 +987,8 @@
    "IAD": 40684.1,
    "BWI": 43157.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Eisenhower Avenue",
@@ -996,7 +1023,8 @@
    "IAD": 37499.2,
    "BWI": 54493.6
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Farragut North",
@@ -1031,7 +1059,8 @@
    "IAD": 36578.8,
    "BWI": 44244.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Farragut West",
@@ -1068,7 +1097,8 @@
    "IAD": 36551.3,
    "BWI": 44438.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Federal Center Southwest",
@@ -1105,7 +1135,8 @@
    "IAD": 39029.4,
    "BWI": 44194.0
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Federal Triangle",
@@ -1142,7 +1173,8 @@
    "IAD": 37756.8,
    "BWI": 44292.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Foggy Bottom\u2013GWU",
@@ -1179,7 +1211,8 @@
    "IAD": 35713.7,
    "BWI": 45097.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Forest Glen",
@@ -1214,7 +1247,8 @@
    "IAD": 36526.8,
    "BWI": 37025.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Fort Totten",
@@ -1252,7 +1286,8 @@
    "IAD": 39386.0,
    "BWI": 38225.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Franconia\u2013Springfield",
@@ -1287,7 +1322,8 @@
    "IAD": 32490.6,
    "BWI": 62910.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Friendship Heights",
@@ -1322,7 +1358,8 @@
    "IAD": 32253.5,
    "BWI": 43367.6
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Gallery Place",
@@ -1360,7 +1397,8 @@
    "IAD": 38155.6,
    "BWI": 43536.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Georgia Avenue\u2013Petworth",
@@ -1396,7 +1434,8 @@
    "IAD": 37548.0,
    "BWI": 40726.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Glenmont",
@@ -1431,7 +1470,8 @@
    "IAD": 36999.0,
    "BWI": 35628.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Greenbelt",
@@ -1467,7 +1507,8 @@
    "IAD": 47702.7,
    "BWI": 27952.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Greensboro",
@@ -1502,7 +1543,8 @@
    "IAD": 19671.2,
    "BWI": 56549.5
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Grosvenor\u2013Strathmore",
@@ -1537,7 +1579,8 @@
    "IAD": 31771.9,
    "BWI": 41032.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Herndon",
@@ -1572,7 +1615,8 @@
    "IAD": 6281.1,
    "BWI": 66738.1
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Huntington",
@@ -1607,7 +1651,8 @@
    "IAD": 37514.5,
    "BWI": 55282.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Hyattsville Crossing",
@@ -1643,7 +1688,8 @@
    "IAD": 43361.2,
    "BWI": 34285.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Innovation Center",
@@ -1678,7 +1724,8 @@
    "IAD": 3744.2,
    "BWI": 68886.7
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Judiciary Square",
@@ -1713,7 +1760,8 @@
    "IAD": 38675.2,
    "BWI": 43398.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "King Street\u2013Old Town",
@@ -1749,7 +1797,8 @@
    "IAD": 37981.0,
    "BWI": 53407.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "L'Enfant Plaza",
@@ -1789,7 +1838,8 @@
    "IAD": 38421.3,
    "BWI": 44613.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Landover",
@@ -1825,7 +1875,8 @@
    "IAD": 49048.7,
    "BWI": 33255.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Loudoun Gateway",
@@ -1860,7 +1911,8 @@
    "IAD": 4456.0,
    "BWI": 71441.8
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "McLean",
@@ -1895,7 +1947,8 @@
    "IAD": 21651.4,
    "BWI": 54578.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "McPherson Square",
@@ -1932,7 +1985,8 @@
    "IAD": 37272.5,
    "BWI": 43913.7
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Medical Center",
@@ -1967,7 +2021,8 @@
    "IAD": 31638.2,
    "BWI": 41971.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Metro Center",
@@ -2006,7 +2061,8 @@
    "IAD": 37645.9,
    "BWI": 43945.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Minnesota Avenue",
@@ -2042,7 +2098,8 @@
    "IAD": 44609.4,
    "BWI": 39181.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Morgan Boulevard",
@@ -2078,7 +2135,8 @@
    "IAD": 51414.0,
    "BWI": 35960.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Mount Vernon Square",
@@ -2114,7 +2172,8 @@
    "IAD": 38066.9,
    "BWI": 42968.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Navy Yard\u2013Ballpark",
@@ -2149,7 +2208,8 @@
    "IAD": 40001.3,
    "BWI": 44382.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Naylor Road",
@@ -2184,7 +2244,8 @@
    "IAD": 44806.0,
    "BWI": 44007.7
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "New Carrollton",
@@ -2220,7 +2281,8 @@
    "IAD": 50677.8,
    "BWI": 30973.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "NoMa\u2013Gallaudet U",
@@ -2255,7 +2317,8 @@
    "IAD": 39655.0,
    "BWI": 41710.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "North Bethesda",
@@ -2290,7 +2353,8 @@
    "IAD": 31667.6,
    "BWI": 40949.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Pentagon",
@@ -2326,7 +2390,8 @@
    "IAD": 36141.1,
    "BWI": 47803.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Pentagon City",
@@ -2362,7 +2427,8 @@
    "IAD": 35876.4,
    "BWI": 48612.0
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Potomac Avenue",
@@ -2399,7 +2465,8 @@
    "IAD": 41649.3,
    "BWI": 42813.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Potomac Yard",
@@ -2435,7 +2502,8 @@
    "IAD": 37988.8,
    "BWI": 50315.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Reston Town Center",
@@ -2470,7 +2538,8 @@
    "IAD": 8408.5,
    "BWI": 64773.8
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Rhode Island Avenue\u2013Brentwood",
@@ -2505,7 +2574,8 @@
    "IAD": 40104.6,
    "BWI": 40178.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Rockville",
@@ -2540,7 +2610,8 @@
    "IAD": 30673.2,
    "BWI": 42486.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Ronald Reagan Washington National Airport",
@@ -2576,7 +2647,8 @@
    "IAD": 37459.8,
    "BWI": 48489.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Rosslyn",
@@ -2613,7 +2685,8 @@
    "IAD": 34056.3,
    "BWI": 46775.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Shady Grove",
@@ -2648,7 +2721,8 @@
    "IAD": 31448.4,
    "BWI": 43269.3
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Maryland"
  },
  {
   "name": "Shaw\u2013Howard University",
@@ -2684,7 +2758,8 @@
    "IAD": 37955.8,
    "BWI": 42349.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Silver Spring",
@@ -2719,7 +2794,8 @@
    "IAD": 37164.2,
    "BWI": 37388.6
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Smithsonian",
@@ -2756,7 +2832,8 @@
    "IAD": 37812.3,
    "BWI": 44718.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Southern Avenue",
@@ -2791,7 +2868,8 @@
    "IAD": 43579.9,
    "BWI": 45796.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Spring Hill",
@@ -2826,7 +2904,8 @@
    "IAD": 18851.5,
    "BWI": 56693.0
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Stadium\u2013Armory",
@@ -2863,7 +2942,8 @@
    "IAD": 42197.9,
    "BWI": 41763.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Suitland",
@@ -2898,7 +2978,8 @@
    "IAD": 47005.0,
    "BWI": 43495.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Takoma",
@@ -2933,7 +3014,8 @@
    "IAD": 38129.8,
    "BWI": 37598.3
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Tenleytown\u2013AU",
@@ -2968,7 +3050,8 @@
    "IAD": 32741.5,
    "BWI": 43692.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Twinbrook",
@@ -3003,7 +3086,8 @@
    "IAD": 31576.5,
    "BWI": 41093.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Tysons",
@@ -3038,7 +3122,8 @@
    "IAD": 20676.7,
    "BWI": 55709.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "U Street",
@@ -3074,7 +3159,8 @@
    "IAD": 37441.3,
    "BWI": 42422.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Union Station",
@@ -3109,7 +3195,8 @@
    "IAD": 39436.9,
    "BWI": 42711.6
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Van Dorn Street",
@@ -3144,7 +3231,8 @@
    "IAD": 33154.8,
    "BWI": 57906.9
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Van Ness\u2013UDC",
@@ -3179,7 +3267,8 @@
    "IAD": 34119.8,
    "BWI": 42851.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "Vienna/Fairfax\u2013GMU",
@@ -3214,7 +3303,8 @@
    "IAD": 18076.3,
    "BWI": 61907.7
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Virginia Square\u2013GMU",
@@ -3250,7 +3340,8 @@
    "IAD": 31629.7,
    "BWI": 49833.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "Washington Dulles International Airport",
@@ -3285,7 +3376,8 @@
    "IAD": 916.4,
    "BWI": 71701.2
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Waterfront",
@@ -3320,7 +3412,8 @@
    "IAD": 39022.6,
    "BWI": 45049.4
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  },
  {
   "name": "West Falls Church\u2013VT",
@@ -3355,7 +3448,8 @@
    "IAD": 23956.4,
    "BWI": 54474.8
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Virginia"
  },
  {
   "name": "West Hyattsville",
@@ -3391,7 +3485,8 @@
    "IAD": 42231.1,
    "BWI": 35864.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Wheaton",
@@ -3426,7 +3521,8 @@
    "IAD": 36474.9,
    "BWI": 36418.2
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "Maryland"
  },
  {
   "name": "Wiehle\u2013Reston East",
@@ -3461,7 +3557,8 @@
    "IAD": 10200.3,
    "BWI": 63365.5
   },
-  "nearestAirport": "IAD"
+  "nearestAirport": "IAD",
+  "state": "Virginia"
  },
  {
   "name": "Woodley Park",
@@ -3496,6 +3593,7 @@
    "IAD": 35204.1,
    "BWI": 43439.1
   },
-  "nearestAirport": "DCA"
+  "nearestAirport": "DCA",
+  "state": "District of Columbia"
  }
 ]

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
+import type { Station } from '../types'
 
 // Loads the region registry fresh with a given active region selected, so we can
 // assert the per-map question demotion (LOG_ONLY_KINDS) and the play-area airport
@@ -25,11 +26,13 @@ afterEach(() => {
 })
 
 describe('play-area scoping and question demotion', () => {
-  it('Bay Area contains SFO/OAK/SJC and demotes nothing', async () => {
+  it('Bay Area contains SFO/OAK/SJC and demotes nothing but the single-state question', async () => {
     const m = await loadFor('bayarea')
     expect(Object.keys(m.AIRPORTS).sort()).toEqual(['OAK', 'SFO', 'SJC'])
     expect(m.HAS_AIRPORTS).toBe(true)
-    expect([...m.LOG_ONLY_KINDS]).toEqual([])
+    // One state (California) and no state polygons → "same state?" is log-only.
+    expect(m.MULTI_STATE).toBe(false)
+    expect([...m.LOG_ONLY_KINDS]).toEqual(['match-admin1'])
     expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual([])
   })
 
@@ -40,7 +43,11 @@ describe('play-area scoping and question demotion', () => {
     // are useless in every phase.
     expect(Object.keys(m.AIRPORTS)).toEqual([])
     expect(m.HAS_AIRPORTS).toBe(false)
-    expect([...m.LOG_ONLY_KINDS].sort()).toEqual(['match-airport', 'measure-airport'])
+    expect([...m.LOG_ONLY_KINDS].sort()).toEqual([
+      'match-admin1',
+      'match-airport',
+      'measure-airport',
+    ])
     // County/city can't split the all-SF station list, but they still carve the
     // endgame hiding zone at the SF↔San Mateo border, so they're endgame-only.
     expect([...m.ENDGAME_ELIMINATES_KINDS].sort()).toEqual(['match-city', 'match-county'])
@@ -75,6 +82,60 @@ describe('play-area scoping and question demotion', () => {
     expect(await blurbFor('sfmuni', 'match-airport')).toBe(
       'Is your nearest commercial airport the same as mine?',
     )
+  })
+
+  it('Washington DC: three states make "same state?" a real eliminator; DCA/IAD in play, BWI out', async () => {
+    const m = await loadFor('dc')
+    // BWI is 10 mi outside the play area, so it is not a valid answer here.
+    expect(Object.keys(m.AIRPORTS).sort()).toEqual(['DCA', 'IAD'])
+    // Stations split 40 DC / 32 VA / 26 MD, and the map ships state polygons —
+    // the first map where the 1st-admin question can eliminate.
+    expect(m.MULTI_STATE).toBe(true)
+    expect(m.LOG_ONLY_KINDS.has('match-admin1')).toBe(false)
+    // Seven county-equivalents and six lines: nothing else demotes.
+    expect([...m.LOG_ONLY_KINDS]).toEqual([])
+    expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual([])
+  })
+
+  it('DC: a coordinate resolves to its real state, county and city across the river', async () => {
+    await loadFor('dc')
+    const { stateAt } = await import('../lib/states')
+    const { countyAt } = await import('../lib/counties')
+    const { cityAt } = await import('../lib/cities')
+    // Metro Center (DC), Rosslyn (Arlington, VA) and Bethesda (Montgomery, MD)
+    // are a mile or two apart but answer the state question three different ways.
+    const metroCenter = { lat: 38.8983, lon: -77.0281 }
+    const rosslyn = { lat: 38.8963, lon: -77.0716 }
+    const bethesda = { lat: 38.9843, lon: -77.0947 }
+    expect(stateAt(metroCenter)).toBe('District of Columbia')
+    expect(stateAt(rosslyn)).toBe('Virginia')
+    expect(stateAt(bethesda)).toBe('Maryland')
+    expect(countyAt(metroCenter)).toBe('District of Columbia')
+    expect(countyAt(rosslyn)).toBe('Arlington')
+    expect(countyAt(bethesda)).toBe('Montgomery')
+    expect(cityAt(bethesda)).toBe('Bethesda CDP')
+  })
+
+  it('DC state Matching eliminates exactly the stations the shading covers', async () => {
+    await loadFor('dc')
+    const { stationPasses } = await import('../lib/elimination')
+    const stations = (await import('./dc.stations.json')).default as unknown as Station[]
+    const rosslyn = { lat: 38.8963, lon: -77.0716 } // Virginia
+    const record = {
+      id: 'q1',
+      kind: 'match-admin1' as const,
+      params: { value: 'Virginia', fromLat: rosslyn.lat, fromLon: rosslyn.lon, answer: 'yes' },
+      active: true,
+      vetoed: false,
+      eliminates: true,
+    }
+    const kept = stations.filter((s) => stationPasses(s, record as never))
+    expect(kept.length).toBe(stations.filter((s) => s.state === 'Virginia').length)
+    expect(kept.every((s) => s.state === 'Virginia')).toBe(true)
+    // "No" keeps the exact complement.
+    const no = { ...record, params: { ...record.params, answer: 'no' } }
+    const keptNo = stations.filter((s) => stationPasses(s, no as never))
+    expect(keptNo.length + kept.length).toBe(stations.length)
   })
 
   it('the state blurb names the active map\'s own state', async () => {

@@ -51,6 +51,7 @@ import dcPlaces from './dc.places.geojson.json'
 import dcCounties from './dc.counties.geojson.json'
 import dcZctas from './dc.zctas.geojson.json'
 import dcTransit from './dc.transit-lines.geojson.json'
+import dcStates from './dc.states.geojson.json'
 
 export interface RegionData {
   id: string
@@ -63,12 +64,19 @@ export interface RegionData {
   /** 2nd-admin divisions that hold stations (used by county Matching + dim). */
   inPlayCounties: string[]
   /**
-   * 1st-admin divisions (states) the play area spans. No station carries a state
-   * of its own — nothing in the app is keyed on it — so this exists purely so the
-   * State Matching copy names the right state instead of a hardcoded one, and
-   * tells the truth on a map that crosses a state line.
+   * 1st-admin divisions (states) the play area spans. On a single-state map this
+   * only shapes the State Matching copy (which names the state instead of a
+   * hardcoded one); a map spanning a state line also ships `statesGeo`, which
+   * turns that question into a real eliminator.
    */
   states: string[]
+  /**
+   * State polygons (+ the neighbours they border), for a map that crosses a
+   * state line: they back the "same state?" question's lookup and shading, and
+   * each station carries the state they put it in. Absent on a single-state map,
+   * where the question can't eliminate anything anyway.
+   */
+  statesGeo?: unknown
   /**
    * How far (metres) a point outside every place polygon still snaps to the
    * nearest place in the city Matching lookup (see cities.ts). Absorbs boundary
@@ -155,6 +163,7 @@ export const REGIONS: RegionData[] = [
       "Prince George's",
     ],
     states: ['District of Columbia', 'Maryland', 'Virginia'],
+    statesGeo: dcStates,
     stations: dcStations,
     poi: dcPoi,
     playArea: dcPlayArea,
@@ -207,6 +216,7 @@ export const placesData = ACTIVE_REGION.places
 export const countiesData = ACTIVE_REGION.counties
 export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
+export const statesData = ACTIVE_REGION.statesGeo ?? null
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
 export const MAP_STATES = ACTIVE_REGION.states
 export const MAP_NAME = ACTIVE_REGION.name
@@ -308,6 +318,11 @@ function distinctValueCount(vals: (string | number | null)[]): number {
   return new Set(vals.filter((v) => v != null && v !== '')).size
 }
 const singleCounty = distinctValueCount(logOnlyStations.map((s) => s.county)) <= 1
+// A map spanning a state line answers "same state?" for real: it ships state
+// polygons and its stations carry a state. Anywhere else the question has no
+// data behind it and stays log-only.
+export const MULTI_STATE =
+  statesData != null && distinctValueCount(logOnlyStations.map((s) => s.state ?? null)) > 1
 const singleCity = distinctValueCount(logOnlyStations.map((s) => s.city)) <= 1
 const singleLine = distinctValueCount(logOnlyStations.flatMap((s) => s.lines)) <= 1
 
@@ -363,6 +378,7 @@ export const LOG_ONLY_KINDS: ReadonlySet<QuestionKind> = new Set<QuestionKind>(
   (
     [
       [singleLine, 'match-line'],
+      [!MULTI_STATE, 'match-admin1'],
       [!HAS_AIRPORTS, 'match-airport'],
       [!HAS_AIRPORTS, 'measure-airport'],
       [singleCounty && !countyCarves, 'match-county'],

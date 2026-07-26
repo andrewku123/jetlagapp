@@ -6,6 +6,7 @@ import { AIRPORTS, nearestAirport } from './airports'
 import { REGION_FRAME } from '../data/regions'
 import { RAIL_STATIONS, nearestRailStationMiles } from './railStations'
 import { countyAt, countyGeom } from './counties'
+import { stateAt, stateGeom } from './states'
 import { cityAt, cityGeom } from './cities'
 import { zipAt, zipCodes, zipGeom } from './zip'
 import { bisectorHalfPlane, circlePolygon, haversineMiles } from './geo'
@@ -517,6 +518,22 @@ export function railStationMeasureEliminatedRegion(record: QuestionRecord): LatL
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Matching a state (1st admin): shade outside (Yes) / inside (No) the
+// seeker's state polygon. Only a multi-state map has the layer. ----------------
+
+export function stateMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const name = String(p.value || '') || stateAt(seeker) || ''
+  const geom = stateGeom(name)
+  if (!geom.length) return null
+  const elim =
+    p.answer === 'yes'
+      ? polygonClipping.difference([WORLD_RING], geom)
+      : polygonClipping.intersection([WORLD_RING], geom)
+  return elim.length ? toLatLng(elim) : null
+}
+
 // --- Matching a county (2nd admin): shade outside (Yes) / inside (No) the
 // seeker's county polygon. -------------------------------------------------------
 
@@ -584,6 +601,7 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
   // measure-railstation is intentionally NOT here: it never shades map-wide (it
   // eliminates no station). Its region is only produced for the endgame zone clip
   // (see eliminatedGeom), so the shown shading always agrees with elimination.
+  if (record.kind === 'match-admin1') return stateMatchEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
   if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)

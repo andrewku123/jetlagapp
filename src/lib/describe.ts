@@ -83,6 +83,11 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
     case 'match-admin1':
     case 'match-admin4':
     case 'match-landmass': {
+      // On a multi-state map the state question is a real eliminator and carries
+      // the seeker's state, so it reads like the county/city ones.
+      if (r.kind === 'match-admin1' && p.value) {
+        return `Same state as "${String(p.value)}"?${arrow(String(a))}`
+      }
       const detail = p.description ? ` "${String(p.description)}"` : ''
       const subject = { 'match-street': 'street/path', 'match-admin1': 'state', 'match-admin4': 'neighborhood', 'match-landmass': 'landmass' }[r.kind]
       return `Same ${subject}?${detail}${arrow(String(a).toUpperCase())} (log only)`

@@ -9,10 +9,11 @@ import { MEASURE_FEATURE_KEYS, AVAILABLE_MEASURE_FEATURE_KEYS, featurePolylines,
 import { nearestAirport } from '../lib/airports'
 import { nearestRailStation } from '../lib/railStations'
 import { countyAt } from '../lib/counties'
+import { stateAt } from '../lib/states'
 import { cityAt, inPlayArea } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
-import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS } from '../data/regions'
+import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
 
 interface Props {
   lastClick: LatLng | null
@@ -85,8 +86,15 @@ function featureSubjectLabel(key: string): string {
   return raw.charAt(0).toUpperCase() + raw.slice(1)
 }
 
-// Kinds that have no auto-eliminator — logged for the seeker's notes only.
-const MATCH_LOGONLY: QuestionKind[] = ['match-street', 'match-admin1', 'match-admin4', 'match-landmass']
+// Kinds that have no auto-eliminator — logged for the seeker's notes only. State
+// Matching is one of them only where the map can't answer it: on a map spanning a
+// state line it asks for a location and eliminates like county Matching.
+const MATCH_LOGONLY: QuestionKind[] = [
+  'match-street',
+  'match-admin4',
+  'match-landmass',
+  ...(MULTI_STATE ? [] : (['match-admin1'] as QuestionKind[])),
+]
 const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-water']
 
 function ordinalSuffix(n: number): string {
@@ -451,6 +459,18 @@ export default function QuestionForm({
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
+      case 'match-admin1': {
+        // Log-only maps fall through to the shared MATCH_LOGONLY case below.
+        if (!MULTI_STATE) {
+          params = { description: value.trim() || undefined, answer: yesno }
+          break
+        }
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const st = stateAt(center)
+        if (!st) return alert('Outside the play area.')
+        params = { value: st, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
       case 'match-city': {
         if (!center) return alert('Set your location (paste coordinates or click the map).')
         const c = cityAt(center)
@@ -466,7 +486,6 @@ export default function QuestionForm({
         break
       }
       case 'match-street':
-      case 'match-admin1':
       case 'match-admin4':
       case 'match-landmass': {
         // Record-keeping only: log the answer (+ optional detail) but eliminate nothing.
@@ -662,6 +681,7 @@ export default function QuestionForm({
   // (see LOG_ONLY_KINDS). Tell the seeker why so it reads like the other
   // log-only questions instead of promising an elimination it won't do.
   const DEMOTION_NOTE: Partial<Record<QuestionKind, string>> = {
+    'match-admin1': 'every station on this map is in the same state',
     'match-county': 'every station on this map is in the same county',
     'match-city': 'every station on this map is in the same city',
     'match-airport': 'there is no airport in the play area on this map',
@@ -848,6 +868,21 @@ export default function QuestionForm({
             ) : (
               <p className="blurb poi-readout">No airport in the play area on this map.</p>
             ))}
+          {yesNo}
+        </>
+      )}
+
+      {kind === 'match-admin1' && MULTI_STATE && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const st = stateAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {st ? <>Your state: <b>{st}</b></> : 'Outside the play area.'}
+              </p>
+            )
+          })()}
           {yesNo}
         </>
       )}

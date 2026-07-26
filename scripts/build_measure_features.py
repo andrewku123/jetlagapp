@@ -206,7 +206,7 @@ CITIES = {
         # `build_region_geo.py --region dc --what states`). The bundled
         # us-states.geojson is a world-scale outline — on DC it cuts the corner
         # across the Potomac by up to a mile, which is the whole question here.
-        "states": "measure_src/states.dc.geojson",
+        "states": "data:dc.states.geojson.json",
         "state_simplify": 0.0002,
         "countries": "measure_src/countries.geojson",
         # Three 1st-admin divisions share the map, so the "state border" is every

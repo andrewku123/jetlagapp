@@ -82,6 +82,9 @@ REGIONS = {
         "places": "src/data/dc.places.geojson.json",
         "countiesGeo": "src/data/dc.counties.geojson.json",
         "zctas": "src/data/dc.zctas.geojson.json",
+        # Multi-state map: state polygons back the "same state?" question and the
+        # state-border measure feature. Single-state maps have no such file.
+        "statesGeo": "src/data/dc.states.geojson.json",
         "agencies": ["Metrorail"],
         # BWI is kept even though it sits outside the play area: the app filters
         # airports to the ones inside the polygon (regions.ts), so carrying the

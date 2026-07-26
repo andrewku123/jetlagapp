@@ -10,9 +10,9 @@
   zctas     ZIP-code areas clipped to the play area — the Measuring -> ZIP
             question (US-only: ZIPs are ordinal, so "smaller/larger" works).
   states    (only for a map spanning more than one state) state polygons around
-            the play area, the source build_measure_features.py turns into the
-            state-border measure feature. The bundled measure_src/us-states
-            file is far too coarse where the border matters — DC's runs down the
+            the play area — the Matching -> state question, stateAt(), and the
+            state-border measure feature. The bundled measure_src/us-states file
+            is far too coarse where the border matters — DC's runs down the
             Potomac shoreline.
 
 Adding a city is one entry in poi_geo.REGIONS (`states`, `play`, `countiesGeo`,
@@ -52,7 +52,6 @@ ZCTA_URL = "https://www2.census.gov/geo/tiger/TIGER2023/ZCTA520/tl_2023_us_zcta5
 ZCTA_STEM = "tl_2023_us_zcta520"
 STATE_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_state_500k.zip"
 STATE_STEM = "cb_2023_us_state_500k"
-MEASURE_SRC = os.path.join(HERE, "measure_src")
 
 SIMPLIFY_DEG = 0.0002   # ~22 m; plenty for point-in-polygon + shading
 MIN_AREA_DEG2 = 1e-7    # drop sliver clip artifacts (~1000 m^2)
@@ -225,8 +224,7 @@ def build_states(region, play):
             continue
         feats.append({"type": "Feature", "properties": {"name": d["NAME"]},
                       "geometry": mapping(g)})
-    os.makedirs(MEASURE_SRC, exist_ok=True)
-    write(os.path.join(MEASURE_SRC, f"states.{region}.geojson"), feats, "states")
+    write(poi_geo.repo_path(region, "statesGeo"), feats, "states")
 
 
 def main():
