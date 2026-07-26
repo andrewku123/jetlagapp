@@ -20,6 +20,24 @@ async function blurbFor(id: string, kind: string) {
   return QUESTION_CATALOG.find((q) => q.kind === kind)!.blurb
 }
 
+// ray-cast point-in-multipolygon on a [lat, lon] eliminated region
+function pointInMulti(lat: number, lon: number, mp: [number, number][][][]): boolean {
+  const inRing = (ring: [number, number][]) => {
+    let inside = false
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [yi, xi] = ring[i]
+      const [yj, xj] = ring[j]
+      if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside
+    }
+    return inside
+  }
+  for (const poly of mp) {
+    if (!inRing(poly[0])) continue
+    if (!poly.slice(1).some(inRing)) return true
+  }
+  return false
+}
+
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.resetModules()
@@ -148,6 +166,28 @@ describe('play-area scoping and question demotion', () => {
     expect(countyAt(rosslyn)).toBe('Arlington')
     expect(countyAt(bethesda)).toBe('Montgomery')
     expect(cityAt(bethesda)).toBe('Bethesda CDP')
+  })
+
+  it('DC: an unnamed inholding inside a place is shaded by that place, not left as a hole', async () => {
+    await loadFor('dc')
+    const { cityAt } = await import('../lib/cities')
+    const { cityMatchEliminatedRegion } = await import('../lib/questionRegions')
+    // A 31-acre parcel the Fort Belvoir CDP outline excludes. cityAt() snaps a
+    // point there to Fort Belvoir, so the city shading has to cover it too —
+    // otherwise the app names your city and then draws you outside it.
+    const inholding = { lat: 38.7096, lon: -77.1604 }
+    expect(cityAt(inholding)).toBe('Fort Belvoir CDP')
+    const yes = cityMatchEliminatedRegion({
+      id: 'q', kind: 'match-city', createdAt: 0, eliminates: true, active: true,
+      params: { value: 'Fort Belvoir CDP', fromLat: inholding.lat, fromLon: inholding.lon, answer: 'yes' },
+    } as never)!
+    // "Yes" shades everything but the seeker's city: the inholding is kept.
+    expect(pointInMulti(inholding.lat, inholding.lon, yes)).toBe(false)
+    const no = cityMatchEliminatedRegion({
+      id: 'q', kind: 'match-city', createdAt: 0, eliminates: true, active: true,
+      params: { value: 'Fort Belvoir CDP', fromLat: inholding.lat, fromLon: inholding.lon, answer: 'no' },
+    } as never)!
+    expect(pointInMulti(inholding.lat, inholding.lon, no)).toBe(true)
   })
 
   it('DC state Matching eliminates exactly the stations the shading covers', async () => {

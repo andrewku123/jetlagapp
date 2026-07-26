@@ -336,6 +336,26 @@ describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () =
     expect(inPlayArea(hills)).toBe(true)
   })
 
+  it('an enclave city stays its own city (Piedmont is not Oakland)', () => {
+    // Piedmont is a hole in Oakland's outline and a separate municipality, so
+    // it must keep answering "no" to "same city as Oakland?" — both in the
+    // lookup and in the shading.
+    const piedmont = { lat: 37.8210, lon: -122.2306 }
+    expect(cityAt(piedmont)).toBe('Piedmont city')
+    const region = cityMatchEliminatedRegion(rec('match-city', { fromLat: oakland.lat, fromLon: oakland.lon, value: 'Oakland city', answer: 'yes' }))!
+    expect(pointInMulti(piedmont.lat, piedmont.lon, region)).toBe(true)
+  })
+
+  it('an unincorporated county island inside a city is named and shaded as that city', () => {
+    // A 1.1 sq mi pocket San Jose's outline excludes but no place claims. The
+    // lookup snaps it to San Jose, so the shading must agree — a hole here is
+    // the app naming your city and then drawing you outside it.
+    const island = { lat: 37.1797, lon: -121.6908 }
+    expect(cityAt(island)).toBe('San Jose city')
+    const region = cityMatchEliminatedRegion(rec('match-city', { fromLat: island.lat, fromLon: island.lon, value: 'San Jose city', answer: 'yes' }))!
+    expect(pointInMulti(island.lat, island.lon, region)).toBe(false)
+  })
+
   it('a named unincorporated CDP (Fairview) resolves to its own name', () => {
     expect(cityAt({ lat: 37.6759, lon: -122.0472 })).toBe('Fairview CDP')
   })

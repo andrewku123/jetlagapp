@@ -24,26 +24,18 @@ interface GeoFeature {
 // gaps aren't wrongly snapped into a neighbouring city.
 const SNAP_M = CITY_SNAP_M
 
-function buildCities(): Record<string, CityPolys> {
-  const out: Record<string, CityPolys> = {}
-  const fc = placesRaw as unknown as { features: GeoFeature[] }
-  for (const f of fc.features) {
-    const name = f.properties.name
-    const g = f.geometry
-    const polys: CityPolys = []
-    if (g.type === 'Polygon') {
-      polys.push((g.coordinates as number[][][]).map((r) => r as Ring))
-    } else if (g.type === 'MultiPolygon') {
-      for (const poly of g.coordinates as number[][][][]) {
-        polys.push(poly.map((r) => r as Ring))
-      }
+function readPolys(f: GeoFeature): CityPolys {
+  const g = f.geometry
+  const polys: CityPolys = []
+  if (g.type === 'Polygon') {
+    polys.push((g.coordinates as number[][][]).map((r) => r as Ring))
+  } else if (g.type === 'MultiPolygon') {
+    for (const poly of g.coordinates as number[][][][]) {
+      polys.push(poly.map((r) => r as Ring))
     }
-    out[name] = polys
   }
-  return out
+  return polys
 }
-
-const CITIES: Record<string, CityPolys> = buildCities()
 
 // The play-area polygon (union of kept places + transit-line bridges + filled
 // enclaves — see scripts/build_play_area.py). Parts of it are genuinely
@@ -67,6 +59,80 @@ function buildPlayArea(): CityPolys {
 }
 
 const PLAY_AREA: CityPolys = buildPlayArea()
+
+function ringBounds(ring: Ring): [number, number, number, number] {
+  let minX = Infinity
+  let minY = Infinity
+  let maxX = -Infinity
+  let maxY = -Infinity
+  for (const [x, y] of ring) {
+    if (x < minX) minX = x
+    if (x > maxX) maxX = x
+    if (y < minY) minY = y
+    if (y > maxY) maxY = y
+  }
+  return [minX, minY, maxX, maxY]
+}
+
+// A place's polygon can enclose land the place itself excludes. Two kinds:
+// another municipality (Newark inside Fremont, Piedmont inside Oakland, Beverly
+// Hills inside LA), and an unnamed inholding the Census outline simply omits
+// (a 31-acre parcel inside Fort Belvoir CDP). The first must stay a hole — it
+// is a different answer to "same municipality?". The second must NOT: cityAt()
+// snaps a point there to the surrounding place, so leaving the hole makes the
+// shading contradict the answer the app just gave (you're told "Fort Belvoir"
+// while standing on unshaded ground). Fill those, so lookup and shading are the
+// same geometry. A hole reaching outside the play area is left alone — that land
+// is off-map, not part of any city.
+function fillUnclaimedHoles(raw: Record<string, CityPolys>): Record<string, CityPolys> {
+  // Outer rings of every place, with bounds, so the "does another place sit in
+  // this hole?" test is a box check before any ray-casting (this runs at module
+  // load, before first render).
+  const outers: { name: string; ring: Ring; box: [number, number, number, number] }[] = []
+  for (const [name, polys] of Object.entries(raw)) {
+    for (const poly of polys) outers.push({ name, ring: poly[0], box: ringBounds(poly[0]) })
+  }
+  const out: Record<string, CityPolys> = {}
+  for (const [name, polys] of Object.entries(raw)) {
+    out[name] = polys.map((poly) => {
+      if (poly.length < 2) return poly
+      const kept: Ring[] = [poly[0]]
+      for (let h = 1; h < poly.length; h++) {
+        const hole = poly[h]
+        const [hx0, hy0, hx1, hy1] = ringBounds(hole)
+        const mid = { lat: (hy0 + hy1) / 2, lon: (hx0 + hx1) / 2 }
+        const midInHole = pointInRing(mid, hole)
+        const holdsPlace = outers.some(({ name: other, ring, box }) => {
+          if (other === name) return false
+          if (box[2] < hx0 || box[0] > hx1 || box[3] < hy0 || box[1] > hy1) return false
+          // Either the hole is (part of) that place, or that place swallows it.
+          return (
+            ring.some(([x, y]) => pointInRing({ lat: y, lon: x }, hole)) ||
+            (midInHole && pointInRing(mid, ring))
+          )
+        })
+        // Sampled rather than exhaustive: a hole is either wholly inside the
+        // play area or clearly straddles its edge.
+        const step = Math.max(1, Math.floor(hole.length / 16))
+        let inPlay = true
+        for (let i = 0; i < hole.length && inPlay; i += step) {
+          inPlay = pointInPolys({ lat: hole[i][1], lon: hole[i][0] }, PLAY_AREA)
+        }
+        if (holdsPlace || !inPlay) kept.push(hole)
+      }
+      return kept
+    })
+  }
+  return out
+}
+
+const CITIES: Record<string, CityPolys> = fillUnclaimedHoles(
+  Object.fromEntries(
+    (placesRaw as unknown as { features: GeoFeature[] }).features.map(
+      (f) => [f.properties.name, readPolys(f)] as const,
+    ),
+  ),
+)
 
 export function cityNames(): string[] {
   return Object.keys(CITIES)

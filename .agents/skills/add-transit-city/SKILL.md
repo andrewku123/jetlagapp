@@ -288,6 +288,25 @@ The rest of this doc is the detailed reference for each step.
      active region (`regions.ts`); default stays 150 m for Bay Area / SF Muni,
      whose edge stations (Colma 107 m, Bayshore/NASA 64 m) still need it. Confirm
      station→city assignments are unchanged before/after.
+   - **Unclaimed holes are filled at load (`fillUnclaimedHoles()` in `cities.ts`,
+     all regions):** a Census place polygon can have interior rings of two kinds
+     — another municipality (Newark in Fremont, Piedmont in Oakland, Beverly
+     Hills in LA) and **unclaimed land no place names** (a 31-acre inholding in
+     Fort Belvoir CDP, a 1.1 sq mi county island in San Jose, the VA campus in
+     LA). The second kind is a **visible bug**: `cityAt()` snaps a click there to
+     the surrounding place, so the form says "Fort Belvoir CDP" while
+     `cityMatchEliminatedRegion()` draws the hole unshaded — the app names your
+     city and then puts you outside it. So drop an interior ring when **no other
+     place's polygon touches it AND it lies wholly inside the play area**; keep
+     it otherwise (a real enclave is a different answer to "same municipality?",
+     and land outside the play area belongs to no city). This is the general form
+     of LA's `fold_gaps()` small-hole rule, done app-side so it covers every map
+     with no data regeneration (fills: DC 4 holes/1.2 sq mi, Bay 33/4.6, LA
+     25/2.8, Muni 0). Runs at module load, so keep it cheap: precompute outer-ring
+     bounding boxes, box-test before ray-casting, and sample ~16 hole vertices for
+     the play-area test (~30 ms per map). **Verify station→city diffs = 0** for
+     every region before/after — filling must only change what a *seeker* click
+     reads, never elimination.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
