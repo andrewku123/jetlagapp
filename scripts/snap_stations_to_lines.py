@@ -21,7 +21,6 @@ DATA = os.path.join(HERE, "..", "src", "data")
 
 R = 6371000.0
 AIRPORTS = {"LAX": (33.94256, -118.40853), "LGB": (33.81765, -118.15227)}
-CITY_SNAP_M = 150.0  # mirror cityAt()'s boundary-erosion snap
 
 # transit-line feature colour -> line name (empirically derived, see session)
 CMAP = {
@@ -100,36 +99,18 @@ def contains(lat, lon, feat):
     return False
 
 
-def dist_to_feat_m(lat, lon, feat):
-    cr = math.cos(math.radians(lat))
-    px, py = lon * cr, lat
-    best = float("inf")
-    for poly in polys_of(feat):
-        for ring in poly:
-            for i in range(len(ring) - 1):
-                ax, ay = ring[i][0] * cr, ring[i][1]
-                bx, by = ring[i + 1][0] * cr, ring[i + 1][1]
-                dx, dy = bx - ax, by - ay
-                if dx == 0 and dy == 0:
-                    t = 0.0
-                else:
-                    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)))
-                d = math.hypot(px - (ax + t * dx), py - (ay + t * dy)) * 111320.0
-                if d < best:
-                    best = d
-    return best
+def place_at(lat, lon, places):
+    """Strictly the place whose polygon contains the point, mirroring cityAt().
 
-
-def place_at(lat, lon, places, fallback):
+    This used to fall back to the nearest place within 150 m. That tolerance is
+    gone from the app: a station outside every polygon is on unincorporated land
+    and its city is None (a test asserts `s.city === cityAt(s)` on every map), so
+    a snap here would silently put the two back out of sync.
+    """
     for f in places["features"]:
         if contains(lat, lon, f):
             return f["properties"]["name"]
-    best, best_d = fallback, CITY_SNAP_M
-    for f in places["features"]:
-        d = dist_to_feat_m(lat, lon, f)
-        if d < best_d:
-            best_d, best = d, f["properties"]["name"]
-    return best
+    return None
 
 
 def county_at(lat, lon, counties, fallback):
@@ -157,7 +138,7 @@ def main():
         s["airportDist"] = {k: round(hav((nlat, nlon), v), 1) for k, v in AIRPORTS.items()}
         s["nearestAirport"] = min(AIRPORTS, key=lambda k: s["airportDist"][k])
         s["county"] = county_at(nlat, nlon, counties, s.get("county"))
-        s["city"] = place_at(nlat, nlon, places, s.get("city"))
+        s["city"] = place_at(nlat, nlon, places)
 
     with open(os.path.join(DATA, "la.stations.json"), "w") as fh:
         json.dump(sts, fh, ensure_ascii=False)

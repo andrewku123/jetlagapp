@@ -110,6 +110,16 @@ The rest of this doc is the detailed reference for each step.
    out continuous (no gaps / stray yard bits / NB-SB doubling) — the same OSM
    fragmentation problem affects every metro, so reuse that algorithm rather than
    rendering one feature per raw OSM way.
+   - **Measure the dot-to-line gap before deciding to snap**:
+     `python3 scripts/audit_line_offsets.py --region <slug>`. Station coordinates
+     are entrance/mezzanine nodes and the overlay is the track centreline, so they
+     never agree exactly. Threshold **150 ft (~45 m)** — a platform's width, ~2 px
+     at the app's default zoom. LA earned its snap (6 stations over, Sepulveda
+     791 ft); DC did not (max 127 ft, median 17 ft), so DC ships unsnapped.
+     Snapping moves the *game*, not just the dot — the coordinate is what the
+     elimination engine reads — and `station-identity` documents how a blanket
+     re-snap once moved Pacific Ave onto the wrong side of a loop. Prefer fixing
+     the overlay.
 
 6. **Measuring-feature geometry** (coastline + county/state/international
    borders) and the **county polygons** used by county Matching. These are the
