@@ -114,8 +114,8 @@ export type UnitSystem = 'imperial' | 'metric'
 
 export interface GameState {
   dayType: DayType
-  // game size is auto-derived from the map (station count), not chosen by a
-  // person; it sets the station-frequency eligibility rule.
+  // the active map's declared size (src/data/region-sizes.json), never inferred
+  // from the station count; it sets the station-frequency eligibility rule.
   gameSize: GameSize
   units: UnitSystem
   questions: QuestionRecord[]
