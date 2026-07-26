@@ -20,24 +20,6 @@ async function blurbFor(id: string, kind: string) {
   return QUESTION_CATALOG.find((q) => q.kind === kind)!.blurb
 }
 
-// ray-cast point-in-multipolygon on a [lat, lon] eliminated region
-function pointInMulti(lat: number, lon: number, mp: [number, number][][][]): boolean {
-  const inRing = (ring: [number, number][]) => {
-    let inside = false
-    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-      const [yi, xi] = ring[i]
-      const [yj, xj] = ring[j]
-      if (yi > lat !== yj > lat && lon < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside
-    }
-    return inside
-  }
-  for (const poly of mp) {
-    if (!inRing(poly[0])) continue
-    if (!poly.slice(1).some(inRing)) return true
-  }
-  return false
-}
-
 afterEach(() => {
   vi.unstubAllGlobals()
   vi.resetModules()
@@ -168,26 +150,18 @@ describe('play-area scoping and question demotion', () => {
     expect(cityAt(bethesda)).toBe('Bethesda CDP')
   })
 
-  it('DC: an unnamed inholding inside a place is shaded by that place, not left as a hole', async () => {
+  it('DC: an inholding a place cuts out of itself reads as unincorporated', async () => {
     await loadFor('dc')
-    const { cityAt } = await import('../lib/cities')
-    const { cityMatchEliminatedRegion } = await import('../lib/questionRegions')
-    // A 31-acre parcel the Fort Belvoir CDP outline excludes. cityAt() snaps a
-    // point there to Fort Belvoir, so the city shading has to cover it too —
-    // otherwise the app names your city and then draws you outside it.
-    const inholding = { lat: 38.7096, lon: -77.1604 }
-    expect(cityAt(inholding)).toBe('Fort Belvoir CDP')
-    const yes = cityMatchEliminatedRegion({
-      id: 'q', kind: 'match-city', createdAt: 0, eliminates: true, active: true,
-      params: { value: 'Fort Belvoir CDP', fromLat: inholding.lat, fromLon: inholding.lon, answer: 'yes' },
-    } as never)!
-    // "Yes" shades everything but the seeker's city: the inholding is kept.
-    expect(pointInMulti(inholding.lat, inholding.lon, yes)).toBe(false)
-    const no = cityMatchEliminatedRegion({
-      id: 'q', kind: 'match-city', createdAt: 0, eliminates: true, active: true,
-      params: { value: 'Fort Belvoir CDP', fromLat: inholding.lat, fromLon: inholding.lon, answer: 'no' },
-    } as never)!
-    expect(pointInMulti(inholding.lat, inholding.lon, no)).toBe(true)
+    const { cityAt, inPlayArea } = await import('../lib/cities')
+    // Accotink: a residential pocket Fairfax kept out of the base, so the Fort
+    // Belvoir CDP outline is a ring around it. It is not in the CDP — with a
+    // snap tolerance it read "Fort Belvoir CDP" and then wasn't shaded, since
+    // the shading draws the same hole the lookup ignored.
+    const accotink = { lat: 38.7096, lon: -77.1604 }
+    expect(cityAt(accotink)).toBeNull()
+    expect(inPlayArea(accotink)).toBe(true)
+    // The base around it is still Fort Belvoir.
+    expect(cityAt({ lat: 38.7096, lon: -77.1450 })).toBe('Fort Belvoir CDP')
   })
 
   it('DC state Matching eliminates exactly the stations the shading covers', async () => {

@@ -245,12 +245,12 @@ The rest of this doc is the detailed reference for each step.
        stand in one — it must read out its real name, so it has to be in the set;
      - clipping to the play area (already shoreline-clipped) drops the parts of
        edge places (Tiburon, Belvedere) that stick out into greyed-out land.
-     `cityAt()` in `cities.ts` is point-in-place with a small `SNAP_M` (~150 m)
-     snap; a coordinate in a **named** place → that place, in the play area but no
-     named place → **null → the form shows "Unincorporated"** (in play, no
-     municipality to match), outside the play area → null → **"Outside the play
-     area."** (`inPlayArea()` distinguishes the two). Keep the seeker AND station
-     lookups on this SAME `cityAt()` so shading and elimination always agree.
+     `cityAt()` in `cities.ts` is **strict point-in-place, no distance tolerance**:
+     a coordinate in a **named** place → that place, in the play area but no named
+     place → **null → the form shows "Unincorporated"** (in play, no municipality
+     to match), outside the play area → null → **"Outside the play area."**
+     (`inPlayArea()` distinguishes the two). Keep the seeker AND station lookups on
+     this SAME `cityAt()` so shading and elimination always agree.
    - **Airport-on-unincorporated-land override:** an airport owned by a city but
      physically on unincorporated land (SFO is owned by the City & County of San
      Francisco but sits in San Mateo County) is folded into its owning city by
@@ -259,8 +259,10 @@ The rest of this doc is the detailed reference for each step.
      in `build_city_places.py`. That makes every airport station AND a click on
      the airport resolve to the owning city. This is the one Bay-specific
      override; a new metro only needs it if it has the same ownership quirk.
-     Verify **no hiding station resolves to null** after building — if one does,
-     it's on unincorporated land and either needs a CDP added or an override.
+     Verify each station that resolves to null after building: it is on
+     unincorporated land (fine — it can then only be kept by a "no"), or it needs
+     a CDP added / an ownership override. Bay's Colma and Bayshore/NASA and LA's
+     Del Amo are genuinely unincorporated; DC's New Carrollton and Dulles too.
    - **Gap-folding (cosmetic, keeps shading gap-free):** after the play area is
      expanded (e.g. into river channels/piers), the Census places leave narrow
      unincorporated slivers — river/wash channels and tiny enclosed holes (an
@@ -275,38 +277,24 @@ The rest of this doc is the detailed reference for each step.
      fold rivers + SMALL holes; leave big parks / real unincorporated land / water
      alone. Purely cosmetic: elimination still resolves each station through the
      same polygons (verify station→city diffs = 0 vs before).
-   - **Per-region snap tolerance (`RegionData.citySnapM`, default 150 m):** the
-     snap in `cityAt()` that rescues points just outside a simplified boundary ALSO
-     wrongly pulls genuinely-unincorporated county islands (e.g. an un-annexed
-     parcel 97 m from the city, by the LA River / Forest Lawn) into the
-     neighbouring city. Tighten it per region when the places are clean: count how
-     many hiding stations sit outside all polygons AND within the snap band — if
-     **zero rely on snap** (LA: only 1 station is outside, at 178 m, already beyond
-     snap), set `citySnapM` to just above the simplification tolerance (LA uses
-     **40 m** for `SIMPLIFY_DEG ≈ 22 m`) so islands read **Unincorporated** while
-     boundary erosion is still absorbed. `cities.ts` reads `CITY_SNAP_M` from the
-     active region (`regions.ts`); default stays 150 m for Bay Area / SF Muni,
-     whose edge stations (Colma 107 m, Bayshore/NASA 64 m) still need it. Confirm
-     station→city assignments are unchanged before/after.
-   - **Unclaimed holes are filled at load (`fillUnclaimedHoles()` in `cities.ts`,
-     all regions):** a Census place polygon can have interior rings of two kinds
-     — another municipality (Newark in Fremont, Piedmont in Oakland, Beverly
-     Hills in LA) and **unclaimed land no place names** (a 31-acre inholding in
-     Fort Belvoir CDP, a 1.1 sq mi county island in San Jose, the VA campus in
-     LA). The second kind is a **visible bug**: `cityAt()` snaps a click there to
-     the surrounding place, so the form says "Fort Belvoir CDP" while
-     `cityMatchEliminatedRegion()` draws the hole unshaded — the app names your
-     city and then puts you outside it. So drop an interior ring when **no other
-     place's polygon touches it AND it lies wholly inside the play area**; keep
-     it otherwise (a real enclave is a different answer to "same municipality?",
-     and land outside the play area belongs to no city). This is the general form
-     of LA's `fold_gaps()` small-hole rule, done app-side so it covers every map
-     with no data regeneration (fills: DC 4 holes/1.2 sq mi, Bay 33/4.6, LA
-     25/2.8, Muni 0). Runs at module load, so keep it cheap: precompute outer-ring
-     bounding boxes, box-test before ray-casting, and sample ~16 hole vertices for
-     the play-area test (~30 ms per map). **Verify station→city diffs = 0** for
-     every region before/after — filling must only change what a *seeker* click
-     reads, never elimination.
+   - **Never add a snap/tolerance to the city lookup.** `cityAt()` used to fall
+     back to the nearest place within 150 m (40 m on LA) to "absorb simplification
+     erosion". It does not work: the *shading* is drawn from the polygon, so every
+     snapped point is told a city and then left unshaded — the app naming your
+     city and drawing you outside it. It mislabelled ~8 of DC's 20 unincorporated
+     sq mi, including **Accotink**, the residential pocket cut out of the Fort
+     Belvoir CDP outline. Check the erosion premise before believing it: for each
+     station outside every polygon, test the point against the **raw TIGER**
+     `tl_<state>_place` shapefile — for all of Colma (95 m), Bayshore/NASA (57 m),
+     Del Amo (153 m) and New Carrollton (430 m), raw TIGER also says outside, i.e.
+     they are really unincorporated and no tolerance was ever fixing erosion.
+     Anything the polygons genuinely get wrong belongs in the **data** (see the
+     airport override and gap-folding above), not in the lookup.
+   - **Show the lookup's answer, not a parallel one.** The station popup used to
+     print the baked `Station.city` (Census geocoder) while the question used
+     `cityAt()`; the two disagree exactly on unincorporated stations. MapView now
+     prints `cityAt(st) ?? 'unincorporated'`. Any new surface that shows a city
+     must call `cityAt()`.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
