@@ -166,18 +166,21 @@ describe('play-area scoping and question demotion', () => {
     expect(cityAt(bethesda)).toBe('Bethesda CDP')
   })
 
-  it('DC: an inholding a place cuts out of itself reads as unincorporated', async () => {
+  it('DC: in-play land outside every place has no city, and a station can be on it', async () => {
     await loadFor('dc')
     const { cityAt, inPlayArea } = await import('../lib/cities')
-    // Accotink: a residential pocket Fairfax kept out of the base, so the Fort
-    // Belvoir CDP outline is a ring around it. It is not in the CDP — with a
-    // snap tolerance it read "Fort Belvoir CDP" and then wasn't shaded, since
-    // the shading draws the same hole the lookup ignored.
-    const accotink = { lat: 38.7096, lon: -77.1604 }
-    expect(cityAt(accotink)).toBeNull()
-    expect(inPlayArea(accotink)).toBe(true)
-    // The base around it is still Fort Belvoir.
-    expect(cityAt({ lat: 38.7096, lon: -77.1450 })).toBe('Fort Belvoir CDP')
+    const stations = (await import('./dc.stations.json')).default as unknown as Station[]
+    // New Carrollton station sits ~430 m outside every place polygon, on
+    // unincorporated land between the places it is named after — in play (its
+    // hiding zone is), but with no municipality to match. With a snap tolerance
+    // it read "New Carrollton city" and then wasn't shaded, since the shading
+    // draws the polygon the lookup had stretched.
+    const nc = stations.find((s) => s.name === 'New Carrollton')!
+    expect(cityAt(nc)).toBeNull()
+    expect(nc.city ?? null).toBeNull()
+    expect(inPlayArea(nc)).toBe(true)
+    // The city it is named after is right there, and still resolves.
+    expect(cityAt({ lat: 38.9585, lon: -76.8814 })).toBe('New Carrollton city')
   })
 
   it('DC state Matching eliminates exactly the stations the shading covers', async () => {

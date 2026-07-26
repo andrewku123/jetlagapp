@@ -35,6 +35,25 @@ transit-lines.geojson.json`.
    whole city any line touches, auto-add enclosed enclaves, and if an endgame
    disk carves into a not-yet-included city **whose county is already in play**,
    pull in that whole city (union just the sliver if the county is NOT in play).
+   Curation lives in `scripts/play_area_overrides<sfx>.json` (`drop` / `keep`),
+   with three escape hatches for what the Census-place model alone cannot say —
+   all three earned on DC:
+   - `extra_counties`: a **VA-style independent city** is its own county-
+     equivalent, so it is not inside the county around it and its place is not
+     even a candidate. Falls Church needed naming here to be keepable.
+   - `unincorporated_fills`: land in **no place at all**. Dulles airport is 14 sq
+     mi of unincorporated Loudoun/Fairfax; cut the CDPs around it and the Silver
+     Line's Ashburn end becomes an island. Give a committed seed polygon
+     (`fetch_osm_polygon.py --relation <id>`) plus `bounded_by` place names — the
+     hull of seed+places clips the fill, since unincorporated land is otherwise
+     contiguous across half a county.
+   - A station outside every place (New Carrollton, ~430 m out) automatically
+     gets its 0.25 mi hiding zone, linked to the nearest kept place. **Check
+     every station is still in play after a trim** — a cut CDP can silently strand
+     one, and the hiding zone has to be playable land.
+   Place NAMELSADs repeat across a multi-state map (DC has a Woodlawn CDP in both
+   Prince George's and Fairfax, 20 mi apart), so the builder qualifies duplicates
+   as `Woodlawn CDP [Prince George's]` — name that form in the overrides.
 3. **Geography files**: `<slug>.counties.geojson.json`,
    `<slug>.places.geojson.json`, `<slug>.zctas.geojson.json` (Steps 3/6 below).
 4. **Measure features** (`<slug>.measure-features.geojson.json`) via the per-slug

@@ -68,6 +68,8 @@ DISPLAY_HOLE_MAX_KM2 = 12.0   # in the app display, fill interior holes (land ri
 BRIDGE_RADIUS_MI = 0.5        # half-width of a transit-line corridor bridge
 BRIDGE_NEAR_M = 60.0          # gap endpoint within this of a kept place = touching
 BRIDGE_MAX_MI = 12.0         # only bridge gaps shorter than this between two kept places
+STATION_ZONE_MI = 0.25       # hiding zone around a station outside every kept place
+STATION_LINK_M = 120.0       # half-width of the link tying such a zone to the map
 ISLAND_LON_CUTOFF = CFG.get("islandLonCutoff")  # drop place parts west of this (far-offshore islands)
 # Census places: full-resolution TIGER/Line (dense coastline nodes, ~6-7x more
 # vertices than the 1:500k cartographic file). These are *legal* limits that
@@ -101,12 +103,17 @@ def ensure_shapefile(url, stem):
     return shp
 
 
-def load_counties(names, station_pts):
+def load_counties(names, station_pts, stationless=()):
     """The transit counties' polygons, keyed by the station `county` string.
 
     A county name is not unique across a multi-state map (Virginia has both a
     Fairfax County and an independent Fairfax city, and a Montgomery County of
     its own next to Maryland's), so a name match must also *contain a station*.
+
+    `stationless` names are exempt from that check, for the case a curator wants
+    a county-equivalent the network misses: a Virginia independent city is not
+    part of the county around it, so its places are not candidates at all unless
+    it is named here (Falls Church, ringed by Arlington and Fairfax, is one).
     """
     import shapefile
     r = shapefile.Reader(ensure_shapefile(COUNTY_URL, COUNTY_STEM))
@@ -124,7 +131,7 @@ def load_counties(names, station_pts):
         g = shape(sh.__geo_interface__)
         if not g.is_valid:
             g = g.buffer(0)
-        if not any(g.contains(p) for p in station_pts):
+        if label not in stationless and not any(g.contains(p) for p in station_pts):
             continue
         out[label] = g
     return out
@@ -178,8 +185,42 @@ def load_county_places(counties):
         if best is None or bestA < 0.10 * g.area:
             continue
         nm = d["NAMELSAD"]
-        out[nm] = {"geom": g, "county": best, "cdp": nm.endswith("CDP")}
+        rec = {"geom": g, "county": best, "cdp": nm.endswith("CDP")}
+        if nm in out:
+            # Place names repeat across a multi-state map — DC has a Woodlawn CDP
+            # in Prince George's and another in Fairfax, 20 mi apart. Keying on
+            # the name alone silently kept whichever state was read last, so the
+            # curator could not say which one they meant; qualify both.
+            prev = out.pop(nm)
+            out[f"{nm} [{prev['county']}]"] = prev
+            nm = f"{nm} [{best}]"
+        out[nm] = rec
     return out
+
+
+def unincorporated_fill(spec, places, to_m):
+    """The unnamed land a seed feature sits on, out to the places around it.
+
+    Some in-play land belongs to no Census place at all, so the opt-out curation
+    can never reach it: Dulles airport is 14 sq mi of unincorporated Loudoun and
+    Fairfax, and without it the Silver Line's Ashburn end is a separate island.
+    Unincorporated land is contiguous across most of a county, so the fill is
+    clipped to the convex hull of the seed plus the places named in `bounded_by`
+    — the curator says how far out it reaches, in place names rather than a
+    hand-traced ring, and it re-derives if the Census geometry changes.
+
+    spec: {"seed": <geojson under scripts/>, "bounded_by": [place NAMELSADs]}
+    """
+    seed = shape(json.load(open(os.path.join(HERE, spec["seed"])))["geometry"])
+    missing = [n for n in spec["bounded_by"] if n not in places]
+    if missing:
+        sys.exit(f"unincorporated_fill: unknown bounding place(s) {missing}")
+    hull = unary_union([seed] + [places[n]["geom"] for n in spec["bounded_by"]]).convex_hull
+    gap = hull.difference(unary_union([d["geom"] for d in places.values()
+                                       if d["geom"].intersects(hull)]))
+    parts = [gap] if gap.geom_type == "Polygon" else list(getattr(gap, "geoms", []))
+    touching = [p for p in parts if p.intersects(seed.buffer(1e-9))]
+    return transform(to_m, unary_union(touching + [seed]))
 
 
 def transit_bridges(city_m, to_m):
@@ -345,10 +386,13 @@ def main():
     lat0 = sum(lats) / len(lats)
     to_m, to_ll = _proj(lat0)
 
+    ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
+    extra_counties = set(ov.get("extra_counties", []))
+
     station_pts = [Point(s["lon"], s["lat"]) for s in stations]
-    transit_counties = sorted({s["county"] for s in stations})
+    transit_counties = sorted({s["county"] for s in stations} | extra_counties)
     print("transit counties:", ", ".join(transit_counties))
-    counties_ll = load_counties(set(transit_counties), station_pts)
+    counties_ll = load_counties(set(transit_counties), station_pts, extra_counties)
     missing_co = [c for c in transit_counties if c not in counties_ll]
     if missing_co:
         print("WARN counties with no polygon:", missing_co, file=sys.stderr)
@@ -367,7 +411,6 @@ def main():
     places_m = {n: transform(to_m, d["geom"]) for n, d in places.items()}
     is_cdp = {n: d["cdp"] for n, d in places.items()}
 
-    ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
     force_keep = set(ov.get("keep", []))
     drop = set(ov.get("drop", []))
     for n in drop | force_keep:
@@ -467,9 +510,37 @@ def main():
     for fr in ov.get("fill_regions", []):
         ring = [to_m(lon, lat) for lon, lat in fr["ring"]]
         extra.append(Polygon(ring))
+    for uf in ov.get("unincorporated_fills", []):
+        extra.append(unincorporated_fill(uf, places, to_m))
+        print(f"added unincorporated fill: {uf['seed']} out to "
+              f"{len(uf['bounded_by'])} places")
     if extra:
         print(f"added {len(extra)} manual corridor/fill region(s)")
         union_m = unary_union([union_m] + extra)
+
+    # A station's hiding zone has to be playable, and a station is not always
+    # inside a named place: New Carrollton's sits ~430 m outside every polygon,
+    # on unincorporated land between the places it is named after. Rather than
+    # drag a whole neighbouring CDP back in, give any such station its own zone.
+    orphans = [s for s in stations
+               if not union_m.contains(Point(to_m(s["lon"], s["lat"])))]
+    if orphans:
+        print("stations outside the kept places, adding their hiding zones:",
+              ", ".join(s["name"] for s in orphans))
+        from shapely.geometry import LineString
+        from shapely.ops import nearest_points
+        zones = []
+        for s in orphans:
+            p = Point(to_m(s["lon"], s["lat"]))
+            zone = p.buffer(STATION_ZONE_MI * 1609.344)
+            if not zone.intersects(union_m):
+                # A zone that reaches no kept place would be an island in the
+                # grey; tie it to the nearest one so the map stays one piece.
+                a, b = nearest_points(p, union_m)
+                zone = unary_union([zone, LineString([a, b]).buffer(STATION_LINK_M)])
+            zones.append(zone)
+        union_m = unary_union([union_m] + zones)
+
     union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 

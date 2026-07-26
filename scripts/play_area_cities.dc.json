@@ -5,26 +5,36 @@
   "Arlington",
   "District of Columbia",
   "Fairfax",
+  "Falls Church city",
   "Loudoun",
   "Montgomery",
   "Prince George's"
  ],
  "shoreline_buffer_m": 150.0,
- "candidate_places": 244,
+ "candidate_places": 246,
  "dropped_manual": [
   "Accokeek CDP",
   "Aldie CDP",
+  "Andrews AFB CDP",
+  "Annandale CDP",
   "Aquasco CDP",
   "Arcola CDP",
   "Ashton-Sandy Spring CDP",
+  "Aspen Hill CDP",
   "Baden CDP",
+  "Bailey's Crossroads CDP",
   "Barnesville town",
+  "Belle Haven CDP",
   "Belmont CDP",
+  "Bladensburg town",
   "Bowie city",
   "Braddock CDP",
+  "Brambleton CDP",
   "Brandywine CDP",
+  "Broadlands CDP",
   "Brock Hall CDP",
   "Brookeville town",
+  "Brookmont CDP",
   "Brown Station CDP",
   "Bull Run CDP",
   "Burke CDP",
@@ -41,91 +51,140 @@
   "Clifton town",
   "Clinton CDP",
   "Cloverly CDP",
+  "Colesville CDP",
+  "Colmar Manor town",
+  "Coral Hills CDP",
+  "Cottage City town",
   "Countryside CDP",
   "Croom CDP",
   "Crosspointe CDP",
   "Damascus CDP",
   "Darnestown CDP",
+  "Difficult Run CDP",
+  "District Heights city",
+  "Dranesville CDP",
   "Dulles Town Center CDP",
   "Eagle Harbor town",
+  "East Riverdale CDP",
+  "Edmonston town",
   "Fair Lakes CDP",
   "Fair Oaks CDP",
   "Fairfax Station CDP",
   "Fairland CDP",
   "Fairwood CDP",
+  "Floris CDP",
   "Flower Hill CDP",
+  "Forest Heights town",
+  "Forestville CDP",
+  "Fort Belvoir CDP",
   "Fort Hunt CDP",
   "Fort Washington CDP",
+  "Four Corners CDP",
+  "Franklin Farm CDP",
   "Friendly CDP",
+  "Gaithersburg city",
   "George Mason CDP",
   "Germantown CDP",
+  "Glassmanor CDP",
   "Glen Echo town",
+  "Glenarden city",
   "Glenn Dale CDP",
   "Goose Creek Village CDP",
   "Great Falls CDP",
+  "Great Falls Crossing CDP",
   "Greenbriar CDP",
+  "Groveton CDP",
   "Hamilton town",
+  "Hayfield CDP",
   "Hillandale CDP",
   "Hillsboro town",
+  "Hybla Valley CDP",
+  "Kemp Mill CDP",
+  "Kettering CDP",
   "Kincora CDP",
   "Kings Park CDP",
   "Kings Park West CDP",
+  "Kingstowne CDP",
   "Konterra CDP",
+  "Lake Barcroft CDP",
+  "Langley Park CDP",
+  "Lanham CDP",
   "Lansdowne CDP",
+  "Largo CDP",
   "Laurel Hill CDP",
   "Laurel city",
+  "Layhill CDP",
   "Laytonsville town",
   "Leesburg town",
   "Leisure World CDP",
   "Long Branch CDP",
   "Lorton CDP",
+  "Loudoun Valley Estates CDP",
   "Lovettsville town",
   "Lowes Island CDP",
+  "Mantua CDP",
   "Marlboro Meadows CDP",
   "Marlboro Village CDP",
+  "Marlow Heights CDP",
   "Marlton CDP",
   "Mason Neck CDP",
   "Melwood CDP",
   "Middleburg town",
+  "Mitchellville CDP",
   "Montgomery Village CDP",
+  "Morningside town",
   "Mount Vernon CDP",
   "National Harbor CDP",
   "Navy CDP",
+  "Newington CDP",
   "Newington Forest CDP",
+  "North Brentwood town",
   "North Potomac CDP",
   "North Springfield CDP",
+  "Oak Grove CDP",
   "Occoquan town",
   "Olney CDP",
   "One Loudoun CDP",
   "Oxon Hill CDP",
   "Poolesville town",
+  "Potomac CDP",
   "Purcellville town",
   "Queen Anne CDP",
   "Queensland CDP",
   "Ravensworth CDP",
   "Rosaryville CDP",
   "Round Hill town",
+  "Seabrook CDP",
+  "Seven Corners CDP",
   "South Laurel CDP",
   "South Riding CDP",
   "South Run CDP",
   "Spencerville CDP",
+  "Springdale CDP",
+  "Sterling CDP",
   "Stone Ridge CDP",
   "Sugarland Run CDP",
   "Sully Square CDP",
+  "Temple Hills CDP",
   "Ten Mile Creek CDP",
   "Travilah CDP",
   "Union Mill CDP",
   "University Center CDP",
   "Upper Marlboro town",
   "Wakefield CDP",
+  "Washington Grove town",
   "Waterford CDP",
+  "West Falls Church CDP",
   "West Laurel CDP",
+  "West Springfield CDP",
+  "Westphalia CDP",
   "White Oak CDP",
-  "Woodlawn CDP",
+  "Woodburn CDP",
+  "Woodlawn CDP [Fairfax]",
   "Woodmore CDP"
  ],
  "dropped_auto_surrounded": [],
- "count": 133,
+ "count": 77,
  "cities": [
   {
    "name": "Adelphi CDP",
@@ -140,18 +199,6 @@
    "reason": "kept"
   },
   {
-   "name": "Andrews AFB CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Annandale CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Arlington CDP",
    "county": "Arlington",
    "type": "CDP",
@@ -160,24 +207,6 @@
   {
    "name": "Ashburn CDP",
    "county": "Loudoun",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Aspen Hill CDP",
-   "county": "Montgomery",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Bailey's Crossroads CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Belle Haven CDP",
-   "county": "Fairfax",
    "type": "CDP",
    "reason": "kept"
   },
@@ -200,33 +229,9 @@
    "reason": "kept"
   },
   {
-   "name": "Bladensburg town",
-   "county": "Prince George's",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Brambleton CDP",
-   "county": "Loudoun",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Brentwood town",
    "county": "Prince George's",
    "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Broadlands CDP",
-   "county": "Loudoun",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Brookmont CDP",
-   "county": "Montgomery",
-   "type": "CDP",
    "reason": "kept"
   },
   {
@@ -296,31 +301,7 @@
    "reason": "kept"
   },
   {
-   "name": "Colesville CDP",
-   "county": "Montgomery",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "College Park city",
-   "county": "Prince George's",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Colmar Manor town",
-   "county": "Prince George's",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Coral Hills CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Cottage City town",
    "county": "Prince George's",
    "type": "city/town",
    "reason": "kept"
@@ -332,39 +313,9 @@
    "reason": "kept"
   },
   {
-   "name": "Difficult Run CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "District Heights city",
-   "county": "Prince George's",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Dranesville CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Dunn Loring CDP",
    "county": "Fairfax",
    "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "East Riverdale CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Edmonston town",
-   "county": "Prince George's",
-   "type": "city/town",
    "reason": "kept"
   },
   {
@@ -374,37 +325,13 @@
    "reason": "kept"
   },
   {
-   "name": "Floris CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
+   "name": "Falls Church city",
+   "county": "Falls Church city",
+   "type": "city/town",
+   "reason": "manual-keep"
   },
   {
    "name": "Forest Glen CDP",
-   "county": "Montgomery",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Forest Heights town",
-   "county": "Prince George's",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Forestville CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Fort Belvoir CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Four Corners CDP",
    "county": "Montgomery",
    "type": "CDP",
    "reason": "kept"
@@ -416,38 +343,14 @@
    "reason": "kept"
   },
   {
-   "name": "Franklin Farm CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Friendship Heights Village CDP",
    "county": "Montgomery",
    "type": "CDP",
    "reason": "kept"
   },
   {
-   "name": "Gaithersburg city",
-   "county": "Montgomery",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
    "name": "Garrett Park town",
    "county": "Montgomery",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Glassmanor CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Glenarden city",
-   "county": "Prince George's",
    "type": "city/town",
    "reason": "kept"
   },
@@ -458,27 +361,9 @@
    "reason": "kept"
   },
   {
-   "name": "Great Falls Crossing CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Greenbelt city",
    "county": "Prince George's",
    "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Groveton CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Hayfield CDP",
-   "county": "Fairfax",
-   "type": "CDP",
    "reason": "kept"
   },
   {
@@ -512,20 +397,8 @@
    "reason": "kept"
   },
   {
-   "name": "Hybla Valley CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Idylwood CDP",
    "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Kemp Mill CDP",
-   "county": "Montgomery",
    "type": "CDP",
    "reason": "kept"
   },
@@ -536,26 +409,8 @@
    "reason": "kept"
   },
   {
-   "name": "Kettering CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Kingstowne CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Lake Arbor CDP",
    "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Lake Barcroft CDP",
-   "county": "Fairfax",
    "type": "CDP",
    "reason": "kept"
   },
@@ -572,50 +427,8 @@
    "reason": "kept"
   },
   {
-   "name": "Langley Park CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Lanham CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Largo CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Layhill CDP",
-   "county": "Montgomery",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Lincolnia CDP",
    "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Loudoun Valley Estates CDP",
-   "county": "Loudoun",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Mantua CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Marlow Heights CDP",
-   "county": "Prince George's",
    "type": "CDP",
    "reason": "kept"
   },
@@ -650,21 +463,9 @@
    "reason": "kept"
   },
   {
-   "name": "Mitchellville CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Moorefield CDP",
    "county": "Loudoun",
    "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Morningside town",
-   "county": "Prince George's",
-   "type": "city/town",
    "reason": "kept"
   },
   {
@@ -680,21 +481,9 @@
    "reason": "kept"
   },
   {
-   "name": "Newington CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "North Bethesda CDP",
    "county": "Montgomery",
    "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "North Brentwood town",
-   "county": "Prince George's",
-   "type": "city/town",
    "reason": "kept"
   },
   {
@@ -706,12 +495,6 @@
   {
    "name": "North Kensington CDP",
    "county": "Montgomery",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Oak Grove CDP",
-   "county": "Loudoun",
    "type": "CDP",
    "reason": "kept"
   },
@@ -730,12 +513,6 @@
   {
    "name": "Pimmit Hills CDP",
    "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Potomac CDP",
-   "county": "Montgomery",
    "type": "CDP",
    "reason": "kept"
   },
@@ -770,21 +547,9 @@
    "reason": "kept"
   },
   {
-   "name": "Seabrook CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Seat Pleasant city",
    "county": "Prince George's",
    "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Seven Corners CDP",
-   "county": "Fairfax",
-   "type": "CDP",
    "reason": "kept"
   },
   {
@@ -812,20 +577,8 @@
    "reason": "kept"
   },
   {
-   "name": "Springdale CDP",
-   "county": "Prince George's",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
    "name": "Springfield CDP",
    "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Sterling CDP",
-   "county": "Loudoun",
    "type": "CDP",
    "reason": "kept"
   },
@@ -845,12 +598,6 @@
    "name": "Takoma Park city",
    "county": "Montgomery",
    "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "Temple Hills CDP",
-   "county": "Prince George's",
-   "type": "CDP",
    "reason": "kept"
   },
   {
@@ -878,33 +625,9 @@
    "reason": "kept"
   },
   {
-   "name": "Washington Grove town",
-   "county": "Montgomery",
-   "type": "city/town",
-   "reason": "kept"
-  },
-  {
    "name": "Washington city",
    "county": "District of Columbia",
    "type": "city/town",
-   "reason": "kept"
-  },
-  {
-   "name": "West Falls Church CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "West Springfield CDP",
-   "county": "Fairfax",
-   "type": "CDP",
-   "reason": "kept"
-  },
-  {
-   "name": "Westphalia CDP",
-   "county": "Prince George's",
-   "type": "CDP",
    "reason": "kept"
   },
   {
@@ -920,10 +643,10 @@
    "reason": "kept"
   },
   {
-   "name": "Woodburn CDP",
-   "county": "Fairfax",
+   "name": "Woodlawn CDP [Prince George's]",
+   "county": "Prince George's",
    "type": "CDP",
-   "reason": "kept"
+   "reason": "manual-keep"
   }
  ]
 }
