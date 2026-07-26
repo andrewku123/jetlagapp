@@ -1,18 +1,18 @@
 import type { Station } from '../types'
 
+// Dot color for an agency with no entry below — which is every single-agency
+// map, where one color reads better than a per-line dot under the per-line
+// colored overlay. A new city needs no edit here.
+export const DEFAULT_SYSTEM_COLOR = '#7b2d8b'
+
 export const SYSTEM_COLORS: Record<string, string> = {
   BART: '#0066cc',
   Caltrain: '#d4001a',
   VTA: '#f5821f',
-  Muni: '#7b2d8b',
+  Muni: DEFAULT_SYSTEM_COLOR,
   'SFO AirTrain': '#00897b',
-  // LA Metro is single-agency: every station dot is one purple so the
-  // per-line colored overlay (A/B/C/D/E/K/G/J) reads clearly on top.
-  Metro: '#7b2d8b',
-  // WMATA Metrorail, likewise single-agency. Near-black rather than WMATA's
-  // brand brown: the six line colors it sits on include red, silver/grey and
-  // yellow, and a dot has to stay legible against all of them.
-  Metrorail: '#1f2937',
+  Metro: DEFAULT_SYSTEM_COLOR,
+  Metrorail: DEFAULT_SYSTEM_COLOR,
 }
 
 export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Metro', 'Metrorail']
@@ -26,7 +26,7 @@ export function stationColor(st: Station): string {
   for (const sys of SYSTEM_ORDER) {
     if (st.systems.includes(sys)) return SYSTEM_COLORS[sys]
   }
-  return '#444'
+  return DEFAULT_SYSTEM_COLOR
 }
 
 export function isMultiSystem(st: Station): boolean {

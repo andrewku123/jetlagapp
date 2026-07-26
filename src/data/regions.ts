@@ -1,4 +1,6 @@
 import type { LatLng, QuestionKind, Station } from '../types'
+import type { GameSize } from './questionSets'
+import regionSizes from './region-sizes.json'
 
 // Region registry: the app is data-driven and region-agnostic — every question,
 // the elimination engine, the map, the board code etc. read whatever the ACTIVE
@@ -188,6 +190,16 @@ function readActiveId(): string {
   return DEFAULT_REGION_ID
 }
 
+/**
+ * Game size per map — a judgement call made with the user, never derived from
+ * station count or area. The book sizes a game by what the map spans and how
+ * long it plays (Medium = a major city or metro area, about a day), so DC's 98
+ * stations are still a Medium game. Kept in its own JSON because the printed
+ * reference card (`scripts/make_reference_pdf.py`) reads the same file, and the
+ * card's deck and the app's deck must never disagree.
+ */
+export const REGION_SIZES = regionSizes as Record<string, GameSize>
+
 export const ACTIVE_REGION_ID = readActiveId()
 export const ACTIVE_REGION: RegionData =
   REGIONS.find((r) => r.id === ACTIVE_REGION_ID) ?? REGIONS[0]
@@ -218,6 +230,7 @@ export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
 export const statesData = ACTIVE_REGION.statesGeo ?? null
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
+export const MAP_SIZE: GameSize = REGION_SIZES[ACTIVE_REGION_ID]
 export const MAP_STATES = ACTIVE_REGION.states
 export const MAP_NAME = ACTIVE_REGION.name
 // Snap tolerance (metres) for the city Matching place lookup; see RegionData.

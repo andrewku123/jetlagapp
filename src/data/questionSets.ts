@@ -275,47 +275,12 @@ export const QUESTION_SETS: Record<GameSize, QuestionSet> = {
   large: questionsForSize('large'),
 }
 
-// ---------------------------------------------------------------------------
-// Size selection (so the map's size is suggested automatically, not chosen by a
-// person). Official criteria — Quick Start → Choosing a Transit System:
-//   SMALL  : 30 – 100 stations   | 10 – 100 sq. miles
-//   MEDIUM : 100 – 500 stations  | 100 – 1,000 sq. miles
-//   LARGE  : 500+ stations       | 1,000+ sq. miles
-// The ranges overlap at the round numbers; we treat 100 / 500 as the station
-// boundaries and 100 / 1,000 as the area boundaries.
-// ---------------------------------------------------------------------------
-export const SIZE_STATION_THRESHOLDS = { smallMax: 100, mediumMax: 500 }
-export const SIZE_AREA_THRESHOLDS = { smallMaxSqMi: 100, mediumMaxSqMi: 1000 }
-
-export function sizeForStationCount(stationCount: number): GameSize {
-  if (stationCount <= SIZE_STATION_THRESHOLDS.smallMax) return 'small'
-  if (stationCount <= SIZE_STATION_THRESHOLDS.mediumMax) return 'medium'
-  return 'large'
-}
-
-export function sizeForAreaSqMi(areaSqMi: number): GameSize {
-  if (areaSqMi <= SIZE_AREA_THRESHOLDS.smallMaxSqMi) return 'small'
-  if (areaSqMi <= SIZE_AREA_THRESHOLDS.mediumMaxSqMi) return 'medium'
-  return 'large'
-}
-
-/**
- * Suggest a size from both signals (station count + area). When they disagree,
- * prefer the larger — a map with many stations or a wide footprint plays better
- * with the bigger ruleset. Returns each signal so the UI can show its reasoning.
- */
-export function suggestGameSize(stationCount: number, areaSqMi?: number): {
-  size: GameSize
-  byStations: GameSize
-  byArea?: GameSize
-} {
-  const byStations = sizeForStationCount(stationCount)
-  if (areaSqMi == null) return { size: byStations, byStations }
-  const byArea = sizeForAreaSqMi(areaSqMi)
-  const rank: Record<GameSize, number> = { small: 0, medium: 1, large: 2 }
-  const size = rank[byStations] >= rank[byArea] ? byStations : byArea
-  return { size, byStations, byArea }
-}
+// Size is NOT inferred from the data. The book sizes a game by what the map
+// spans and how long it plays (Small = a town or part of a big city, 4–8 h;
+// Medium = a major city / metro area, ~1 day; Large = a region or country,
+// 2–4 days), which no station count or area can decide on its own — DC is 98
+// stations and unambiguously a Medium metro game. Each map's size is chosen
+// with the user and recorded in `region-sizes.json`.
 
 // ---------------------------------------------------------------------------
 // Station eligibility by service frequency (a game restriction, not a seeker

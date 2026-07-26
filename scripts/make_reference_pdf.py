@@ -20,14 +20,18 @@ sys.path.insert(0, SCRIPTS)
 from poi_geo import load_play, make_in_play
 
 # ---------- region ----------
-# A map *is* a game size — how big the play area is decides which questions the
-# book allows — so `size` lives here and the deck follows from `--region` alone.
-# Only the file prefix differs otherwise, so a new city is one entry.
+# A map carries its game size, so the deck follows from `--region` alone. The
+# size itself is a judgement call made with the user (never derived from station
+# count or area) and lives in src/data/region-sizes.json, which the app reads
+# too — printing a deck the app doesn't agree with would be worse than useless.
 REGIONS = {
-    "bay": {"label": "Bay Area", "prefix": "", "size": "medium"},
-    "la": {"label": "LA Metro", "prefix": "la.", "size": "medium"},
-    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni.", "size": "medium"},
+    "bay": {"label": "Bay Area", "prefix": "", "app_id": "bayarea"},
+    "la": {"label": "LA Metro", "prefix": "la.", "app_id": "la"},
+    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni.", "app_id": "sfmuni"},
+    "dc": {"label": "Washington DC", "prefix": "dc.", "app_id": "dc"},
 }
+REGION_SIZES = json.load(
+    open(os.path.join(REPO, "src", "data", "region-sizes.json")))
 SIZES = ("small", "medium", "large")
 
 ap = argparse.ArgumentParser(description=__doc__)
@@ -38,7 +42,7 @@ ap.add_argument("--size", default=None, choices=SIZES,
 ap.add_argument("--out", default=None, help="output PDF path")
 ARGS = ap.parse_args()
 REGION = REGIONS[ARGS.region]
-SIZE = ARGS.size or REGION["size"]
+SIZE = ARGS.size or REGION_SIZES[REGION["app_id"]]
 BIG = SIZE in ("medium", "large")  # "add for Medium & Large"
 LARGE = SIZE == "large"
 

@@ -758,8 +758,8 @@ export default function App() {
               <h3>About this map</h3>
               <p className="info">
                 <span className="info-tag">{MAP_NAME}</span>{' '}
-                <span className="info-tag">{game.gameSize}</span> game ({STATIONS.length} stations,
-                auto-set from station count).
+                <span className="info-tag">{game.gameSize}</span> game ({STATIONS.length} stations).
+                The size is set for this map, and decides which questions the deck allows.
               </p>
               <h3>Share / load board</h3>
               <details className="share-board" open>

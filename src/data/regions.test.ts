@@ -25,6 +25,22 @@ afterEach(() => {
   vi.resetModules()
 })
 
+describe('game size', () => {
+  it('every map declares its own size, and the printed card reads the same file', async () => {
+    const m = await loadFor('bayarea')
+    const { GAME_SIZES } = await import('./questionSets')
+    for (const r of m.REGIONS) {
+      expect(GAME_SIZES).toContain(m.REGION_SIZES[r.id])
+    }
+    // A fresh board plays the active map's declared size — DC is 98 stations
+    // and still Medium, so nothing may infer size from the station count.
+    const dc = await loadFor('dc')
+    expect(dc.MAP_SIZE).toBe('medium')
+    const { emptyGame } = await import('../lib/storage')
+    expect(emptyGame.gameSize).toBe('medium')
+  })
+})
+
 describe('play-area scoping and question demotion', () => {
   it('Bay Area contains SFO/OAK/SJC and demotes nothing but the single-state question', async () => {
     const m = await loadFor('bayarea')

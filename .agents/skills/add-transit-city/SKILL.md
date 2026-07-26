@@ -394,9 +394,22 @@ check both when a new agency's numbers look impossible:
 When the physical station merges two GTFS stations (a two-level transfer), take
 the **better** of the headways — the hider is reachable via either level.
 
-Also add the agency to `SYSTEM_COLORS`/`SYSTEM_ORDER` in `src/lib/style.ts`;
-without it every dot falls back to `#444` grey, which reads as intentional and is
-easy to miss on screenshots.
+Add the agency to `SYSTEM_ORDER` in `src/lib/style.ts` so it appears in the
+legend; a **colour entry is only needed for a multi-agency map**, since the
+fallback is `DEFAULT_SYSTEM_COLOR` (purple `#7b2d8b`, what LA/Muni/Metrorail
+use) — one dot colour under a per-line coloured overlay is what reads best.
+
+### Game size is a decision, not a derivation
+Ask the user; never infer it. An earlier version derived size from station count
+(`<= 100 → small`) and labelled DC — a 615 sq mi, three-jurisdiction metro map —
+a **Small** game, which silently drops the whole Tentacles card and half the
+photo conditions. The book sizes by what the map spans and how long it plays
+(Quick Start → Choosing Game Size): *Small* = a town or part of a large city,
+4–8 h; *Medium* = a major city / metro area, ~1 day; *Large* = a region or
+country, 2–4 days. Record the agreed size in `src/data/region-sizes.json`, which
+both the app (`MAP_SIZE` in `regions.ts` → `emptyGame.gameSize`) and the printed
+card (`make_reference_pdf.py`) read, so a card can't print a deck the app won't
+play.
 
 ### Region-adaptive UI (don't hardcode per map)
 A subset/single-agency map should hide controls that are meaningless for it, but
