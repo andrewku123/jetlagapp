@@ -20,7 +20,7 @@ import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
-import { cityAt } from '../lib/cities'
+import { cityAt, NO_CITY_LABEL } from '../lib/cities'
 import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
@@ -1133,7 +1133,7 @@ export default function MapView({
         <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
         {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
         <div className="muted">
-          {cityAt(st) ?? 'unincorporated'}, {st.county ?? '?'} Co. · {st.nameLength} chars
+          {cityAt(st) ?? NO_CITY_LABEL}, {st.county ?? '?'} Co. · {st.nameLength} chars
           {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
         </div>
         <div className="popup-actions">

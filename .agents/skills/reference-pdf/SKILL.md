@@ -98,6 +98,15 @@ The edge-of-play-area block prints **every tied station**, not the first one the
 sort happens to return — ties are common on name length (3 LA stations are 4
 characters).
 
+**Some stations have no city, and the card must say so.** `cityAt()` is exact
+(see `add-transit-city`), so a station on unincorporated land — Colma,
+Bayshore/NASA, Del Amo, New Carrollton, Dulles — resolves to `null`, and the app
+answers "same municipality?" NO for it against every seeker. Counting with
+`if s.get("city")` silently drops those stations from the list, so the counts
+don't sum to the station total and the seeker never learns a *yes* can't keep
+them. Print a trailing italic **"No city (unincorporated)"** row with the count
+(the block's header count stays the number of real cities).
+
 ## Layout gotchas
 - **Render with Playwright, not the `google-chrome` CLI** — here `google-chrome`
   is a CDP wrapper that won't write a file. Connect to

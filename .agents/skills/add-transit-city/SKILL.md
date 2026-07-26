@@ -290,11 +290,17 @@ The rest of this doc is the detailed reference for each step.
      they are really unincorporated and no tolerance was ever fixing erosion.
      Anything the polygons genuinely get wrong belongs in the **data** (see the
      airport override and gap-folding above), not in the lookup.
-   - **Show the lookup's answer, not a parallel one.** The station popup used to
-     print the baked `Station.city` (Census geocoder) while the question used
-     `cityAt()`; the two disagree exactly on unincorporated stations. MapView now
-     prints `cityAt(st) ?? 'unincorporated'`. Any new surface that shows a city
-     must call `cityAt()`.
+   - **One city per station, from the polygons.** `Station.city` used to come from
+     the Census geocoder while the app eliminated on `cityAt()`; they disagree on
+     exactly the interesting stations (Bay Fair read *Ashland CDP*, the app said
+     *San Leandro*; Colma and Bayshore/NASA were named a city they aren't in). The
+     places file is built *after* `build_attributes.py`, so on a new map re-run it
+     once the polygons exist — `python3 scripts/build_attributes.py --region <r>
+     --cities-only` rewrites only `city`, in place, no network and no re-fetched
+     elevations. Anything showing a city (map popup, printed card) reads that
+     field or calls `cityAt()`; never a second source. `null` is displayed as
+     `NO_CITY_LABEL` ("No city"), not "Unincorporated" — named CDPs are
+     unincorporated too and they *do* answer the question.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,

@@ -100,6 +100,13 @@ export function inPlayArea(p: LatLng): boolean {
   return pointInPolys(p, PLAY_AREA)
 }
 
+// What the UI shows where cityAt() is null and the point is in play. "No city"
+// rather than "Unincorporated": many named places here (Bethesda, McLean,
+// Tysons, Fairview) are unincorporated CDPs that DO answer the question, so that
+// word describes the wrong thing — what matters to a seeker is that there is no
+// municipality to match.
+export const NO_CITY_LABEL = 'No city'
+
 // The Census place (city / town / CDP) whose polygon contains `p`, or null.
 // Strictly inside-the-polygon: the boundary is the answer to "same municipality?",
 // so land a place excludes — the gaps between places, and the inholdings their

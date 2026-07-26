@@ -62,6 +62,11 @@ def clean_city(c):
 
 county_counts = collections.Counter(s["county"] for s in ST if s.get("county"))
 city_counts = collections.Counter(clean_city(s["city"]) for s in ST if s.get("city"))
+# Stations on unincorporated land belong to no city at all, so the app answers
+# "same municipality?" NO for them however the seeker is standing. Printing the
+# count keeps the card honest with the tool (and warns the seeker that a yes
+# can never keep these) instead of quietly dropping them from the list.
+no_city = sum(1 for s in ST if not s.get("city"))
 airport_counts = collections.Counter(s["nearestAirport"] for s in ST if s.get("nearestAirport"))
 line_counts = collections.Counter(l for s in ST for l in s.get("lines", []))
 
@@ -277,9 +282,12 @@ def rblock(title, count, body):
             f'{body}</div>')
 
 
-def counted_list(counter):
+def counted_list(counter, last=None):
     lis = "".join(f'<li>{html.escape(k)} <span class="n">{v}</span></li>'
                   for k, v in sorted(counter.items()))
+    if last:
+        k, v = last
+        lis += f'<li><i>{html.escape(k)}</i> <span class="n">{v}</span></li>'
     return f'<ul class="cols cnts">{lis}</ul>'
 
 
@@ -323,7 +331,9 @@ ref = "".join([
     rblock("Commercial airports", len(AIRPORTS), airports_html) if AIRPORTS else "",
     rblock("POIs in play", sum(n for _, n in poi_rows), poi_html),
     rblock("Edges of the play area", len(EXTREMES), extremes_html),
-    rblock("Cities / municipalities", len(city_counts), counted_list(city_counts)),
+    rblock("Cities / municipalities", len(city_counts),
+           counted_list(city_counts,
+                        ("No city (unincorporated)", no_city) if no_city else None)),
 ])
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8">

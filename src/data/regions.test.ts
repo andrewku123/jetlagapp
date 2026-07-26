@@ -41,6 +41,22 @@ describe('game size', () => {
   })
 })
 
+describe('every map has one city per station', () => {
+  it("Station.city is the polygon lookup's answer, on every map", async () => {
+    // Two sources for a station's city is how the app came to print one city and
+    // eliminate on another (Bay Fair read "Ashland CDP" from the Census geocoder
+    // while sitting in San Leandro). The baked field is written from these same
+    // polygons — `build_attributes.py --cities-only` — so they can't drift.
+    for (const id of ['bayarea', 'sfmuni', 'la', 'dc']) {
+      const m = await loadFor(id)
+      const { cityAt } = await import('../lib/cities')
+      for (const s of m.ACTIVE_REGION.stations as Station[]) {
+        expect([id, s.name, s.city ?? null]).toEqual([id, s.name, cityAt(s)])
+      }
+    }
+  })
+})
+
 describe('play-area scoping and question demotion', () => {
   it('Bay Area contains SFO/OAK/SJC and demotes nothing but the single-state question', async () => {
     const m = await loadFor('bayarea')

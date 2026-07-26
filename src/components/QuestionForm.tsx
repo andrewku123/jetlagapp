@@ -10,7 +10,7 @@ import { nearestAirport } from '../lib/airports'
 import { nearestRailStation } from '../lib/railStations'
 import { countyAt } from '../lib/counties'
 import { stateAt } from '../lib/states'
-import { cityAt, inPlayArea } from '../lib/cities'
+import { cityAt, inPlayArea, NO_CITY_LABEL } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { PHOTO, type GameSize } from '../data/questionSets'
 import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
@@ -475,7 +475,7 @@ export default function QuestionForm({
         if (!center) return alert('Set your location (paste coordinates or click the map).')
         const c = cityAt(center)
         if (!c) return alert(inPlayArea(center)
-          ? "Unincorporated — you're not in a city here, so there's no municipality to match."
+          ? "No city here — you're on unincorporated land, so there's no municipality to match."
           : 'Outside the play area.')
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
@@ -1108,7 +1108,7 @@ export default function QuestionForm({
                 {c
                   ? <>Your city: <b>{c}</b></>
                   : inPlayArea(center)
-                    ? <>Your city: <b>Unincorporated</b> (no municipality to match here)</>
+                    ? <>Your city: <b>{NO_CITY_LABEL}</b> (unincorporated land — no municipality to match)</>
                     : 'Outside the play area.'}
               </p>
             )
