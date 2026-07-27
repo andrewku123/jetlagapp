@@ -1,0 +1,6 @@
+cat,keep,keep_lat,keep_lon,merged,merged_lat,merged_lon,merged_was_group,footprint,footprint_dam2
+museum,La Brea Tar Pits and Museum,34.06388,-118.35644500000001,Observation Pit,34.064157099999996,-118.358645,False,La Brea Tar Pits and Museum,60.94
+museum,Los Angeles County Museum of Art,34.0639323,-118.3592293,B. Gerald Cantor Sculpture Garden,34.0630861,-118.35876499999999,False,Los Angeles County Museum of Art,57.52
+museum,De La Osa Adobe Museum and Historic Marker,34.1601036,-118.4990528,Blacksmith Shop,34.1605504,-118.4996665,False,Los Encinos State Historic Park,19.12
+museum,Bolton Hall Museum,34.252674999999996,-118.28829169999999,Village Poets of Sunland Tujunga,34.2526428,-118.28823369999999,False,Bolton Hall,0.48
+museum,Natural History Museum of Los Angeles County,34.0171448,-118.28866349999998,New Wing of NHM,34.0171123,-118.28938959999998,False,Natural History Museum of Los Angeles County,12.46
