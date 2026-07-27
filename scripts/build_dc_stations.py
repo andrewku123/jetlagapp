@@ -58,6 +58,35 @@ EXPECTED = {"Red Line": 27, "Blue Line": 28, "Orange Line": 26,
             "Silver Line": 39, "Yellow Line": 22, "Green Line": 21}
 SNAP_M = 400  # stop node -> station node; platforms sit a block from the pin
 
+# OSM spells stations out in full; WMATA's own signage, maps and announcements
+# abbreviate, and the game is played off the signs. Keyed by the OSM name.
+NAME_OVERRIDES = {
+    "Addison Road": "Addison Rd",
+    "Benning Road": "Benning Rd",
+    "Braddock Road": "Braddock Rd",
+    "Branch Avenue": "Branch Av",
+    "College Park\u2013University of Maryland": "College Park\u2013U of Md",
+    "Dunn Loring\u2013Merrifield": "Dunn Loring",
+    "Eisenhower Avenue": "Eisenhower Av",
+    "Federal Center Southwest": "Federal Center SW",
+    "Georgia Avenue\u2013Petworth": "Georgia Av\u2013Petworth",
+    "Judiciary Square": "Judiciary Sq",
+    "King Street\u2013Old Town": "King St\u2013Old Town",
+    "McPherson Square": "McPherson Sq",
+    "Minnesota Avenue": "Minnesota Av",
+    "Morgan Boulevard": "Morgan Blvd",
+    "Mount Vernon Square": "Mount Vernon Sq",
+    "Naylor Road": "Naylor Rd",
+    "Potomac Avenue": "Potomac Av",
+    "Rhode Island Avenue\u2013Brentwood": "Rhode Island Av",
+    "Shaw\u2013Howard University": "Shaw\u2013Howard U",
+    "Southern Avenue": "Southern Av",
+    "U Street": "U St",
+    "Van Dorn Street": "Van Dorn St",
+    "Vienna/Fairfax\u2013GMU": "Vienna",
+    "West Falls Church\u2013VT": "West Falls Church",
+}
+
 QUERY = """[out:json][timeout:300];
 (node["railway"="station"]["station"="subway"]["network"="Washington Metro"];
  rel["route"="subway"]["network"="Washington Metro"];);
@@ -153,17 +182,20 @@ def main():
             continue
         if t.get("network") != "Washington Metro" or not t.get("name"):
             continue
-        st = by_name.setdefault(t["name"], {"name": t["name"], "lat": 0.0, "lon": 0.0,
-                                            "n": 0, "lines": set(), "codes": set()})
+        name = NAME_OVERRIDES.get(t["name"], t["name"])
+        st = by_name.setdefault(name, {"name": name, "lat": 0.0, "lon": 0.0,
+                                       "n": 0, "lines": set()})
         st["lat"] += e["lat"]
         st["lon"] += e["lon"]
         st["n"] += 1
-        if t.get("railway:ref"):
-            st["codes"].update(t["railway:ref"].split(";"))
     for st in by_name.values():
         st["lat"] /= st["n"]
         st["lon"] /= st["n"]
     print("stations:", len(by_name))
+    stale = [n for n in NAME_OVERRIDES if n not in {
+        e.get("tags", {}).get("name") for e in nodes.values()}]
+    if stale:
+        raise SystemExit(f"NAME_OVERRIDES no longer match OSM: {stale}")
 
     # --- line membership from the route relations ---
     stations = list(by_name.values())
@@ -208,7 +240,9 @@ def main():
         out.append({
             "name": s["name"], "lat": round(s["lat"], 6), "lon": round(s["lon"], 6),
             "systems": ["Metrorail"], "lines": sorted(s["lines"]),
-            "aka": sorted(s["codes"]),
+            # no alternate names: Metrorail stations have one name each, and the
+            # OSM `railway:ref` codes (N02, D10) are internal platform IDs
+            "aka": [],
             "service": {day: {"served": h[day] < 999,
                               "hourly": h[day] <= compute_headways.THRESHOLD_MIN}
                         for day in ("wd", "we")},

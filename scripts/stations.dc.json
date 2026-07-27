@@ -1,6 +1,6 @@
 [
  {
-  "name": "Addison Road",
+  "name": "Addison Rd",
   "lat": 38.886722,
   "lon": -76.894406,
   "systems": [
@@ -10,9 +10,7 @@
    "Blue Line",
    "Silver Line"
   ],
-  "aka": [
-   "G03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -38,9 +36,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F06"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -67,9 +63,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "F02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -95,9 +89,7 @@
   "lines": [
    "Blue Line"
   ],
-  "aka": [
-   "C06"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -123,9 +115,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N15"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -152,9 +142,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "K04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -171,7 +159,7 @@
   }
  },
  {
-  "name": "Benning Road",
+  "name": "Benning Rd",
   "lat": 38.890447,
   "lon": -76.937533,
   "systems": [
@@ -181,9 +169,7 @@
    "Blue Line",
    "Silver Line"
   ],
-  "aka": [
-   "G01"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -209,9 +195,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -228,7 +212,7 @@
   }
  },
  {
-  "name": "Braddock Road",
+  "name": "Braddock Rd",
   "lat": 38.814146,
   "lon": -77.05367,
   "systems": [
@@ -238,9 +222,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C12"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -257,7 +239,7 @@
   }
  },
  {
-  "name": "Branch Avenue",
+  "name": "Branch Av",
   "lat": 38.826852,
   "lon": -76.912084,
   "systems": [
@@ -266,9 +248,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F11"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -294,9 +274,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -323,9 +301,7 @@
    "Blue Line",
    "Silver Line"
   ],
-  "aka": [
-   "G02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -353,9 +329,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -382,9 +356,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D11"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -411,9 +383,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "K02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -439,9 +409,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -458,7 +426,7 @@
   }
  },
  {
-  "name": "College Park\u2013University of Maryland",
+  "name": "College Park\u2013U of Md",
   "lat": 38.978459,
   "lon": -76.928268,
   "systems": [
@@ -468,9 +436,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -497,9 +463,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -525,9 +489,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -554,9 +516,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "K01"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -583,9 +543,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -612,9 +570,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -641,9 +597,7 @@
    "Blue Line",
    "Silver Line"
   ],
-  "aka": [
-   "G05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -660,7 +614,7 @@
   }
  },
  {
-  "name": "Dunn Loring\u2013Merrifield",
+  "name": "Dunn Loring",
   "lat": 38.883353,
   "lon": -77.22812,
   "systems": [
@@ -669,9 +623,7 @@
   "lines": [
    "Orange Line"
   ],
-  "aka": [
-   "K07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -697,9 +649,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -726,9 +676,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "K05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -756,9 +704,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D06"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -775,7 +721,7 @@
   }
  },
  {
-  "name": "Eisenhower Avenue",
+  "name": "Eisenhower Av",
   "lat": 38.800345,
   "lon": -77.071133,
   "systems": [
@@ -784,9 +730,7 @@
   "lines": [
    "Yellow Line"
   ],
-  "aka": [
-   "C14"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -812,9 +756,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -842,9 +784,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "C03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -861,7 +801,7 @@
   }
  },
  {
-  "name": "Federal Center Southwest",
+  "name": "Federal Center SW",
   "lat": 38.885118,
   "lon": -77.015082,
   "systems": [
@@ -872,9 +812,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -902,9 +840,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D01"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -932,9 +868,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "C04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -960,9 +894,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -990,10 +922,7 @@
    "Red Line",
    "Yellow Line"
   ],
-  "aka": [
-   "B06",
-   "E06"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1019,9 +948,7 @@
   "lines": [
    "Blue Line"
   ],
-  "aka": [
-   "J03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1047,9 +974,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1077,10 +1002,7 @@
    "Red Line",
    "Yellow Line"
   ],
-  "aka": [
-   "B01",
-   "F01"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1097,7 +1019,7 @@
   }
  },
  {
-  "name": "Georgia Avenue\u2013Petworth",
+  "name": "Georgia Av\u2013Petworth",
   "lat": 38.936937,
   "lon": -77.024166,
   "systems": [
@@ -1107,9 +1029,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1135,9 +1055,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B11"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1164,9 +1082,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1192,9 +1108,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1220,9 +1134,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A11"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1248,9 +1160,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1276,9 +1186,7 @@
   "lines": [
    "Yellow Line"
   ],
-  "aka": [
-   "C15"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1305,9 +1213,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1333,9 +1239,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N11"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1352,7 +1256,7 @@
   }
  },
  {
-  "name": "Judiciary Square",
+  "name": "Judiciary Sq",
   "lat": 38.896086,
   "lon": -77.016681,
   "systems": [
@@ -1361,9 +1265,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1380,7 +1282,7 @@
   }
  },
  {
-  "name": "King Street\u2013Old Town",
+  "name": "King St\u2013Old Town",
   "lat": 38.806531,
   "lon": -77.061046,
   "systems": [
@@ -1390,9 +1292,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C13"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1422,10 +1322,7 @@
    "Silver Line",
    "Yellow Line"
   ],
-  "aka": [
-   "D03",
-   "F03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1452,9 +1349,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D12"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1480,9 +1375,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N14"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1508,9 +1401,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1527,7 +1418,7 @@
   }
  },
  {
-  "name": "McPherson Square",
+  "name": "McPherson Sq",
   "lat": 38.901363,
   "lon": -77.032006,
   "systems": [
@@ -1538,9 +1429,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "C02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1566,9 +1455,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1597,10 +1484,7 @@
    "Red Line",
    "Silver Line"
   ],
-  "aka": [
-   "A01",
-   "C01"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1617,7 +1501,7 @@
   }
  },
  {
-  "name": "Minnesota Avenue",
+  "name": "Minnesota Av",
   "lat": 38.899161,
   "lon": -76.946739,
   "systems": [
@@ -1627,9 +1511,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1646,7 +1528,7 @@
   }
  },
  {
-  "name": "Morgan Boulevard",
+  "name": "Morgan Blvd",
   "lat": 38.893744,
   "lon": -76.868343,
   "systems": [
@@ -1656,9 +1538,7 @@
    "Blue Line",
    "Silver Line"
   ],
-  "aka": [
-   "G04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1675,7 +1555,7 @@
   }
  },
  {
-  "name": "Mount Vernon Square",
+  "name": "Mount Vernon Sq",
   "lat": 38.905528,
   "lon": -77.021933,
   "systems": [
@@ -1685,9 +1565,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E01"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1713,9 +1591,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1732,7 +1608,7 @@
   }
  },
  {
-  "name": "Naylor Road",
+  "name": "Naylor Rd",
   "lat": 38.851128,
   "lon": -76.956676,
   "systems": [
@@ -1741,9 +1617,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1770,9 +1644,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D13"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1798,9 +1670,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B35"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1826,9 +1696,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A12"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1855,9 +1723,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1884,9 +1750,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1903,7 +1767,7 @@
   }
  },
  {
-  "name": "Potomac Avenue",
+  "name": "Potomac Av",
   "lat": 38.881297,
   "lon": -76.9852,
   "systems": [
@@ -1914,9 +1778,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1943,9 +1805,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C11"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1971,9 +1831,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N09"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -1990,7 +1848,7 @@
   }
  },
  {
-  "name": "Rhode Island Avenue\u2013Brentwood",
+  "name": "Rhode Island Av",
   "lat": 38.92082,
   "lon": -76.995973,
   "systems": [
@@ -1999,9 +1857,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2027,9 +1883,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A14"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2056,9 +1910,7 @@
    "Blue Line",
    "Yellow Line"
   ],
-  "aka": [
-   "C10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2086,9 +1938,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "C05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2114,9 +1964,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A15"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2133,7 +1981,7 @@
   }
  },
  {
-  "name": "Shaw\u2013Howard University",
+  "name": "Shaw\u2013Howard U",
   "lat": 38.913471,
   "lon": -77.021917,
   "systems": [
@@ -2143,9 +1991,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2171,9 +2017,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2201,9 +2045,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2220,7 +2062,7 @@
   }
  },
  {
-  "name": "Southern Avenue",
+  "name": "Southern Av",
   "lat": 38.84139,
   "lon": -76.974875,
   "systems": [
@@ -2229,9 +2071,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2257,9 +2097,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N05"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2287,9 +2125,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "D08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2315,9 +2151,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2343,9 +2177,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2371,9 +2203,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2399,9 +2229,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A13"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2427,9 +2255,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2446,7 +2272,7 @@
   }
  },
  {
-  "name": "U Street",
+  "name": "U St",
   "lat": 38.916995,
   "lon": -77.027393,
   "systems": [
@@ -2456,9 +2282,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2484,9 +2308,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2503,7 +2325,7 @@
   }
  },
  {
-  "name": "Van Dorn Street",
+  "name": "Van Dorn St",
   "lat": 38.799308,
   "lon": -77.129111,
   "systems": [
@@ -2512,9 +2334,7 @@
   "lines": [
    "Blue Line"
   ],
-  "aka": [
-   "J02"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2540,9 +2360,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A06"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2559,7 +2377,7 @@
   }
  },
  {
-  "name": "Vienna/Fairfax\u2013GMU",
+  "name": "Vienna",
   "lat": 38.877601,
   "lon": -77.272288,
   "systems": [
@@ -2568,9 +2386,7 @@
   "lines": [
    "Orange Line"
   ],
-  "aka": [
-   "K08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2597,9 +2413,7 @@
    "Orange Line",
    "Silver Line"
   ],
-  "aka": [
-   "K03"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2625,9 +2439,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N12"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2653,9 +2465,7 @@
   "lines": [
    "Green Line"
   ],
-  "aka": [
-   "F04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2672,7 +2482,7 @@
   }
  },
  {
-  "name": "West Falls Church\u2013VT",
+  "name": "West Falls Church",
   "lat": 38.900793,
   "lon": -77.188965,
   "systems": [
@@ -2681,9 +2491,7 @@
   "lines": [
    "Orange Line"
   ],
-  "aka": [
-   "K06"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2710,9 +2518,7 @@
    "Green Line",
    "Yellow Line"
   ],
-  "aka": [
-   "E07"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2738,9 +2544,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "B10"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2766,9 +2570,7 @@
   "lines": [
    "Silver Line"
   ],
-  "aka": [
-   "N08"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
@@ -2794,9 +2596,7 @@
   "lines": [
    "Red Line"
   ],
-  "aka": [
-   "A04"
-  ],
+  "aka": [],
   "service": {
    "wd": {
     "served": true,
