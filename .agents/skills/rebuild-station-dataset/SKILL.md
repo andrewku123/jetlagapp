@@ -198,9 +198,13 @@ Then `npm run dev` and confirm the map renders all stations and the
 weekday/weekend + "≥hourly only" toggles change the "N of M possible" count.
 Also regenerate `STATIONS.md` (docs only) with `node scripts/build_stations_md.mjs`
 and the standalone `public/stations-map.html` if the set changed (they embed the
-station list). `build_stations_md.mjs` lists each station once under its PRIMARY
-system (priority `BART > Caltrain > VTA > Muni > SFO AirTrain`), tags shared
-stations, and strips the primary system's own line prefix.
+station list). `STATIONS.md` holds **every shipped map** — one section per entry
+in the script's `MAPS` list, each station listed once under its PRIMARY system
+(Bay Area priority `BART > Caltrain > VTA > Muni > SFO AirTrain`), shared stations
+tagged, the primary system's own line prefix stripped. The point of the file is
+that a rename or a moved coordinate shows up as a **reviewable diff**, so
+regenerate it in the same commit as the data and never hand-edit it. A map that
+isn't shipped yet stays out of `MAPS` — the file is user-facing.
 
 ## Gotchas
 - Run the scripts from `scripts/`; they use relative input paths but `build_attributes.py`/`patch_lines.py` write to an **absolute** app path — update that constant if the repo lives elsewhere.
