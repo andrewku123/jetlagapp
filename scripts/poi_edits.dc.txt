@@ -11,3 +11,8 @@
 
 merge   Freeman Store & Museum @ 38.90336,-77.26504 <- Vienna Caboose @ 38.90361,-77.26570
 merge   Freeman Store & Museum @ 38.90336,-77.26504 <- Vienna’s Historic Original 1897 Library @ 38.90341,-77.26461
+
+delete  Tinner Hill Historic Park @ 38.87918,-77.17679
+delete  Athenaeum @ 38.80346,-77.04181
+delete  Old Quarry Boiler & Equipment @ 38.91302,-77.10347
+closed  Tall Ship Providence @ 38.80324,-77.03867
