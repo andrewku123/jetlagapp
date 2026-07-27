@@ -188,8 +188,21 @@ Google returns a place at ~that spot whose `primaryType` is the category icon
 (same allowlist + golf/cinema rescue). Safety: **hard `MAX_CALLS` cap** and every
 result **cached to disk**, so a restart never re-spends. `apply_gap_backfill.py`
 then folds the icon-verified survivors into `poi_curated.json`, flagged
-`source=osm_backfill, userRatingCount=None` — the human applies the >=5-review
-rule to them by hand. (Bay Area: 260 candidates → **33** carried a real icon.)
+`source=osm_backfill`. (Bay Area: 260 candidates → **33** carried a real icon.)
+
+**A backfill may not undo curation.** The icon check buys no review count, so the
+backfill used to re-add places the paid sweep had already scored below 5 reviews
+(DC put a 0-review "James I. Mayer Center" museum back on the map that way, and
+nobody could see why it was there). Two rules, both now enforced in code:
+- `apply_gap_backfill.py` reads the sweep's own `userRatingCount` per place id,
+  **refuses** any candidate the sweep scored `<5`, prunes earlier runs' pins that
+  fail the same test, and stamps the known count onto the ones it keeps so the
+  review map says "0 reviews" instead of nothing;
+- pins with **no** count — registry-backed ones the sweep never returned — are
+  bought and gated in step 4b below. A registry listing proves a place exists,
+  not that it qualifies: DC cut Embassy of Ireland (0), Crime Museum (1) and 13
+  others this way. There is **no registry exemption** from the >=5 rule; only
+  `KEEP_ALL` categories (mountains, stadiums) skip it.
 
 ### 2b/3b. `authoritative_candidates.py` — official registries (3rd source)
 A second free discovery source on top of OSM: **official public registries**. It
@@ -246,17 +259,20 @@ The Google icon rule still governs — registries only widen recall.
   `FLAG_REVIEW` for eyeballing. Writes `poi_curated.json` + `poi_review.md`
   (every name links to Google Maps at the pin so the icon can be checked).
 
-### 4b. `refresh_business_status.py` — auto-drop closed places
+### 4b. `refresh_business_status.py` — verify backfilled pins (status + reviews)
 The icon pull (`poi_full.json`) carries Google's `businessStatus`, and curate
 drops `CLOSED_PERMANENTLY`/`CLOSED_TEMPORARILY`. **But the backfilled pins**
 (authoritative IMLS + OSM gap recall) are injected straight into
 `poi_curated.json` from external sources with `businessStatus: None` — they never
 had their status checked, which is how closed places (Madame Tussauds, Habitot,
 Carquinez Toy Train, …) used to slip past the audit and waste manual-review time.
-- This step queries **Place Details with just the `businessStatus` field** (the
-  cheapest SKU) for every pin that has a Google `id` but no status, caches the
-  answer by `place_id` in `poi_bizstatus_cache.json` (statuses rarely change, so
-  reruns are ~free), and writes it back into `poi_curated.json`.
+- This step queries **Place Details for `businessStatus,userRatingCount`** for
+  every pin that has a Google `id` and is missing either, caches both by
+  `place_id` in `poi_bizstatus_cache.json` (they rarely change, so reruns are
+  ~free), writes them back into `poi_curated.json`, and then **drops any
+  backfilled pin now known to be under 5 reviews** — this is where the review
+  rule finally reaches pins that never went through `curate_places_poi.py`.
+  ~$1 per city (DC: 26 calls); print-out lists exactly what it cut.
 - `POI_REFRESH_ALL=1` re-queries **every** pin (not just status-less ones) to
   catch places that closed since the last pull — worth running each biannual
   refresh (every 6 months). A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
@@ -497,7 +513,7 @@ a display-only fan-out that separates pins sitting within 30 m of each other —
 `od(p)` moves the dot, `at(p)` still writes the real coordinate into every edit line.
 
 **The reviewer does not need you, and does not touch generated data.** Clicking a pin
-offers Delete / Merge / Rename / Keep / Make-this-the-pin; the map collects the exact
+offers Delete / Merge / Rename / Closed-now / Keep / Make-this-the-pin; the map collects the exact
 lines `poi_apply_edits.py` parses into a localStorage basket behind a *Copy edits*
 button. Merge is **one-to-many and armed**: click the pin that SURVIVES → *Merge…*,
 then every following pin click absorbs (one line each, no popup) until Esc or the
@@ -537,6 +553,24 @@ rather than aborting the batch — but the run exits non-zero.
 
 Structural corrections that should survive a clean rebuild from scratch (an OSM
 footprint that should merge two pins) still belong in `poi_dedup_overrides.json`.
+
+#### `closed` / `open` — a closure is not a deletion
+`delete` is **sticky**: it means "this was never a POI for the game", and a rescan
+may never resurrect it. A shut business is not that — it can reopen — so it gets
+its own pair of verbs:
+- `closed <name>` takes the pin off the review map and out of the app, but the
+  ledger keeps `decision: "closed"` **plus a copy of the pin**, and `sync_ledger`
+  is explicitly told not to convert it into a drop (that would make it permanent);
+- `open <name>` puts a closed pin back from that copy, and — on a pin still on the
+  map — clears Google's `businessStatus` flag and sets `closedOverride`, which
+  stops the refresh re-asking about a flag a human already judged stale;
+- the refresh **queues** a closed place it finds open again (`add \`open <name>\``)
+  rather than restoring it itself: the reviewer's `closed` line is replayed on
+  every build, so nothing but another line can outvote it. A closed place that
+  goes `CLOSED_PERMANENTLY` does become a sticky drop.
+The map shows Google's flag rather than obeying it (dashed black ring, red badge,
+an "only pins Google calls closed" filter for triaging them in one pass), because
+the temp-closed flag is stale often enough that auto-dropping it loses real places.
 
 ### 6b. `registry_audit.py` — cross-check the finished pass against the registry
 **Run this on every category that has a reputable registry, at the end of the
