@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>POI review — what got merged, and your edits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html,body{margin:0;height:100%;font-family:system-ui,Arial,sans-serif}
+  #wrap{display:flex;height:100%}
+  #side{width:330px;overflow:auto;padding:12px 14px;box-sizing:border-box;border-right:1px solid #ddd}
+  #map{flex:1}
+  h2{font-size:16px;margin:0 0 8px}
+  h3{font-size:13px;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.04em;color:#555}
+  .cat{display:flex;align-items:center;gap:7px;margin:3px 0;font-size:13px;cursor:pointer}
+  .sw{width:13px;height:13px;border-radius:50%;flex:0 0 auto}
+  .cnt{color:#777;margin-left:auto;font-variant-numeric:tabular-nums}
+  .leg{font-size:12px;color:#444;margin-top:12px;line-height:1.5}
+  .leg b{font-weight:600}
+  .ctl{font-size:12px;margin:8px 0}
+  button{font-size:12px;padding:3px 8px;margin:0 6px 4px 0;cursor:pointer}
+  input[type=search]{width:100%;box-sizing:border-box;font-size:13px;padding:4px 6px;margin:4px 0}
+  .tot{font-size:12px;color:#555;margin-top:10px}
+  .lp b{font-size:13px}
+  .lp .k{color:#c0392b}
+  .lp .r{color:#27ae60}
+  .lp .acts{margin-top:6px;border-top:1px solid #eee;padding-top:6px}
+  .lp .acts button{margin:0 4px 0 0;padding:2px 6px}
+  #edits{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;
+         background:#fafafa;border:1px solid #e2e2e2;border-radius:4px;padding:6px;
+         max-height:210px;overflow:auto}
+  #edits div{display:flex;gap:6px;align-items:flex-start}
+  #edits span{flex:1;word-break:break-word}
+  #edits a{color:#c0392b;text-decoration:none;cursor:pointer;font-weight:700}
+  #banner{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);top:10px;
+          background:#34495e;color:#fff;padding:6px 12px;border-radius:4px;font-size:13px;
+          display:none;box-shadow:0 1px 6px rgba(0,0,0,.3)}
+  #banner button{margin-left:10px}
+  .hits{font-size:12px;max-height:150px;overflow:auto}
+  .hits div{padding:2px 0;cursor:pointer;color:#2662c4}
+  .edited{font-size:12px;color:#888}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="side">
+    <h2>POI review<span id="region" style="font-weight:400;color:#888"></span></h2>
+    <div class="ctl">
+      <button id="all">Show all</button><button id="none">Hide all</button>
+    </div>
+    <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <input type="search" id="q" placeholder="find a place by name…" />
+    <div class="hits" id="hits"></div>
+    <div id="cats"></div>
+    <div class="tot" id="tot"></div>
+
+    <h3>Your edits (<span id="ecount">0</span>)</h3>
+    <div class="ctl" style="color:#555">
+      Click any dot → <b>Delete / Merge / Rename / Keep</b>. Lines collect here and
+      stay in this browser. Paste them into
+      <code id="editsfile">scripts/poi_edits.&lt;region&gt;.txt</code> and commit.
+    </div>
+    <div id="edits"></div>
+    <div class="ctl" style="margin-top:6px">
+      <button id="copy">Copy edits</button><button id="clear">Clear</button>
+    </div>
+
+    <div class="leg">
+      <div><span class="sw" style="background:#27ae60;display:inline-block"></span> <b>kept</b> (the group's pin)</div>
+      <div><span class="sw" style="background:#c0392b;display:inline-block"></span> <b>merged away</b> — name match</div>
+      <div><span class="sw" style="background:#e67e22;display:inline-block"></span> <b>merged away</b> — OSM footprint</div>
+      <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
+      <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
+      <div style="margin-top:6px">Grey line links each absorbed pin → the pin that survives.</div>
+    </div>
+  </div>
+  <div id="map"></div>
+</div>
+<div id="banner"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>document.write('<scr'+'ipt src="poi_merge_viz.js?cb='+Date.now()+'"><\/scr'+'ipt>')</script>
+<script>
+const COLORS={museum:"#8e44ad",library:"#2980b9",movie_theater:"#16a085",hospital:"#c0392b",
+  zoo:"#d35400",aquarium:"#0097a7",amusement_park:"#e91e63",park:"#27ae60",golf_course:"#7cb342",
+  consulate:"#34495e",mountain:"#795548",stadium:"#f39c12"};
+const REGION=(window.VIZ && window.VIZ._region) || 'dc';
+document.getElementById('region').textContent=' — '+REGION.toUpperCase();
+document.getElementById('editsfile').textContent='scripts/poi_edits.'+REGION+'.txt';
+
+const map=L.map('map');
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+  {maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+
+const CATS=Object.keys(window.VIZ).filter(k=>window.VIZ[k] && window.VIZ[k].groups);
+const layers={}, enabled={}, onlyMerged={v:false};
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function at(p){return p.lat.toFixed(5)+','+p.lon.toFixed(5)}
+
+// ---------------------------------------------------------------- edit basket
+// The map can't write to the repo, so decisions accumulate here (localStorage,
+// so a review can span several sittings) as the exact lines poi_apply_edits.py
+// parses — the reviewer pastes them into the region's edits file and commits.
+const KEY='poi_edits_'+REGION;
+let edits=JSON.parse(localStorage.getItem(KEY)||'[]');
+function saveEdits(){localStorage.setItem(KEY,JSON.stringify(edits));drawEdits()}
+function addEdit(line){
+  if(edits.includes(line)) return;
+  edits.push(line); saveEdits();
+}
+function drawEdits(){
+  const box=document.getElementById('edits');
+  document.getElementById('ecount').textContent=edits.length;
+  box.innerHTML='';
+  edits.forEach((l,i)=>{
+    const row=document.createElement('div');
+    row.innerHTML=`<span>${esc(l)}</span><a title="remove">✕</a>`;
+    row.querySelector('a').onclick=()=>{edits.splice(i,1);saveEdits()};
+    box.appendChild(row);
+  });
+}
+document.getElementById('copy').onclick=()=>{
+  navigator.clipboard.writeText(edits.join('\n')+'\n').then(
+    ()=>flash('copied '+edits.length+' line(s)'),
+    ()=>flash('copy failed — select the text and copy manually'));
+};
+document.getElementById('clear').onclick=()=>{
+  if(edits.length && confirm('Discard '+edits.length+' edit line(s)?')){edits=[];saveEdits()}
+};
+drawEdits();
+
+let flashT=null;
+function flash(msg,keep){
+  const b=document.getElementById('banner');
+  b.innerHTML=esc(msg); b.style.display='block';
+  clearTimeout(flashT);
+  if(keep){const btn=document.createElement('button');btn.textContent='cancel';
+    btn.onclick=()=>{merging=null;b.style.display='none'};b.appendChild(btn);}
+  else flashT=setTimeout(()=>b.style.display='none',2200);
+}
+
+// merge is two-step: pick the pin that SURVIVES, then click the ones it absorbs
+let merging=null;
+function startMerge(p){
+  merging={name:p.n,at:at(p)};
+  flash('Merging into “'+p.n+'” — now click each pin it absorbs',true);
+}
+function absorb(p){
+  addEdit(`merge   ${merging.name} @ ${merging.at} <- ${p.n} @ ${at(p)}`);
+  flash('absorbed “'+p.n+'” — click more, or cancel');
+}
+
+function popup(p,kind,cat){
+  const acts=`<div class="acts">
+      <button data-a="del">Delete</button>
+      <button data-a="merge">Merge…</button>
+      <button data-a="rename">Rename</button>
+      ${kind.indexOf('merged')===0?'<button data-a="keep">Keep (un-merge)</button>'
+                                  +'<button data-a="rep">Make this the pin</button>':''}
+    </div>`;
+  return `<div class="lp" data-n="${esc(p.n)}" data-at="${at(p)}"><b>${esc(p.n)}</b><br>`
+    +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${cat}<br>`
+    +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span> · `
+    +`<a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}" target="_blank">maps</a>`
+    +acts+`</div>`;
+}
+
+function bind(marker,p,kind,cat){
+  marker.bindPopup(()=>popup(p,kind,cat));
+  marker.on('click',()=>{ if(merging && p.n!==merging.name) absorb(p); });
+  marker.on('popupopen',e=>{
+    e.popup.getElement().querySelectorAll('button[data-a]').forEach(b=>{
+      b.onclick=()=>{
+        const a=b.dataset.a;
+        if(a==='del')    addEdit(`delete  ${p.n} @ ${at(p)}`);
+        if(a==='keep')   addEdit(`keep    ${p.n} @ ${at(p)}`);
+        if(a==='rep')    addEdit(`rep     ${p.n} @ ${at(p)}`);
+        if(a==='rename'){const n=prompt('New name for “'+p.n+'”:',p.n);
+                         if(n && n!==p.n) addEdit(`rename  ${p.n} @ ${at(p)} -> ${n}`);}
+        if(a==='merge'){ startMerge(p); marker.closePopup(); return; }
+        marker.closePopup(); flash('added to your edits');
+      };
+    });
+  });
+}
+
+function build(key){
+  const d=window.VIZ[key]; const g=L.layerGroup();
+  if(!onlyMerged.v){
+    d.singles.forEach(p=>{
+      const m=L.circleMarker([p.lat,p.lon],{radius:4,color:'#999',weight:1,fillOpacity:.5,opacity:.6});
+      bind(m,p,'untouched',d.label); m.addTo(g);
+    });
+  }
+  d.groups.forEach(grp=>{
+    const R=grp.rep;
+    grp.kids.forEach(k=>{
+      const col2=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b';
+      const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
+      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:1.2,opacity:.8,dashArray:'3,3'}).addTo(g);
+      const m=L.circleMarker([k.lat,k.lon],{radius:5,color:'#fff',weight:1.5,fillColor:col2,fillOpacity:1});
+      bind(m,k,klabel,d.label); m.addTo(g);
+    });
+    const mr=L.circleMarker([R.lat,R.lon],{radius:7,color:'#fff',weight:2,fillColor:'#27ae60',fillOpacity:1});
+    bind(mr,R,'kept',d.label); mr.addTo(g);
+  });
+  return g;
+}
+function refresh(key){
+  if(layers[key]){map.removeLayer(layers[key]);delete layers[key];}
+  if(enabled[key]){layers[key]=build(key);layers[key].addTo(map);}
+}
+
+const catsDiv=document.getElementById('cats');
+CATS.forEach(key=>{
+  const d=window.VIZ[key]; enabled[key]=(d.groups.length>0);
+  const row=document.createElement('label'); row.className='cat';
+  row.innerHTML=`<input type="checkbox" ${enabled[key]?'checked':''}>
+    <span class="sw" style="background:${COLORS[key]||'#555'}"></span>${d.label}
+    <span class="cnt">${d.before}→${d.after} (−${d.before-d.after})</span>`;
+  row.querySelector('input').addEventListener('change',e=>{enabled[key]=e.target.checked;refresh(key);});
+  catsDiv.appendChild(row);
+  refresh(key);
+});
+let mb=0,ma=0; CATS.forEach(k=>{mb+=window.VIZ[k].before;ma+=window.VIZ[k].after});
+document.getElementById('tot').textContent=`Total: ${mb} → ${ma}  (−${mb-ma})`;
+document.getElementById('all').onclick=()=>{CATS.forEach(k=>{enabled[k]=true;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=true);};
+document.getElementById('none').onclick=()=>{CATS.forEach(k=>{enabled[k]=false;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
+document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
+  CATS.forEach(k=>refresh(k));};
+
+// ------------------------------------------------------------- search + view
+const ALL=[];
+CATS.forEach(k=>{const d=window.VIZ[k];
+  d.singles.forEach(p=>ALL.push([p,k]));
+  d.groups.forEach(g=>{ALL.push([g.rep,k]); g.kids.forEach(x=>ALL.push([x,k]))});
+});
+document.getElementById('q').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase(); const box=document.getElementById('hits');
+  box.innerHTML='';
+  if(q.length<3) return;
+  ALL.filter(([p])=>p.n.toLowerCase().includes(q)).slice(0,40).forEach(([p,k])=>{
+    const row=document.createElement('div');
+    row.textContent=p.n+' · '+window.VIZ[k].label;
+    row.onclick=()=>{if(!enabled[k]){enabled[k]=true;refresh(k);
+        catsDiv.querySelectorAll('input')[CATS.indexOf(k)].checked=true;}
+      map.setView([p.lat,p.lon],17);};
+    box.appendChild(row);
+  });
+});
+// fit whatever city this is, instead of a hardcoded centre
+const pts=ALL.map(([p])=>[p.lat,p.lon]);
+map.fitBounds(pts.length?L.latLngBounds(pts):[[38.8,-77.1],[39.0,-76.9]]);
+</script>
+</body>
+</html>
