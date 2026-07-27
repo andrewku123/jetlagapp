@@ -935,11 +935,7 @@ def main():
                  f"rerun with --force to regenerate it and lose that manual pass")
     open(md_path, "w").write("\n".join(md))
     json.dump(out, open(dedup_path, "w"), indent=1)
-    os.makedirs(os.path.dirname(viz_path), exist_ok=True)
-    with open(viz_path, "w") as f:
-        f.write("window.VIZ=")
-        json.dump(viz, f)
-        f.write(";")
+    poi_ledger.save_viz(REGION, viz)   # committed copy + the served preview copy
     print("\n".join(table))
     if pa_raw is not None:
         print(f"\nplay-area clip: dropped {oop_total} POIs outside the city polygons")

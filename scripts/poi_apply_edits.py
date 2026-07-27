@@ -105,12 +105,26 @@ def one(obj, target):
     raise LookupError(f"{len(hits)} pins named {name!r} — add '@ lat,lon' ({where})")
 
 
-def apply_op(obj, verb, payload):
+def known_gone(led, name):
+    """True if the ledger already records a place of this name as dropped/merged.
+
+    Lets a replay report `already gone` for a decision that has been applied,
+    while a name that was never on the map at all (a typo) still fails loudly.
+    """
+    want = L.norm(name)
+    return any(L.norm(r.get("name")) == want and r["decision"] in ("drop", "merged")
+               for r in led["places"].values())
+
+
+def apply_op(obj, led, verb, payload):
     """-> a status string, or raise LookupError. Idempotent by construction."""
     if verb == "delete":
         name, at = payload
         if not C.find(obj, name, at):
-            return "already gone"
+            if known_gone(led, name):
+                return "already gone"
+            raise LookupError(f"no pin named {name!r}, and nothing of that name "
+                              "was ever on the map")
         hit = one(obj, payload)
         promoted = C.op_delete(obj, [hit])
         extra = "".join(f"; kept unlisted kid {k['n']}" for _, k in promoted)
@@ -185,7 +199,7 @@ def main():
     applied = failed = 0
     for lineno, verb, payload in ops:
         try:
-            status = apply_op(obj, verb, payload)
+            status = apply_op(obj, led, verb, payload)
         except LookupError as e:
             bad.append((lineno, verb, str(e))); failed += 1; continue
         applied += 1

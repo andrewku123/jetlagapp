@@ -128,11 +128,21 @@ def recount(cat):
 
 
 def save_viz(region, obj):
+    """Write the review map — to **both** copies while a city is under review.
+
+    `viz_path` prefers the served `public/` copy so the reviewer's map updates,
+    but the committed `scripts/` copy is what the ledger seeds from and what makes
+    the app data reproducible; letting them drift is how a decision gets lost.
+    """
     for cat in obj.values():
         if isinstance(cat, dict) and "groups" in cat:
             recount(cat)
-    with open(viz_path(region), "w", encoding="utf-8") as f:
-        f.write(VIZ_PREFIX + json.dumps(obj, ensure_ascii=False) + ";\n")
+    text = VIZ_PREFIX + json.dumps(obj, ensure_ascii=False) + ";\n"
+    paths = {viz_path(region), os.path.join(ROOT, REGIONS[region]["viz"])}
+    for p in paths:
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(text)
 
 
 def iter_pins(obj):
