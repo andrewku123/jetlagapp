@@ -1,7 +1,7 @@
 {
   "museum": {
     "tentacleRadiusMi": 1,
-    "count": 162,
+    "count": 160,
     "places": [
       {
         "id": "ChIJx7K17Ji3t4kRr3VvqMTw7cc",
@@ -2570,7 +2570,7 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 66,
         "businessStatus": "CLOSED_PERMANENTLY",
         "lat": 38.86318320000001,
         "lon": -76.99178739999999,
@@ -2587,45 +2587,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 1341,
         "businessStatus": "CLOSED_PERMANENTLY",
         "lat": 38.9597197,
         "lon": -77.0846863,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJaQEHID_Ht4kRdAqOJqsCSYE",
-        "name": "Market Master House Historic Site",
-        "primaryType": "museum",
-        "types": [
-          "museum",
-          "tourist_attraction",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.938714399999995,
-        "lon": -76.93690579999999,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJu1anBwC1t4kRSEoYva47Prg",
-        "name": "James I. Mayer Center for Environmental Protection",
-        "primaryType": "museum",
-        "types": [
-          "museum",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.914322999999996,
-        "lon": -77.10804159999999,
         "source": "osm_backfill"
       },
       {
@@ -2645,28 +2610,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 110,
         "businessStatus": "OPERATIONAL",
         "lat": 38.8034561,
         "lon": -77.0418067,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJVx73uge8t4kRzL0i1VW3i0g",
-        "name": "Airmen Memorial Museum",
-        "primaryType": "museum",
-        "types": [
-          "museum",
-          "tourist_attraction",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "CLOSED_PERMANENTLY",
-        "lat": 38.8227318,
-        "lon": -76.91624039999999,
         "source": "authoritative"
       },
       {
@@ -2682,7 +2629,7 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 30,
         "businessStatus": "OPERATIONAL",
         "lat": 38.9584963,
         "lon": -77.361903,
@@ -2701,51 +2648,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 438,
         "businessStatus": "OPERATIONAL",
         "lat": 38.8804444,
         "lon": -77.0119177,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJseZq8JC3t4kRB26bRroayCQ",
-        "name": "Crime Museum",
-        "primaryType": "museum",
-        "types": [
-          "museum",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "CLOSED_PERMANENTLY",
-        "lat": 38.8966642,
-        "lon": -77.0253793,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJkYfiMbzIt4kRdHVMQi_eYVQ",
-        "name": "Montgomery Preservation Inc",
-        "primaryType": "history_museum",
-        "types": [
-          "history_museum",
-          "historical_landmark",
-          "historical_place",
-          "church",
-          "place_of_worship",
-          "museum",
-          "transportation_service",
-          "association_or_organization",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.990262799999996,
-        "lon": -77.02706119999999,
         "source": "authoritative"
       },
       {
@@ -2759,65 +2665,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 42,
         "businessStatus": "OPERATIONAL",
         "lat": 38.9824793,
         "lon": -77.0345928,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJtw7g08i3t4kRlsilcdXQI8o",
-        "name": "Fondo Del Sol",
-        "primaryType": "museum",
-        "types": [
-          "museum",
-          "art_gallery",
-          "non_profit_organization",
-          "tourist_attraction",
-          "association_or_organization",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "CLOSED_PERMANENTLY",
-        "lat": 38.9124291,
-        "lon": -77.0473442,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJcZRPPfq3t4kRHP5Ccayxkkw",
-        "name": "Mary Church Terrell Home",
-        "primaryType": "museum",
-        "types": [
-          "museum",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.9157249,
-        "lon": -77.0169334,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJxxHYPBHHt4kRFZ_-hT7XWwU",
-        "name": "Salve Regina Hall",
-        "primaryType": "art_gallery",
-        "types": [
-          "art_gallery",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.936221499999995,
-        "lon": -77.00062489999999,
         "source": "authoritative"
       },
       {
@@ -2832,27 +2683,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 123,
         "businessStatus": "CLOSED_PERMANENTLY",
         "lat": 38.9433485,
         "lon": -76.94857999999999,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJm2CEWrC3t4kRJWWE4FMs3Eg",
-        "name": "Dimock Gallery",
-        "primaryType": "art_gallery",
-        "types": [
-          "art_gallery",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.8992465,
-        "lon": -77.046844,
         "source": "authoritative"
       },
       {
@@ -2866,7 +2700,7 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 5,
         "businessStatus": "OPERATIONAL",
         "lat": 38.8958961,
         "lon": -77.0400662,
@@ -2883,7 +2717,7 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 8,
         "businessStatus": "OPERATIONAL",
         "lat": 39.0946485,
         "lon": -77.1513331,
@@ -2893,7 +2727,7 @@
   },
   "library": {
     "tentacleRadiusMi": 1,
-    "count": 125,
+    "count": 120,
     "places": [
       {
         "id": "ChIJTTr4jvbuDzkR7D7e9Jayy0Y",
@@ -4919,98 +4753,6 @@
         "lon": -77.0272102
       },
       {
-        "id": "ChIJy3rkFPnHt4kRtdgxzN0HG1Q",
-        "name": "Sister Helen Sheehan Library",
-        "primaryType": "library",
-        "types": [
-          "university",
-          "library",
-          "educational_institution",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.9268037,
-        "lon": -77.0052559,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJwdHbsuK3t4kREAJSybAkaTw",
-        "name": "Business Library",
-        "primaryType": "library",
-        "types": [
-          "library",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.924345599999995,
-        "lon": -77.0227558,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJi9derqW3t4kRpWqXvYsGB8M",
-        "name": "US Department-Interior Library",
-        "primaryType": "library",
-        "types": [
-          "library",
-          "point_of_interest",
-          "service",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.8944025,
-        "lon": -77.0425229,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJk3YsDte1t4kRQKJRBO8Rcik",
-        "name": "Ballston Coakley Library Extension",
-        "primaryType": "library",
-        "types": [
-          "library",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "CLOSED_TEMPORARILY",
-        "lat": 38.882339699999996,
-        "lon": -77.11678549999999,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJzayNzUXJt4kRlDvPOKfJKl8",
-        "name": "USUHS Learning Resource Center",
-        "primaryType": "library",
-        "types": [
-          "library",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 39.001944,
-        "lon": -77.085979,
-        "source": "osm_backfill"
-      },
-      {
         "id": "ChIJWwrNA7q3t4kRwJJLP8sJt8o",
         "name": "DC Public Library - Library Express",
         "primaryType": "library",
@@ -5022,28 +4764,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 17,
         "businessStatus": "CLOSED_PERMANENTLY",
         "lat": 38.9017773,
         "lon": -77.04470529999999,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJS_woB_iwt4kRIPYxPNneEyY",
-        "name": "Alexandria Law Library",
-        "primaryType": "library",
-        "types": [
-          "library",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.8046076,
-        "lon": -77.0453639,
         "source": "authoritative"
       }
     ]
@@ -7771,7 +7495,7 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 279,
         "businessStatus": "CLOSED_PERMANENTLY",
         "lat": 38.8353434,
         "lon": -76.9847538,
@@ -26282,7 +26006,7 @@
   },
   "golf_course": {
     "tentacleRadiusMi": null,
-    "count": 20,
+    "count": 19,
     "places": [
       {
         "id": "ChIJ-3Zn1t84tokRtDSj2VlalK8",
@@ -26617,7 +26341,7 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 851,
         "businessStatus": "OPERATIONAL",
         "lat": 38.856504699999995,
         "lon": -77.07938770000001,
@@ -26634,46 +26358,10 @@
         ],
         "address": "",
         "rating": null,
-        "userRatingCount": null,
+        "userRatingCount": 239,
         "businessStatus": "OPERATIONAL",
         "lat": 39.0647721,
         "lon": -77.14017299999999,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJNW3y0w23t4kRgos-9kQcjBU",
-        "name": "East Potomac Park White Course Hole 2",
-        "primaryType": "golf_course",
-        "types": [
-          "golf_course",
-          "athletic_field",
-          "sports_activity_location",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.8725117,
-        "lon": -77.03045089999999,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJ74cYzLTJt4kRsibs4cqCuhI",
-        "name": "Columbia Country Club Greens Department",
-        "primaryType": "association_or_organization",
-        "types": [
-          "point_of_interest",
-          "association_or_organization",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.9943861,
-        "lon": -77.0800215,
         "source": "osm_backfill"
       }
     ]
@@ -30529,120 +30217,6 @@
         "businessStatus": "OPERATIONAL",
         "lat": 38.9142241,
         "lon": -77.0873281
-      },
-      {
-        "id": "ChIJFbpBcza3t4kR9qRlB8OlNjE",
-        "name": "Embassy of the Republic of Maldives to the United States of America",
-        "primaryType": "embassy",
-        "types": [
-          "embassy",
-          "government_office",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.8995094,
-        "lon": -77.02718209999999,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJYVUCItm3t4kRWFsnFTu4F-Y",
-        "name": "Embassy of the Central African Republic",
-        "primaryType": "embassy",
-        "types": [
-          "embassy",
-          "government_office",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.9244347,
-        "lon": -77.0405534,
-        "source": "osm_backfill"
-      },
-      {
-        "id": "ChIJ31CrcLu3t4kRBSsZT7dq4Xw",
-        "name": "Embassy of Ireland",
-        "primaryType": "embassy",
-        "types": [
-          "embassy",
-          "government_office",
-          "point_of_interest",
-          "service",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.898598899999996,
-        "lon": -77.0398731,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJcX8WSc7Jt4kRBJcmYklPVh8",
-        "name": "Embassy of the Principality of Monaco",
-        "primaryType": "embassy",
-        "types": [
-          "embassy",
-          "government_office",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.9011634,
-        "lon": -77.0396464,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJ28IWs8C3t4kReRZHBHO4chg",
-        "name": "Embassy of San Marino",
-        "primaryType": "embassy",
-        "types": [
-          "embassy",
-          "government_office",
-          "service",
-          "point_of_interest",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.907464600000004,
-        "lon": -77.03906049999999,
-        "source": "authoritative"
-      },
-      {
-        "id": "ChIJueeXg0PJt4kRlTrAk1U4-fU",
-        "name": "Embassy of Timor-Leste",
-        "primaryType": "embassy",
-        "types": [
-          "embassy",
-          "government_office",
-          "point_of_interest",
-          "service",
-          "establishment"
-        ],
-        "address": "",
-        "rating": null,
-        "userRatingCount": null,
-        "businessStatus": "OPERATIONAL",
-        "lat": 38.97554470000001,
-        "lon": -77.0339127,
-        "source": "authoritative"
       }
     ]
   },

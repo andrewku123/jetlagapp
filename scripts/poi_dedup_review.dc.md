@@ -4,22 +4,22 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 
 | Category | before | after | name-merged | osm-merged | bigpark | manual |
 |---|---|---|---|---|---|---|
-| Museums | 156 | 148 | 6 | 2 | 0 | 0 |
-| Libraries | 119 | 114 | 3 | 2 | 0 | 0 |
+| Museums | 150 | 142 | 6 | 2 | 0 | 0 |
+| Libraries | 113 | 108 | 3 | 2 | 0 | 0 |
 | Movie Theaters | 40 | 40 | 0 | 0 | 0 | 0 |
 | Hospitals | 105 | 81 | 17 | 7 | 0 | 0 |
 | Zoos | 16 | 2 | 0 | 14 | 0 | 0 |
 | Aquariums | 2 | 2 | 0 | 0 | 0 | 0 |
 | Amusement Parks | 13 | 12 | 0 | 1 | 0 | 0 |
 | Parks | 1049 | 886 | 31 | 111 | 21 | 0 |
-| Golf Courses | 20 | 20 | 0 | 0 | 0 | 0 |
-| Consulates | 219 | 209 | 10 | 0 | 0 | 0 |
+| Golf Courses | 18 | 18 | 0 | 0 | 0 | 0 |
+| Consulates | 213 | 203 | 10 | 0 | 0 | 0 |
 | Mountains | 30 | 29 | 1 | 0 | 0 | 0 |
 | Sports Stadiums | 49 | 47 | 2 | 0 | 0 | 0 |
 
 
 
-## Museums — 156 → 148 (name −6, osm −2)
+## Museums — 150 → 142 (name −6, osm −2)
 
 
 **Merged (7 groups):**
@@ -32,7 +32,7 @@ NAME_D=300m (same-name merge), SUB_D=400m (sub-part absorb), then pins inside th
 - **[Larz Anderson House](https://www.google.com/maps/search/?api=1&query=38.9107019%2C-77.04771819999999&query_place_id=ChIJVVUF_ci3t4kRampaDjGDRfs)** (292 rev) absorbs: [The Society of the Cincinnati](https://www.google.com/maps/search/?api=1&query=38.9106747%2C-77.0476547&query_place_id=ChIJobU6_ci3t4kRTj8OXayvDIY)(291,osm)
 
 
-## Libraries — 119 → 114 (name −3, osm −2)
+## Libraries — 113 → 108 (name −3, osm −2)
 
 
 **Merged (2 groups):**
@@ -192,13 +192,13 @@ _No merges._
 - **[Woodend Nature Sanctuary](https://www.google.com/maps/search/?api=1&query=39.0034726%2C-77.06652679999999&query_place_id=ChIJd27AYsvJt4kRDbHMPfhy44U)** (5 rev) absorbs: [Nature Forward](https://www.google.com/maps/search/?api=1&query=39.003310899999995%2C-77.06750389999999&query_place_id=ChIJz1G15y_Jt4kRUAbhaw5kntg)(177,osm)
 
 
-## Golf Courses — 20 → 20 (name −0, osm −0)
+## Golf Courses — 18 → 18 (name −0, osm −0)
 
 
 _No merges._
 
 
-## Consulates — 219 → 209 (name −10, osm −0)
+## Consulates — 213 → 203 (name −10, osm −0)
 
 
 **Merged (9 groups):**

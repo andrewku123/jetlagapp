@@ -10,6 +10,7 @@ import os
 import sys
 
 import build_poi_data as B
+import poi_apply_edits as E
 import poi_curate as C
 import registry_audit as A
 import poi_geo as G
@@ -180,6 +181,49 @@ check("a swap re-points every sibling at the new rep",
       and led["places"]["google:a1"]["mergedInto"] is None)
 
 
+# ------------------------------------------------------ closure (reversible)
+print("\nclosed / open")
+
+o = viz()
+led = ledger_from(o)
+check("closing a pin takes it off the map",
+      E.apply_op(o, led, "closed", ("Solo", None)) == "closed"
+      and not C.find(o, "Solo"), roles(o))
+rec = led["places"]["google:s"]
+check("a closure is its own decision, not a sticky delete",
+      rec["decision"] == "closed" and rec["reason"] == "closed", rec)
+C.sync_ledger(T, led, o)
+check("a ledger sync leaves a closure alone (a drop would make it permanent)",
+      led["places"]["google:s"]["decision"] == "closed")
+check("replaying the same closure is a no-op",
+      E.apply_op(o, led, "closed", ("Solo", None)) == "already closed")
+check("the app data build can't see a closed place",
+      "Solo" not in [p["n"] for p in B.from_viz(o)["hospital"]])
+
+check("re-opening puts the pin back", E.apply_op(o, led, "open", ("Solo", None)) == "re-opened"
+      and [p["id"] for p in o["hospital"]["singles"] if p["n"] == "Solo"] == ["s"])
+C.sync_ledger(T, led, o)
+rec = led["places"]["google:s"]
+check("a re-opened pin is a live pin again",
+      rec["decision"] == "pending" and rec["closedOverride"] is True and "pin" not in rec, rec)
+
+o = viz()
+led = ledger_from(o)
+o["hospital"]["singles"][0]["bs"] = R.CLOSED_TEMP     # Google's flag, often stale
+status = E.apply_op(o, led, "open", ("Solo", None))
+check("'open' overrules Google's closed flag without removing the pin",
+      status.startswith("open (was flagged") and "bs" not in C.find(o, "Solo")[0][2]
+      and led["places"]["google:s"]["closedOverride"] is True, status)
+
+o = viz()
+led = ledger_from(o)
+try:
+    E.apply_op(o, led, "open", ("Nowhere Museum", None))
+    check("re-opening something that was never closed fails loudly", False)
+except LookupError:
+    check("re-opening something that was never closed fails loudly", True)
+
+
 # ------------------------------------------------------------ refresh / diff
 print("\nrefresh diff")
 
@@ -270,6 +314,28 @@ led, q = run([place("keep1", "Kept Hospital", status=R.CLOSED_TEMP)])
 check("temporary closure is manual review, never an auto-drop",
       names(q, "CHANGED") == ["Kept Hospital"]
       and led["places"]["google:keep1"]["decision"] == "pending")
+
+led = base_ledger()
+led["places"]["google:keep1"]["closedOverride"] = True
+led, q = run([place("keep1", "Kept Hospital", status=R.CLOSED_TEMP)], led=led)
+check("a closure flag a human already judged stale isn't re-queued", q["CHANGED"] == [])
+
+led = base_ledger()
+led["places"]["google:keep1"].update(decision="closed", reason="closed")
+led, q = run([place("keep1", "Kept Hospital")], led=led)
+check("a closed place found open again asks for an `open` line, and stays closed "
+      "until it gets one",
+      names(q, "CHANGED") == ["Kept Hospital"]
+      and "open Kept Hospital" in q["CHANGED"][0]["why"]
+      and led["places"]["google:keep1"]["decision"] == "closed", q["CHANGED"])
+led = base_ledger()
+led["places"]["google:keep1"].update(decision="closed", reason="closed")
+led, q = run([place("keep1", "Kept Hospital", status=R.CLOSED_TEMP)], led=led)
+check("a closed place still closed says nothing", q["CHANGED"] == [] and q["GONE"] == [])
+led, q = run([place("keep1", "Kept Hospital", status=R.CLOSED_PERM)], led=led)
+check("a closed place that closes for good becomes a sticky drop",
+      names(q, "GONE") == ["Kept Hospital"]
+      and led["places"]["google:keep1"]["reason"] == "closed_permanently")
 
 led, q = run([place("keep1", "Renamed Medical Center")])
 check("a rename on a live pin is queued and the ledger follows the new name",

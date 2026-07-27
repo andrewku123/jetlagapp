@@ -1,6 +1,6 @@
 {
  "museum": {
-  "count": 148,
+  "count": 142,
   "places": [
    {
     "id": "ChIJx7K17Ji3t4kRr3VvqMTw7cc",
@@ -808,6 +808,25 @@
     "lon": -77.0415472
    },
    {
+    "id": "ChIJJV_SSn63t4kRPy8UXRME73I",
+    "name": "Culture House DC",
+    "primaryType": "art_gallery",
+    "types": [
+     "art_gallery",
+     "event_venue",
+     "association_or_organization",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 438,
+    "businessStatus": "OPERATIONAL",
+    "lat": 38.8804444,
+    "lon": -77.0119177,
+    "source": "authoritative"
+   },
+   {
     "id": "ChIJNRMmvEu2t4kRpYJG2iWb1vw",
     "name": "Old Stone House",
     "primaryType": "museum",
@@ -1282,6 +1301,29 @@
     "lon": -76.95408599999999
    },
    {
+    "id": "ChIJaxf6iFiwt4kRjCQSCgFhsn4",
+    "name": "Athenaeum",
+    "primaryType": "art_gallery",
+    "types": [
+     "art_gallery",
+     "historical_landmark",
+     "tourist_attraction",
+     "wedding_venue",
+     "historical_place",
+     "event_venue",
+     "service",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 110,
+    "businessStatus": "OPERATIONAL",
+    "lat": 38.8034561,
+    "lon": -77.0418067,
+    "source": "authoritative"
+   },
+   {
     "id": "ChIJRb7S4Oy3t4kRxZ30NqxXjBI",
     "name": "D.C. Alley Museum",
     "primaryType": "art_museum",
@@ -1696,6 +1738,23 @@
     "lon": -77.067572
    },
    {
+    "id": "ChIJ35pYvOzIt4kRos-t54GP2gA",
+    "name": "Zenith Gallery",
+    "primaryType": "art_gallery",
+    "types": [
+     "art_gallery",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 42,
+    "businessStatus": "OPERATIONAL",
+    "lat": 38.9824793,
+    "lon": -77.0345928,
+    "source": "authoritative"
+   },
+   {
     "id": "ChIJEUtefKS3t4kRFlcPpOVoZeY",
     "name": "DAR Museum",
     "primaryType": "history_museum",
@@ -1797,6 +1856,25 @@
     "businessStatus": "OPERATIONAL",
     "lat": 39.000554699999995,
     "lon": -76.8805033
+   },
+   {
+    "id": "ChIJiwsbxA1JtokRqGBpF5Wndxo",
+    "name": "Tephra Institute of Contemporary Art",
+    "primaryType": "art_gallery",
+    "types": [
+     "art_gallery",
+     "non_profit_organization",
+     "association_or_organization",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 30,
+    "businessStatus": "OPERATIONAL",
+    "lat": 38.9584963,
+    "lon": -77.361903,
+    "source": "authoritative"
    },
    {
     "id": "ChIJk0YymAY4tokRxidcShP_9o4",
@@ -2283,6 +2361,23 @@
     "lon": -77.0303674
    },
    {
+    "id": "ChIJaZKi577Nt4kRMJKoFfdaqAo",
+    "name": "Grail Art House",
+    "primaryType": "art_gallery",
+    "types": [
+     "art_gallery",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 8,
+    "businessStatus": "OPERATIONAL",
+    "lat": 39.0946485,
+    "lon": -77.1513331,
+    "source": "authoritative"
+   },
+   {
     "id": "ChIJcydTgiK4t4kR8K9WfJ1HpVM",
     "name": "Gallery NK",
     "primaryType": "art_gallery",
@@ -2415,194 +2510,6 @@
     "lon": -77.10346899999999
    },
    {
-    "id": "ChIJaQEHID_Ht4kRdAqOJqsCSYE",
-    "name": "Market Master House Historic Site",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "tourist_attraction",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.938714399999995,
-    "lon": -76.93690579999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJu1anBwC1t4kRSEoYva47Prg",
-    "name": "James I. Mayer Center for Environmental Protection",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.914322999999996,
-    "lon": -77.10804159999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJaxf6iFiwt4kRjCQSCgFhsn4",
-    "name": "Athenaeum",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "historical_landmark",
-     "tourist_attraction",
-     "wedding_venue",
-     "historical_place",
-     "event_venue",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8034561,
-    "lon": -77.0418067,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJiwsbxA1JtokRqGBpF5Wndxo",
-    "name": "Tephra Institute of Contemporary Art",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "non_profit_organization",
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9584963,
-    "lon": -77.361903,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJJV_SSn63t4kRPy8UXRME73I",
-    "name": "Culture House DC",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "event_venue",
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8804444,
-    "lon": -77.0119177,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJkYfiMbzIt4kRdHVMQi_eYVQ",
-    "name": "Montgomery Preservation Inc",
-    "primaryType": "history_museum",
-    "types": [
-     "history_museum",
-     "historical_landmark",
-     "historical_place",
-     "church",
-     "place_of_worship",
-     "museum",
-     "transportation_service",
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.990262799999996,
-    "lon": -77.02706119999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ35pYvOzIt4kRos-t54GP2gA",
-    "name": "Zenith Gallery",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9824793,
-    "lon": -77.0345928,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJcZRPPfq3t4kRHP5Ccayxkkw",
-    "name": "Mary Church Terrell Home",
-    "primaryType": "museum",
-    "types": [
-     "museum",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9157249,
-    "lon": -77.0169334,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJxxHYPBHHt4kRFZ_-hT7XWwU",
-    "name": "Salve Regina Hall",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.936221499999995,
-    "lon": -77.00062489999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJm2CEWrC3t4kRJWWE4FMs3Eg",
-    "name": "Dimock Gallery",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8992465,
-    "lon": -77.046844,
-    "source": "authoritative"
-   },
-   {
     "id": "ChIJzXqa97C3t4kRyqDHQPrL_Og",
     "name": "Luther W. Brady Art Gallery",
     "primaryType": "art_gallery",
@@ -2613,33 +2520,16 @@
     ],
     "address": "",
     "rating": null,
-    "userRatingCount": null,
+    "userRatingCount": 5,
     "businessStatus": "OPERATIONAL",
     "lat": 38.8958961,
     "lon": -77.0400662,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJaZKi577Nt4kRMJKoFfdaqAo",
-    "name": "Grail Art House",
-    "primaryType": "art_gallery",
-    "types": [
-     "art_gallery",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 39.0946485,
-    "lon": -77.1513331,
     "source": "authoritative"
    }
   ]
  },
  "library": {
-  "count": 114,
+  "count": 108,
   "places": [
    {
     "id": "ChIJTTr4jvbuDzkR7D7e9Jayy0Y",
@@ -4493,116 +4383,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 38.994228,
     "lon": -77.0272102
-   },
-   {
-    "id": "ChIJy3rkFPnHt4kRtdgxzN0HG1Q",
-    "name": "Sister Helen Sheehan Library",
-    "primaryType": "library",
-    "types": [
-     "university",
-     "library",
-     "educational_institution",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9268037,
-    "lon": -77.0052559,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJwdHbsuK3t4kREAJSybAkaTw",
-    "name": "Business Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.924345599999995,
-    "lon": -77.0227558,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJk3YsDte1t4kRQKJRBO8Rcik",
-    "name": "Ballston Coakley Library Extension",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "CLOSED_TEMPORARILY",
-    "lat": 38.882339699999996,
-    "lon": -77.11678549999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJzayNzUXJt4kRlDvPOKfJKl8",
-    "name": "USUHS Learning Resource Center",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 39.001944,
-    "lon": -77.085979,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJS_woB_iwt4kRIPYxPNneEyY",
-    "name": "Alexandria Law Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8046076,
-    "lon": -77.0453639,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJi9derqW3t4kRpWqXvYsGB8M",
-    "name": "US Department-Interior Library",
-    "primaryType": "library",
-    "types": [
-     "library",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8944025,
-    "lon": -77.0425229,
-    "source": "osm_backfill"
    }
   ]
  },
@@ -22020,8 +21800,25 @@
   ]
  },
  "golf_course": {
-  "count": 20,
+  "count": 18,
   "places": [
+   {
+    "id": "ChIJhyJRmcm2t4kR6-GoE8MCG7c",
+    "name": "Army Navy Country Club",
+    "primaryType": "association_or_organization",
+    "types": [
+     "association_or_organization",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 851,
+    "businessStatus": "OPERATIONAL",
+    "lat": 38.856504699999995,
+    "lon": -77.07938770000001,
+    "source": "osm_backfill"
+   },
    {
     "id": "ChIJ-3Zn1t84tokRtDSj2VlalK8",
     "name": "1757 Golf Club",
@@ -22222,6 +22019,23 @@
     "lon": -77.216647
    },
    {
+    "id": "ChIJGyFYH63Nt4kR0MGd4Dy6GOo",
+    "name": "Woodmont Country Club",
+    "primaryType": "association_or_organization",
+    "types": [
+     "association_or_organization",
+     "point_of_interest",
+     "establishment"
+    ],
+    "address": "",
+    "rating": null,
+    "userRatingCount": 239,
+    "businessStatus": "OPERATIONAL",
+    "lat": 39.0647721,
+    "lon": -77.14017299999999,
+    "source": "osm_backfill"
+   },
+   {
     "id": "ChIJlTTFt0bSt4kRYWMKRppvgc8",
     "name": "Needwood Golf Course",
     "primaryType": "golf_course",
@@ -22343,81 +22157,11 @@
     "businessStatus": "OPERATIONAL",
     "lat": 38.874621499999996,
     "lon": -77.0267636
-   },
-   {
-    "id": "ChIJhyJRmcm2t4kR6-GoE8MCG7c",
-    "name": "Army Navy Country Club",
-    "primaryType": "association_or_organization",
-    "types": [
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.856504699999995,
-    "lon": -77.07938770000001,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJGyFYH63Nt4kR0MGd4Dy6GOo",
-    "name": "Woodmont Country Club",
-    "primaryType": "association_or_organization",
-    "types": [
-     "association_or_organization",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 39.0647721,
-    "lon": -77.14017299999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJNW3y0w23t4kRgos-9kQcjBU",
-    "name": "East Potomac Park White Course Hole 2",
-    "primaryType": "golf_course",
-    "types": [
-     "golf_course",
-     "athletic_field",
-     "sports_activity_location",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8725117,
-    "lon": -77.03045089999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJ74cYzLTJt4kRsibs4cqCuhI",
-    "name": "Columbia Country Club Greens Department",
-    "primaryType": "association_or_organization",
-    "types": [
-     "point_of_interest",
-     "association_or_organization",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9943861,
-    "lon": -77.0800215,
-    "source": "osm_backfill"
    }
   ]
  },
  "consulate": {
-  "count": 209,
+  "count": 203,
   "places": [
    {
     "id": "ChIJIad77s_Jt4kRykGjDSJEpp4",
@@ -26085,120 +25829,6 @@
     "businessStatus": "OPERATIONAL",
     "lat": 38.9142241,
     "lon": -77.0873281
-   },
-   {
-    "id": "ChIJFbpBcza3t4kR9qRlB8OlNjE",
-    "name": "Embassy of the Republic of Maldives to the United States of America",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.8995094,
-    "lon": -77.02718209999999,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJYVUCItm3t4kRWFsnFTu4F-Y",
-    "name": "Embassy of the Central African Republic",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9244347,
-    "lon": -77.0405534,
-    "source": "osm_backfill"
-   },
-   {
-    "id": "ChIJ31CrcLu3t4kRBSsZT7dq4Xw",
-    "name": "Embassy of Ireland",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.898598899999996,
-    "lon": -77.0398731,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJcX8WSc7Jt4kRBJcmYklPVh8",
-    "name": "Embassy of the Principality of Monaco",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.9011634,
-    "lon": -77.0396464,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJ28IWs8C3t4kReRZHBHO4chg",
-    "name": "Embassy of San Marino",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "service",
-     "point_of_interest",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.907464600000004,
-    "lon": -77.03906049999999,
-    "source": "authoritative"
-   },
-   {
-    "id": "ChIJueeXg0PJt4kRlTrAk1U4-fU",
-    "name": "Embassy of Timor-Leste",
-    "primaryType": "embassy",
-    "types": [
-     "embassy",
-     "government_office",
-     "point_of_interest",
-     "service",
-     "establishment"
-    ],
-    "address": "",
-    "rating": null,
-    "userRatingCount": null,
-    "businessStatus": "OPERATIONAL",
-    "lat": 38.97554470000001,
-    "lon": -77.0339127,
-    "source": "authoritative"
    }
   ]
  },

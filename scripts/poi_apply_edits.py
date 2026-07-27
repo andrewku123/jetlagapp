@@ -21,6 +21,14 @@ add `@ lat,lon` after any name to disambiguate a repeated one):
     rename  Fort Dupont Ice Arena -> Fort Dupont Ice Rink
     keep    Rock Creek Park Horse Center      # undo an automatic merge
     rep     Kindred Hospital Paramount        # promote a merged-away pin to the group's pin
+    closed  Uptown Theater                    # shut for now: out of the app, still watched
+    open    Anacostia Community Museum        # it's open — ignore Google's closed flag
+
+`delete` and `closed` both take a place out of the app, and the difference
+matters: `delete` says "this was never a POI for the game" and is **sticky**, so a
+rescan can never bring it back; `closed` says "this place is shut *right now*",
+which a refresh is allowed to undo by itself if the place reopens. Use `open` to
+put a closed place back, or to overrule a stale Google closure flag.
 
 Every op is **idempotent**: re-running the file is a no-op, and a line whose place
 is already in the requested state reports `ok (already)`. Lines that no longer
@@ -52,6 +60,8 @@ TEMPLATE = """# POI decisions for {label} — replayed onto the review map by
 #   rename  <old> -> <new>                  fix a name
 #   keep    <name>                          undo an automatic merge
 #   rep     <name>                          make this pin the group's pin
+#   closed  <name>                          shut for now (reversible; still re-checked)
+#   open    <name>                          it's open — undo a closure / Google's flag
 """
 
 
@@ -84,11 +94,11 @@ def parse(path):
                 if not old.strip() or not new.strip():
                     bad.append((i, line, "rename needs a name on each side")); continue
                 ops.append((i, verb, (C.parse_line(old), new.strip())))
-            elif verb in ("delete", "keep", "rep"):
+            elif verb in ("delete", "keep", "rep", "closed", "open"):
                 ops.append((i, verb, C.parse_line(rest)))
             else:
-                bad.append((i, line, f"unknown verb '{verb}' "
-                                     "(delete / merge / rename / keep / rep)"))
+                bad.append((i, line, f"unknown verb '{verb}' (delete / merge / "
+                                     "rename / keep / rep / closed / open)"))
     return ops, bad
 
 
@@ -114,6 +124,25 @@ def known_gone(led, name):
     want = L.norm(name)
     return any(L.norm(r.get("name")) == want and r["decision"] in ("drop", "merged")
                for r in led["places"].values())
+
+
+def ledger_find(led, target, decision=None):
+    """Ledger records matching a (name, at) — the only trace a closed place leaves.
+
+    A closed pin is off the review map, so `open` can't resolve it the way every
+    other verb does; the ledger keeps the pin's own data for exactly this.
+    """
+    name, at = target
+    want = L.norm(name)
+    out = [(k, r) for k, r in led["places"].items()
+           if L.norm(r.get("name")) == want
+           and (decision is None or r.get("decision") == decision)]
+    if at:
+        near = [(k, r) for k, r in out if abs(r.get("lat", 0) - at[0]) < 3e-4
+                and abs(r.get("lon", 0) - at[1]) < 3e-4]
+        if near:
+            return near
+    return out
 
 
 def apply_op(obj, led, verb, payload):
@@ -163,6 +192,57 @@ def apply_op(obj, led, verb, payload):
             return "already standalone"
         C.op_unmerge(obj, [(cat, role, pin, grp)])
         return "un-merged"
+
+    if verb == "closed":
+        name, at = payload
+        if not C.find(obj, name, at):
+            if ledger_find(led, payload, "closed"):
+                return "already closed"
+            if known_gone(led, name):
+                return "already gone"
+            raise LookupError(f"no pin named {name!r}, and nothing of that name "
+                              "was ever on the map")
+        hit = one(obj, payload)
+        cat, _, pin, _ = hit
+        rec = led["places"].setdefault(L.key_for(pin.get("id")), {
+            "cat": cat, "name": pin["n"], "lat": pin["lat"], "lon": pin["lon"],
+            "reviewGate": "unknown", "closed": None,
+            "firstSeen": L.today(), "lastSeen": L.today(),
+        })
+        # keep the pin itself, not just its name: `open` rebuilds the map entry
+        # from this, and nothing else remembers its review count or Google id
+        rec["pin"] = {k: v for k, v in pin.items() if k != "src"}
+        rec.update(decision="closed", reason="closed", mergedInto=None,
+                   closedOverride=False, decidedAt=L.today())
+        promoted = C.op_delete(obj, [hit])
+        extra = "".join(f"; kept unlisted kid {k['n']}" for _, k in promoted)
+        return "closed" + extra
+
+    if verb == "open":
+        name, at = payload
+        if C.find(obj, name, at):
+            cat, _, pin, _ = one(obj, payload)
+            flag = pin.pop("bs", None)
+            rec = led["places"].get(L.key_for(pin.get("id")))
+            if rec is not None:
+                rec.update(closed=None, closedOverride=True)
+            return f"open (was flagged {flag})" if flag else "already open"
+        recs = ledger_find(led, payload, "closed")
+        if not recs:
+            raise LookupError(f"no pin named {name!r} on the map, and no closed "
+                              "record of that name to re-open")
+        if len(recs) > 1:
+            where = "; ".join(f"{r['lat']:.5f},{r['lon']:.5f}" for _, r in recs)
+            raise LookupError(f"{len(recs)} closed places named {name!r} "
+                              f"— add '@ lat,lon' ({where})")
+        key, rec = recs[0]
+        pin = rec.pop("pin", None) or {
+            "n": rec["name"], "lat": rec["lat"], "lon": rec["lon"], "r": None,
+            "id": key.split("google:", 1)[1] if key.startswith("google:") else None}
+        pin.pop("bs", None)
+        obj[rec["cat"]]["singles"].append(pin)
+        rec.update(closed=None, closedOverride=True)
+        return "re-opened"
 
     if verb == "rep":
         cat, role, pin, grp = one(obj, payload)

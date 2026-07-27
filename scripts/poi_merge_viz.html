@@ -24,6 +24,7 @@
   .lp b{font-size:13px}
   .lp .k{color:#c0392b}
   .lp .r{color:#27ae60}
+  .lp .shut{color:#fff;background:#c0392b;border-radius:3px;padding:1px 4px;font-size:11px}
   .lp .acts{margin-top:6px;border-top:1px solid #eee;padding-top:6px}
   .lp .acts button{margin:0 4px 0 0;padding:2px 6px}
   /* the check-it-on-Google step comes before any decision, so it leads the row */
@@ -53,6 +54,7 @@
       <button id="all">Show all</button><button id="none">Hide all</button>
     </div>
     <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <div class="ctl"><label><input type="checkbox" id="onlyclosed"> only pins Google calls closed</label></div>
     <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
     <input type="search" id="q" placeholder="find a place by name…" />
     <div class="hits" id="hits"></div>
@@ -61,10 +63,12 @@
 
     <h3>Your edits (<span id="ecount">0</span>)</h3>
     <div class="ctl" style="color:#555">
-      Click any dot → <b>Delete / Merge / Rename / Keep</b>. To merge, click the
-      pin you want to <b>survive</b> → <b>Merge…</b>, then click each pin it
-      absorbs; <b>Esc</b> (or the banner button) ends it. Lines collect here and
-      stay in this browser. Paste them into
+      Click any dot → <b>Delete / Merge / Rename / Closed now</b>. To merge, click
+      the pin you want to <b>survive</b> → <b>Merge…</b>, then click each pin it
+      absorbs; <b>Esc</b> (or the banner button) ends it. <b>Delete</b> is
+      permanent (“never a POI”); <b>Closed now</b> only hides a place while it is
+      shut, and a later refresh brings it back if it reopens. Lines collect here
+      and stay in this browser. Paste them into
       <code id="editsfile">scripts/poi_edits.&lt;region&gt;.txt</code> and commit.
     </div>
     <div id="edits"></div>
@@ -79,6 +83,7 @@
       <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
       <div><span class="sw" style="background:#1abc9c;display:inline-block"></span> <b>merged away</b> — into parent park</div>
       <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
+      <div><span class="sw" style="background:#fff;border:2px dashed #000;display:inline-block"></span> Google says closed — judge it</div>
       <div style="margin-top:6px">Grey line links each absorbed pin → the pin that survives.
         Pins sitting on top of each other are fanned out a few metres <b>for display
         only</b> — every edit line still carries the real coordinate.</div>
@@ -106,7 +111,8 @@ L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain}
   {collapsed:false,position:'topleft'}).addTo(map);
 
 const CATS=Object.keys(window.VIZ).filter(k=>window.VIZ[k] && window.VIZ[k].groups);
-const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false}, jump={v:false};
+const layers={}, enabled={}, onlyMerged={v:false}, onlyClosed={v:false},
+      terrain={v:false}, jump={v:false};
 map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
   CATS.forEach(refresh);});
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
@@ -216,17 +222,26 @@ function computeFan(){
 }
 computeFan();
 
+// Google's closed flag is often stale, so it is shown, not obeyed: the pin stays
+// on the map until a human says `closed` (reversible) or `open` (overrules it).
+const CLOSED={CLOSED_TEMPORARILY:'Google: temporarily closed',
+              CLOSED_PERMANENTLY:'Google: permanently closed'};
 function popup(p,kind,label){
+  const shut=CLOSED[p.bs];
   const acts=`<div class="acts">
       <a class="gm" href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
       <button data-a="del">Delete</button>
       <button data-a="merge">Merge…</button>
       <button data-a="rename">Rename</button>
+      <button data-a="closed">Closed now</button>
+      ${shut?'<button data-a="open">It\'s open</button>':''}
       ${kind.indexOf('merged')===0?'<button data-a="keep">Keep (un-merge)</button>'
                                   +'<button data-a="rep">Make this the pin</button>':''}
     </div>`;
   return `<div class="lp" data-n="${esc(p.n)}" data-at="${at(p)}"><b>${esc(p.n)}</b><br>`
-    +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${label}<br>`
+    +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${label}`
+    +(p.sr?` · <i>${esc(p.sr==='authoritative'?'registry-listed':p.sr)}</i>`:'')+`<br>`
+    +(shut?`<span class="shut">${shut}</span> `:'')
     +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span>`
     +acts+`</div>`;
 }
@@ -237,6 +252,7 @@ const TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches)
 
 function place(g,p,kind,label,cat,style){
   const o=od(p);
+  if(p.bs) style={...style,color:'#000',weight:2,dashArray:'2,2'};   // flagged closed
   if(TOUCH) bind(L.circleMarker(o,{radius:Math.max(style.radius+10,15),
     stroke:false,fillOpacity:0}).addTo(g),p,kind,label,cat);
   return bind(L.circleMarker(o,style).addTo(g),p,kind,label,cat);
@@ -258,6 +274,8 @@ function bind(marker,p,kind,label,cat){
         if(a==='del')    addEdit(`delete  ${p.n} @ ${at(p)}`);
         if(a==='keep')   addEdit(`keep    ${p.n} @ ${at(p)}`);
         if(a==='rep')    addEdit(`rep     ${p.n} @ ${at(p)}`);
+        if(a==='closed') addEdit(`closed  ${p.n} @ ${at(p)}`);
+        if(a==='open')   addEdit(`open    ${p.n} @ ${at(p)}`);
         if(a==='rename'){const n=prompt('New name for “'+p.n+'”:',p.n);
                          if(n && n!==p.n) addEdit(`rename  ${p.n} @ ${at(p)} -> ${n}`);}
         if(a==='merge'){ startMerge(p,cat); marker.closePopup(); return; }
@@ -271,14 +289,18 @@ function bind(marker,p,kind,label,cat){
 function build(key){
   const d=window.VIZ[key], g=L.layerGroup();
   const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0;  // terrain needs darker ink
+  // triaging closures means visiting a handful of pins spread over the whole
+  // map, so they get their own view rather than a hunt through 1,500 dots
+  const shown=p=>!onlyClosed.v || p.bs;
   if(!onlyMerged.v){
-    d.singles.forEach(p=>place(g,p,'untouched',d.label,key,
+    d.singles.filter(shown).forEach(p=>place(g,p,'untouched',d.label,key,
       {radius:4,color:t?'#444':'#999',weight:1,
        fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6}));
   }
   d.groups.forEach(grp=>{
     const R=grp.rep, oR=od(R);
-    grp.kids.forEach(k=>{
+    if(onlyClosed.v && !R.bs && !grp.kids.some(k=>k.bs)) return;
+    grp.kids.filter(shown).forEach(k=>{
       const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':
                  k.src==='bigpark'?'#1abc9c':'#c0392b';
       const col2=dark(base,sf);
@@ -287,7 +309,7 @@ function build(key){
       L.polyline([oR,od(k)],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
       place(g,k,klabel,d.label,key,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1});
     });
-    place(g,R,'kept',d.label,key,
+    if(shown(R)) place(g,R,'kept',d.label,key,
       {radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1});
   });
   return g;
@@ -315,6 +337,10 @@ document.getElementById('all').onclick=()=>{CATS.forEach(k=>{enabled[k]=true;ref
 document.getElementById('none').onclick=()=>{CATS.forEach(k=>{enabled[k]=false;refresh(k);});
   catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
 document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
+  CATS.forEach(k=>refresh(k));};
+document.getElementById('onlyclosed').onchange=e=>{onlyClosed.v=e.target.checked;
+  if(onlyClosed.v){CATS.forEach(k=>{enabled[k]=true});
+    catsDiv.querySelectorAll('input').forEach(i=>i.checked=true);}
   CATS.forEach(k=>refresh(k));};
 document.getElementById('jump').onchange=e=>{jump.v=e.target.checked;
   if(jump.v) flash('click a dot to open it in Google Maps — untick to edit again');};

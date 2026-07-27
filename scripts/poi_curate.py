@@ -216,6 +216,12 @@ def sync_ledger(region, led, obj, reason="manual"):
     Alive pins take their decision from their role; anything the ledger thought was
     alive and is now absent becomes a **sticky** drop. Review-gate state is never
     lost, and a `drop` is never resurrected (curation only ever removes pins).
+
+    `closed` is the one absent-but-not-dropped state: a place the reviewer says is
+    shut is off the map and out of the app, but it is not a judgement that the
+    place was never a POI, so it keeps its own decision and the refresh goes on
+    re-checking it. Turning it into a sticky drop here would make a closure
+    permanent, which is exactly what it must not be.
     """
     pending_cats = L.REGIONS[region]["pendingCats"]
     day = L.today()
@@ -232,18 +238,19 @@ def sync_ledger(region, led, obj, reason="manual"):
             new, into = "merged", L.key_for(group["rep"].get("id"))
         else:
             new, into = ("pending" if cat in pending_cats else "keep"), None
-        if was == "drop":
+        if was in ("drop", "closed"):
             # The map is what the human sees, so a pin they put back is alive again
             # — but say so out loud, because refreshes never do this on their own.
-            print(f"  NOTE: '{pin['n']}' was a {rec.get('reason')} drop and is on the map "
-                  f"again — restoring it as {new}")
+            print(f"  NOTE: '{pin['n']}' was a {rec.get('reason') or was} drop and is on "
+                  f"the map again — restoring it as {new}")
+            rec.pop("pin", None)
         if was != new or rec.get("mergedInto") != into:
             rec.update(decision=new, mergedInto=into, reason=None, decidedAt=day)
             changes[new if new != "pending" else "keep"] += 1
         rec["name"] = pin["n"]
         rec["mergeSrc"] = pin.get("src") if role == "kid" else None
     for k, rec in led["places"].items():
-        if k in alive or rec.get("decision") == "drop":
+        if k in alive or rec.get("decision") in ("drop", "closed"):
             continue
         rec.update(decision="drop", reason=reason, mergedInto=None, decidedAt=day)
         changes["drop"] += 1

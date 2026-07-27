@@ -1320,14 +1320,15 @@
    "name": "Embassy of San Marino",
    "lat": 38.907464600000004,
    "lon": -77.03906049999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ29CCDNa2t4kRPY-Ey7vvq_E": {
    "cat": "park",
@@ -1628,14 +1629,15 @@
    "name": "Embassy of Ireland",
    "lat": 38.898598899999996,
    "lon": -77.0398731,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ31vfGb63t4kRZiuukg6a1wk": {
    "cat": "park",
@@ -2986,14 +2988,15 @@
    "name": "Columbia Country Club Greens Department",
    "lat": 38.9943861,
    "lon": -77.0800215,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ762-6tnNt4kR5FoWut223hc": {
    "cat": "museum",
@@ -6640,14 +6643,15 @@
    "name": "Embassy of the Republic of Maldives to the United States of America",
    "lat": 38.8995094,
    "lon": -77.02718209999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJFc2Lda7Gt4kRamHuCwt8IY4": {
    "cat": "park",
@@ -10043,14 +10047,15 @@
    "name": "East Potomac Park White Course Hole 2",
    "lat": 38.8725117,
    "lon": -77.03045089999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJNXFUJS-yt4kRMOxw2LmeVrk": {
    "cat": "park",
@@ -12241,14 +12246,15 @@
    "name": "Alexandria Law Library",
    "lat": 38.8046076,
    "lon": -77.0453639,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJSd13PCDGt4kRo9CxwSKrd9M": {
    "cat": "park",
@@ -14579,14 +14585,15 @@
    "name": "Embassy of the Central African Republic",
    "lat": 38.9244347,
    "lon": -77.0405534,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJYXAQRfm3t4kRncGcWhcuI2I": {
    "cat": "park",
@@ -15797,14 +15804,15 @@
    "name": "Market Master House Historic Site",
    "lat": 38.938714399999995,
    "lon": -76.93690579999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJaRl_BQuxt4kRyvRU8nDmVB0": {
    "cat": "park",
@@ -16581,14 +16589,15 @@
    "name": "Embassy of the Principality of Monaco",
    "lat": 38.9011634,
    "lon": -77.0396464,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJcX8WSc7Jt4kRR4NbhBH6knk": {
    "cat": "consulate",
@@ -16623,14 +16632,15 @@
    "name": "Mary Church Terrell Home",
    "lat": 38.9157249,
    "lon": -77.0169334,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJc_ylqn62t4kRY-gwOy_mStQ": {
    "cat": "park",
@@ -18779,14 +18789,15 @@
    "name": "US Department-Interior Library",
    "lat": 38.8944025,
    "lon": -77.0425229,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJi9zJ0HFLtokRHc-8PmFkpi4": {
    "cat": "park",
@@ -19493,14 +19504,15 @@
    "name": "Ballston Coakley Library Extension",
    "lat": 38.882339699999996,
    "lon": -77.11678549999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJk3_-Dbe1t4kRYKX3MFrU8uE": {
    "cat": "library",
@@ -19731,14 +19743,15 @@
    "name": "Montgomery Preservation Inc",
    "lat": 38.990262799999996,
    "lon": -77.02706119999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJkYrBklzMt4kRIbYIaEHC1dM": {
    "cat": "park",
@@ -20347,14 +20360,15 @@
    "name": "Dimock Gallery",
    "lat": 38.8992465,
    "lon": -77.046844,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJm4uAxvyxt4kRuWXq0ugbT8s": {
    "cat": "hospital",
@@ -23385,14 +23399,15 @@
    "name": "James I. Mayer Center for Environmental Protection",
    "lat": 38.914322999999996,
    "lon": -77.10804159999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJu1zYuk62t4kRoPy9gCjcr-g": {
    "cat": "consulate",
@@ -23623,14 +23638,15 @@
    "name": "Embassy of Timor-Leste",
    "lat": 38.97554470000001,
    "lon": -77.0339127,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJuwa-HFzJt4kRwcSeUDrEDWk": {
    "cat": "hospital",
@@ -24309,14 +24325,15 @@
    "name": "Business Library",
    "lat": 38.924345599999995,
    "lon": -77.0227558,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJwftcVSm4t4kRDSdJpTPOiic": {
    "cat": "library",
@@ -24687,14 +24704,15 @@
    "name": "Salve Regina Hall",
    "lat": 38.936221499999995,
    "lon": -77.00062489999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJxygf7NC5t4kRg4N3Fk-N0jQ": {
    "cat": "park",
@@ -24799,14 +24817,15 @@
    "name": "Sister Helen Sheehan Library",
    "lat": 38.9268037,
    "lon": -77.0052559,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJy5F2NK22t4kR8N_dJJwn_JY": {
    "cat": "park",
@@ -25387,14 +25406,15 @@
    "name": "USUHS Learning Resource Center",
    "lat": 39.001944,
    "lon": -77.085979,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJzc09rvE3tokR1tdYXTTsrTs": {
    "cat": "park",
