@@ -137,9 +137,27 @@ test — but they are **no longer used to draw the overlay**.)
   outer ring (in play) → interior hole (dim again). **Including interior holes is
   required** — a deleted place ringed by kept neighbours (e.g. Moraga inside
   Orinda/Lafayette) is an interior hole in the play polygon; if only outer rings
-  are used it renders white instead of grey. The satellite-imagery clip-path's
-  `<path>` likewise sets `clip-rule="evenodd"` for the same reason. Placed
-  **before** the station markers so markers/annotations draw on top of the shading.
+  are used it renders white instead of grey. The satellite-imagery clip likewise
+  uses the even-odd rule for the same reason. Placed **before** the station
+  markers so markers/annotations draw on top of the shading.
+
+## Satellite clip: never mask with `clip-path: url(#id)`
+iOS (every iPhone browser — they are all WebKit; macOS Safari is fine) clips the
+whole layer away when a `clip-path` references an SVG `<clipPath>`. The symptom is
+imagery that *loads* and is invisible: tiles are fetched, the Esri attribution
+appears, and the map shows only the basemap. `SatelliteLayer` therefore masks the
+pane with the CSS function form —
+`pane.style.clipPath = 'path(evenodd, "M… Z")'` (same `d` string, rebuilt on
+`viewreset zoomend moveend resize`) — and only builds the SVG `<clipPath>` when
+`CSS.supports('clip-path', 'path(evenodd, "M0 0Z")')` is false.
+
+Playwright's WebKit build renders **both** forms correctly, so it cannot reproduce
+this; test on a real iPhone. A cheap way to isolate a mobile-only rendering bug:
+drop a standalone page in `public/` that draws the same layer several ways (plain
+/ each masking technique / a different tile host) with per-map `tileload`/
+`tileerror` counters, push it to the PR preview, and have the user screenshot it —
+tiles-loaded-but-nothing-drawn tells you the *clip* is at fault, not the source.
+Delete the page once the cause is known.
 
 ## To change what is in play
 Change the eligible-place rule and re-run `build_play_area.py` (see the
