@@ -108,6 +108,16 @@ The rest of this doc is the detailed reference for each step.
      else nearest `< 150 m`) and cross-system merge (`< 200 m`, different systems
      only, OR-ing service flags). Tune thresholds for the city's stop spacing.
    - Keep the name-collision disambiguation (append system).
+   - **Station names must read like the signage, not like OSM.** OSM spells names
+     out in full and tacks on university/neighbourhood qualifiers
+     (`Vienna/Fairfax–GMU`, `Shaw–Howard University`, `Rhode Island
+     Avenue–Brentwood`) where the agency's maps, signs and announcements say
+     `Vienna`, `Shaw–Howard U`, `Rhode Island Av`. Players read the sign, and the
+     name-length question is scored off it, so keep a `NAME_OVERRIDES = {osm:
+     display}` in the region's station builder and fail the build when a key no
+     longer matches an OSM name (otherwise an upstream rename silently reverts
+     one). `aka` is for names a stop is genuinely findable under — never internal
+     platform IDs (`railway:ref` = `N02`, `D10`); leave it empty if there are none.
    - Encode each system's service: frequent systems use the `FREQUENT` constant;
      systems with sparse/peak service need a per-stop `{served, hourly}` per day
      like `caltrain_service.json`.
