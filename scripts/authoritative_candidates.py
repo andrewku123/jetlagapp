@@ -36,6 +36,15 @@ curated = json.load(open(poi_geo.work(REGION, "poi_curated.json")))
 # Both come from the region registry — see poi_geo.REGIONS.
 US_COUNTIES = {c.upper() for c in poi_geo.REGIONS[REGION]["counties"]}
 GEONAMES_COUNTRY = poi_geo.REGIONS[REGION]["geonamesCountry"]  # US.zip, CA.zip, ...
+# CMS keys rows by postal state, and a metro can span several (DC/MD/VA).
+STATE_ABBR = {"district of columbia": "DC", "maryland": "MD", "virginia": "VA",
+              "california": "CA", "new york": "NY", "illinois": "IL",
+              "texas": "TX", "florida": "FL", "massachusetts": "MA",
+              "washington": "WA", "oregon": "OR", "georgia": "GA",
+              "pennsylvania": "PA", "michigan": "MI", "ohio": "OH",
+              "colorado": "CO", "arizona": "AZ", "nevada": "NV"}
+STATES = {STATE_ABBR[n.lower()] for _, n in poi_geo.REGIONS[REGION].get("states", [])
+          if n.lower() in STATE_ABBR}
 
 
 def norm(s):
@@ -94,14 +103,17 @@ def cms_hospitals():
         if not rows:
             break
         for x in rows:
-            if x.get("state") != "CA":
+            st = x.get("state")
+            if STATES and st not in STATES:
                 continue
-            if (x.get("countyparish") or "").upper() not in US_COUNTIES:
+            # DC files itself with no county; elsewhere the county must be ours.
+            county = (x.get("countyparish") or "").upper()
+            if county and county not in US_COUNTIES and st != "DC":
                 continue
             nm = (x.get("facility_name") or "").title()
             city = (x.get("citytown") or "").title()
             out.append({"name": nm, "lat": cy, "lon": cx,
-                        "query": f"{nm}, {city}, CA"})
+                        "query": f"{nm}, {city}, {st}"})
         off += 500
     return out
 

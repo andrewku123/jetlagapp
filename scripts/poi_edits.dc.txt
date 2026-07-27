@@ -1,0 +1,10 @@
+# POI decisions for Washington DC — replayed onto the review map by
+#   python3 scripts/poi_apply_edits.py --region dc
+# One decision per line. Paste the block the review map's "Copy edits" button
+# gives you; nothing here is ever overwritten by a rebuild.
+#
+#   delete  <name> [@ lat,lon]              drop the pin entirely
+#   merge   <keep this> <- <a> | <b>        fold pins into one place
+#   rename  <old> -> <new>                  fix a name
+#   keep    <name>                          undo an automatic merge
+#   rep     <name>                          make this pin the group's pin

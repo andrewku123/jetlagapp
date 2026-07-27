@@ -68,12 +68,19 @@ REGIONS = {
         "suffix": ".dc",
         "play": "src/data/dc.play-area.geojson.json",
         "viz": "scripts/poi_merge_viz.dc.js",
+        # while a city is under review its map is also served from the review
+        # branch's preview site; that copy wins when present (see viz_path).
+        "vizPreview": "public/poi-dc-review/poi_merge_viz.js",
         "ledger": "scripts/poi_decisions.dc.json",
         "poi": "src/data/dc.poi.json",
         "counties": ["District of Columbia", "Arlington", "Alexandria city",
                      "Fairfax", "Loudoun", "Montgomery", "Prince George's"],
         "geonamesCountry": "US",
-        "pendingCats": [],
+        # Nothing here has been through a human pass yet, so every survivor seeds
+        # as `pending`: the ledger must not claim a place was confirmed by anyone.
+        "pendingCats": ["museum", "library", "movie_theater", "hospital", "zoo",
+                        "aquarium", "amusement_park", "park", "golf_course",
+                        "consulate", "mountain", "stadium"],
         # --- map build (stations + geometry); see build_region_geo.py ---
         "states": [("11", "District of Columbia"), ("24", "Maryland"),
                    ("51", "Virginia")],

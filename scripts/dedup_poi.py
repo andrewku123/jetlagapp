@@ -919,6 +919,9 @@ def main():
                    for i in kept if i not in children and i not in absorbed_set]
         viz[key] = {"label": LABEL[key], "groups": groups, "singles": singles,
                     "before": len(places), "after": len(kept_places)}
+    # the map is one file served for every city: it reads the region off the data
+    # so its title, edits-file name and per-browser edit basket are region-scoped
+    viz["_region"] = REGION
 
     md = [md[0], md[1], "\n".join(table), "\n"] + md[2:]
     dedup_path = poi_geo.work(REGION, "poi_deduped.json")

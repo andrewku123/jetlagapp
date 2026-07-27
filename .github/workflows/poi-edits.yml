@@ -1,0 +1,93 @@
+name: Apply POI edits
+
+# The human POI review happens on the review map, but the map can't write to the
+# repo: it hands you lines to paste into `scripts/poi_edits.<region>.txt`. This
+# turns that commit into applied data — replay the decisions onto the review map
+# and the ledger, rebuild the app's POI file, and push the result back — so the
+# reviewer never has to run anything locally.
+#
+# Deliberately *not* a full pipeline run: discovery costs money and needs the
+# Google key, so this only replays decisions over data already in the repo.
+
+on:
+  push:
+    paths:
+      - 'scripts/poi_edits.*.txt'
+  workflow_dispatch:
+    inputs:
+      region:
+        description: 'Region to re-apply (blank = every edits file present)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: poi-edits-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install shapely
+
+      - name: Replay every region's edits file
+        id: apply
+        run: |
+          set -o pipefail
+          shopt -s nullglob
+          regions="${{ github.event.inputs.region }}"
+          if [ -z "$regions" ]; then
+            regions=$(for f in scripts/poi_edits.*.txt; do
+                        b=${f#scripts/poi_edits.}; echo "${b%.txt}"; done)
+          fi
+          : > /tmp/poi_report.md
+          status=0
+          for r in $regions; do
+            echo "== $r"
+            {
+              echo "### \`$r\`"
+              echo '```'
+            } >> /tmp/poi_report.md
+            python3 scripts/poi_apply_edits.py --region "$r" 2>&1 | tee -a /tmp/poi_report.md || status=1
+            python3 scripts/build_poi_data.py --region "$r" 2>&1 | tee -a /tmp/poi_report.md || status=1
+            echo '```' >> /tmp/poi_report.md
+          done
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+
+      - name: Commit the regenerated data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A scripts src/data
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "Apply POI edits [skip ci]"
+            git push
+          fi
+
+      - name: Report on the PR
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr=$(gh pr list --head "${{ github.ref_name }}" --json number -q '.[0].number' || true)
+          if [ -n "$pr" ]; then
+            gh pr comment "$pr" --body-file /tmp/poi_report.md
+          fi
+
+      # A line that no longer resolves (renamed place, typo) is reported but does
+      # not block the rest of the batch; fail the run so it is visible.
+      - name: Fail if any decision was unresolved
+        if: steps.apply.outputs.status != '0'
+        run: exit 1

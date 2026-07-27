@@ -1,40 +1,60 @@
-"""Authoritative consulate list -> auth_lists/consulate.csv.
+"""Authoritative diplomatic-post list -> auth_lists/consulate.csv.
 
 Source: the U.S. Government Congressional Directory "Foreign Diplomatic Offices in
-the United States" (published on govinfo.gov), which lists, per country, the
-cities where it maintains consular offices. We extract the consular cities that
-fall in the play area's metro and emit one candidate per (country, city):
-    Consulate General of <Country>, <City>, <STATE>
-`authoritative_candidates.py` then gap-filters these and the icon-check geocodes
-them via Google searchText + the in_play polygon test (consulates type=embassy).
+the United States" (published on govinfo.gov). Two kinds of post are listed per
+country and both count as the game's `consulate` category (Google icon `embassy`):
+  * the **embassy** itself — always in Washington, DC, so it only matters for a
+    play area that contains the capital;
+  * the **consular offices**, listed as `<State>, <City>` lines.
+We emit one candidate per post in the play area; `authoritative_candidates.py`
+gap-filters them and the icon-check geocodes each via Google searchText + the
+in_play polygon test.
+
+City-agnostic: the in-metro test is the region's own Census places file
+(`places` in poi_geo.REGIONS) and its states, so a new city needs no edits —
+never a hand-typed city list, which silently under-covers a metro.
 
 The PDF is two-column; we crop each page into halves so the country blocks read
-in order. Per-city input for a new metro: METRO_CITIES + STATE (+ a current PDF).
-Requires: pdfplumber.
+in order. Requires: pdfplumber.
+
+    python3 fetch_consulates_fco.py --region dc
 """
-import os, re, csv, urllib.request
+import os, re, csv, json, urllib.request
 import pdfplumber
+
+import poi_geo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PDF_URL = ("https://www.govinfo.gov/content/pkg/CDIR-2022-10-26/pdf/"
            "CDIR-2022-10-26-DIPLOMATICOFFICES.pdf")
-STATE = "California"                       # play-area state (full name as in PDF)
-STATE_ABBR = "CA"
-METRO_CITIES = {                          # Bay Area cities considered in-metro
-    "san francisco", "san jose", "palo alto", "sunnyvale", "mountain view",
-    "oakland", "berkeley", "santa clara", "san mateo", "burlingame",
-    "foster city", "menlo park", "fremont", "milpitas", "redwood city",
-    "cupertino", "los altos", "san rafael", "walnut creek", "hayward",
-    "south san francisco", "emeryville", "san bruno"}
-US_STATES = {  # state names that head a consular-office list in the directory
-    "california", "alaska", "arizona", "colorado", "florida", "georgia", "guam",
-    "hawaii", "illinois", "massachusetts", "michigan", "new york", "oregon",
-    "texas", "washington", "louisiana", "district of columbia", "nevada",
-    "puerto rico", "minnesota", "ohio", "pennsylvania", "missouri", "utah",
-    "north carolina", "tennessee", "new mexico", "kentucky",
-    "northern mariana islands", "american samoa", "virgin islands"}
+REGION = poi_geo.region_from_argv()
+
+# The directory heads each consular list with a state name, so we need the play
+# area's states; the abbreviation is only cosmetic (it lands in the CSV).
+STATE_ABBR = {
+    "district of columbia": "DC", "maryland": "MD", "virginia": "VA",
+    "california": "CA", "new york": "NY", "illinois": "IL", "texas": "TX",
+    "florida": "FL", "massachusetts": "MA", "washington": "WA", "oregon": "OR",
+    "georgia": "GA", "pennsylvania": "PA", "michigan": "MI", "ohio": "OH",
+    "colorado": "CO", "arizona": "AZ", "nevada": "NV", "hawaii": "HI",
+    "alaska": "AK", "louisiana": "LA", "minnesota": "MN", "missouri": "MO",
+    "utah": "UT", "north carolina": "NC", "tennessee": "TN", "new mexico": "NM",
+    "kentucky": "KY", "puerto rico": "PR", "guam": "GU",
+}
+US_STATES = set(STATE_ABBR)                  # state names that head a consular list
 STOP = ("Embassy", "Ambassador", "His Excellency", "Her Excellency", "Mr.", "Ms.",
         "Mrs.", "Charge", "Counselor", "Delegation", "Minister", "phone", "fax")
+LSAD = re.compile(r"\s+(city|town|village|borough|CDP|municipality)$", re.I)
+
+
+def metro(region):
+    """(city names in the play area, state names it spans) — both lowercased."""
+    places = json.load(open(poi_geo.repo_path(region, "places")))
+    cities = {LSAD.sub("", f["properties"]["name"]).strip().lower()
+              for f in places["features"]}
+    states = {name.lower() for _, name in poi_geo.REGIONS[region].get(
+        "states", [])} or US_STATES
+    return cities, states
 
 
 def col_text(pdf_path):
@@ -51,6 +71,11 @@ def is_country(l):
 
 
 def main():
+    cities, states = metro(REGION)
+    # The embassies all sit in Washington, DC, so they are only in play for a
+    # capital-region map.
+    want_embassies = "washington" in cities and "district of columbia" in states
+
     pdf_path = os.path.join(HERE, "consular_directory.pdf")
     if not os.path.exists(pdf_path):
         print("downloading", PDF_URL)
@@ -58,10 +83,17 @@ def main():
         with urllib.request.urlopen(req, timeout=90) as r, open(pdf_path, "wb") as f:
             f.write(r.read())
 
-    rows, country, collecting, state = [], None, False, None
+    rows, country, collecting, state, embassy_done = [], None, False, None, set()
     for l in (ln.strip() for ln in col_text(pdf_path).splitlines()):
         if not l:
             continue
+        if want_embassies and country and country not in embassy_done and \
+                re.match(r"Embassy of ", l):
+            # Name it from the country heading, not the line: the PDF wraps long
+            # official names ("Embassy of the Democratic and Popular Republic" /
+            # "of Algeria") and a truncated name geocodes to nothing.
+            embassy_done.add(country)
+            rows.append((f"Embassy of {country}", "Washington", "DC"))
         if l.startswith("Consular Offices"):
             collecting, state = True, None
             continue
@@ -85,22 +117,24 @@ def main():
             city = l
         else:
             continue
-        if state.lower() == STATE.lower() and city.lower() in METRO_CITIES and country:
-            rows.append((country, city))
+        if state.lower() in states and city.lower() in cities and country:
+            rows.append((f"Consulate General of {country}", city,
+                         STATE_ABBR.get(state.lower(), state)))
 
     seen, final = set(), []
-    for c, city in rows:
-        if (c, city) not in seen:
-            seen.add((c, city)); final.append((c, city))
+    for r in rows:
+        if r not in seen:
+            seen.add(r); final.append(r)
 
     os.makedirs(os.path.join(HERE, "auth_lists"), exist_ok=True)
     out = os.path.join(HERE, "auth_lists", "consulate.csv")
     with open(out, "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["category", "name", "city", "state"])
-        for c, city in final:
-            w.writerow(["consulate", f"Consulate General of {c}", city, STATE_ABBR])
-    print(f"wrote {out}: {len(final)} consular offices in the metro")
+        for name, city, st in final:
+            w.writerow(["consulate", name, city, st])
+    print(f"wrote {out}: {len(final)} diplomatic posts in the {REGION} play area "
+          f"({sum(1 for n, *_ in final if n.startswith('Embassy'))} embassies)")
 
 
 if __name__ == "__main__":
