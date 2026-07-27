@@ -517,6 +517,16 @@ python3 poi_apply_edits.py --region dc             # replay every human decision
 python3 build_poi_data.py  --region dc
 ```
 
+Two things that make the loop actually reach the reviewer, both learned the hard way
+on DC — the replay reported success while the map kept showing pre-edit data:
+- the workflow must commit **`public/` as well as `scripts/` and `src/data`**;
+  `viz_path` prefers the served `public/` copy, so omitting it regenerates the map
+  the reviewer is looking at inside the runner and throws it away;
+- a push made with `GITHUB_TOKEN` **triggers no further workflows**, so the data
+  commit can never fire `preview.yml`. The apply workflow republishes the PR preview
+  itself (build with `BASE=/<repo>/pr-preview/pr-N/`, copy `dist/` into that dir on
+  `gh-pages`, under the shared `gh-pages-publish` concurrency group).
+
 Every op is idempotent (`already gone` / `already renamed` / `already merged`), which
 is what makes the file replayable after a `--force` regeneration — the old model,
 where the pass lived *inside* the review map, is why `dedup_poi.py` had to refuse to

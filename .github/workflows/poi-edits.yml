@@ -31,6 +31,8 @@ concurrency:
 jobs:
   apply:
     runs-on: ubuntu-latest
+    outputs:
+      pushed: ${{ steps.commit.outputs.pushed }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,15 +67,21 @@ jobs:
           echo "status=$status" >> "$GITHUB_OUTPUT"
 
       - name: Commit the regenerated data
+        id: commit
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A scripts src/data
+          # `public/` too: while a city is under review the served copy of the
+          # review map lives there and is the one the reviewer is looking at.
+          # Leaving it out regenerates it in the runner and throws it away, so
+          # the map keeps showing pre-edit data.
+          git add -A scripts src/data public
           if git diff --cached --quiet; then
             echo "nothing changed"
           else
             git commit -m "Apply POI edits [skip ci]"
             git push
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Report on the PR
@@ -91,3 +99,49 @@ jobs:
       - name: Fail if any decision was unresolved
         if: steps.apply.outputs.status != '0'
         run: exit 1
+
+  # A push made with GITHUB_TOKEN triggers no further workflows, so the commit
+  # above can never fire `preview.yml` — the reviewer's map would only pick up
+  # their decisions the next time a human pushed. Republish the preview here.
+  preview:
+    needs: apply
+    if: github.event_name == 'push' && needs.apply.outputs.pushed == 'true'
+    runs-on: ubuntu-latest
+    # share the gh-pages write lock with deploy.yml / preview.yml
+    concurrency:
+      group: gh-pages-publish
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Find the PR this branch belongs to
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          n=$(gh pr list --head "${{ github.ref_name }}" --json number -q '.[0].number' || true)
+          echo "n=$n" >> "$GITHUB_OUTPUT"
+      - name: Install and build
+        if: steps.pr.outputs.n != ''
+        env:
+          BASE: /${{ github.event.repository.name }}/pr-preview/pr-${{ steps.pr.outputs.n }}/
+        run: |
+          npm ci
+          npm run build
+      - name: Publish into this PR's preview
+        if: steps.pr.outputs.n != ''
+        run: |
+          dir="pr-preview/pr-${{ steps.pr.outputs.n }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages:refs/remotes/origin/gh-pages
+          git worktree add -B gh-pages ../gh-pages origin/gh-pages
+          rm -rf "../gh-pages/$dir"
+          mkdir -p "../gh-pages/$dir"
+          cp -r dist/. "../gh-pages/$dir/"
+          cd ../gh-pages
+          git add -A "$dir"
+          git diff --cached --quiet && echo "preview unchanged" && exit 0
+          git commit -m "Update pr-${{ steps.pr.outputs.n }} preview (POI edits)"
+          git push origin gh-pages
