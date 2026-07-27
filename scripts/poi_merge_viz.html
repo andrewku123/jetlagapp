@@ -26,6 +26,10 @@
   .lp .r{color:#27ae60}
   .lp .acts{margin-top:6px;border-top:1px solid #eee;padding-top:6px}
   .lp .acts button{margin:0 4px 0 0;padding:2px 6px}
+  /* the check-it-on-Google step comes before any decision, so it leads the row */
+  .lp .acts .gm{display:block;margin-bottom:5px;font-weight:600;color:#1a73e8;
+                text-decoration:none}
+  .lp .acts .gm:hover{text-decoration:underline}
   #edits{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;
          background:#fafafa;border:1px solid #e2e2e2;border-radius:4px;padding:6px;
          max-height:210px;overflow:auto}
@@ -49,6 +53,7 @@
       <button id="all">Show all</button><button id="none">Hide all</button>
     </div>
     <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
     <input type="search" id="q" placeholder="find a place by name…" />
     <div class="hits" id="hits"></div>
     <div id="cats"></div>
@@ -70,8 +75,11 @@
       <div><span class="sw" style="background:#c0392b;display:inline-block"></span> <b>merged away</b> — name match</div>
       <div><span class="sw" style="background:#e67e22;display:inline-block"></span> <b>merged away</b> — OSM footprint</div>
       <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
+      <div><span class="sw" style="background:#1abc9c;display:inline-block"></span> <b>merged away</b> — into parent park</div>
       <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
-      <div style="margin-top:6px">Grey line links each absorbed pin → the pin that survives.</div>
+      <div style="margin-top:6px">Grey line links each absorbed pin → the pin that survives.
+        Pins sitting on top of each other are fanned out a few metres <b>for display
+        only</b> — every edit line still carries the real coordinate.</div>
     </div>
   </div>
   <div id="map"></div>
@@ -88,11 +96,17 @@ document.getElementById('region').textContent=' — '+REGION.toUpperCase();
 document.getElementById('editsfile').textContent='scripts/poi_edits.'+REGION+'.txt';
 
 const map=L.map('map');
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+const baseLight=L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
   {maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+  {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
+L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain},null,
+  {collapsed:false,position:'topleft'}).addTo(map);
 
 const CATS=Object.keys(window.VIZ).filter(k=>window.VIZ[k] && window.VIZ[k].groups);
-const layers={}, enabled={}, onlyMerged={v:false};
+const layers={}, enabled={}, onlyMerged={v:false}, terrain={v:false}, jump={v:false};
+map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
+  CATS.forEach(refresh);});
 function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
 function at(p){return p.lat.toFixed(5)+','+p.lon.toFixed(5)}
 
@@ -151,8 +165,48 @@ function absorb(p,cat){
   flash('absorbed “'+p.n+'” — click more, or cancel');
 }
 
+// name + coords, not coords alone: the name is what disambiguates a pin dropped
+// in the middle of a campus, and it's how you check Google still lists the place
+function gmaps(p){
+  const q=encodeURIComponent(`${p.n} @${p.lat},${p.lon}`);
+  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+// darken a #rrggbb hex toward black by factor f (0=unchanged, 1=black)
+function dark(hex,f){const n=parseInt(hex.slice(1),16);
+  let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=Math.round(r*(1-f));g=Math.round(g*(1-f));b=Math.round(b*(1-f));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+
+// DISPLAY ONLY: same-category pins on top of each other can't be told apart or
+// clicked separately, so they're fanned out a few metres (p.__dx/__dy). The data
+// is untouched, and every edit line uses at(p) — the real coordinate.
+function od(p){return [p.lat+(p.__dy||0),p.lon+(p.__dx||0)];}
+function computeFan(){
+  const TH=30, latRef=38.9, kx=111320*Math.cos(latRef*Math.PI/180), ky=110540;
+  CATS.forEach(k=>{
+    const d=window.VIZ[k], P=[];
+    (d.singles||[]).forEach(p=>P.push(p));
+    (d.groups||[]).forEach(gr=>{P.push(gr.rep);(gr.kids||[]).forEach(x=>P.push(x));});
+    const used=new Array(P.length).fill(false);
+    for(let i=0;i<P.length;i++){
+      if(used[i])continue; const cl=[i]; used[i]=true;
+      for(let j=i+1;j<P.length;j++){ if(used[j])continue;
+        const dx=(P[i].lon-P[j].lon)*kx, dy=(P[i].lat-P[j].lat)*ky;
+        if(dx*dx+dy*dy<=TH*TH){cl.push(j);used[j]=true;}}
+      if(cl.length<2)continue;
+      const rad=Math.max(6,1.43*cl.length);   // metres; grows with cluster size
+      cl.forEach((idx,n)=>{const a=2*Math.PI*n/cl.length, p=P[idx];
+        p.__dy=(rad*Math.sin(a))/ky;
+        p.__dx=(rad*Math.cos(a))/(111320*Math.cos(p.lat*Math.PI/180));});
+    }
+  });
+}
+computeFan();
+
 function popup(p,kind,label){
   const acts=`<div class="acts">
+      <a class="gm" href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
       <button data-a="del">Delete</button>
       <button data-a="merge">Merge…</button>
       <button data-a="rename">Rename</button>
@@ -161,14 +215,30 @@ function popup(p,kind,label){
     </div>`;
   return `<div class="lp" data-n="${esc(p.n)}" data-at="${at(p)}"><b>${esc(p.n)}</b><br>`
     +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${label}<br>`
-    +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span> · `
-    +`<a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}" target="_blank">maps</a>`
+    +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span>`
     +acts+`</div>`;
+}
+
+// touch devices: a 4 px dot is unhittable, so a large invisible marker sits
+// behind each visible one, wired to the same behaviour
+const TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
+
+function place(g,p,kind,label,cat,style){
+  const o=od(p);
+  if(TOUCH) bind(L.circleMarker(o,{radius:Math.max(style.radius+10,15),
+    stroke:false,fillOpacity:0}).addTo(g),p,kind,label,cat);
+  return bind(L.circleMarker(o,style).addTo(g),p,kind,label,cat);
 }
 
 function bind(marker,p,kind,label,cat){
   marker.bindPopup(()=>popup(p,kind,label));
-  marker.on('click',()=>{ if(merging && p.n!==merging.name) absorb(p,cat); });
+  // Leaflet opens the popup on click itself; these two modes take the click
+  // instead — jump goes straight to Google Maps (one click per pin when you're
+  // checking a run of places), merge absorbs the pin into the armed group.
+  marker.on('click',()=>{
+    if(merging && p.n!==merging.name){ marker.closePopup(); absorb(p,cat); return; }
+    if(jump.v){ marker.closePopup(); window.open(gmaps(p),'_blank','noopener'); }
+  });
   marker.on('popupopen',e=>{
     e.popup.getElement().querySelectorAll('button[data-a]').forEach(b=>{
       b.onclick=()=>{
@@ -183,27 +253,30 @@ function bind(marker,p,kind,label,cat){
       };
     });
   });
+  return marker;
 }
 
 function build(key){
-  const d=window.VIZ[key]; const g=L.layerGroup();
+  const d=window.VIZ[key], g=L.layerGroup();
+  const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0;  // terrain needs darker ink
   if(!onlyMerged.v){
-    d.singles.forEach(p=>{
-      const m=L.circleMarker([p.lat,p.lon],{radius:4,color:'#999',weight:1,fillOpacity:.5,opacity:.6});
-      bind(m,p,'untouched',d.label,key); m.addTo(g);
-    });
+    d.singles.forEach(p=>place(g,p,'untouched',d.label,key,
+      {radius:4,color:t?'#444':'#999',weight:1,
+       fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6}));
   }
   d.groups.forEach(grp=>{
-    const R=grp.rep;
+    const R=grp.rep, oR=od(R);
     grp.kids.forEach(k=>{
-      const col2=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':'#c0392b';
-      const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
-      L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:1.2,opacity:.8,dashArray:'3,3'}).addTo(g);
-      const m=L.circleMarker([k.lat,k.lon],{radius:5,color:'#fff',weight:1.5,fillColor:col2,fillOpacity:1});
-      bind(m,k,klabel,d.label,key); m.addTo(g);
+      const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':
+                 k.src==='bigpark'?'#1abc9c':'#c0392b';
+      const col2=dark(base,sf);
+      const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':
+                   k.src==='bigpark'?'merged (into parent park)':'merged (name match)';
+      L.polyline([oR,od(k)],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
+      place(g,k,klabel,d.label,key,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1});
     });
-    const mr=L.circleMarker([R.lat,R.lon],{radius:7,color:'#fff',weight:2,fillColor:'#27ae60',fillOpacity:1});
-    bind(mr,R,'kept',d.label,key); mr.addTo(g);
+    place(g,R,'kept',d.label,key,
+      {radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1});
   });
   return g;
 }
@@ -231,6 +304,8 @@ document.getElementById('none').onclick=()=>{CATS.forEach(k=>{enabled[k]=false;r
   catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
 document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
   CATS.forEach(k=>refresh(k));};
+document.getElementById('jump').onchange=e=>{jump.v=e.target.checked;
+  if(jump.v) flash('click a dot to open it in Google Maps — untick to edit again');};
 
 // ------------------------------------------------------------- search + view
 const ALL=[];
@@ -247,7 +322,7 @@ document.getElementById('q').addEventListener('input',e=>{
     row.textContent=p.n+' · '+window.VIZ[k].label;
     row.onclick=()=>{if(!enabled[k]){enabled[k]=true;refresh(k);
         catsDiv.querySelectorAll('input')[CATS.indexOf(k)].checked=true;}
-      map.setView([p.lat,p.lon],17);};
+      map.setView(od(p),17);};
     box.appendChild(row);
   });
 });

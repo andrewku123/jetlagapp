@@ -491,7 +491,10 @@ Copy `poi_merge_viz.html` → `public/poi-<region>-review/index.html` and the re
 `REGIONS[region]["vizPreview"]` at that copy so every edit lands where the preview
 serves it (`poi_ledger.save_viz` writes both copies, so they can't drift). Multiple
 reviewers open one URL; legend: green = kept, **red spoke = name merge**, **orange =
-OSM footprint**, **purple = manual override**.
+OSM footprint**, **purple = manual override**. Also on it: a terrain basemap (peaks),
+a `click dot → open Google Maps` mode for checking a run of places a click each, and
+a display-only fan-out that separates pins sitting within 30 m of each other —
+`od(p)` moves the dot, `at(p)` still writes the real coordinate into every edit line.
 
 **The reviewer does not need you, and does not touch generated data.** Clicking a pin
 offers Delete / Merge / Rename / Keep / Make-this-the-pin; the map collects the exact
