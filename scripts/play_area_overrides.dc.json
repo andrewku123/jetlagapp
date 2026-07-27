@@ -1,0 +1,98 @@
+{
+ "_note": "Curated by the user on the labelled place map: cuts the outer/stationless fringe, keeps Falls Church city (its own county-equivalent, so it needs extra_counties to be a candidate at all) and PG's Woodlawn.",
+ "extra_counties": [
+  "Falls Church city"
+ ],
+ "keep": [
+  "Falls Church city",
+  "Woodlawn CDP [Prince George's]"
+ ],
+ "drop": [
+  "Andrews AFB CDP",
+  "Annandale CDP",
+  "Aspen Hill CDP",
+  "Bailey's Crossroads CDP",
+  "Belle Haven CDP",
+  "Bladensburg town",
+  "Brambleton CDP",
+  "Broadlands CDP",
+  "Brookmont CDP",
+  "Colesville CDP",
+  "Colmar Manor town",
+  "Coral Hills CDP",
+  "Cottage City town",
+  "Difficult Run CDP",
+  "District Heights city",
+  "Dranesville CDP",
+  "East Riverdale CDP",
+  "Edmonston town",
+  "Floris CDP",
+  "Forest Heights town",
+  "Forestville CDP",
+  "Fort Belvoir CDP",
+  "Four Corners CDP",
+  "Franklin Farm CDP",
+  "Gaithersburg city",
+  "Glassmanor CDP",
+  "Glenarden city",
+  "Great Falls Crossing CDP",
+  "Groveton CDP",
+  "Hayfield CDP",
+  "Hybla Valley CDP",
+  "Kemp Mill CDP",
+  "Kettering CDP",
+  "Kingstowne CDP",
+  "Lake Barcroft CDP",
+  "Langley Park CDP",
+  "Lanham CDP",
+  "Largo CDP",
+  "Layhill CDP",
+  "Loudoun Valley Estates CDP",
+  "Mantua CDP",
+  "Marlow Heights CDP",
+  "Mitchellville CDP",
+  "Morningside town",
+  "Newington CDP",
+  "North Brentwood town",
+  "Oak Grove CDP",
+  "Potomac CDP",
+  "Seabrook CDP",
+  "Seven Corners CDP",
+  "Springdale CDP",
+  "Sterling CDP",
+  "Temple Hills CDP",
+  "Washington Grove town",
+  "West Falls Church CDP",
+  "West Springfield CDP",
+  "Westphalia CDP",
+  "Woodburn CDP"
+ ],
+ "unincorporated_fills": [
+  {
+   "_why": "Dulles airport is unincorporated, so no Census place covers it and the Silver Line's Ashburn/Loudoun Gateway end would be an island.",
+   "seed": "dc_dulles_airport.geojson",
+   "bounded_by": [
+    "Ashburn CDP",
+    "Sterling CDP",
+    "Oak Grove CDP",
+    "Herndon town",
+    "Hutchison CDP",
+    "McNair CDP"
+   ]
+  },
+  {
+   "_why": "New Carrollton station sits ~430 m outside every place, in the pocket the places it is named after leave open.",
+   "seed_point": [
+    -76.871877,
+    38.94801
+   ],
+   "bounded_by": [
+    "New Carrollton city",
+    "Lanham CDP",
+    "Seabrook CDP",
+    "Springdale CDP",
+    "Glenarden city"
+   ]
+  }
+ ]
+}

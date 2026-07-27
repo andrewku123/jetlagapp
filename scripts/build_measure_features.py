@@ -193,6 +193,30 @@ CITIES = {
             [-118.43, 33.859814, -118.39, 33.868349],
         ],
     },
+    "dc": {
+        # No coastline: the nearest sea coast (Chesapeake Bay) is ~35 mi east of
+        # the play area, and the Potomac only widens past the game's 1-mile rule
+        # below Mount Vernon, i.e. off the map — so the coastline sub-question
+        # has no geometry here and the app demotes it to log-only. What DC has
+        # instead is the sharpest state border of any map: DC/Maryland/Virginia
+        # all meet inside the play area.
+        "play_bbox": (-77.60, 38.60, -76.75, 39.20),
+        "counties": "data:dc.counties.geojson.json",
+        # Census cb_2023 state polygons around the play area (built by
+        # `build_region_geo.py --region dc --what states`). The bundled
+        # us-states.geojson is a world-scale outline — on DC it cuts the corner
+        # across the Potomac by up to a mile, which is the whole question here.
+        "states": "data:dc.states.geojson.json",
+        "state_simplify": 0.0002,
+        "countries": "measure_src/countries.geojson",
+        # Three 1st-admin divisions share the map, so the "state border" is every
+        # boundary they share with each other or with an adjacent state — the
+        # same pairwise construction as the county border, one level up.
+        "states_pairwise": ["District of Columbia", "Maryland", "Virginia",
+                            "West Virginia", "Delaware", "Pennsylvania"],
+        "country": "United States of America",
+        "country_neighbor": None,   # nearest is Canada, ~300 mi north
+    },
 }
 
 
@@ -370,6 +394,11 @@ def build_county_border(counties, clip):
 
 def build_state_border(states, cfg, clip):
     by = state_by_name(states)
+    if cfg.get("states_pairwise"):
+        # Multi-state map (DC): the border is every boundary shared between two
+        # of the listed states, same pairwise intersection as the counties.
+        gs = [by[n] for n in cfg["states_pairwise"] if n in by]
+        return build_county_border(gs, clip)
     home = by[cfg["state"]]
     neighbors = unary_union([g for name, g in by.items()
                              if name in cfg["state_neighbors"]])
@@ -382,6 +411,8 @@ def build_state_border(states, cfg, clip):
 
 
 def build_intl_border(countries, cfg, clip):
+    if not cfg.get("country_neighbor"):
+        return None
     by = country_by_name(countries)
     home = by.get(cfg["country"]) or by.get("United States")
     neighbor = by.get(cfg["country_neighbor"])
@@ -436,9 +467,10 @@ def main():
     lon0, lat0, lon1, lat1 = cfg["play_bbox"]
     clip = box(lon0, lat0, lon1, lat1)
 
-    land = unary_union(feats(load(src(cfg["land"]))))
+    # A landlocked map (DC) has no land/saltwater masks and no coastline.
+    land = unary_union(feats(load(src(cfg["land"])))) if cfg.get("land") else None
     saltwater = unary_union([g for p in cfg["saltwater"]
-                             for g in feats(load(src(p)))])
+                             for g in feats(load(src(p)))]) if cfg.get("saltwater") else None
     play = unary_union(feats(load(src(cfg["play"])))) if cfg.get("play") else None
     bay = unary_union(feats(load(src(cfg["bay"])))) if cfg.get("bay") else None
     counties = feats(load(src(cfg["counties"])))
@@ -458,10 +490,14 @@ def main():
         piers = unary_union(feats(load(src(cfg["piers_file"])))).buffer(0)
 
     print(f"building features for {slug}…")
+    coastline = None if land is None else build_coastline(
+        land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude,
+        coast_detail, cfg.get("coast_water_clip"), piers)
     features = (
-        ("coastline", to_multiline(build_coastline(land, saltwater, play, bay, clip, cfg.get("dams"), coast_exclude, coast_detail, cfg.get("coast_water_clip"), piers), 0.00015)),
+        ("coastline", to_multiline(coastline, 0.00015)),
         ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
-        ("state-border", to_multiline(build_state_border(states, cfg, clip), 0.003)),
+        ("state-border", to_multiline(build_state_border(states, cfg, clip),
+                                      cfg.get("state_simplify", 0.003))),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
     )
 

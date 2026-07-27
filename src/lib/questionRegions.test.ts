@@ -312,6 +312,7 @@ describe('countyMatchEliminatedRegion shades outside/inside the seeker county', 
 describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () => {
   const oakland = { lat: 37.8044, lon: -122.2712 }
   const sanJose = { lat: 37.3382, lon: -121.8863 }
+  const STATIONS = rawStations as unknown as Station[]
 
   it('YES keeps the seeker city (unshaded); another city is shaded', () => {
     const city = cityAt(oakland)
@@ -350,6 +351,28 @@ describe('cityMatchEliminatedRegion shades outside/inside the seeker city', () =
     const utah = { lat: 41.1621, lon: -112.4561 }
     expect(cityAt(utah)).toBeNull()
     expect(inPlayArea(utah)).toBe(false)
+  })
+
+  it('a station just outside every place is unincorporated, not the town next door', () => {
+    // Colma BART sits ~95 m north of Colma town, on unincorporated San Mateo
+    // land (TIGER agrees, so it is not simplification erosion). It used to be
+    // snapped to "Colma town" and then kept by a "same city as Colma?" yes,
+    // while the shading — drawn from the town polygon — excluded it.
+    const colma = STATIONS.find((s) => s.name === 'Colma')!
+    expect(cityAt(colma)).toBeNull()
+    const region = cityMatchEliminatedRegion(rec('match-city', { fromLat: 37.6879, fromLon: -122.4702, value: 'Colma town', answer: 'yes' }))!
+    expect(pointInMulti(colma.lat, colma.lon, region)).toBe(true)
+  })
+
+  it('every station the app names a city for is inside that city\'s shading', () => {
+    // The invariant the lookup exists to hold: name and shading are one
+    // geometry. A tolerance-based lookup breaks it silently, so assert it.
+    for (const st of STATIONS) {
+      const name = cityAt(st)
+      if (!name) continue
+      const region = cityMatchEliminatedRegion(rec('match-city', { fromLat: st.lat, fromLon: st.lon, value: name, answer: 'no' }))!
+      expect(pointInMulti(st.lat, st.lon, region)).toBe(true)
+    }
   })
 })
 

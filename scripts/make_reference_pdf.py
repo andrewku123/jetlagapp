@@ -20,14 +20,18 @@ sys.path.insert(0, SCRIPTS)
 from poi_geo import load_play, make_in_play
 
 # ---------- region ----------
-# A map *is* a game size — how big the play area is decides which questions the
-# book allows — so `size` lives here and the deck follows from `--region` alone.
-# Only the file prefix differs otherwise, so a new city is one entry.
+# A map carries its game size, so the deck follows from `--region` alone. The
+# size itself is a judgement call made with the user (never derived from station
+# count or area) and lives in src/data/region-sizes.json, which the app reads
+# too — printing a deck the app doesn't agree with would be worse than useless.
 REGIONS = {
-    "bay": {"label": "Bay Area", "prefix": "", "size": "medium"},
-    "la": {"label": "LA Metro", "prefix": "la.", "size": "medium"},
-    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni.", "size": "medium"},
+    "bay": {"label": "Bay Area", "prefix": "", "app_id": "bayarea"},
+    "la": {"label": "LA Metro", "prefix": "la.", "app_id": "la"},
+    "sfmuni": {"label": "SF Muni", "prefix": "sfmuni.", "app_id": "sfmuni"},
+    "dc": {"label": "Washington DC", "prefix": "dc.", "app_id": "dc"},
 }
+REGION_SIZES = json.load(
+    open(os.path.join(REPO, "src", "data", "region-sizes.json")))
 SIZES = ("small", "medium", "large")
 
 ap = argparse.ArgumentParser(description=__doc__)
@@ -38,7 +42,7 @@ ap.add_argument("--size", default=None, choices=SIZES,
 ap.add_argument("--out", default=None, help="output PDF path")
 ARGS = ap.parse_args()
 REGION = REGIONS[ARGS.region]
-SIZE = ARGS.size or REGION["size"]
+SIZE = ARGS.size or REGION_SIZES[REGION["app_id"]]
 BIG = SIZE in ("medium", "large")  # "add for Medium & Large"
 LARGE = SIZE == "large"
 
@@ -58,6 +62,11 @@ def clean_city(c):
 
 county_counts = collections.Counter(s["county"] for s in ST if s.get("county"))
 city_counts = collections.Counter(clean_city(s["city"]) for s in ST if s.get("city"))
+# Stations on unincorporated land belong to no city at all, so the app answers
+# "same municipality?" NO for them however the seeker is standing. Printing the
+# count keeps the card honest with the tool (and warns the seeker that a yes
+# can never keep these) instead of quietly dropping them from the list.
+no_city = sum(1 for s in ST if not s.get("city"))
 airport_counts = collections.Counter(s["nearestAirport"] for s in ST if s.get("nearestAirport"))
 line_counts = collections.Counter(l for s in ST for l in s.get("lines", []))
 
@@ -273,9 +282,12 @@ def rblock(title, count, body):
             f'{body}</div>')
 
 
-def counted_list(counter):
+def counted_list(counter, last=None):
     lis = "".join(f'<li>{html.escape(k)} <span class="n">{v}</span></li>'
                   for k, v in sorted(counter.items()))
+    if last:
+        k, v = last
+        lis += f'<li><i>{html.escape(k)}</i> <span class="n">{v}</span></li>'
     return f'<ul class="cols cnts">{lis}</ul>'
 
 
@@ -319,7 +331,9 @@ ref = "".join([
     rblock("Commercial airports", len(AIRPORTS), airports_html) if AIRPORTS else "",
     rblock("POIs in play", sum(n for _, n in poi_rows), poi_html),
     rblock("Edges of the play area", len(EXTREMES), extremes_html),
-    rblock("Cities / municipalities", len(city_counts), counted_list(city_counts)),
+    rblock("Cities / municipalities", len(city_counts),
+           counted_list(city_counts,
+                        ("No city (unincorporated)", no_city) if no_city else None)),
 ])
 
 doc = f"""<!doctype html><html><head><meta charset="utf-8">

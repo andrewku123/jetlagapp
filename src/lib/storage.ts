@@ -1,16 +1,12 @@
 import type { GameState } from '../types'
-import { sizeForStationCount } from '../data/questionSets'
-import { stationsData, ACTIVE_REGION_ID } from '../data/regions'
+import { ACTIVE_REGION_ID, MAP_SIZE } from '../data/regions'
 
 // Each map keeps its own saved board, so switching maps never mixes state.
 const KEY = `bahs.game.v1.${ACTIVE_REGION_ID}`
 
-// Size is derived from the map itself, not chosen by a person.
-const DEFAULT_SIZE = sizeForStationCount((stationsData as unknown[]).length)
-
 export const emptyGame: GameState = {
   dayType: 'wd',
-  gameSize: DEFAULT_SIZE,
+  gameSize: MAP_SIZE,
   units: 'imperial',
   questions: [],
   manualEliminated: [],

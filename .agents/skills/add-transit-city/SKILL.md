@@ -22,7 +22,12 @@ transit-lines.geojson.json`.
    stop order). Then build `<slug>.stations.json` — see the detailed Steps 1–4
    below and the `rebuild-station-dataset` skill. Enrich every station
    (`county`, `city`, `elevation`, per-airport distance + `nearestAirport`,
-   per-day `service`/`headwayMin`).
+   per-day `service`/`headwayMin`). **`headwayMin` is not optional**: `App.tsx`
+   filters `s.headwayMin[day]` during first render, so one station without it
+   throws `Cannot read properties of undefined` and the map renders a blank dark
+   page — it does not degrade. Assert the app-read fields over the whole new
+   dataset in `regions.test.ts` (the unit tests otherwise only ever load Bay's
+   file, since `regions.ts` resolves the active region at module load).
 2. **Pick the play area WITH the user** — it drives every clip + the demotion
    rules. Options seen so far: place-based whole-city + enclaves (Bay Area, LA)
    vs a corridor buffer. Build `<slug>.play-area.geojson.json`, then clip
@@ -30,6 +35,25 @@ transit-lines.geojson.json`.
    whole city any line touches, auto-add enclosed enclaves, and if an endgame
    disk carves into a not-yet-included city **whose county is already in play**,
    pull in that whole city (union just the sliver if the county is NOT in play).
+   Curation lives in `scripts/play_area_overrides<sfx>.json` (`drop` / `keep`),
+   with three escape hatches for what the Census-place model alone cannot say —
+   all three earned on DC:
+   - `extra_counties`: a **VA-style independent city** is its own county-
+     equivalent, so it is not inside the county around it and its place is not
+     even a candidate. Falls Church needed naming here to be keepable.
+   - `unincorporated_fills`: land in **no place at all**. Dulles airport is 14 sq
+     mi of unincorporated Loudoun/Fairfax; cut the CDPs around it and the Silver
+     Line's Ashburn end becomes an island. Give a committed seed polygon
+     (`fetch_osm_polygon.py --relation <id>`) plus `bounded_by` place names — the
+     hull of seed+places clips the fill, since unincorporated land is otherwise
+     contiguous across half a county.
+   - A station outside every place (New Carrollton, ~430 m out) automatically
+     gets its 0.25 mi hiding zone, linked to the nearest kept place. **Check
+     every station is still in play after a trim** — a cut CDP can silently strand
+     one, and the hiding zone has to be playable land.
+   Place NAMELSADs repeat across a multi-state map (DC has a Woodlawn CDP in both
+   Prince George's and Fairfax, 20 mi apart), so the builder qualifies duplicates
+   as `Woodlawn CDP [Prince George's]` — name that form in the overrides.
 3. **Geography files**: `<slug>.counties.geojson.json`,
    `<slug>.places.geojson.json`, `<slug>.zctas.geojson.json` (Steps 3/6 below).
 4. **Measure features** (`<slug>.measure-features.geojson.json`) via the per-slug
@@ -49,6 +73,7 @@ transit-lines.geojson.json`.
    `setView` center/zoom; drop in `poi_merge_viz.js` + `play_area.geojson.json`).
    `fetch_places_poi.py` takes a `POI_PLAY_FILE` env override for the play polygon.
 7. **Register the region** — add the 8 imports + one `REGIONS` entry
+   (plus optional `statesGeo`, see "A map that crosses a state line")
    (`id, name, center, zoom, inPlayCounties`, + the 8 data objects) to
    `src/data/regions.ts`, and a single-agency dot color in `src/lib/style.ts` if
    the map is one agency. **Demotion is derived from the region's own geometry —
@@ -83,6 +108,16 @@ The rest of this doc is the detailed reference for each step.
      else nearest `< 150 m`) and cross-system merge (`< 200 m`, different systems
      only, OR-ing service flags). Tune thresholds for the city's stop spacing.
    - Keep the name-collision disambiguation (append system).
+   - **Station names must read like the signage, not like OSM.** OSM spells names
+     out in full and tacks on university/neighbourhood qualifiers
+     (`Vienna/Fairfax–GMU`, `Shaw–Howard University`, `Rhode Island
+     Avenue–Brentwood`) where the agency's maps, signs and announcements say
+     `Vienna`, `Shaw–Howard U`, `Rhode Island Av`. Players read the sign, and the
+     name-length question is scored off it, so keep a `NAME_OVERRIDES = {osm:
+     display}` in the region's station builder and fail the build when a key no
+     longer matches an OSM name (otherwise an upstream rename silently reverts
+     one). `aka` is for names a stop is genuinely findable under — never internal
+     platform IDs (`railway:ref` = `N02`, `D10`); leave it empty if there are none.
    - Encode each system's service: frequent systems use the `FREQUENT` constant;
      systems with sparse/peak service need a per-stop `{served, hourly}` per day
      like `caltrain_service.json`.
@@ -104,6 +139,16 @@ The rest of this doc is the detailed reference for each step.
    out continuous (no gaps / stray yard bits / NB-SB doubling) — the same OSM
    fragmentation problem affects every metro, so reuse that algorithm rather than
    rendering one feature per raw OSM way.
+   - **Measure the dot-to-line gap before deciding to snap**:
+     `python3 scripts/audit_line_offsets.py --region <slug>`. Station coordinates
+     are entrance/mezzanine nodes and the overlay is the track centreline, so they
+     never agree exactly. Threshold **150 ft (~45 m)** — a platform's width, ~2 px
+     at the app's default zoom. LA earned its snap (6 stations over, Sepulveda
+     791 ft); DC did not (max 127 ft, median 17 ft), so DC ships unsnapped.
+     Snapping moves the *game*, not just the dot — the coordinate is what the
+     elimination engine reads — and `station-identity` documents how a blanket
+     re-snap once moved Pacific Ave onto the wrong side of a loop. Prefer fixing
+     the overlay.
 
 6. **Measuring-feature geometry** (coastline + county/state/international
    borders) and the **county polygons** used by county Matching. These are the
@@ -239,12 +284,12 @@ The rest of this doc is the detailed reference for each step.
        stand in one — it must read out its real name, so it has to be in the set;
      - clipping to the play area (already shoreline-clipped) drops the parts of
        edge places (Tiburon, Belvedere) that stick out into greyed-out land.
-     `cityAt()` in `cities.ts` is point-in-place with a small `SNAP_M` (~150 m)
-     snap; a coordinate in a **named** place → that place, in the play area but no
-     named place → **null → the form shows "Unincorporated"** (in play, no
-     municipality to match), outside the play area → null → **"Outside the play
-     area."** (`inPlayArea()` distinguishes the two). Keep the seeker AND station
-     lookups on this SAME `cityAt()` so shading and elimination always agree.
+     `cityAt()` in `cities.ts` is **strict point-in-place, no distance tolerance**:
+     a coordinate in a **named** place → that place, in the play area but no named
+     place → **null → the form shows "Unincorporated"** (in play, no municipality
+     to match), outside the play area → null → **"Outside the play area."**
+     (`inPlayArea()` distinguishes the two). Keep the seeker AND station lookups on
+     this SAME `cityAt()` so shading and elimination always agree.
    - **Airport-on-unincorporated-land override:** an airport owned by a city but
      physically on unincorporated land (SFO is owned by the City & County of San
      Francisco but sits in San Mateo County) is folded into its owning city by
@@ -253,8 +298,10 @@ The rest of this doc is the detailed reference for each step.
      in `build_city_places.py`. That makes every airport station AND a click on
      the airport resolve to the owning city. This is the one Bay-specific
      override; a new metro only needs it if it has the same ownership quirk.
-     Verify **no hiding station resolves to null** after building — if one does,
-     it's on unincorporated land and either needs a CDP added or an override.
+     Verify each station that resolves to null after building: it is on
+     unincorporated land (fine — it can then only be kept by a "no"), or it needs
+     a CDP added / an ownership override. Bay's Colma and Bayshore/NASA and LA's
+     Del Amo are genuinely unincorporated; DC's New Carrollton and Dulles too.
    - **Gap-folding (cosmetic, keeps shading gap-free):** after the play area is
      expanded (e.g. into river channels/piers), the Census places leave narrow
      unincorporated slivers — river/wash channels and tiny enclosed holes (an
@@ -269,19 +316,30 @@ The rest of this doc is the detailed reference for each step.
      fold rivers + SMALL holes; leave big parks / real unincorporated land / water
      alone. Purely cosmetic: elimination still resolves each station through the
      same polygons (verify station→city diffs = 0 vs before).
-   - **Per-region snap tolerance (`RegionData.citySnapM`, default 150 m):** the
-     snap in `cityAt()` that rescues points just outside a simplified boundary ALSO
-     wrongly pulls genuinely-unincorporated county islands (e.g. an un-annexed
-     parcel 97 m from the city, by the LA River / Forest Lawn) into the
-     neighbouring city. Tighten it per region when the places are clean: count how
-     many hiding stations sit outside all polygons AND within the snap band — if
-     **zero rely on snap** (LA: only 1 station is outside, at 178 m, already beyond
-     snap), set `citySnapM` to just above the simplification tolerance (LA uses
-     **40 m** for `SIMPLIFY_DEG ≈ 22 m`) so islands read **Unincorporated** while
-     boundary erosion is still absorbed. `cities.ts` reads `CITY_SNAP_M` from the
-     active region (`regions.ts`); default stays 150 m for Bay Area / SF Muni,
-     whose edge stations (Colma 107 m, Bayshore/NASA 64 m) still need it. Confirm
-     station→city assignments are unchanged before/after.
+   - **Never add a snap/tolerance to the city lookup.** `cityAt()` used to fall
+     back to the nearest place within 150 m (40 m on LA) to "absorb simplification
+     erosion". It does not work: the *shading* is drawn from the polygon, so every
+     snapped point is told a city and then left unshaded — the app naming your
+     city and drawing you outside it. It mislabelled ~8 of DC's 20 unincorporated
+     sq mi, including **Accotink**, the residential pocket cut out of the Fort
+     Belvoir CDP outline. Check the erosion premise before believing it: for each
+     station outside every polygon, test the point against the **raw TIGER**
+     `tl_<state>_place` shapefile — for all of Colma (95 m), Bayshore/NASA (57 m),
+     Del Amo (153 m) and New Carrollton (430 m), raw TIGER also says outside, i.e.
+     they are really unincorporated and no tolerance was ever fixing erosion.
+     Anything the polygons genuinely get wrong belongs in the **data** (see the
+     airport override and gap-folding above), not in the lookup.
+   - **One city per station, from the polygons.** `Station.city` used to come from
+     the Census geocoder while the app eliminated on `cityAt()`; they disagree on
+     exactly the interesting stations (Bay Fair read *Ashland CDP*, the app said
+     *San Leandro*; Colma and Bayshore/NASA were named a city they aren't in). The
+     places file is built *after* `build_attributes.py`, so on a new map re-run it
+     once the polygons exist — `python3 scripts/build_attributes.py --region <r>
+     --cities-only` rewrites only `city`, in place, no network and no re-fetched
+     elevations. Anything showing a city (map popup, printed card) reads that
+     field or calls `cityAt()`; never a second source. `null` is displayed as
+     `NO_CITY_LABEL` ("No city"), not "Unincorporated" — named CDPs are
+     unincorporated too and they *do* answer the question.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
    center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
@@ -352,6 +410,58 @@ museums, far too small to re-admit across-the-bay islands. `scripts/build_sfmuni
 is the worked example. Note the SF **city** polygon lives in the SHARED
 `places.geojson.json` (used by city Matching on *both* maps), so clip the wedge
 there too, not just in the `<slug>.*` copy.
+
+### A map that crosses a state line (real "same state?" Matching)
+`match-admin1` was hardcoded log-only until DC, whose 98 stations split 40 DC /
+32 VA / 26 MD. Make it real the same derived way as every other demotion — never
+a per-city flag:
+- Add a **9th, optional** data file `<slug>.states.geojson.json` (Census
+  `cb_2023_us_state_500k`, generated by `build_region_geo.py --region <slug>`
+  from the region's `states: [(fips, name), …]`) and wire it as
+  `RegionData.statesGeo?`.
+- `build_attributes.py` stamps each station's `state` from **those same
+  polygons**, so shading (`stateGeom`) and per-station elimination (`station.state`)
+  cannot disagree. Single-state maps get `state: undefined` and keep the old copy.
+- `MULTI_STATE = statesGeo != null && distinct(stations.state) > 1` gates the
+  label, the blurb, `LOG_ONLY_KINDS`, the `MATCH_LOGONLY` list in `QuestionForm`
+  and the shading dispatch in `MapView`.
+- Point-in-polygon lives once in `src/lib/polys.ts` (`polysByName` +
+  `pointInPolys`); `states.ts` and `counties.ts` both use it.
+- **Do not use the bundled `measure_src/us-states.geojson` for the state-border
+  measure feature** on such a map: at world scale it cuts up to a mile across the
+  Potomac, exactly where the question is decided. Point the `CITIES` entry at
+  `data:<slug>.states.geojson.json` with a fine `state_simplify` (DC: 0.0002).
+
+### Service from a GTFS feed with an awkward calendar
+`compute_headways.py` handles two dialects that otherwise yield silent garbage —
+check both when a new agency's numbers look impossible:
+- **No `calendar.txt`** (WMATA rail): every service day is a `calendar_dates`
+  exception and one `service_id` can cover a Sunday *and* a holiday Monday, so a
+  per-`service_id` day type is a guess. `representative_dates()` picks the
+  weekday/Saturday whose services carry the **median** trip count — that skips
+  holidays and single-tracking weekends without needing a holiday calendar.
+- **One stop per track** (`Metro Center, Red Line Track 1 Platform`): each stop
+  is one-directional by construction, so the `len(dirs) < 2` rule scores every
+  station 999 = ineligible. Departures roll up to `parent_station` first.
+When the physical station merges two GTFS stations (a two-level transfer), take
+the **better** of the headways — the hider is reachable via either level.
+
+Add the agency to `SYSTEM_ORDER` in `src/lib/style.ts` so it appears in the
+legend; a **colour entry is only needed for a multi-agency map**, since the
+fallback is `DEFAULT_SYSTEM_COLOR` (purple `#7b2d8b`, what LA/Muni/Metrorail
+use) — one dot colour under a per-line coloured overlay is what reads best.
+
+### Game size is a decision, not a derivation
+Ask the user; never infer it. An earlier version derived size from station count
+(`<= 100 → small`) and labelled DC — a 615 sq mi, three-jurisdiction metro map —
+a **Small** game, which silently drops the whole Tentacles card and half the
+photo conditions. The book sizes by what the map spans and how long it plays
+(Quick Start → Choosing Game Size): *Small* = a town or part of a large city,
+4–8 h; *Medium* = a major city / metro area, ~1 day; *Large* = a region or
+country, 2–4 days. Record the agreed size in `src/data/region-sizes.json`, which
+both the app (`MAP_SIZE` in `regions.ts` → `emptyGame.gameSize`) and the printed
+card (`make_reference_pdf.py`) read, so a card can't print a deck the app won't
+play.
 
 ### Region-adaptive UI (don't hardcode per map)
 A subset/single-agency map should hide controls that are meaningless for it, but

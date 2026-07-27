@@ -320,7 +320,7 @@
   "id": "s007",
   "nameLength": 8,
   "county": "Alameda",
-  "city": "Ashland CDP",
+  "city": "San Leandro city",
   "elevation": 10.7,
   "airportDist": {
    "SFO": 24070.3,
@@ -534,7 +534,7 @@
   "id": "s012",
   "nameLength": 5,
   "county": "San Mateo",
-  "city": "Colma town",
+  "city": null,
   "elevation": 48.3,
   "airportDist": {
    "SFO": 10418.7,
@@ -7970,7 +7970,7 @@
   "id": "s205",
   "nameLength": 13,
   "county": "Santa Clara",
-  "city": "Mountain View city",
+  "city": null,
   "elevation": 11.0,
   "airportDist": {
    "SFO": 37795.4,

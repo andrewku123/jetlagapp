@@ -1,4 +1,6 @@
 import type { LatLng, QuestionKind, Station } from '../types'
+import type { GameSize } from './questionSets'
+import regionSizes from './region-sizes.json'
 
 // Region registry: the app is data-driven and region-agnostic — every question,
 // the elimination engine, the map, the board code etc. read whatever the ACTIVE
@@ -42,6 +44,17 @@ import laCounties from './la.counties.geojson.json'
 import laZctas from './la.zctas.geojson.json'
 import laTransit from './la.transit-lines.geojson.json'
 
+// --- Washington DC (WMATA Metrorail, DC + the inner MD/VA suburbs) -----------
+import dcStations from './dc.stations.json'
+import dcPoi from './dc.poi.json'
+import dcPlayArea from './dc.play-area.geojson.json'
+import dcMeasure from './dc.measure-features.geojson.json'
+import dcPlaces from './dc.places.geojson.json'
+import dcCounties from './dc.counties.geojson.json'
+import dcZctas from './dc.zctas.geojson.json'
+import dcTransit from './dc.transit-lines.geojson.json'
+import dcStates from './dc.states.geojson.json'
+
 export interface RegionData {
   id: string
   /** Human-readable name; shown in the picker and baked into the board code. */
@@ -53,21 +66,19 @@ export interface RegionData {
   /** 2nd-admin divisions that hold stations (used by county Matching + dim). */
   inPlayCounties: string[]
   /**
-   * 1st-admin divisions (states) the play area spans. No station carries a state
-   * of its own — nothing in the app is keyed on it — so this exists purely so the
-   * State Matching copy names the right state instead of a hardcoded one, and
-   * tells the truth on a map that crosses a state line.
+   * 1st-admin divisions (states) the play area spans. On a single-state map this
+   * only shapes the State Matching copy (which names the state instead of a
+   * hardcoded one); a map spanning a state line also ships `statesGeo`, which
+   * turns that question into a real eliminator.
    */
   states: string[]
   /**
-   * How far (metres) a point outside every place polygon still snaps to the
-   * nearest place in the city Matching lookup (see cities.ts). Absorbs boundary
-   * simplification erosion; too large and genuinely-unincorporated spots read as
-   * a neighbouring city. Defaults to 150. LA's places are cleaner + no station
-   * relies on snap, so it uses a tight value so county-island gaps (e.g. by the
-   * LA River / Forest Lawn) correctly read as unincorporated.
+   * State polygons (+ the neighbours they border), for a map that crosses a
+   * state line: they back the "same state?" question's lookup and shading, and
+   * each station carries the state they put it in. Absent on a single-state map,
+   * where the question can't eliminate anything anyway.
    */
-  citySnapM?: number
+  statesGeo?: unknown
   stations: unknown
   poi: unknown
   playArea: unknown
@@ -118,7 +129,6 @@ export const REGIONS: RegionData[] = [
     zoom: 10,
     inPlayCounties: ['Los Angeles'],
     states: ['California'],
-    citySnapM: 40,
     stations: laStations,
     poi: laPoi,
     playArea: laPlayArea,
@@ -127,6 +137,33 @@ export const REGIONS: RegionData[] = [
     counties: laCounties,
     zctas: laZctas,
     transitLines: laTransit,
+  },
+  {
+    id: 'dc',
+    name: 'Washington DC',
+    center: [38.9, -77.05],
+    zoom: 10,
+    // Seven county-equivalents hold stations, across three 1st-admin divisions —
+    // the first map where "same state?" is a real question rather than copy.
+    inPlayCounties: [
+      'District of Columbia',
+      'Arlington',
+      'Alexandria city',
+      'Fairfax',
+      'Loudoun',
+      'Montgomery',
+      "Prince George's",
+    ],
+    states: ['District of Columbia', 'Maryland', 'Virginia'],
+    statesGeo: dcStates,
+    stations: dcStations,
+    poi: dcPoi,
+    playArea: dcPlayArea,
+    measureFeatures: dcMeasure,
+    places: dcPlaces,
+    counties: dcCounties,
+    zctas: dcZctas,
+    transitLines: dcTransit,
   },
 ]
 
@@ -142,6 +179,16 @@ function readActiveId(): string {
   }
   return DEFAULT_REGION_ID
 }
+
+/**
+ * Game size per map — a judgement call made with the user, never derived from
+ * station count or area. The book sizes a game by what the map spans and how
+ * long it plays (Medium = a major city or metro area, about a day), so DC's 98
+ * stations are still a Medium game. Kept in its own JSON because the printed
+ * reference card (`scripts/make_reference_pdf.py`) reads the same file, and the
+ * card's deck and the app's deck must never disagree.
+ */
+export const REGION_SIZES = regionSizes as Record<string, GameSize>
 
 export const ACTIVE_REGION_ID = readActiveId()
 export const ACTIVE_REGION: RegionData =
@@ -171,11 +218,11 @@ export const placesData = ACTIVE_REGION.places
 export const countiesData = ACTIVE_REGION.counties
 export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
+export const statesData = ACTIVE_REGION.statesGeo ?? null
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
+export const MAP_SIZE: GameSize = REGION_SIZES[ACTIVE_REGION_ID]
 export const MAP_STATES = ACTIVE_REGION.states
 export const MAP_NAME = ACTIVE_REGION.name
-// Snap tolerance (metres) for the city Matching place lookup; see RegionData.
-export const CITY_SNAP_M = ACTIVE_REGION.citySnapM ?? 150
 
 // Transit agencies present on the active map. On a single-agency map (e.g. SF
 // Muni, where every station is "Muni") per-station agency chips are just noise,
@@ -201,6 +248,9 @@ const AIRPORT_SITES: Record<string, LatLng> = {
   SJC: { lat: 37.36351, lon: -121.928648 },
   LAX: { lat: 33.94256, lon: -118.40853 },
   LGB: { lat: 33.81765, lon: -118.15227 },
+  DCA: { lat: 38.850108, lon: -77.039176 },
+  IAD: { lat: 38.952248, lon: -77.457889 },
+  BWI: { lat: 39.177414, lon: -76.668394 },
 }
 interface NamedFeature {
   properties?: { name?: string }
@@ -269,6 +319,11 @@ function distinctValueCount(vals: (string | number | null)[]): number {
   return new Set(vals.filter((v) => v != null && v !== '')).size
 }
 const singleCounty = distinctValueCount(logOnlyStations.map((s) => s.county)) <= 1
+// A map spanning a state line answers "same state?" for real: it ships state
+// polygons and its stations carry a state. Anywhere else the question has no
+// data behind it and stays log-only.
+export const MULTI_STATE =
+  statesData != null && distinctValueCount(logOnlyStations.map((s) => s.state ?? null)) > 1
 const singleCity = distinctValueCount(logOnlyStations.map((s) => s.city)) <= 1
 const singleLine = distinctValueCount(logOnlyStations.flatMap((s) => s.lines)) <= 1
 
@@ -324,6 +379,7 @@ export const LOG_ONLY_KINDS: ReadonlySet<QuestionKind> = new Set<QuestionKind>(
   (
     [
       [singleLine, 'match-line'],
+      [!MULTI_STATE, 'match-admin1'],
       [!HAS_AIRPORTS, 'match-airport'],
       [!HAS_AIRPORTS, 'measure-airport'],
       [singleCounty && !countyCarves, 'match-county'],

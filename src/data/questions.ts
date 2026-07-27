@@ -1,15 +1,16 @@
 import type { QuestionKind } from '../types'
 import { haversineMiles } from '../lib/geo'
-import { AIRPORTS, MAP_STATES } from './regions'
+import { AIRPORTS, MAP_STATES, MULTI_STATE } from './regions'
 
 // The airports the active map actually contains, in the order they're declared,
 // so the blurb names the ones a seeker can reach on this map (and nothing at all
 // on a map with none) rather than a fixed list.
 const AIRPORT_CODES = Object.keys(AIRPORTS).join('/')
 
-// State Matching never eliminates (no station carries a state), but *why* differs:
-// on a single-state map the answer is always yes, while a map spanning a state
-// line would be answerable if the app had the data. Say whichever is true.
+// State Matching eliminates only where the map spans a state line AND ships the
+// state polygons behind it (MULTI_STATE) — e.g. DC, where the stations split
+// across DC / Maryland / Virginia. Otherwise it's log-only, for one of two
+// reasons: every station is in one state, or the map has no state data.
 const ADMIN1_REASON =
   MAP_STATES.length === 1
     ? `every station in this play area is in ${MAP_STATES[0]}, so this can never eliminate`
@@ -98,10 +99,12 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
   {
     kind: 'match-admin1',
     category: 'Matching',
-    label: 'Matching — State · 1st admin (log only)',
+    label: MULTI_STATE ? 'Matching — State · 1st admin' : 'Matching — State · 1st admin (log only)',
     cards: 'draw 3, keep 1',
-    eliminates: false,
-    blurb: `Is your state (1st admin division) the same as mine? Log only — ${ADMIN1_REASON}; recorded for your reference.`,
+    eliminates: MULTI_STATE,
+    blurb: MULTI_STATE
+      ? `Is your state (1st admin division) the same as mine? This map spans ${MAP_STATES.join(' / ')}.`
+      : `Is your state (1st admin division) the same as mine? Log only — ${ADMIN1_REASON}; recorded for your reference.`,
   },
   {
     kind: 'match-county',

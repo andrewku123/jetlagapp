@@ -1,30 +1,36 @@
-"""Enrich stations.json with attributes needed by the elimination engine.
+"""Enrich a region's station list with the attributes the elimination engine needs.
 
-Adds per station: nameLength, county, city, elevation (m), distance to each
-commercial airport (SFO/OAK/SJC) and nearest airport. Writes enriched file to
-the app's data dir.
+Adds per station: id, nameLength, county, city, elevation (m), distance to each
+of the region's commercial airports and the nearest one — plus `state` on a map
+that spans more than one (read off the region's own state polygons, so it agrees
+with the shading the app draws). Writes the enriched file to the app's data dir.
+
+Adding a city is one entry in `poi_geo.REGIONS` (`stations`, `agencies`,
+`airports`), then:
+
+    python3 scripts/build_attributes.py --region dc
+
+It reads the raw station list the city's builder wrote (scripts/stations.dc.json
+from build_dc_stations.py) and writes the enriched file the app imports.
 """
-import json, math, time, sys, re, urllib.request, urllib.parse
+import argparse, json, math, os, time, sys, re, urllib.request, urllib.parse
 
-SRC = 'stations.json'
-OUT = '/home/ubuntu/repos/bayarea-hideandseek/src/data/stations.json'
+import poi_geo
 
-# Agency suffix appended by build_stations.py to disambiguate stations that share
-# a display name across systems (e.g. "San Bruno (BART)" vs "San Bruno (Caltrain)").
-# The name-length question should count the *base* name only, so strip just this
-# agency parenthetical — never descriptive ones like "(Ocean Beach)".
-_AGENCY_SUFFIX = re.compile(r'\s*\((?:BART|Caltrain|VTA|Muni)\)\s*$')
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 
-def name_length(name):
-    return len(_AGENCY_SUFFIX.sub('', name))
 
-# Coordinates of each airport's Google Maps pin/icon (the point the official
-# game rules measure from), per andrewku.
-AIRPORTS = {
-    'SFO': (37.619083, -122.381597),
-    'OAK': (37.719016, -122.219595),
-    'SJC': (37.363510, -121.928648),
-}
+# `agencies` lists the system names a station builder may append to disambiguate
+# same-named stations across agencies ("San Bruno (BART)"): the name-length
+# question counts the *base* name, so only that parenthetical is stripped —
+# never a descriptive one like "(Ocean Beach)".
+def name_length(name, agencies):
+    if not agencies:
+        return len(name)
+    suffix = re.compile(r'\s*\((?:' + '|'.join(map(re.escape, agencies)) + r')\)\s*$')
+    return len(suffix.sub('', name))
+
 
 def hav(a, b):
     R = 6371000.0
@@ -70,10 +76,67 @@ def usgs_elev(lat, lon):
         print('elev err', lat, lon, e, file=sys.stderr)
         return None
 
-def load_cache():
+def place_lookup(cfg):
+    """name -> [rings] for the region's Census places, or None before they exist.
+
+    A station's `city` MUST be the polygon the app's `cityAt()` will resolve it
+    to, not the Census geocoder's answer: the geocoder places a point by address
+    range, so it names a city for a station that is (correctly) outside every
+    polygon — Colma and Bayshore/NASA sit on unincorporated land — and the app
+    would then print one city and eliminate on another. The places file is built
+    after this script on a new map, so run this script again once it exists.
+    """
+    if 'places' not in cfg:
+        return None
+    path = os.path.join(ROOT, cfg['places'])
+    if not os.path.exists(path):
+        return None
+    fc = json.load(open(path))
+    out = []
+    for f in fc['features']:
+        g = f['geometry']
+        polys = ([g['coordinates']] if g['type'] == 'Polygon' else g['coordinates'])
+        out.append((f['properties']['name'], polys))
+    return out
+
+
+def state_lookup(cfg):
+    """name -> [rings] for a multi-state map, so each station carries the state
+    its dot sits in. Single-state maps get None (the question is log-only there)."""
+    if 'statesGeo' not in cfg:
+        return None
+    fc = json.load(open(os.path.join(ROOT, cfg['statesGeo'])))
+    out = []
+    for f in fc['features']:
+        g = f['geometry']
+        polys = ([g['coordinates']] if g['type'] == 'Polygon' else g['coordinates'])
+        out.append((f['properties']['name'], polys))
+    return out
+
+
+def in_ring(lat, lon, ring):
+    inside = False
+    j = len(ring) - 1
+    for i in range(len(ring)):
+        xi, yi = ring[i]; xj, yj = ring[j]
+        if (yi > lat) != (yj > lat) and lon < (xj - xi) * (lat - yi) / (yj - yi) + xi:
+            inside = not inside
+        j = i
+    return inside
+
+
+def polygon_at(named_polys, lat, lon):
+    for name, polys in named_polys:
+        for poly in polys:
+            if in_ring(lat, lon, poly[0]) and not any(in_ring(lat, lon, h) for h in poly[1:]):
+                return name
+    return None
+
+
+def load_cache(path):
     cache = {}
     try:
-        prev = json.load(open('stations_enriched.json'))
+        prev = json.load(open(path))
         for p in prev:
             if p.get('county') is not None or p.get('elevation') is not None:
                 cache[(round(p['lat'], 5), round(p['lon'], 5))] = (
@@ -82,9 +145,52 @@ def load_cache():
         pass
     return cache
 
+def sync_cities(cfg, out_path):
+    """Re-resolve every station's `city` from the places polygons, in place.
+
+    The full enrichment pass needs the city builder's raw list (and re-fetches
+    elevations), which an older map no longer has; this touches nothing but the
+    one field the polygons own, so it is safe to re-run on a live dataset.
+    """
+    places = place_lookup(cfg)
+    if places is None:
+        sys.exit('no places file — build it with build_region_geo.py first')
+    st = json.load(open(out_path))
+    changed = 0
+    for s in st:
+        was, now = s.get('city'), polygon_at(places, s['lat'], s['lon'])
+        if was != now:
+            changed += 1
+            print(f"{s['name']:30} {was} -> {now}", file=sys.stderr)
+        s['city'] = now
+    json.dump(st, open(out_path, 'w'), indent=1)
+    print(f'wrote {out_path}: {changed}/{len(st)} cities changed')
+
+
 def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--cities-only', action='store_true',
+                    help="only re-resolve `city` from the places polygons "
+                         "(run after build_region_geo.py on an existing map)")
+    args = poi_geo.add_region_arg(ap).parse_args()
+    region, cities_only = args.region, args.cities_only
+    cfg = poi_geo.REGIONS[region]
+    if not cities_only and 'airports' not in cfg:
+        sys.exit(f"{region}: no `agencies`/`airports` in poi_geo.REGIONS — its "
+                 "station file is built elsewhere")
+    SRC = poi_geo.work(region, 'stations.json')
+    OUT = poi_geo.repo_path(region, 'stations')
+    if cities_only:
+        return sync_cities(cfg, OUT)
+    AIRPORTS = cfg['airports']
+    states = state_lookup(cfg)
+    places = place_lookup(cfg)
+    if places is None:
+        print('no places file yet — city falls back to the Census geocoder; '
+              're-run after build_region_geo.py', file=sys.stderr)
     st = json.load(open(SRC))
-    cache = load_cache()
+    CACHE = poi_geo.work(region, 'stations_enriched.json')
+    cache = load_cache(CACHE)
     out = []
     hits = 0
     for i, s in enumerate(st):
@@ -97,9 +203,14 @@ def main():
             dist = {k: round(hav((lat, lon), v), 1) for k, v in AIRPORTS.items()}
             nearest = min(dist, key=dist.get)
             rec = dict(s)
-            rec['id'] = f's{i:03d}'; rec['nameLength'] = name_length(s['name'])
-            rec['county'] = cc; rec['city'] = city; rec['elevation'] = elev
+            rec['id'] = f's{i:03d}'
+            rec['nameLength'] = name_length(s['name'], cfg['agencies'])
+            rec['county'] = cc
+            rec['city'] = polygon_at(places, lat, lon) if places else city
+            rec['elevation'] = elev
             rec['airportDist'] = dist; rec['nearestAirport'] = nearest
+            if states:
+                rec['state'] = polygon_at(states, lat, lon)
             out.append(rec)
             print(f"{i+1}/{len(st)} {s['name']:30} CACHED", file=sys.stderr)
             continue
@@ -111,18 +222,19 @@ def main():
         nearest = min(dist, key=dist.get)
         rec = dict(s)
         rec['id'] = f's{i:03d}'
-        rec['nameLength'] = name_length(s['name'])
+        rec['nameLength'] = name_length(s['name'], cfg['agencies'])
         rec['county'] = (county or '').replace(' County', '') or None
-        rec['city'] = city
+        rec['city'] = polygon_at(places, lat, lon) if places else city
         rec['elevation'] = elev
         rec['airportDist'] = dist
         rec['nearestAirport'] = nearest
+        if states:
+            rec['state'] = polygon_at(states, lat, lon)
         out.append(rec)
-        print(f"{i+1}/{len(st)} {s['name']:30} {rec['county']} / {city} elev={elev}", file=sys.stderr)
-    import os
+        print(f"{i+1}/{len(st)} {s['name']:30} {rec['county']} / {rec['city']} elev={elev}", file=sys.stderr)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     json.dump(out, open(OUT, 'w'), indent=1)
-    json.dump(out, open('stations_enriched.json', 'w'), indent=1)
+    json.dump(out, open(CACHE, 'w'), indent=1)
     print('wrote', OUT, len(out))
 
 if __name__ == '__main__':

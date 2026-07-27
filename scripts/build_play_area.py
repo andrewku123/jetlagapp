@@ -24,26 +24,37 @@ natural categories (park, mountain); a small 150 m shoreline buffer is allowed
 for the other categories so pier/waterfront pins (Exploratorium, USS Hornet…)
 that sit just over the water inside an in-play city are kept.
 
-Emits (committed):
-  play_area.geojson           raw union of kept places
-  play_area_buffered.geojson  union buffered by SHORELINE_BUF_M (pier rescue)
-  play_area_cities.json       sorted keep list with the reason each qualified
-and copies the raw union into the app at
-  ../../<app>/src/data/play-area.geojson.json
+Emits (committed), region-suffixed like the rest of the pipeline:
+  play_area<sfx>.geojson           raw union of kept places
+  play_area_buffered<sfx>.geojson  union buffered by SHORELINE_BUF_M (pier rescue)
+  play_area_cities<sfx>.json       sorted keep list with the reason each qualified
+and copies the raw union into the app's `play` file for the region
+(`src/data/dc.play-area.geojson.json`).
+
+Run: python3 scripts/build_play_area.py --region dc
 """
 import json, math, os, sys, io, zipfile, urllib.request
 from shapely.geometry import shape, Point, Polygon, mapping
 from shapely.ops import transform, unary_union
 
+import poi_geo
+
 HERE = os.path.dirname(os.path.abspath(__file__))
-STATIONS = os.environ.get("STATIONS_JSON",
-    os.path.join(HERE, "..", "..", "repos", "bayarea-hideandseek", "src", "data", "stations.json"))
-APP_PLAY_AREA = os.environ.get("APP_PLAY_AREA",
-    os.path.join(HERE, "..", "..", "repos", "bayarea-hideandseek", "src", "data", "play-area.geojson.json"))
-OVERRIDES = os.path.join(HERE, "play_area_overrides.json")
+ROOT = os.path.dirname(HERE)
 CACHE = os.path.join(HERE, "_census_place")
-TRANSIT_LINES = os.environ.get("TRANSIT_LINES",
-    os.path.join(HERE, "..", "..", "repos", "bayarea-hideandseek", "src", "data", "transit-lines.geojson.json"))
+
+# Everything city-specific comes from the shared registry (poi_geo.REGIONS), so
+# adding a map is one entry there: `states` are the Census state FIPS the play
+# area can span (DC's touches three), `waterMask`/`displayWater` are extras a
+# coastal map needs, and `autoDropBeyondMi` seeds the curation in a region whose
+# transit counties are far bigger than the transit network (see below).
+REGION = poi_geo.region_from_argv()
+CFG = poi_geo.REGIONS[REGION]
+
+STATIONS = os.environ.get("STATIONS_JSON", poi_geo.repo_path(REGION, "stations"))
+APP_PLAY_AREA = os.environ.get("APP_PLAY_AREA", poi_geo.repo_path(REGION, "play"))
+TRANSIT_LINES = os.environ.get("TRANSIT_LINES", poi_geo.repo_path(REGION, "transitLines"))
+OVERRIDES = poi_geo.work(REGION, "play_area_overrides.json")
 
 SHORELINE_BUF_M = 150.0        # pier/waterfront rescue for non-natural POIs
 ADJ_TOL_M = 150.0              # boundary-adjacency tolerance
@@ -57,18 +68,19 @@ DISPLAY_HOLE_MAX_KM2 = 12.0   # in the app display, fill interior holes (land ri
 BRIDGE_RADIUS_MI = 0.5        # half-width of a transit-line corridor bridge
 BRIDGE_NEAR_M = 60.0          # gap endpoint within this of a kept place = touching
 BRIDGE_MAX_MI = 12.0         # only bridge gaps shorter than this between two kept places
-ISLAND_LON_CUTOFF = -122.6   # drop place parts west of this (far-offshore Pacific islands, e.g. Farallones)
+STATION_ZONE_MI = 0.25       # hiding zone around a station outside every kept place
+STATION_LINK_M = 120.0       # half-width of the link tying such a zone to the map
+ISLAND_LON_CUTOFF = CFG.get("islandLonCutoff")  # drop place parts west of this (far-offshore islands)
 # Census places: full-resolution TIGER/Line (dense coastline nodes, ~6-7x more
 # vertices than the 1:500k cartographic file). These are *legal* limits that
 # extend out into the bay, so each place is clipped back to the real shoreline by
 # subtracting the dense bay+ocean water mask (build_water_mask.py -> AREAWATER).
 # Counties stay on the 1:500k cartographic file (only used for tagging/inclusion).
-CBF_URL = "https://www2.census.gov/geo/tiger/TIGER2023/PLACE/tl_2023_06_place.zip"
-CBF_STEM = "tl_2023_06_place"
+PLACE_URL = "https://www2.census.gov/geo/tiger/TIGER2023/PLACE/tl_2023_{fips}_place.zip"
 COUNTY_URL = "https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_county_500k.zip"
 COUNTY_STEM = "cb_2023_us_county_500k"
-WATER_MASK = os.path.join(HERE, "bay_water_mask.geojson")
-STATE_NAME = "California"      # state the transit counties live in
+WATER_MASK = poi_geo.repo_path(REGION, "waterMask") if CFG.get("waterMask") else None
+STATE_NAMES = [name for _, name in CFG["states"]]
 
 M = 111320.0
 
@@ -91,29 +103,60 @@ def ensure_shapefile(url, stem):
     return shp
 
 
-def load_counties(names):
+def load_counties(names, station_pts, stationless=()):
+    """The transit counties' polygons, keyed by the station `county` string.
+
+    A county name is not unique across a multi-state map (Virginia has both a
+    Fairfax County and an independent Fairfax city, and a Montgomery County of
+    its own next to Maryland's), so a name match must also *contain a station*.
+
+    `stationless` names are exempt from that check, for the case a curator wants
+    a county-equivalent the network misses: a Virginia independent city is not
+    part of the county around it, so its places are not candidates at all unless
+    it is named here (Falls Church, ringed by Arlington and Fairfax, is one).
+    """
     import shapefile
     r = shapefile.Reader(ensure_shapefile(COUNTY_URL, COUNTY_STEM))
     flds = [f[0] for f in r.fields[1:]]
     out = {}
     for sh, rec in zip(r.shapes(), r.records()):
         d = dict(zip(flds, rec))
-        if d.get("STATE_NAME") == STATE_NAME and d["NAME"] in names:
-            g = shape(sh.__geo_interface__)
-            if not g.is_valid:
-                g = g.buffer(0)
-            out[d["NAME"]] = g
+        if d.get("STATE_NAME") not in STATE_NAMES:
+            continue
+        # Census county NAME drops the LSAD, so a VA independent city comes back
+        # as "Alexandria" while build_attributes stores "Alexandria city".
+        label = next((n for n in names if n in (d["NAME"], d["NAMELSAD"])), None)
+        if label is None:
+            continue
+        g = shape(sh.__geo_interface__)
+        if not g.is_valid:
+            g = g.buffer(0)
+        if label not in stationless and not any(g.contains(p) for p in station_pts):
+            continue
+        out[label] = g
     return out
 
 
 def _load_water_mask():
     """Dense bay+ocean water polygon (Census AREAWATER, build_water_mask.py),
     in lon/lat. Subtracted from each full-resolution TIGER/Line place so the
-    legal limits that reach into the bay are clipped back to the real coast."""
-    if not os.path.exists(WATER_MASK):
+    legal limits that reach into the bay are clipped back to the real coast.
+    A region with no coastal water mask (DC) skips the clip."""
+    if WATER_MASK is None or not os.path.exists(WATER_MASK):
         return None
     g = shape(json.load(open(WATER_MASK))["geometry"])
     return g.buffer(0) if not g.is_valid else g
+
+
+def load_places():
+    """Every Census place in the region's states (full-resolution TIGER/Line)."""
+    import shapefile
+    for fips, _ in CFG["states"]:
+        stem = f"tl_2023_{fips}_place"
+        r = shapefile.Reader(ensure_shapefile(PLACE_URL.format(fips=fips), stem))
+        flds = [f[0] for f in r.fields[1:]]
+        for sh, rec in zip(r.shapes(), r.records()):
+            yield dict(zip(flds, rec)), sh
 
 
 def load_county_places(counties):
@@ -121,13 +164,9 @@ def load_county_places(counties):
     tagged with the county it overlaps most and whether it is a CDP. Places use
     the full-resolution TIGER/Line geometry clipped to the real shoreline (the
     bay+ocean water mask is subtracted) so coastlines are dense, not 1:500k."""
-    import shapefile
-    r = shapefile.Reader(ensure_shapefile(CBF_URL, CBF_STEM))
-    flds = [f[0] for f in r.fields[1:]]
     water = _load_water_mask()
     out = {}
-    for sh, rec in zip(r.shapes(), r.records()):
-        d = dict(zip(flds, rec))
+    for d, sh in load_places():
         g = shape(sh.__geo_interface__)
         if not g.is_valid:
             g = g.buffer(0)
@@ -146,8 +185,52 @@ def load_county_places(counties):
         if best is None or bestA < 0.10 * g.area:
             continue
         nm = d["NAMELSAD"]
-        out[nm] = {"geom": g, "county": best, "cdp": nm.endswith("CDP")}
+        rec = {"geom": g, "county": best, "cdp": nm.endswith("CDP")}
+        if nm in out:
+            # Place names repeat across a multi-state map — DC has a Woodlawn CDP
+            # in Prince George's and another in Fairfax, 20 mi apart. Keying on
+            # the name alone silently kept whichever state was read last, so the
+            # curator could not say which one they meant; qualify both.
+            prev = out.pop(nm)
+            out[f"{nm} [{prev['county']}]"] = prev
+            nm = f"{nm} [{best}]"
+        out[nm] = rec
     return out
+
+
+def unincorporated_fill(spec, places, to_m):
+    """The unnamed land a seed feature sits on, out to the places around it.
+
+    Some in-play land belongs to no Census place at all, so the opt-out curation
+    can never reach it: Dulles airport is 14 sq mi of unincorporated Loudoun and
+    Fairfax, and without it the Silver Line's Ashburn end is a separate island.
+    Unincorporated land is contiguous across most of a county, so the fill is
+    clipped to the convex hull of the seed plus the places named in `bounded_by`
+    — the curator says how far out it reaches, in place names rather than a
+    hand-traced ring, and it re-derives if the Census geometry changes.
+
+    The seed is either a polygon (`seed`, a GeoJSON file under scripts/) or a
+    point inside the land to keep (`seed_point`) — New Carrollton's station sits
+    in a pocket the places around it leave open, which has no feature of its own.
+
+    spec: {"seed"|"seed_point": ..., "bounded_by": [place NAMELSADs]}
+    """
+    if "seed" in spec:
+        seed = shape(json.load(open(os.path.join(HERE, spec["seed"])))["geometry"])
+    else:
+        seed = Point(*spec["seed_point"])
+    missing = [n for n in spec["bounded_by"] if n not in places]
+    if missing:
+        sys.exit(f"unincorporated_fill: unknown bounding place(s) {missing}")
+    hull = unary_union([seed] + [places[n]["geom"] for n in spec["bounded_by"]]).convex_hull
+    gap = hull.difference(unary_union([d["geom"] for d in places.values()
+                                       if d["geom"].intersects(hull)]))
+    parts = [gap] if gap.geom_type == "Polygon" else list(getattr(gap, "geoms", []))
+    touching = [p for p in parts if p.intersects(seed.buffer(1e-9))]
+    if not touching:
+        sys.exit(f"unincorporated_fill: seed {spec.get('seed', spec.get('seed_point'))} "
+                 "is inside a place, nothing unincorporated to add")
+    return transform(to_m, unary_union(touching + ([seed] if seed.geom_type != "Point" else [])))
 
 
 def transit_bridges(city_m, to_m):
@@ -305,14 +388,21 @@ def bay_water(places_all_m, to_m):
 
 
 def main():
+    if REGION == "la":
+        sys.exit("LA's play area is hand-curated (build_la_play_area.py), "
+                 "not built by the opt-out curation")
     stations = json.load(open(STATIONS))
     lats = [s["lat"] for s in stations]
     lat0 = sum(lats) / len(lats)
     to_m, to_ll = _proj(lat0)
 
-    transit_counties = sorted({s["county"] for s in stations})
+    ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
+    extra_counties = set(ov.get("extra_counties", []))
+
+    station_pts = [Point(s["lon"], s["lat"]) for s in stations]
+    transit_counties = sorted({s["county"] for s in stations} | extra_counties)
     print("transit counties:", ", ".join(transit_counties))
-    counties_ll = load_counties(set(transit_counties))
+    counties_ll = load_counties(set(transit_counties), station_pts, extra_counties)
     missing_co = [c for c in transit_counties if c not in counties_ll]
     if missing_co:
         print("WARN counties with no polygon:", missing_co, file=sys.stderr)
@@ -323,7 +413,7 @@ def main():
     # multipolygon part is dropped if its centroid is west of ISLAND_LON_CUTOFF.
     for n, d in places.items():
         g = d["geom"]
-        if g.geom_type == "MultiPolygon":
+        if ISLAND_LON_CUTOFF is not None and g.geom_type == "MultiPolygon":
             parts = [p for p in g.geoms if p.centroid.x >= ISLAND_LON_CUTOFF]
             if len(parts) != len(g.geoms):
                 d["geom"] = unary_union(parts)
@@ -331,12 +421,23 @@ def main():
     places_m = {n: transform(to_m, d["geom"]) for n, d in places.items()}
     is_cdp = {n: d["cdp"] for n, d in places.items()}
 
-    ov = json.load(open(OVERRIDES)) if os.path.exists(OVERRIDES) else {}
     force_keep = set(ov.get("keep", []))
     drop = set(ov.get("drop", []))
     for n in drop | force_keep:
         if n not in places:
             print(f"WARN override name not in candidate places: {n!r}", file=sys.stderr)
+
+    # Rule-based seed of the curation (regions whose transit counties dwarf the
+    # network): a place the trains never come within `auto_drop_beyond_mi` of is
+    # not somewhere a hider could be, so drop it without listing it by hand.
+    beyond = CFG.get("autoDropBeyondMi")
+    if beyond is not None:
+        reach = unary_union([Point(to_m(s["lon"], s["lat"])) for s in stations]
+                            ).buffer(beyond * 1609.344)
+        far = {n for n, g in places_m.items()
+               if n not in force_keep and not g.intersects(reach)}
+        print(f"auto-dropped (no station within {beyond} mi): {len(far)} places")
+        drop |= far
 
     kept = set(places) - drop
     reason = {n: ("manual-keep" if n in force_keep else "kept") for n in kept}
@@ -419,17 +520,67 @@ def main():
     for fr in ov.get("fill_regions", []):
         ring = [to_m(lon, lat) for lon, lat in fr["ring"]]
         extra.append(Polygon(ring))
+    for uf in ov.get("unincorporated_fills", []):
+        extra.append(unincorporated_fill(uf, places, to_m))
+        print(f"added unincorporated fill: {uf.get('seed', uf.get('seed_point'))} "
+              f"out to {', '.join(uf['bounded_by'])}")
     if extra:
         print(f"added {len(extra)} manual corridor/fill region(s)")
         union_m = unary_union([union_m] + extra)
+
+    # A station's hiding zone has to be playable, and a station is not always
+    # inside a named place: New Carrollton's sits ~430 m outside every polygon,
+    # on unincorporated land between the places it is named after. Rather than
+    # drag a whole neighbouring CDP back in, give any such station its own zone.
+    orphans = [s for s in stations
+               if not union_m.contains(Point(to_m(s["lon"], s["lat"])))]
+    if orphans:
+        print("stations outside the kept places, adding their hiding zones:",
+              ", ".join(s["name"] for s in orphans))
+        from shapely.geometry import LineString
+        from shapely.ops import nearest_points
+        zones = []
+        for s in orphans:
+            p = Point(to_m(s["lon"], s["lat"]))
+            zone = p.buffer(STATION_ZONE_MI * 1609.344)
+            if not zone.intersects(union_m):
+                # A zone that reaches no kept place would be an island in the
+                # grey; tie it to the nearest one so the map stays one piece.
+                a, b = nearest_points(p, union_m)
+                zone = unary_union([zone, LineString([a, b]).buffer(STATION_LINK_M)])
+            zones.append(zone)
+        union_m = unary_union([union_m] + zones)
+
     union_ll = transform(to_ll, union_m)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 
+    # A place the candidate scan never saw can still end up enclosed by the play
+    # area — Falls Church is a Virginia independent city, so it is not inside
+    # Fairfax County and was invisible to the county-scoped candidate set even
+    # though Arlington and Fairfax's places ring it. Its land is in play either
+    # way (fill_holes), but it is absent from the curation list, so say so.
+    stray = []
+    for d, sh in load_places():
+        nm = d["NAMELSAD"]
+        if nm in places or any(k.startswith(nm + " [") for k in places):
+            continue
+        g = shape(sh.__geo_interface__)
+        if not g.is_valid:
+            g = g.buffer(0)
+        if g.intersects(union_ll) and g.intersection(union_ll).area >= ENCLAVE_FILL_FRAC * g.area:
+            stray.append(nm)
+    if stray:
+        print("WARN enclosed by the play area but not a candidate place — add to "
+              f"`extra_counties`+`keep` to curate it: {', '.join(sorted(stray))}",
+              file=sys.stderr)
+
+    sfx = CFG["suffix"]  # "" for the Bay Area's historical filenames
     feat = {"type": "Feature", "properties": {"name": "play-area"},
             "geometry": mapping(union_ll)}
-    json.dump(feat, open(os.path.join(HERE, "play_area.geojson"), "w"))
+    json.dump(feat, open(os.path.join(HERE, f"play_area{sfx}.geojson"), "w"))
     json.dump({"type": "Feature", "properties": {"name": "play-area-buffered"},
-               "geometry": mapping(buf_ll)}, open(os.path.join(HERE, "play_area_buffered.geojson"), "w"))
+               "geometry": mapping(buf_ll)},
+              open(os.path.join(HERE, f"play_area_buffered{sfx}.geojson"), "w"))
     json.dump({"model": "opt-out-county",
                "transit_counties": transit_counties,
                "shoreline_buffer_m": SHORELINE_BUF_M,
@@ -440,7 +591,7 @@ def main():
                "cities": [{"name": n, "county": places[n]["county"],
                            "type": "CDP" if is_cdp[n] else "city/town",
                            "reason": reason[n]} for n in keep]},
-              open(os.path.join(HERE, "play_area_cities.json"), "w"), indent=1)
+              open(os.path.join(HERE, f"play_area_cities{sfx}.json"), "w"), indent=1)
 
     if os.path.exists(os.path.dirname(APP_PLAY_AREA)):
         # The app only uses this polygon for display (out-of-play dimming mask,
@@ -448,7 +599,7 @@ def main():
         # ship a simplified version (~40 m tolerance). The open bay water is
         # unioned in for display only so the bay shows as water instead of grey —
         # it is NOT in play_area.geojson and never affects POI clipping.
-        bay = bay_water(places_m, to_m)
+        bay = bay_water(places_m, to_m) if CFG.get("displayWater") == "bay" else None
         display_m = unary_union([union_m, bay]) if bay is not None else union_m
         # Unioning the bay water can ring small bits of unnamed shoreline land
         # (e.g. Albany Hill / the Golden Gate Fields flats, or a bay-fronting

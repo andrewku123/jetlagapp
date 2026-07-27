@@ -20,6 +20,7 @@ import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
+import { cityAt, NO_CITY_LABEL } from '../lib/cities'
 import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
@@ -440,10 +441,19 @@ function MapRefCapture({ mapRef }: { mapRef: MutableRefObject<L.Map | null> }) {
   return null
 }
 
+// iOS clips the whole layer away when a clip-path points at an SVG <clipPath>
+// (`url(#id)`) — the imagery loads and is then invisible — so the mask is a CSS
+// `path()` wherever that is supported, and only falls back to the SVG reference
+// on browsers without it.
+const SUPPORTS_CSS_PATH =
+  typeof CSS !== 'undefined' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('clip-path', 'path(evenodd, "M0 0Z")')
+
 // Satellite imagery clipped to the in-play county polygons. Lives in its own
-// pane so an SVG clip-path (rebuilt on every view change) can mask it to the
-// county shapes; the pane is `leaflet-zoom-hide` so the clip never lags behind
-// during the zoom animation (it reappears, re-clipped, on zoomend).
+// pane so a clip-path (rebuilt on every view change) can mask it to the county
+// shapes; the pane is `leaflet-zoom-hide` so the clip never lags behind during
+// the zoom animation (it reappears, re-clipped, on zoomend).
 let satClipSeq = 0
 function SatelliteLayer() {
   const map = useMap()
@@ -456,23 +466,27 @@ function SatelliteLayer() {
       pane.classList.add('leaflet-zoom-hide')
     }
 
-    const clipId = `sat-clip-${satClipSeq++}`
-    const svgNS = 'http://www.w3.org/2000/svg'
-    const svg = document.createElementNS(svgNS, 'svg')
-    svg.setAttribute('width', '0')
-    svg.setAttribute('height', '0')
-    svg.style.position = 'absolute'
-    const clip = document.createElementNS(svgNS, 'clipPath')
-    clip.setAttribute('id', clipId)
-    clip.setAttribute('clipPathUnits', 'userSpaceOnUse')
-    const path = document.createElementNS(svgNS, 'path')
-    path.setAttribute('clip-rule', 'evenodd')
-    clip.appendChild(path)
-    const defs = document.createElementNS(svgNS, 'defs')
-    defs.appendChild(clip)
-    svg.appendChild(defs)
-    map.getContainer().appendChild(svg)
-    pane.style.clipPath = `url(#${clipId})`
+    let svg: SVGSVGElement | null = null
+    let path: SVGPathElement | null = null
+    if (!SUPPORTS_CSS_PATH) {
+      const clipId = `sat-clip-${satClipSeq++}`
+      const svgNS = 'http://www.w3.org/2000/svg'
+      svg = document.createElementNS(svgNS, 'svg')
+      svg.setAttribute('width', '0')
+      svg.setAttribute('height', '0')
+      svg.style.position = 'absolute'
+      const clip = document.createElementNS(svgNS, 'clipPath')
+      clip.setAttribute('id', clipId)
+      clip.setAttribute('clipPathUnits', 'userSpaceOnUse')
+      path = document.createElementNS(svgNS, 'path')
+      path.setAttribute('clip-rule', 'evenodd')
+      clip.appendChild(path)
+      const defs = document.createElementNS(svgNS, 'defs')
+      defs.appendChild(clip)
+      svg.appendChild(defs)
+      map.getContainer().appendChild(svg)
+      pane.style.clipPath = `url(#${clipId})`
+    }
 
     const layer = new (SatelliteTileLayer as SatelliteTileLayerCtor)(
       SATELLITE_URL,
@@ -509,7 +523,8 @@ function SatelliteLayer() {
         }
         d += 'Z'
       }
-      path.setAttribute('d', d)
+      if (path) path.setAttribute('d', d)
+      else pane.style.clipPath = `path(evenodd, "${d}")`
     }
     updateClip()
     map.on('viewreset zoomend moveend resize', updateClip)
@@ -519,7 +534,7 @@ function SatelliteLayer() {
       map.removeLayer(layer)
       for (const l of labelLayers) map.removeLayer(l)
       pane.style.clipPath = ''
-      svg.remove()
+      svg?.remove()
     }
   }, [map])
   return null
@@ -893,7 +908,7 @@ export default function MapView({
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' ||
-      k === 'match-county' ||
+      k === 'match-admin1' || k === 'match-county' ||
       k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
@@ -939,7 +954,7 @@ export default function MapView({
       .filter((r) =>
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
         r.kind === 'match-airport' || r.kind === 'measure-airport' ||
-        r.kind === 'match-county' ||
+        r.kind === 'match-admin1' || r.kind === 'match-county' ||
         r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
@@ -1132,7 +1147,7 @@ export default function MapView({
         <div>{st.systems.join(' · ')}{isMultiSystem(st) ? ' (shared)' : ''}</div>
         {st.lines.length > 0 && <div className="muted">{st.lines.map(fmtLine).join(', ')}</div>}
         <div className="muted">
-          {st.city ?? '?'}, {st.county ?? '?'} Co. · {st.nameLength} chars
+          {cityAt(st) ?? NO_CITY_LABEL}, {st.county ?? '?'} Co. · {st.nameLength} chars
           {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
         </div>
         <div className="popup-actions">

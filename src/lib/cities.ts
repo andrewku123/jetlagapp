@@ -1,6 +1,6 @@
 import type { LatLng } from '../types'
 import type { Polygon as ClipPolygon, Ring } from 'polygon-clipping'
-import { placesData as placesRaw, playAreaData as playAreaRaw, CITY_SNAP_M } from '../data/regions'
+import { placesData as placesRaw, playAreaData as playAreaRaw } from '../data/regions'
 
 // Census-place (3rd-admin / "city") polygons used by the "Matching — city"
 // question. Both the seeker's city (from their coordinate) and each station's
@@ -15,14 +15,6 @@ interface GeoFeature {
   properties: { name: string }
   geometry: { type: string; coordinates: number[][][] | number[][][][] }
 }
-
-// A station/seeker point this far (metres) outside every polygon still snaps to
-// the nearest place — absorbs shoreline-clip / simplification erosion at
-// boundaries (e.g. a station sitting ~100 m outside its city outline). Genuinely
-// unincorporated points (e.g. SFO airport land, ~300 m+ from any city) stay null.
-// Per-region (see RegionData.citySnapM): LA uses a tight value so county-island
-// gaps aren't wrongly snapped into a neighbouring city.
-const SNAP_M = CITY_SNAP_M
 
 function buildCities(): Record<string, CityPolys> {
   const out: Record<string, CityPolys> = {}
@@ -102,64 +94,31 @@ function pointInPolys(p: LatLng, polys: CityPolys): boolean {
   return false
 }
 
-// Metres between a point and a [lon, lat] segment, via a local equirectangular
-// projection (fine at these distances).
-function distToSegM(p: LatLng, a: number[], b: number[]): number {
-  const mPerDegLat = 111320
-  const mPerDegLon = 111320 * Math.cos((p.lat * Math.PI) / 180)
-  const px = p.lon * mPerDegLon
-  const py = p.lat * mPerDegLat
-  const ax = a[0] * mPerDegLon
-  const ay = a[1] * mPerDegLat
-  const bx = b[0] * mPerDegLon
-  const by = b[1] * mPerDegLat
-  const dx = bx - ax
-  const dy = by - ay
-  const len2 = dx * dx + dy * dy
-  let t = len2 === 0 ? 0 : ((px - ax) * dx + (py - ay) * dy) / len2
-  t = Math.max(0, Math.min(1, t))
-  const cx = ax + t * dx
-  const cy = ay + t * dy
-  return Math.hypot(px - cx, py - cy)
-}
-
-function distToPolysM(p: LatLng, polys: CityPolys): number {
-  let best = Infinity
-  for (const poly of polys) {
-    for (const ring of poly) {
-      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-        const d = distToSegM(p, ring[j], ring[i])
-        if (d < best) best = d
-      }
-    }
-  }
-  return best
-}
-
 // Whether `p` is inside the play area (used to tell "unincorporated" — in play
 // but in no named place — apart from "outside the play area").
 export function inPlayArea(p: LatLng): boolean {
   return pointInPolys(p, PLAY_AREA)
 }
 
-// The Census place (city / town / CDP) containing `p`, snapping to the nearest
-// place within SNAP_M to absorb boundary/simplification erosion; otherwise null.
-// A null result inside the play area is unincorporated land (a transit corridor
-// over the hills, filled bay water); outside it is off-map. Every hiding station
-// resolves to a place (the SFO stops fold into San Francisco), so only a seeker
-// coordinate can be null.
+// What the UI shows where cityAt() is null and the point is in play. "No city"
+// rather than "Unincorporated": many named places here (Bethesda, McLean,
+// Tysons, Fairview) are unincorporated CDPs that DO answer the question, so that
+// word describes the wrong thing — what matters to a seeker is that there is no
+// municipality to match.
+export const NO_CITY_LABEL = 'No city'
+
+// The Census place (city / town / CDP) whose polygon contains `p`, or null.
+// Strictly inside-the-polygon: the boundary is the answer to "same municipality?",
+// so land a place excludes — the gaps between places, and the inholdings their
+// outlines cut out (Accotink inside Fort Belvoir) — must read as unincorporated
+// rather than borrow a neighbour's name. A null inside the play area is
+// unincorporated land, outside it is off-map; the question form tells them apart.
+// Stations resolve through this same lookup, so a station on unincorporated land
+// (Colma, Bayshore/NASA, Del Amo, New Carrollton) is null too and can only be
+// kept by "no".
 export function cityAt(p: LatLng): string | null {
   for (const [name, polys] of Object.entries(CITIES)) {
     if (pointInPolys(p, polys)) return name
   }
-  let best: string | null = null
-  let bestD = SNAP_M
-  for (const [name, polys] of Object.entries(CITIES)) {
-    const d = distToPolysM(p, polys)
-    if (d < bestD) {
-      bestD = d
-      best = name
-    }
-  }
-  return best
+  return null
 }

@@ -18,6 +18,8 @@ export interface Station {
   nameLength: number
   county: string | null
   city: string | null
+  // 1st admin division, only on a map that spans more than one (see statesGeo).
+  state?: string | null
   elevation: number | null
   airportDist: Record<string, number>
   nearestAirport: string
@@ -112,8 +114,8 @@ export type UnitSystem = 'imperial' | 'metric'
 
 export interface GameState {
   dayType: DayType
-  // game size is auto-derived from the map (station count), not chosen by a
-  // person; it sets the station-frequency eligibility rule.
+  // the active map's declared size (src/data/region-sizes.json), never inferred
+  // from the station count; it sets the station-frequency eligibility rule.
   gameSize: GameSize
   units: UnitSystem
   questions: QuestionRecord[]

@@ -5,6 +5,7 @@ import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE
 import { metroLineDistanceMiles, metroLinesWithinRadius } from './metroLines'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
+import { stateAt } from './states'
 import { zipAt } from './zip'
 
 function n(v: unknown): number {
@@ -37,6 +38,13 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       const to: LatLng = { lat: n(p.toLat), lon: n(p.toLon) }
       const gotCloser = haversineMiles(station, to) < haversineMiles(station, from)
       return gotCloser === (p.answer === 'hotter')
+    }
+    case 'match-admin1': {
+      // Only a multi-state map records a state per station; elsewhere the
+      // question is log-only and never reaches here with a value.
+      const seekerState = s(p.value) || stateAt({ lat: n(p.fromLat), lon: n(p.fromLon) })
+      if (!seekerState || station.state == null) return true
+      return (station.state === seekerState) === (p.answer === 'yes')
     }
     case 'match-county': {
       const same = station.county != null && station.county === s(p.value)
