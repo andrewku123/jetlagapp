@@ -136,6 +136,11 @@ def apply_op(obj, led, verb, payload):
         merged, already = [], 0
         for kt in kid_ts:
             kid = one(obj, kt)
+            if kid[0] != rep[0]:
+                # one physical place can't be a hospital and a park; a cross-category
+                # merge is always a misclick, and it would corrupt both categories
+                raise LookupError(f"{kid[2]['n']!r} is a {kid[0]}, "
+                                  f"{rep[2]['n']!r} is a {rep[0]} — merge is per category")
             if kid[3] is not None and kid[3] is rep[3] and kid[1] == "kid":
                 already += 1; continue
             merged.append(kid)

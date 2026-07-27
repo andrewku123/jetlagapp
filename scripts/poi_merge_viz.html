@@ -140,16 +140,18 @@ function flash(msg,keep){
 
 // merge is two-step: pick the pin that SURVIVES, then click the ones it absorbs
 let merging=null;
-function startMerge(p){
-  merging={name:p.n,at:at(p)};
+function startMerge(p,cat){
+  merging={name:p.n,at:at(p),cat:cat};
   flash('Merging into “'+p.n+'” — now click each pin it absorbs',true);
 }
-function absorb(p){
+function absorb(p,cat){
+  // one physical place is in one category; a cross-category merge is a misclick
+  if(cat!==merging.cat){flash('“'+p.n+'” is a '+cat+', not a '+merging.cat+' — skipped');return}
   addEdit(`merge   ${merging.name} @ ${merging.at} <- ${p.n} @ ${at(p)}`);
   flash('absorbed “'+p.n+'” — click more, or cancel');
 }
 
-function popup(p,kind,cat){
+function popup(p,kind,label){
   const acts=`<div class="acts">
       <button data-a="del">Delete</button>
       <button data-a="merge">Merge…</button>
@@ -158,15 +160,15 @@ function popup(p,kind,cat){
                                   +'<button data-a="rep">Make this the pin</button>':''}
     </div>`;
   return `<div class="lp" data-n="${esc(p.n)}" data-at="${at(p)}"><b>${esc(p.n)}</b><br>`
-    +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${cat}<br>`
+    +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${label}<br>`
     +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span> · `
     +`<a href="https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}" target="_blank">maps</a>`
     +acts+`</div>`;
 }
 
-function bind(marker,p,kind,cat){
-  marker.bindPopup(()=>popup(p,kind,cat));
-  marker.on('click',()=>{ if(merging && p.n!==merging.name) absorb(p); });
+function bind(marker,p,kind,label,cat){
+  marker.bindPopup(()=>popup(p,kind,label));
+  marker.on('click',()=>{ if(merging && p.n!==merging.name) absorb(p,cat); });
   marker.on('popupopen',e=>{
     e.popup.getElement().querySelectorAll('button[data-a]').forEach(b=>{
       b.onclick=()=>{
@@ -176,7 +178,7 @@ function bind(marker,p,kind,cat){
         if(a==='rep')    addEdit(`rep     ${p.n} @ ${at(p)}`);
         if(a==='rename'){const n=prompt('New name for “'+p.n+'”:',p.n);
                          if(n && n!==p.n) addEdit(`rename  ${p.n} @ ${at(p)} -> ${n}`);}
-        if(a==='merge'){ startMerge(p); marker.closePopup(); return; }
+        if(a==='merge'){ startMerge(p,cat); marker.closePopup(); return; }
         marker.closePopup(); flash('added to your edits');
       };
     });
@@ -188,7 +190,7 @@ function build(key){
   if(!onlyMerged.v){
     d.singles.forEach(p=>{
       const m=L.circleMarker([p.lat,p.lon],{radius:4,color:'#999',weight:1,fillOpacity:.5,opacity:.6});
-      bind(m,p,'untouched',d.label); m.addTo(g);
+      bind(m,p,'untouched',d.label,key); m.addTo(g);
     });
   }
   d.groups.forEach(grp=>{
@@ -198,10 +200,10 @@ function build(key){
       const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':'merged (name match)';
       L.polyline([[R.lat,R.lon],[k.lat,k.lon]],{color:col2,weight:1.2,opacity:.8,dashArray:'3,3'}).addTo(g);
       const m=L.circleMarker([k.lat,k.lon],{radius:5,color:'#fff',weight:1.5,fillColor:col2,fillOpacity:1});
-      bind(m,k,klabel,d.label); m.addTo(g);
+      bind(m,k,klabel,d.label,key); m.addTo(g);
     });
     const mr=L.circleMarker([R.lat,R.lon],{radius:7,color:'#fff',weight:2,fillColor:'#27ae60',fillOpacity:1});
-    bind(mr,R,'kept',d.label); mr.addTo(g);
+    bind(mr,R,'kept',d.label,key); mr.addTo(g);
   });
   return g;
 }

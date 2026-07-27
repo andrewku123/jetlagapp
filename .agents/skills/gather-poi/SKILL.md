@@ -485,13 +485,38 @@ Rules the incremental pass MUST follow:
 Fold these same OSM merges back into `poi_dedup_overrides.json` (as `merge`
 entries) so a future clean pipeline run reproduces them.
 
-### 6. Review — interactive map
-Deploy `poi_merge_viz.html` + `poi_merge_viz.js` to `public/poi-review/` (see the
-`deploy-hideandseek` skill / PR-preview). Multiple reviewers open one URL; legend:
-green = kept, **red spoke = name merge**, **orange = OSM footprint**, **purple =
-manual override**. Reviewers send merge/separate corrections → record them in
-`poi_dedup_overrides.json` and re-run `dedup_poi.py` (the map cache-busts its data
-on load, so corrections show without a hard refresh).
+### 6. Review — interactive map, and the reviewer's own edits file
+Copy `poi_merge_viz.html` → `public/poi-<region>-review/index.html` and the region's
+`poi_merge_viz.<region>.js` → `poi_merge_viz.js` beside it, and point
+`REGIONS[region]["vizPreview"]` at that copy so every edit lands where the preview
+serves it (`poi_ledger.save_viz` writes both copies, so they can't drift). Multiple
+reviewers open one URL; legend: green = kept, **red spoke = name merge**, **orange =
+OSM footprint**, **purple = manual override**.
+
+**The reviewer does not need you, and does not touch generated data.** Clicking a pin
+offers Delete / Merge / Rename / Keep / Make-this-the-pin; the map collects the exact
+lines `poi_apply_edits.py` parses into a localStorage basket behind a *Copy edits*
+button. They paste the block into `scripts/poi_edits.<region>.txt` (GitHub's web
+editor is enough) and commit; `.github/workflows/poi-edits.yml` replays it, rebuilds
+the app's POI file and pushes the result back:
+
+```bash
+python3 poi_apply_edits.py --region dc --init      # write the commented template
+python3 dedup_poi.py       --region dc --force     # regenerate from the raw pull
+python3 poi_apply_edits.py --region dc             # replay every human decision
+python3 build_poi_data.py  --region dc
+```
+
+Every op is idempotent (`already gone` / `already renamed` / `already merged`), which
+is what makes the file replayable after a `--force` regeneration — the old model,
+where the pass lived *inside* the review map, is why `dedup_poi.py` had to refuse to
+re-run at all. Rules worth keeping: a `delete` naming a place the ledger never saw is
+an error (that's a typo, not an applied decision), a cross-category merge is refused
+in both the map and the parser, and an unresolvable line is reported and skipped
+rather than aborting the batch — but the run exits non-zero.
+
+Structural corrections that should survive a clean rebuild from scratch (an OSM
+footprint that should merge two pins) still belong in `poi_dedup_overrides.json`.
 
 ### 6b. `registry_audit.py` — cross-check the finished pass against the registry
 **Run this on every category that has a reputable registry, at the end of the
