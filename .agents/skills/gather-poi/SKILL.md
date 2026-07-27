@@ -499,7 +499,14 @@ a display-only fan-out that separates pins sitting within 30 m of each other —
 **The reviewer does not need you, and does not touch generated data.** Clicking a pin
 offers Delete / Merge / Rename / Keep / Make-this-the-pin; the map collects the exact
 lines `poi_apply_edits.py` parses into a localStorage basket behind a *Copy edits*
-button. They paste the block into `scripts/poi_edits.<region>.txt` (GitHub's web
+button. Merge is **one-to-many and armed**: click the pin that SURVIVES → *Merge…*,
+then every following pin click absorbs (one line each, no popup) until Esc or the
+banner button. An armed mode that swallows clicks must keep its own way out on
+screen the whole time — the banner stays up with a `cancel/done (Esc)` button, and
+per-absorb messages never replace it (they used to auto-hide, stranding the reviewer
+in merge mode with no visible exit).
+
+They paste the block into `scripts/poi_edits.<region>.txt` (GitHub's web
 editor is enough) and commit; `.github/workflows/poi-edits.yml` replays it, rebuilds
 the app's POI file and pushes the result back:
 

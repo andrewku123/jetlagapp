@@ -61,7 +61,9 @@
 
     <h3>Your edits (<span id="ecount">0</span>)</h3>
     <div class="ctl" style="color:#555">
-      Click any dot → <b>Delete / Merge / Rename / Keep</b>. Lines collect here and
+      Click any dot → <b>Delete / Merge / Rename / Keep</b>. To merge, click the
+      pin you want to <b>survive</b> → <b>Merge…</b>, then click each pin it
+      absorbs; <b>Esc</b> (or the banner button) ends it. Lines collect here and
       stay in this browser. Paste them into
       <code id="editsfile">scripts/poi_edits.&lt;region&gt;.txt</code> and commit.
     </div>
@@ -142,27 +144,37 @@ document.getElementById('clear').onclick=()=>{
 };
 drawEdits();
 
+// merge is two-step: pick the pin that SURVIVES, then click the ones it absorbs
+let merging=null;
+
 let flashT=null;
+// While a merge is armed the banner is the only thing telling you so, and the
+// only way out — so it stays up, with its exit button, until the merge ends.
+// A transient message during a merge must not take that button away.
 function flash(msg,keep){
   const b=document.getElementById('banner');
   b.innerHTML=esc(msg); b.style.display='block';
   clearTimeout(flashT);
-  if(keep){const btn=document.createElement('button');btn.textContent='cancel';
-    btn.onclick=()=>{merging=null;b.style.display='none'};b.appendChild(btn);}
+  if(keep||merging){
+    const btn=document.createElement('button');
+    btn.textContent=(merging&&merging.n?'done':'cancel')+' (Esc)';
+    btn.onclick=endMerge; b.appendChild(btn);
+  }
   else flashT=setTimeout(()=>b.style.display='none',2200);
 }
+function endMerge(){merging=null;document.getElementById('banner').style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&merging)endMerge()});
 
-// merge is two-step: pick the pin that SURVIVES, then click the ones it absorbs
-let merging=null;
 function startMerge(p,cat){
-  merging={name:p.n,at:at(p),cat:cat};
+  merging={name:p.n,at:at(p),cat:cat,n:0};
   flash('Merging into “'+p.n+'” — now click each pin it absorbs',true);
 }
 function absorb(p,cat){
   // one physical place is in one category; a cross-category merge is a misclick
   if(cat!==merging.cat){flash('“'+p.n+'” is a '+cat+', not a '+merging.cat+' — skipped');return}
   addEdit(`merge   ${merging.name} @ ${merging.at} <- ${p.n} @ ${at(p)}`);
-  flash('absorbed “'+p.n+'” — click more, or cancel');
+  merging.n++;
+  flash(merging.n+' absorbed into “'+merging.name+'” — click more, or finish');
 }
 
 // name + coords, not coords alone: the name is what disambiguates a pin dropped
