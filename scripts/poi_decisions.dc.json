@@ -5649,14 +5649,15 @@
    "name": "Old Quarry Boiler & Equipment",
    "lat": 38.9130231,
    "lon": -77.10346899999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJDZgFlm60t4kRAcVNFVnqpr8": {
    "cat": "museum",
@@ -11896,14 +11897,15 @@
    "name": "Tinner Hill Historic Park",
    "lat": 38.8791809,
    "lon": -77.1767857,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJS2bhpbjGt4kRSNrsHaOxGSo": {
    "cat": "park",
@@ -16001,14 +16003,15 @@
    "name": "Athenaeum",
    "lat": 38.8034561,
    "lon": -77.0418067,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJb0dAujbMt4kRJ7x3Jyk2coM": {
    "cat": "hospital",
@@ -17921,14 +17924,24 @@
    "name": "Tall Ship Providence",
    "lat": 38.803237599999996,
    "lon": -77.0386677,
-   "decision": "pending",
+   "decision": "closed",
    "reviewGate": "unknown",
    "decidedAt": "2026-07-27",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "pin": {
+    "n": "Tall Ship Providence",
+    "lat": 38.803237599999996,
+    "lon": -77.0386677,
+    "r": 67,
+    "id": "ChIJg8Z35-Sxt4kRQvGfc66K6MA",
+    "bs": "CLOSED_TEMPORARILY"
+   },
+   "reason": "closed",
+   "closedOverride": false
   },
   "google:ChIJg9-5jjG5t4kRVIS-fvbZm7g": {
    "cat": "park",
