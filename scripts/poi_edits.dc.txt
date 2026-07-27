@@ -8,3 +8,6 @@
 #   rename  <old> -> <new>                  fix a name
 #   keep    <name>                          undo an automatic merge
 #   rep     <name>                          make this pin the group's pin
+
+merge   Freeman Store & Museum @ 38.90336,-77.26504 <- Vienna Caboose @ 38.90361,-77.26570
+merge   Freeman Store & Museum @ 38.90336,-77.26504 <- Vienna’s Historic Original 1897 Library @ 38.90341,-77.26461
