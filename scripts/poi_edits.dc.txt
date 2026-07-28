@@ -16,3 +16,10 @@ delete  Tinner Hill Historic Park @ 38.87918,-77.17679
 delete  Athenaeum @ 38.80346,-77.04181
 delete  Old Quarry Boiler & Equipment @ 38.91302,-77.10347
 closed  Tall Ship Providence @ 38.80324,-77.03867
+
+closed  Beall-Dawson Museum @ 39.08473,-77.15527
+delete  Rockville Science Center Storefront @ 39.05853,-77.12294
+delete  Brahma Kumaris Meditation Museum @ 39.01113,-77.04068
+delete  Smithsonian Exhibits @ 38.93898,-76.88103
+delete  National Park Service Museum Resource Center @ 38.93020,-76.87523
+delete  The Smithsonian's Museum Conservation Institute @ 38.84335,-76.94132
