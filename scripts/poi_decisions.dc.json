@@ -3003,14 +3003,15 @@
    "name": "Rockville Science Center Storefront",
    "lat": 39.0585315,
    "lon": -77.12294349999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
-   "decidedAt": "2026-07-27",
+   "decidedAt": "2026-07-28",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJ76euhi_Tt4kRSF5252_Y1to": {
    "cat": "park",
@@ -6967,14 +6968,24 @@
    "name": "Beall-Dawson Museum",
    "lat": 39.084727799999996,
    "lon": -77.1552694,
-   "decision": "pending",
+   "decision": "closed",
    "reviewGate": "unknown",
-   "decidedAt": "2026-07-27",
+   "decidedAt": "2026-07-28",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "pin": {
+    "n": "Beall-Dawson Museum",
+    "lat": 39.084727799999996,
+    "lon": -77.1552694,
+    "r": 28,
+    "id": "ChIJG5FBQXPNt4kRuTHMSIBj6sw",
+    "bs": "CLOSED_TEMPORARILY"
+   },
+   "reason": "closed",
+   "closedOverride": false
   },
   "google:ChIJG5FHWN7Jt4kRpHRpCSa1UkY": {
    "cat": "park",
@@ -8171,14 +8182,15 @@
    "name": "Brahma Kumaris Meditation Museum",
    "lat": 39.0111293,
    "lon": -77.04068029999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
-   "decidedAt": "2026-07-27",
+   "decidedAt": "2026-07-28",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJIZXUyJfGt4kRbRXCzztx0DY": {
    "cat": "park",
@@ -9067,14 +9079,15 @@
    "name": "National Park Service Museum Resource Center",
    "lat": 38.9301993,
    "lon": -76.87523039999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
-   "decidedAt": "2026-07-27",
+   "decidedAt": "2026-07-28",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJKyFTUkC2t4kRa-gUfSePjf4": {
    "cat": "park",
@@ -9263,14 +9276,15 @@
    "name": "The Smithsonian's Museum Conservation Institute",
    "lat": 38.8433494,
    "lon": -76.9413223,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
-   "decidedAt": "2026-07-27",
+   "decidedAt": "2026-07-28",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJLTlIIte3t4kRRDwz81_iN0I": {
    "cat": "consulate",
@@ -15961,14 +15975,15 @@
    "name": "Smithsonian Exhibits",
    "lat": 38.9389839,
    "lon": -76.88102719999999,
-   "decision": "pending",
+   "decision": "drop",
    "reviewGate": "unknown",
-   "decidedAt": "2026-07-27",
+   "decidedAt": "2026-07-28",
    "mergedInto": null,
    "closed": null,
    "firstSeen": "2026-07-27",
    "lastSeen": "2026-07-27",
-   "mergeSrc": null
+   "mergeSrc": null,
+   "reason": "manual"
   },
   "google:ChIJaeIWYdu1t4kR7T9LPIIwL74": {
    "cat": "park",
