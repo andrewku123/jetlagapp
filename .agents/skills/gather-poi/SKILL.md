@@ -1,6 +1,6 @@
 ---
 name: gather-poi
-description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, cross-check the finished pass against official registries, and apply to the app. Also covers the recurring refresh (2nd and subsequent checks) — a sticky decision-ledger diff so re-checks only surface new/changed/closed pins. Use when (re)building, biannually-refreshing (every 6 months), re-checking existing POI data, or extending it to a new city/region.
+description: End-to-end procedure for building a Jet-Lag-ready POI database (museums, libraries, movie theaters, hospitals, zoos, aquariums, amusement parks, parks, golf courses, foreign consulates, mountains, professional sports stadiums) for ANY play area — collect (OSM-first + minimal Google), curate by the "category icon + >=5 reviews" rule, de-dup (name + footprint + manual overrides), review on an interactive map, cross-check the finished pass against official registries, and apply to the app. Also covers the recurring refresh (2nd and subsequent checks) — a sticky decision-ledger diff so re-checks only surface new/changed/closed pins. Use when (re)building, re-checking existing POI data on demand (before a game in that city), or extending it to a new city/region. Also covers keeping the Google spend inside the monthly per-SKU free tiers.
 ---
 
 # Build a Jet-Lag-ready POI database (any play area)
@@ -258,8 +258,8 @@ Carquinez Toy Train, …) used to slip past the audit and waste manual-review ti
   answer by `place_id` in `poi_bizstatus_cache.json` (statuses rarely change, so
   reruns are ~free), and writes it back into `poi_curated.json`.
 - `POI_REFRESH_ALL=1` re-queries **every** pin (not just status-less ones) to
-  catch places that closed since the last pull — worth running each biannual
-  refresh (every 6 months). A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
+  catch places that closed since the last pull — worth running on each on-demand
+  re-check. A full Bay-Area pass (~3.8k pins) typically flags ~70 closed.
 - `dedup_poi.py` then drops only `CLOSED_PERMANENTLY` pins up front (one
   chokepoint for all sources). Manual `drop` overrides that target a now-
   perm-closed pin are silently skipped (not warned).
@@ -302,7 +302,7 @@ pins are *actually* gone vs just stale flags. Two tiers, weakest first:
     defunct). Flag genuinely borderline ones (NDNU/Gellert: campus sold to UC, leasing
     back ≤5 yrs) for the human rather than dropping.
   Encode confirmed-gone pins as manual `drop` overrides (perm-closed ones auto-drop
-  and need none). Re-run this per biannual refresh (every 6 months) on the temp-closed set only.
+  and need none). Re-run this per on-demand re-check, on the temp-closed set only.
 
 ### 5. De-dup — `fetch_osm_polys.py` + `dedup_poi.py`
 Google lists one physical place as many pins (a hospital = main building + ER +
@@ -763,6 +763,47 @@ here — **never special-case names in code**:
 
 ## Cost & the cheap blend (OSM-first + minimal API + manual)
 
+### The free tier is monthly and per-SKU — budget in calls, not dollars
+
+Every Places SKU carries its own **free calls per calendar month**; only the
+overflow bills. Quoting a price without subtracting the cap overstates the cost
+several-fold (DC was estimated at ~$66 and cost **$15.93**).
+
+| what you ask for | SKU | free/month | overflow |
+|---|---|---|---|
+| Nearby/Text Search, no review fields | Search **Pro** | 5,000 | $32/1k |
+| …plus `rating`/`userRatingCount` | Search **Enterprise** | **1,000** | $35/1k |
+| Details: `businessStatus`, `displayName`, `types` | Details **Pro** | 5,000 | $17/1k |
+| Details: `userRatingCount` | Details **Enterprise** | **1,000** | $20/1k |
+| Details: `reviews` (recency proxy) | Details **Ent+Atmosphere** | 1,000 | $25/1k |
+
+`userRatingCount` is the only field that matters here: it is what drags a call
+into a 1,000-cap tier. `businessStatus` is Pro, so closure checking is five times
+roomier than review checking.
+
+**DC's first build, entirely:** 1,455 review-mode sweep calls − 1,000 free = 455
+× $0.035 = **$15.93**. The 463 icon `searchText` calls (Pro) and the 26 review
+top-ups (Details Enterprise) were inside their own caps and cost nothing. So a
+whole city's discovery is *one* SKU's overflow — that is the only number to plan.
+
+### Staging a build across calendar months = $0
+
+`fetch_places_poi.py` takes **`POI_MAX_CALLS`** and caches **per finished
+category**, so a build can be split across months and resumed for free. Stop on a
+category boundary: a category interrupted mid-way is left uncached and re-runs
+from scratch next month, re-spending what it already used.
+
+DC's calls per category — a realistic shape for any mid-size map:
+
+```
+park 723 · hospital 302 · library 128 · consulate 113 · museum 88
+movie_theater 24 · zoo 21 · golf_course 20 · stadium 17 · mountain 13
+amusement_park 5 · aquarium 1                                  (1,455 total)
+```
+
+One big category dominates (park ≈ half). Batch to ≤1,000/month: month 1 park +
+all the small ones (912), month 2 hospital + library + consulate (543) → **$0**.
+
 Billing reality (Places API New — confirm in **Billing → Reports → group by
 SKU**): there is **no ~$3/1k tier** for *discovery*. Search SKUs are **Pro
 (~$32/1k)** and, once you add `rating`/`userRatingCount`, **Enterprise (~$35/1k)**.
@@ -843,7 +884,31 @@ The first build curates everything by hand. **Every later check must be a diff, 
 a re-review**: a place already confirmed a hospital stays confirmed, a merge stays
 merged, a deletion stays deleted. What changes between cycles is (a) new places,
 (b) review counts that crossed the >=5 gate, (c) closures/renames. Only those reach
-a human. Run it **every 6 months**.
+a human.
+
+**Cadence is on demand, not on a timer** (Andrew's call): re-check a city when a
+game there is planned and enough time has passed since the last check — not every
+6 months regardless of whether anyone is playing.
+
+**A re-check need not buy reviews for the whole map.** New places and closures are
+cheap-tier facts; only the review count is Enterprise. So:
+- **discovery diff** (new / vanished): sweep with `POI_NO_REVIEWS=1` → Search Pro,
+  5,000 free/month — a DC-sized sweep (1,455 calls) is free;
+- **closures** for the live set: `businessStatus` is a Details/Search **Pro**
+  field, so a review-free field mask keeps it inside the 5,000 cap;
+- **review counts** (Enterprise, 1,000 free/month): only the *new* pins plus a
+  shortlist of the under-5 set.
+
+Shortlist by how close the pin is to the line. DC has 1,800 in-play pins under 5
+reviews, but the distribution is `0:975 · 1:361 · 2:206 · 3:152 · 4:106` — only
+**258** are at 3-4. A listing that has sat at 0 for a year is not about to cross;
+buy the 3-4s first, then the 2s if there is cap left. That keeps a whole re-check
+inside the free tiers.
+
+(This does not contradict step 2's "fold reviews into the sweep, it's 11x cheaper
+per place" — that arithmetic is per *paid* place. Once free tiers are in play, the
+split-SKU route wins for a refresh, where new pins are few and the sweep is only
+there to spot them.)
 
 ### The decision ledger (`poi_decisions.<region>.json`) — what makes this cheap
 
@@ -968,8 +1033,8 @@ invisible:
 - **RECHECK** — a review-failure drop that now clears >=5 reviews. It keeps
   reappearing here until you act: put it back on the map, or `reject` it.
 
-This is a good fit for a scheduled Devin automation: run steps 0-4 every 6 months
-and deliver the queues.
+This is a good fit for a Devin automation, but trigger it **on request before a
+game in that city**, not on a fixed schedule.
 
 Regression tests for all of it (sticky drops, the one-time re-test, closures,
 renames, vanished pins, gating) are in `scripts/test_poi_pipeline.py` — plain
