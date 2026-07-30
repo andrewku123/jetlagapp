@@ -24,6 +24,9 @@ Writes: the region's `poi_full[.<region>].json`
 """
 import os, sys, json, math, time, urllib.request, urllib.error
 
+from shapely.geometry import box, shape
+from shapely.ops import unary_union
+
 import poi_geo
 from poi_geo import CATS, PARK_TYPES  # noqa: F401  (the shared category rulebook)
 
@@ -47,6 +50,9 @@ FIELDS = ",".join(_BASE_FIELDS if NO_REVIEWS
 MAX = 20
 MAX_RADIUS = 50000.0
 MIN_RADIUS = 25.0
+# Stop before the bill runs away: 0 = no cap. Each finished category is written
+# out and skipped on the next run, so a capped sweep is restartable.
+MAX_CALLS = int(os.environ.get("POI_MAX_CALLS", "0"))
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REGION = poi_geo.region_from_argv()
@@ -55,6 +61,20 @@ PLAY = poi_geo.load_play(REGION)
 BBOX = poi_geo.bbox(PLAY)               # lat0, lat1, lon0, lon1
 in_play = poi_geo.make_in_play(PLAY)    # even-odd over every ring, holes included
 calls = 0
+
+# A play area never fills its own bounding box (DC's covers about a third of
+# it), and the quadtree would otherwise pay to search the empty rest — the bulk
+# of the sweep's cost. Cells missing the polygon entirely are skipped: an
+# in-play place near such a cell is still returned by the neighbouring cell that
+# does hit it. The margin absorbs the search circle circumscribing each cell.
+SKIP_MARGIN_M = 500.0
+_PLAY_GEOM = unary_union([shape(f["geometry"]) for f in PLAY["features"]]).buffer(
+    SKIP_MARGIN_M / (111320.0 * math.cos(math.radians((BBOX[0] + BBOX[1]) / 2))))
+skipped = 0
+
+
+class BudgetExhausted(Exception):
+    """POI_MAX_CALLS reached — unwind without discarding finished categories."""
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -67,6 +87,8 @@ def haversine(lat1, lon1, lat2, lon2):
 
 def nearby(types, clat, clon, radius):
     global calls
+    if MAX_CALLS and calls >= MAX_CALLS:
+        raise BudgetExhausted()
     body = json.dumps({
         "includedTypes": types,
         "maxResultCount": MAX,
@@ -93,12 +115,15 @@ def nearby(types, clat, clon, radius):
 
 
 def search_box(types, lat0, lat1, lon0, lon1, out):
+    global skipped
     clat, clon = (lat0 + lat1) / 2, (lon0 + lon1) / 2
     radius = haversine(clat, clon, lat1, lon1)
     quad = lambda: (search_box(types, lat0, clat, lon0, clon, out),
                     search_box(types, lat0, clat, clon, lon1, out),
                     search_box(types, clat, lat1, lon0, clon, out),
                     search_box(types, clat, lat1, clon, lon1, out))
+    if not _PLAY_GEOM.intersects(box(lon0, lat0, lon1, lat1)):
+        skipped += 1; return
     if radius > MAX_RADIUS:
         quad(); return
     places = nearby(types, clat, clon, radius)
@@ -117,7 +142,12 @@ def main():
         if key in result:
             print(f"{key:15s} (cached, skip)", flush=True); continue
         found = {}
-        search_box(types, *BBOX, found)
+        try:
+            search_box(types, *BBOX, found)
+        except BudgetExhausted:
+            print(f"{key:15s} stopped at POI_MAX_CALLS={MAX_CALLS}; {key} left "
+                  f"uncached — rerun to finish it", flush=True)
+            break
         kept = []
         for p in found.values():
             loc = p["location"]
@@ -137,7 +167,8 @@ def main():
         ge5 = sum(1 for x in kept if (x["userRatingCount"] or 0) >= 5)
         print(f"{key:15s} raw_in_bbox={len(found):5d} in_play={len(kept):5d} "
               f">=5rev={ge5:5d} calls={calls}", flush=True)
-    print(f"\ntotal API calls: {calls}\nwrote {out_path} ({REGION})")
+    print(f"\ntotal API calls: {calls} (cells skipped as out of play: {skipped})"
+          f"\nwrote {out_path} ({REGION})")
 
 
 if __name__ == "__main__":

@@ -251,7 +251,10 @@ def reconcile(region, led, raw, details, write):
         every refresh until it clears >=5 reviews, is deleted by hand, or is merged;
       * closure and disappearance are *manual* signals -- only CLOSED_PERMANENTLY
         auto-drops, because Google's temporary flag is routinely stale and a pin
-        missing from one sweep is usually search wobble, not a closed business.
+        missing from one sweep is usually search wobble, not a closed business;
+      * a `closed` decision is deliberately **not** sticky: it means "shut right
+        now", so a scan that finds the place open again queues it for re-opening
+        instead of leaving it buried like a delete.
     """
     day = L.today()
     q = {k: [] for k in ("NEW", "UNDER5", "CHANGED", "GONE", "RECHECK")}
@@ -315,6 +318,23 @@ def reconcile(region, led, raw, details, write):
                 if renamed:
                     rec["name"] = pl["name"]
                 continue
+            if decision == "closed":
+                # A closure is the one human decision a later scan may undo. It
+                # can't undo it on its own, though: the reviewer's `closed` line
+                # is replayed on every build, so re-opening means adding `open`
+                # to the edits file — which is what this queue entry asks for.
+                if status == CLOSED_PERM:
+                    q["GONE"].append(entry(rec, k, "closed place is now permanently "
+                                                   "closed (auto-dropped)"))
+                    rec.update(decision="drop", reason="closed_permanently", decidedAt=day)
+                elif status != CLOSED_TEMP:
+                    q["CHANGED"].append(entry(
+                        rec, k, "closed by hand, but Google shows it open again — "
+                                f"add `open {rec['name']}` to put it back",
+                        {"reviews": n}))
+                if renamed:
+                    rec["name"] = pl["name"]
+                continue
 
             auto = rec.get("reason") == "auto_discovered"   # discovered, not yet mapped
             if status == CLOSED_PERM:
@@ -325,7 +345,9 @@ def reconcile(region, led, raw, details, write):
                 if gate_ok and was_unknown:
                     q["NEW"].append(entry(rec, k, "crossed 5 reviews since the last refresh",
                                           {"reviews": n}))
-            elif status == CLOSED_TEMP:
+            elif status == CLOSED_TEMP and not rec.get("closedOverride"):
+                # `closedOverride` is a human who checked and said it's open:
+                # don't re-ask every refresh about a flag we already judged stale
                 q["CHANGED"].append(entry(rec, k, "temporarily closed — verify by hand"))
             elif renamed:
                 q["CHANGED"].append(entry(rec, k, "renamed", {"newName": pl["name"]}))

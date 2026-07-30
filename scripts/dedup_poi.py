@@ -903,22 +903,34 @@ def main():
 
         # viz payload: groups (rep + colored child spokes) and untouched singles
         absorbed_set = {c for c, _, _ in edges}
+
+        def pin(i, **extra):
+            """One dot on the review map. `sr`/`bs` are what a reviewer needs to
+            judge a thin-looking pin: where it came from and whether Google
+            calls it closed."""
+            p = places[i]
+            d = {"n": p["name"], "lat": p["lat"], "lon": p["lon"],
+                 "r": rev[i], "id": p.get("id"), **extra}
+            if p.get("source"):
+                d["sr"] = p["source"]
+            if p.get("businessStatus") not in (None, "OPERATIONAL"):
+                d["bs"] = p["businessStatus"]
+            return d
+
         groups = []
         for rep in sorted(children, key=lambda i: -rev[i]):
             groups.append({
-                "rep": {"n": places[rep]["name"], "lat": places[rep]["lat"],
-                        "lon": places[rep]["lon"], "r": rev[rep],
-                        "id": places[rep].get("id")},
-                "kids": [{"n": places[c]["name"], "lat": places[c]["lat"],
-                          "lon": places[c]["lon"], "r": rev[c], "src": s,
-                          "id": places[c].get("id")}
+                "rep": pin(rep),
+                "kids": [pin(c, src=s)
                          for c, s in sorted(children[rep], key=lambda cs: -rev[cs[0]])],
             })
-        singles = [{"n": places[i]["name"], "lat": places[i]["lat"],
-                    "lon": places[i]["lon"], "r": rev[i], "id": places[i].get("id")}
-                   for i in kept if i not in children and i not in absorbed_set]
+        singles = [pin(i) for i in kept
+                   if i not in children and i not in absorbed_set]
         viz[key] = {"label": LABEL[key], "groups": groups, "singles": singles,
                     "before": len(places), "after": len(kept_places)}
+    # the map is one file served for every city: it reads the region off the data
+    # so its title, edits-file name and per-browser edit basket are region-scoped
+    viz["_region"] = REGION
 
     md = [md[0], md[1], "\n".join(table), "\n"] + md[2:]
     dedup_path = poi_geo.work(REGION, "poi_deduped.json")
@@ -932,11 +944,7 @@ def main():
                  f"rerun with --force to regenerate it and lose that manual pass")
     open(md_path, "w").write("\n".join(md))
     json.dump(out, open(dedup_path, "w"), indent=1)
-    os.makedirs(os.path.dirname(viz_path), exist_ok=True)
-    with open(viz_path, "w") as f:
-        f.write("window.VIZ=")
-        json.dump(viz, f)
-        f.write(";")
+    poi_ledger.save_viz(REGION, viz)   # committed copy + the served preview copy
     print("\n".join(table))
     if pa_raw is not None:
         print(f"\nplay-area clip: dropped {oop_total} POIs outside the city polygons")

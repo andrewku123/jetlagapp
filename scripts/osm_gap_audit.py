@@ -39,12 +39,14 @@ def overpass(filters):
     data = urllib.parse.urlencode({"data": q}).encode()
     req = urllib.request.Request("https://overpass-api.de/api/interpreter",
                                  data=data, headers={"User-Agent": "jetlag-audit/1.0"})
-    for attempt in range(4):
+    for attempt in range(6):
         try:
             return json.load(urllib.request.urlopen(req, timeout=200))["elements"]
         except Exception as e:
-            print("  overpass retry:", e); time.sleep(8)
-    return []
+            print("  overpass retry:", e); time.sleep(10 * (attempt + 1))
+    # Returning [] here would read as "OSM knows of nothing in this category" and
+    # silently report a gap of 0 — the one answer this audit must never invent.
+    raise RuntimeError(f"overpass failed for {filters} after 6 attempts")
 
 
 def norm(s):

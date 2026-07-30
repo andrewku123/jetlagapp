@@ -96,7 +96,9 @@ def to_polys(js):
 
 
 def main():
-    cats = sys.argv[1:] or list(TAGS)
+    # positional args are categories; --region is consumed by poi_geo
+    cats = [a for a in sys.argv[1:] if not a.startswith("-")
+            and a not in (REGION,)] or list(TAGS)
     for cat in cats:
         print(f"fetching {cat} ...", flush=True)
         js = fetch(cat)
