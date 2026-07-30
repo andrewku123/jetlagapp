@@ -16,21 +16,26 @@ The **map** picker in the top bar chooses which map you're playing:
   stations, five counties). Default.
 - **SF Muni** — a day-pass map scoped to San Francisco (the 7 Muni rail lines,
   132 stations, one county/city).
+- **LA Metro** — Los Angeles County (rail A/B/C/D/E/K plus the G and J busways,
+  158 stations).
 
 Each map keeps its **own saved board**, so switching maps never mixes state, and
 you can hand off a game by its board code (a code from one map won't load on the
-other). Some questions are automatically demoted on SF Muni — see §12.
+other). Each map also sets its own **game size** from how many stations it has —
+all three are `medium` today, which is what decides the deck of questions you can
+ask; the **Legend** tab names it under *About this map*. A question that can't
+tell that map's stations apart is demoted automatically — see §12.
 
 ## 1. The screen at a glance
 
 - **Map** (left / main): every eligible station as a dot. Possible stations are
   solid; eliminated ones are dimmed (toggle with **show eliminated**).
 - **Top bar:**
-  - **map** — which map you're playing (Bay Area / SF Muni; see §0).
+  - **map** — which map you're playing (see §0).
   - **Weekday / Weekend** — which service day you're playing. It changes which
     stations are eligible (some stops only run often enough on one of them). This
-    toggle is **hidden** on maps where the service day makes no difference (e.g.
-    SF Muni, where the same 132 stations run both days).
+    toggle is **hidden** on maps where the service day makes no difference (SF
+    Muni and LA Metro, where every station runs often enough on both days).
   - **mi/ft / km/m** — imperial or metric for every distance and elevation in the
     app (inputs and labels both switch).
   - **show eliminated** — show or hide the dimmed, ruled-out stations.
@@ -117,23 +122,27 @@ ask a question, its reward is multiplied by n (2nd ask → ×2, 3rd → ×3, …
 
 ## 6. Satellite view
 
-Tick **satellite** in the top bar to overlay aerial imagery, clipped to the
-play-area counties (land + bay; ocean and the Farallon Islands are excluded).
-Road and place names are drawn on top so streets stay readable. The **Legend**
-tab lists the imagery source and per-county capture dates.
+Tick **satellite** in the top bar to overlay aerial imagery, clipped to the play
+area — anything out of play stays grey, so the boundary is obvious. Road and
+place names are drawn on top so streets stay readable. The **Legend** tab lists
+the imagery source and its capture dates.
 
 ## 7. POI — reference layer for POI questions
 
 The **POI** tab overlays the points of interest used to compose Tentacles,
 Matching and Measuring questions (museums, libraries, movie theaters, hospitals,
-zoos, aquariums, amusement parks, parks, golf courses, mountains) on the map while
-the tab is open.
+zoos, aquariums, amusement parks, parks, golf courses, sports stadiums,
+mountains, foreign consulates) on the map while the tab is open.
 
 - Toggle any category on/off, or use **Show all** / **Hide all**.
 - **Search POI name…** filters the dots and offers a top-5 suggestion dropdown;
   picking one flies the map to it.
 - Set the **Stations** layer to **Normal / Faded / Hidden** so the POIs stand out.
-- A place counts if it carries the Google Maps category icon and has ≥5 reviews.
+- A place counts if it carries the Google Maps category icon and has ≥5 reviews
+  — so if the hider names something that isn't on this layer, it isn't a legal
+  answer. Mountains are the exception (peaks aren't reviewed).
+- Each map has its own set: **2,340** places on Bay Area, **502** on SF Muni,
+  **2,056** on LA Metro.
 
 ## 8. Suspects — work the candidate list
 
@@ -166,7 +175,10 @@ On SF Muni every station is in the same county and city, so those questions can'
 split the board in the regular game (they're `(endgame only)` — see §12). But a
 border station's hiding zone can straddle the county/city line (e.g.
 Bayshore/Sunnydale across the SF↔San Mateo line), so ticking **Endgame question**
-and asking "same county/city?" carves the zone along that boundary.
+and asking "same county/city?" carves the zone along that boundary. On LA Metro
+**County** Matching is dead even here — the nearest station is about 3 km inside
+the county line, further than any hiding zone reaches — so it's plain
+`(log only)`; City Matching there is a normal, fully eliminating question.
 
 ## 10. The map toolbox (drawing tools)
 
@@ -207,6 +219,10 @@ Helpful behaviors:
 
 - Log questions in the order you ask them; the repeat-cost multiplier counts in
   ask order.
+- **Hand the board to a teammate** with the **Legend** tab's *Board code*: copy
+  the code, they paste it. It carries your eliminations only, merges into
+  whatever they've already ruled out (Reset first for an exact copy), and a code
+  from another map is rejected.
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
 - **Reset** wipes everything — only use it to start a brand-new game.
@@ -219,14 +235,21 @@ The game rule is that anything outside the play area doesn't exist, so a feature
 that's off the map can't be an answer.
 
 - **`(log only)`** — you can still record it for your notes, but it eliminates and
-  shades **nothing**, in the regular game and the endgame. On **SF Muni** this
-  covers **nearest commercial airport** (both Matching and Measuring — SFO/OAK/SJC
-  are all outside San Francisco), **transit line** Matching (one system), and any
-  POI category with no in-play locations (e.g. amusement parks).
+  shades **nothing**, in the regular game and the endgame.
 - **`(endgame only)`** — log-only in the regular game, but it **does** eliminate
-  once you're in the endgame. This is **County** and **City** Matching on SF Muni
-  (see §9): useless map-wide, but they carve a border station's hiding zone.
+  once you're in the endgame (see §9): useless map-wide, but it carves a border
+  station's hiding zone.
+
+What that means per map:
+
+| Map | `(log only)` | `(endgame only)` |
+|---|---|---|
+| **Bay Area** | nothing | nothing |
+| **SF Muni** | nearest **commercial airport**, Matching and Measuring (SFO/OAK/SJC are all outside San Francisco, so no airport exists in play), and any POI category with no in-play locations (e.g. amusement parks) | **County** and **City** Matching |
+| **LA Metro** | **County** Matching | nothing |
+
+On every map the **state border** and **international border** Measuring
+subjects are `(log only)` too — none of these play areas has one.
 
 The Ask form marks the subject with the tag, the button changes to **Log
-question**, and the blurb tells you why. On the **Bay Area** map nothing is
-demoted.
+question**, and the blurb tells you why.

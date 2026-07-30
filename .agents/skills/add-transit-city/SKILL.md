@@ -342,8 +342,12 @@ The rest of this doc is the detailed reference for each step.
      unincorporated too and they *do* answer the question.
 
 7. **Update the map default view** in `src/components/MapView.tsx` (initial
-   center/zoom) to the new region, and update copy in `src/App.tsx`, `README.md`,
-   `STATIONS.md`, and `public/stations-map.html`.
+   center/zoom) to the new region, and update copy in `src/App.tsx`,
+   `README.md`, `TUTORIAL.md` and `public/stations-map.html`. `STATIONS.md` is
+   generated: add the map to `MAPS` in `scripts/build_stations_md.mjs` and run
+   `node scripts/build_stations_md.mjs`. Do all of this only once the map is
+   **finished** — these three files are what a player reads, so a half-built map
+   must not appear in them.
 
 8. **Question set**: the existing medium-game questions in `src/data/questions.ts`
    are geography-generic and need no change. If the new region lacks an attribute
