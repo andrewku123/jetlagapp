@@ -1,0 +1,19 @@
+{
+  "name": "Bay Area Hide & Seek",
+  "short_name": "Hide & Seek",
+  "description": "Seeker companion for Jet Lag: Hide and Seek in the SF Bay Area.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f1216",
+  "theme_color": "#0f1216",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
