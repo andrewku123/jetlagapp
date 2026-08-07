@@ -18,6 +18,9 @@ map uses a `<slug>.` prefix (e.g. `la.stations.json`). The 8 files are:
 · places.geojson.json · counties.geojson.json · zctas.geojson.json ·
 transit-lines.geojson.json`.
 
+0. **Decide which lines are in scope** before touching data — see "Which lines
+   belong on a map" below. Three gates: walk-up fares, hourly-every-day service,
+   and a majority of the line's stops inside the intended play area.
 1. **Lock the station set** with the user (systems in scope, names, per-line
    stop order). Then build `<slug>.stations.json` — see the detailed Steps 1–4
    below and the `rebuild-station-dataset` skill. Enrich every station
@@ -94,6 +97,57 @@ transit-lines.geojson.json`.
    runs on push to `main`, so run them locally before pushing.)
 
 The rest of this doc is the detailed reference for each step.
+
+## Which lines belong on a map
+
+Decide this with the user *before* building anything — the play area is drawn
+after the lines, so the third gate is judged against the play area the map's
+name implies ("the DC map" does not reach Baltimore), not against a polygon that
+does not exist yet. A line ships only if it clears all three:
+
+1. **Walk-up fares, no reservation.** Tap-and-go (Metro SmarTrip, Clipper) or
+   buy-before-boarding but unreserved (MARC, VRE: TVM/app, any train) both pass.
+   **Amtrak fails** — its fares are reservation-based and yield-priced, so a
+   hider cannot be assumed able to board the next train. This gate is about the
+   *rules of the game*, not frequency, so apply it first and cheaply.
+2. **Served at least hourly, every day** — combined across all lines at the
+   station and direction (staggered lines add up; see `rebuild-station-dataset`).
+   Peak-only or weekday-only commuter lines fail outright: VRE runs no weekend
+   service at all, MARC Camden/Brunswick are weekday-only. Bay's Caltrain passes
+   (20–30 min, seven days) — commuter rail is **not** excluded on principle.
+3. **A majority of the line's stops sit inside the intended play area.** A line
+   whose stops are mostly outside makes the "same line?" Matching question
+   meaningless and drags the boundary toward the next metro. Measure it, don't
+   eyeball it: pull the OSM route relation's `stop`/`platform` members and
+   point-in-polygon them against the draft play area.
+
+Worked numbers, DC (all rejected; the Metrorail lines are 100% in play):
+
+| line | stops | in play |
+|---|---:|---:|
+| MARC Penn | 13 | 2 (15%) |
+| MARC Camden | 11 | 4 (36%) |
+| MARC Brunswick | 14–17 | 5 (29–36%) |
+| VRE Fredericksburg | 9 | 4 (44%) |
+| VRE Manassas | 10 | 5 (50%) |
+| Amtrak NE Regional | 25 | 3 (12%) |
+
+Bay's Caltrain, by contrast, is 24 of ~31 stops in play — that is what "majority"
+looks like when a line genuinely belongs to the metro.
+
+**Also check what a rejected line would actually have added.** Overlay its stops
+on the stations you already have: in DC, 13 of the 17 non-Metro rail stops in
+play are within ~250 m of an existing Metrorail station, so MARC/VRE/Amtrak would
+have contributed **4** new suspects (Backlick Road, Garrett Park, Kensington,
+Riverdale) — all on lines that fail gate 2 anyway. When a rejected line adds no
+new stations, adding it only changes line labels, i.e. it can only make
+`match-line` worse. Record the verdict and the numbers in the region's station
+builder docstring (`build_dc_stations.py`) so the next reader does not re-litigate
+it.
+
+A system that is *unmapped* is a separate reason: the H Street streetcar has no
+OSM route relation and no named stops, so it cannot be built from OSM at all —
+it would have to be hand-entered.
 
 ## Steps
 

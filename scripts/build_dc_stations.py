@@ -1,11 +1,25 @@
 #!/usr/bin/env python3
 """Build the DC map's station list: WMATA Metrorail, from OSM.
 
-Metrorail is the whole map — MARC/VRE are commuter rail whose stops run out to
-Baltimore/Fredericksburg/Martinsburg and mostly fail the "served at least hourly
-every day" eligibility rule, and the H Street streetcar is barely mapped in OSM
-(no route relation, no named stops), so neither is included. See the
-add-transit-city skill.
+Metrorail is the whole map. MARC, VRE and Amtrak were each audited against the
+three line-inclusion gates (add-transit-city skill) and all three fail:
+
+  * Fares: Amtrak is reservation-based, so a hider can't be assumed able to board
+    the next train. MARC/VRE pass this one (walk-up, unreserved).
+  * Service: VRE runs no weekend service at all; MARC Camden/Brunswick are
+    weekday-only. Only MARC Penn runs seven days, and not hourly.
+  * Share of stops in play: Penn 2/13, Camden 4/11, Brunswick 5/14-17,
+    VRE Fredericksburg 4/9, VRE Manassas 5/10, Amtrak NE Regional 3/25 — every
+    one a minority, with the rest running out to Baltimore, Martinsburg and
+    Spotsylvania. All six Metrorail lines are 100% in play.
+
+They would also have added almost nothing: 13 of the 17 non-Metro rail stops
+inside the play area are within ~250 m of a Metrorail station already here, so
+the only new suspects would be Backlick Road, Garrett Park, Kensington and
+Riverdale — all on lines that fail the service gate.
+
+The H Street streetcar is a different case: it has no OSM route relation and no
+named stops, so it can't be built from OSM at all.
 
 Two OSM quirks handled here:
   * Metro is tagged network="Washington Metro" (NOT "WMATA"), so a WMATA-keyed
