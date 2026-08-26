@@ -51,13 +51,16 @@ to the play area for both perf and looks:
   and `polygon-clipping`).
 - **Labels on top of imagery**: satellite would otherwise hide the basemap's
   road/place names, so a labels-only overlay (`SAT_LABEL_URLS`) is added to the
-  **same clipped pane** at higher `zIndex`. We use Esri
-  `Reference/World_Boundaries_and_Places` — labels with **no road/area shading or
-  fills**. `SAT_LABEL_URLS` is a list, so other overlays can be layered in.
-  (History: CARTO's `light_only_labels` was the in-between we wanted — road names,
-  no road geometry — but it went key-only, so satellite now shows place names
-  only. Esri `World_Transportation` would add road names but is too busy: it
-  draws road *lines/shields* too.)
+  **same clipped pane** at higher `zIndex`. `SAT_LABEL_URLS` lists two Esri
+  reference layers: `Reference/World_Boundaries_and_Places` (place names) and
+  `Reference/World_Transportation` (road names). Both keep returning HTTP 200 past
+  z17 but the tiles are empty, so they need `maxNativeZoom`
+  (`SAT_LABEL_MAX_NATIVE_ZOOM = 17`) or the labels silently vanish at hiding-zone
+  zooms — check the tile *byte size*, not the status. (History: CARTO's `light_only_labels`
+  was road+place names with no road geometry, but it went key-only.
+  `World_Transportation` does draw hairline road casings — over *imagery* they
+  land on the real roadway and read as the usual hybrid look, so it's fine here;
+  it would be too busy over the light basemap, which has roads already.)
 
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous

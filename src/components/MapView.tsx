@@ -140,12 +140,15 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-// Labels shown on top of the satellite imagery: a labels-only reference layer —
-// road and place names with NO road/area shading or fills. This restores
-// readable road names in satellite view without the busy colored road network.
+// Labels shown on top of the satellite imagery: place names, plus road names
+// (the transportation layer draws hairline casings along the roads it labels —
+// over imagery they land on the real roadway, the usual "hybrid" look).
 const SAT_LABEL_URLS = [
   'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
 ]
+// Past z17 the reference layers serve empty tiles, so upscale instead.
+const SAT_LABEL_MAX_NATIVE_ZOOM = 17
 
 // Base map. Esri's Light Gray Canvas: keyless, and the same muted palette the
 // colored transit lines and station dots are drawn against. Its tiles stop at
@@ -514,7 +517,7 @@ function SatelliteLayer() {
       const l = new (SatelliteTileLayer as SatelliteTileLayerCtor)(url, {
         bounds: PLAY_BOUNDS,
         maxZoom: 20,
-        maxNativeZoom: BASE_MAX_NATIVE_ZOOM,
+        maxNativeZoom: SAT_LABEL_MAX_NATIVE_ZOOM,
         pane: paneName,
         zIndex: 2 + i,
       })
