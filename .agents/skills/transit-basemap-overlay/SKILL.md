@@ -10,14 +10,28 @@ top in their official (Google-Maps-style) colors, so transit is the visual focus
 instead of freeways.
 
 ## Basemap (`src/components/MapView.tsx`)
-The `<TileLayer>` uses **CartoDB Positron** (`light_all`):
-`https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png`,
-`subdomains="abcd"`, attribution must credit OpenStreetMap **and** CARTO. This
-style de-emphasizes roads/freeways, drops ferry lines, and shows parks as light
-green fills without bold outlines (which is what the user wanted). Note: a raster
-basemap cannot fully delete freeways — to remove them entirely you'd need a vector
-basemap (MapLibre + a custom style JSON). Use `light_nolabels` for no place
-labels.
+Two `<TileLayer>`s make the base: Esri **Light Gray Canvas** plus its labels-only
+reference layer.
+
+```
+.../Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}       (BASE_URL)
+.../Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}  (BASE_LABEL_URL)
+```
+(host `https://server.arcgisonline.com/ArcGIS/rest/services/`, note the `{y}/{x}`
+order.) Both need `maxNativeZoom={16}` — the service has no tiles past z16, so
+without it the map goes blank when you zoom into a hiding zone; with it Leaflet
+upscales. Attribution must credit **Esri** and OpenStreetMap. Drop the reference
+layer for a no-labels map.
+
+**Do not use CartoDB Positron** (`{s}.basemaps.cartocdn.com/light_all/…`). It was
+the original basemap, but in Aug 2026 CARTO began stamping every keyless request
+with a diagonal "API KEY REQUIRED" watermark — the tiles still return HTTP 200,
+so this fails visually rather than loudly. Any replacement must be keyless
+(Stadia/MapTiler/Jawg/Geoapify all 401 without a key) and, for a static GitHub
+Pages site, must not need a referrer allow-list.
+
+Note: a raster basemap cannot fully delete freeways — to remove them entirely
+you'd need a vector basemap (MapLibre + a custom style JSON).
 
 ## Satellite layer (`src/components/MapView.tsx`, `SatelliteLayer`)
 Optional Esri **World Imagery** layer toggled by the `satellite` prop, restricted
@@ -37,15 +51,13 @@ to the play area for both perf and looks:
   and `polygon-clipping`).
 - **Labels on top of imagery**: satellite would otherwise hide the basemap's
   road/place names, so a labels-only overlay (`SAT_LABEL_URLS`) is added to the
-  **same clipped pane** at higher `zIndex`. We use CARTO's
-  `light_only_labels` tiles — the **same label set as the base map** (road + place
-  names) but with **no road/area shading or fills** — so road names stay readable
-  in satellite view without the busy colored road network. Needs
-  `subdomains: 'abcd'` (CARTO `{s}` URL). `SAT_LABEL_URLS` is a list, so other
-  overlays can be layered in. (History: Esri `World_Boundaries_and_Places`
-  gave only place names; adding Esri `World_Transportation` for roads was too
-  busy because it draws road *lines/shields*. CARTO labels-only is the in-between:
-  road names, no road geometry.)
+  **same clipped pane** at higher `zIndex`. We use Esri
+  `Reference/World_Boundaries_and_Places` — labels with **no road/area shading or
+  fills**. `SAT_LABEL_URLS` is a list, so other overlays can be layered in.
+  (History: CARTO's `light_only_labels` was the in-between we wanted — road names,
+  no road geometry — but it went key-only, so satellite now shows place names
+  only. Esri `World_Transportation` would add road names but is too busy: it
+  draws road *lines/shields* too.)
 
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous

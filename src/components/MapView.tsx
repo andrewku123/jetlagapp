@@ -140,13 +140,21 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-// Labels shown on top of the satellite imagery: CARTO's labels-only tiles — the
-// SAME label set as the base map (road + place names) but with NO road/area
-// shading or fills. This restores readable road names in satellite view without
-// the busy colored road network.
+// Labels shown on top of the satellite imagery: a labels-only reference layer —
+// road and place names with NO road/area shading or fills. This restores
+// readable road names in satellite view without the busy colored road network.
 const SAT_LABEL_URLS = [
-  'https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png',
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
 ]
+
+// Base map. Esri's Light Gray Canvas: keyless, and the same muted palette the
+// colored transit lines and station dots are drawn against. Its tiles stop at
+// z16, so deeper zooms upscale them (maxNativeZoom) rather than going blank.
+const BASE_URL =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
+const BASE_LABEL_URL =
+  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
+const BASE_MAX_NATIVE_ZOOM = 16
 
 interface TransitWay {
   type: 'Feature'
@@ -506,9 +514,9 @@ function SatelliteLayer() {
       const l = new (SatelliteTileLayer as SatelliteTileLayerCtor)(url, {
         bounds: PLAY_BOUNDS,
         maxZoom: 20,
+        maxNativeZoom: BASE_MAX_NATIVE_ZOOM,
         pane: paneName,
         zIndex: 2 + i,
-        subdomains: 'abcd',
       })
       l.addTo(map)
       return l
@@ -1358,10 +1366,15 @@ export default function MapView({
 
       <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} className="map" preferCanvas>
         <TileLayer
-          attribution='&copy; OpenStreetMap contributors &copy; CARTO'
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-          subdomains="abcd"
+          attribution='Tiles &copy; Esri &mdash; &copy; OpenStreetMap contributors'
+          url={BASE_URL}
           maxZoom={20}
+          maxNativeZoom={BASE_MAX_NATIVE_ZOOM}
+        />
+        <TileLayer
+          url={BASE_LABEL_URL}
+          maxZoom={20}
+          maxNativeZoom={BASE_MAX_NATIVE_ZOOM}
         />
         {satellite && <SatelliteLayer />}
         <MapRefCapture mapRef={mapInstanceRef} />
