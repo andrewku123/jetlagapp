@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
 import {
   MapContainer,
-  TileLayer,
   CircleMarker,
   Circle,
   Polyline,
@@ -14,6 +13,7 @@ import {
   Marker,
 } from 'react-leaflet'
 import L from 'leaflet'
+import '@maplibre/maplibre-gl-leaflet'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
@@ -140,24 +140,45 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-// Labels shown on top of the satellite imagery: place names, plus road names
-// (the transportation layer draws hairline casings along the roads it labels —
-// over imagery they land on the real roadway, the usual "hybrid" look).
-const SAT_LABEL_URLS = [
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+// Labels shown on top of the satellite imagery: place names, plus road names.
+// The transportation layer paints salmon casings along the roads it labels,
+// which shouts louder than the transit lines the game is about, so it is
+// desaturated and faded (see .sat-roads) — the names stay, the roads recede.
+const SAT_LABEL_URLS: { url: string; className?: string }[] = [
+  {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  },
+  {
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+    className: 'sat-roads',
+  },
 ]
 // Past z17 the reference layers serve empty tiles, so upscale instead.
 const SAT_LABEL_MAX_NATIVE_ZOOM = 17
 
-// Base map. Esri's Light Gray Canvas: keyless, and the same muted palette the
-// colored transit lines and station dots are drawn against. Its tiles stop at
-// z16, so deeper zooms upscale them (maxNativeZoom) rather than going blank.
-const BASE_URL =
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-const BASE_LABEL_URL =
-  'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}'
-const BASE_MAX_NATIVE_ZOOM = 16
+// Base map. OpenFreeMap's Positron style: OpenStreetMap vector tiles, keyless
+// and unmetered, and the same pale palette the colored transit lines and station
+// dots are drawn against. Vector means labels stay crisp at every zoom.
+const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
+const BASE_ATTRIBUTION =
+  '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+
+// Vector basemap, rendered by MapLibre into a canvas Leaflet keeps in sync.
+function BaseLayer() {
+  const map = useMap()
+  useEffect(() => {
+    // MapLibre draws its own attribution inside the layer's pane, which would
+    // sit on top of Leaflet's; credit the sources in Leaflet's control instead.
+    const layer = L.maplibreGL({ style: BASE_STYLE_URL, attributionControl: false })
+    layer.addTo(map)
+    map.attributionControl?.addAttribution(BASE_ATTRIBUTION)
+    return () => {
+      map.attributionControl?.removeAttribution(BASE_ATTRIBUTION)
+      map.removeLayer(layer)
+    }
+  }, [map])
+  return null
+}
 
 interface TransitWay {
   type: 'Feature'
@@ -513,13 +534,14 @@ function SatelliteLayer() {
 
     // Label overlays in the same (clipped) pane, above the imagery, so road and
     // place names stay visible where the satellite covers the labelled basemap.
-    const labelLayers = SAT_LABEL_URLS.map((url, i) => {
+    const labelLayers = SAT_LABEL_URLS.map(({ url, className }, i) => {
       const l = new (SatelliteTileLayer as SatelliteTileLayerCtor)(url, {
         bounds: PLAY_BOUNDS,
         maxZoom: 20,
         maxNativeZoom: SAT_LABEL_MAX_NATIVE_ZOOM,
         pane: paneName,
         zIndex: 2 + i,
+        className,
       })
       l.addTo(map)
       return l
@@ -1368,17 +1390,7 @@ export default function MapView({
       )}
 
       <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} className="map" preferCanvas>
-        <TileLayer
-          attribution='Tiles &copy; Esri &mdash; &copy; OpenStreetMap contributors'
-          url={BASE_URL}
-          maxZoom={20}
-          maxNativeZoom={BASE_MAX_NATIVE_ZOOM}
-        />
-        <TileLayer
-          url={BASE_LABEL_URL}
-          maxZoom={20}
-          maxNativeZoom={BASE_MAX_NATIVE_ZOOM}
-        />
+        <BaseLayer />
         {satellite && <SatelliteLayer />}
         <MapRefCapture mapRef={mapInstanceRef} />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
