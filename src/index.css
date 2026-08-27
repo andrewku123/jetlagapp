@@ -326,11 +326,6 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 
 .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #fff; color: #111; }
 
-/* Road-name tiles over the satellite imagery: keep the names, mute the salmon
-   road casings that come with them so the transit lines stay the loudest thing
-   on the map. */
-.sat-roads { filter: grayscale(1) brightness(1.15) opacity(0.5); }
-
 /* desktop: floating sheet controls are hidden */
 .sheet-toggle, .sheet-grab { display: none; }
 

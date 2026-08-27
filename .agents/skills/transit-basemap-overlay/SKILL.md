@@ -16,16 +16,24 @@ keyless, unmetered) rendered by MapLibre GL into a canvas that the
 
 ```ts
 const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
-L.maplibreGL({ style: BASE_STYLE_URL, attributionControl: false })  // <BaseLayer/>
+const style = await fetchBaseStyle()                       // style JSON, edited
+L.maplibreGL({ style, attributionControl: false })         // <BaseLayer/>
 ```
 Points to watch:
 - `attributionControl: false`, then `map.attributionControl.addAttribution(...)`
   — otherwise MapLibre paints its own credit inside the layer's pane on top of
   Leaflet's. Credit **OpenFreeMap** and **OpenStreetMap**.
 - No `maxNativeZoom` needed: vector labels stay crisp at every zoom (that cap is
-  a raster-tile concern, and still applies to the satellite label layers below).
+  a raster-tile concern; only the Esri imagery is raster now).
 - Because it's a style JSON, individual layers (freeways, place labels) can be
-  restyled or removed client-side — impossible with raster tiles.
+  restyled or removed client-side — impossible with raster tiles. `fetchBaseStyle()`
+  does exactly that: Positron draws every road twice, a grey "subtle" pass at low
+  zoom (`highway_major_subtle`, `highway_motorway_subtle`, plus grey
+  `highway_path`) and a white casing+fill once the road matters. The grey pass
+  reads as clutter under the transit lines, so those layers are dropped and
+  `highway_minor` is held to `minzoom 14` and recoloured `#fff` — roads appear
+  only once they'd be drawn white. Match layer ids against the live style before
+  changing this; OpenFreeMap can rename them.
 
 History / don'ts:
 - **Do not use CartoDB Positron** (`{s}.basemaps.cartocdn.com/light_all/…`), the
@@ -58,20 +66,23 @@ to the play area for both perf and looks:
   `scripts/play_area_src_water.geojson.json` + `scripts/pacific_ocean.geojson.json`
   and `polygon-clipping`).
 - **Labels on top of imagery**: satellite would otherwise hide the basemap's
-  road/place names, so a labels-only overlay (`SAT_LABEL_URLS`) is added to the
-  **same clipped pane** at higher `zIndex`. `SAT_LABEL_URLS` lists two Esri
-  reference layers: `Reference/World_Boundaries_and_Places` (place names) and
-  `Reference/World_Transportation` (road names). Both keep returning HTTP 200 past
-  z17 but the tiles are empty, so they need `maxNativeZoom`
-  (`SAT_LABEL_MAX_NATIVE_ZOOM = 17`) or the labels silently vanish at hiding-zone
-  zooms — check the tile *byte size*, not the status. (History: CARTO's `light_only_labels`
-  was road+place names with no road geometry, but it went key-only.)
-- `World_Transportation` also paints **salmon road casings** along the roads it
-  labels, which shout louder than the transit lines the game is about. The layer
-  is therefore given `className: 'sat-roads'` and `src/index.css` fades it
-  (`filter: grayscale(1) brightness(1.15) opacity(.5)`): names stay legible, the
-  roads recede. Fade the *label layer only* — a filter on the pane would wash out
-  the imagery too. Don't add this layer over the light basemap, which has roads.
+  road/place names, so `fetchSatelliteLabelStyle()` re-fetches the Positron style,
+  keeps **only `type: 'symbol'` layers**, and paints them white with a dark halo.
+  Symbol-only means street and place *names* with **zero road geometry** — the
+  point of doing it in vector rather than raster.
+- That label overlay needs **its own pane** (`'satelliteLabels'`, zIndex 251),
+  not the imagery pane. MapLibre's container is `position: static` with a
+  `transform`, so it forms a stacking context painted at z-index 0 and any
+  z-indexed sibling (the imagery tile container) covers it — the labels render
+  but are invisible, and no z-index on the MapLibre element fixes it. Both panes
+  get the same play-area `clip-path`, rebuilt together.
+- History / don'ts: Esri `Reference/World_Transportation` was the keyless raster
+  road-label layer, but it welds **salmon road casings** to the names, and
+  fading it with a CSS filter (`grayscale(1) opacity(.5)`) dims the names as much
+  as the casings. It also returns HTTP 200 *empty* tiles past z17, so as a raster
+  layer it needed `maxNativeZoom: 17` — check tile *byte size*, not status.
+  CARTO's `light_only_labels` was the original names-only layer; it went
+  key-only. Don't add road labels over the light basemap, which draws roads.
 
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous

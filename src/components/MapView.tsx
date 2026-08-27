@@ -14,6 +14,7 @@ import {
 } from 'react-leaflet'
 import L from 'leaflet'
 import '@maplibre/maplibre-gl-leaflet'
+import type { StyleSpecification, SymbolLayerSpecification } from 'maplibre-gl'
 import type { Feature, Geometry } from 'geojson'
 import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
 import type { RenderPoi } from '../lib/poi'
@@ -140,21 +141,6 @@ type SatelliteTileLayerCtor = new (
 ) => L.TileLayer
 const SATELLITE_URL =
   'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-// Labels shown on top of the satellite imagery: place names, plus road names.
-// The transportation layer paints salmon casings along the roads it labels,
-// which shouts louder than the transit lines the game is about, so it is
-// desaturated and faded (see .sat-roads) — the names stay, the roads recede.
-const SAT_LABEL_URLS: { url: string; className?: string }[] = [
-  {
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-  },
-  {
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
-    className: 'sat-roads',
-  },
-]
-// Past z17 the reference layers serve empty tiles, so upscale instead.
-const SAT_LABEL_MAX_NATIVE_ZOOM = 17
 
 // Base map. OpenFreeMap's Positron style: OpenStreetMap vector tiles, keyless
 // and unmetered, and the same pale palette the colored transit lines and station
@@ -163,18 +149,85 @@ const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
 const BASE_ATTRIBUTION =
   '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
+// Positron draws roads twice: a grey "subtle" line at low zoom, replaced by a
+// white casing+fill once the road is worth showing. The grey pass reads as
+// clutter under the transit lines, so it is dropped and minor streets are held
+// back until they can be drawn white too.
+const GREY_ROAD_LAYERS = new Set([
+  'highway_major_subtle',
+  'highway_motorway_subtle',
+  'highway_path',
+])
+const MINOR_ROAD_LAYER = 'highway_minor'
+const MINOR_ROAD_WHITE_ZOOM = 14
+
+// Labels drawn on top of the satellite imagery, so the names the imagery covers
+// stay readable. Built from the basemap's own style with every non-text layer
+// stripped out: street and place *names* with no road geometry at all (the Esri
+// raster label service used to be the only keyless option, but its road labels
+// come welded to salmon road casings that shout over the transit lines).
+// Text is inverted to white-on-dark since it now sits over imagery.
+type MaplibreGLOptions = Parameters<typeof L.maplibreGL>[0] & L.LayerOptions
+
+async function fetchBaseStyle(): Promise<StyleSpecification> {
+  const style = await fetchStyle()
+  return {
+    ...style,
+    layers: style.layers
+      .filter((l) => !GREY_ROAD_LAYERS.has(l.id))
+      .map((l) =>
+        l.id === MINOR_ROAD_LAYER && l.type === 'line'
+          ? {
+              ...l,
+              minzoom: MINOR_ROAD_WHITE_ZOOM,
+              paint: { ...l.paint, 'line-color': '#ffffff' },
+            }
+          : l,
+      ),
+  }
+}
+
+async function fetchStyle(): Promise<StyleSpecification> {
+  const res = await fetch(BASE_STYLE_URL)
+  return (await res.json()) as StyleSpecification
+}
+
+async function fetchSatelliteLabelStyle(): Promise<StyleSpecification> {
+  const style = await fetchStyle()
+  return {
+    ...style,
+    layers: style.layers
+      .filter((l): l is SymbolLayerSpecification => l.type === 'symbol')
+      .map((l) => ({
+        ...l,
+        paint: {
+          ...l.paint,
+          'text-color': '#ffffff',
+          'text-halo-color': 'rgba(0,0,0,0.8)',
+          'text-halo-width': 1.4,
+        },
+      })),
+  }
+}
+
 // Vector basemap, rendered by MapLibre into a canvas Leaflet keeps in sync.
 function BaseLayer() {
   const map = useMap()
   useEffect(() => {
     // MapLibre draws its own attribution inside the layer's pane, which would
     // sit on top of Leaflet's; credit the sources in Leaflet's control instead.
-    const layer = L.maplibreGL({ style: BASE_STYLE_URL, attributionControl: false })
-    layer.addTo(map)
+    let layer: L.MaplibreGL | null = null
+    let disposed = false
+    void fetchBaseStyle().then((style) => {
+      if (disposed) return
+      layer = L.maplibreGL({ style, attributionControl: false })
+      layer.addTo(map)
+    })
     map.attributionControl?.addAttribution(BASE_ATTRIBUTION)
     return () => {
+      disposed = true
       map.attributionControl?.removeAttribution(BASE_ATTRIBUTION)
-      map.removeLayer(layer)
+      if (layer) map.removeLayer(layer)
     }
   }, [map])
   return null
@@ -491,12 +544,21 @@ function SatelliteLayer() {
   const map = useMap()
   useEffect(() => {
     const paneName = 'satellite'
-    let pane = map.getPane(paneName)
-    if (!pane) {
-      pane = map.createPane(paneName)
-      pane.style.zIndex = '250' // above base tiles (200), below overlays (400)
-      pane.classList.add('leaflet-zoom-hide')
+    const labelPaneName = 'satelliteLabels'
+    const makePane = (name: string, z: string) => {
+      let p = map.getPane(name)
+      if (!p) {
+        p = map.createPane(name)
+        p.style.zIndex = z
+        p.classList.add('leaflet-zoom-hide')
+      }
+      return p
     }
+    // above base tiles (200), below overlays (400); the labels need a pane of
+    // their own because MapLibre's canvas is transform-positioned, which traps
+    // it in its own stacking context underneath the imagery tiles.
+    const pane = makePane(paneName, '250')
+    const labelPane = makePane(labelPaneName, '251')
 
     let svg: SVGSVGElement | null = null
     let path: SVGPathElement | null = null
@@ -518,6 +580,7 @@ function SatelliteLayer() {
       svg.appendChild(defs)
       map.getContainer().appendChild(svg)
       pane.style.clipPath = `url(#${clipId})`
+      labelPane.style.clipPath = `url(#${clipId})`
     }
 
     const layer = new (SatelliteTileLayer as SatelliteTileLayerCtor)(
@@ -527,24 +590,24 @@ function SatelliteLayer() {
         bounds: PLAY_BOUNDS,
         maxZoom: 20,
         pane: paneName,
-        zIndex: 1,
       },
     )
     layer.addTo(map)
 
-    // Label overlays in the same (clipped) pane, above the imagery, so road and
-    // place names stay visible where the satellite covers the labelled basemap.
-    const labelLayers = SAT_LABEL_URLS.map(({ url, className }, i) => {
-      const l = new (SatelliteTileLayer as SatelliteTileLayerCtor)(url, {
-        bounds: PLAY_BOUNDS,
-        maxZoom: 20,
-        maxNativeZoom: SAT_LABEL_MAX_NATIVE_ZOOM,
-        pane: paneName,
-        zIndex: 2 + i,
-        className,
-      })
-      l.addTo(map)
-      return l
+    // Names over the imagery, clipped like it so they stop at the play-area
+    // edge where the basemap's own labels take over again.
+    let labelLayer: L.MaplibreGL | null = null
+    let disposed = false
+    void fetchSatelliteLabelStyle().then((style) => {
+      if (disposed) return
+      // the plugin's types omit the Leaflet layer options it also accepts
+      const opts: MaplibreGLOptions = {
+        style,
+        attributionControl: false,
+        pane: labelPaneName,
+      }
+      labelLayer = L.maplibreGL(opts)
+      labelLayer.addTo(map)
     })
 
     const updateClip = () => {
@@ -557,16 +620,22 @@ function SatelliteLayer() {
         d += 'Z'
       }
       if (path) path.setAttribute('d', d)
-      else pane.style.clipPath = `path(evenodd, "${d}")`
+      else {
+        const clip = `path(evenodd, "${d}")`
+        pane.style.clipPath = clip
+        labelPane.style.clipPath = clip
+      }
     }
     updateClip()
     map.on('viewreset zoomend moveend resize', updateClip)
 
     return () => {
+      disposed = true
       map.off('viewreset zoomend moveend resize', updateClip)
       map.removeLayer(layer)
-      for (const l of labelLayers) map.removeLayer(l)
+      if (labelLayer) map.removeLayer(labelLayer)
       pane.style.clipPath = ''
+      labelPane.style.clipPath = ''
       svg?.remove()
     }
   }, [map])
