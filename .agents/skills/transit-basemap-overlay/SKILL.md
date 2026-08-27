@@ -10,28 +10,44 @@ top in their official (Google-Maps-style) colors, so transit is the visual focus
 instead of freeways.
 
 ## Basemap (`src/components/MapView.tsx`)
-Two `<TileLayer>`s make the base: Esri **Light Gray Canvas** plus its labels-only
-reference layer.
+The base is a **vector** layer: OpenFreeMap's **Positron** style (OSM data,
+keyless, unmetered) rendered by MapLibre GL into a canvas that the
+`@maplibre/maplibre-gl-leaflet` plugin keeps in sync with Leaflet.
 
+```ts
+const BASE_STYLE_URL = 'https://tiles.openfreemap.org/styles/positron'
+const style = await fetchBaseStyle()                       // style JSON, edited
+L.maplibreGL({ style, attributionControl: false })         // <BaseLayer/>
 ```
-.../Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}       (BASE_URL)
-.../Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}  (BASE_LABEL_URL)
-```
-(host `https://server.arcgisonline.com/ArcGIS/rest/services/`, note the `{y}/{x}`
-order.) Both need `maxNativeZoom={16}` — the service has no tiles past z16, so
-without it the map goes blank when you zoom into a hiding zone; with it Leaflet
-upscales. Attribution must credit **Esri** and OpenStreetMap. Drop the reference
-layer for a no-labels map.
+Points to watch:
+- `attributionControl: false`, then `map.attributionControl.addAttribution(...)`
+  — otherwise MapLibre paints its own credit inside the layer's pane on top of
+  Leaflet's. Credit **OpenFreeMap** and **OpenStreetMap**.
+- No `maxNativeZoom` needed: vector labels stay crisp at every zoom (that cap is
+  a raster-tile concern; only the Esri imagery is raster now).
+- Because it's a style JSON, individual layers (freeways, place labels) can be
+  restyled or removed client-side — impossible with raster tiles. `fetchBaseStyle()`
+  does exactly that: Positron draws every road twice, a grey "subtle" pass at low
+  zoom (`highway_major_subtle`, `highway_motorway_subtle`, plus grey
+  `highway_path`) and a white casing+fill once the road matters. The grey pass
+  reads as clutter under the transit lines, so those layers are dropped and
+  `highway_minor` is held to `minzoom 14` and recoloured `#fff` — roads appear
+  only once they'd be drawn white. Match layer ids against the live style before
+  changing this; OpenFreeMap can rename them.
 
-**Do not use CartoDB Positron** (`{s}.basemaps.cartocdn.com/light_all/…`). It was
-the original basemap, but in Aug 2026 CARTO began stamping every keyless request
-with a diagonal "API KEY REQUIRED" watermark — the tiles still return HTTP 200,
-so this fails visually rather than loudly. Any replacement must be keyless
-(Stadia/MapTiler/Jawg/Geoapify all 401 without a key) and, for a static GitHub
-Pages site, must not need a referrer allow-list.
-
-Note: a raster basemap cannot fully delete freeways — to remove them entirely
-you'd need a vector basemap (MapLibre + a custom style JSON).
+History / don'ts:
+- **Do not use CartoDB Positron** (`{s}.basemaps.cartocdn.com/light_all/…`), the
+  original basemap: in Aug 2026 CARTO began stamping every keyless request with a
+  diagonal "API KEY REQUIRED" watermark, and the tiles still return HTTP 200 — it
+  fails visually rather than loudly.
+- Esri **Light Gray Canvas** (`Canvas/World_Light_Gray_Base` +
+  `Canvas/World_Light_Gray_Reference`, `maxNativeZoom={16}`) was the stopgap after
+  CARTO. It works but its baked-in place labels read as heavy/crude next to the
+  transit lines; OpenFreeMap matches the look the app was designed around.
+- Any replacement must be keyless (Stadia/MapTiler/Jawg/Geoapify all 401 without
+  a key) and, for a static GitHub Pages site, must not need a referrer allow-list.
+- `scripts/poi_merge_viz.html` is a standalone CDN page with no bundler, so it
+  stays on the Esri raster canvas.
 
 ## Satellite layer (`src/components/MapView.tsx`, `SatelliteLayer`)
 Optional Esri **World Imagery** layer toggled by the `satellite` prop, restricted
@@ -50,17 +66,23 @@ to the play area for both perf and looks:
   `scripts/play_area_src_water.geojson.json` + `scripts/pacific_ocean.geojson.json`
   and `polygon-clipping`).
 - **Labels on top of imagery**: satellite would otherwise hide the basemap's
-  road/place names, so a labels-only overlay (`SAT_LABEL_URLS`) is added to the
-  **same clipped pane** at higher `zIndex`. `SAT_LABEL_URLS` lists two Esri
-  reference layers: `Reference/World_Boundaries_and_Places` (place names) and
-  `Reference/World_Transportation` (road names). Both keep returning HTTP 200 past
-  z17 but the tiles are empty, so they need `maxNativeZoom`
-  (`SAT_LABEL_MAX_NATIVE_ZOOM = 17`) or the labels silently vanish at hiding-zone
-  zooms — check the tile *byte size*, not the status. (History: CARTO's `light_only_labels`
-  was road+place names with no road geometry, but it went key-only.
-  `World_Transportation` does draw hairline road casings — over *imagery* they
-  land on the real roadway and read as the usual hybrid look, so it's fine here;
-  it would be too busy over the light basemap, which has roads already.)
+  road/place names, so `fetchSatelliteLabelStyle()` re-fetches the Positron style,
+  keeps **only `type: 'symbol'` layers**, and paints them white with a dark halo.
+  Symbol-only means street and place *names* with **zero road geometry** — the
+  point of doing it in vector rather than raster.
+- That label overlay needs **its own pane** (`'satelliteLabels'`, zIndex 251),
+  not the imagery pane. MapLibre's container is `position: static` with a
+  `transform`, so it forms a stacking context painted at z-index 0 and any
+  z-indexed sibling (the imagery tile container) covers it — the labels render
+  but are invisible, and no z-index on the MapLibre element fixes it. Both panes
+  get the same play-area `clip-path`, rebuilt together.
+- History / don'ts: Esri `Reference/World_Transportation` was the keyless raster
+  road-label layer, but it welds **salmon road casings** to the names, and
+  fading it with a CSS filter (`grayscale(1) opacity(.5)`) dims the names as much
+  as the casings. It also returns HTTP 200 *empty* tiles past z17, so as a raster
+  layer it needed `maxNativeZoom: 17` — check tile *byte size*, not status.
+  CARTO's `light_only_labels` was the original names-only layer; it went
+  key-only. Don't add road labels over the light basemap, which draws roads.
 
 ## Transit overlay data (`src/data/transit-lines.geojson.json`)
 A GeoJSON `FeatureCollection` of `LineString`s — **one feature per continuous
