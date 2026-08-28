@@ -113,15 +113,19 @@ const baseLight=L.maplibreGL({style:'https://tiles.openfreemap.org/styles/positr
   attributionControl:false}).addTo(map);
 map.attributionControl.addAttribution(
   '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
-baseLight.getMaplibreMap().on('load',function(){
+// The GL map only exists once Leaflet actually adds the layer, which it defers
+// until the map has a view (fitBounds below) — hence 'add' rather than direct.
+baseLight.on('add',function(){
   const gl=baseLight.getMaplibreMap();
-  ['highway_major_subtle','highway_motorway_subtle','highway_path'].forEach(function(id){
-    if(gl.getLayer(id)) gl.removeLayer(id);
+  gl.on('load',function(){
+    ['highway_major_subtle','highway_motorway_subtle','highway_path'].forEach(function(id){
+      if(gl.getLayer(id)) gl.removeLayer(id);
+    });
+    if(gl.getLayer('highway_minor')){
+      gl.setLayerZoomRange('highway_minor',14,24);
+      gl.setPaintProperty('highway_minor','line-color','#ffffff');
+    }
   });
-  if(gl.getLayer('highway_minor')){
-    gl.setLayerZoomRange('highway_minor',14,24);
-    gl.setPaintProperty('highway_minor','line-color','#ffffff');
-  }
 });
 const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
   {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
