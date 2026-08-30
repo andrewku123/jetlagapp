@@ -405,11 +405,19 @@ ul.plain.ext li {{ display:flex; justify-content:space-between; gap:8px; font-si
   border-bottom:1px dotted #e5e5e5; margin:0 0 2px; }}
 .elab {{ color:#666; }}
 .eval {{ font-weight:600; text-align:right; }}
+/* Page 2 is a fixed-height flex column (Letter 11in less the 0.5in margins) so
+   the question log can absorb whatever height the reference lists leave: the
+   row count stays 14 and the rows grow instead. */
+.p2 {{ display:flex; flex-direction:column; height:10in; }}
+.p2 .ref {{ flex:0 0 auto; }}
+.p2 footer {{ flex:0 0 auto; }}
+.logblock {{ flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }}
+.logblock table.log {{ flex:1 1 auto; height:100%; }}
 /* running board: blank rows to fill in during play */
 table.log {{ width:100%; border-collapse:collapse; margin-top:2px; }}
 table.log th {{ font-size:8.5px; color:#666; font-weight:600; text-align:left;
   border-bottom:1px solid #ddd; padding:1px 4px; }}
-table.log td {{ border:1px solid #e2e2e2; height:15px; }}
+table.log td {{ border:1px solid #e2e2e2; height:15px; vertical-align:top; }}
 table.log td.num {{ width:16px; font-size:8px; color:#999; text-align:center; }}
 table.log th:nth-child(2) {{ width:52%; }} table.log th:nth-child(4) {{ width:16%; }}
 .coord {{ font-size:9px; color:#555; font-family:'IBM Plex Mono', monospace; }}
@@ -428,11 +436,13 @@ footer {{ font-size:8px; color:#888; margin-top:8px; }}
     <b>still draw a card</b>.</div>
 </div>
 <div class="p1">{"".join(cards)}</div>
-<div class="ref page-break">{ref}</div>
-<div class="rblock"><h3>Question log</h3>{log_html}</div>
+<div class="p2 page-break">
+<div class="ref">{ref}</div>
+<div class="rblock logblock"><h3>Question log</h3>{log_html}</div>
 <footer>Question subjects, draw/keep costs, answer windows &amp; end-game rules from the
 official Jet Lag: Hide &amp; Seek investigation book and quick start guide. Station and POI
 figures are this map\u2019s own data.</footer>
+</div>
 </body></html>"""
 
 open("/tmp/reference.html", "w").write(doc)
