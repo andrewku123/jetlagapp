@@ -46,8 +46,15 @@ History / don'ts:
   transit lines; OpenFreeMap matches the look the app was designed around.
 - Any replacement must be keyless (Stadia/MapTiler/Jawg/Geoapify all 401 without
   a key) and, for a static GitHub Pages site, must not need a referrer allow-list.
-- `scripts/poi_merge_viz.html` is a standalone CDN page with no bundler, so it
-  stays on the Esri raster canvas.
+- `scripts/poi_merge_viz.html` (the POI review map, deployed per city as
+  `public/poi-<city>-review/index.html` — update both copies) uses the same
+  basemap, loading `maplibre-gl` + `maplibre-gl-leaflet` from unpkg since it has
+  no bundler. It passes the style **URL** and applies the road edit through the
+  runtime API (`removeLayer`, `setLayerZoomRange`, `setPaintProperty`). Do that
+  inside the layer's **`add`** event: the page calls `L.map('map')` with no view
+  and only fits bounds after the data loads, so Leaflet defers `onAdd` and
+  `getMaplibreMap()` is `undefined` until then — touching it earlier throws and
+  the whole page (markers, category list) dies.
 
 ## Satellite layer (`src/components/MapView.tsx`, `SatelliteLayer`)
 Optional Esri **World Imagery** layer toggled by the `satellite` prop, restricted

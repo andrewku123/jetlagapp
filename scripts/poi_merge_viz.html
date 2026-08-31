@@ -5,6 +5,7 @@
 <title>POI review — what got merged, and your edits</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" />
 <style>
   html,body{margin:0;height:100%;font-family:system-ui,Arial,sans-serif}
   #wrap{display:flex;height:100%}
@@ -93,6 +94,8 @@
 </div>
 <div id="banner"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.3/leaflet-maplibre-gl.js"></script>
 <script>document.write('<scr'+'ipt src="poi_merge_viz.js?cb='+Date.now()+'"><\/scr'+'ipt>')</script>
 <script>
 const COLORS={museum:"#8e44ad",library:"#2980b9",movie_theater:"#16a085",hospital:"#c0392b",
@@ -103,12 +106,27 @@ document.getElementById('region').textContent=' — '+REGION.toUpperCase();
 document.getElementById('editsfile').textContent='scripts/poi_edits.'+REGION+'.txt';
 
 const map=L.map('map');
-const baseLight=L.layerGroup([
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
-    {maxZoom:19,maxNativeZoom:16,attribution:'Tiles © Esri — © OpenStreetMap contributors'}),
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}',
-    {maxZoom:19,maxNativeZoom:16}),
-]).addTo(map);
+// Same basemap as the app (.agents/skills/transit-basemap-overlay): OpenFreeMap
+// Positron, with Positron's grey low-zoom road pass dropped so roads show only
+// once they'd be drawn white.
+const baseLight=L.maplibreGL({style:'https://tiles.openfreemap.org/styles/positron',
+  attributionControl:false}).addTo(map);
+map.attributionControl.addAttribution(
+  '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+// The GL map only exists once Leaflet actually adds the layer, which it defers
+// until the map has a view (fitBounds below) — hence 'add' rather than direct.
+baseLight.on('add',function(){
+  const gl=baseLight.getMaplibreMap();
+  gl.on('load',function(){
+    ['highway_major_subtle','highway_motorway_subtle','highway_path'].forEach(function(id){
+      if(gl.getLayer(id)) gl.removeLayer(id);
+    });
+    if(gl.getLayer('highway_minor')){
+      gl.setLayerZoomRange('highway_minor',14,24);
+      gl.setPaintProperty('highway_minor','line-color','#ffffff');
+    }
+  });
+});
 const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
   {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
 L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain},null,
