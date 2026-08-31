@@ -33,6 +33,14 @@ body { background: var(--bg); color: var(--text); }
    select is as wide as its longest option ("Washington DC" pads out "SF Muni").
    Unsupported browsers keep that wider default. */
 .region-pick select { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 6px; cursor: pointer; font: inherit; font-size: 13px; field-sizing: content; }
+/* hiding-zone curse control (Prosperous / Tiny Home) */
+.zonecurse { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.zonecurse-label strong { color: var(--text); }
+.zonecurse.on .zonecurse-label strong { color: var(--accent); }
+.zonecurse-label em { font-style: normal; color: var(--accent); }
+.toggles .zonecurse button { padding: 4px 7px; font-size: 12px; }
+.toggles .zonecurse .zonecurse-undo { color: var(--muted); }
+
 .legend .info { font-size: 13px; color: var(--text); margin: 6px 0; line-height: 1.4; }
 .legend a, .panel a { color: #6cb0ff; text-decoration: underline; }
 .legend a:hover, .panel a:hover { color: #9ccbff; }

@@ -112,6 +112,14 @@ export type Annotation = CircleAnnotation | LineAnnotation
 
 export type UnitSystem = 'imperial' | 'metric'
 
+// Hider curses that resize the hiding zone. Each Prosperous Home grows the
+// current zone by 50%, each Tiny Home halves it; both cards can be duplicated,
+// so these are counts, not flags.
+export interface ZoneCurses {
+  prosperous: number
+  tiny: number
+}
+
 export interface GameState {
   dayType: DayType
   // the active map's declared size (src/data/region-sizes.json), never inferred
@@ -126,4 +134,5 @@ export interface GameState {
   // endgame: the single station the seeker has narrowed to. When set, only this
   // station remains and a hiding-zone circle is drawn around it.
   endgame: string | null
+  zoneCurses: ZoneCurses
 }

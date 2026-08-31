@@ -6,11 +6,13 @@ import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
-import { ELIGIBLE_HEADWAY_MIN, SIZE_PARAMS } from './data/questionSets'
+import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
+import { castCurse, removeCurse, curseMultiplier, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
+import { formatDistance } from './lib/geo'
 import { rewardForKind, questionGroupKey } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
-import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem } from './types'
+import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem, ZoneCurses } from './types'
 import { stationsData, REGIONS, ACTIVE_REGION_ID, setActiveRegion, SINGLE_AGENCY } from './data/regions'
 
 const STATIONS = stationsData as unknown as Station[]
@@ -137,7 +139,9 @@ export default function App() {
     () => (game.endgame ? base.find((s) => s.id === game.endgame) ?? null : null),
     [game.endgame, base],
   )
-  const hidingRadiusMi = SIZE_PARAMS[game.gameSize].hidingZoneRadiusMi
+  // the zone the hider is allowed to be in: the map's default for this game
+  // size, resized by any Prosperous / Tiny Home curses in play
+  const hidingRadiusMi = effectiveRadiusMi(game.gameSize, game.zoneCurses)
 
   const { remaining, eliminated } = useMemo(() => {
     if (endgameStation) {
@@ -331,6 +335,8 @@ export default function App() {
     if (confirm('Clear all questions, eliminations and notes?')) setGame({ ...emptyGame })
   }
 
+  const zoneMultiplier = curseMultiplier(game.zoneCurses)
+
   const remainingLi = (s: Station) => (
     <li key={s.id} className={starredSet.has(s.id) ? 'starred' : ''}>
       <button className={'star ' + (starredSet.has(s.id) ? 'on' : '')} onClick={() => toggleStar(s.id)}>★</button>
@@ -472,6 +478,15 @@ export default function App() {
               <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
               satellite
             </label>
+            <ZoneCurseControl
+              curses={game.zoneCurses}
+              radiusMi={hidingRadiusMi}
+              multiplier={zoneMultiplier}
+              units={game.units}
+              onCast={(card) => update({ zoneCurses: castCurse(game.zoneCurses, card) })}
+              onUndo={(card) => update({ zoneCurses: removeCurse(game.zoneCurses, card) })}
+              onClear={() => update({ zoneCurses: { ...NO_CURSES } })}
+            />
             <button onClick={resetGame}>Reset</button>
           </div>
         </div>
@@ -884,6 +899,62 @@ function UnitsToggle({ value, onChange }: { value: UnitSystem; onChange: (u: Uni
     <div className="seg">
       <button className={value === 'imperial' ? 'on' : ''} onClick={() => onChange('imperial')}>mi/ft</button>
       <button className={value === 'metric' ? 'on' : ''} onClick={() => onChange('metric')}>km/m</button>
+    </div>
+  )
+}
+
+// Hider curses that resize the hiding zone. Each press casts one card and takes
+// effect immediately (the seeker sees the new zone the moment the hider plays
+// it); pressing the same card twice compounds, which is what a duplicated
+// Prosperous Home does. ↺ undoes one cast, ✕ clears them all.
+function ZoneCurseControl({
+  curses,
+  radiusMi,
+  multiplier,
+  units,
+  onCast,
+  onUndo,
+  onClear,
+}: {
+  curses: ZoneCurses
+  radiusMi: number
+  multiplier: number
+  units: UnitSystem
+  onCast: (card: keyof ZoneCurses) => void
+  onUndo: (card: keyof ZoneCurses) => void
+  onClear: () => void
+}) {
+  const cast = curses.prosperous + curses.tiny
+  return (
+    <div className={'zonecurse' + (cast > 0 ? ' on' : '')}>
+      <span className="zonecurse-label">
+        zone <strong>{formatDistance(radiusMi, units)}</strong>
+        {cast > 0 && <em> ×{Number(multiplier.toFixed(4))}</em>}
+      </span>
+      <button
+        title="Curse of the Prosperous Home: hiding zone +50%"
+        onClick={() => onCast('prosperous')}
+      >
+        +50%
+      </button>
+      <button title="Curse of the Tiny Home: hiding zone −50%" onClick={() => onCast('tiny')}>
+        −50%
+      </button>
+      {curses.prosperous > 0 && (
+        <button className="zonecurse-undo" title="Undo one +50%" onClick={() => onUndo('prosperous')}>
+          ↺+ {curses.prosperous}
+        </button>
+      )}
+      {curses.tiny > 0 && (
+        <button className="zonecurse-undo" title="Undo one −50%" onClick={() => onUndo('tiny')}>
+          ↺− {curses.tiny}
+        </button>
+      )}
+      {cast > 0 && (
+        <button className="zonecurse-undo" title="Back to the default zone" onClick={onClear}>
+          ✕
+        </button>
+      )}
     </div>
   )
 }
