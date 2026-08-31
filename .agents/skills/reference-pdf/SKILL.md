@@ -94,6 +94,16 @@ the app eliminates on (e.g. OSM gave 3 Bay zoos vs the app's 5, missing SF Zoo).
 Print counts from the app's own POI file instead. `scripts/fetch_poi.py` (the
 Overpass query that used to feed those lists) is no longer part of this build.
 
+The question log is **always 14 rows**; the rows stretch instead of the count
+changing, so the log ends flush with the bottom margin on every map (SF Muni's
+short reference lists leave much more room than the Bay's). Page 2 is wrapped in
+`.p2 { display:flex; flex-direction:column; height:10in }` (Letter minus the
+0.5in margins) with the log block `flex:1` and `table.log { height:100% }` —
+the table absorbs the leftover height and the browser divides it between rows.
+Keep the `td { height:15px }` as the floor. If a map's reference lists ever
+overflow 10in the fixed height will spill onto a third page, so re-check
+`pdfinfo` after adding a map.
+
 The edge-of-play-area block prints **every tied station**, not the first one the
 sort happens to return — ties are common on name length (3 LA stations are 4
 characters).
