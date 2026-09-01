@@ -5,6 +5,23 @@ import { normalizeCurses, NO_CURSES } from './hidingZone'
 // Each map keeps its own saved board, so switching maps never mixes state.
 const KEY = `bahs.game.v1.${ACTIVE_REGION_ID}`
 
+// Raw text of the saved board, for the crash screen to hand back before wiping it.
+export function readRawSave(): string {
+  try {
+    return localStorage.getItem(KEY) ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export function clearSave(): void {
+  try {
+    localStorage.removeItem(KEY)
+  } catch {
+    // ignore
+  }
+}
+
 export const emptyGame: GameState = {
   dayType: 'wd',
   gameSize: MAP_SIZE,
