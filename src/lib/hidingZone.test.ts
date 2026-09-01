@@ -6,7 +6,6 @@ import {
   defaultHidingRadiusMi,
   hidingRadiusMi,
   normalizeCurses,
-  removeCurse,
 } from './hidingZone'
 
 const cast = (n: number, card: 'prosperous' | 'tiny') => {
@@ -40,17 +39,9 @@ describe('hiding zone curses', () => {
     expect(curseMultiplier(a)).toBe(curseMultiplier(b))
   })
 
-  it('undoes one cast at a time and never goes negative', () => {
-    const two = cast(2, 'prosperous')
-    expect(removeCurse(two, 'prosperous')).toEqual({ prosperous: 1, tiny: 0 })
-    expect(removeCurse(NO_CURSES, 'tiny')).toEqual({ prosperous: 0, tiny: 0 })
-  })
-
   it('refuses a cast that would run the zone off the scale', () => {
-    const many = cast(40, 'prosperous')
-    expect(curseMultiplier(many)).toBeLessThanOrEqual(64)
-    // the counter stops where the multiplier does, so undo still tracks the zone
-    expect(curseMultiplier(removeCurse(many, 'prosperous'))).toBeLessThan(curseMultiplier(many))
+    expect(curseMultiplier(cast(40, 'prosperous'))).toBeLessThanOrEqual(64)
+    expect(curseMultiplier(cast(40, 'tiny'))).toBeGreaterThanOrEqual(1 / 64)
   })
 
   it('repairs saves written before curses existed, and junk values', () => {

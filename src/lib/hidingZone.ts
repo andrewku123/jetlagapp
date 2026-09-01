@@ -40,12 +40,6 @@ export function castCurse(curses: ZoneCurses, card: keyof ZoneCurses): ZoneCurse
   return next
 }
 
-// Undoing a curse (mis-click, or the hider's card was refused) never goes
-// negative; the opposite curse is a separate card, not a negative count.
-export function removeCurse(curses: ZoneCurses, card: keyof ZoneCurses): ZoneCurses {
-  return { ...normalizeCurses(curses), [card]: Math.max(0, clampCount(curses[card]) - 1) }
-}
-
 // Older saved games have no zoneCurses at all, and a hand-edited board code
 // could carry junk; both must land on a sane object.
 export function normalizeCurses(curses: Partial<ZoneCurses> | null | undefined): ZoneCurses {

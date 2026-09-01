@@ -69,13 +69,14 @@ Hider curses resize the zone mid-game. `GameState.zoneCurses:
 Duplicate lets the same curse be played twice.
 - `src/lib/hidingZone.ts` owns the maths: each Prosperous is `×1.5`, each Tiny is
   `×0.5`, **compounding** on the current zone (2 Prosperous = `×2.25`, not `×2`);
-  `castCurse` / `removeCurse` add and undo one cast; `curseMultiplier` is clamped
-  to `[1/64, 64]` and `castCurse` refuses a cast that would leave that range.
+  `castCurse` adds one cast; `curseMultiplier` is clamped to `[1/64, 64]` and
+  `castCurse` refuses a cast that would leave that range.
 - `normalizeCurses` runs in `loadGame`, so pre-curse saves and junk values load as
   zero counts.
 - UI is `ZoneCurseControl` in the top-bar settings group (`.zonecurse`), not a new
-  tab: a `zone <radius> ×<multiplier>` readout, `+50%` / `−50%`, per-card undo
-  showing the count, and `✕` to clear. Each press applies immediately.
+  tab: a `zone <radius> ×<multiplier>` readout, `+50%` / `−50%`, and `✕` to clear.
+  Each press applies immediately. There is deliberately no per-card undo — curses
+  are rare, and `✕` plus re-pressing covers a mis-click.
 - Changing the radius must move the circle, the outside shading,
   `endgameClippedRegion`, `MapFit` and the suspects focus together — they all read
   the one `hidingRadiusMi` prop, so keep it that way rather than passing a size.
@@ -140,6 +141,6 @@ outline, the banner shows the right name + radius and does not cover the zoom
 controls, the suspects list collapses to the one station, **Exit** restores the
 full board, and the state survives a page reload. Also **reload while endgame is
 active** — the map must frame the zone, not go white — and press `+50%` twice to
-confirm the readout reads `×2.25`, the circle and shading grow with it, undo
-steps back one cast, and the counts survive a reload. For deterministic checks drive
+confirm the readout reads `×2.25`, the circle and shading grow with it, the counts
+survive a reload, and `✕` returns to the size default. For deterministic checks drive
 it via CDP (`verify-map-interactions`).

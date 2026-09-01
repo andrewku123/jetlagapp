@@ -7,7 +7,7 @@ import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
-import { castCurse, removeCurse, curseMultiplier, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
+import { castCurse, curseMultiplier, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
 import { formatDistance } from './lib/geo'
 import { rewardForKind, questionGroupKey } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
@@ -484,7 +484,6 @@ export default function App() {
               multiplier={zoneMultiplier}
               units={game.units}
               onCast={(card) => update({ zoneCurses: castCurse(game.zoneCurses, card) })}
-              onUndo={(card) => update({ zoneCurses: removeCurse(game.zoneCurses, card) })}
               onClear={() => update({ zoneCurses: { ...NO_CURSES } })}
             />
             <button onClick={resetGame}>Reset</button>
@@ -906,14 +905,13 @@ function UnitsToggle({ value, onChange }: { value: UnitSystem; onChange: (u: Uni
 // Hider curses that resize the hiding zone. Each press casts one card and takes
 // effect immediately (the seeker sees the new zone the moment the hider plays
 // it); pressing the same card twice compounds, which is what a duplicated
-// Prosperous Home does. ↺ undoes one cast, ✕ clears them all.
+// Prosperous Home does. ✕ clears them all and goes back to the size default.
 function ZoneCurseControl({
   curses,
   radiusMi,
   multiplier,
   units,
   onCast,
-  onUndo,
   onClear,
 }: {
   curses: ZoneCurses
@@ -921,7 +919,6 @@ function ZoneCurseControl({
   multiplier: number
   units: UnitSystem
   onCast: (card: keyof ZoneCurses) => void
-  onUndo: (card: keyof ZoneCurses) => void
   onClear: () => void
 }) {
   const cast = curses.prosperous + curses.tiny
@@ -940,16 +937,6 @@ function ZoneCurseControl({
       <button title="Curse of the Tiny Home: hiding zone −50%" onClick={() => onCast('tiny')}>
         −50%
       </button>
-      {curses.prosperous > 0 && (
-        <button className="zonecurse-undo" title="Undo one +50%" onClick={() => onUndo('prosperous')}>
-          ↺+ {curses.prosperous}
-        </button>
-      )}
-      {curses.tiny > 0 && (
-        <button className="zonecurse-undo" title="Undo one −50%" onClick={() => onUndo('tiny')}>
-          ↺− {curses.tiny}
-        </button>
-      )}
       {cast > 0 && (
         <button className="zonecurse-undo" title="Back to the default zone" onClick={onClear}>
           ✕
