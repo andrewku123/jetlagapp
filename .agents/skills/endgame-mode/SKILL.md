@@ -15,9 +15,11 @@ end-game phase). It collapses the whole board to that one station + a circle.
 - `App.tsx`:
   - `endgameStation` = the `Station` for `game.endgame` looked up in the
     eligible `base` list (null if cleared).
-  - `hidingRadiusMi = SIZE_PARAMS[game.gameSize].hidingZoneRadiusMi` — the zone
-    radius comes from the **game size** params in `src/data/questionSets.ts`
-    (size is auto-derived from station count), NOT a user input.
+  - `hidingRadiusMi = hidingRadiusMi(game.gameSize, game.zoneCurses)` from
+    `src/lib/hidingZone.ts` — the size default from `SIZE_PARAMS`
+    (`src/data/questionSets.ts`, size auto-derived from station count) times the
+    curse multiplier (see *Curse-resized zone* below). Every consumer reads this
+    one value; never re-read `SIZE_PARAMS` at a call site.
   - While `endgameStation` is set, `remaining = [endgameStation]` and everything
     else is `eliminated` — so the suspects list and map reduce to the one station.
   - `onStartEndgame(id)` sets `endgame: id`; `onExitEndgame()` sets it back to
@@ -41,8 +43,43 @@ For endgame that means shade *outside* the circle, keep the inside clear:
 - A `<Circle>` outline (green `#16a34a`, `fill:false`, `interactive:false`) marks
   the zone boundary.
 - `MapFit` auto-zooms to the zone when endgame locks on: it fits
-  `L.latLng(center).toBounds(hidingRadiusMi * 1609.344 * 2.6)` once per distinct
-  endgame id (manual pan/zoom afterwards is left alone).
+  `zoneBoxMeters(hidingRadiusMi)` (`src/lib/mapFit.ts`) once per distinct endgame
+  id (manual pan/zoom afterwards is left alone).
+
+### Fitting a one-point board (the blank-map trap)
+Endgame collapses `remaining` to one station, so the **first-load** fit gets a
+zero-size bounding box. Since the basemap became a MapLibre GL layer there is no
+raster `TileLayer` to contribute a `maxZoom`, so `map.getMaxZoom()` is `Infinity`
+and `getBoundsZoom(zeroBox)` returns `Infinity` → pixel origin `Infinity` →
+`getCenter()` is `(NaN, NaN)` → **the whole map renders white**. It only bites on
+reload-with-endgame (or any load where exactly one suspect is left), which is why
+entering endgame in a live session looked fine.
+Two guards, both required:
+- `MapContainer` carries an explicit `maxZoom={MAP_MAX_ZOOM}` so every
+  `fitBounds` is clamped. Re-add this if the basemap layer ever changes again.
+- `fitTarget(remaining, endgame, radiusMi)` returns a `zone` target (station +
+  `zoneBoxMeters`) whenever the board is a single point — endgame, one suspect
+  left, or several co-located stations (a multi-agency stop listed twice) — and
+  padded station bounds otherwise. `MapFit`'s init effect uses it, so the initial
+  fit and the endgame fit frame the zone identically. Regression: `mapFit.test.ts`.
+
+## Curse-resized zone (Prosperous / Tiny Home)
+Hider curses resize the zone mid-game. `GameState.zoneCurses:
+{ prosperous: number; tiny: number }` counts **casts, not a toggle**, because
+Duplicate lets the same curse be played twice.
+- `src/lib/hidingZone.ts` owns the maths: each Prosperous is `×1.5`, each Tiny is
+  `×0.5`, **compounding** on the current zone (2 Prosperous = `×2.25`, not `×2`);
+  `castCurse` adds one cast; `curseMultiplier` is clamped to `[1/64, 64]` and
+  `castCurse` refuses a cast that would leave that range.
+- `normalizeCurses` runs in `loadGame`, so pre-curse saves and junk values load as
+  zero counts.
+- UI is `ZoneCurseControl` in the top-bar settings group (`.zonecurse`), not a new
+  tab: a `zone <radius> ×<multiplier>` readout, `+50%` / `−50%`, and `✕` to clear.
+  Each press applies immediately. There is deliberately no per-card undo — curses
+  are rare, and `✕` plus re-pressing covers a mis-click.
+- Changing the radius must move the circle, the outside shading,
+  `endgameClippedRegion`, `MapFit` and the suspects focus together — they all read
+  the one `hidingRadiusMi` prop, so keep it that way rather than passing a size.
 
 ## Per-question endgame flag (zone sub-division)
 Any auto-eliminating question can be tagged as an **endgame question** — a
@@ -91,8 +128,10 @@ stations map-wide. Covered by the endgame-tentacle case in `endgameShading.test.
   it offset right of the `+/−` buttons or it covers them.
 - Radius is in **miles**; convert to metres with `* 1609.344` for Leaflet, and
   always display via `formatDistance(mi, units)` so it respects the unit toggle.
-- Endgame radius is per **game size** (`SIZE_PARAMS[...].hidingZoneRadiusMi`), not
-  the compass `radiusMi` — don't confuse the two.
+- Endgame radius is the **size default × curse multiplier**, not the compass
+  `radiusMi` — don't confuse the two.
+- **Never `fitBounds` a single point.** Go through `fitTarget`/`zoneBoxMeters`; a
+  degenerate box plus an uncapped max zoom blanks the map (see above).
 
 ## Verify
 `npm run lint && npx tsc -b --noEmit && npm test`, then `npm run dev`: click a
@@ -100,5 +139,8 @@ station → **🎯 Endgame here**; confirm the map zooms to the zone, the area
 outside the circle is shaded red, the zone interior is clear with a green
 outline, the banner shows the right name + radius and does not cover the zoom
 controls, the suspects list collapses to the one station, **Exit** restores the
-full board, and the state survives a page reload. For deterministic checks drive
+full board, and the state survives a page reload. Also **reload while endgame is
+active** — the map must frame the zone, not go white — and press `+50%` twice to
+confirm the readout reads `×2.25`, the circle and shading grow with it, the counts
+survive a reload, and `✕` returns to the size default. For deterministic checks drive
 it via CDP (`verify-map-interactions`).
