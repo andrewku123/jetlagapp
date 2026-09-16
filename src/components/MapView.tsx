@@ -22,6 +22,7 @@ import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/po
 import { nearestAirport } from '../lib/airports'
 import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
 import { cityAt, NO_CITY_LABEL } from '../lib/cities'
+import { fitTarget, zoneBoxMeters, MAP_MAX_ZOOM, type FitTarget } from '../lib/mapFit'
 import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
@@ -466,19 +467,29 @@ function MapFit({
   const didInit = useRef(false)
   const lastEndgame = useRef<string | null>(null)
   useEffect(() => {
-    if (didInit.current || remaining.length === 0) return
+    if (didInit.current) return
+    const target = fitTarget(remaining, endgame, radiusMi)
+    if (!target) return
     didInit.current = true
-    map.fitBounds(L.latLngBounds(remaining.map((s) => [s.lat, s.lon])).pad(0.12))
-  }, [map, remaining])
+    lastEndgame.current = endgame?.id ?? null
+    applyFit(map, target)
+  }, [map, remaining, endgame, radiusMi])
   useEffect(() => {
     const id = endgame?.id ?? null
     if (id === lastEndgame.current) return
     lastEndgame.current = id
     if (!endgame) return
-    const b = L.latLng(endgame.lat, endgame.lon).toBounds(radiusMi * 1609.344 * 2.6)
-    map.fitBounds(b)
+    applyFit(map, { kind: 'zone', lat: endgame.lat, lon: endgame.lon, sizeM: zoneBoxMeters(radiusMi) })
   }, [map, endgame, radiusMi])
   return null
+}
+
+function applyFit(map: L.Map, target: FitTarget): void {
+  if (target.kind === 'zone') {
+    map.fitBounds(L.latLng(target.lat, target.lon).toBounds(target.sizeM))
+  } else {
+    map.fitBounds(L.latLngBounds(target.points).pad(0.12))
+  }
 }
 
 // Re-centers the map on a station picked from the Suspects list. Uses the same
@@ -497,7 +508,7 @@ function MapFocus({
     if (!target || target.nonce === lastNonce.current) return
     lastNonce.current = target.nonce
     const { station } = target
-    const b = L.latLng(station.lat, station.lon).toBounds(radiusMi * 1609.344 * 2.6)
+    const b = L.latLng(station.lat, station.lon).toBounds(zoneBoxMeters(radiusMi))
     const endgameZoom = map.getBoundsZoom(b)
     const zoom = Math.max(map.getMinZoom(), endgameZoom - 1)
     map.flyTo([station.lat, station.lon], zoom, { duration: 0.6 })
@@ -1458,7 +1469,13 @@ export default function MapView({
         </div>
       )}
 
-      <MapContainer center={MAP_CENTER} zoom={MAP_ZOOM} className="map" preferCanvas>
+      <MapContainer
+        center={MAP_CENTER}
+        zoom={MAP_ZOOM}
+        maxZoom={MAP_MAX_ZOOM}
+        className="map"
+        preferCanvas
+      >
         <BaseLayer />
         {satellite && <SatelliteLayer />}
         <MapRefCapture mapRef={mapInstanceRef} />
