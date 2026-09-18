@@ -57,8 +57,11 @@ classic *source* of a permanently stale site):
 
 Two invariants worth keeping — both are tested in `src/lib/version.test.ts`:
 
-- A failed fetch (dev server with no `version.json`, or offline mid-game) must return `null` and
-  reload nothing; a game must never reload because the phone lost signal.
+- Anything other than a parseable id must return `null` and reload nothing; a game must never reload
+  because the phone lost signal. Note the dev server is *not* a 404 case: `vite dev` answers
+  `/version.json` with the SPA fallback, i.e. HTTP 200 + `text/html`, so `res.ok` is true and
+  `res.json()` throws — both paths have to be inert. `version.json` is emitted by a `generateBundle`
+  hook, so it exists only in `dist/`; test this feature against a built, statically served site.
 - Reload **at most once per remote id** (`sessionStorage` `bahs.reloadedFor`). A cache that refuses
   to revalidate would otherwise reload forever, which is worse than the black page.
 
