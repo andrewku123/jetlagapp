@@ -20,7 +20,12 @@ import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem 
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
-import { poiEliminatedRegion, endgameClippedRegion, type LatLngMultiPolygon } from '../lib/questionRegions'
+import {
+  poiEliminatedRegion,
+  railStationMeasureEliminatedRegion,
+  endgameClippedRegion,
+  type LatLngMultiPolygon,
+} from '../lib/questionRegions'
 import { cityAt, NO_CITY_LABEL } from '../lib/cities'
 import { fitTarget, zoneBoxMeters, MAP_MAX_ZOOM, type FitTarget } from '../lib/mapFit'
 import { describeRecord } from '../lib/describe'
@@ -1808,6 +1813,13 @@ export default function MapView({
               // elimination is logged-only there), so force the non-endgame region
               // to get the geometry — same trick as eliminatedGeom in
               // questionRegions — otherwise the border wouldn't draw.
+              // Rail-station measuring is the other special case: it never shades
+              // map-wide, so poiEliminatedRegion returns null for it and the zone
+              // shading came with no edge. Ask its region builder directly.
+              if (r.kind === 'measure-railstation') {
+                const region = railStationMeasureEliminatedRegion(r)
+                return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
+              }
               const forGeom =
                 r.kind === 'tentacle' || r.kind === 'tentacle-line'
                   ? { ...r, endgame: false }

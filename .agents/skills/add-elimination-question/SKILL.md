@@ -175,6 +175,11 @@ helper module exports the point list + `nearest<Thing>Miles(p)` (min haversine).
   - `railStationMeasureEliminatedRegion` itself is un-gated (computes the disks for
     any record); the endgame-only behavior is enforced by the two routing points
     above. Return null when `seekerD <= 0`.
+  - **The outline pass needs the same direct call.** MapView's endgame outline pass
+    (the one after the endgame fills) special-cases radar/thermometer and otherwise
+    asks `poiEliminatedRegion` — which returns null here, so the zone shaded with no
+    boundary line. Any kind kept out of `poiEliminatedRegion` must get its own branch
+    there calling its region builder, exactly like the fill path does.
 
 ### Tie rule for ALL measuring questions ("equal → the smaller answer")
 Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,

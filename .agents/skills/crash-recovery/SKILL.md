@@ -43,6 +43,27 @@ dev server over CDP (see `verify-map-interactions`), screenshot at phone and des
 **Clear saved board and reload** and assert `localStorage.getItem(key) === null`, then remove the
 trigger. Do not ship the trigger.
 
+## Stale bundle: the app fixes itself now
+
+GitHub Pages serves `index.html` with no cache control we can set, so a phone can keep an old
+`index.html` whose hashed assets are gone — a black page the crash screen can never catch (nothing
+mounts to catch it). The self-heal is a build stamp, not a service worker (a service worker is the
+classic *source* of a permanently stale site):
+
+- `vite.config.ts` computes `BUILD_ID` from `git rev-parse --short HEAD`, injects it via `define`
+  (`__BUILD_ID__`, declared in `src/vite-env.d.ts`) and emits `version.json` with the same id.
+- `src/lib/version.ts` fetches `${import.meta.env.BASE_URL}version.json` with `cache: 'no-store'` on
+  load and on every `visibilitychange` → visible, and reloads once if the ids differ.
+
+Two invariants worth keeping — both are tested in `src/lib/version.test.ts`:
+
+- A failed fetch (dev server with no `version.json`, or offline mid-game) must return `null` and
+  reload nothing; a game must never reload because the phone lost signal.
+- Reload **at most once per remote id** (`sessionStorage` `bahs.reloadedFor`). A cache that refuses
+  to revalidate would otherwise reload forever, which is worse than the black page.
+
+So after a deploy the fix is just "wait a few seconds / switch away and back", no site-data clearing.
+
 ## What to tell the player
 
 Clearing site data for `andrewku123.github.io` in that browser fixes it immediately, but wipes that
