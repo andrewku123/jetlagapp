@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>POI review — what got merged, and your edits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" />
+<style>
+  html,body{margin:0;height:100%;font-family:system-ui,Arial,sans-serif}
+  #wrap{display:flex;height:100%}
+  #side{width:330px;overflow:auto;padding:12px 14px;box-sizing:border-box;border-right:1px solid #ddd}
+  #map{flex:1}
+  h2{font-size:16px;margin:0 0 8px}
+  h3{font-size:13px;margin:14px 0 6px;text-transform:uppercase;letter-spacing:.04em;color:#555}
+  .cat{display:flex;align-items:center;gap:7px;margin:3px 0;font-size:13px;cursor:pointer}
+  .sw{width:13px;height:13px;border-radius:50%;flex:0 0 auto}
+  .cnt{color:#777;margin-left:auto;font-variant-numeric:tabular-nums}
+  .leg{font-size:12px;color:#444;margin-top:12px;line-height:1.5}
+  .leg b{font-weight:600}
+  .ctl{font-size:12px;margin:8px 0}
+  button{font-size:12px;padding:3px 8px;margin:0 6px 4px 0;cursor:pointer}
+  input[type=search]{width:100%;box-sizing:border-box;font-size:13px;padding:4px 6px;margin:4px 0}
+  .tot{font-size:12px;color:#555;margin-top:10px}
+  .lp b{font-size:13px}
+  .lp .k{color:#c0392b}
+  .lp .r{color:#27ae60}
+  .lp .shut{color:#fff;background:#c0392b;border-radius:3px;padding:1px 4px;font-size:11px}
+  .lp .acts{margin-top:6px;border-top:1px solid #eee;padding-top:6px}
+  .lp .acts button{margin:0 4px 0 0;padding:2px 6px}
+  /* the check-it-on-Google step comes before any decision, so it leads the row */
+  .lp .acts .gm{display:block;margin-bottom:5px;font-weight:600;color:#1a73e8;
+                text-decoration:none}
+  .lp .acts .gm:hover{text-decoration:underline}
+  #edits{font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;
+         background:#fafafa;border:1px solid #e2e2e2;border-radius:4px;padding:6px;
+         max-height:210px;overflow:auto}
+  #edits div{display:flex;gap:6px;align-items:flex-start}
+  #edits span{flex:1;word-break:break-word}
+  #edits a{color:#c0392b;text-decoration:none;cursor:pointer;font-weight:700}
+  #banner{position:absolute;z-index:1000;left:50%;transform:translateX(-50%);top:10px;
+          background:#34495e;color:#fff;padding:6px 12px;border-radius:4px;font-size:13px;
+          display:none;box-shadow:0 1px 6px rgba(0,0,0,.3)}
+  #banner button{margin-left:10px}
+  .hits{font-size:12px;max-height:150px;overflow:auto}
+  .hits div{padding:2px 0;cursor:pointer;color:#2662c4}
+  .edited{font-size:12px;color:#888}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="side">
+    <h2>POI review<span id="region" style="font-weight:400;color:#888"></span></h2>
+    <div class="ctl">
+      <button id="all">Show all</button><button id="none">Hide all</button>
+    </div>
+    <div class="ctl"><label><input type="checkbox" id="onlymerged"> only merged groups</label></div>
+    <div class="ctl"><label><input type="checkbox" id="onlyclosed"> only pins Google calls closed</label></div>
+    <div class="ctl"><label><input type="checkbox" id="jump"> click dot → open Google Maps</label></div>
+    <input type="search" id="q" placeholder="find a place by name…" />
+    <div class="hits" id="hits"></div>
+    <div id="cats"></div>
+    <div class="tot" id="tot"></div>
+
+    <h3>Your edits (<span id="ecount">0</span>)</h3>
+    <div class="ctl" style="color:#555">
+      Click any dot → <b>Delete / Merge / Rename / Closed now</b>. To merge, click
+      the pin you want to <b>survive</b> → <b>Merge…</b>, then click each pin it
+      absorbs; <b>Esc</b> (or the banner button) ends it. <b>Delete</b> is
+      permanent (“never a POI”); <b>Closed now</b> only hides a place while it is
+      shut, and a later refresh brings it back if it reopens. Lines collect here
+      and stay in this browser. Paste them into
+      <code id="editsfile">scripts/poi_edits.&lt;region&gt;.txt</code> and commit.
+    </div>
+    <div id="edits"></div>
+    <div class="ctl" style="margin-top:6px">
+      <button id="copy">Copy edits</button><button id="clear">Clear</button>
+    </div>
+
+    <div class="leg">
+      <div><span class="sw" style="background:#27ae60;display:inline-block"></span> <b>kept</b> (the group's pin)</div>
+      <div><span class="sw" style="background:#c0392b;display:inline-block"></span> <b>merged away</b> — name match</div>
+      <div><span class="sw" style="background:#e67e22;display:inline-block"></span> <b>merged away</b> — OSM footprint</div>
+      <div><span class="sw" style="background:#8e44ad;display:inline-block"></span> <b>merged away</b> — manual override</div>
+      <div><span class="sw" style="background:#1abc9c;display:inline-block"></span> <b>merged away</b> — into parent park</div>
+      <div><span class="sw" style="background:#999;display:inline-block;opacity:.6"></span> untouched (no dup)</div>
+      <div><span class="sw" style="background:#fff;border:2px dashed #000;display:inline-block"></span> Google says closed — judge it</div>
+      <div style="margin-top:6px">Grey line links each absorbed pin → the pin that survives.
+        Pins sitting on top of each other are fanned out a few metres <b>for display
+        only</b> — every edit line still carries the real coordinate.</div>
+    </div>
+  </div>
+  <div id="map"></div>
+</div>
+<div id="banner"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.3/leaflet-maplibre-gl.js"></script>
+<script>document.write('<scr'+'ipt src="poi_merge_viz.js?cb='+Date.now()+'"><\/scr'+'ipt>')</script>
+<script>
+const COLORS={museum:"#8e44ad",library:"#2980b9",movie_theater:"#16a085",hospital:"#c0392b",
+  zoo:"#d35400",aquarium:"#0097a7",amusement_park:"#e91e63",park:"#27ae60",golf_course:"#7cb342",
+  consulate:"#34495e",mountain:"#795548",stadium:"#f39c12"};
+const REGION=(window.VIZ && window.VIZ._region) || 'dc';
+document.getElementById('region').textContent=' — '+REGION.toUpperCase();
+document.getElementById('editsfile').textContent='scripts/poi_edits.'+REGION+'.txt';
+
+const map=L.map('map');
+// Same basemap as the app (.agents/skills/transit-basemap-overlay): OpenFreeMap
+// Positron, with Positron's grey low-zoom road pass dropped so roads show only
+// once they'd be drawn white.
+const baseLight=L.maplibreGL({style:'https://tiles.openfreemap.org/styles/positron',
+  attributionControl:false}).addTo(map);
+map.attributionControl.addAttribution(
+  '&copy; <a href="https://openfreemap.org">OpenFreeMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors');
+// The GL map only exists once Leaflet actually adds the layer, which it defers
+// until the map has a view (fitBounds below) — hence 'add' rather than direct.
+baseLight.on('add',function(){
+  const gl=baseLight.getMaplibreMap();
+  gl.on('load',function(){
+    ['highway_major_subtle','highway_motorway_subtle','highway_path'].forEach(function(id){
+      if(gl.getLayer(id)) gl.removeLayer(id);
+    });
+    if(gl.getLayer('highway_minor')){
+      gl.setLayerZoomRange('highway_minor',14,24);
+      gl.setPaintProperty('highway_minor','line-color','#ffffff');
+    }
+  });
+});
+const baseTerrain=L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+  {maxZoom:17,attribution:'© OpenStreetMap, SRTM | © OpenTopoMap (CC-BY-SA)'});
+L.control.layers({'Light (default)':baseLight,'Terrain (mountains)':baseTerrain},null,
+  {collapsed:false,position:'topleft'}).addTo(map);
+
+const CATS=Object.keys(window.VIZ).filter(k=>window.VIZ[k] && window.VIZ[k].groups);
+const layers={}, enabled={}, onlyMerged={v:false}, onlyClosed={v:false},
+      terrain={v:false}, jump={v:false};
+map.on('baselayerchange',e=>{terrain.v=(e.name.indexOf('Terrain')===0);
+  CATS.forEach(refresh);});
+function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function at(p){return p.lat.toFixed(5)+','+p.lon.toFixed(5)}
+
+// ---------------------------------------------------------------- edit basket
+// The map can't write to the repo, so decisions accumulate here (localStorage,
+// so a review can span several sittings) as the exact lines poi_apply_edits.py
+// parses — the reviewer pastes them into the region's edits file and commits.
+const KEY='poi_edits_'+REGION;
+let edits=JSON.parse(localStorage.getItem(KEY)||'[]');
+function saveEdits(){localStorage.setItem(KEY,JSON.stringify(edits));drawEdits()}
+function addEdit(line){
+  if(edits.includes(line)) return;
+  edits.push(line); saveEdits();
+}
+function drawEdits(){
+  const box=document.getElementById('edits');
+  document.getElementById('ecount').textContent=edits.length;
+  box.innerHTML='';
+  edits.forEach((l,i)=>{
+    const row=document.createElement('div');
+    row.innerHTML=`<span>${esc(l)}</span><a title="remove">✕</a>`;
+    row.querySelector('a').onclick=()=>{edits.splice(i,1);saveEdits()};
+    box.appendChild(row);
+  });
+}
+document.getElementById('copy').onclick=()=>{
+  navigator.clipboard.writeText(edits.join('\n')+'\n').then(
+    ()=>flash('copied '+edits.length+' line(s)'),
+    ()=>flash('copy failed — select the text and copy manually'));
+};
+document.getElementById('clear').onclick=()=>{
+  if(edits.length && confirm('Discard '+edits.length+' edit line(s)?')){edits=[];saveEdits()}
+};
+drawEdits();
+
+// merge is two-step: pick the pin that SURVIVES, then click the ones it absorbs
+let merging=null;
+
+let flashT=null;
+// While a merge is armed the banner is the only thing telling you so, and the
+// only way out — so it stays up, with its exit button, until the merge ends.
+// A transient message during a merge must not take that button away.
+function flash(msg,keep){
+  const b=document.getElementById('banner');
+  b.innerHTML=esc(msg); b.style.display='block';
+  clearTimeout(flashT);
+  if(keep||merging){
+    const btn=document.createElement('button');
+    btn.textContent=(merging&&merging.n?'done':'cancel')+' (Esc)';
+    btn.onclick=endMerge; b.appendChild(btn);
+  }
+  else flashT=setTimeout(()=>b.style.display='none',2200);
+}
+function endMerge(){merging=null;document.getElementById('banner').style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&merging)endMerge()});
+
+function startMerge(p,cat){
+  merging={name:p.n,at:at(p),cat:cat,n:0};
+  flash('Merging into “'+p.n+'” — now click each pin it absorbs',true);
+}
+function absorb(p,cat){
+  // one physical place is in one category; a cross-category merge is a misclick
+  if(cat!==merging.cat){flash('“'+p.n+'” is a '+cat+', not a '+merging.cat+' — skipped');return}
+  addEdit(`merge   ${merging.name} @ ${merging.at} <- ${p.n} @ ${at(p)}`);
+  merging.n++;
+  flash(merging.n+' absorbed into “'+merging.name+'” — click more, or finish');
+}
+
+// name + coords, not coords alone: the name is what disambiguates a pin dropped
+// in the middle of a campus, and it's how you check Google still lists the place
+function gmaps(p){
+  const q=encodeURIComponent(`${p.n} @${p.lat},${p.lon}`);
+  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+// darken a #rrggbb hex toward black by factor f (0=unchanged, 1=black)
+function dark(hex,f){const n=parseInt(hex.slice(1),16);
+  let r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  r=Math.round(r*(1-f));g=Math.round(g*(1-f));b=Math.round(b*(1-f));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+
+// DISPLAY ONLY: same-category pins on top of each other can't be told apart or
+// clicked separately, so they're fanned out a few metres (p.__dx/__dy). The data
+// is untouched, and every edit line uses at(p) — the real coordinate.
+function od(p){return [p.lat+(p.__dy||0),p.lon+(p.__dx||0)];}
+function computeFan(){
+  const TH=30, latRef=38.9, kx=111320*Math.cos(latRef*Math.PI/180), ky=110540;
+  CATS.forEach(k=>{
+    const d=window.VIZ[k], P=[];
+    (d.singles||[]).forEach(p=>P.push(p));
+    (d.groups||[]).forEach(gr=>{P.push(gr.rep);(gr.kids||[]).forEach(x=>P.push(x));});
+    const used=new Array(P.length).fill(false);
+    for(let i=0;i<P.length;i++){
+      if(used[i])continue; const cl=[i]; used[i]=true;
+      for(let j=i+1;j<P.length;j++){ if(used[j])continue;
+        const dx=(P[i].lon-P[j].lon)*kx, dy=(P[i].lat-P[j].lat)*ky;
+        if(dx*dx+dy*dy<=TH*TH){cl.push(j);used[j]=true;}}
+      if(cl.length<2)continue;
+      const rad=Math.max(6,1.43*cl.length);   // metres; grows with cluster size
+      cl.forEach((idx,n)=>{const a=2*Math.PI*n/cl.length, p=P[idx];
+        p.__dy=(rad*Math.sin(a))/ky;
+        p.__dx=(rad*Math.cos(a))/(111320*Math.cos(p.lat*Math.PI/180));});
+    }
+  });
+}
+computeFan();
+
+// Google's closed flag is often stale, so it is shown, not obeyed: the pin stays
+// on the map until a human says `closed` (reversible) or `open` (overrules it).
+const CLOSED={CLOSED_TEMPORARILY:'Google: temporarily closed',
+              CLOSED_PERMANENTLY:'Google: permanently closed'};
+function popup(p,kind,label){
+  const shut=CLOSED[p.bs];
+  const acts=`<div class="acts">
+      <a class="gm" href="${gmaps(p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a>
+      <button data-a="del">Delete</button>
+      <button data-a="merge">Merge…</button>
+      <button data-a="rename">Rename</button>
+      <button data-a="closed">Closed now</button>
+      ${shut?'<button data-a="open">It\'s open</button>':''}
+      ${kind.indexOf('merged')===0?'<button data-a="keep">Keep (un-merge)</button>'
+                                  +'<button data-a="rep">Make this the pin</button>':''}
+    </div>`;
+  return `<div class="lp" data-n="${esc(p.n)}" data-at="${at(p)}"><b>${esc(p.n)}</b><br>`
+    +`${p.r==null?'reviews unknown':p.r+' reviews'} · ${label}`
+    +(p.sr?` · <i>${esc(p.sr==='authoritative'?'registry-listed':p.sr)}</i>`:'')+`<br>`
+    +(shut?`<span class="shut">${shut}</span> `:'')
+    +`<span class="${kind==='kept'?'r':(kind.indexOf('merged')===0?'k':'')}">${kind}</span>`
+    +acts+`</div>`;
+}
+
+// touch devices: a 4 px dot is unhittable, so a large invisible marker sits
+// behind each visible one, wired to the same behaviour
+const TOUCH=!!(window.matchMedia&&window.matchMedia('(pointer:coarse)').matches);
+
+function place(g,p,kind,label,cat,style){
+  const o=od(p);
+  if(p.bs) style={...style,color:'#000',weight:2,dashArray:'2,2'};   // flagged closed
+  if(TOUCH) bind(L.circleMarker(o,{radius:Math.max(style.radius+10,15),
+    stroke:false,fillOpacity:0}).addTo(g),p,kind,label,cat);
+  return bind(L.circleMarker(o,style).addTo(g),p,kind,label,cat);
+}
+
+function bind(marker,p,kind,label,cat){
+  marker.bindPopup(()=>popup(p,kind,label));
+  // Leaflet opens the popup on click itself; these two modes take the click
+  // instead — jump goes straight to Google Maps (one click per pin when you're
+  // checking a run of places), merge absorbs the pin into the armed group.
+  marker.on('click',()=>{
+    if(merging && p.n!==merging.name){ marker.closePopup(); absorb(p,cat); return; }
+    if(jump.v){ marker.closePopup(); window.open(gmaps(p),'_blank','noopener'); }
+  });
+  marker.on('popupopen',e=>{
+    e.popup.getElement().querySelectorAll('button[data-a]').forEach(b=>{
+      b.onclick=()=>{
+        const a=b.dataset.a;
+        if(a==='del')    addEdit(`delete  ${p.n} @ ${at(p)}`);
+        if(a==='keep')   addEdit(`keep    ${p.n} @ ${at(p)}`);
+        if(a==='rep')    addEdit(`rep     ${p.n} @ ${at(p)}`);
+        if(a==='closed') addEdit(`closed  ${p.n} @ ${at(p)}`);
+        if(a==='open')   addEdit(`open    ${p.n} @ ${at(p)}`);
+        if(a==='rename'){const n=prompt('New name for “'+p.n+'”:',p.n);
+                         if(n && n!==p.n) addEdit(`rename  ${p.n} @ ${at(p)} -> ${n}`);}
+        if(a==='merge'){ startMerge(p,cat); marker.closePopup(); return; }
+        marker.closePopup(); flash('added to your edits');
+      };
+    });
+  });
+  return marker;
+}
+
+function build(key){
+  const d=window.VIZ[key], g=L.layerGroup();
+  const t=terrain.v, edge=t?'#111':'#fff', sf=t?.45:0;  // terrain needs darker ink
+  // triaging closures means visiting a handful of pins spread over the whole
+  // map, so they get their own view rather than a hunt through 1,500 dots
+  const shown=p=>!onlyClosed.v || p.bs;
+  if(!onlyMerged.v){
+    d.singles.filter(shown).forEach(p=>place(g,p,'untouched',d.label,key,
+      {radius:4,color:t?'#444':'#999',weight:1,
+       fillColor:t?'#555':'#999',fillOpacity:t?.85:.5,opacity:t?.95:.6}));
+  }
+  d.groups.forEach(grp=>{
+    const R=grp.rep, oR=od(R);
+    if(onlyClosed.v && !R.bs && !grp.kids.some(k=>k.bs)) return;
+    grp.kids.filter(shown).forEach(k=>{
+      const base=k.src==='osm'?'#e67e22':k.src==='manual'?'#8e44ad':
+                 k.src==='bigpark'?'#1abc9c':'#c0392b';
+      const col2=dark(base,sf);
+      const klabel=k.src==='osm'?'merged (OSM footprint)':k.src==='manual'?'merged (manual override)':
+                   k.src==='bigpark'?'merged (into parent park)':'merged (name match)';
+      L.polyline([oR,od(k)],{color:col2,weight:t?1.6:1.2,opacity:t?1:.8,dashArray:'3,3'}).addTo(g);
+      place(g,k,klabel,d.label,key,{radius:5,color:edge,weight:1.5,fillColor:col2,fillOpacity:1});
+    });
+    if(shown(R)) place(g,R,'kept',d.label,key,
+      {radius:7,color:edge,weight:2,fillColor:dark('#27ae60',sf),fillOpacity:1});
+  });
+  return g;
+}
+function refresh(key){
+  if(layers[key]){map.removeLayer(layers[key]);delete layers[key];}
+  if(enabled[key]){layers[key]=build(key);layers[key].addTo(map);}
+}
+
+const catsDiv=document.getElementById('cats');
+CATS.forEach(key=>{
+  const d=window.VIZ[key]; enabled[key]=(d.groups.length>0);
+  const row=document.createElement('label'); row.className='cat';
+  row.innerHTML=`<input type="checkbox" ${enabled[key]?'checked':''}>
+    <span class="sw" style="background:${COLORS[key]||'#555'}"></span>${d.label}
+    <span class="cnt">${d.before}→${d.after} (−${d.before-d.after})</span>`;
+  row.querySelector('input').addEventListener('change',e=>{enabled[key]=e.target.checked;refresh(key);});
+  catsDiv.appendChild(row);
+  refresh(key);
+});
+let mb=0,ma=0; CATS.forEach(k=>{mb+=window.VIZ[k].before;ma+=window.VIZ[k].after});
+document.getElementById('tot').textContent=`Total: ${mb} → ${ma}  (−${mb-ma})`;
+document.getElementById('all').onclick=()=>{CATS.forEach(k=>{enabled[k]=true;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=true);};
+document.getElementById('none').onclick=()=>{CATS.forEach(k=>{enabled[k]=false;refresh(k);});
+  catsDiv.querySelectorAll('input').forEach(i=>i.checked=false);};
+document.getElementById('onlymerged').onchange=e=>{onlyMerged.v=e.target.checked;
+  CATS.forEach(k=>refresh(k));};
+document.getElementById('onlyclosed').onchange=e=>{onlyClosed.v=e.target.checked;
+  if(onlyClosed.v){CATS.forEach(k=>{enabled[k]=true});
+    catsDiv.querySelectorAll('input').forEach(i=>i.checked=true);}
+  CATS.forEach(k=>refresh(k));};
+document.getElementById('jump').onchange=e=>{jump.v=e.target.checked;
+  if(jump.v) flash('click a dot to open it in Google Maps — untick to edit again');};
+
+// ------------------------------------------------------------- search + view
+const ALL=[];
+CATS.forEach(k=>{const d=window.VIZ[k];
+  d.singles.forEach(p=>ALL.push([p,k]));
+  d.groups.forEach(g=>{ALL.push([g.rep,k]); g.kids.forEach(x=>ALL.push([x,k]))});
+});
+document.getElementById('q').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase(); const box=document.getElementById('hits');
+  box.innerHTML='';
+  if(q.length<3) return;
+  ALL.filter(([p])=>p.n.toLowerCase().includes(q)).slice(0,40).forEach(([p,k])=>{
+    const row=document.createElement('div');
+    row.textContent=p.n+' · '+window.VIZ[k].label;
+    row.onclick=()=>{if(!enabled[k]){enabled[k]=true;refresh(k);
+        catsDiv.querySelectorAll('input')[CATS.indexOf(k)].checked=true;}
+      map.setView(od(p),17);};
+    box.appendChild(row);
+  });
+});
+// fit whatever city this is, instead of a hardcoded centre
+const pts=ALL.map(([p])=>[p.lat,p.lon]);
+map.fitBounds(pts.length?L.latLngBounds(pts):[[38.8,-77.1],[39.0,-76.9]]);
+</script>
+</body>
+</html>
