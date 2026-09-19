@@ -17,8 +17,10 @@ This is far more trustworthy than eyeballing a screenshot.
 - Dev server running: `cd <repo> && npm run dev` → `http://localhost:5173`.
 - Chrome is already running with a CDP endpoint at **`http://localhost:29229`**.
 - App persistence key: the game (including `annotations`) is saved to
-  `localStorage` under **`bahs.game.v1`** (see `src/lib/storage.ts`). Annotations
-  carry exact coords, so you can assert on them numerically.
+  `localStorage` under **`bahs.game.v1.<ACTIVE_REGION_ID>`** — one key per map
+  (`bayarea`, `la`, `sfmuni`, `dc`), see `src/lib/storage.ts`. The snippets below
+  use `bayarea`; read `localStorage['bahs.region']` if you don't know which map is
+  active. Annotations carry exact coords, so you can assert on them numerically.
 
 ## Pattern
 Write a small Node ESM script (`node script.mjs`, Node 20+ has global `WebSocket`
@@ -50,13 +52,13 @@ async function drag(x1, y1, x2, y2) { // move in steps so Leaflet treats it as a
 }
 
 // helpers that compute screen coords from the live DOM (never hard-code pixels):
-const anns = async () => JSON.parse((await ev(`localStorage.getItem('bahs.game.v1')`)) || '{}').annotations || []
+const anns = async () => JSON.parse((await ev(`localStorage.getItem('bahs.game.v1.bayarea')`)) || '{}').annotations || []
 const btnXY = async (label) => await ev(`(()=>{const b=[...document.querySelectorAll('button')].find(x=>(x.getAttribute('aria-label')||'')===${JSON.stringify(label)});const r=b.getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()`)
 const mapXY = async (fx, fy) => await ev(`(()=>{const m=document.querySelector('.leaflet-container');const r=m.getBoundingClientRect();return [r.x+r.width*${fx},r.y+r.height*${fy}]})()`)
 
 await send('Page.enable'); await send('Runtime.enable')
 await send('Page.navigate', { url: 'http://localhost:5173/index.html' }); await sleep(3500)
-await ev(`localStorage.removeItem('bahs.game.v1')`)              // start clean
+await ev(`localStorage.removeItem('bahs.game.v1.bayarea')`)      // start clean
 await send('Page.reload'); await sleep(3500)
 // ... select tools by aria-label, click/drag at map fractions, then assert on anns()
 ```
