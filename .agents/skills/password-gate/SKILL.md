@@ -21,8 +21,8 @@ Access in front of a custom domain.
 ## Rotate the password
 1. `node scripts/gate_hash.mjs <new password>` prints the new hash.
 2. Replace `PASSWORD_HASH` in `src/lib/gate.ts`.
-3. Update the first test in `src/lib/gate.test.ts` (it asserts the shipped hash matches the current password) — the
-   test file will contain the plaintext, so if the password must stay secret, assert against a fixture instead.
+3. Don't put the plaintext anywhere in the repo — `gate.test.ts` deliberately tests against a fixture password, not
+   the real one. Tell players the new password out-of-band.
 4. PR + merge. Every device is re-prompted on its next load; the stale-bundle check (`version.json`) makes phones pick
    up the new build on the next focus/load, so nobody is stuck on the old gate.
 

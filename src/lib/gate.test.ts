@@ -11,28 +11,31 @@ Object.defineProperty(globalThis, 'localStorage', {
   configurable: true,
 })
 
+// node scripts/gate_hash.mjs fixture-pw
+const FIXTURE = 'f5d3ec6c4019d26870029be40d2030932c64f66e948f402d63ca98fd3159347a'
+
 describe('password gate', () => {
   beforeEach(() => store.clear())
 
-  it('ships the hash of the current password', async () => {
-    expect(await hashPassword('jetlag')).toBe(PASSWORD_HASH)
+  it('hashes exactly like scripts/gate_hash.mjs, so a rotated hash can be pasted in', async () => {
+    expect(await hashPassword('fixture-pw')).toBe(FIXTURE)
+    expect(PASSWORD_HASH).toMatch(/^[0-9a-f]{64}$/)
   })
 
   it('stays locked on a wrong password', async () => {
-    expect(await tryUnlock('nope')).toBe(false)
-    expect(isUnlocked()).toBe(false)
+    expect(await tryUnlock('nope', FIXTURE)).toBe(false)
+    expect(isUnlocked(FIXTURE)).toBe(false)
   })
 
   it('remembers a correct password across loads', async () => {
-    expect(await tryUnlock(' jetlag ')).toBe(true)
-    expect(isUnlocked()).toBe(true)
+    expect(await tryUnlock(' fixture-pw ', FIXTURE)).toBe(true)
+    expect(isUnlocked(FIXTURE)).toBe(true)
   })
 
   it('locks again once the password changes, without touching saved boards', async () => {
     store.set('bahs.game.v1.bayarea', '{"questions":[1]}')
-    await tryUnlock('jetlag')
-    const next = await hashPassword('newpass')
-    expect(isUnlocked(next)).toBe(false)
+    await tryUnlock('fixture-pw', FIXTURE)
+    expect(isUnlocked(await hashPassword('newpass'))).toBe(false)
     expect(store.get('bahs.game.v1.bayarea')).toBe('{"questions":[1]}')
   })
 })
