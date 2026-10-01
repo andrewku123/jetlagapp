@@ -37,6 +37,23 @@ body { background: var(--bg); color: var(--text); }
   border-radius: 8px; padding: 8px; font-size: 11px; font-family: ui-monospace, monospace;
 }
 
+.gate {
+  max-width: 320px; margin: 18vh auto 0; padding: 0 18px;
+  display: flex; flex-direction: column; gap: 10px; font-size: 15px;
+}
+.gate h1 { font-size: 22px; margin: 0; }
+.gate p { color: var(--muted); margin: 0 0 4px; }
+.gate input {
+  background: var(--panel); color: var(--text); border: 1px solid var(--line);
+  border-radius: 6px; padding: 10px 12px; font: inherit; font-size: 16px;
+}
+.gate button {
+  background: var(--accent); color: #fff; border: 0; border-radius: 6px;
+  padding: 10px 12px; font: inherit; cursor: pointer;
+}
+.gate button:disabled { opacity: 0.5; cursor: default; }
+.gate-error { color: #ffb4b4; font-size: 14px; }
+
 .topbar {
   display: flex; align-items: center; gap: 16px;
   padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line);
