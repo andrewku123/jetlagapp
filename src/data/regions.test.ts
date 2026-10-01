@@ -32,7 +32,7 @@ describe('game size', () => {
     for (const r of m.REGIONS) {
       expect(GAME_SIZES).toContain(m.REGION_SIZES[r.id])
     }
-    // A fresh board plays the active map's declared size — DC is 98 stations
+    // A fresh board plays the active map's declared size — DC is 97 stations
     // and still Medium, so nothing may infer size from the station count.
     const dc = await loadFor('dc')
     expect(dc.MAP_SIZE).toBe('medium')
@@ -131,7 +131,7 @@ describe('play-area scoping and question demotion', () => {
 
   it('every DC station carries the fields the app reads at load', async () => {
     const stations = (await import('./dc.stations.json')).default as unknown as Station[]
-    expect(stations.length).toBe(98)
+    expect(stations.length).toBe(97)
     for (const s of stations) {
       // headwayMin is read on first render (eligibility filter), so a station
       // missing it blanks the whole app rather than degrading.

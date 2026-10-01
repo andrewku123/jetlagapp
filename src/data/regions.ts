@@ -183,7 +183,7 @@ function readActiveId(): string {
 /**
  * Game size per map — a judgement call made with the user, never derived from
  * station count or area. The book sizes a game by what the map spans and how
- * long it plays (Medium = a major city or metro area, about a day), so DC's 98
+ * long it plays (Medium = a major city or metro area, about a day), so DC's 97
  * stations are still a Medium game. Kept in its own JSON because the printed
  * reference card (`scripts/make_reference_pdf.py`) reads the same file, and the
  * card's deck and the app's deck must never disagree.

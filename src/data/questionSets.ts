@@ -278,7 +278,7 @@ export const QUESTION_SETS: Record<GameSize, QuestionSet> = {
 // Size is NOT inferred from the data. The book sizes a game by what the map
 // spans and how long it plays (Small = a town or part of a big city, 4–8 h;
 // Medium = a major city / metro area, ~1 day; Large = a region or country,
-// 2–4 days), which no station count or area can decide on its own — DC is 98
+// 2–4 days), which no station count or area can decide on its own — DC is 97
 // stations and unambiguously a Medium metro game. Each map's size is chosen
 // with the user and recorded in `region-sizes.json`.
 
