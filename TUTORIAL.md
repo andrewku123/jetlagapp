@@ -8,6 +8,11 @@ that are no longer possible so you can see where the hider can still be.
 See [README.md](README.md) for the maps, play area, and the list of supported
 questions.
 
+**First visit:** the site asks for the game password. Type it and tap
+**Enter**. Your phone remembers it, so reloads and later visits go straight to
+the map. If it ever asks again, the password has been changed; your saved board
+is still there once you enter the new one.
+
 ## 0. Pick a map
 
 The **map** picker in the top bar chooses which map you're playing:

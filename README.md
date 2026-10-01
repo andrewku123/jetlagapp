@@ -228,6 +228,22 @@ Click any drawing to delete it, or use **Clear drawings**. See
 [TUTORIAL.md](TUTORIAL.md) for a full step-by-step walkthrough of the app and
 toolbox.
 
+## Password
+
+The site opens on a **password screen**. Enter it once per browser and that
+browser goes straight to the map on every later visit, until the password is
+changed. Then everyone is asked once more. Saved boards are kept throughout:
+entering, re-entering or changing the password never touches them. Unlocking the
+main site also unlocks the PR previews, which share its address.
+
+It is a soft gate: GitHub Pages has no server-side login, so it keeps casual
+visitors out but the app's files remain publicly downloadable. Only a salted hash
+of the password is in the repo. To change it:
+
+```bash
+node scripts/gate_hash.mjs '<new password>'   # paste the output into PASSWORD_HASH in src/lib/gate.ts
+```
+
 ## Develop
 
 ```bash
