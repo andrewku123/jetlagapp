@@ -15,7 +15,7 @@ is still there once you enter the new one.
 
 ## 0. Pick a map
 
-The **map** picker in the top bar chooses which map you're playing:
+The **map** picker (tap **⚙** in the top bar) chooses which map you're playing:
 
 - **Bay Area** — the full regional map (BART/Caltrain/VTA/Muni/AirTrain, 264
   stations, five counties). Default.
@@ -35,7 +35,8 @@ tell that map's stations apart is demoted automatically — see §12.
 
 - **Map** (left / main): every eligible station as a dot. Possible stations are
   solid; eliminated ones are dimmed (toggle with **show eliminated**).
-- **Top bar:**
+- **Top bar:** the map name and the count "**N of M possible**" (your live
+  progress). Everything else is behind the **⚙** button:
   - **map** — which map you're playing (see §0).
   - **Weekday / Weekend** — which service day you're playing. It changes which
     stations are eligible (some stops only run often enough on one of them). This
@@ -45,8 +46,8 @@ tell that map's stations apart is demoted automatically — see §12.
     app (inputs and labels both switch).
   - **show eliminated** — show or hide the dimmed, ruled-out stations.
   - **satellite** — overlay aerial imagery on the play area (see §6).
+  - **zone** `+50%` / `−50%` — hiding-zone curses (see §9).
   - **Reset** — clear the whole game (questions, manual eliminations, drawings).
-  - The count "**N of M possible**" is your live progress.
 - **Right panel tabs:** **Ask**, **History**, **Suspects**, **POI**, **Legend**.
 
 On a phone the map fills the screen and the panel becomes a slide-up bottom
@@ -55,7 +56,7 @@ and POI dots have enlarged invisible tap targets so they're easy to tap by finge
 
 ## 2. Set up the game
 
-1. Pick **Weekday** or **Weekend** to match when you're playing.
+1. Tap **⚙**, pick **Weekday** or **Weekend** to match when you're playing.
 2. Pick your **units** (mi/ft or km/m).
 3. That's it — the board starts with every eligible station "possible".
 
@@ -127,9 +128,13 @@ ask a question, its reward is multiplied by n (2nd ask → ×2, 3rd → ×3, …
 
 ## 6. Satellite view
 
-Tick **satellite** in the top bar to overlay aerial imagery, clipped to the play
-area — anything out of play stays grey, so the boundary is obvious. Road and
-place names are drawn on top so streets stay readable. The **Legend** tab lists
+The normal map is kept plain on purpose: only the main roads show until you zoom
+in, where the side streets appear.
+
+Tick **satellite** (behind ⚙) to overlay aerial imagery, clipped to the play
+area — anything out of play stays grey, so the boundary is obvious. Street and
+place names are drawn on top as text, without road outlines, so the transit
+lines stand out. The **Legend** tab lists
 the imagery source and its capture dates.
 
 ## 7. POI — reference layer for POI questions
@@ -167,13 +172,22 @@ When you're down to one suspected station, open its popup on the map and choose
 **🎯 Endgame here**. The board collapses to that station and draws its **hiding
 zone** — the circle the hider must be within for the endgame — shading everything
 outside it. A banner shows the station and the zone radius. Choose **Exit
-endgame** (popup or banner) to go back to the full board.
+endgame** (popup or banner) to go back to the full board. Reloading the page
+keeps you in the endgame, framed on the zone.
+
+**Prosperous Home / Tiny Home curses.** When the hider plays **Curse of the
+Prosperous Home**, tap **⚙** and press **+50%**. For **Curse of the Tiny Home**,
+press **−50%**. Each press is one card and applies to the zone as it currently
+is, so a duplicated Prosperous Home is two presses: 0.25 → 0.375 → 0.5625 mi,
+shown as `×2.25`. **✕** returns to the default size. The circle, the shading and
+every endgame question follow the new size straight away.
 
 The **Measuring — Rail station** question is designed for this phase: in the
 first half it eliminates nothing (every hiding station is itself a rail station,
 so your distance is 0), but in the endgame the hider answers from their real
 position, and "closer/further from the nearest rail station" carves the hiding
-zone just like the airport measuring question.
+zone just like the airport measuring question. The app draws that boundary as a
+line inside the zone, with the eliminated side shaded.
 
 **County / City Matching are endgame tools on single-county / single-city maps.**
 On SF Muni every station is in the same county and city, so those questions can't
@@ -231,6 +245,13 @@ Helpful behaviors:
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
 - **Reset** wipes everything — only use it to start a brand-new game.
+- **Your board is saved on the phone**, per map, so reloading or closing the tab
+  loses nothing. Clearing the browser's site data does wipe it, so copy the board
+  code first.
+- **After an update the app reloads itself once** when you next open or switch
+  back to it. Your board is kept.
+- **If you see *The board crashed*** instead of the map: press **Copy saved
+  board** if you want to keep it, then **Clear saved board and reload**.
 
 ## 12. Demoted questions (per map)
 
