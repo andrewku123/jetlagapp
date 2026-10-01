@@ -116,6 +116,44 @@
   "state": "District of Columbia"
  },
  {
+  "name": "Arlington Cemetery",
+  "lat": 38.884619,
+  "lon": -77.063085,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": false
+   },
+   "we": {
+    "served": true,
+    "hourly": false
+   }
+  },
+  "headwayMin": {
+   "wd": 187,
+   "we": 187
+  },
+  "id": "s003",
+  "nameLength": 18,
+  "county": "Arlington",
+  "city": "Arlington CDP",
+  "elevation": 5.8,
+  "airportDist": {
+   "DCA": 4360.1,
+   "IAD": 34974.2,
+   "BWI": 47140.7
+  },
+  "nearestAirport": "DCA",
+  "state": "Virginia"
+ },
+ {
   "name": "Ashburn",
   "lat": 39.004971,
   "lon": -77.491197,

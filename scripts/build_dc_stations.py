@@ -72,11 +72,6 @@ EXPECTED = {"Red Line": 27, "Blue Line": 28, "Orange Line": 26,
             "Silver Line": 39, "Yellow Line": 22, "Green Line": 21}
 SNAP_M = 400  # stop node -> station node; platforms sit a block from the pin
 
-# Real Metrorail stations deliberately left off the map. Arlington Cemetery
-# closes with the cemetery (last train ~19:00, earlier in winter), so it can't
-# be served through the 22:00 game day.
-EXCLUDE = {"Arlington Cemetery"}
-
 # OSM spells stations out in full; WMATA's own signage, maps and announcements
 # abbreviate, and the game is played off the signs. Keyed by the OSM name.
 NAME_OVERRIDES = {
@@ -255,8 +250,6 @@ def main():
 
     out = []
     for s in sorted(stations, key=lambda s: s["name"]):
-        if s["name"] in EXCLUDE:
-            continue
         h = hw[s["name"]]
         out.append({
             "name": s["name"], "lat": round(s["lat"], 6), "lon": round(s["lon"], 6),

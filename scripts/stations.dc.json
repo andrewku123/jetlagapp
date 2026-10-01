@@ -80,6 +80,32 @@
   }
  },
  {
+  "name": "Arlington Cemetery",
+  "lat": 38.884619,
+  "lon": -77.063085,
+  "systems": [
+   "Metrorail"
+  ],
+  "lines": [
+   "Blue Line"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": false
+   },
+   "we": {
+    "served": true,
+    "hourly": false
+   }
+  },
+  "headwayMin": {
+   "wd": 187,
+   "we": 187
+  }
+ },
+ {
   "name": "Ashburn",
   "lat": 39.004971,
   "lon": -77.491197,
