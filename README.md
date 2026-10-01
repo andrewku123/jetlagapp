@@ -7,8 +7,8 @@ set of candidate hiding spots on a map.
 
 ## Maps
 
-The app ships three maps, chosen from the **map** picker in the top bar. Each map
-keeps its **own saved board** (questions, eliminations, drawings, endgame) so
+The app ships three maps, chosen from the **map** picker (behind the ⚙ button in
+the top bar). Each map keeps its **own saved board** (questions, eliminations, drawings, endgame) so
 switching between them never mixes state, and its board code is tagged with the
 map so a code from one map is rejected on the other.
 
@@ -174,6 +174,20 @@ The Ask form previews this cost live as you choose parameters. If the hider
 it without an answer — it's recorded but eliminates nothing, and still counts
 toward the repeat-cost tally.
 
+## Endgame and hiding-zone curses
+
+Choosing **🎯 Endgame here** on a station locks the board onto it and draws its
+**hiding zone** (0.25 mi in a medium game), shading everything outside it.
+Endgame questions are then clipped to that circle, each drawn with its boundary
+line, including the **rail station** Measuring question.
+
+Two hider curses resize the zone: **Curse of the Prosperous Home** (+50%) and
+**Curse of the Tiny Home** (−50%). The **zone** control behind ⚙ has a `+50%`
+and a `−50%` button. Each press is one card and **compounds** on the current
+zone, so two Prosperous Homes give 0.25 → 0.375 → 0.5625 mi (shown as `×2.25`).
+**✕** goes back to the default. The circle, shading, endgame zoom and Suspects
+focus all follow the resized zone, and it's saved with the board.
+
 ## POI reference tab
 
 The **POI** tab overlays the points of interest used to compose Tentacles /
@@ -193,12 +207,21 @@ physical place is one pin: **Bay Area 2,340 · SF Muni 502 · LA Metro 2,056**
 places. The pipeline and its 6-monthly refresh live in
 `.agents/skills/gather-poi/`.
 
-## Satellite imagery
+## Base map and satellite imagery
 
-A **satellite** toggle (top bar) overlays Esri World Imagery, clipped to the
+The base map is OpenFreeMap's **Positron** style (OpenStreetMap vector tiles,
+keyless and unmetered, drawn with MapLibre GL). It is pared down for a transit
+game: only the main white roads show at overview zooms, and minor streets appear
+from zoom 14. Out-of-play land is dimmed.
+
+A **satellite** toggle (behind ⚙) overlays Esri World Imagery, clipped to the
 active map's play area — tiles outside it are never requested, and the layer is
-masked to the in-play polygons, so out-of-play land stays grey. Road and place
-name labels render on top so streets stay readable. The **Legend** tab lists the
+masked to the in-play polygons, so out-of-play land stays grey. Street and place
+**names** are drawn on top as white text, with no road outlines, so the transit
+lines stay the loudest thing on the map.
+
+Both stream from the internet as you pan; nothing map-related is bundled, so the
+app needs a connection during a game. The **Legend** tab lists the
 imagery source and capture dates; a quarterly check
 (`scripts/check_imagery_dates.py`) flags when Esri refreshes the imagery.
 
@@ -209,7 +232,8 @@ for a map: page 1 is the question deck for that map's game size (every card with
 its draw/keep cost, answer window and subject checkboxes, with the rules that
 apply to all of them stated once in the header), page 2 is the play-area
 reference — station name lengths and altitudes, counties, cities, in-play
-airports and the POI inventory. It reads the same data files the app does, so the
+airports and the POI inventory — with a 14-row **question log** filling the rest
+of the page. It reads the same data files the app does, so the
 card can't disagree with the board.
 
 ## Map drawing tools (toolbox)
@@ -227,6 +251,36 @@ locally):
 Click any drawing to delete it, or use **Clear drawings**. See
 [TUTORIAL.md](TUTORIAL.md) for a full step-by-step walkthrough of the app and
 toolbox.
+
+## Password
+
+The site opens on a **password screen**. Enter it once per browser and that
+browser goes straight to the map on every later visit, until the password is
+changed. Then everyone is asked once more. Saved boards are kept throughout:
+entering, re-entering or changing the password never touches them. Unlocking the
+main site also unlocks the PR previews, which share its address.
+
+It is a soft gate: GitHub Pages has no server-side login, so it keeps casual
+visitors out but the app's files remain publicly downloadable. Only a salted hash
+of the password is in the repo. To change it:
+
+```bash
+node scripts/gate_hash.mjs '<new password>'   # paste the output into PASSWORD_HASH in src/lib/gate.ts
+```
+
+## Saved boards, updates and the crash screen
+
+Each map's board (questions, eliminations, drawings, endgame, curses) is saved in
+the browser under `bahs.game.v1.<map>` and survives reloads. Nothing is sent to a
+server; use the board code to share eliminations.
+
+- **Updates install themselves.** Every build ships a `version.json` stamped with
+  its commit. On load and whenever the tab comes back into view, the app checks
+  it and, if a newer deploy is live, clears cached files and reloads **once**.
+  The saved board is kept. Offline, it does nothing.
+- **Crash screen.** If the board ever fails to draw, you get *The board crashed*
+  with the error, a **Copy saved board** button, **Clear saved board and
+  reload**, and **Reload**, instead of a black page.
 
 ## Develop
 
