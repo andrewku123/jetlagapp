@@ -93,16 +93,16 @@
   "service": {
    "wd": {
     "served": true,
-    "hourly": true
+    "hourly": false
    },
    "we": {
     "served": true,
-    "hourly": true
+    "hourly": false
    }
   },
   "headwayMin": {
-   "wd": 12,
-   "we": 15
+   "wd": 187,
+   "we": 187
   }
  },
  {

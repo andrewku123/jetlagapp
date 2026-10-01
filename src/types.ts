@@ -24,8 +24,10 @@ export interface Station {
   airportDist: Record<string, number>
   nearestAirport: string
   service: { wd: ServiceFlags; we: ServiceFlags }
-  // typical midday headway (minutes between departures, best direction) per day;
-  // 999 = no regular midday service. Drives size-based eligibility.
+  // longest gap (minutes) between departures across the 07:30–22:00 game day,
+  // worst direction, counting the window edges — so a station that closes early
+  // scores its gap to 22:00, not its running headway. 999 = no service. A
+  // station is a hiding spot on a day type only if this is <= ELIGIBLE_HEADWAY_MIN.
   headwayMin: { wd: number; we: number }
 }
 

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import type { Station } from '../types'
+import { ELIGIBLE_HEADWAY_MIN } from './questionSets'
 
 // Loads the region registry fresh with a given active region selected, so we can
 // assert the per-map question demotion (LOG_ONLY_KINDS) and the play-area airport
@@ -142,9 +143,15 @@ describe('play-area scoping and question demotion', () => {
       expect(s.county).toBeTruthy()
       expect(s.lines.length).toBeGreaterThan(0)
     }
-    // Metrorail's worst branch gap is ~20 min, so every station is eligible on
-    // both day types — the map has no "weekend-only ineligible" stations.
-    expect(Math.max(...stations.map((s) => Math.max(s.headwayMin.wd, s.headwayMin.we)))).toBeLessThanOrEqual(20)
+    // Metrorail's worst branch gap is ~20 min. The one exception is Arlington
+    // Cemetery, which closes with the cemetery (last train ~19:00), so it fails
+    // the hourly-to-22:00 rule and is never a hiding spot.
+    const eligible = (day: 'wd' | 'we') => stations.filter((s) => s.headwayMin[day] <= ELIGIBLE_HEADWAY_MIN)
+    expect(eligible('wd').length).toBe(97)
+    expect(eligible('we').length).toBe(97)
+    expect(stations.filter((s) => s.headwayMin.wd > ELIGIBLE_HEADWAY_MIN).map((s) => s.name)).toEqual(['Arlington Cemetery'])
+    expect(Math.max(...eligible('wd').map((s) => s.headwayMin.wd))).toBeLessThanOrEqual(20)
+    expect(Math.max(...eligible('we').map((s) => s.headwayMin.we))).toBeLessThanOrEqual(20)
   })
 
   it('DC: a coordinate resolves to its real state, county and city across the river', async () => {

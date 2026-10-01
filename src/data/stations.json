@@ -7501,45 +7501,6 @@
   }
  },
  {
-  "name": "Ulloa St & Forest Side Ave",
-  "lat": 37.741497,
-  "lon": -122.468612,
-  "systems": [
-   "Muni"
-  ],
-  "lines": [
-   "Muni L"
-  ],
-  "aka": [
-   "Ulloa St & Forest Side Ave"
-  ],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "id": "s193",
-  "nameLength": 26,
-  "county": "San Francisco",
-  "city": "San Francisco city",
-  "elevation": 113.9,
-  "airportDist": {
-   "SFO": 15618.0,
-   "OAK": 22041.8,
-   "SJC": 63500.5
-  },
-  "nearestAirport": "SFO",
-  "headwayMin": {
-   "wd": 12,
-   "we": 12
-  }
- },
- {
   "name": "Union Square/Market Street",
   "lat": 37.786525,
   "lon": -122.406214,
