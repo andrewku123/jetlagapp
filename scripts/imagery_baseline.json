@@ -1,7 +1,16 @@
 {
-  "Alameda": "Mar 2025",
-  "Contra Costa": "Sep 2025",
-  "San Francisco": "Aug 2025",
-  "San Mateo": "Jun 2025",
-  "Santa Clara": "Nov 2024"
+  "bayarea/Alameda": "Mar 2025",
+  "bayarea/Contra Costa": "Sep 2025",
+  "bayarea/San Francisco": "Aug 2025",
+  "bayarea/San Mateo": "Jun 2025",
+  "bayarea/Santa Clara": "Nov 2024",
+  "dc/Alexandria city": "Feb 2025",
+  "dc/Arlington": "Feb 2025",
+  "dc/District of Columbia": "Jul 2025",
+  "dc/Fairfax": "Feb 2025",
+  "dc/Loudoun": "Feb 2025",
+  "dc/Montgomery": "May 2025",
+  "dc/Prince George's": "Jun 2025",
+  "la/Los Angeles": "Nov 2025",
+  "sfmuni/San Francisco": "Aug 2025"
 }
