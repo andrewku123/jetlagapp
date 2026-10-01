@@ -2,9 +2,9 @@
 """Check whether Esri World Imagery has been refreshed over the play area(s).
 
 This is map-agnostic: it probes one representative point per in-play **county**
-found in `src/data/stations.json`, so it automatically covers every region the
-app ships — adding a new city/metro to the station data extends the check with no
-edits here. It queries Esri's World_Imagery metadata for each point and compares
+in every region's station dataset (`src/data/*stations.json` — `stations.json` is
+the Bay Area, `<region>.stations.json` the others), so adding a new city/metro
+extends the check with no edits here. Baseline keys are `<region>/<county>`. It queries Esri's World_Imagery metadata for each point and compares
 the capture dates against the committed baseline `scripts/imagery_baseline.json`.
 
 Usage:
@@ -22,23 +22,33 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-STATIONS = ROOT / "src" / "data" / "stations.json"
+DATA = ROOT / "src" / "data"
 BASELINE = Path(__file__).resolve().parent / "imagery_baseline.json"
 IDENTIFY = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/identify"
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 
+def station_datasets() -> dict[str, Path]:
+    """Region id -> station JSON, for every region the app ships."""
+    out: dict[str, Path] = {}
+    for f in sorted(DATA.glob("*stations.json")):
+        prefix = f.name[: -len("stations.json")].rstrip(".")
+        out[prefix or "bayarea"] = f
+    return out
+
+
 def probe_points() -> dict[str, tuple[float, float]]:
-    """One representative (lat, lon) per county: the station nearest that county's
-    centroid, so the point is always real imagery (a station), not open water."""
-    stations = json.loads(STATIONS.read_text())
+    """One representative (lat, lon) per region/county: the station nearest that
+    county's centroid, so the point is always real imagery (a station), not open
+    water."""
     by_county: dict[str, list[tuple[float, float]]] = {}
-    for s in stations:
-        county = s.get("county")
-        if not county or s.get("lat") is None or s.get("lon") is None:
-            continue
-        by_county.setdefault(county, []).append((s["lat"], s["lon"]))
+    for region, path in station_datasets().items():
+        for s in json.loads(path.read_text()):
+            county = s.get("county")
+            if not county or s.get("lat") is None or s.get("lon") is None:
+                continue
+            by_county.setdefault(f"{region}/{county}", []).append((s["lat"], s["lon"]))
     points: dict[str, tuple[float, float]] = {}
     for county, pts in by_county.items():
         clat = sum(p[0] for p in pts) / len(pts)
@@ -93,7 +103,7 @@ def main() -> int:
         BASELINE.write_text(json.dumps(fresh, indent=2) + "\n")
         print(f"Wrote baseline for {len(fresh)} counties to {BASELINE.name}:")
         for county, date in fresh.items():
-            print(f"  {county:16} {date}")
+            print(f"  {county:28} {date}")
         return 0
 
     baseline = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
@@ -104,11 +114,11 @@ def main() -> int:
         flag = "" if date == was else "  <-- CHANGED"
         if date != was:
             changed = True
-        print(f"  {county:16} baseline={was:11} esri={date:11}{flag}")
+        print(f"  {county:28} baseline={was:11} esri={date:11}{flag}")
     for county in baseline:
         if county not in fresh:
             changed = True
-            print(f"  {county:16} baseline={baseline[county]:11} esri=(gone)      <-- REMOVED")
+            print(f"  {county:28} baseline={baseline[county]:11} esri=(gone)      <-- REMOVED")
 
     if changed:
         print("\nImagery changed (or a region was added/removed). Re-run with "
