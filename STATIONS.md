@@ -8,15 +8,15 @@ train an hour through the daytime window (the game’s eligibility rule), **—*
 _Generated from the app’s own station data by `scripts/build_stations_md.mjs`
 — edit the data, not this file._
 
-- [Bay Area](#bay-area-264-stations) — 264 stations
-- [SF Muni](#sf-muni-132-stations) — 132 stations
+- [Bay Area](#bay-area-263-stations) — 263 stations
+- [SF Muni](#sf-muni-131-stations) — 131 stations
 - [LA Metro](#la-metro-158-stations) — 158 stations
 
-## Bay Area — 264 stations
+## Bay Area — 263 stations
 
-**264 unique hideable stations** (deduped within and across systems). Eligible after the at-least-hourly rule: **263 weekday / 264 weekend**.
+**263 unique hideable stations** (deduped within and across systems). Eligible after the at-least-hourly rule: **262 weekday / 263 weekend**.
 
-Each station is listed once, under its **primary system**; the "shared" tag names the others (e.g. 4th & King is under Caltrain, not also Muni). Membership counts, which do count a shared station in every system it serves: BART 50 · Caltrain 24 · VTA 59 · Muni 132 · SFO AirTrain 11.
+Each station is listed once, under its **primary system**; the "shared" tag names the others (e.g. 4th & King is under Caltrain, not also Muni). Membership counts, which do count a shared station in every system it serves: BART 50 · Caltrain 24 · VTA 59 · Muni 131 · SFO AirTrain 11.
 
 Ten F-only surface stops on Market St inland of Embarcadero are excluded — they sit directly above the Muni Metro subway and duplicate those stations.
 
@@ -163,7 +163,7 @@ Ten F-only surface stops on Market St inland of Embarcadero are excluded — the
 | Whisman | Orange | ✓ | ✓ | 37.3921, -122.0583 |
 | Winchester | Green | ✓ | ✓ | 37.2796, -121.9479 |
 
-### Muni (126)
+### Muni (125)
 
 | Station | Lines | WD | WE | Lat, Lon |
 |---|---|:--:|:--:|---|
@@ -284,7 +284,6 @@ Ten F-only surface stops on Market St inland of Embarcadero are excluded — the
 | UCSF Medical Center | T | ✓ | ✓ | 37.7643, -122.3889 |
 | UCSF/Chase Center | T | ✓ | ✓ | 37.7682, -122.3892 |
 | Ulloa St & 14th Ave | L | ✓ | ✓ | 37.7414, -122.4701 |
-| Ulloa St & Forest Side Ave | L | ✓ | ✓ | 37.7415, -122.4686 |
 | Ulloa St & West Portal Ave | L | ✓ | ✓ | 37.7411, -122.4662 |
 | Union Square/Market Street | T | ✓ | ✓ | 37.7865, -122.4062 |
 | Van Ness Station | J, K, L, M, N | ✓ | ✓ | 37.7752, -122.4192 |
@@ -309,9 +308,9 @@ Ten F-only surface stops on Market St inland of Embarcadero are excluded — the
 | Terminal 3 | — | ✓ | ✓ | 37.6175, -122.3866 |
 | West Field Road | — | ✓ | ✓ | 37.6217, -122.3995 |
 
-## SF Muni — 132 stations
+## SF Muni — 131 stations
 
-**132 unique hideable stations**. Eligible after the at-least-hourly rule: **132 weekday / 132 weekend**.
+**131 unique hideable stations**. Eligible after the at-least-hourly rule: **131 weekday / 131 weekend**.
 
 These are the Bay Area map’s Muni rail stops, scoped to the City & County of San Francisco — the same stations, played as their own day-pass map.
 
@@ -440,7 +439,6 @@ These are the Bay Area map’s Muni rail stops, scoped to the City & County of S
 | UCSF Medical Center | T | ✓ | ✓ | 37.7643, -122.3889 |
 | UCSF/Chase Center | T | ✓ | ✓ | 37.7682, -122.3892 |
 | Ulloa St & 14th Ave | L | ✓ | ✓ | 37.7414, -122.4701 |
-| Ulloa St & Forest Side Ave | L | ✓ | ✓ | 37.7415, -122.4686 |
 | Ulloa St & West Portal Ave | L | ✓ | ✓ | 37.7411, -122.4662 |
 | Union Square/Market Street | T | ✓ | ✓ | 37.7865, -122.4062 |
 | Van Ness Station | J, K, L, M, N | ✓ | ✓ | 37.7752, -122.4192 |

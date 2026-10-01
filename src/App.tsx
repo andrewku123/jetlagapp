@@ -167,7 +167,7 @@ export default function App() {
 
   // Weekday/Weekend only matters when the two days differ for this map — i.e. the
   // eligible-station set changes, or the map has weekday-only lines. On SF Muni
-  // (all lines run daily, same 132 eligible) it does nothing, so the toggle and
+  // (all lines run daily, same 131 eligible) it does nothing, so the toggle and
   // the split eligibility line are hidden.
   const dayTypeMatters = useMemo(() => {
     const eligibleIds = (day: DayType) =>
