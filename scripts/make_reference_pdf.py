@@ -3,7 +3,7 @@
 
 Page 1 is the question deck: every question card for the chosen size, with its
 draw/keep cost, answer window and checkbox subject list. Page 2 is the play-area
-reference: station profiles (altitude, name length, nearest airport, line),
+reference: station profiles (hiding-zone altitude, name length, nearest airport, line),
 counties, cities, airports and the in-play POI inventory.
 
 Rules that apply to every question (answer window consequences, what to send the
@@ -70,13 +70,22 @@ no_city = sum(1 for s in ST if not s.get("city"))
 airport_counts = collections.Counter(s["nearestAirport"] for s in ST if s.get("nearestAirport"))
 line_counts = collections.Counter(l for s in ST for l in s.get("lines", []))
 
-# altitude histogram (feet)
-elevs_ft = [s["elevation"] * M2FT for s in ST if s.get("elevation") is not None]
+# hiding-zone altitude grid (feet). The hider answers sea-level questions from
+# wherever they stand in the zone, so a station's center elevation says little;
+# what matters is the ground range its default-radius zone covers (the same
+# build-time ranges the app eliminates on, from scripts/build_zone_elevation.py).
+# A zone counts in every band it reaches, so the counts sum past the total.
+ZONE_ELEV = json.load(open(data("zone-elev.json")))
+ZONE_MI = 0.5 if SIZE == "large" else 0.25
+_band = ZONE_ELEV["bandsMi"].index(ZONE_MI)
+zone_ft = [(lo * M2FT, hi * M2FT) for lo, hi in
+           (b[_band] for b in ZONE_ELEV["stations"].values() if b)]
 BIN = 50
-nbins = max(1, int(max(elevs_ft) // BIN) + 1) if elevs_ft else 1
+nbins = max(1, int(max(0, max(hi for _, hi in zone_ft)) // BIN) + 1) if zone_ft else 1
 alt_counts = [0] * nbins
-for e in elevs_ft:
-    alt_counts[min(int(e // BIN), nbins - 1)] += 1
+for lo, hi in zone_ft:
+    for i in range(max(0, int(lo // BIN)), min(nbins - 1, int(max(lo, hi) // BIN)) + 1):
+        alt_counts[i] += 1
 alt_labels = [f"{i*BIN}\u2013{(i+1)*BIN}" for i in range(nbins)]
 
 # name-length histogram
@@ -292,9 +301,10 @@ def counted_list(counter, last=None):
 
 
 nstat = len(ST)
-alt_card = tblcard("Stations by altitude", f"{nstat} stations",
+alt_card = tblcard(f"Hiding zones by altitude ({ZONE_MI:g} mi)", f"{nstat} stations",
                    hgrid([(a, c) for a, c in zip(alt_labels, alt_counts) if c],
-                         "Elevation band (ft) &rarr; stations"))
+                         "Ground elevation band (ft) &rarr; stations whose zone reaches it"
+                         " (a zone can span several bands)"))
 nl_card = tblcard("Stations by name length", f"{nstat} stations",
                   hgrid([(L, c) for L, c in nl_rows if c], "Name length &rarr; stations"))
 # no airport in play -> the airport questions are log-only in the app, so

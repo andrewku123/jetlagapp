@@ -86,6 +86,9 @@ export interface QuestionRecord {
   // endgame its shading is clipped to the hiding zone to sub-divide it. Toggleable
   // after the fact from the history tab.
   endgame?: boolean
+  // hiding-zone radius (mi) in force when the question was logged: the hider
+  // could have answered from anywhere within it. Absent on older boards.
+  zoneMi?: number
 }
 
 // Manual compass / straightedge annotations the seeker draws on the map.

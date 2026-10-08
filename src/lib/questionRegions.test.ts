@@ -279,10 +279,9 @@ describe('railStationMeasureEliminatedRegion shades the your-distance rail-stati
     expect(region).toBeNull()
   })
 
-  it('never shades map-wide (poiEliminatedRegion returns null) but does clip the endgame zone', () => {
+  it('shades map-wide and clips the endgame zone', () => {
     const r = { ...rec('measure-railstation', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }), endgame: true }
-    // Map-wide path is null: it eliminates no station, so it must shade nothing.
-    expect(poiEliminatedRegion(r)).toBeNull()
+    expect(poiEliminatedRegion(r)).not.toBeNull()
     // Endgame path still carves the hiding-zone disk around the locked station.
     const s0 = (rawStations as unknown as Station[])[0]
     const clipped = endgameClippedRegion(r, { lat: s0.lat, lon: s0.lon }, 3)
@@ -468,14 +467,14 @@ describe('metroLineEliminatedRegion (sampled Voronoi) tracks the elimination rul
     for (const st of STATIONS) {
       // margin between the station's nearest in-play line and the answer line;
       // near the boundary the sampled shading can differ from the exact rule, so
-      // only assert where the decision is unambiguous (> 1 mi from the boundary).
+      // only assert where the decision is unambiguous (> 0.1 mi from the boundary).
       let minD = Infinity, answerD = Infinity
       for (const l of inPlay) {
         const d = metroLineDistanceMiles({ lat: st.lat, lon: st.lon }, l, SEEKER.lat)
         if (d < minD) minD = d
         if (l.id === answer.id) answerD = d
       }
-      if (Math.abs(answerD - minD) <= 1) continue
+      if (Math.abs(answerD - minD) <= 0.1) continue
       const shaded = region ? pointInMulti(st.lat, st.lon, region) : false
       const eliminated = !stationPasses(st, r)
       expect(shaded, `${st.name} shading vs elimination`).toBe(eliminated)

@@ -167,10 +167,10 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
   {
     kind: 'measure-railstation',
     category: 'Measuring',
-    label: 'Measuring — Rail station (endgame)',
+    label: 'Measuring — Rail station',
     cards: 'draw 3, keep 1',
     eliminates: true,
-    blurb: 'Compared to me, are you closer to or further from the nearest rail station? Inert in the first half — every hiding station is itself a rail station (distance 0), so nothing is eliminated — but useful in the endgame, where it carves the hiding zone. Set your location; the app shows your distance to the nearest station.',
+    blurb: 'Compared to me, are you closer to or further from the nearest rail station? Every hiding station is itself a rail station (distance 0), so it only rules out stations whose whole hiding zone stays close to stations; most useful in the endgame, where it carves the hiding zone. Set your location; the app shows your distance to the nearest station.',
   },
   // --- Measuring · Borders / coastline (expands per feature) ---
   {
@@ -196,7 +196,7 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Measuring — Sea level (altitude)',
     cards: 'draw 3, keep 1',
     eliminates: true,
-    blurb: 'Compared to me, are you closer to or further from sea level (lower altitude)?',
+    blurb: 'Compared to me, are you closer to or further from sea level (lower altitude)? Outside endgame both sides use ground elevation (the USGS value at your spot). In endgame real height (bridge, rooftop) is allowed, so an endgame-marked sea-level question is a note only until you unmark it.',
   },
   {
     kind: 'measure-water',

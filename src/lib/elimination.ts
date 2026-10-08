@@ -7,6 +7,10 @@ import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
 import { stateAt } from './states'
 import { zipAt } from './zip'
+import { zoneRegions } from './questionRegions'
+import { regionWithinMiles } from './zoneFit'
+import { zoneElevationRange } from './zoneElevation'
+import { nearestRailStationMiles } from './railStations'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -19,12 +23,76 @@ function nearestAirportMiles(p: LatLng): number {
   return Math.min(...Object.values(AIRPORTS).map((a) => haversineMiles(p, a)))
 }
 
+// The hiding-zone radius a question was answered under: the zone in force when
+// it was logged, else (older boards) the caller's fallback for the game size.
+export function recordZoneMi(record: QuestionRecord, fallbackZoneMi: number): number {
+  const z = record.zoneMi
+  return typeof z === 'number' && Number.isFinite(z) && z >= 0 ? z : fallbackZoneMi
+}
+
+// Whether the hider could have answered from somewhere in play within `zoneMi`
+// of the station and outside the question's eliminated area.
+function zoneReachesAnswer(station: Station, record: QuestionRecord, zoneMi: number): boolean {
+  if (!(zoneMi > 0)) return false
+  const regions = zoneRegions(record)
+  if (!regions) return true // no eliminated area (no data / degenerate question)
+  return regionWithinMiles({ lat: station.lat, lon: station.lon }, regions.kept, zoneMi)
+}
+
 /**
- * Returns true if `station` is still consistent with the answer of `record`.
- * Photo questions (and inactive / non-eliminating records) always return true.
+ * Returns true if `station` is still consistent with the answer of `record`,
+ * given that the hider answered from somewhere within `zoneMi` of the station
+ * (the record's own logged zone wins over `fallbackZoneMi`). Photo questions
+ * (and inactive / non-eliminating records) always return true.
  */
-export function stationPasses(station: Station, record: QuestionRecord): boolean {
+export function stationPasses(station: Station, record: QuestionRecord, fallbackZoneMi = 0): boolean {
   if (!record.active || record.vetoed || !record.eliminates) return true
+  const p = record.params
+  const zoneMi = recordZoneMi(record, fallbackZoneMi)
+
+  switch (record.kind) {
+    // About the station itself ("your station"), not where the hider stands.
+    case 'match-namelength':
+    case 'match-line':
+      return centerPasses(station, record)
+    case 'measure-sealevel': {
+      // In endgame the hider may answer by real height (bridge, rooftop), which
+      // ground terrain can't bound: a note until the endgame flag is cleared.
+      if (record.endgame) return true
+      // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
+      const seeker = n(p.value)
+      if (!Number.isFinite(seeker)) return true
+      const closer = p.answer === 'closer'
+      if (station.elevation != null && (station.elevation <= seeker) === closer) return true
+      if (zoneMi <= 0) return station.elevation == null
+      const range = zoneElevationRange(station.id, zoneMi)
+      if (!range) return true // no terrain for this zone size: can't eliminate
+      return closer ? range.min <= seeker : range.max > seeker
+    }
+    case 'radar':
+    case 'thermometer':
+    case 'match-admin1':
+    case 'match-county':
+    case 'match-city':
+    case 'match-airport':
+    case 'match-poi':
+    case 'measure-poi':
+    case 'measure-feature':
+    case 'measure-airport':
+    case 'measure-zip':
+    case 'tentacle':
+    case 'tentacle-line':
+    case 'measure-railstation':
+      return centerPasses(station, record) || zoneReachesAnswer(station, record, zoneMi)
+    default:
+      return true
+  }
+}
+
+// Whether the answer is consistent with the hider standing on the station
+// itself — exact, including the tie rules. Kept from before the hiding zone
+// counted, since the station is always one place the hider could be.
+function centerPasses(station: Station, record: QuestionRecord): boolean {
   const p = record.params
 
   switch (record.kind) {
@@ -111,15 +179,12 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // Tie folds into the smaller side ("closer"): keep <= inclusive.
       return (stationDist <= seeker) === (p.answer === 'closer')
     }
-    case 'measure-railstation':
-      // Logged-only for the suspect list: rail-station measuring never eliminates
-      // a station. Map-wide every candidate IS a rail station (distance 0 to the
-      // nearest rail station = itself), so applying an answer here is degenerate —
-      // an endgame "further" answer (asked from the hider's real position, where
-      // distance > 0) would wrongly eliminate EVERY station once you leave the
-      // endgame. Its only effect is carving the endgame hiding zone via
-      // railStationMeasureEliminatedRegion (see questionRegions.ts). Keep all.
-      return true
+    case 'measure-railstation': {
+      const seeker = nearestRailStationMiles({ lat: n(p.fromLat), lon: n(p.fromLon) })
+      if (!Number.isFinite(seeker)) return true
+      // Tie folds into the smaller side ("closer"): keep <= inclusive.
+      return (nearestRailStationMiles(station) <= seeker) === (p.answer === 'closer')
+    }
     case 'measure-sealevel': {
       if (station.elevation == null) return true // unknown: don't eliminate
       // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
@@ -145,12 +210,6 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // (p.value = poiKey) is the in-play POI the hider is closest to. Keep a
       // station iff its nearest *in-play* POI is that answer — a POI outside the
       // radius never counts, even if it is physically closer to the station.
-      // Endgame tentacles eliminate nothing. In endgame the hider answers from
-      // their real position, not the station centre, so a station can sit outside
-      // the radius (or nearest a different POI) even though the hider is inside it
-      // — the disk / closest-POI tests would wrongly drop valid stations. Rather
-      // than reason about that mismatch, endgame tentacles are logged only.
-      if (record.endgame) return true
       const cat = s(p.poiCat)
       const radius = n(p.radiusMi)
       const answerKey = s(p.value)
@@ -167,8 +226,7 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // A normal (named-POI) answer means the hider is within the radius of the
       // seeker — otherwise they'd answer "not within". So, like a radar "yes",
       // everything outside the disk is eliminated too. Skipped only for the 0/1-POI
-      // case, which is asked as a radar (handled by the sentinels above). (Endgame
-      // returned early above, so this only applies to non-endgame questions.)
+      // case, which is asked as a radar (handled by the sentinels above).
       if (inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
@@ -190,10 +248,6 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       // the hider is closest to. Keep a station iff its nearest in-play line is
       // that answer. All distances use the seeker-centred projection so the
       // keep/drop decision agrees with the shaded region.
-      // Endgame tentacles eliminate nothing (see the 'tentacle' case): the hider
-      // answers from their real position, not the station centre, so elimination
-      // would be unreliable. Logged only in endgame.
-      if (record.endgame) return true
       const radius = n(p.radiusMi)
       const answerId = s(p.value)
       if (!answerId || !Number.isFinite(radius)) return true
@@ -205,7 +259,7 @@ export function stationPasses(station: Station, record: QuestionRecord): boolean
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       // Normal answer ⇒ hider within the radius (else they'd answer "not within"),
       // so eliminate everything outside the disk too — like a radar "yes". Skipped
-      // for the 0/1-line radar case (sentinels above); endgame returned early.
+      // for the 0/1-line radar case (sentinels above).
       if (inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
@@ -232,13 +286,14 @@ export interface FilterResult {
 export function applyFilters(
   stations: Station[],
   records: QuestionRecord[],
+  fallbackZoneMi = 0,
 ): FilterResult {
   const eliminated = new Set<string>()
   const remaining: Station[] = []
   for (const st of stations) {
     let ok = true
     for (const r of records) {
-      if (!stationPasses(st, r)) {
+      if (!stationPasses(st, r, fallbackZoneMi)) {
         ok = false
         break
       }

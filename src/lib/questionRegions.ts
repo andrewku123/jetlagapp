@@ -3,7 +3,7 @@ import type { LatLng, QuestionRecord } from '../types'
 import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
-import { REGION_FRAME } from '../data/regions'
+import { REGION_FRAME, playAreaData } from '../data/regions'
 import { RAIL_STATIONS, nearestRailStationMiles } from './railStations'
 import { countyAt, countyGeom } from './counties'
 import { stateAt, stateGeom } from './states'
@@ -11,6 +11,8 @@ import { cityAt, cityGeom } from './cities'
 import { zipAt, zipCodes, zipGeom } from './zip'
 import { bisectorHalfPlane, circlePolygon, haversineMiles } from './geo'
 import { metroLinesWithinRadius, type MetroLine } from './metroLines'
+import { indexRegion, type RegionIndex } from './zoneFit'
+import { polysByName } from './polys'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -292,7 +294,6 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   const radius = Number(p.radiusMi)
   const answerKey = String(p.value ?? '')
   if (!answerKey || !Number.isFinite(radius)) return null
-  if (record.endgame) return null // endgame tentacles eliminate nothing
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerKey === TENTACLE_INSIDE || answerKey === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerKey)
@@ -325,25 +326,90 @@ function clipKeepToDisk(keep: Polygon[], seeker: LatLng, radius: number): Polygo
 // is no closed-form Voronoi for polylines, so each in-play line is sampled into
 // points and a point-Voronoi is built over all samples; the keep region is the
 // union of the answer line's sample cells and the eliminated area is its
-// complement. Sample spacing is chosen so the total site count stays bounded,
-// which keeps the boundary within a sample-spacing of the true nearest-line
-// boundary — matched by skipping a thin band in the agreement test.
+// complement. Samples every METRO_LINE_SAMPLE_MI along each line (long
+// segments are interpolated), which keeps the boundary within about half that
+// of the true nearest-line boundary.
+const METRO_LINE_SAMPLE_MI = 0.05
+
 function sampleLine(line: MetroLine, spacingMi: number): LatLng[] {
   const out: LatLng[] = []
   for (const poly of line.polylines) {
     if (poly.length === 0) continue
     out.push(poly[0])
-    let acc = 0
+    let next = spacingMi // distance along this segment to the next sample
     for (let i = 1; i < poly.length; i++) {
-      const seg = haversineMiles(poly[i - 1], poly[i])
-      acc += seg
-      if (acc >= spacingMi) {
-        out.push(poly[i])
-        acc = 0
+      const a = poly[i - 1]
+      const b = poly[i]
+      const seg = haversineMiles(a, b)
+      while (next < seg) {
+        const t = next / seg
+        out.push({ lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) })
+        next += spacingMi
+      }
+      next -= seg
+    }
+    out.push(poly[poly.length - 1])
+  }
+  return out
+}
+
+// Voronoi cells of sites[idx] for each idx in `which`, using a bucket grid so
+// each cell is clipped only by nearby sites: once every site within 2× the
+// cell's current radius has clipped it, no farther site can.
+function voronoiCellsIndexed(sites: LatLng[], which: number[], refLat: number): Ring[] {
+  const cosRef = Math.cos((refLat * Math.PI) / 180) || 1e-6
+  const pts: P2[] = sites.map((p) => ({ x: p.lon * cosRef, y: p.lat }))
+  const bl = { x: CELL_FRAME.minLon * cosRef, y: CELL_FRAME.minLat }
+  const tr = { x: CELL_FRAME.maxLon * cosRef, y: CELL_FRAME.maxLat }
+  const g = 0.01 // bucket size in degrees of latitude (~0.7 mi)
+  const nx = Math.max(1, Math.ceil((tr.x - bl.x) / g))
+  const ny = Math.max(1, Math.ceil((tr.y - bl.y) / g))
+  const bx = (x: number) => Math.min(nx - 1, Math.max(0, Math.floor((x - bl.x) / g)))
+  const by = (y: number) => Math.min(ny - 1, Math.max(0, Math.floor((y - bl.y) / g)))
+  const buckets = new Map<number, number[]>()
+  pts.forEach((p, i) => {
+    const k = by(p.y) * nx + bx(p.x)
+    const b = buckets.get(k)
+    if (b) b.push(i)
+    else buckets.set(k, [i])
+  })
+  const out: Ring[] = []
+  for (const idx of which) {
+    const p0 = pts[idx]
+    const cx = bx(p0.x)
+    const cy = by(p0.y)
+    let poly: P2[] = [
+      { x: bl.x, y: bl.y },
+      { x: tr.x, y: bl.y },
+      { x: tr.x, y: tr.y },
+      { x: bl.x, y: tr.y },
+    ]
+    for (let r = 0; poly.length >= 3; r++) {
+      if (r > 0) {
+        let reach = 0
+        for (const v of poly) reach = Math.max(reach, Math.hypot(v.x - p0.x, v.y - p0.y))
+        if ((r - 1) * g >= 2 * reach) break
+        if (cx - r < 0 && cy - r < 0 && cx + r >= nx && cy + r >= ny) break
+      }
+      for (let y = cy - r; y <= cy + r; y++) {
+        if (y < 0 || y >= ny) continue
+        const edgeRow = y === cy - r || y === cy + r
+        for (let x = cx - r; x <= cx + r; x += edgeRow ? 1 : 2 * r || 1) {
+          if (x < 0 || x >= nx) continue
+          const b = buckets.get(y * nx + x)
+          if (!b) continue
+          for (const i of b) {
+            if (i === idx) continue
+            const pi = pts[i]
+            const a = 2 * (pi.x - p0.x)
+            const bb = 2 * (pi.y - p0.y)
+            const c = -(pi.x * pi.x + pi.y * pi.y - (p0.x * p0.x + p0.y * p0.y))
+            poly = clipHalfPlane(poly, a, bb, c)
+          }
+        }
       }
     }
-    const last = poly[poly.length - 1]
-    if (out[out.length - 1] !== last) out.push(last)
+    if (poly.length >= 3) out.push(poly.map((p) => [p.x / cosRef, p.y] as [number, number]))
   }
   return out
 }
@@ -353,7 +419,6 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   const radius = Number(p.radiusMi)
   const answerId = String(p.value ?? '')
   if (!answerId || !Number.isFinite(radius)) return null
-  if (record.endgame) return null // endgame tentacles eliminate nothing
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerId === TENTACLE_INSIDE || answerId === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerId)
@@ -361,18 +426,12 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
   if (!inPlay.some((l) => l.id === answerId)) return null
 
-  // Bound total samples: aim ~600 sites across all in-play lines.
-  let totalMi = 0
-  for (const l of inPlay) for (const poly of l.polylines) for (let i = 1; i < poly.length; i++) totalMi += haversineMiles(poly[i - 1], poly[i])
-  const spacingMi = Math.max(0.25, totalMi / 600)
-
   const sites: LatLng[] = []
-  const isAnswer: boolean[] = []
+  const answerIdx: number[] = []
   for (const l of inPlay) {
-    const pts = sampleLine(l, spacingMi)
-    for (const pt of pts) {
+    for (const pt of sampleLine(l, METRO_LINE_SAMPLE_MI)) {
+      if (l.id === answerId) answerIdx.push(sites.length)
       sites.push(pt)
-      isAnswer.push(l.id === answerId)
     }
   }
   if (sites.length < 2) return null
@@ -381,13 +440,7 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   // shared robustUnion (snap + divide-and-conquer) — an incremental pairwise fold
   // of the many adjacent, near-collinear cells along a line trips
   // polygon-clipping's ring-completion robustness bug.
-  const cells: Polygon[] = []
-  for (let i = 0; i < sites.length; i++) {
-    if (!isAnswer[i]) continue
-    const cell = voronoiCellRing(sites, i, seeker.lat)
-    if (!cell) continue
-    cells.push([cell])
-  }
+  const cells: Polygon[] = voronoiCellsIndexed(sites, answerIdx, seeker.lat).map((c) => [c])
   if (!cells.length) return null
   // Normal answer ⇒ hider within the radius, so clip the keep region to the
   // seeker's disk (everything outside is eliminated too), even in endgame.
@@ -498,10 +551,10 @@ export function airportMeasureEliminatedRegion(record: QuestionRecord): LatLngMu
 }
 
 // --- Measuring a nearest rail station: shade the union of your-distance disks
-// around every rail station, or its complement. Map-wide this eliminates no
-// station (each candidate IS a rail station → distance 0, so an honest
-// "closer"/tie answer keeps them all); its value is in the endgame, where it
-// sub-divides the hiding zone. Same machinery as the airport measure. ----------
+// around every rail station, or its complement. A station centre is distance 0,
+// but the hider can stand up to a zone-radius away, so a "further" answer rules
+// out stations with no spot that far from every station. Same machinery as the
+// airport measure. --------------------------------------------------------------
 
 export function railStationMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   const p = record.params
@@ -591,16 +644,24 @@ export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiP
 }
 
 // Eliminated region for any shaded question record, or null if it has none.
+// Memoized per record object: records are replaced, never mutated, and both the
+// map shading and the station elimination ask for the same region.
+const regionCache = new WeakMap<QuestionRecord, LatLngMultiPolygon | null>()
 export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (!record.active || record.vetoed || !record.eliminates) return null
+  if (regionCache.has(record)) return regionCache.get(record) ?? null
+  const region = buildPoiRegion(record)
+  regionCache.set(record, region)
+  return region
+}
+
+function buildPoiRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (record.kind === 'match-poi') return poiMatchEliminatedRegion(record)
   if (record.kind === 'measure-poi') return poiMeasureEliminatedRegion(record)
   if (record.kind === 'measure-feature') return featureMeasureEliminatedRegion(record)
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
-  // measure-railstation is intentionally NOT here: it never shades map-wide (it
-  // eliminates no station). Its region is only produced for the endgame zone clip
-  // (see eliminatedGeom), so the shown shading always agrees with elimination.
+  if (record.kind === 'measure-railstation') return railStationMeasureEliminatedRegion(record)
   if (record.kind === 'match-admin1') return stateMatchEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
@@ -621,16 +682,25 @@ function toGeom(mp: LatLngMultiPolygon): MultiPolygon {
   return mp.map((poly) => poly.map((ring) => ring.map(([lat, lon]) => [lon, lat] as [number, number])))
 }
 
-// The eliminated region of any auto-eliminating question, in [lon,lat] geometry.
-// Radar and thermometer are built here directly (they're otherwise drawn inline in
-// MapView); everything else routes through poiEliminatedRegion.
-function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
+// The area the hider could not have been in when they answered, for any
+// auto-eliminating question, in [lon,lat] geometry. Radar and thermometer are
+// built here directly (MapView draws them inline); everything else routes
+// through poiEliminatedRegion.
+const geomCache = new WeakMap<QuestionRecord, MultiPolygon | null>()
+export function eliminatedRegionGeom(record: QuestionRecord): MultiPolygon | null {
   if (!record.active || record.vetoed || !record.eliminates) return null
+  if (geomCache.has(record)) return geomCache.get(record) ?? null
+  const geom = buildEliminatedGeom(record)
+  geomCache.set(record, geom)
+  return geom
+}
+
+function buildEliminatedGeom(record: QuestionRecord): MultiPolygon | null {
   const p = record.params
   if (record.kind === 'radar') {
     const c: LatLng = { lat: Number(p.lat), lon: Number(p.lon) }
     const rMi = Number(p.radiusMiles)
-    if (!Number.isFinite(rMi)) return null
+    if (!Number.isFinite(rMi) || !Number.isFinite(c.lat) || !Number.isFinite(c.lon)) return null
     // Same geodesic ring the radar outline/non-endgame shading use, so the
     // clipped endgame shading edge sits exactly on the drawn circle.
     const disk: Polygon = [circlePolygon(c, rMi).map((pt) => [pt.lon, pt.lat] as [number, number])]
@@ -641,6 +711,7 @@ function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
   if (record.kind === 'thermometer') {
     const from: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
     const to: LatLng = { lat: Number(p.toLat), lon: Number(p.toLon) }
+    if (![from.lat, from.lon, to.lat, to.lon].every(Number.isFinite)) return null
     // Eliminate the half-plane the hider moved away from: cold side.
     const coldSide = p.answer === 'hotter' ? from : to
     const band = bisectorHalfPlane(from, to, coldSide, 400)
@@ -648,28 +719,44 @@ function eliminatedGeom(record: QuestionRecord): MultiPolygon | null {
     const ring: Ring = band.map((pt) => [pt.lon, pt.lat] as [number, number])
     return [[ring]]
   }
-  // Rail-station measuring is logged-only for map-wide station elimination and
-  // never shades map-wide (poiEliminatedRegion returns null for it), because every
-  // candidate IS a rail station (distance 0). Its only effect is in the endgame,
-  // where the hider answers from their real position and the union-of-disks region
-  // sub-divides the hiding zone — so it's routed here directly.
-  if (record.kind === 'measure-railstation') {
-    const latlng = railStationMeasureEliminatedRegion(record)
-    return latlng ? toGeom(latlng) : null
-  }
-  // Tentacles are logged-only in endgame for *station* elimination (the hider
-  // answers from their real position, not the station centre), but the eliminated
-  // geometry itself is still valid — the hider must be within the radius and
-  // nearest the answer POI/line — so it correctly sub-divides the hiding zone.
-  // Force the non-endgame region so endgame tentacles shade the zone; the map-wide
-  // path (poiEliminatedRegion) still returns null for endgame, keeping the
-  // shown-shading vs station-elimination agreement everywhere else.
-  const forNonEndgame =
-    record.endgame && (record.kind === 'tentacle' || record.kind === 'tentacle-line')
-      ? { ...record, endgame: false }
-      : record
-  const latlng = poiEliminatedRegion(forNonEndgame)
+  const latlng = poiEliminatedRegion(record)
   return latlng ? toGeom(latlng) : null
+}
+
+// --- Zone-aware elimination ------------------------------------------------------
+// The hider answers from wherever they are inside their hiding zone, so a
+// station survives a question when its zone reaches somewhere the answer allows
+// and the hider could actually stand: in play and outside the eliminated area.
+
+function playAreaGeom(): MultiPolygon {
+  const out: MultiPolygon = []
+  for (const polys of Object.values(polysByName(playAreaData))) out.push(...polys)
+  return out
+}
+const PLAY_AREA: MultiPolygon = playAreaGeom()
+
+export interface ZoneRegions {
+  eliminated: RegionIndex
+  // in play and not eliminated: where the hider could have answered from
+  kept: RegionIndex
+}
+
+const zoneCache = new WeakMap<QuestionRecord, ZoneRegions | null>()
+export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
+  if (zoneCache.has(record)) return zoneCache.get(record) ?? null
+  const elim = eliminatedRegionGeom(record)
+  let out: ZoneRegions | null = null
+  if (elim && elim.length) {
+    let kept: MultiPolygon
+    try {
+      kept = PLAY_AREA.length ? polygonClipping.difference(PLAY_AREA, elim) : polygonClipping.difference([WORLD_RING], elim)
+    } catch {
+      kept = polygonClipping.difference([WORLD_RING], elim)
+    }
+    out = { eliminated: indexRegion(elim), kept: indexRegion(kept) }
+  }
+  zoneCache.set(record, out)
+  return out
 }
 
 // A question's eliminated area, intersected with the hiding-zone disk, as a
@@ -679,7 +766,7 @@ export function endgameClippedRegion(
   center: LatLng,
   radiusMiles: number,
 ): LatLngMultiPolygon | null {
-  const geom = eliminatedGeom(record)
+  const geom = eliminatedRegionGeom(record)
   if (!geom || !geom.length) return null
   // Geodesic ring matching the green hiding-zone outline drawn in MapView.
   const disk: Polygon = [circlePolygon(center, radiusMiles).map((pt) => [pt.lon, pt.lat] as [number, number])]

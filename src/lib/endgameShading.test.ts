@@ -128,8 +128,8 @@ describe('endgame shading stays inside the zone and agrees with elimination', ()
 // In endgame, a Tentacle question still sub-divides the hiding zone: the hider
 // answered which in-play POI they are nearest, which is geometrically valid from
 // their real position too. So endgameClippedRegion must shade (the zone minus the
-// answer POI's nearest-cell), even though the map-wide poiEliminatedRegion stays
-// null for endgame tentacles (station elimination is intentionally logged-only).
+// answer POI's nearest-cell), and the map-wide poiEliminatedRegion returns
+// the same region map-wide.
 describe('endgame tentacle sub-divides the hiding zone', () => {
   // Find a seeker + category with ≥2 in-play POIs so the tentacle actually
   // partitions space (a single POI keeps the whole disk → no shading).
@@ -163,8 +163,7 @@ describe('endgame tentacle sub-divides the hiding zone', () => {
       active: true,
       endgame: true,
     }
-    // map-wide elimination shading stays null in endgame (logged-only)
-    expect(poiEliminatedRegion(rec)).toBeNull()
+    expect(poiEliminatedRegion(rec)).not.toBeNull()
     // but the zone-clipped shading is present and stays inside the zone
     const zone = seeker
     const zoneMi = cat.radiusMi

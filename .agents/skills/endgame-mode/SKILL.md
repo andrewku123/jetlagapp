@@ -106,19 +106,21 @@ centre (anti-cheese rule), an endgame question from the hider's real position.
   intersects it with the zone disk, so sub-zone shading always agrees with the
   elimination rule. Regression: `endgameShading.test.ts`.
 
-### Tentacles in endgame (shading vs station elimination diverge)
-Tentacles (`tentacle`, `tentacle-line`) are **logged-only for station elimination
-in endgame**: the hider answers from their real position, not the station centre,
-so `tentacleEliminatedRegion` / `metroLineEliminatedRegion` (and therefore
-`poiEliminatedRegion`) return `null` when `record.endgame` — a wrong-station guess
-must not wipe stations off the board. **But the zone shading is still valid** (the
-hider must be within the radius and nearest the answer POI/line even from their
-real position), so `eliminatedGeom` deliberately builds a `forNonEndgame` copy
-(`{ ...record, endgame: false }`) for tentacles before calling
-`poiEliminatedRegion`, so endgame tentacles **do** sub-divide the hiding zone
-while the map-wide path stays `null`. Don't "simplify" this back to a single call
-— it would either stop endgame tentacles from shading or make them eliminate
-stations map-wide. Covered by the endgame-tentacle case in `endgameShading.test.ts`.
+### Endgame-flagged questions still filter map-wide
+Every endgame-flagged question, including Tentacles and rail-station Measuring,
+filters suspects map-wide through the same zone-aware `stationPasses` as a normal
+question. The hider answers truthfully from somewhere in their zone, and a station
+is dropped only if its whole zone contradicts the answer, so a wrong endgame guess
+can't wipe the hider's real station. `eliminatedGeom` / `poiEliminatedRegion`
+return the same geometry for endgame and non-endgame records; the endgame path just
+clips it to the hiding-zone disk. Covered by `endgameShading.test.ts` and
+`zoneElimination.test.ts`.
+
+**Exception, sea level:** in endgame the hider may answer by real height (bridge
+deck, public rooftop), which ground terrain can't bound. So an endgame-flagged
+`measure-sealevel` is a note only (`stationPasses` returns true), even after
+exiting endgame, until the seeker unmarks it. Outside endgame both sides use USGS
+ground elevation.
 
 ## Gotchas
 - **Don't invert the shading.** A regression once shaded the *inside* of the zone;

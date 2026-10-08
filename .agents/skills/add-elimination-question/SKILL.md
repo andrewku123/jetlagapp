@@ -47,6 +47,40 @@ just a pure predicate over `(station, record.params)`.
      `KIND_SUBJECT_GROUP` entry. Do **not** re-introduce a secondary "Place type"
      select — keep every subject in the one dropdown.
 
+## The hider answers from anywhere in their hiding zone
+The hider may move freely inside their zone before endgame, so a question rules
+out *zones*, not station points. `stationPasses(station, record, fallbackZoneMi)`:
+- **Zone radius is per question.** `App.addQuestion` stamps `record.zoneMi` with
+  the curse-adjusted radius at log time (`hidingRadiusMi(size, curses)`), so a
+  later Prosperous/Tiny Home never changes an earlier answer. Older records have
+  no `zoneMi` → `recordZoneMi` falls back to the game-size default
+  (`applyFilters(..., defaultHidingRadiusMi(size))`).
+- **Location-based kinds** (radar, thermometer, state/county/city/airport/POI
+  matching, POI/feature/airport/ZIP measuring, tentacles) keep a station when the
+  old exact station-point predicate (`centerPasses`, which owns the tie rules) passes
+  **or** the zone reaches the "kept" region: `zoneRegions(record).kept` = play area
+  minus `eliminatedRegionGeom(record)` (the same geometry the map shades), tested
+  with `regionWithinMiles` (`src/lib/zoneFit.ts`, blocked edge index, memoized per
+  record). So a new location kind only needs its `<kind>EliminatedRegion` wired into
+  `poiEliminatedRegion`/`eliminatedRegionGeom` plus a `centerPasses` case, and an
+  entry in the location-kind list in `stationPasses`.
+- **"Your station" kinds** (line, name length) ignore the zone. Every other kind,
+  including rail-station measuring and endgame-flagged tentacles, is zone-aware and
+  filters suspects map-wide: a truthful answer from anywhere in the hider's zone can
+  only rule out stations whose whole zone contradicts it.
+- **Map shading stays physical** (where the hider can't be). A surviving station
+  can sit inside shading when its zone pokes out of it — expected.
+- **Sea level** uses per-station terrain ranges: `src/data/<prefix>zone-elev.json`
+  from `scripts/build_zone_elevation.py --region bay|sfmuni|la|dc` (AWS Terrarium
+  z14 tiles, in-play pixels, bathymetry < -10 m dropped, station's USGS point folded
+  in; bands = default × {½, ¾, 1, 1½} for 0.25 and 0.5 mi bases + 1 mi).
+  `zoneElevationRange` picks the smallest band ≥ the zone and widens by
+  `ZONE_ELEV_MARGIN_M` (3 m: Terrarium vs USGS EPQS is ≤1 m at p95, ~3 m at p99).
+  No band (zone > 1 mi, unknown station) ⇒ never eliminates. The Ask form fills the
+  seeker's altitude from USGS EPQS at the picked point (`usgsGroundElevationM`) —
+  ground elevation, not a phone altimeter. Rerun the script after any
+  station-dataset rebuild.
+
 ## If the question needs new station data
 Add the attribute to the `Station` type and populate it in
 `scripts/build_attributes.py` (or `build_stations.py` for line/system data), then
@@ -151,35 +185,16 @@ helper module exports the point list + `nearest<Thing>Miles(p)` (min haversine).
   `further` ⇒ eliminate the union. Return null when `seekerD <= 0` (seeker sits on
   a point → nothing eliminated). Wire it into `poiEliminatedRegion` + MapView's
   `isShaded()`/`poiRegions` dep filter like any shaded kind.
-- **Rail station is endgame-ONLY: logged-only for the suspect list, shades only
-  the endgame zone.** Every candidate hiding station IS a rail station (distance 0
-  to nearest rail station = itself). The catch: an endgame answer is asked from the
-  hider's *real* position (distance > 0), and if you apply it to the map-wide
-  station set — every station at distance 0 — a "further" answer eliminates EVERY
-  station (a full board wipe you notice the moment you leave the endgame). So rail
-  station must **never eliminate a station** and **never shade map-wide**; it only
-  carves the endgame hiding zone. Implement it exactly like this (mirrors the
-  endgame-tentacle pattern):
-  - `stationPasses` case `measure-railstation` → `return true` (always keep).
-  - `poiEliminatedRegion` does NOT dispatch `measure-railstation` (returns null) →
-    no map-wide shading, and it's kept OUT of MapView's `isShaded()`/`poiRegions`
-    dep filter so no map-wide dot/shade is drawn.
-  - `eliminatedGeom` (the endgame path) handles `measure-railstation` **directly**
-    (calls `railStationMeasureEliminatedRegion` itself, not via
-    `poiEliminatedRegion`), so `endgameClippedRegion` still carves the zone with
-    the union-of-disks. `endgameRegions` only runs for `r.endgame` records.
-  - Catalog entry stays `eliminates: true` (needed so the endgame shading path
-    runs), label `Measuring — Rail station (endgame)`. Do NOT precompute a
-    per-station `railStationDist` attribute — distance is computed on the fly from
-    `stations.json` via `nearestRailStationMiles`.
-  - `railStationMeasureEliminatedRegion` itself is un-gated (computes the disks for
-    any record); the endgame-only behavior is enforced by the two routing points
-    above. Return null when `seekerD <= 0`.
-  - **The outline pass needs the same direct call.** MapView's endgame outline pass
-    (the one after the endgame fills) special-cases radar/thermometer and otherwise
-    asks `poiEliminatedRegion` — which returns null here, so the zone shaded with no
-    boundary line. Any kind kept out of `poiEliminatedRegion` must get its own branch
-    there calling its region builder, exactly like the fill path does.
+- **Rail station is zone-aware like every other location kind.** Every candidate
+  hiding station is distance 0 from the nearest rail station, so `centerPasses`
+  keeps it on "closer" and drops it on "further"; `zoneReachesAnswer` then keeps any
+  station whose zone reaches a spot further than the seeker from every station. It
+  is dispatched by `poiEliminatedRegion` and in MapView's `isShaded()`/`poiRegions`
+  filter like any shaded kind. (Before the zone engine it had to be logged-only,
+  because applying a real-position "further" answer to station centres wiped the
+  board.) Do NOT precompute a per-station `railStationDist` attribute: distance is
+  computed on the fly from `stations.json` via `nearestRailStationMiles`.
+  `railStationMeasureEliminatedRegion` returns null when the seeker distance is <= 0.
 
 ### Tie rule for ALL measuring questions ("equal → the smaller answer")
 Every measuring predicate (`measure-poi`, `measure-feature`, `measure-airport`,

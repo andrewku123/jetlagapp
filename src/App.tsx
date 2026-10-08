@@ -7,7 +7,7 @@ import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
-import { castCurse, curseMultiplier, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
+import { castCurse, curseMultiplier, defaultHidingRadiusMi, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
 import { formatDistance } from './lib/geo'
 import { rewardForKind, questionGroupKey } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
@@ -150,13 +150,14 @@ export default function App() {
         eliminated: base.filter((s) => s.id !== endgameStation.id),
       }
     }
-    const res = applyFilters(base, game.questions)
+    // Older boards' questions carry no zone of their own: assume the default.
+    const res = applyFilters(base, game.questions, defaultHidingRadiusMi(game.gameSize))
     const manual = new Set(game.manualEliminated)
     const remain = res.remaining.filter((s) => !manual.has(s.id))
     const remainIds = new Set(remain.map((s) => s.id))
     const elim = base.filter((s) => !remainIds.has(s.id))
     return { remaining: remain, eliminated: elim }
-  }, [base, game.questions, game.manualEliminated, endgameStation])
+  }, [base, game.questions, game.manualEliminated, endgameStation, game.gameSize])
 
   const lines = useMemo(() => {
     const all = uniqSorted(STATIONS.flatMap((s) => s.lines))
@@ -295,7 +296,8 @@ export default function App() {
   }
 
   function addQuestion(r: QuestionRecord) {
-    update({ questions: [r, ...game.questions] })
+    // The hider answers from anywhere in the zone as it stands right now.
+    update({ questions: [{ ...r, zoneMi: hidingRadiusMi }, ...game.questions] })
     setTab('history')
     setSheetOpen(true)
   }
@@ -602,7 +604,7 @@ export default function App() {
                         <button
                           className={q.endgame ? 'on' : ''}
                           onClick={() => toggleEndgame(q.id)}
-                          title="Endgame questions still eliminate map-wide, but their shading is clipped to the hiding zone."
+                          title="Endgame questions still eliminate map-wide (except sea level, a note until unmarked), but their shading is clipped to the hiding zone."
                         >
                           {q.endgame ? 'Unmark endgame' : 'Mark endgame'}
                         </button>

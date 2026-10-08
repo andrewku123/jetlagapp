@@ -16,6 +16,7 @@ import regionSizes from './region-sizes.json'
 
 // --- Bay Area (the original map) -------------------------------------------
 import baStations from './stations.json'
+import baZoneElev from './zone-elev.json'
 import baPoi from './poi.json'
 import baPlayArea from './play-area.geojson.json'
 import baMeasure from './measure-features.geojson.json'
@@ -26,6 +27,7 @@ import baTransit from './transit-lines.geojson.json'
 
 // --- SF Muni (day-pass map: Muni rail lines J/K/L/M/N/T/F, SF county only) ---
 import sfStations from './sfmuni.stations.json'
+import sfZoneElev from './sfmuni.zone-elev.json'
 import sfPoi from './sfmuni.poi.json'
 import sfPlayArea from './sfmuni.play-area.geojson.json'
 import sfMeasure from './sfmuni.measure-features.geojson.json'
@@ -36,6 +38,7 @@ import sfTransit from './sfmuni.transit-lines.geojson.json'
 
 // --- LA Metro (Metro Rail A/B/C/D/E/K + Busway G/J, Los Angeles County) -------
 import laStations from './la.stations.json'
+import laZoneElev from './la.zone-elev.json'
 import laPoi from './la.poi.json'
 import laPlayArea from './la.play-area.geojson.json'
 import laMeasure from './la.measure-features.geojson.json'
@@ -46,6 +49,7 @@ import laTransit from './la.transit-lines.geojson.json'
 
 // --- Washington DC (WMATA Metrorail, DC + the inner MD/VA suburbs) -----------
 import dcStations from './dc.stations.json'
+import dcZoneElev from './dc.zone-elev.json'
 import dcPoi from './dc.poi.json'
 import dcPlayArea from './dc.play-area.geojson.json'
 import dcMeasure from './dc.measure-features.geojson.json'
@@ -80,6 +84,9 @@ export interface RegionData {
    */
   statesGeo?: unknown
   stations: unknown
+  // per-station ground elevation range within each hiding-zone size
+  // (scripts/build_zone_elevation.py)
+  zoneElev: unknown
   poi: unknown
   playArea: unknown
   measureFeatures: unknown
@@ -98,6 +105,7 @@ export const REGIONS: RegionData[] = [
     inPlayCounties: ['Alameda', 'Contra Costa', 'San Francisco', 'San Mateo', 'Santa Clara'],
     states: ['California'],
     stations: baStations,
+    zoneElev: baZoneElev,
     poi: baPoi,
     playArea: baPlayArea,
     measureFeatures: baMeasure,
@@ -114,6 +122,7 @@ export const REGIONS: RegionData[] = [
     inPlayCounties: ['San Francisco'],
     states: ['California'],
     stations: sfStations,
+    zoneElev: sfZoneElev,
     poi: sfPoi,
     playArea: sfPlayArea,
     measureFeatures: sfMeasure,
@@ -130,6 +139,7 @@ export const REGIONS: RegionData[] = [
     inPlayCounties: ['Los Angeles'],
     states: ['California'],
     stations: laStations,
+    zoneElev: laZoneElev,
     poi: laPoi,
     playArea: laPlayArea,
     measureFeatures: laMeasure,
@@ -157,6 +167,7 @@ export const REGIONS: RegionData[] = [
     states: ['District of Columbia', 'Maryland', 'Virginia'],
     statesGeo: dcStates,
     stations: dcStations,
+    zoneElev: dcZoneElev,
     poi: dcPoi,
     playArea: dcPlayArea,
     measureFeatures: dcMeasure,
@@ -212,6 +223,7 @@ export function setActiveRegion(id: string): void {
 // --- Convenience exports: the active region's data, consumed by the lib files ---
 export const stationsData = ACTIVE_REGION.stations
 export const poiData = ACTIVE_REGION.poi
+export const zoneElevData = ACTIVE_REGION.zoneElev
 export const playAreaData = ACTIVE_REGION.playArea
 export const measureFeaturesData = ACTIVE_REGION.measureFeatures
 export const placesData = ACTIVE_REGION.places
