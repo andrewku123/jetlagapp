@@ -105,6 +105,11 @@ describe('stationPasses — measuring', () => {
     const r = record('measure-sealevel', { value: 50, answer: 'closer' })
     expect(stationPasses(station({ elevation: null }), r)).toBe(true)
   })
+  it('measure-sealevel: endgame-marked is a note until unmarked (real height allowed)', () => {
+    const r = { ...record('measure-sealevel', { value: 50, answer: 'closer' }), endgame: true }
+    expect(stationPasses(station({ elevation: 200 }), r)).toBe(true)
+    expect(stationPasses(station({ elevation: 200 }), { ...r, endgame: false })).toBe(false)
+  })
 })
 
 describe('stationPasses — match-poi (nearest place of a type)', () => {

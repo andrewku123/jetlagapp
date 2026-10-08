@@ -196,7 +196,7 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
     label: 'Measuring — Sea level (altitude)',
     cards: 'draw 3, keep 1',
     eliminates: true,
-    blurb: 'Compared to me, are you closer to or further from sea level (lower altitude)?',
+    blurb: 'Compared to me, are you closer to or further from sea level (lower altitude)? Outside endgame both sides use ground elevation (the USGS value at your spot). In endgame real height (bridge, rooftop) is allowed, so an endgame-marked sea-level question is a note only until you unmark it.',
   },
   {
     kind: 'measure-water',

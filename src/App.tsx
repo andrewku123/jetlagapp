@@ -610,7 +610,7 @@ export default function App() {
                         <button
                           className={q.endgame ? 'on' : ''}
                           onClick={() => toggleEndgame(q.id)}
-                          title="Endgame questions still eliminate map-wide, but their shading is clipped to the hiding zone."
+                          title="Endgame questions still eliminate map-wide (except sea level, a note until unmarked), but their shading is clipped to the hiding zone."
                         >
                           {q.endgame ? 'Unmark endgame' : 'Mark endgame'}
                         </button>

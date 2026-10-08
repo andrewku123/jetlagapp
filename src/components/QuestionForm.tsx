@@ -1250,7 +1250,7 @@ export default function QuestionForm({
       </div>
 
       {(eliminatesEffective || endgameOnlyKind) && (
-        <label className="endgame-check" title="Endgame questions still eliminate stations map-wide, but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
+        <label className="endgame-check" title="Endgame questions still eliminate stations map-wide (except sea level, which is a note until unmarked, since real height is allowed in endgame), but their shading is clipped to the hiding zone to help pinpoint the hider inside it.">
           <input type="checkbox" checked={endgameFlag} onChange={(e) => setEndgameFlag(e.target.checked)} />
           <span className="endgame-text">
             Endgame question
