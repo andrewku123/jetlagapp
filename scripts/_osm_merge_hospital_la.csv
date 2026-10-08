@@ -1,0 +1,124 @@
+cat,keep,keep_lat,keep_lon,merged,merged_lat,merged_lon,merged_was_group,footprint,footprint_dam2
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Biobank and Research Pathology Resource,34.0760028,-118.38238150000001,True,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Vascular Surgery - Third,34.0737354,-118.3792403,True,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Cardio-Oncology,34.0746919,-118.37897230000002,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Goldman & Dubow Medical Corporation,34.0738287,-118.38043829999998,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Good Beginnings,34.075153,-118.3802766,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Hand Surgery,34.0740781,-118.3809386,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Hypertension,34.0747274,-118.37904019999998,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Medical Offices West,34.0740781,-118.3809386,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Medical Records,34.0750175,-118.38059000000001,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Noreen Oswell DPM,34.073947,-118.38049019999998,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Psychological Trauma Center,34.0750072,-118.3828082,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Regenerative Medicine,34.0746919,-118.37897230000002,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,The Menopause Center,34.073946899999996,-118.38049509999999,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Transplant hospital,34.0737401,-118.3808045,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Volunteer Services,34.075232,-118.3801756,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,8631 W 3rd St,34.0740781,-118.3809386,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,8700 Beverly Blvd,34.074686199999995,-118.37970879999999,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Becker Building #220,34.0749961,-118.38056379999999,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,CSMC Ambulance Entrance,34.0758873,-118.381559,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Davis Building,34.0763387,-118.38148439999999,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,North Tower Parking,34.0758626,-118.3814132,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Pavilion Blood Draw Station,34.0746919,-118.37897230000002,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Prescription Pickup Kiosk—Pavilion Pharmacy,34.0746919,-118.37897230000002,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,Susanne and Ervin Bard Pavilion,34.0746821,-118.3788037,False,Cedars-Sinai Medical Center,125.93
+hospital,Cedar-Sinai Medical Center,34.0748483,-118.378889,south tower entrance,34.0750324,-118.38059690000001,False,Cedars-Sinai Medical Center,125.93
+hospital,Children's Hospital Los Angeles,34.097451,-118.2898877,Childrens Hospital Immunology,34.0979709,-118.29050620000001,True,Children's Hospital Los Angeles,34.24
+hospital,Children's Hospital Los Angeles,34.097451,-118.2898877,Dr. Albert Tu,34.0979709,-118.29050620000001,False,Children's Hospital Los Angeles,34.24
+hospital,Children's Hospital Los Angeles,34.097451,-118.2898877,Dr. Niki Elyasi,34.0975416,-118.29129460000001,False,Children's Hospital Los Angeles,34.24
+hospital,Children's Hospital Los Angeles,34.097451,-118.2898877,Tawny Saleh,34.0979709,-118.29050620000001,False,Children's Hospital Los Angeles,34.24
+hospital,Children's Hospital Los Angeles,34.097451,-118.2898877,The Division of Clinical Immunology,34.0972214,-118.29020019999999,False,Children's Hospital Los Angeles,34.24
+hospital,Children's Hospital Los Angeles,34.097451,-118.2898877,Ultimate Health Services,34.097983,-118.29091509999999,False,Children's Hospital Los Angeles,34.24
+hospital,Adventist Health White Memorial,34.0492922,-118.21768370000001,White Memorial Medical Plaza 11,34.0508872,-118.21752869999999,True,White Memorial Medical Center,86.05
+hospital,Adventist Health White Memorial,34.0492922,-118.21768370000001,Boyle Heights Specialty Clinic,34.0507761,-118.2173738,False,White Memorial Medical Center,86.05
+hospital,Adventist Health White Memorial,34.0492922,-118.21768370000001,LA ENT,34.0508145,-118.21747750000002,False,White Memorial Medical Center,86.05
+hospital,Adventist Health White Memorial,34.0492922,-118.21768370000001,Oscar De La Hoya Labor and Delivery Center,34.0493486,-118.21700410000001,False,White Memorial Medical Center,86.05
+hospital,Adventist Health White Memorial,34.0492922,-118.21768370000001,Medical Office Building Plaza II,34.050741699999996,-118.2174264,False,White Memorial Medical Center,86.05
+hospital,West Los Angeles VA Medical Center,34.052687299999995,-118.45297749999999,Clifton Slater,34.0569786,-118.45787929999999,False,West Los Angeles Veterans Affairs Medical Center,1428.12
+hospital,West Los Angeles VA Medical Center,34.052687299999995,-118.45297749999999,Cure-Digestive Disease Research,34.0527003,-118.45263969999999,False,West Los Angeles Veterans Affairs Medical Center,1428.12
+hospital,West Los Angeles VA Medical Center,34.052687299999995,-118.45297749999999,Patriot House,34.0489806,-118.4512019,False,West Los Angeles Veterans Affairs Medical Center,1428.12
+hospital,West Los Angeles VA Medical Center,34.052687299999995,-118.45297749999999,James W. Wadsworth Building,34.0533979,-118.4533004,False,West Los Angeles Veterans Affairs Medical Center,1428.12
+hospital,West Los Angeles VA Medical Center,34.052687299999995,-118.45297749999999,Veterans Hospital Bldg 500,34.053173099999995,-118.45306599999999,False,West Los Angeles Veterans Affairs Medical Center,1428.12
+hospital,Los Angeles General Medical Center,34.057685,-118.20801069999997,Women's clinic,34.0577573,-118.20816169999999,True,Los Angeles General Medical Center,281.8
+hospital,Los Angeles General Medical Center,34.057685,-118.20801069999997,Keck School of Medicine,34.0590574,-118.2065663,False,Los Angeles General Medical Center,281.8
+hospital,Los Angeles General Medical Center,34.057685,-118.20801069999997,La medical center,34.0580044,-118.2088255,False,Los Angeles General Medical Center,281.8
+hospital,Los Angeles General Medical Center,34.057685,-118.20801069999997,USC Hospital,34.0613427,-118.20977549999999,False,Los Angeles General Medical Center,281.8
+hospital,Los Angeles General Medical Center,34.057685,-118.20801069999997,LOT 10 Visitors Parking,34.0615147,-118.21208670000001,False,Los Angeles General Medical Center,281.8
+hospital,Hollywood Presbyterian Medical Center,34.096344699999996,-118.29045869999999,Dr. Mimi Lee Neurologist,34.0961369,-118.2906555,False,CHA Hollywood Presbyterian Medical Center,34.04
+hospital,Hollywood Presbyterian Medical Center,34.096344699999996,-118.29045869999999,Medico ginecologo,34.096032,-118.29100960000001,False,CHA Hollywood Presbyterian Medical Center,34.04
+hospital,Hollywood Presbyterian Medical Center,34.096344699999996,-118.29045869999999,Moran Matt G,34.096032,-118.29100960000001,False,CHA Hollywood Presbyterian Medical Center,34.04
+hospital,Hollywood Presbyterian Medical Center,34.096344699999996,-118.29045869999999,The Liver Institute,34.0962209,-118.2905784,False,CHA Hollywood Presbyterian Medical Center,34.04
+hospital,Hollywood Presbyterian Medical Center,34.096344699999996,-118.29045869999999,Acute Care Hospital Building at HPMC,34.0960933,-118.29101629999998,False,CHA Hollywood Presbyterian Medical Center,34.04
+hospital,Dignity Health - Northridge Hospital Medical Center,34.2201753,-118.53358369999998,Akshay Gupte MD,34.2203434,-118.5341007,False,Northridge Hospital Medical Center,53.77
+hospital,Dignity Health - Northridge Hospital Medical Center,34.2201753,-118.53358369999998,Brittney Ryan,34.2205406,-118.53386440000001,False,Northridge Hospital Medical Center,53.77
+hospital,Dignity Health - Northridge Hospital Medical Center,34.2201753,-118.53358369999998,Northridge Hospital Foundation,34.2201611,-118.53290760000002,False,Northridge Hospital Medical Center,53.77
+hospital,Dignity Health - Northridge Hospital Medical Center,34.2201753,-118.53358369999998,Ucla Perinatl Group,34.2205406,-118.53386440000001,False,Northridge Hospital Medical Center,53.77
+hospital,MemorialCare Long Beach Medical Center,33.808347399999995,-118.1867193,Pediatric Hospitalist Of Amerca,33.8079754,-118.1866967,True,Long Beach Memorial Hospital,181.15
+hospital,MemorialCare Long Beach Medical Center,33.808347399999995,-118.1867193,Pet Scan,33.8096676,-118.18901450000001,False,Long Beach Memorial Hospital,181.15
+hospital,MemorialCare Long Beach Medical Center,33.808347399999995,-118.1867193,"Valerie M. Macy-Hurley, LCSW",33.8083605,-118.18732359999998,False,Long Beach Memorial Hospital,181.15
+hospital,MemorialCare Long Beach Medical Center,33.808347399999995,-118.1867193,Outpatient Surgical Pavilion,33.8088017,-118.18758039999999,False,Long Beach Memorial Hospital,181.15
+hospital,Providence Holy Cross Medical Center - Mission Hills,34.2798239,-118.45993109999999,DOCTOR OFFICE,34.2809209,-118.4577097,False,Providence Holy Cross Medical Center,117.13
+hospital,Providence Holy Cross Medical Center - Mission Hills,34.2798239,-118.45993109999999,Healthcare Partners,34.280853199999996,-118.457634,False,Providence Holy Cross Medical Center,117.13
+hospital,Providence Holy Cross Medical Center - Mission Hills,34.2798239,-118.45993109999999,Usc University Hospital Trs/ccm,34.280219699999996,-118.4586733,False,Providence Holy Cross Medical Center,117.13
+hospital,ER Dignity Health Hospital,34.0376,-118.26666999999999,Cardiologia,34.037396699999995,-118.26572709999999,False,California Hospital Medical Center,25.98
+hospital,ER Dignity Health Hospital,34.0376,-118.26666999999999,Hospital Californiana,34.0371668,-118.26576,False,California Hospital Medical Center,25.98
+hospital,ER Dignity Health Hospital,34.0376,-118.26666999999999,Hospital Glendale,34.0376189,-118.2656842,False,California Hospital Medical Center,25.98
+hospital,St. Francis Medical Center,33.9295583,-118.20332389999999,Beyan Lorpu,33.929499899999996,-118.20331850000001,False,St. Francis Medical Center,51.69
+hospital,St. Francis Medical Center,33.9295583,-118.20332389999999,Hospital de yuri,33.930883099999996,-118.2034137,False,St. Francis Medical Center,51.69
+hospital,St. Francis Medical Center,33.9295583,-118.20332389999999,Saint Francis Levey Pediatric Clinic,33.9304969,-118.2043075,False,St. Francis Medical Center,51.69
+hospital,Olive View-UCLA Medical Center,34.3258447,-118.44572449999998,Hospital/Dr,34.3257593,-118.4510376,False,Olive View–UCLA Medical Center,377.6
+hospital,Olive View-UCLA Medical Center,34.3258447,-118.44572449999998,1st Floor Entrance,34.3253475,-118.44565139999999,False,Olive View–UCLA Medical Center,377.6
+hospital,Olive View-UCLA Medical Center,34.3258447,-118.44572449999998,Olive View Parking,34.3256368,-118.45017829999999,False,Olive View–UCLA Medical Center,377.6
+hospital,Huntington Hospital,34.1336946,-118.15222790000001,Epilepsy and Brain Mapping Program,34.1338424,-118.15078489999998,False,Huntington Hospital,121.79
+hospital,Huntington Hospital,34.1336946,-118.15222790000001,Pasadena Medical Plaza,34.1338588,-118.1507603,False,Huntington Hospital,121.79
+hospital,Huntington Hospital,34.1336946,-118.15222790000001,711 Fairmount Ave,34.1334711,-118.15223060000001,False,Huntington Hospital,121.79
+hospital,Promise Hospital of East Los Angeles,33.8842297,-118.16227749999999,Kindred Hospital Paramount,33.884534699999996,-118.1625945,False,,25.2
+hospital,Promise Hospital of East Los Angeles,33.8842297,-118.16227749999999,Nu Yu Aesthetics Medical Center,33.8849988,-118.16181809999999,False,,25.2
+hospital,Promise Hospital of East Los Angeles,33.8842297,-118.16227749999999,suburban medical center,33.884367999999995,-118.16175899999999,False,,25.2
+hospital,Sherman Oaks Hospital,34.1603515,-118.4488995,Clinic,34.160863,-118.44890119999998,False,Sherman Oaks Hospital,18.0
+hospital,Sherman Oaks Hospital,34.1603515,-118.4488995,"Max MRI Radiología A Medical Group,Inc.",34.1607933,-118.449044,False,Sherman Oaks Hospital,18.0
+hospital,UCLA Santa Monica Medical Center,34.0275624,-118.4865088,Max’s pediatrician,34.026327099999996,-118.4869893,False,UCLA Medical Center - Santa Monica,34.3
+hospital,UCLA Santa Monica Medical Center,34.0275624,-118.4865088,UCLA Food & Drug Allergy Care Center,34.027992,-118.48604999999999,False,UCLA Medical Center - Santa Monica,34.3
+hospital,City of Hope,34.1291643,-117.9725842,Michael Amini Transfusion Medicine Center,34.1300597,-117.96968369999999,False,City of Hope,388.01
+hospital,City of Hope,34.1291643,-117.9725842,Montana / Smith Research,34.1285083,-117.9740255,False,City of Hope,388.01
+hospital,Dignity Health - St. Mary Medical Center,33.780003799999996,-118.1860397,City of Hope Long Beach Elm,33.7797376,-118.1883915,False,Saint Mary Medical Center Long Beach,68.89
+hospital,Dignity Health - St. Mary Medical Center,33.780003799999996,-118.1860397,Imaging Center St Marys,33.7802724,-118.18532399999998,False,Saint Mary Medical Center Long Beach,68.89
+hospital,King Hospital Los Angeles,33.9239691,-118.23939670000001,Exodus MLK,33.9239691,-118.23939670000001,True,"Martin Luther King, Jr. Community Hospital",152.69
+hospital,King Hospital Los Angeles,33.9239691,-118.23939670000001,DPW Site Office,33.9239027,-118.2394622,False,"Martin Luther King, Jr. Community Hospital",152.69
+hospital,Keck Hospital of USC,34.062576199999995,-118.2018351,5 West the best,34.062112899999995,-118.20121590000001,False,Keck Hospital of USC,46.92
+hospital,Keck Hospital of USC,34.062576199999995,-118.2018351,HC4 parking garage,34.061411899999996,-118.2026507,False,Keck Hospital of USC,46.92
+hospital,Valley Presbyterian Hospital,34.1949645,-118.46412099999999,Barlow Respiratory Hospital,34.1942732,-118.46278559999999,False,Valley Presbyterian Hospital,58.66
+hospital,Valley Presbyterian Hospital,34.1949645,-118.46412099999999,Medical Center,34.194496199999996,-118.4642592,False,Valley Presbyterian Hospital,58.66
+hospital,Kaiser Permanente Downey Medical Center,33.9195971,-118.12897179999999,Dr. Iroezi Office,33.9174496,-118.1262982,False,Kaiser Permanente Downey Medical Center,166.01
+hospital,Kaiser Permanente Downey Medical Center,33.9195971,-118.12897179999999,"Nandi, Jyoti Sharan (M.d.)",33.9176521,-118.126273,False,Kaiser Permanente Downey Medical Center,166.01
+hospital,San Pedro Medical Center,33.7394709,-118.30716819999999,LC SP,33.7382583,-118.305098,False,Providence Little Company of Mary Medical Center San Pedro,53.43
+hospital,San Pedro Medical Center,33.7394709,-118.30716819999999,Peninsula Family Health Associates,33.739039999999996,-118.30665,False,Providence Little Company of Mary Medical Center San Pedro,53.43
+hospital,PIH Health Good Samaritan Hospital,34.0544036,-118.26495639999999,Oscar,34.053193199999995,-118.2638542,False,Good Samaritan Hospital,57.29
+hospital,PIH Health Good Samaritan Hospital,34.0544036,-118.26495639999999,Samaritan Medical Tower,34.0531929,-118.26385350000001,False,Good Samaritan Hospital,57.29
+hospital,Va Long Beach Healthcare Psy,33.7783814,-118.11971999999999,Outpatient Psychiarty,33.7783814,-118.11971999999999,False,Tibor Rubin VA Medical Center,397.64
+hospital,Va Long Beach Healthcare Psy,33.7783814,-118.11971999999999,Tibor Rubin VA Medical Center,33.776468099999995,-118.11896639999998,False,Tibor Rubin VA Medical Center,397.64
+hospital,Arcadia Child Health Council,34.1332167,-118.0435419,USC Arcadia Hospital,34.134468399999996,-118.04162459999998,False,USC Arcadia Hospital,84.35
+hospital,Arcadia Child Health Council,34.1332167,-118.0435419,Building D,34.1323396,-118.04416999999998,False,USC Arcadia Hospital,84.35
+hospital,L.A. Downtown Medical Center - Downtown Campus,34.0696967,-118.26350149999999,CDoc Group,34.0695317,-118.26348879999998,False,Silver Lake Medical Center,13.46
+hospital,L.A. Downtown Medical Center - Downtown Campus,34.0696967,-118.26350149999999,Silver Lake NewStart,34.069705299999995,-118.2634552,False,Silver Lake Medical Center,13.46
+hospital,Casa Colina Hospital and Centers for Healthcare,34.0976663,-117.7469067,Inland neurology institute,34.0980007,-117.7469574,False,Casa Colina,69.89
+hospital,Casa Colina Hospital and Centers for Healthcare,34.0976663,-117.7469067,Pomona Dialysis and Vascular Center,34.097074299999996,-117.7473705,False,Casa Colina,69.89
+hospital,Pediatrics Hospital,34.098423,-118.29441310000001,Cath Labs,34.098423,-118.29441310000001,False,Kaiser Permanente Los Angeles Medical Center,79.3
+hospital,Pediatrics Hospital,34.098423,-118.29441310000001,مستشفى,34.098934799999995,-118.29409150000001,False,Kaiser Permanente Los Angeles Medical Center,79.3
+hospital,Outpatient Building Auditorium,33.929932,-118.15797839999999,Recuperative care center,33.9277874,-118.15709640000001,False,Rancho Los Amigos National Rehabilitation Center,190.49
+hospital,Outpatient Building Auditorium,33.929932,-118.15797839999999,Harriman Building at RLANRC,33.9287992,-118.1585093,False,Rancho Los Amigos National Rehabilitation Center,190.49
+hospital,Pomona Valley Hospital Medical Center,34.0776071,-117.7509228,Robert and Beverly Lewis Outpatient Pavilion,34.0778835,-117.75026349999999,False,Pomona Valley Hospital Medical Center,91.23
+hospital,Providence Cedars-Sinai Tarzana Medical Center,34.1699552,-118.53256169999999,San Fernando Valley Neurologic,34.170479199999996,-118.5330385,False,Providence Tarzana Medical Center,48.38
+hospital,Kaiser Permanente West Los Angeles Medical Center,34.0386739,-118.37502389999999,Kaiser Hospital,34.038568999999995,-118.37623719999999,False,Kaiser Permanente West Los Angeles Medical Center,63.63
+hospital,Kaiser Permanente Panorama City Medical Center,34.218598799999995,-118.4302775,Central Medical Offices,34.21971570000001,-118.4299402,False,Kaiser Permanente Panorama City Medical Center,134.68
+hospital,Garfield Medical Center,34.0675446,-118.1231784,Gem Medical Group,34.0682622,-118.12346540000001,False,Garfield Medical Center,30.51
+hospital,Cardiology Medical,34.0639234,-118.27241799999999,Foot &Ankle Clinic,34.0639365,-118.27244179999998,False,Saint Vincent Medical Center,41.19
+hospital,Community Care Campus Long Beach,33.788722199999995,-118.1447775,ENDOCRINDLOGY,33.78851050000001,-118.14533829999999,False,Community Medical Center Long Beach,27.85
+hospital,PIH Health Downey Hospital,33.9352254,-118.13069019999998,Downey Regional Medical Plaza,33.9358246,-118.1303262,False,PIH Health Hospital - Downey,65.09
+hospital,UCLA West Valley Medical Center,34.2028189,-118.62878149999997,Dr Ott Hospital,34.2016729,-118.62892679999999,False,UCLA West Hills Medical Center,60.52
+hospital,Memorial Hospital of Gardena,33.892948,-118.2947275,Family Medicine,33.892801299999995,-118.294145,False,Memorial Hospital of Gardena,16.82
+hospital,Gateways Hospital and Mental Health Center,34.0849411,-118.2567073,Friends,34.0848656,-118.2567073,False,Gateways Hospital,14.72
+hospital,Mission Community Hospital,34.220251999999995,-118.45649829999999,Mission Community Mri,34.2212461,-118.4563254,False,Mission Community Hospital,17.69
+hospital,San Dimas Community Hospital,34.0974723,-117.834735,Wiliam,34.0970708,-117.83379869999999,False,San Dimas Community Hospital,62.19
+hospital,San Gabriel Valley Medical Center,34.101512299999996,-118.105871,직장,34.100916999999995,-118.1055926,False,San Gabriel Valley Medical Center,31.24
