@@ -46,6 +46,8 @@ tell that map's stations apart is demoted automatically — see §12.
     app (inputs and labels both switch).
   - **show eliminated** — show or hide the dimmed, ruled-out stations.
   - **satellite** — overlay aerial imagery on the play area (see §6).
+  - **uncertainty stripes** — show striped "maybe" bands inside shading (see
+    §3, *What the shading means*).
   - **zone** `+50%` / `−50%` — hiding-zone curses (see §9).
   - **Reset** — clear the whole game (questions, manual eliminations, drawings).
 - **Right panel tabs:** **Ask**, **History**, **Suspects**, **POI**, **Legend**.
@@ -80,7 +82,8 @@ can eliminate stations.
      between), same click-or-paste pickers.
    - **Measuring** / **Matching** (airport, coastline, borders, sea level, and the
      POI subjects) use your location as a point — click the map or paste
-     `lat, lon`; **Matching (name length)** takes a number; the admin-division
+     `lat, lon`. For **sea level**, picking your location fills in the USGS ground
+     elevation there (you can still type a number); **Matching (name length)** takes a number; the admin-division
      **Matching** questions take a dropdown value.
    - **Tentacles** — set your location; the app lists the in-range POIs of the
      chosen category and you pick the one the hider answers.
@@ -90,6 +93,9 @@ can eliminate stations.
 7. (Optional) tick **Endgame question** — the question still eliminates stations
    map-wide, but its shading is clipped to the current hiding-zone circle so you
    can pinpoint the hider inside it. It defaults on once you're in the endgame.
+   **Sea level** is the exception: in the endgame the hider may answer by real
+   height (bridge, rooftop), so an endgame-marked sea-level question is a note
+   only until you **Unmark endgame** it in History.
 8. Press **Log question & eliminate** (or **Log question** for the reference-only
    and demoted subjects — see §12). The app applies the filter and the "possible"
    count drops. You'll land on the **History** tab.
@@ -97,6 +103,21 @@ can eliminate stations.
 Switching to another tab (POI/Suspects/Legend/History) and back to **Ask** keeps
 your current selection and parameters, so you don't lose a half-composed
 question.
+
+### What the shading means
+
+The hider answers from where they're standing, anywhere in their hiding zone, so
+a station is eliminated only when its whole zone contradicts the answer. Shading
+shows where the hider wasn't **when they answered**. They can move afterwards.
+
+- **Solid red** — no station here can be the hider's. **Darker** = two or more
+  questions agree.
+- **Stripes** — the hider couldn't have answered from here, but a station here may
+  still be theirs. That's why a suspect dot can sit in striped shading.
+
+Solid covers stripes, and stripes never darken. Disable a question and the map
+redraws from the rest. Turn stripes off in ⚙ if the map gets busy; the suspect
+list doesn't change.
 
 ### If the hider vetoes
 If the hider refuses to answer (a veto), press **Hider vetoed** instead of Log.
@@ -182,10 +203,14 @@ is, so a duplicated Prosperous Home is two presses: 0.25 → 0.375 → 0.5625 mi
 shown as `×2.25`. **✕** returns to the default size. The circle, the shading and
 every endgame question follow the new size straight away.
 
-The **Measuring — Rail station** question is designed for this phase: in the
-first half it eliminates nothing (every hiding station is itself a rail station,
-so your distance is 0), but in the endgame the hider answers from their real
-position, and "closer/further from the nearest rail station" carves the hiding
+Endgame questions keep eliminating stations map-wide after you **Exit endgame**
+(except sea level, see §3), so if you were at the wrong station you don't need to
+unmark anything.
+
+The **Measuring — Rail station** question is built for this phase. Map-wide it
+rarely rules anything out: every hiding zone contains its own station (distance
+0), so "further" only bites when you're almost a full zone radius from a station.
+In the endgame, "closer/further from the nearest rail station" carves the hiding
 zone just like the airport measuring question. The app draws that boundary as a
 line inside the zone, with the eliminated side shaded.
 
@@ -245,6 +270,9 @@ Helpful behaviors:
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
 - **Reset** wipes everything — only use it to start a brand-new game.
+- **Press the curse button the moment Prosperous/Tiny Home is played.** Each
+  question keeps the zone size it was logged with, so questions logged before a
+  late +50% could wrongly eliminate the hider's station.
 - **Your board is saved on the phone**, per map, so reloading or closing the tab
   loses nothing. Clearing the browser's site data does wipe it, so copy the board
   code first.

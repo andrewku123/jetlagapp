@@ -108,13 +108,14 @@ What the app eliminates for:
   **state** and **international border** subjects are offered too, but no map
   ships one in play today, so they are `(log only)`. A **ZIP code** smaller/larger
   question is also supported. A **rail station** measuring question also
-  auto-eliminates but is only useful in the **endgame** — in the first half every
-  hiding station is itself a rail station (distance 0), so it eliminates nothing;
-  in the endgame it carves the hiding zone (union of your-distance disks around
+  auto-eliminates, but it's mostly useful in the **endgame**: every hiding zone
+  contains its own station (distance 0), so "closer" rules nothing out and
+  "further" only bites when you're almost a full zone radius from a station. In
+  the endgame it carves the hiding zone (union of your-distance disks around
   every station on the map).
 - **Tentacles** — "of all the ___ within 1 mi of me, which are you closest to?"
-  for **museums, libraries, movie theaters, hospitals** (keeps the stations
-  closest to the answered POI and shades the eliminated area). The 15 mi
+  for **museums, libraries, movie theaters, hospitals** (keeps stations whose
+  hiding zone reaches the answered POI's area and shades the eliminated area). The 15 mi
   categories (zoo, aquarium, amusement park) are large-game only, so no map
   offers them yet. If only one POI sits in the circle, answer **within / not
   within** instead and the tentacle behaves as a radar of that radius.
@@ -124,8 +125,45 @@ What the app eliminates for:
 The remaining booklet subjects (e.g. street/path, 1st & 4th admin divisions,
 landmass, high-speed-rail line, body of water) are selectable and logged for the
 seeker's notes, but don't auto-eliminate. Any question can be flagged as an
-**endgame question** — its eliminated area is then clipped to the current
-hiding-zone circle (see [TUTORIAL.md](TUTORIAL.md)).
+**endgame question**: it still eliminates stations map-wide, but its shading is
+clipped to the current hiding-zone circle (see [TUTORIAL.md](TUTORIAL.md)). The
+one exception is **sea level**, which is a note only while it's marked endgame
+(see below).
+
+## Hiding zones: how answers eliminate stations
+
+The hider answers from **where they are standing**, which can be anywhere in
+their station's hiding zone (0.25 mi in a medium game), not from the station
+itself. So a station is eliminated only when **every** spot in its zone
+contradicts the answer. A truthful answer can therefore never eliminate the
+hider's real station, but a station can stay a suspect while its dot sits inside
+shading, because part of its zone pokes out.
+
+Shading shows where the hider **wasn't when they answered**. They may move
+afterwards, so it never means "the hider isn't here now". With **uncertainty
+stripes** on (⚙, on by default):
+
+- **Solid red** — no station here can be the hider's.
+- **Darker red** — ruled out by two or more questions.
+- **Stripes** — the hider couldn't have answered from here, but a station here may
+  still be theirs (a band one zone radius wide inside each boundary).
+
+Solid always covers stripes, and stripes never make an area darker. Disabling a
+question redraws everything from the questions still on, so an area can go back
+to striped or clear. Turning stripes off shades every answer-time area solid. It
+only changes the picture, not the suspect list.
+
+Each question remembers the zone size it was asked with, so **press the curse
+button as soon as Prosperous/Tiny Home is played**. Questions logged before
+pressing +50% keep the smaller zone and could wrongly eliminate the hider's
+station.
+
+**Sea level** uses ground elevation, not a phone altimeter. The Ask form's
+location picker fills in the USGS ground elevation for your spot, and each
+station's lowest/highest ground inside its zone is precomputed from the same
+terrain. In the **endgame** the hider may answer by real height (a bridge deck or
+public rooftop), so a sea-level question marked **Endgame question** is a note
+only, even after you exit the endgame, until you **Unmark endgame** it.
 
 ## Question demotion
 
@@ -179,7 +217,9 @@ toward the repeat-cost tally.
 Choosing **🎯 Endgame here** on a station locks the board onto it and draws its
 **hiding zone** (0.25 mi in a medium game), shading everything outside it.
 Endgame questions are then clipped to that circle, each drawn with its boundary
-line, including the **rail station** Measuring question.
+line, including the **rail station** Measuring question. They keep eliminating
+stations map-wide after you exit (sea level excepted, see above), so finding out
+you're at the wrong station needs no unmarking.
 
 Two hider curses resize the zone: **Curse of the Prosperous Home** (+50%) and
 **Curse of the Tiny Home** (−50%). The **zone** control behind ⚙ has a `+50%`
@@ -231,7 +271,8 @@ imagery source and capture dates; a quarterly check
 for a map: page 1 is the question deck for that map's game size (every card with
 its draw/keep cost, answer window and subject checkboxes, with the rules that
 apply to all of them stated once in the header), page 2 is the play-area
-reference — station name lengths and altitudes, counties, cities, in-play
+reference — station name lengths, which altitude bands each station's hiding
+zone reaches, counties, cities, in-play
 airports and the POI inventory — with a 14-row **question log** filling the rest
 of the page. It reads the same data files the app does, so the
 card can't disagree with the board.
