@@ -12,6 +12,7 @@ import { countyAt } from '../lib/counties'
 import { stateAt } from '../lib/states'
 import { cityAt, inPlayArea, NO_CITY_LABEL } from '../lib/cities'
 import { zipAt } from '../lib/zip'
+import { usgsGroundElevationM } from '../lib/usgsElevation'
 import { PHOTO, type GameSize } from '../data/questionSets'
 import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
 
@@ -280,6 +281,22 @@ export default function QuestionForm({
   const [endgameFlag, setEndgameFlag] = useState<boolean>(endgameActive)
   useEffect(() => setEndgameFlag(endgameActive), [endgameActive])
 
+  // Sea level: a picked location fills the altitude from USGS ground elevation,
+  // the same terrain the hider's zone ranges come from.
+  const [elevLookup, setElevLookup] = useState<'idle' | 'loading' | 'done' | 'failed'>('idle')
+  useEffect(() => {
+    if (kind !== 'measure-sealevel' || !center) return
+    const ctl = new AbortController()
+    setElevLookup('loading')
+    usgsGroundElevationM(center, ctl.signal).then((m) => {
+      if (ctl.signal.aborted) return
+      if (m == null) return setElevLookup('failed')
+      setNum(String(Math.round(metric ? m : m * FEET_PER_METER)))
+      setElevLookup('done')
+    })
+    return () => ctl.abort()
+  }, [kind, center, metric])
+
   // Whether logging this question will actually eliminate/shade. A kind is
   // demoted to log-only when the active map can't use it: always-useless kinds
   // (LOG_ONLY_KINDS) never eliminate; endgame-only kinds (ENDGAME_ELIMINATES_KINDS
@@ -369,7 +386,9 @@ export default function QuestionForm({
       case 'measure-sealevel': {
         if (num === '') return alert(`Enter your altitude in ${elevUnit}.`)
         const meters = metric ? Number(num) : Number(num) / FEET_PER_METER
-        params = { value: meters, answer: closefar }
+        params = center
+          ? { value: meters, fromLat: center.lat, fromLon: center.lon, answer: closefar }
+          : { value: meters, answer: closefar }
         break
       }
       case 'measure-zip': {
@@ -957,6 +976,16 @@ export default function QuestionForm({
 
       {kind === 'measure-sealevel' && (
         <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          <p className="blurb poi-readout">
+            {elevLookup === 'loading'
+              ? 'Looking up USGS ground elevation…'
+              : elevLookup === 'failed'
+                ? 'No USGS elevation here — type the altitude.'
+                : elevLookup === 'done'
+                  ? 'Filled in from USGS ground elevation at that point.'
+                  : 'Pick your location to fill in the USGS ground elevation (both sides should use it, not a phone altimeter).'}
+          </p>
           <div className="row">
             <label>Your altitude ({elevUnit})</label>
             <input type="number" value={num} onChange={(e) => setNum(e.target.value)} />

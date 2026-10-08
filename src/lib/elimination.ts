@@ -7,6 +7,9 @@ import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
 import { stateAt } from './states'
 import { zipAt } from './zip'
+import { zoneRegions } from './questionRegions'
+import { regionWithinMiles } from './zoneFit'
+import { zoneElevationRange } from './zoneElevation'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -19,12 +22,77 @@ function nearestAirportMiles(p: LatLng): number {
   return Math.min(...Object.values(AIRPORTS).map((a) => haversineMiles(p, a)))
 }
 
+// The hiding-zone radius a question was answered under: the zone in force when
+// it was logged, else (older boards) the caller's fallback for the game size.
+export function recordZoneMi(record: QuestionRecord, fallbackZoneMi: number): number {
+  const z = record.zoneMi
+  return typeof z === 'number' && Number.isFinite(z) && z >= 0 ? z : fallbackZoneMi
+}
+
+// Whether the hider could have answered from somewhere in play within `zoneMi`
+// of the station and outside the question's eliminated area.
+function zoneReachesAnswer(station: Station, record: QuestionRecord, zoneMi: number): boolean {
+  if (!(zoneMi > 0)) return false
+  const regions = zoneRegions(record)
+  if (!regions) return true // no eliminated area (no data / degenerate question)
+  return regionWithinMiles({ lat: station.lat, lon: station.lon }, regions.kept, zoneMi)
+}
+
 /**
- * Returns true if `station` is still consistent with the answer of `record`.
- * Photo questions (and inactive / non-eliminating records) always return true.
+ * Returns true if `station` is still consistent with the answer of `record`,
+ * given that the hider answered from somewhere within `zoneMi` of the station
+ * (the record's own logged zone wins over `fallbackZoneMi`). Photo questions
+ * (and inactive / non-eliminating records) always return true.
  */
-export function stationPasses(station: Station, record: QuestionRecord): boolean {
+export function stationPasses(station: Station, record: QuestionRecord, fallbackZoneMi = 0): boolean {
   if (!record.active || record.vetoed || !record.eliminates) return true
+  const p = record.params
+  const zoneMi = recordZoneMi(record, fallbackZoneMi)
+
+  switch (record.kind) {
+    // About the station itself ("your station"), not where the hider stands.
+    case 'match-namelength':
+    case 'match-line':
+      return centerPasses(station, record)
+    // Map-wide logged-only (every candidate is a rail station); endgame only.
+    case 'measure-railstation':
+      return true
+    case 'measure-sealevel': {
+      // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
+      const seeker = n(p.value)
+      if (!Number.isFinite(seeker)) return true
+      const closer = p.answer === 'closer'
+      if (station.elevation != null && (station.elevation <= seeker) === closer) return true
+      if (zoneMi <= 0) return station.elevation == null
+      const range = zoneElevationRange(station.id, zoneMi)
+      if (!range) return true // no terrain for this zone size: can't eliminate
+      return closer ? range.min <= seeker : range.max > seeker
+    }
+    case 'radar':
+    case 'thermometer':
+    case 'match-admin1':
+    case 'match-county':
+    case 'match-city':
+    case 'match-airport':
+    case 'match-poi':
+    case 'measure-poi':
+    case 'measure-feature':
+    case 'measure-airport':
+    case 'measure-zip':
+    case 'tentacle':
+    case 'tentacle-line':
+      // Endgame tentacles are logged-only for the suspect list (centerPasses).
+      if (record.endgame && (record.kind === 'tentacle' || record.kind === 'tentacle-line')) return true
+      return centerPasses(station, record) || zoneReachesAnswer(station, record, zoneMi)
+    default:
+      return true
+  }
+}
+
+// Whether the answer is consistent with the hider standing on the station
+// itself — exact, including the tie rules. Kept from before the hiding zone
+// counted, since the station is always one place the hider could be.
+function centerPasses(station: Station, record: QuestionRecord): boolean {
   const p = record.params
 
   switch (record.kind) {
@@ -232,13 +300,14 @@ export interface FilterResult {
 export function applyFilters(
   stations: Station[],
   records: QuestionRecord[],
+  fallbackZoneMi = 0,
 ): FilterResult {
   const eliminated = new Set<string>()
   const remaining: Station[] = []
   for (const st of stations) {
     let ok = true
     for (const r of records) {
-      if (!stationPasses(st, r)) {
+      if (!stationPasses(st, r, fallbackZoneMi)) {
         ok = false
         break
       }

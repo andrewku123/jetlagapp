@@ -47,6 +47,38 @@ just a pure predicate over `(station, record.params)`.
      `KIND_SUBJECT_GROUP` entry. Do **not** re-introduce a secondary "Place type"
      select — keep every subject in the one dropdown.
 
+## The hider answers from anywhere in their hiding zone
+The hider may move freely inside their zone before endgame, so a question rules
+out *zones*, not station points. `stationPasses(station, record, fallbackZoneMi)`:
+- **Zone radius is per question.** `App.addQuestion` stamps `record.zoneMi` with
+  the curse-adjusted radius at log time (`hidingRadiusMi(size, curses)`), so a
+  later Prosperous/Tiny Home never changes an earlier answer. Older records have
+  no `zoneMi` → `recordZoneMi` falls back to the game-size default
+  (`applyFilters(..., defaultHidingRadiusMi(size))`).
+- **Location-based kinds** (radar, thermometer, state/county/city/airport/POI
+  matching, POI/feature/airport/ZIP measuring, tentacles) keep a station when the
+  old exact station-point predicate (`centerPasses`, which owns the tie rules) passes
+  **or** the zone reaches the "kept" region: `zoneRegions(record).kept` = play area
+  minus `eliminatedRegionGeom(record)` (the same geometry the map shades), tested
+  with `regionWithinMiles` (`src/lib/zoneFit.ts`, blocked edge index, memoized per
+  record). So a new location kind only needs its `<kind>EliminatedRegion` wired into
+  `poiEliminatedRegion`/`eliminatedRegionGeom` plus a `centerPasses` case, and an
+  entry in the location-kind list in `stationPasses`.
+- **"Your station" kinds** (line, name length) ignore the zone. Rail-station
+  measuring and endgame tentacles stay logged-only for the suspect list.
+- **Map shading stays physical** (where the hider can't be). A surviving station
+  can sit inside shading when its zone pokes out of it — expected.
+- **Sea level** uses per-station terrain ranges: `src/data/<prefix>zone-elev.json`
+  from `scripts/build_zone_elevation.py --region bay|sfmuni|la|dc` (AWS Terrarium
+  z14 tiles, in-play pixels, bathymetry < -10 m dropped, station's USGS point folded
+  in; bands = default × {½, ¾, 1, 1½} for 0.25 and 0.5 mi bases + 1 mi).
+  `zoneElevationRange` picks the smallest band ≥ the zone and widens by
+  `ZONE_ELEV_MARGIN_M` (3 m: Terrarium vs USGS EPQS is ≤1 m at p95, ~3 m at p99).
+  No band (zone > 1 mi, unknown station) ⇒ never eliminates. The Ask form fills the
+  seeker's altitude from USGS EPQS at the picked point (`usgsGroundElevationM`) —
+  ground elevation, not a phone altimeter. Rerun the script after any
+  station-dataset rebuild.
+
 ## If the question needs new station data
 Add the attribute to the `Station` type and populate it in
 `scripts/build_attributes.py` (or `build_stations.py` for line/system data), then
