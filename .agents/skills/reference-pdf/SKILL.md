@@ -76,11 +76,18 @@ investigation book lists the titles and size buckets but not the requirements.
 
 ## Reference page
 Built only from `src/data/<prefix>stations.json` and `<prefix>poi.json`:
-station-count grids (altitude band, name length, nearest airport), stations per
+station-count grids (hiding-zone altitude band, name length, nearest airport), stations per
 line, counties, in-play airports with coordinates, the POI inventory, the play
 area's edge stations, cities, and a blank **question log** to fill in during
 play (Andrew's call: the app logs questions, but this is the paper backup if the
 board is reset).
+
+**The altitude grid is per hiding zone, not per station.** The hider answers
+sea level from anywhere in their zone, so each station counts in every 50-ft
+band its default zone (0.25 mi, 0.5 mi for Large) reaches, read from
+`<prefix>zone-elev.json` (built by `scripts/build_zone_elevation.py`, the same
+ranges the app eliminates on). Counts sum past the station total; that's
+expected and the caption says so. Don't go back to a station-center histogram.
 
 **Airports are filtered by the play-area polygon, not by the station data.**
 Every station carries `airportDist` to every site in `AIRPORT_SITES`, so keying
