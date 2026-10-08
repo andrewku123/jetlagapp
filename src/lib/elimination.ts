@@ -10,6 +10,7 @@ import { zipAt } from './zip'
 import { zoneRegions } from './questionRegions'
 import { regionWithinMiles } from './zoneFit'
 import { zoneElevationRange } from './zoneElevation'
+import { nearestRailStationMiles } from './railStations'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -54,9 +55,6 @@ export function stationPasses(station: Station, record: QuestionRecord, fallback
     case 'match-namelength':
     case 'match-line':
       return centerPasses(station, record)
-    // Map-wide logged-only (every candidate is a rail station); endgame only.
-    case 'measure-railstation':
-      return true
     case 'measure-sealevel': {
       // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
       const seeker = n(p.value)
@@ -81,8 +79,7 @@ export function stationPasses(station: Station, record: QuestionRecord, fallback
     case 'measure-zip':
     case 'tentacle':
     case 'tentacle-line':
-      // Endgame tentacles are logged-only for the suspect list (centerPasses).
-      if (record.endgame && (record.kind === 'tentacle' || record.kind === 'tentacle-line')) return true
+    case 'measure-railstation':
       return centerPasses(station, record) || zoneReachesAnswer(station, record, zoneMi)
     default:
       return true
@@ -179,15 +176,12 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       // Tie folds into the smaller side ("closer"): keep <= inclusive.
       return (stationDist <= seeker) === (p.answer === 'closer')
     }
-    case 'measure-railstation':
-      // Logged-only for the suspect list: rail-station measuring never eliminates
-      // a station. Map-wide every candidate IS a rail station (distance 0 to the
-      // nearest rail station = itself), so applying an answer here is degenerate —
-      // an endgame "further" answer (asked from the hider's real position, where
-      // distance > 0) would wrongly eliminate EVERY station once you leave the
-      // endgame. Its only effect is carving the endgame hiding zone via
-      // railStationMeasureEliminatedRegion (see questionRegions.ts). Keep all.
-      return true
+    case 'measure-railstation': {
+      const seeker = nearestRailStationMiles({ lat: n(p.fromLat), lon: n(p.fromLon) })
+      if (!Number.isFinite(seeker)) return true
+      // Tie folds into the smaller side ("closer"): keep <= inclusive.
+      return (nearestRailStationMiles(station) <= seeker) === (p.answer === 'closer')
+    }
     case 'measure-sealevel': {
       if (station.elevation == null) return true // unknown: don't eliminate
       // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
@@ -213,12 +207,6 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       // (p.value = poiKey) is the in-play POI the hider is closest to. Keep a
       // station iff its nearest *in-play* POI is that answer — a POI outside the
       // radius never counts, even if it is physically closer to the station.
-      // Endgame tentacles eliminate nothing. In endgame the hider answers from
-      // their real position, not the station centre, so a station can sit outside
-      // the radius (or nearest a different POI) even though the hider is inside it
-      // — the disk / closest-POI tests would wrongly drop valid stations. Rather
-      // than reason about that mismatch, endgame tentacles are logged only.
-      if (record.endgame) return true
       const cat = s(p.poiCat)
       const radius = n(p.radiusMi)
       const answerKey = s(p.value)
@@ -235,8 +223,7 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       // A normal (named-POI) answer means the hider is within the radius of the
       // seeker — otherwise they'd answer "not within". So, like a radar "yes",
       // everything outside the disk is eliminated too. Skipped only for the 0/1-POI
-      // case, which is asked as a radar (handled by the sentinels above). (Endgame
-      // returned early above, so this only applies to non-endgame questions.)
+      // case, which is asked as a radar (handled by the sentinels above).
       if (inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity
@@ -258,10 +245,6 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       // the hider is closest to. Keep a station iff its nearest in-play line is
       // that answer. All distances use the seeker-centred projection so the
       // keep/drop decision agrees with the shaded region.
-      // Endgame tentacles eliminate nothing (see the 'tentacle' case): the hider
-      // answers from their real position, not the station centre, so elimination
-      // would be unreliable. Logged only in endgame.
-      if (record.endgame) return true
       const radius = n(p.radiusMi)
       const answerId = s(p.value)
       if (!answerId || !Number.isFinite(radius)) return true
@@ -273,7 +256,7 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       // Normal answer ⇒ hider within the radius (else they'd answer "not within"),
       // so eliminate everything outside the disk too — like a radar "yes". Skipped
-      // for the 0/1-line radar case (sentinels above); endgame returned early.
+      // for the 0/1-line radar case (sentinels above).
       if (inPlay.length >= 2 && haversineMiles(station, seeker) > radius) return false
       let minD = Infinity
       let answerD = Infinity

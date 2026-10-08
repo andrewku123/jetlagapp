@@ -279,10 +279,9 @@ describe('railStationMeasureEliminatedRegion shades the your-distance rail-stati
     expect(region).toBeNull()
   })
 
-  it('never shades map-wide (poiEliminatedRegion returns null) but does clip the endgame zone', () => {
+  it('shades map-wide and clips the endgame zone', () => {
     const r = { ...rec('measure-railstation', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }), endgame: true }
-    // Map-wide path is null: it eliminates no station, so it must shade nothing.
-    expect(poiEliminatedRegion(r)).toBeNull()
+    expect(poiEliminatedRegion(r)).not.toBeNull()
     // Endgame path still carves the hiding-zone disk around the locked station.
     const s0 = (rawStations as unknown as Station[])[0]
     const clipped = endgameClippedRegion(r, { lat: s0.lat, lon: s0.lon }, 3)

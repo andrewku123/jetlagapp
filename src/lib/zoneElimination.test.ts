@@ -5,6 +5,7 @@ import { zoneElevationRange, ZONE_ELEV_MARGIN_M } from './zoneElevation'
 import { defaultHidingRadiusMi, hidingRadiusMi } from './hidingZone'
 import type { QuestionRecord, Station } from '../types'
 import stationsJson from '../data/stations.json'
+import { TENTACLE_INSIDE } from './poi'
 
 // The hider answers from anywhere in their hiding zone: a station survives when
 // any in-play point within its zone radius is consistent with the answer.
@@ -133,13 +134,21 @@ describe('questions about "your station" ignore the zone', () => {
     const r = record('match-line', { value: 'BART Red', answer: 'yes' }, 1)
     expect(stationPasses(station({ lines: ['BART Blue'] }), r)).toBe(false)
   })
-  it('rail-station measuring stays logged-only map-wide', () => {
-    const r = record('measure-railstation', { fromLat: CENTER.lat, fromLon: CENTER.lon, answer: 'further' }, 0.25)
-    expect(stationPasses(station(), r)).toBe(true)
+})
+
+describe('rail-station measuring and endgame tentacles use the zone', () => {
+  it('rail-station "further" keeps a station whose zone reaches far enough from every station', () => {
+    const real = (stationsJson as unknown as Station[])[0]
+    const seeker = { lat: real.lat + 0.1 / 69, lon: real.lon }
+    const further = record('measure-railstation', { fromLat: seeker.lat, fromLon: seeker.lon, answer: 'further' }, 0)
+    expect(stationPasses(real, further)).toBe(false)
+    const wide = { ...further, zoneMi: 3 }
+    expect(stationPasses(real, wide)).toBe(true)
   })
-  it('endgame tentacles stay logged-only for the suspect list', () => {
-    const r = { ...record('tentacle', { poiCat: 'museum', radiusMi: 1, fromLat: CENTER.lat, fromLon: CENTER.lon, value: 'nonesuch' }, 0.25), endgame: true }
-    expect(stationPasses(station(north(5)), r)).toBe(true)
+  it('endgame tentacles eliminate map-wide like any other tentacle', () => {
+    const r = { ...record('tentacle', { poiCat: 'museum', radiusMi: 1, fromLat: CENTER.lat, fromLon: CENTER.lon, value: TENTACLE_INSIDE }, 0.25), endgame: true }
+    expect(stationPasses(station(north(5)), r)).toBe(false)
+    expect(stationPasses(station(), r)).toBe(true)
   })
 })
 

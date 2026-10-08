@@ -868,7 +868,7 @@ export default function QuestionForm({
               </p>
             )
           })()}
-          <p className="blurb">Inert in the first half (every station is distance 0); useful in the endgame.</p>
+          <p className="blurb">Every station is distance 0, so only a hiding zone reaching well away from all stations can be ruled out; most useful in the endgame.</p>
           <div className="row">
             <label>Answer</label>
             <div className="seg">

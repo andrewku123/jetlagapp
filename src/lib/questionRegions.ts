@@ -294,7 +294,6 @@ export function tentacleEliminatedRegion(record: QuestionRecord): LatLngMultiPol
   const radius = Number(p.radiusMi)
   const answerKey = String(p.value ?? '')
   if (!answerKey || !Number.isFinite(radius)) return null
-  if (record.endgame) return null // endgame tentacles eliminate nothing
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerKey === TENTACLE_INSIDE || answerKey === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerKey)
@@ -355,7 +354,6 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   const radius = Number(p.radiusMi)
   const answerId = String(p.value ?? '')
   if (!answerId || !Number.isFinite(radius)) return null
-  if (record.endgame) return null // endgame tentacles eliminate nothing
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerId === TENTACLE_INSIDE || answerId === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerId)
@@ -500,10 +498,10 @@ export function airportMeasureEliminatedRegion(record: QuestionRecord): LatLngMu
 }
 
 // --- Measuring a nearest rail station: shade the union of your-distance disks
-// around every rail station, or its complement. Map-wide this eliminates no
-// station (each candidate IS a rail station → distance 0, so an honest
-// "closer"/tie answer keeps them all); its value is in the endgame, where it
-// sub-divides the hiding zone. Same machinery as the airport measure. ----------
+// around every rail station, or its complement. A station centre is distance 0,
+// but the hider can stand up to a zone-radius away, so a "further" answer rules
+// out stations with no spot that far from every station. Same machinery as the
+// airport measure. --------------------------------------------------------------
 
 export function railStationMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   const p = record.params
@@ -610,9 +608,7 @@ function buildPoiRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (record.kind === 'measure-feature') return featureMeasureEliminatedRegion(record)
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
-  // measure-railstation is intentionally NOT here: it never shades map-wide (it
-  // eliminates no station). Its region is only produced for the endgame zone clip
-  // (see eliminatedRegionGeom), so the shown shading always agrees with elimination.
+  if (record.kind === 'measure-railstation') return railStationMeasureEliminatedRegion(record)
   if (record.kind === 'match-admin1') return stateMatchEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
@@ -670,25 +666,7 @@ function buildEliminatedGeom(record: QuestionRecord): MultiPolygon | null {
     const ring: Ring = band.map((pt) => [pt.lon, pt.lat] as [number, number])
     return [[ring]]
   }
-  // Rail-station measuring is logged-only for map-wide station elimination and
-  // never shades map-wide (poiEliminatedRegion returns null for it), because every
-  // candidate IS a rail station (distance 0). Its only effect is in the endgame,
-  // where the hider answers from their real position and the union-of-disks region
-  // sub-divides the hiding zone — so it's routed here directly.
-  if (record.kind === 'measure-railstation') {
-    const latlng = railStationMeasureEliminatedRegion(record)
-    return latlng ? toGeom(latlng) : null
-  }
-  // Tentacles are logged-only in endgame for *station* elimination, but the
-  // eliminated geometry itself is still valid — the hider must be within the
-  // radius and nearest the answer POI/line — so it correctly sub-divides the
-  // hiding zone. Force the non-endgame region so endgame tentacles shade the
-  // zone; the map-wide path (poiEliminatedRegion) still returns null for endgame.
-  const forNonEndgame =
-    record.endgame && (record.kind === 'tentacle' || record.kind === 'tentacle-line')
-      ? { ...record, endgame: false }
-      : record
-  const latlng = poiEliminatedRegion(forNonEndgame)
+  const latlng = poiEliminatedRegion(record)
   return latlng ? toGeom(latlng) : null
 }
 

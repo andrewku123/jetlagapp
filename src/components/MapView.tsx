@@ -22,7 +22,6 @@ import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/po
 import { nearestAirport } from '../lib/airports'
 import {
   poiEliminatedRegion,
-  railStationMeasureEliminatedRegion,
   endgameClippedRegion,
   type LatLngMultiPolygon,
 } from '../lib/questionRegions'
@@ -1021,13 +1020,12 @@ export default function MapView({
     // who have no hover tooltip — can tell which question an answer dot belongs to.
     type Pin = { lat: number; lon: number; label: string }
     type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null; desc: string }
-    // measure-railstation is deliberately absent: it eliminates no station and
-    // only shades the endgame hiding zone (see endgameRegions), never map-wide.
     const isShaded = (k: string) =>
       k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
       k === 'match-airport' || k === 'measure-airport' ||
       k === 'match-admin1' || k === 'match-county' ||
-      k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line'
+      k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line' ||
+      k === 'measure-railstation'
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
     )
@@ -1073,7 +1071,8 @@ export default function MapView({
         r.kind === 'match-poi' || r.kind === 'measure-poi' || r.kind === 'measure-feature' ||
         r.kind === 'match-airport' || r.kind === 'measure-airport' ||
         r.kind === 'match-admin1' || r.kind === 'match-county' ||
-        r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line',
+        r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line' ||
+        r.kind === 'measure-railstation',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
@@ -1807,24 +1806,10 @@ export default function MapView({
                   />
                 )
               }
-              // POI / measure / feature / matching / tentacle: outline the full
-              // (unclipped) eliminated boundary, like the radar circle stays whole
-              // in endgame. Tentacles return null map-wide in endgame (station
-              // elimination is logged-only there), so force the non-endgame region
-              // to get the geometry — same trick as eliminatedGeom in
-              // questionRegions — otherwise the border wouldn't draw.
-              // Rail-station measuring is the other special case: it never shades
-              // map-wide, so poiEliminatedRegion returns null for it and the zone
-              // shading came with no edge. Ask its region builder directly.
-              if (r.kind === 'measure-railstation') {
-                const region = railStationMeasureEliminatedRegion(r)
-                return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
-              }
-              const forGeom =
-                r.kind === 'tentacle' || r.kind === 'tentacle-line'
-                  ? { ...r, endgame: false }
-                  : r
-              const region = poiEliminatedRegion(forGeom)
+              // POI / measure / feature / matching / tentacle / rail-station:
+              // outline the full (unclipped) eliminated boundary, like the radar
+              // circle stays whole in endgame.
+              const region = poiEliminatedRegion(r)
               return region ? <RegionOutline key={r.id + '-outline'} region={region} /> : null
             })}
 
