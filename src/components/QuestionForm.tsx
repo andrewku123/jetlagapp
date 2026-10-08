@@ -285,7 +285,10 @@ export default function QuestionForm({
   // the same terrain the hider's zone ranges come from.
   const [elevLookup, setElevLookup] = useState<'idle' | 'loading' | 'done' | 'failed'>('idle')
   useEffect(() => {
-    if (kind !== 'measure-sealevel' || !center) return
+    if (kind !== 'measure-sealevel' || !center) {
+      setElevLookup('idle')
+      return
+    }
     const ctl = new AbortController()
     setElevLookup('loading')
     usgsGroundElevationM(center, ctl.signal).then((m) => {
