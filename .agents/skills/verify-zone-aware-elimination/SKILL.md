@@ -22,7 +22,11 @@ Write an independent Python/Shapely oracle (do NOT import app code): a station s
 4. Sea level: type coordinates into "Your location" and press Set; the altitude should be filled from USGS EPQS (meters, converted to ft). Toggle km/m to check the conversion. Typing an altitude by hand without a location must still submit (the record then has no fromLat/fromLon).
 5. Rail-station Measuring in endgame should draw an indigo outline but never eliminate stations map-wide (after Exit, the count returns to its earlier value).
 
+6. Endgame mark/unmark lifecycle: before entering endgame, save the survivor names (Suspects rows that have a `button[title=eliminate]`). Then go station popup → 🎯 Endgame here, log endgame Radar, rail-station and Tentacles questions, and Exit via the banner. The count AND the name list must match the saved baseline exactly. Do it at least 3 times: once on a different station, once with F5 while in endgame (banner and zone must come back), and once with F5 after Exit. Exit does not refit the map. Endgame questions keep shading inside whichever station's zone is current, and their outlines (e.g. the radar circle) stay drawn map-wide after Exit, but they add no map-wide shading.
+7. Curse in endgame: the map does not refit when +50% / ✕ is pressed, so measure the green (#16a34a) circle's diameter along the station's pixel row in full-res screenshots, skipping the green BART line. The ratio should be ~1.50 (e.g. 273→410 px) and should return exactly after ✕.
+
 ## Gotchas
+- In CDP `Runtime.evaluate`, wrap snippets in an IIFE. Top-level `const` persists between calls in the page and throws "Identifier already declared", and that error shows up in console captures as a false-positive app exception.
 - The Ask form re-lays itself out after each Set (distance lines and city names appear), so the Log button moves down. Zoom or re-screenshot before clicking. A missed click can silently tick the "Endgame question" checkbox.
 - Native `<select>` options: click the select, type the option's prefix ("City", "Museum", "Rail"), then press Enter.
 - Map overlays are drawn on canvas. Check them by sampling pixels, not by counting SVG paths.
