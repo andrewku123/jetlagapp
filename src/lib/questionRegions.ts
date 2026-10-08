@@ -326,25 +326,90 @@ function clipKeepToDisk(keep: Polygon[], seeker: LatLng, radius: number): Polygo
 // is no closed-form Voronoi for polylines, so each in-play line is sampled into
 // points and a point-Voronoi is built over all samples; the keep region is the
 // union of the answer line's sample cells and the eliminated area is its
-// complement. Sample spacing is chosen so the total site count stays bounded,
-// which keeps the boundary within a sample-spacing of the true nearest-line
-// boundary — matched by skipping a thin band in the agreement test.
+// complement. Samples every METRO_LINE_SAMPLE_MI along each line (long
+// segments are interpolated), which keeps the boundary within about half that
+// of the true nearest-line boundary.
+const METRO_LINE_SAMPLE_MI = 0.05
+
 function sampleLine(line: MetroLine, spacingMi: number): LatLng[] {
   const out: LatLng[] = []
   for (const poly of line.polylines) {
     if (poly.length === 0) continue
     out.push(poly[0])
-    let acc = 0
+    let next = spacingMi // distance along this segment to the next sample
     for (let i = 1; i < poly.length; i++) {
-      const seg = haversineMiles(poly[i - 1], poly[i])
-      acc += seg
-      if (acc >= spacingMi) {
-        out.push(poly[i])
-        acc = 0
+      const a = poly[i - 1]
+      const b = poly[i]
+      const seg = haversineMiles(a, b)
+      while (next < seg) {
+        const t = next / seg
+        out.push({ lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) })
+        next += spacingMi
+      }
+      next -= seg
+    }
+    out.push(poly[poly.length - 1])
+  }
+  return out
+}
+
+// Voronoi cells of sites[idx] for each idx in `which`, using a bucket grid so
+// each cell is clipped only by nearby sites: once every site within 2× the
+// cell's current radius has clipped it, no farther site can.
+function voronoiCellsIndexed(sites: LatLng[], which: number[], refLat: number): Ring[] {
+  const cosRef = Math.cos((refLat * Math.PI) / 180) || 1e-6
+  const pts: P2[] = sites.map((p) => ({ x: p.lon * cosRef, y: p.lat }))
+  const bl = { x: CELL_FRAME.minLon * cosRef, y: CELL_FRAME.minLat }
+  const tr = { x: CELL_FRAME.maxLon * cosRef, y: CELL_FRAME.maxLat }
+  const g = 0.01 // bucket size in degrees of latitude (~0.7 mi)
+  const nx = Math.max(1, Math.ceil((tr.x - bl.x) / g))
+  const ny = Math.max(1, Math.ceil((tr.y - bl.y) / g))
+  const bx = (x: number) => Math.min(nx - 1, Math.max(0, Math.floor((x - bl.x) / g)))
+  const by = (y: number) => Math.min(ny - 1, Math.max(0, Math.floor((y - bl.y) / g)))
+  const buckets = new Map<number, number[]>()
+  pts.forEach((p, i) => {
+    const k = by(p.y) * nx + bx(p.x)
+    const b = buckets.get(k)
+    if (b) b.push(i)
+    else buckets.set(k, [i])
+  })
+  const out: Ring[] = []
+  for (const idx of which) {
+    const p0 = pts[idx]
+    const cx = bx(p0.x)
+    const cy = by(p0.y)
+    let poly: P2[] = [
+      { x: bl.x, y: bl.y },
+      { x: tr.x, y: bl.y },
+      { x: tr.x, y: tr.y },
+      { x: bl.x, y: tr.y },
+    ]
+    for (let r = 0; poly.length >= 3; r++) {
+      if (r > 0) {
+        let reach = 0
+        for (const v of poly) reach = Math.max(reach, Math.hypot(v.x - p0.x, v.y - p0.y))
+        if ((r - 1) * g >= 2 * reach) break
+        if (cx - r < 0 && cy - r < 0 && cx + r >= nx && cy + r >= ny) break
+      }
+      for (let y = cy - r; y <= cy + r; y++) {
+        if (y < 0 || y >= ny) continue
+        const edgeRow = y === cy - r || y === cy + r
+        for (let x = cx - r; x <= cx + r; x += edgeRow ? 1 : 2 * r || 1) {
+          if (x < 0 || x >= nx) continue
+          const b = buckets.get(y * nx + x)
+          if (!b) continue
+          for (const i of b) {
+            if (i === idx) continue
+            const pi = pts[i]
+            const a = 2 * (pi.x - p0.x)
+            const bb = 2 * (pi.y - p0.y)
+            const c = -(pi.x * pi.x + pi.y * pi.y - (p0.x * p0.x + p0.y * p0.y))
+            poly = clipHalfPlane(poly, a, bb, c)
+          }
+        }
       }
     }
-    const last = poly[poly.length - 1]
-    if (out[out.length - 1] !== last) out.push(last)
+    if (poly.length >= 3) out.push(poly.map((p) => [p.x / cosRef, p.y] as [number, number]))
   }
   return out
 }
@@ -361,18 +426,12 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
   if (!inPlay.some((l) => l.id === answerId)) return null
 
-  // Bound total samples: aim ~600 sites across all in-play lines.
-  let totalMi = 0
-  for (const l of inPlay) for (const poly of l.polylines) for (let i = 1; i < poly.length; i++) totalMi += haversineMiles(poly[i - 1], poly[i])
-  const spacingMi = Math.max(0.25, totalMi / 600)
-
   const sites: LatLng[] = []
-  const isAnswer: boolean[] = []
+  const answerIdx: number[] = []
   for (const l of inPlay) {
-    const pts = sampleLine(l, spacingMi)
-    for (const pt of pts) {
+    for (const pt of sampleLine(l, METRO_LINE_SAMPLE_MI)) {
+      if (l.id === answerId) answerIdx.push(sites.length)
       sites.push(pt)
-      isAnswer.push(l.id === answerId)
     }
   }
   if (sites.length < 2) return null
@@ -381,13 +440,7 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   // shared robustUnion (snap + divide-and-conquer) — an incremental pairwise fold
   // of the many adjacent, near-collinear cells along a line trips
   // polygon-clipping's ring-completion robustness bug.
-  const cells: Polygon[] = []
-  for (let i = 0; i < sites.length; i++) {
-    if (!isAnswer[i]) continue
-    const cell = voronoiCellRing(sites, i, seeker.lat)
-    if (!cell) continue
-    cells.push([cell])
-  }
+  const cells: Polygon[] = voronoiCellsIndexed(sites, answerIdx, seeker.lat).map((c) => [c])
   if (!cells.length) return null
   // Normal answer ⇒ hider within the radius, so clip the keep region to the
   // seeker's disk (everything outside is eliminated too), even in endgame.
