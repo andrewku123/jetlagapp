@@ -24,7 +24,11 @@ import {
   poiEliminatedRegion,
   endgameClippedRegion,
   type LatLngMultiPolygon,
+  shadeSplit,
+  composeShading,
+  type ShadeSplit,
 } from '../lib/questionRegions'
+import { recordZoneMi } from '../lib/elimination'
 import { cityAt, NO_CITY_LABEL } from '../lib/cities'
 import { fitTarget, zoneBoxMeters, MAP_MAX_ZOOM, type FitTarget } from '../lib/mapFit'
 import { describeRecord } from '../lib/describe'
@@ -308,6 +312,7 @@ interface Props {
   onClearAnnotations: () => void
   endgameStation: Station | null
   hidingRadiusMi: number
+  stripes: boolean
   focusTarget: { station: Station; nonce: number } | null
   poiFocus: { lat: number; lon: number; nonce: number } | null
   onStartEndgame: (id: string) => void
@@ -318,6 +323,23 @@ interface Props {
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
 const LINE_LENGTH_MI = 60
+
+// question kinds shaded through poiEliminatedRegion (radar/thermometer are drawn inline)
+const POI_SHADED_KINDS = new Set<string>([
+  'match-poi', 'measure-poi', 'measure-feature', 'match-airport', 'measure-airport',
+  'match-admin1', 'match-county', 'match-city', 'measure-zip', 'tentacle', 'tentacle-line',
+  'measure-railstation',
+])
+
+// hatched fill for the uncertainty band (pattern defined by StripeRenderer)
+const STRIPE_PATTERN_ID = 'jl-uncertainty-stripes'
+const STRIPE_FILL = {
+  stroke: false,
+  weight: 0,
+  fillColor: `url(#${STRIPE_PATTERN_ID})`,
+  fillOpacity: 1,
+  interactive: false,
+} as const
 
 // translucent shading for the area a question has eliminated
 const ELIM_FILL = {
@@ -802,6 +824,39 @@ function PoiLayer({ pois, interactive }: { pois: RenderPoi[]; interactive: boole
   return null
 }
 
+// SVG renderer for the striped uncertainty band (the canvas renderer can't fill
+// with a pattern), plus the hatch pattern it references. Click-through pane.
+function StripeRenderer({ onChange }: { onChange: (r: L.SVG | null) => void }) {
+  const map = useMap()
+  useEffect(() => {
+    const paneName = 'uncertaintyStripes'
+    let pane = map.getPane(paneName)
+    if (!pane) {
+      pane = map.createPane(paneName)
+      pane.style.zIndex = '399' // just under the overlay pane (400) holding the solid fills
+      pane.style.pointerEvents = 'none'
+    }
+    const ns = 'http://www.w3.org/2000/svg'
+    const defs = document.createElementNS(ns, 'svg')
+    defs.setAttribute('width', '0')
+    defs.setAttribute('height', '0')
+    defs.setAttribute('aria-hidden', 'true')
+    defs.style.position = 'absolute'
+    defs.innerHTML =
+      `<defs><pattern id="${STRIPE_PATTERN_ID}" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(45)">` +
+      '<line x1="0" y1="0" x2="0" y2="7" stroke="#cf222e" stroke-width="2" stroke-opacity="0.38"/></pattern></defs>'
+    document.body.appendChild(defs)
+    const renderer = L.svg({ padding: 0.5, pane: paneName }).addTo(map)
+    onChange(renderer)
+    return () => {
+      renderer.remove()
+      defs.remove()
+      onChange(null)
+    }
+  }, [map, onChange])
+  return null
+}
+
 // Dedicated SVG renderer for the station markers, in a pane above the POI canvas.
 // SVG (rather than the map's default canvas) is what lets a click that misses a
 // station fall through to the POI layer below: an SVG renderer's pane container is
@@ -950,6 +1005,7 @@ export default function MapView({
   onClearAnnotations,
   endgameStation,
   hidingRadiusMi,
+  stripes,
   focusTarget,
   poiFocus,
   onStartEndgame,
@@ -1020,12 +1076,7 @@ export default function MapView({
     // who have no hover tooltip — can tell which question an answer dot belongs to.
     type Pin = { lat: number; lon: number; label: string }
     type ShadeRegion = { id: string; region: LatLngMultiPolygon; pin: Pin | null; desc: string }
-    const isShaded = (k: string) =>
-      k === 'match-poi' || k === 'measure-poi' || k === 'measure-feature' ||
-      k === 'match-airport' || k === 'measure-airport' ||
-      k === 'match-admin1' || k === 'match-county' ||
-      k === 'match-city' || k === 'measure-zip' || k === 'tentacle' || k === 'tentacle-line' ||
-      k === 'measure-railstation'
+    const isShaded = (k: string) => POI_SHADED_KINDS.has(k)
     const rs = records.filter(
       (r) => r.active && !r.vetoed && r.eliminates && isShaded(r.kind),
     )
@@ -1098,6 +1149,18 @@ export default function MapView({
       .map((r) => `${r.id}:${r.kind}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.lat ?? ''}:${r.params.lon ?? ''}:${r.params.radiusMiles ?? ''}:${r.params.fromLat ?? ''}:${r.params.fromLon ?? ''}:${r.params.toLat ?? ''}:${r.params.toLon ?? ''}:${r.params.answer}`)
       .join('|'),
   ])
+  // Stripes mode: per-question solid fills (overlaps darken) and one stripe layer
+  // (every question's uncertainty band minus every solid). Map-wide only.
+  const stripeShading = useMemo(() => {
+    if (!stripes || endgameStation) return null
+    const splits = records
+      .filter((r) => r.active && !r.vetoed && r.eliminates &&
+        (r.kind === 'radar' || r.kind === 'thermometer' || POI_SHADED_KINDS.has(r.kind)))
+      .map((r) => shadeSplit(r, recordZoneMi(r, hidingRadiusMi)))
+      .filter((x): x is ShadeSplit => x != null)
+    return composeShading(splits)
+  }, [stripes, endgameStation, hidingRadiusMi, records])
+  const [stripeRenderer, setStripeRenderer] = useState<L.SVG | null>(null)
   // measure polylines by id, so the distance label can open the line's edit
   // popup (the label tooltip isn't the popup's source by default)
   const measureLineRefs = useRef<Record<string, L.Polyline>>({})
@@ -1602,6 +1665,19 @@ export default function MapView({
           )
         })}
 
+        <StripeRenderer onChange={setStripeRenderer} />
+        {/* stripes mode: solid = no station centred here can be the hider's
+            (overlapping solids darken); stripes = the hider couldn't have answered
+            from here, but a station here can still be theirs. */}
+        {stripeShading?.solids.map((region, qi) =>
+          region.map((poly, i) => (
+            <Polygon key={`solid-${qi}-${i}`} positions={poly} pathOptions={ELIM_FILL} />
+          )),
+        )}
+        {stripeShading && stripeRenderer && stripeShading.stripes.map((poly, i) => (
+          <Polygon key={`stripe-${i}`} positions={poly} renderer={stripeRenderer} pathOptions={STRIPE_FILL} />
+        ))}
+
         {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
             the circle; NO eliminates inside it. The circle outline always shows
             the radius. Suppressed in endgame (only zone-clipped shading shows). */}
@@ -1616,10 +1692,12 @@ export default function MapView({
             const yes = r.params.answer === 'yes'
             return (
               <Fragment key={r.id}>
-                <Polygon
-                  positions={yes ? [WORLD_RING, ring] : [ring]}
-                  pathOptions={ELIM_FILL}
-                />
+                {!stripeShading && (
+                  <Polygon
+                    positions={yes ? [WORLD_RING, ring] : [ring]}
+                    pathOptions={ELIM_FILL}
+                  />
+                )}
                 {/* outline built from the same ring as the shading, so the edge
                     of the shaded area sits exactly on the drawn circle */}
                 <Polygon
@@ -1676,7 +1754,7 @@ export default function MapView({
             )
             return (
               <Fragment key={r.id}>
-                <Polygon positions={coldBand} pathOptions={ELIM_FILL} />
+                {!stripeShading && <Polygon positions={coldBand} pathOptions={ELIM_FILL} />}
                 <Polyline
                   positions={ends.map((p) => [p.lat, p.lon]) as [number, number][]}
                   interactive={false}
@@ -1735,7 +1813,7 @@ export default function MapView({
             Suppressed in endgame (only zone-clipped shading shows). */}
         {!endgameStation && poiRegions.map((pr) => (
           <Fragment key={pr.id}>
-            {pr.region.map((poly, i) => (
+            {!stripeShading && pr.region.map((poly, i) => (
               <Polygon key={i} positions={poly} pathOptions={ELIM_FILL} />
             ))}
             {/* boundary line, like the radar circle outline */}

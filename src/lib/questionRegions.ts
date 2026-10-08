@@ -686,6 +686,7 @@ export interface ZoneRegions {
   eliminated: RegionIndex
   // in play and not eliminated: where the hider could have answered from
   kept: RegionIndex
+  keptGeom: MultiPolygon
 }
 
 const zoneCache = new WeakMap<QuestionRecord, ZoneRegions | null>()
@@ -700,7 +701,7 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
     } catch {
       kept = polygonClipping.difference([WORLD_RING], elim)
     }
-    out = { eliminated: indexRegion(elim), kept: indexRegion(kept) }
+    out = { eliminated: indexRegion(elim), kept: indexRegion(kept), keptGeom: kept }
   }
   zoneCache.set(record, out)
   return out
@@ -724,4 +725,195 @@ export function endgameClippedRegion(
     return null
   }
   return clipped.length ? toLatLng(clipped) : null
+}
+
+// --- Solid vs striped shading ----------------------------------------------------
+// A question's eliminated area splits in two once the hiding zone counts:
+//  - solid: every point is more than a zone-radius from anywhere the answer allows,
+//    so no station centred there can be the hider's;
+//  - stripes: the hider couldn't have answered from there, but a station centred
+//    there can still be theirs because its zone reaches an allowed spot.
+// solid = eliminated − (kept buffered by zoneMi), matching zoneReachesAnswer.
+
+export interface ShadeSplit {
+  solid: MultiPolygon
+  stripes: MultiPolygon
+}
+
+const PLAY_REF_LAT = (() => {
+  let min = Infinity
+  let max = -Infinity
+  for (const poly of PLAY_AREA) for (const ring of poly) for (const [, y] of ring) {
+    if (y < min) min = y
+    if (y > max) max = y
+  }
+  return Number.isFinite(min) ? (min + max) / 2 : (REGION_FRAME.minLat + REGION_FRAME.maxLat) / 2
+})()
+
+type Box = [number, number, number, number]
+
+function bboxOf(mp: MultiPolygon): Box {
+  const b: Box = [Infinity, Infinity, -Infinity, -Infinity]
+  for (const poly of mp) for (const ring of poly) for (const [x, y] of ring) {
+    if (x < b[0]) b[0] = x
+    if (y < b[1]) b[1] = y
+    if (x > b[2]) b[2] = x
+    if (y > b[3]) b[3] = y
+  }
+  return b
+}
+
+// The kept region's boundary edges that could lie within `zoneMi` of the
+// eliminated area, as polylines (runs of consecutive edges).
+function keptEdgesNear(kept: MultiPolygon, box: Box): LatLng[][] {
+  const runs: LatLng[][] = []
+  for (const poly of kept) for (const ring of poly) {
+    let cur: LatLng[] = []
+    for (let i = 1; i < ring.length; i++) {
+      const [ax, ay] = ring[i - 1]
+      const [bx, by] = ring[i]
+      const hit = Math.max(ax, bx) >= box[0] && Math.min(ax, bx) <= box[2] &&
+        Math.max(ay, by) >= box[1] && Math.min(ay, by) <= box[3]
+      if (hit) {
+        if (!cur.length) cur.push({ lat: ay, lon: ax })
+        cur.push({ lat: by, lon: bx })
+      } else if (cur.length) {
+        runs.push(cur)
+        cur = []
+      }
+    }
+    if (cur.length) runs.push(cur)
+  }
+  return runs
+}
+
+// Douglas-Peucker in the local equirectangular plane. Densified boundaries carry
+// many collinear vertices; dropping them keeps the buffer union small.
+const SIMPLIFY_MI = 0.005
+function simplifyLine(pts: LatLng[], cosRef: number): LatLng[] {
+  if (pts.length <= 2) return pts
+  const tol = SIMPLIFY_MI * DEG_PER_MILE
+  const xy = pts.map((p) => [p.lon * cosRef, p.lat] as const)
+  const keep = new Uint8Array(pts.length)
+  keep[0] = 1
+  keep[pts.length - 1] = 1
+  const stack: [number, number][] = [[0, pts.length - 1]]
+  while (stack.length) {
+    const [a, b] = stack.pop()!
+    const [ax, ay] = xy[a]
+    const [bx, by] = xy[b]
+    const dx = bx - ax
+    const dy = by - ay
+    const len2 = dx * dx + dy * dy
+    let worst = -1
+    let worstD = tol
+    for (let i = a + 1; i < b; i++) {
+      const [px, py] = xy[i]
+      let t = len2 > 0 ? ((px - ax) * dx + (py - ay) * dy) / len2 : 0
+      t = Math.max(0, Math.min(1, t))
+      const d = Math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+      if (d > worstD) {
+        worstD = d
+        worst = i
+      }
+    }
+    if (worst >= 0) {
+      keep[worst] = 1
+      stack.push([a, worst], [worst, b])
+    }
+  }
+  return pts.filter((_, i) => keep[i])
+}
+
+const splitCache = new WeakMap<QuestionRecord, Map<number, ShadeSplit | null>>()
+export function shadeSplit(record: QuestionRecord, zoneMi: number): ShadeSplit | null {
+  const elim = eliminatedRegionGeom(record)
+  if (!elim || !elim.length) return null
+  if (!(zoneMi > 0)) return { solid: elim, stripes: [] }
+  let byZone = splitCache.get(record)
+  if (!byZone) {
+    byZone = new Map()
+    splitCache.set(record, byZone)
+  }
+  if (byZone.has(zoneMi)) return byZone.get(zoneMi) ?? null
+  const out = buildShadeSplit(record, elim, zoneMi)
+  byZone.set(zoneMi, out)
+  return out
+}
+
+// Equal-radius disk unions (measure POI / airport / rail station): offsetting
+// the radius by the zone is exact for "closer" and a safe under-estimate of the
+// solid area for "further", and far cheaper than buffering thousands of arcs.
+function diskUnionSites(record: QuestionRecord): { sites: LatLng[]; d: number } | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  if (!Number.isFinite(seeker.lat) || !Number.isFinite(seeker.lon)) return null
+  if (record.kind === 'measure-poi') {
+    const list = POI_BY_CATEGORY[String(p.poiCat)]
+    return list && list.length ? { sites: list, d: nearestPoiMiles(seeker, String(p.poiCat)) } : null
+  }
+  if (record.kind === 'measure-airport') return { sites: Object.values(AIRPORTS), d: nearestAirport(seeker).distMiles }
+  if (record.kind === 'measure-railstation') return { sites: RAIL_STATIONS, d: nearestRailStationMiles(seeker) }
+  return null
+}
+
+function diskUnion(sites: LatLng[], r: number): MultiPolygon {
+  const segs = diskSegments(sites.length, r)
+  return robustUnion(sites.map((c) => [diskRing(c, r, segs)]))
+}
+
+function buildShadeSplit(record: QuestionRecord, elim: MultiPolygon, zoneMi: number): ShadeSplit {
+  const disks = diskUnionSites(record)
+  if (disks && Number.isFinite(disks.d) && disks.d > 0) {
+    try {
+      const closer = record.params.answer === 'closer'
+      let solid: MultiPolygon
+      // A few metres of slack so disk facets never put a surviving station in solid.
+      const slack = 0.005
+      if (closer) solid = polygonClipping.difference([WORLD_RING], diskUnion(disks.sites, disks.d + zoneMi + slack))
+      else solid = disks.d > zoneMi + slack ? diskUnion(disks.sites, disks.d - zoneMi - slack) : []
+      return { solid, stripes: solid.length ? polygonClipping.difference(elim, solid) : elim }
+    } catch {
+      return { solid: elim, stripes: [] }
+    }
+  }
+  const kept = zoneRegions(record)?.keptGeom ?? []
+  const cosRef = Math.cos((PLAY_REF_LAT * Math.PI) / 180) || 1e-6
+  const padY = zoneMi * DEG_PER_MILE * 1.05
+  const padX = padY / cosRef
+  const [x0, y0, x1, y1] = bboxOf(elim)
+  const lines = keptEdgesNear(kept, [x0 - padX, y0 - padY, x1 + padX, y1 + padY])
+    .map((l) => simplifyLine(l, cosRef))
+  if (!lines.length) return { solid: elim, stripes: [] }
+  const band = bufferPolylines(lines, zoneMi, PLAY_REF_LAT)
+  if (!band.length) return { solid: elim, stripes: [] }
+  try {
+    return {
+      solid: polygonClipping.difference(elim, band),
+      stripes: polygonClipping.intersection(elim, band),
+    }
+  } catch {
+    return { solid: elim, stripes: [] }
+  }
+}
+
+export interface ComposedShading {
+  // one per question, drawn translucent so overlapping solids darken
+  solids: LatLngMultiPolygon[]
+  // a single layer: every question's stripes minus every solid
+  stripes: LatLngMultiPolygon
+}
+
+export function composeShading(splits: ShadeSplit[]): ComposedShading {
+  const solids = splits.map((s) => s.solid).filter((m) => m.length > 0)
+  const allStripes = robustUnion(splits.flatMap((s) => s.stripes))
+  let stripes = allStripes
+  if (allStripes.length && solids.length) {
+    try {
+      stripes = polygonClipping.difference(allStripes, ...solids)
+    } catch {
+      stripes = allStripes
+    }
+  }
+  return { solids: solids.map(toLatLng), stripes: toLatLng(stripes) }
 }

@@ -89,6 +89,7 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('ask')
   const [showEliminated, setShowEliminated] = useState(true)
   const [satellite, setSatellite] = useState(false)
+  const [stripes, setStripes] = useState(true)
   // on phones the secondary header controls (show-eliminated / satellite / Reset)
   // collapse behind a ⚙ button so the topbar stays one compact row
   const [settingsOpen, setSettingsOpen] = useState(false)
@@ -480,6 +481,10 @@ export default function App() {
               <input type="checkbox" checked={satellite} onChange={(e) => setSatellite(e.target.checked)} />
               satellite
             </label>
+            <label className="chk" title="Striped = the hider couldn't have answered from there, but a station there may still be theirs. Off: shade every answer-time area solid.">
+              <input type="checkbox" checked={stripes} onChange={(e) => setStripes(e.target.checked)} />
+              uncertainty stripes
+            </label>
             <ZoneCurseControl
               curses={game.zoneCurses}
               radiusMi={hidingRadiusMi}
@@ -516,6 +521,7 @@ export default function App() {
             onClearAnnotations={clearAnnotations}
             endgameStation={endgameStation}
             hidingRadiusMi={hidingRadiusMi}
+            stripes={stripes}
             focusTarget={focusTarget}
             poiFocus={poiFocus}
             onStartEndgame={(id) => update({ endgame: id })}
@@ -776,6 +782,14 @@ export default function App() {
                 <span className="info-tag">{MAP_NAME}</span>{' '}
                 <span className="info-tag">{game.gameSize}</span> game{' '}
                 <span className="info-tag">{STATIONS.length} stations</span>
+              </p>
+              <h3>Shading</h3>
+              <p className="hint">
+                Shading shows where the hider could <i>not</i> have been when they answered; they may
+                have moved since, but only within their station's hiding zone.
+                <b> Solid red:</b> no station centred there can be theirs (darker = ruled out by 2+ questions).
+                <b> Stripes:</b> a station there may still be theirs, because its hiding zone reaches somewhere
+                the answer allows. Turn stripes off in ⚙ to shade every answer-time area solid.
               </p>
               <h3>Share / load board</h3>
               <details className="share-board" open>
