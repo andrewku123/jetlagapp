@@ -217,6 +217,18 @@ it would have to be hand-entered.
      - `counties` (a FeatureCollection of the metro + neighbor county polygons;
        reuse the same file the county Matching question reads,
        `src/data/counties.geojson.json`, via the `data:` path prefix)
+     - `county_water` (optional): county lines that cross water INSIDE the play
+       area (bays, harbors, rivers). The county polygons are land-only, so the
+       pairwise build misses them (e.g. SF/Alameda/San Mateo down SF Bay, ~59 mi
+       on the Bay map). Generate with `CITY=<slug> python3
+       scripts/build_county_water_borders.py` (Census TIGER/Line full-res
+       counties, ~83 MB download cached in ~/.cache; set TIGER_COUNTY_SHP to
+       reuse a local copy) → `scripts/measure_src/county_water_borders.<slug>.geojson`.
+       Rule (Andrew): a border segment counts iff it is in the play area, so
+       open-ocean extensions are dropped. Then re-run build_measure_features.py
+       (and for SF Muni re-clip its measure-features from the Bay file, step 8
+       of build_sfmuni_region.py). Verified: land borders sit within 250 ft of
+       TIGER; station distances within 0.03 mi of a TIGER oracle.
      - `states` + `countries` source geojson (US states file + Natural Earth
        admin-0 already in `scripts/measure_src/`)
      - `state` + `state_neighbors` (the 1st-admin div the metro is in and the

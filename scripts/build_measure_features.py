@@ -73,6 +73,9 @@ CITIES = {
         # then convert each way's geometry to a LineString Feature.
         "coastline_detail": "measure_src/osm_coastline_bayarea.geojson",
         "counties": "data:counties.geojson.json",
+        # County lines over Bay water inside the play area (the county polygons
+        # above are land-only). Regenerate: scripts/build_county_water_borders.py
+        "county_water": "measure_src/county_water_borders.bayarea.geojson",
         "states": "measure_src/us-states.geojson",
         "countries": "measure_src/countries.geojson",
         "state": "California",
@@ -169,6 +172,7 @@ CITIES = {
         "bay": "la_ocean.geojson.json",
         "coastline_detail": "measure_src/osm_coastline_la.geojson",
         "counties": "data:la.counties.geojson.json",
+        "county_water": "measure_src/county_water_borders.la.geojson",
         "states": "measure_src/us-states.geojson",
         "countries": "measure_src/countries.geojson",
         "state": "California",
@@ -377,7 +381,7 @@ def build_coastline(land, saltwater, play, bay, clip, dams=None, exclude=None, d
     return unary_union(parts) if parts else shore
 
 
-def build_county_border(counties, clip):
+def build_county_border(counties, clip, water=None):
     # internal shared boundaries between adjacent county polygons (no coast:
     # coast edges belong to only one county so never appear in a pairwise
     # intersection)
@@ -389,6 +393,8 @@ def build_county_border(counties, clip):
             inter = bi.intersection(counties[j].boundary)
             if not inter.is_empty and inter.length > 0:
                 lines.append(inter)
+    if water is not None:
+        lines.append(water)
     return unary_union(lines).intersection(clip)
 
 
@@ -474,6 +480,8 @@ def main():
     play = unary_union(feats(load(src(cfg["play"])))) if cfg.get("play") else None
     bay = unary_union(feats(load(src(cfg["bay"])))) if cfg.get("bay") else None
     counties = feats(load(src(cfg["counties"])))
+    county_water = unary_union(feats(load(src(cfg["county_water"])))) \
+        if cfg.get("county_water") else None
     states = load(src(cfg["states"]))
     countries = load(src(cfg["countries"]))
 
@@ -495,7 +503,7 @@ def main():
         coast_detail, cfg.get("coast_water_clip"), piers)
     features = (
         ("coastline", to_multiline(coastline, 0.00015)),
-        ("county-border", to_multiline(build_county_border(counties, clip), 0.0007)),
+        ("county-border", to_multiline(build_county_border(counties, clip, county_water), 0.0007)),
         ("state-border", to_multiline(build_state_border(states, cfg, clip),
                                       cfg.get("state_simplify", 0.003))),
         ("intl-border", to_multiline(build_intl_border(countries, cfg, clip), 0.003)),
