@@ -56,6 +56,9 @@ export function stationPasses(station: Station, record: QuestionRecord, fallback
     case 'match-line':
       return centerPasses(station, record)
     case 'measure-sealevel': {
+      // In endgame the hider may answer by real height (bridge, rooftop), which
+      // ground terrain can't bound: a note until the endgame flag is cleared.
+      if (record.endgame) return true
       // Tie folds into the smaller side ("closer" = lower altitude): keep <=.
       const seeker = n(p.value)
       if (!Number.isFinite(seeker)) return true

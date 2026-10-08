@@ -116,6 +116,12 @@ return the same geometry for endgame and non-endgame records; the endgame path j
 clips it to the hiding-zone disk. Covered by `endgameShading.test.ts` and
 `zoneElimination.test.ts`.
 
+**Exception, sea level:** in endgame the hider may answer by real height (bridge
+deck, public rooftop), which ground terrain can't bound. So an endgame-flagged
+`measure-sealevel` is a note only (`stationPasses` returns true), even after
+exiting endgame, until the seeker unmarks it. Outside endgame both sides use USGS
+ground elevation.
+
 ## Gotchas
 - **Don't invert the shading.** A regression once shaded the *inside* of the zone;
   the rule is eliminated-area-shaded, hiding-zone-clear, matching every other
