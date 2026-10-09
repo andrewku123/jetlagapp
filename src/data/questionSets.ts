@@ -94,8 +94,7 @@ export const MATCHING: SubjectCard[] = [
 
 // ---------------------------------------------------------------------------
 // Measuring — "Compared to me, are you closer to or further from ___?"
-// Every subject is available in all game sizes. (The lifack book lists only
-// International / 1st / 2nd admin-division borders, but we keep 3rd/4th too.)
+// Every subject is available in all game sizes.
 // ---------------------------------------------------------------------------
 export const MEASURING: SubjectCard[] = [
   { subject: 'A Commercial Airport', group: 'Transit', note: 'distance to nearest airport', sizes: ALL, appKind: 'measure-airport' },
@@ -104,8 +103,6 @@ export const MEASURING: SubjectCard[] = [
   { subject: 'An International Border', group: 'Borders', note: 'nearest US–Mexico line', sizes: ALL, appKind: 'measure-feature' },
   { subject: 'A 1st Admin. Div. Border', group: 'Borders', note: 'state line (CA land border, excludes the coast)', sizes: ALL, appKind: 'measure-feature' },
   { subject: 'A 2nd Admin. Div. Border', group: 'Borders', note: 'county line', sizes: ALL, appKind: 'measure-feature' },
-  { subject: 'A 3rd Admin. Div. Border', group: 'Borders', note: 'city line', sizes: ALL },
-  { subject: 'A 4th Admin. Div. Border', group: 'Borders', note: 'neighborhood line (where it exists)', sizes: ALL },
   { subject: 'Sea Level', group: 'Natural', note: 'higher vs lower elevation', sizes: ALL, appKind: 'measure-sealevel' },
   { subject: 'A Body of Water', group: 'Natural', note: 'nearest lake / bay / ocean', sizes: ALL },
   { subject: 'A Coastline', group: 'Natural', note: 'distance to the saltwater shore (Pacific + Bay)', sizes: ALL, appKind: 'measure-feature' },
