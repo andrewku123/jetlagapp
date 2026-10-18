@@ -1,0 +1,3 @@
+cat,keep,keep_lat,keep_lon,merged,merged_lat,merged_lon,merged_was_group,footprint,footprint_dam2
+movie_theater,Gardena Cinema,33.8960608,-118.3263563,Morning Calm Theatre,33.895978,-118.32607399999999,False,Gardena Cinema,0.88
+movie_theater,Vista Theatre,34.0982827,-118.2869511,Secret Movie Club,34.0984672,-118.28695330000001,False,The Vista Theatre,0.95
