@@ -85,8 +85,11 @@ direction is only served every ~2 h off-peak. See `scripts/compute_headways.py`
 (`gtfs_headways()` for GTFS feeds, `constant_headways()` for frequent
 fixed-frequency metro/light-rail).
 It's a game restriction derived from the data, not a user toggle (the old
-`≥hourly` checkbox is gone). Game size is still auto-derived from station count
-(`sizeForStationCount`) but only drives the question deck, not eligibility.
+`≥hourly` checkbox is gone). Game size is **not** derived from station count:
+it is declared per map in `src/data/region-sizes.json` (see `add-transit-city`,
+"Game size is a decision, not a derivation") and only drives the question deck
+and hiding-zone radius, not eligibility. Adding or removing stations never
+changes it.
 A TODO in `questionSets.ts` notes a future auto-relax for genuinely sparse maps;
 the Bay Area never triggers it (247 of 248 qualify at ≤60).
 
@@ -195,7 +198,7 @@ standardize script un-merges these and snaps each to its real SFMTA coordinate.
 npm run lint && npx tsc -b --noEmit && npm test && npm run build
 ```
 Then `npm run dev` and confirm the map renders all stations and the
-weekday/weekend + "≥hourly only" toggles change the "N of M possible" count.
+Weekday / Weekend toggle changes the "N of M possible" count where service differs.
 Also regenerate `STATIONS.md` (docs only) with `node scripts/build_stations_md.mjs`
 and the standalone `public/stations-map.html` if the set changed (they embed the
 station list). `STATIONS.md` holds **every shipped map** — one section per entry
