@@ -105,6 +105,16 @@ def short_name(name):
     return name
 
 
+# Long-term planned work that the static GTFS bakes into every day of the feed,
+# keyed by the affected stop -> a neighbouring stop on the same service that
+# runs normally. MTA alert "In Queens, Flushing-bound [7] skips 52 St and 69 St"
+# runs May 2026 - Sep 2027; outside it both stations have 7 local service both
+# ways, so they take 61 St-Woodside's headway instead of failing the
+# both-directions rule on a construction diversion. Drop an entry once the feed
+# no longer carries the diversion.
+PLANNED_WORK_HEADWAY = {"711": "712", "713": "712"}
+
+
 def hav(a, b):
     R = 6371000.0
     la1, lo1, la2, lo2 = map(math.radians, (a[0], a[1], b[0], b[1]))
@@ -172,6 +182,8 @@ def main():
     sub = feed("gtfs_subway")
     sub_routes = routes_by_stop(sub)
     sub_hw = headways(sub)
+    for sid, twin in PLANNED_WORK_HEADWAY.items():
+        sub_hw[sid] = dict(sub_hw[twin])
     complexes = defaultdict(list)
     for r in mta_stations():
         complexes[r["complex_id"]].append(r)

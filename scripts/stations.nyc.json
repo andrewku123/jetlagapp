@@ -2922,17 +2922,17 @@
   "aka": [],
   "service": {
    "wd": {
-    "served": false,
-    "hourly": false
+    "served": true,
+    "hourly": true
    },
    "we": {
-    "served": false,
-    "hourly": false
+    "served": true,
+    "hourly": true
    }
   },
   "headwayMin": {
-   "wd": 999,
-   "we": 999
+   "wd": 6,
+   "we": 10
   }
  },
  {
@@ -3288,17 +3288,17 @@
   "aka": [],
   "service": {
    "wd": {
-    "served": false,
-    "hourly": false
+    "served": true,
+    "hourly": true
    },
    "we": {
-    "served": false,
-    "hourly": false
+    "served": true,
+    "hourly": true
    }
   },
   "headwayMin": {
-   "wd": 999,
-   "we": 999
+   "wd": 6,
+   "we": 10
   }
  },
  {

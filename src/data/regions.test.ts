@@ -294,6 +294,13 @@ describe('New York City', () => {
       expect(s.headwayMin.wd).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
       expect(s.headwayMin.we).toBe(999)
     }
+    // A long-term diversion in the feed (Flushing-bound 7 skips 52 St and 69 St
+    // through 2027) must not drop real stations from the map.
+    for (const name of ['52 St', '69 St']) {
+      const st = stations.find((s) => s.name === name && s.lines.includes('7'))!
+      expect(st.headwayMin.wd).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
+      expect(st.headwayMin.we).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
+    }
     // The Staten Island Ferry runs every day and labels the stations at its ends.
     const sif = stations.filter((s) => s.lines.includes('Staten Island Ferry')).map((s) => s.name)
     expect(sif.sort()).toEqual(['South Ferry', 'St George'])
