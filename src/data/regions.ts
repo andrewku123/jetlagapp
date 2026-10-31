@@ -207,7 +207,7 @@ export const REGIONS: RegionData[] = [
   },
   {
     id: 'nyc',
-    name: 'New York City',
+    name: 'NYC',
     center: [40.72, -73.94],
     zoom: 11,
     // The five boroughs, named as boroughs (the Census counties are New York,
