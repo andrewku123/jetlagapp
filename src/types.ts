@@ -81,6 +81,11 @@ export interface QuestionRecord {
   // hider vetoed the question: no answer was given, so it eliminates nothing,
   // but it's kept (tagged) so the seeker knows they can ask it again.
   vetoed?: boolean
+  // info a curse handed the seekers (e.g. a casting cost like "seekers must be
+  // 3+ mi from the hider" is a free radar). It eliminates like an answer, but it
+  // wasn't a question: the hider draws no cards for it and it doesn't count
+  // toward the repeat-question multiplier.
+  curse?: boolean
   // asked during the endgame phase (answered from the hider's real position, not
   // the station centre). Still eliminates map-wide like any question, but in
   // endgame its shading is clipped to the hiding zone to sub-divide it. Toggleable

@@ -1,4 +1,4 @@
-import type { QuestionKind } from '../types'
+import type { QuestionKind, QuestionRecord } from '../types'
 import { haversineMiles } from '../lib/geo'
 import { AIRPORTS, MAP_STATES, MULTI_STATE } from './regions'
 
@@ -274,6 +274,41 @@ export const QUESTION_BY_KIND: Record<QuestionKind, QuestionMeta> =
 // The hider's reward for a question, scaled when it's the nth ask of that kind.
 export function rewardForKind(kind: QuestionKind, askMult = 1): string {
   return scaleCards(QUESTION_BY_KIND[kind]?.cards ?? '', askMult)
+}
+
+// Only real questions pay the hider and count toward the repeat multiplier;
+// info logged from a curse's casting cost is neither.
+export function countsAsAsk(q: Pick<QuestionRecord, 'curse'>): boolean {
+  return !q.curse
+}
+
+// Each counted record's 1-based ask ordinal within its questionGroupKey group, in
+// ask (createdAt) order. Curse info gets no ordinal.
+export function askOrdinals(questions: QuestionRecord[]): Map<string, number> {
+  const m = new Map<string, number>()
+  const counts = new Map<string, number>()
+  questions
+    .filter(countsAsAsk)
+    .sort((a, b) => a.createdAt - b.createdAt)
+    .forEach((q) => {
+      const key = questionGroupKey(q.kind, q.params)
+      const n = (counts.get(key) ?? 0) + 1
+      counts.set(key, n)
+      m.set(q.id, n)
+    })
+  return m
+}
+
+// How many times each question group has been asked (curse info excluded), so
+// the Ask form can preview the next ask's cost (n = count + 1).
+export function askGroupCounts(questions: QuestionRecord[]): Map<string, number> {
+  const m = new Map<string, number>()
+  for (const q of questions) {
+    if (!countsAsAsk(q)) continue
+    const key = questionGroupKey(q.kind, q.params)
+    m.set(key, (m.get(key) ?? 0) + 1)
+  }
+  return m
 }
 
 // Key that decides whether two asks count as "the same question" for the repeat

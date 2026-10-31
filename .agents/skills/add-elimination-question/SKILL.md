@@ -246,6 +246,22 @@ you to pick an answer — so the veto action lives in the **Ask form**, not Hist
   reward, and only offers **Delete** (no Disable/Un-veto — there's no answer to
   restore; to use it, ask it again with the answer).
 
+## Curse info (seekers learned it from a curse, not a question)
+Some curses hand the seekers information, e.g. a casting cost like "seekers must be
+3+ mi from the hider" is effectively a free radar. It should cut the map like an
+answer but must not look like a question.
+- The Ask form has a **From a curse** checkbox (`curseFlag`, resets after each
+  log). Submitting sets `curse: true` on the record; the Veto button is hidden
+  while it's checked (a curse can't be vetoed) and the cost preview reads
+  "curse info: no cards".
+- Elimination/shading ignore `curse`: the record eliminates exactly like the same
+  question with that answer.
+- `countsAsAsk(q)` (`src/data/questions.ts`) is false for curse records, so
+  `askOrdinals` gives them no ordinal and `askGroupCounts` skips them: the hider
+  draws no cards, and asking that question later still pays ×1.
+- History tags the row `curse info`, shows "Hider reward: none", and has a
+  **Mark / Unmark curse info** toggle for fixing it after the fact.
+
 ## Repeat-question reward multiplier
 Game rule: the **nth time the same question is asked**, the hider's card reward is
 multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
@@ -275,14 +291,15 @@ multiplied by n (2nd ask → ×2, 3rd → ×3 …). This is independent of veto.
   - every other kind keys on `kind` alone (`match-county` ≠ `match-city`, etc.).
   - If you add a new parameterised question whose cost depends on a param, extend
     `questionGroupKey` to include that param.
-- `App.tsx` builds `askOrdinal` (memo): records sorted by `createdAt`, each gets a
-  1-based ordinal within its group key. A **vetoed** ask still counts toward the tally.
+- `askOrdinals(questions)` (`src/data/questions.ts`, memoised in `App.tsx`): records
+  sorted by `createdAt`, each gets a 1-based ordinal within its group key. A
+  **vetoed** ask still counts toward the tally; **curse info** does not.
 - The History row shows `rewardForKind(kind, n)` (in `src/data/questions.ts`), which
   applies `scaleCards` — multiplies every integer in the "draw X, keep Y" string by
   n. Base reward per kind is the `cards` field in `QUESTION_CATALOG`.
 - **Live cost preview:** the Ask form blurb shows what the *next* ask would cost.
-  `App.tsx` passes `askGroupCounts` (a `Map<groupKey, count>` over existing
-  questions) to `QuestionForm`, which computes `questionGroupKey` from the *current*
+  `App.tsx` passes `askGroupCounts(questions)` (a `Map<groupKey, count>` over
+  existing questions, curse info excluded) to `QuestionForm`, which computes `questionGroupKey` from the *current*
   form params (selected radius / set A-B points) and shows `scaleCards(meta.cards,
   count+1)` with a `×n, nth time asked` note. Updates as the radius dropdown or A/B
   points change.
