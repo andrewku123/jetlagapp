@@ -130,7 +130,7 @@ REGIONS = {
         "zctas": "src/data/la.zctas.geojson.json",
     },
     "nyc": {
-        "label": "New York City",
+        "label": "NYC",
         "suffix": ".nyc",
         "play": "src/data/nyc.play-area.geojson.json",
         "viz": "scripts/poi_merge_viz.nyc.js",
