@@ -20,9 +20,10 @@ own data — no Overpass call, no hand-maintained lists.
 python3 scripts/make_reference_pdf.py --region bay
 # -> ./jetlag_reference_bay_medium.pdf   (git-ignored deliverable)
 ```
-**A map is a game size**: `REGIONS[region]["size"]` decides the deck, so
-`--region` alone prints the right card and a new map declares its size in that
-one entry (all three maps are `medium` today). `--size small|medium|large`
+**A map is a game size**: `src/data/region-sizes.json` (keyed by each
+`REGIONS` entry's `app_id`, the same file the app reads) decides the deck, so
+`--region` alone prints the right card and a new map declares its size there
+once (every map is `medium` today). `--size small|medium|large`
 overrides it; `--out PATH` overrides the filename. Requires
 `pip install playwright` and the CDP Chrome on `localhost:29229`.
 

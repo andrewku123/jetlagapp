@@ -17,7 +17,7 @@ end-game phase). It collapses the whole board to that one station + a circle.
     eligible `base` list (null if cleared).
   - `hidingRadiusMi = hidingRadiusMi(game.gameSize, game.zoneCurses)` from
     `src/lib/hidingZone.ts` — the size default from `SIZE_PARAMS`
-    (`src/data/questionSets.ts`, size auto-derived from station count) times the
+    (`src/data/questionSets.ts`; size declared per map in `region-sizes.json`) times the
     curse multiplier (see *Curse-resized zone* below). Every consumer reads this
     one value; never re-read `SIZE_PARAMS` at a call site.
   - While `endgameStation` is set, `remaining = [endgameStation]` and everything
