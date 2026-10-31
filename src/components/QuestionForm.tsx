@@ -14,7 +14,8 @@ import { cityAt, inPlayArea, NO_CITY_LABEL } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { usgsGroundElevationM } from '../lib/usgsElevation'
 import { PHOTO, type GameSize } from '../data/questionSets'
-import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
+import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE, LANDMASS_ELIMINATES, HSR_ELIMINATES } from '../data/regions'
+import { landmassAt } from '../lib/landmass'
 
 interface Props {
   lastClick: LatLng | null
@@ -90,13 +91,18 @@ function featureSubjectLabel(key: string): string {
 // Kinds that have no auto-eliminator — logged for the seeker's notes only. State
 // Matching is one of them only where the map can't answer it: on a map spanning a
 // state line it asks for a location and eliminates like county Matching.
+// Landmass Matching and high-speed-rail Measuring are real only on a map with
+// more than one landmass in play / an in-play HSR line (NYC).
 const MATCH_LOGONLY: QuestionKind[] = [
   'match-street',
   'match-admin4',
-  'match-landmass',
+  ...(LANDMASS_ELIMINATES ? [] : (['match-landmass'] as QuestionKind[])),
   ...(MULTI_STATE ? [] : (['match-admin1'] as QuestionKind[])),
 ]
-const MEASURE_LOGONLY: QuestionKind[] = ['measure-hsr', 'measure-water']
+const MEASURE_LOGONLY: QuestionKind[] = [
+  ...(HSR_ELIMINATES ? [] : (['measure-hsr'] as QuestionKind[])),
+  'measure-water',
+]
 
 function ordinalSuffix(n: number): string {
   const t = n % 100
@@ -507,14 +513,33 @@ export default function QuestionForm({
         params = { value, answer: yesno }
         break
       }
-      case 'match-street':
-      case 'match-admin4':
       case 'match-landmass': {
+        // Log-only on a one-landmass map, like the shared MATCH_LOGONLY case below.
+        if (!LANDMASS_ELIMINATES) {
+          params = { description: value.trim() || undefined, answer: yesno }
+          break
+        }
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        const lm = landmassAt(center)
+        if (!lm) return alert(inPlayArea(center) ? 'No landmass here.' : 'Outside the play area.')
+        params = { value: lm, fromLat: center.lat, fromLon: center.lon, answer: yesno }
+        break
+      }
+      case 'match-street':
+      case 'match-admin4': {
         // Record-keeping only: log the answer (+ optional detail) but eliminate nothing.
         params = { description: value.trim() || undefined, answer: yesno }
         break
       }
-      case 'measure-hsr':
+      case 'measure-hsr': {
+        if (!HSR_ELIMINATES) {
+          params = { description: value.trim() || undefined, answer: closefar }
+          break
+        }
+        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        params = { feature: 'hsr', fromLat: center.lat, fromLon: center.lon, answer: closefar }
+        break
+      }
       case 'measure-water': {
         params = { description: value.trim() || undefined, answer: closefar }
         break
@@ -906,6 +931,39 @@ export default function QuestionForm({
             )
           })()}
           {yesNo}
+        </>
+      )}
+
+      {kind === 'match-landmass' && LANDMASS_ELIMINATES && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (() => {
+            const lm = landmassAt(center)
+            return (
+              <p className="blurb poi-readout">
+                {lm ? <>Your landmass: <b>{lm}</b></> : inPlayArea(center) ? 'Not on land.' : 'Outside the play area.'}
+              </p>
+            )
+          })()}
+          {yesNo}
+        </>
+      )}
+
+      {kind === 'measure-hsr' && HSR_ELIMINATES && (
+        <>
+          <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
+          {center && (
+            <p className="blurb poi-readout">
+              Distance to the high-speed train line: <b>{formatDistance(distanceToFeatureMiles(center, 'hsr'), units)}</b>
+            </p>
+          )}
+          <div className="row">
+            <label>Answer</label>
+            <div className="seg">
+              <button className={closefar === 'closer' ? 'on' : ''} onClick={() => setClosefar('closer')}>Closer</button>
+              <button className={closefar === 'further' ? 'on' : ''} onClick={() => setClosefar('further')}>Further</button>
+            </div>
+          </div>
         </>
       )}
 

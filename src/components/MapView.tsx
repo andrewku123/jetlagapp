@@ -328,7 +328,7 @@ const LINE_LENGTH_MI = 60
 const POI_SHADED_KINDS = new Set<string>([
   'match-poi', 'measure-poi', 'measure-feature', 'match-airport', 'measure-airport',
   'match-admin1', 'match-county', 'match-city', 'measure-zip', 'tentacle', 'tentacle-line',
-  'measure-railstation',
+  'measure-railstation', 'match-landmass', 'measure-hsr',
 ])
 
 // hatched fill for the uncertainty band (pattern defined by StripeRenderer)
@@ -1123,7 +1123,7 @@ export default function MapView({
         r.kind === 'match-airport' || r.kind === 'measure-airport' ||
         r.kind === 'match-admin1' || r.kind === 'match-county' ||
         r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line' ||
-        r.kind === 'measure-railstation',
+        r.kind === 'measure-railstation' || r.kind === 'match-landmass' || r.kind === 'measure-hsr',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),

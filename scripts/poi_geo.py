@@ -129,6 +129,37 @@ REGIONS = {
         "countiesGeo": "src/data/la.counties.geojson.json",
         "zctas": "src/data/la.zctas.geojson.json",
     },
+    "nyc": {
+        "label": "New York City",
+        "suffix": ".nyc",
+        "play": "src/data/nyc.play-area.geojson.json",
+        "viz": "scripts/poi_merge_viz.nyc.js",
+        "ledger": "scripts/poi_decisions.nyc.json",
+        "poi": "src/data/nyc.poi.json",
+        "counties": ["New York", "Kings", "Queens", "Bronx", "Richmond"],
+        "geonamesCountry": "US",
+        "pendingCats": ["museum", "library", "movie_theater", "hospital", "zoo",
+                        "aquarium", "amusement_park", "park", "golf_course",
+                        "consulate", "mountain", "stadium"],
+        # --- map build (stations + geometry) ---
+        # The five boroughs, shoreline-clipped, built by build_nyc_geo.py (play
+        # area, landmasses, coastline, borders, HSR) rather than
+        # build_play_area.py: the city limit IS the play area, no curation.
+        "states": [("36", "New York")],
+        "stations": "src/data/nyc.stations.json",
+        "transitLines": "src/data/nyc.transit-lines.geojson.json",
+        "places": "src/data/nyc.places.geojson.json",
+        "countiesGeo": "src/data/nyc.counties.geojson.json",
+        "zctas": "src/data/nyc.zctas.geojson.json",
+        # Station county = the borough polygon it stands in (or nearest, for a
+        # ferry landing on a pier), named as the borough; see build_nyc_geo.py.
+        "countyFromGeo": True,
+        "agencies": ["Subway", "SIR", "LIRR", "NYC Ferry", "Staten Island Ferry",
+                     "Roosevelt Island Tram"],
+        # Google Maps place pins. EWR is out: New Jersey isn't in play.
+        "airports": {"JFK": (40.6446124, -73.7797278),
+                     "LGA": (40.7766392, -73.87425)},
+    },
 }
 
 # Every stage defaults to this region, so a whole session can be pointed at one

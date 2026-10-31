@@ -1,6 +1,6 @@
 import type { QuestionKind } from '../types'
 import { haversineMiles } from '../lib/geo'
-import { AIRPORTS, MAP_STATES, MULTI_STATE } from './regions'
+import { AIRPORTS, HSR_ELIMINATES, LANDMASS_ELIMINATES, MAP_STATES, MULTI_STATE, STATIONLESS_LANDMASSES } from './regions'
 
 // The airports the active map actually contains, in the order they're declared,
 // so the blurb names the ones a seeker can reach on this map (and nothing at all
@@ -43,6 +43,9 @@ export function scaleCards(cards: string, mult: number): string {
 // Only the medium-game-legal questions that the engine can auto-apply, plus a
 // generic Photo logger. POI-based matching/measuring/tentacles are tracked
 // separately as they require extra geodata.
+// Up to three stationless islands with a real name, for the landmass blurb.
+const NAMED_ISLANDS = STATIONLESS_LANDMASSES.filter((n) => !n.startsWith('Island at')).slice(0, 3)
+
 export const QUESTION_CATALOG: QuestionMeta[] = [
   {
     kind: 'radar',
@@ -142,10 +145,14 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
   {
     kind: 'match-landmass',
     category: 'Matching',
-    label: 'Matching — Landmass (log only)',
+    label: LANDMASS_ELIMINATES ? 'Matching — Landmass' : 'Matching — Landmass (log only)',
     cards: 'draw 3, keep 1',
-    eliminates: false,
-    blurb: 'Are you on the same landmass as me? Log only — the whole play area is one connected landmass, so this is always “same”; recorded for your reference.',
+    eliminates: LANDMASS_ELIMINATES,
+    blurb: LANDMASS_ELIMINATES
+      ? 'Are you on the same landmass as me? Bridges and tunnels don\'t join landmasses. Set your location; the app shows your landmass.'
+      : `Are you on the same landmass as me? Log only — every station is on one landmass${
+          NAMED_ISLANDS.length ? ` (islands such as ${NAMED_ISLANDS.join(', ')} have no station)` : ''
+        }, so the hider is always on the same one; recorded for your reference.`,
   },
   // --- Measuring · Transit ---
   {
@@ -159,10 +166,12 @@ export const QUESTION_CATALOG: QuestionMeta[] = [
   {
     kind: 'measure-hsr',
     category: 'Measuring',
-    label: 'Measuring — High-speed train line (log only)',
+    label: HSR_ELIMINATES ? 'Measuring — High-speed train line' : 'Measuring — High-speed train line (log only)',
     cards: 'draw 3, keep 1',
-    eliminates: false,
-    blurb: 'Compared to me, are you closer to or further from a high-speed train line? Log only — there is no high-speed rail in the play area, so this is recorded for your reference and eliminates nothing.',
+    eliminates: HSR_ELIMINATES,
+    blurb: HSR_ELIMINATES
+      ? 'Compared to me, are you closer to or further from a high-speed train line (Amtrak\'s Acela route)? Set your location; the app shows your distance to the line.'
+      : 'Compared to me, are you closer to or further from a high-speed train line? Log only — there is no high-speed rail in the play area, so this is recorded for your reference and eliminates nothing.',
   },
   {
     kind: 'measure-railstation',
