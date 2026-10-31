@@ -88,12 +88,16 @@ export function describeRecord(r: QuestionRecord, units: UnitSystem = 'imperial'
       if (r.kind === 'match-admin1' && p.value) {
         return `Same state as "${String(p.value)}"?${arrow(String(a))}`
       }
+      if (r.kind === 'match-landmass' && p.value) {
+        return `Same landmass as "${String(p.value)}"?${arrow(String(a))}`
+      }
       const detail = p.description ? ` "${String(p.description)}"` : ''
       const subject = { 'match-street': 'street/path', 'match-admin1': 'state', 'match-admin4': 'neighborhood', 'match-landmass': 'landmass' }[r.kind]
       return `Same ${subject}?${detail}${arrow(String(a).toUpperCase())} (log only)`
     }
     case 'measure-hsr':
     case 'measure-water': {
+      if (r.kind === 'measure-hsr' && p.feature) return `Closer/further from high-speed rail${arrow(String(a))}`
       const detail = p.description ? ` "${String(p.description)}"` : ''
       const subject = { 'measure-hsr': 'high-speed rail', 'measure-water': 'body of water' }[r.kind]
       return `Closer/further from ${subject}?${detail}${arrow(String(a))} (log only)`

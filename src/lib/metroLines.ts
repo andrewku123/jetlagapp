@@ -25,8 +25,10 @@ export interface MetroLine {
 }
 
 interface RawFeature {
-  // `name` pins the line name (a weekday- or weekend-only line, see
-  // RegionData.weekdayExcludedLines); otherwise it's derived from station.lines.
+  // `name` pins the line name: a weekday- or weekend-only line (see
+  // RegionData.weekdayExcludedLines / weekendExcludedLines), or a feature that
+  // carries several services (NYC's "8 Av: A C E" trunk); otherwise it's
+  // derived from station.lines.
   properties: { system: string; colors: string[]; name?: string }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }

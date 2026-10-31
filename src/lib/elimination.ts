@@ -11,6 +11,7 @@ import { zoneRegions } from './questionRegions'
 import { regionWithinMiles } from './zoneFit'
 import { zoneElevationRange } from './zoneElevation'
 import { nearestRailStationMiles } from './railStations'
+import { landmassAt, stationLandmass } from './landmass'
 
 function n(v: unknown): number {
   return typeof v === 'number' ? v : Number(v)
@@ -74,10 +75,12 @@ export function stationPasses(station: Station, record: QuestionRecord, fallback
     case 'match-admin1':
     case 'match-county':
     case 'match-city':
+    case 'match-landmass':
     case 'match-airport':
     case 'match-poi':
     case 'measure-poi':
     case 'measure-feature':
+    case 'measure-hsr':
     case 'measure-airport':
     case 'measure-zip':
     case 'tentacle':
@@ -130,6 +133,13 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       const same = stationCity != null && stationCity === seekerCity
       return same === (p.answer === 'yes')
     }
+    case 'match-landmass': {
+      // Resolve both sides through the same landmass polygons as the shading.
+      const seekerLandmass = s(p.value) || landmassAt({ lat: n(p.fromLat), lon: n(p.fromLon) })
+      const own = stationLandmass(station)
+      if (!seekerLandmass || !own) return true
+      return (own === seekerLandmass) === (p.answer === 'yes')
+    }
     case 'match-airport': {
       const same = station.nearestAirport === s(p.value)
       return same === (p.answer === 'yes')
@@ -161,8 +171,9 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       // true hider); "further" stays strict (>).
       return (stationD <= seekerD) === (p.answer === 'closer')
     }
-    case 'measure-feature': {
-      const key = s(p.feature)
+    case 'measure-feature':
+    case 'measure-hsr': {
+      const key = record.kind === 'measure-hsr' ? 'hsr' : s(p.feature)
       const seeker = { lat: n(p.fromLat), lon: n(p.fromLon) }
       // Measure both the seeker and the station in the same seeker-centred flat
       // projection the shading buffer is built in, so eliminate/keep and the

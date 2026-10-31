@@ -18,3 +18,6 @@ jetlag_reference_*.pdf
 
 # GTFS feeds downloaded by scripts
 scripts/_gtfs_weta/
+
+# NYC build downloads (GTFS feeds, MTA station list)
+scripts/_gtfs_nyc/
