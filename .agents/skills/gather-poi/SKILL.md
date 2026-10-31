@@ -279,11 +279,13 @@ Carquinez Toy Train, …) used to slip past the audit and waste manual-review ti
 - `dedup_poi.py` then drops only `CLOSED_PERMANENTLY` pins up front (one
   chokepoint for all sources). Manual `drop` overrides that target a now-
   perm-closed pin are silently skipped (not warned).
-- **`CLOSED_TEMPORARILY` is deliberately NOT auto-dropped** — Google's temp-closed
-  flag is frequently stale (e.g. The Beat Museum, the 49ers Museum read
-  "temporarily closed" but are open). Those pins stay in the dataset and surface
-  on the review map for a human to judge; drop them by override only once
-  confirmed actually gone. Only `CLOSED_PERMANENTLY` is trusted as "really closed."
+- **`CLOSED_TEMPORARILY` is never *dropped*, but it is auto-`closed`** — Google's
+  temp-closed flag is frequently stale (e.g. The Beat Museum, the 49ers Museum read
+  "temporarily closed" but are open), so the pins stay in the dataset with `bs`,
+  and `poi_apply_edits.py` writes a reversible `closed` line for each into the
+  generated block of the edits file (see `closed` / `open` below). The reviewer only
+  adds `open <name>` for the stale ones. Only `CLOSED_PERMANENTLY` is trusted as
+  "really closed" (a sticky drop).
 - So you still need manual `drop` overrides for: (a) temp-closed pins you confirm
   are gone, (b) places Google reports `OPERATIONAL` but are actually closed
   (**stale Google data**, e.g. Aléna Museum), and (c) legit-but-unwanted pins.
@@ -571,6 +573,20 @@ its own pair of verbs:
 The map shows Google's flag rather than obeying it (dashed black ring, red badge,
 an "only pins Google calls closed" filter for triaging them in one pass), because
 the temp-closed flag is stale often enough that auto-dropping it loses real places.
+
+**Temp-closed pins are closed automatically, reversibly.** Every
+`poi_apply_edits.py` run rewrites a generated block at the end of
+`poi_edits.<region>.txt` (between `# >>> auto:` and `# <<< end auto`) with one
+coordinate-qualified `closed` line per visible pin Google calls
+`CLOSED_TEMPORARILY` (merged-away kids are skipped; the latest refresh sweep's
+status beats the pin's older `bs`). The block keeps listing places it already
+closed, so they stay closed until a reviewer adds `open <name>` **above** the block
+— that sets `closedOverride` and the block drops it for good. Ledger reason is
+`temp_closed_auto` (vs `closed` for a reviewer's own line). Never hand-edit the
+block; `--no-auto-closed` replays it as-is without regenerating. Expect most of
+these to be stale flags (the verification section below found ~90% open), so
+the review pass is now "add `open` for the open ones" instead of "close the
+closed ones".
 
 ### 6b. `registry_audit.py` — cross-check the finished pass against the registry
 **Run this on every category that has a reputable registry, at the end of the
@@ -1075,8 +1091,9 @@ standalone pins instead of taking them down with it.
    (i.e. the sweep couldn't price them). Never spend on: gate-passed pins, dropped
    pins, merged children, or **mountains** (kept regardless of reviews).
 4. **Closures.** `CLOSED_PERMANENTLY` -> auto-drop (already a chokepoint in
-   `dedup_poi.py`). `CLOSED_TEMPORARILY` -> manual queue, never auto-drop (Google's
-   temp flag is routinely stale — see the verification section above).
+   `dedup_poi.py`). `CLOSED_TEMPORARILY` -> queued in CHANGED and auto-`closed`
+   (reversibly) by the next edits replay, never auto-dropped (Google's temp flag
+   is routinely stale — see the verification section above).
    **Vanished from the sweep != closed**: search coverage wobbles, so a pin that
    simply stops being returned goes to the manual queue too.
 5. **Renames re-open a decision.** If a *dropped* pin comes back with a
@@ -1107,7 +1124,8 @@ invisible:
 - **NEW** — ids not in the ledger that pass icon + >=5, plus pins that just crossed
   the gate (the normal review/merge pass).
 - **UNDER5** — visible pins now known to be under 5 reviews; drop them per the rulebook.
-- **CHANGED** — renamed or temporarily closed; judge by hand.
+- **CHANGED** — renamed, temporarily closed (auto-closed on the next replay; add
+  `open` if stale), or closed but open again; judge by hand.
 - **GONE** — perm-closed (auto-dropped, listed for the record) and vanished pins.
 - **RECHECK** — a review-failure drop that now clears >=5 reviews. It keeps
   reappearing here until you act: put it back on the map, or `reject` it.

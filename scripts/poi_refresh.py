@@ -249,9 +249,10 @@ def reconcile(region, led, raw, details, write):
       * a drop that was only a **review failure** (`review_failed`, and the
         `legacy_first_pass` seed of a city curated before the ledger) is re-tested
         every refresh until it clears >=5 reviews, is deleted by hand, or is merged;
-      * closure and disappearance are *manual* signals -- only CLOSED_PERMANENTLY
-        auto-drops, because Google's temporary flag is routinely stale and a pin
-        missing from one sweep is usually search wobble, not a closed business;
+      * only CLOSED_PERMANENTLY auto-drops. CLOSED_TEMPORARILY is recorded here and
+        `poi_apply_edits.py` turns it into a reversible `closed` line (its
+        generated block), because the flag is sometimes stale; a pin missing from
+        one sweep is usually search wobble, not a closed business;
       * a `closed` decision is deliberately **not** sticky: it means "shut right
         now", so a scan that finds the place open again queues it for re-opening
         instead of leaving it buried like a delete.
@@ -328,8 +329,10 @@ def reconcile(region, led, raw, details, write):
                                                    "closed (auto-dropped)"))
                     rec.update(decision="drop", reason="closed_permanently", decidedAt=day)
                 elif status != CLOSED_TEMP:
+                    who = ("auto-closed on Google's temporarily-closed flag"
+                           if rec.get("reason") == "temp_closed_auto" else "closed by hand")
                     q["CHANGED"].append(entry(
-                        rec, k, "closed by hand, but Google shows it open again — "
+                        rec, k, f"{who}, but Google shows it open again — "
                                 f"add `open {rec['name']}` to put it back",
                         {"reviews": n}))
                 if renamed:
@@ -348,7 +351,10 @@ def reconcile(region, led, raw, details, write):
             elif status == CLOSED_TEMP and not rec.get("closedOverride"):
                 # `closedOverride` is a human who checked and said it's open:
                 # don't re-ask every refresh about a flag we already judged stale
-                q["CHANGED"].append(entry(rec, k, "temporarily closed — verify by hand"))
+                # the next `poi_apply_edits.py` run closes it in its generated block
+                q["CHANGED"].append(entry(
+                    rec, k, "temporarily closed — auto-closed on the next edits replay; "
+                            f"add `open {rec['name']}` if it is actually open"))
             elif renamed:
                 q["CHANGED"].append(entry(rec, k, "renamed", {"newName": pl["name"]}))
                 rec["name"] = pl["name"]
@@ -383,7 +389,8 @@ def write_report(region, q):
     head = {
         "NEW": "New places to review (icon + >=5 reviews)",
         "UNDER5": "Visible pins under 5 reviews — should be dropped per the rulebook",
-        "CHANGED": "Renamed / temporarily closed — judge by hand",
+        "CHANGED": "Renamed / temporarily closed (auto-closed; add `open` if stale) "
+                   "/ closed but open again — judge by hand",
         "GONE": "Permanently closed (auto-dropped) or missing from the sweep",
         "RECHECK": "First-pass deletions that now clear the >=5-review rule (one-time re-test)",
     }

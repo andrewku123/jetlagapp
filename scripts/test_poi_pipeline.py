@@ -224,6 +224,55 @@ except LookupError:
     check("re-opening something that was never closed fails loudly", True)
 
 
+# ------------------------------------------- temp-closed pins: auto `closed`
+print("\nauto-closed block")
+
+o = viz()
+led = ledger_from(o)
+o["hospital"]["singles"][0]["bs"] = R.CLOSED_TEMP          # Solo
+o["hospital"]["groups"][1]["rep"]["bs"] = R.CLOSED_TEMP    # Rep B
+o["hospital"]["groups"][0]["kids"][0]["bs"] = R.CLOSED_TEMP  # Kid A1 (merged away)
+block = E.auto_closed_block(o, led)
+names_in = lambda b: [p[0] for _, _, p in E.parse_lines(b)[0]]
+check("every visible temp-closed pin gets a `closed` line, merged-away kids don't",
+      sorted(names_in(block)) == ["Rep B", "Solo"], block)
+check("the block round-trips through the edits-file splitter",
+      E.split_auto(["delete X\n"] + block) == (["delete X\n", "\n"],
+                                                [l for l in block[3:-1]]))
+for _, v, p in E.parse_lines(block)[0]:
+    E.apply_op(o, led, v, p, auto=True)
+C.sync_ledger(T, led, o)
+check("an auto line closes the pin, and the ledger says the pipeline did it",
+      not C.find(o, "Solo") and led["places"]["google:s"]["decision"] == "closed"
+      and led["places"]["google:s"]["reason"] == E.AUTO_REASON)
+check("the block keeps listing places it already closed (they're off the map now)",
+      sorted(names_in(E.auto_closed_block(o, led))) == ["Rep B", "Solo"])
+check("re-applying the block is a no-op",
+      all(E.apply_op(o, led, v, p, auto=True) == "already closed"
+          for _, v, p in E.parse_lines(E.auto_closed_block(o, led))[0]
+          if p[0] in ("Solo", "Rep B")))
+E.apply_op(o, led, "open", ("Solo", None))
+check("an `open` line puts it back and drops it from the block for good",
+      C.find(o, "Solo") and "Solo" not in names_in(E.auto_closed_block(o, led)))
+C.sync_ledger(T, led, o)
+check("...also after the ledger sync", "Solo" not in names_in(E.auto_closed_block(o, led)))
+
+o = viz()
+led = ledger_from(o)
+E.apply_op(o, led, "closed", ("Solo", None))
+o["hospital"]["groups"][1]["rep"]["bs"] = R.CLOSED_TEMP
+check("a reviewer's own closure is not duplicated in the block",
+      names_in(E.auto_closed_block(o, led)) == ["Rep B"])
+
+o = viz()
+led = ledger_from(o)
+o["hospital"]["singles"][0]["bs"] = R.CLOSED_TEMP
+led["lastRefresh"] = "2026-10-01"
+led["places"]["google:s"].update(lastSeen="2026-10-01", closed=None)
+led["places"]["google:a"].update(lastSeen="2026-10-01", closed=R.CLOSED_TEMP)
+check("the latest refresh sweep's status beats the pin's older flag",
+      names_in(E.auto_closed_block(o, led)) == ["Rep A"])
+
 # ------------------------------------------------------------ refresh / diff
 print("\nrefresh diff")
 
@@ -311,9 +360,10 @@ check("permanent closure auto-drops and reports it",
       and led["places"]["google:keep1"]["reason"] == "closed_permanently")
 
 led, q = run([place("keep1", "Kept Hospital", status=R.CLOSED_TEMP)])
-check("temporary closure is manual review, never an auto-drop",
+check("temporary closure is queued (the edits replay closes it), never an auto-drop",
       names(q, "CHANGED") == ["Kept Hospital"]
-      and led["places"]["google:keep1"]["decision"] == "pending")
+      and led["places"]["google:keep1"]["decision"] == "pending"
+      and led["places"]["google:keep1"]["closed"] == R.CLOSED_TEMP)
 
 led = base_ledger()
 led["places"]["google:keep1"]["closedOverride"] = True
@@ -328,6 +378,12 @@ check("a closed place found open again asks for an `open` line, and stays closed
       names(q, "CHANGED") == ["Kept Hospital"]
       and "open Kept Hospital" in q["CHANGED"][0]["why"]
       and led["places"]["google:keep1"]["decision"] == "closed", q["CHANGED"])
+led = base_ledger()
+led["places"]["google:keep1"].update(decision="closed", reason=E.AUTO_REASON)
+led, q = run([place("keep1", "Kept Hospital")], led=led)
+check("an auto-closed place found open again asks for an `open` line too",
+      names(q, "CHANGED") == ["Kept Hospital"] and "auto-closed" in q["CHANGED"][0]["why"]
+      and "open Kept Hospital" in q["CHANGED"][0]["why"], q["CHANGED"])
 led = base_ledger()
 led["places"]["google:keep1"].update(decision="closed", reason="closed")
 led, q = run([place("keep1", "Kept Hospital", status=R.CLOSED_TEMP)], led=led)
