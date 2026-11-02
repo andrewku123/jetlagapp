@@ -15,7 +15,7 @@ map so a code from one map is rejected on the other.
 | Map | Transit | Stations | Play area |
 |---|---|--:|--:|
 | **Bay Area** (default) | BART + Caltrain + VTA + Muni + SFO AirTrain + Oakland Alameda Water Shuttle (weekends), five counties | 265 | 1,236 sq mi |
-| **SF Muni** | the 7 Muni rail lines J/K/L/M/N/T/F, one city/county | 132 | 46 sq mi |
+| **SF Muni** | the 7 Muni rail lines J/K/L/M/N/T/F, one city/county | 131 | 46 sq mi |
 | **LA Metro** | Metro rail A/B/C/D/E/K + the G and J busways, Los Angeles County | 158 | 907 sq mi |
 
 A map is a self-contained bundle of data files — stations, play area, POIs,
@@ -23,10 +23,9 @@ places, counties, ZIPs, transit lines, measure features — and the app itself i
 region-agnostic: it reads whatever the active map supplies. Two consequences
 worth knowing:
 
-- **The map decides the game size**, from its station count against the
-  rulebook's own thresholds (small ≤100, medium ≤500, large beyond), and the
-  question deck follows. All three maps are **medium** games; the **Legend** tab
-  names the size under *About this map*.
+- **Each map declares its game size** in `src/data/region-sizes.json` (it isn't
+  derived from the station count), and the question deck follows. All three maps
+  are **medium** games; the **Legend** tab names the size under *About this map*.
 - **A question that can't discriminate on a map is demoted automatically**, from
   that map's data rather than a hand-kept list (see
   [Question demotion](#question-demotion)).
@@ -46,7 +45,7 @@ rule that does not loosen on bigger maps.
 - **BART** — all stations (50)
 - **Caltrain** — SF (4th & King) → San Jose Diridon → Tamien (24)
 - **VTA light rail** — full system (59)
-- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (132)
+- **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (131)
 - **SFO AirTrain** — all people-mover stops (11)
 - **Oakland Alameda Water Shuttle** — its two docks, Alameda Landing
   (Bohol Circle Immigrant Park, Alameda) and Jack London Sq (Oakland); **weekends
@@ -74,7 +73,7 @@ peak-only flag stop that can never satisfy the hourly rule.
 
 ### SF Muni
 
-The same 132 Muni rail stops, scoped to the **City & County of San Francisco**
+The same 131 Muni rail stops, scoped to the **City & County of San Francisco**
 and played as a day-pass map. Every other data file (POIs, play area,
 coastline/borders, places, counties, ZIPs, transit lines) is clipped to San
 Francisco. Service is identical both days, so the Weekday / Weekend toggle is
@@ -218,6 +217,14 @@ The Ask form previews this cost live as you choose parameters. If the hider
 it without an answer — it's recorded but eliminates nothing, and still counts
 toward the repeat-cost tally.
 
+When a **curse** hands the seekers information (e.g. a casting cost like
+"seekers must be 3+ mi from the hider", which is a free radar), log the
+equivalent question with **From a curse** ticked. It eliminates and shades
+exactly like an answered question, but it isn't a question: the hider draws no
+cards, and it doesn't count toward the repeat tally, so asking that question for
+real later still pays ×1. History tags the row `curse info`, and **Mark / Unmark
+curse info** fixes a row logged the wrong way.
+
 ## Endgame and hiding-zone curses
 
 Choosing **🎯 Endgame here** on a station locks the board onto it and draws its
@@ -350,7 +357,7 @@ map supplies.
   VTA), then enriched with county/city (US Census), elevation (USGS) and airport
   distances.
 - **SF Muni** (`sfmuni.*.json`) is derived from those files by
-  `scripts/build_sfmuni_region.py`, which keeps the 132 Muni-served stations and
+  `scripts/build_sfmuni_region.py`, which keeps the 131 Muni-served stations and
   clips every other file to the City & County of San Francisco. Because SF is a
   **consolidated city-county**, its county polygon is built from the same
   high-resolution, water-clipped land boundary as its city (not the coarse Census
