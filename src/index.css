@@ -75,8 +75,8 @@ body { background: var(--bg); color: var(--text); }
    edge is ours to set (the native one sat flush against it). */
 .region-pick select {
   appearance: none; -webkit-appearance: none;
-  background: var(--panel2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23e6eaef' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center;
-  color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 30px 5px 8px; cursor: pointer; font: inherit; font-size: 13px; field-sizing: content;
+  background: var(--panel2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23e6eaef' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
+  color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 5px 26px 5px 8px; cursor: pointer; font: inherit; font-size: 13px; field-sizing: content;
 }
 /* hiding-zone curse control (Prosperous / Tiny Home) */
 .zonecurse { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); white-space: nowrap; }
