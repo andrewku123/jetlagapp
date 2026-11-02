@@ -14,10 +14,10 @@ across (Randalls/Wards, City Island; KEEP_ISLANDS). Boat-only or closed islands
 marshes) are dropped, so nothing on them exists for questions.
 
 Landmasses (the Matching -> landmass question): connected pieces of land, where
-bridges and tunnels never join two pieces. The Rockaway peninsula has no land
-link to the rest of Queens inside the city, but it is joined to Long Island
-through Nassau County, so it is part of Long Island (LANDMASSES lists more than
-one seed for a landmass in that case). Marble Hill is on the mainland.
+bridges and tunnels never join two pieces. Land outside the play area doesn't
+exist for questions, so the Rockaway peninsula, whose only land link to the rest
+of Long Island runs through Nassau County, is its own landmass (reached by
+bridge, like Broad Channel). Marble Hill is on the mainland.
 
 Measure features (src/data/nyc.measure-features.geojson.json):
   coastline     the shore of salt water at least COAST_MIN_MI across, plus the
@@ -120,7 +120,8 @@ KEEP_ISLANDS = [("Randalls and Wards Island", 40.7935, -73.9230),
 LANDMASSES = {
     "Manhattan": [(40.7831, -73.9712)],
     "Mainland (Bronx)": [(40.8448, -73.8648)],
-    "Long Island (Brooklyn, Queens)": [(40.6782, -73.9442), (40.5860, -73.8200)],
+    "Long Island (Brooklyn, Queens)": [(40.6782, -73.9442)],
+    "Rockaway Peninsula": [(40.5860, -73.8200)],
     "Staten Island": [(40.5795, -74.1502)],
     "Roosevelt Island": [(40.7620, -73.9500)],
     "Broad Channel": [(40.6080, -73.8180)],

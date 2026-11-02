@@ -339,8 +339,10 @@ describe('New York City', () => {
     expect(landmassAt({ lat: 40.7831, lon: -73.9712 })).toBe('Manhattan')
     // Marble Hill is Manhattan's borough but stands on the mainland.
     expect(landmassAt({ lat: 40.8745, lon: -73.9105 })).toBe('Mainland (Bronx)')
-    // The Rockaways join Long Island through Nassau County.
-    expect(landmassAt({ lat: 40.5806, lon: -73.8358 })).toBe('Long Island (Brooklyn, Queens)')
+    // Nassau is out of play, so the Rockaways only reach Queens by bridge.
+    expect(landmassAt({ lat: 40.5806, lon: -73.8358 })).toBe('Rockaway Peninsula')
+    expect(landmassAt({ lat: 40.6005, lon: -73.7545 })).toBe('Rockaway Peninsula')
+    expect(landmassAt({ lat: 40.6782, lon: -73.9442 })).toBe('Long Island (Brooklyn, Queens)')
     const record = {
       id: 'q1',
       kind: 'match-landmass' as const,
