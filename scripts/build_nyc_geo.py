@@ -3,6 +3,10 @@
 
 Play area: the five boroughs, shoreline-clipped (NYC Open Data "Borough
 Boundaries", water areas excluded — far finer than Census cartographic files).
+The app's play-area file adds, for the satellite view (like the Bay Area's bay),
+the water inside the city limit plus the Hudson, Upper Bay and the kills across
+to the New Jersey shore (TIGER; MASKED_WATER closes Newark Bay, the Lower Bay
+and the ocean); land-only geometry drives the landmasses and coastline.
 An island stays in play when it has a station or a public bridge you can walk
 across (Randalls/Wards, City Island; KEEP_ISLANDS). Boat-only or closed islands
 (Governors, Liberty, Ellis, Rikers, North/South Brother, Hart, the Jamaica Bay
@@ -54,6 +58,34 @@ GTFS = os.path.join(HERE, "_gtfs_nyc")
 BOROUGHS = os.path.join(HERE, "measure_src", "nyc_boroughs.geojson")
 BOROUGHS_URL = "https://data.cityofnewyork.us/resource/gthc-hcne.geojson"
 STATIONS = os.path.join(HERE, "stations.nyc.json")
+# Satellite water beyond the city limit (TIGER AREAWATER): the Hudson, Upper
+# Bay, Kill Van Kull and Arthur Kill across to the New Jersey shore, cut north
+# at the Yonkers line, at the Newark Bay mouth and at Perth Amboy.
+NJ_WATER_COUNTIES = ["34017", "34003", "34039", "34023"]
+NJ_WATER_NAMES = {"Hudson Riv", "New York Bay", "Upper New York Bay",
+                  "Kill Van Kull", "Arthur Kill", "Newark Bay"}
+NJ_WATER_BOX = (-74.30, 40.49, -73.90, 40.9155)
+# Water that stays masked even inside the city limit (lon, lat rings): Newark Bay
+# north of Bergen Point-Elizabethport, and the open Lower Bay, Raritan Bay and
+# ocean beyond the Arthur Kill mouth, Sea Gate-South Beach and Rockaway Inlet
+# (Manhattan Beach-Breezy Point) lines.
+MASKED_WATER = [
+    [(-74.1440, 40.6425), (-74.1750, 40.6475), (-74.25, 40.65), (-74.25, 40.80),
+     (-74.115, 40.80), (-74.115, 40.66)],
+    [(-74.0135, 40.5790), (-74.0660, 40.5850), (-74.20, 40.54), (-74.2500, 40.4975),
+     (-74.2720, 40.5000), (-74.30, 40.40), (-73.60, 40.40), (-73.60, 40.597),
+     (-73.745, 40.597), (-73.76, 40.595), (-73.78, 40.593), (-73.80, 40.588),
+     (-73.82, 40.584), (-73.85, 40.577), (-73.88, 40.565), (-73.91, 40.559),
+     (-73.93, 40.553), (-73.94, 40.548), (-73.94, 40.578), (-73.96, 40.576),
+     (-73.99, 40.575), (-74.005, 40.577)],
+]
+
+
+def areawater(fips):
+    stem = f"tl_2023_{fips}_areawater"
+    return (f"https://www2.census.gov/geo/tiger/TIGER2023/AREAWATER/{stem}.zip", stem)
+
+
 TIGER_COUNTY = ("https://www2.census.gov/geo/tiger/TIGER2023/COUNTY/tl_2023_us_county.zip",
                 "tl_2023_us_county")
 CB_COUNTY = ("https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_county_500k.zip",
@@ -202,7 +234,6 @@ def main():
         print(f"  dropped island {p.area / 1e6:.2f} km2 at {c.y:.4f},{c.x:.4f}")
     play_m = unary_union(kept)
     play_ll = rounded(TO_LL(play_m.simplify(SIMPLIFY_M)))
-    write("nyc.play-area.geojson.json", [feature(play_ll, name="New York City")])
 
     # --- boroughs (county Matching) and the one Census place (city Matching)
     write("nyc.counties.geojson.json", [
@@ -251,6 +282,21 @@ def main():
     tiger = {rec["GEOID"]: TO_M(g) for rec, g in shp_records(
         TIGER_COUNTY, lambda r: r["GEOID"] in NYC_FIPS or r["GEOID"] in NEIGHBOR_FIPS)}
     city_limit = unary_union([tiger[f] for f in NYC_FIPS])
+
+    # The app's play area also takes the water inside the city limit (like the
+    # Bay Area's bay) plus the Hudson and the kills to the New Jersey shore, so
+    # satellite imagery covers the rivers, harbor and bays. Islands ringed by
+    # that water (Rikers, Governors, ...) fill in for the imagery; they are still
+    # not land in play (no stations, not in any landmass).
+    water = city_limit.difference(land.buffer(1))
+    nj_water = unary_union([g for c in NJ_WATER_COUNTIES for rec, g in shp_records(
+        areawater(c), lambda r: r["FULLNAME"] in NJ_WATER_NAMES)])
+    water = unary_union([water, TO_M(nj_water.intersection(box(*NJ_WATER_BOX)))])
+    water = water.difference(TO_M(unary_union([Polygon(r) for r in MASKED_WATER])))
+    display = unary_union([play_m, water]).buffer(1).buffer(-1)
+    display = Polygon(max(parts(display), key=lambda p: p.area).exterior)
+    write("nyc.play-area.geojson.json",
+          [feature(rounded(TO_LL(display.simplify(SIMPLIFY_M))), name="New York City")])
     county_lines, state_lines = [], []
     ids = sorted(tiger)
     for i, a in enumerate(ids):
