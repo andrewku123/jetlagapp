@@ -39,6 +39,7 @@ Measure features (src/data/nyc.measure-features.geojson.json):
     python3 scripts/build_nyc_geo.py          # after build_nyc_stations.py
 """
 import csv
+import heapq
 import io
 import json
 import os
@@ -109,6 +110,15 @@ TIGER_COUNTY = ("https://www2.census.gov/geo/tiger/TIGER2023/COUNTY/tl_2023_us_c
 CB_COUNTY = ("https://www2.census.gov/geo/tiger/GENZ2023/shp/cb_2023_us_county_500k.zip",
              "cb_2023_us_county_500k")
 AMTRAK_URL = "https://content.amtrak.com/content/gtfs/GTFS.zip"
+NARN_URL = ("https://services.arcgis.com/xOi1kZaI0eWDREZv/arcgis/rest/services/"
+            "NTAD_North_American_Rail_Network_Lines/FeatureServer/0/query?where=1%3D1"
+            "&geometry=-74.10,40.70,-73.70,40.95&geometryType=esriGeometryEnvelope&inSR=4326"
+            "&spatialRel=esriSpatialRelIntersects&outFields=FRAARCID,RROWNER1,NET"
+            "&outSR=4326&f=geojson&resultRecordCount=2000")
+NARN_NEAR_M = 400
+# The Acela is routed between these (lon, lat): the NJ side of the Hudson
+# tunnels and New Rochelle, both past the city limit.
+ACELA_ENDS = [(-74.03, 40.762), (-73.76, 40.92)]
 
 NYC_FIPS = {"36005": "Bronx", "36047": "Kings", "36061": "New York",
             "36081": "Queens", "36085": "Richmond"}
@@ -214,6 +224,58 @@ def parts(g):
     return list(g.geoms) if hasattr(g, "geoms") else [g]
 
 
+def acela_track(gtfs_hsr):
+    """The Acela on the real track: Amtrak's GTFS shape only has a point every
+    few hundred metres and cuts corners, so route over the FRA rail network
+    (NARN_URL) instead, preferring track that stays close to the GTFS shape."""
+    dest = os.path.join(GTFS, "narn_nyc.geojson")
+    if not os.path.exists(dest):
+        fetch(NARN_URL, dest)
+    adj, segs = {}, {}
+    node = lambda c: (round(c[0]), round(c[1]))
+    for f in json.load(open(dest))["features"]:
+        p = f["properties"]
+        if p["NET"] not in ("M", "I"):  # main lines and industrial leads, no yards
+            continue
+        g = TO_M(shape(f["geometry"]))
+        if gtfs_hsr.distance(g) > NARN_NEAR_M:
+            continue
+        off = sum(gtfs_hsr.distance(Point(c)) for c in g.coords) / len(g.coords)
+        w = g.length * (1 + off / 40)
+        a, b = node(g.coords[0]), node(g.coords[-1])
+        segs[p["FRAARCID"]] = g
+        adj.setdefault(a, []).append((b, w, p["FRAARCID"]))
+        adj.setdefault(b, []).append((a, w, p["FRAARCID"]))
+    nodes = list(adj)
+    for a in nodes:  # arcs whose ends miss by a few metres still connect
+        for b in nodes:
+            if a < b and Point(a).distance(Point(b)) < 3:
+                adj[a].append((b, 0, None))
+                adj[b].append((a, 0, None))
+
+    def nearest(lon, lat):
+        q = gtfs_hsr.interpolate(gtfs_hsr.project(TO_M(Point(lon, lat))))
+        return min(nodes, key=lambda n: Point(n).distance(q))
+    start, goal = nearest(*ACELA_ENDS[0]), nearest(*ACELA_ENDS[1])
+    dist, prev, pq = {start: 0}, {}, [(0, start)]
+    while pq:
+        d, u = heapq.heappop(pq)
+        if u == goal:
+            break
+        if d > dist[u]:
+            continue
+        for v, w, fid in adj[u]:
+            if d + w < dist.get(v, float("inf")):
+                dist[v], prev[v] = d + w, (u, fid)
+                heapq.heappush(pq, (d + w, v))
+    path, u = [], goal
+    while u != start:
+        u, fid = prev[u]
+        if fid:
+            path.append(segs[fid])
+    return linemerge(unary_union(path))
+
+
 def lines_of(g):
     out = []
     for p in parts(g):
@@ -227,7 +289,8 @@ def lines_of(g):
 
 
 def multiline(lines, min_m=30):
-    merged = linemerge(unary_union(lines)) if lines else MultiLineString()
+    joined = unary_union(lines) if lines else MultiLineString()
+    merged = linemerge(joined) if joined.geom_type == "MultiLineString" else joined
     keep = [l for l in lines_of(merged) if l.length >= min_m]
     keep = [l.simplify(SIMPLIFY_M) for l in keep]
     return rounded(TO_LL(MultiLineString(keep)))
@@ -358,10 +421,12 @@ def main():
             if r["shape_id"] in shape_ids:
                 pts.setdefault(r["shape_id"], []).append(
                     (int(r["shape_pt_sequence"]), float(r["shape_pt_lon"]), float(r["shape_pt_lat"])))
-    hsr = [TO_M(LineString([(x, y) for _, x, y in sorted(v)])) for v in pts.values()]
+    gtfs_hsr = unary_union([TO_M(LineString([(x, y) for _, x, y in sorted(v)]))
+                            for v in pts.values()])
+    hsr = acela_track(gtfs_hsr)
     # Clipped to what the map shows: the city limit plus the display area, so in
     # the Hudson the line runs on to the satellite edge at the New Jersey shore.
-    hsr_in = unary_union(hsr).intersection(city_limit.union(display))
+    hsr_in = hsr.intersection(city_limit.union(display))
     feats.append(feature(multiline(lines_of(hsr_in)), key="hsr"))
     for f in feats:
         g = TO_M(shape(f["geometry"]))
