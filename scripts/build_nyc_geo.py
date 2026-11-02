@@ -31,9 +31,10 @@ Measure features (src/data/nyc.measure-features.geojson.json):
   state-border  the New York / New Jersey line (Hudson, Kill Van Kull, Arthur
                 Kill) inside the city limit.
   hsr           Amtrak's Acela route (Andrew's call: Acela counts as high-speed
-                rail), from Amtrak's GTFS shapes, clipped to the city limit:
-                Penn Station, the Hudson and East River tunnels, Sunnyside, the
-                Hell Gate Bridge and the east Bronx.
+                rail), from Amtrak's GTFS shapes, clipped to the city limit and
+                the display area: Penn Station, the Hudson tunnels out to the
+                satellite edge by the New Jersey shore, the East River tunnels,
+                Sunnyside, the Hell Gate Bridge and the east Bronx.
 
     python3 scripts/build_nyc_geo.py          # after build_nyc_stations.py
 """
@@ -346,7 +347,9 @@ def main():
                 pts.setdefault(r["shape_id"], []).append(
                     (int(r["shape_pt_sequence"]), float(r["shape_pt_lon"]), float(r["shape_pt_lat"])))
     hsr = [TO_M(LineString([(x, y) for _, x, y in sorted(v)])) for v in pts.values()]
-    hsr_in = unary_union(hsr).intersection(city_limit)
+    # Clipped to what the map shows: the city limit plus the display area, so in
+    # the Hudson the line runs on to the satellite edge at the New Jersey shore.
+    hsr_in = unary_union(hsr).intersection(city_limit.union(display))
     feats.append(feature(multiline(lines_of(hsr_in)), key="hsr"))
     for f in feats:
         g = TO_M(shape(f["geometry"]))
