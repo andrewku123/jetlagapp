@@ -56,7 +56,7 @@ print('lines:', line_set)
 # 2. Play area = the SF-city place polygon(s) that actually hold Muni stations
 #    (drops the detached southern sliver + tiny offshore rings with no stations),
 #    clipped to land (the raw TIGER place includes a bay-water wedge toward
-#    Alameda), then unioned with each station's largest possible endgame hiding
+#    Alameda), then unioned with each station's endgame hiding
 #    zone (zone radius x 1.5^2, two Prosperous Home curses; endgame_zones.py) so
 #    an edge station's zone (e.g. Bayshore Blvd & Sunnydale Ave) is never dimmed
 #    out of play. Open water is clipped off the zones so they never bulge into

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Every map's committed play area holds each station's largest endgame disk.
+"""Every map's committed play area holds each station's two-Prosperous endgame disk.
 
 Plain `python3 test_endgame_zones.py` (no pytest, no network). See endgame_zones.py
 for the rule: decided map + every station's zone radius x 1.5^2 disk, minus water.
@@ -39,15 +39,15 @@ def data(name):
 sizes = json.load(open(Z.REGION_SIZES))
 for rid, size in sizes.items():
     want = Z.BASE_RADIUS_MI[size] * 1.5 ** 2
-    check(f"{rid}: max disk = {size} zone x 1.5^2", abs(Z.max_hiding_radius_mi(rid) - want) < 1e-12)
-check("medium max disk is 0.5625 mi", Z.BASE_RADIUS_MI["medium"] * 1.5 ** 2 == 0.5625)
+    check(f"{rid}: endgame disk = {size} zone x 1.5^2", abs(Z.max_hiding_radius_mi(rid) - want) < 1e-12)
+check("medium endgame disk is 0.5625 mi", Z.BASE_RADIUS_MI["medium"] * 1.5 ** 2 == 0.5625)
 check("every map is covered by this test", set(MAPS) == set(sizes), sorted(set(sizes) ^ set(MAPS)))
 
 for rid, (st, pa, water) in MAPS.items():
     stations = data(st)
     play = unary_union([shape(f["geometry"]).buffer(0) for f in data(pa)["features"]])
     ext = Z.new_land(play, stations, Z.max_hiding_radius_mi(rid), Z.load_water(water))
-    check(f"{rid}: play area holds every station's max endgame disk", ext.is_empty,
+    check(f"{rid}: play area holds every station's endgame disk", ext.is_empty,
           f"{ext.area * 111.32 ** 2:.4f} km^2 missing")
     check(f"{rid}: with_endgame_zones is idempotent",
           Z.with_endgame_zones(play, stations, Z.max_hiding_radius_mi(rid), Z.load_water(water)) is play)

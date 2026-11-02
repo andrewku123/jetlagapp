@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Endgame play area: the decided map plus every station's largest hiding zone.
+"""Endgame play area: the decided map plus every station's endgame disk.
 
 Rule (Andrew): the playable area of every map is the decided map unioned with a
-disk around each station at the largest radius its hiding zone can reach. The
-Curse of the Prosperous Home grows the zone x1.5 and can land at most twice
-(drawn once + duplicated), so the disk is the game size's zone radius x 1.5^2
-(Medium: 0.25 x 2.25 = 0.5625 mi). Land outside the decided map but inside a
+disk around each station sized for two Curses of the Prosperous Home (x1.5 each,
+drawn once + duplicated). A third is possible but too unlikely to plan for. So
+the disk is the game size's zone radius x 1.5^2 (Medium: 0.25 x 2.25 =
+0.5625 mi). Land outside the decided map but inside a
 disk is in play like any other (POIs, city/ZIP lookups); open water past the
 shore stays out.
 
@@ -31,10 +31,11 @@ ROOT = os.path.dirname(HERE)
 REGION_SIZES = os.path.join(ROOT, "src", "data", "region-sizes.json")
 
 # Must match SIZE_PARAMS.hidingZoneRadiusMi (src/data/questionSets.ts) and
-# PROSPEROUS_FACTOR / MAX_PROSPEROUS_HOMES (src/lib/hidingZone.ts).
+# PROSPEROUS_FACTOR (src/lib/hidingZone.ts).
 BASE_RADIUS_MI = {"small": 0.25, "medium": 0.25, "large": 0.5}
 PROSPEROUS_FACTOR = 1.5
-MAX_PROSPEROUS_HOMES = 2
+# Draw + duplicate. A third Prosperous Home can happen but is too rare to cover.
+PLANNED_PROSPEROUS_HOMES = 2
 # so the app's rendered 128-gon circle sits fully inside the unioned polygon
 PAD_MI = 0.01
 # drop clip slivers (~100 m^2) where the disk only grazes the existing border
@@ -50,7 +51,7 @@ APP_ID = {"bay": "bayarea"}
 
 def max_hiding_radius_mi(app_region_id):
     size = json.load(open(REGION_SIZES))[app_region_id]
-    return BASE_RADIUS_MI[size] * PROSPEROUS_FACTOR ** MAX_PROSPEROUS_HOMES
+    return BASE_RADIUS_MI[size] * PROSPEROUS_FACTOR ** PLANNED_PROSPEROUS_HOMES
 
 
 def geodesic_circle(lat, lon, radius_mi, n=128):

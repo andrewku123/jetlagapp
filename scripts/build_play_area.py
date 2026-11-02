@@ -552,8 +552,8 @@ def main():
             zones.append(zone)
         union_m = unary_union([union_m] + zones)
 
-    # Every station's largest possible endgame hiding zone (zone radius x 1.5^2:
-    # Prosperous Home drawn + duplicated) is playable, even where it crosses the
+    # Every station's endgame hiding zone at zone radius x 1.5^2 (two Prosperous
+    # Homes: drawn + duplicated; a third is too rare to cover) is playable, even where it crosses the
     # decided map's edge; open water stays out (endgame_zones.py).
     union_ll = with_endgame_zones(transform(to_ll, union_m), stations,
                                   max_hiding_radius_mi(APP_ID.get(REGION, REGION)),

@@ -300,7 +300,7 @@ it would have to be hand-entered.
 
    - **CITY/COUNTY polygons must be the TRUE municipal boundary, not the play
      area.** `build_sfmuni_region.py` sets the SF play area = city land unioned
-     with each station's largest endgame circle (so edge zones stay in play), but
+     with each station's endgame circle (zone × 1.5²) (so edge zones stay in play), but
      the metro's OWN `places` (city Matching) polygon must be the un-padded `land`
      — using `play_area` bleeds the SF polygon south across the county line into
      Brisbane and mislabels border points as "San Francisco city", which also
@@ -469,8 +469,8 @@ is the template) that reads the Bay Area files and:
 polygon includes bay-water wedges reaching toward neighbours (the symptom: "a bit
 of Alameda" shows in-play / a city Matching returns the wrong across-the-water
 city). Clip it: `place.difference(water)` with the same `bay_water_mask.geojson`
-the Bay Area pipeline uses. Then **union each station's largest endgame hiding
-disk** into the play area (and re-clip to land), otherwise an edge station's
+the Bay Area pipeline uses. Then **union each station's endgame hiding
+disk (zone × 1.5²)** into the play area (and re-clip to land), otherwise an edge station's
 endgame zone (e.g. Bayshore/Sunnydale on SF Muni) gets dimmed out of play.
 `scripts/endgame_zones.py` (`with_endgame_zones`) does this and every play-area
 builder calls it; the disk is geodesic at **R = 6371 km** to match
@@ -478,8 +478,9 @@ builder calls it; the disk is geodesic at **R = 6371 km** to match
 sits fully inside).
 
 **Endgame play area rule (every map, Andrew).** Playable area = the decided map
-∪ every station's *largest possible* hiding disk = the game size's zone radius ×
-1.5² (Curse of the Prosperous Home ×1.5, at most twice: draw + duplicate), so
+∪ every station's hiding disk sized for two Curses of the Prosperous Home = the
+game size's zone radius × 1.5² (×1.5 each: draw + duplicate; a third is possible
+but too unlikely to cover), so
 Medium = 0.25 × 2.25 = **0.5625 mi**. Out-of-map land inside a disk is in play
 (cities/ZIPs/POIs there count); open water stays out. The radius reads
 `src/data/region-sizes.json`, so a map's size change moves it. To patch an

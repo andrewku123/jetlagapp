@@ -162,7 +162,7 @@ def main():
     if piers is not None:
         parts_play.append(piers)
     play = unary_union(parts_play).buffer(0)
-    # Each station's largest possible endgame hiding zone is playable land too.
+    # Each station's two-Prosperous endgame hiding zone (zone x 1.5^2) is playable land too.
     play = with_endgame_zones(play, json.load(open(STATIONS)),
                               max_hiding_radius_mi("la"), ocean_for_play)
     play = fill_small_holes(play)
