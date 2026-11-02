@@ -21,6 +21,26 @@ export const RADAR_OPTIONS = [0.25, 0.5, 1, 3, 5, 10, 25, 50, 100]
 // from/to points the seeker records).
 export const THERMOMETER_OPTIONS = [0.5, 3, 10]
 
+// The thermometer distance is a *minimum* travel: A→B must be at least the chosen
+// distance, less a tolerance of 5% (floored at 0.1 mi) so hand-placed points right
+// at the threshold aren't rejected. Curse info has no minimum: a curse that sends
+// the seekers somewhere farther from the hider is a free thermometer however short
+// the move.
+export function thermometerTravelOk(actualMiles: number, chosenMiles: number, curse = false): boolean {
+  if (curse) return true
+  return actualMiles + Math.max(0.1, chosenMiles * 0.05) >= chosenMiles
+}
+
+// A curse thermometer shorter than its distance's minimum travel couldn't have
+// been a real question, so it can't be unmarked into one (delete it instead).
+export function curseUnmarkBlocked(q: Pick<QuestionRecord, 'kind' | 'params' | 'curse' | 'vetoed'>): boolean {
+  if (!q.curse || q.vetoed || q.kind !== 'thermometer') return false
+  const { fromLat, fromLon, toLat, toLon, thermometerMiles } = q.params
+  const [aLat, aLon, bLat, bLon, chosen] = [fromLat, fromLon, toLat, toLon, thermometerMiles].map(Number)
+  if (![aLat, aLon, bLat, bLon, chosen].every(Number.isFinite) || chosen <= 0) return false
+  return !thermometerTravelOk(haversineMiles({ lat: aLat, lon: aLon }, { lat: bLat, lon: bLon }), chosen)
+}
+
 export interface QuestionMeta {
   kind: QuestionKind
   category: 'Radar' | 'Thermometer' | 'Matching' | 'Measuring' | 'Tentacles' | 'Inside' | 'Photo'

@@ -9,7 +9,7 @@ import { SYSTEM_COLORS, SYSTEM_ORDER, linesExcludedOn } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
 import { castCurse, curseMultiplier, defaultHidingRadiusMi, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
 import { formatDistance } from './lib/geo'
-import { rewardForKind, askOrdinals, askGroupCounts as countAskGroups } from './data/questions'
+import { rewardForKind, askOrdinals, askGroupCounts as countAskGroups, curseUnmarkBlocked } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem, ZoneCurses } from './types'
@@ -283,6 +283,8 @@ export default function App() {
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, active: !q.active } : q)) })
   }
   function toggleCurse(id: string) {
+    const q = game.questions.find((x) => x.id === id)
+    if (q && curseUnmarkBlocked(q)) return
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, curse: !q.curse } : q)) })
   }
   function toggleEndgame(id: string) {
@@ -589,6 +591,11 @@ export default function App() {
                         )
                       })()}
                     {q.note && <div className="qnote">{q.note}</div>}
+                    {curseUnmarkBlocked(q) && (
+                      <div className="qnote">
+                        A↔B is shorter than this thermometer's minimum, so it can only be curse info. If it wasn't from a curse, delete it.
+                      </div>
+                    )}
                     <div className="qactions">
                       {q.eliminates && !q.vetoed && (
                         <button onClick={() => toggleActive(q.id)}>{q.active ? 'Disable' : 'Enable'}</button>
@@ -606,7 +613,12 @@ export default function App() {
                         <button
                           className={q.curse ? 'on' : ''}
                           onClick={() => toggleCurse(q.id)}
-                          title="Curse info came from a curse (e.g. its casting cost), not a question: it eliminates the same, but the hider draws no cards and it doesn't count toward the repeat-question multiplier."
+                          disabled={curseUnmarkBlocked(q)}
+                          title={
+                            curseUnmarkBlocked(q)
+                              ? "Too short for a real thermometer, so it can't be unmarked. Delete it instead."
+                              : "Curse info came from a curse (e.g. its casting cost), not a question: it eliminates the same, but the hider draws no cards and it doesn't count toward the repeat-question multiplier."
+                          }
                         >
                           {q.curse ? 'Unmark curse info' : 'Mark curse info'}
                         </button>
