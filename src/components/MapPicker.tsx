@@ -20,7 +20,7 @@ export function MapPicker({ children }: { children: ReactNode }) {
   return (
     <div className="map-picker">
       <h1>Hide &amp; Seek</h1>
-      <p>Pick a map. You can switch later in ⚙ settings.</p>
+      <p>Pick a map. You can switch anytime from the map menu in the top bar (under ⚙ on phones).</p>
       <div className="map-picker-list">
         {REGIONS.map((r) => (
           <button key={r.id} type="button" onClick={() => pick(r.id)}>
