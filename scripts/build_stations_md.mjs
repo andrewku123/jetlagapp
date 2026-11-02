@@ -49,15 +49,6 @@ const MAPS = [
       'Metro rail (A/B/C/D/E/K) plus the two busways the rulebook counts as ' +
       'rapid transit (G, J); each busway stop is a station in its own right.',
   },
-  {
-    id: 'dc',
-    label: 'Washington DC',
-    file: 'src/data/dc.stations.json',
-    priority: ['Metrorail'],
-    note:
-      'All six Metrorail lines across DC, Maryland and Virginia. Arlington ' +
-      'Cemetery stays listed but is never eligible: its last train is around 7 PM.',
-  },
 ]
 
 const eligible = (day) => (st) => st.service[day].served && st.service[day].hourly

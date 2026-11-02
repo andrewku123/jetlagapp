@@ -7,7 +7,7 @@ set of candidate hiding spots on a map.
 
 ## Maps
 
-The app ships four maps, chosen from the **map** picker (behind the ⚙ button in
+The app ships three maps, chosen from the **map** picker (behind the ⚙ button in
 the top bar). Each map keeps its **own saved board** (questions, eliminations, drawings, endgame) so
 switching between them never mixes state, and its board code is tagged with the
 map so a code from one map is rejected on the other.
@@ -17,7 +17,6 @@ map so a code from one map is rejected on the other.
 | **Bay Area** (default) | BART + Caltrain + VTA + Muni + SFO AirTrain + Oakland Alameda Water Shuttle (weekends), five counties | 265 | 1,236 sq mi |
 | **SF Muni** | the 7 Muni rail lines J/K/L/M/N/T/F, one city/county | 131 | 46 sq mi |
 | **LA Metro** | Metro rail A/B/C/D/E/K + the G and J busways, Los Angeles County | 158 | 907 sq mi |
-| **Washington DC** | the 6 Metrorail lines, DC + Maryland + Virginia (seven counties) | 98 | 411 sq mi |
 
 A map is a self-contained bundle of data files — stations, play area, POIs,
 places, counties, ZIPs, transit lines, measure features — and the app itself is
@@ -25,7 +24,7 @@ region-agnostic: it reads whatever the active map supplies. Two consequences
 worth knowing:
 
 - **Each map declares its game size** in `src/data/region-sizes.json` (it isn't
-  derived from the station count), and the question deck follows. All four maps
+  derived from the station count), and the question deck follows. All three maps
   are **medium** games; the **Legend** tab names the size under *About this map*.
 - **A question that can't discriminate on a map is demoted automatically**, from
   that map's data rather than a hand-kept list (see
@@ -90,23 +89,11 @@ served cities of Los Angeles County, clipped to the real shoreline (full beach
 in, ocean out, harbor basins and the piers traced in), so the coastline question
 measures against the same edge the map draws.
 
-### Washington DC
-
-All 98 Metrorail stations on the Red, Orange, Blue, Green, Yellow and Silver
-lines, across the District of Columbia, Maryland and Virginia. Spanning three
-1st-level admin divisions makes it the only map where **same state?** Matching
-(DC/MD/VA) eliminates. The play area is trimmed to the served area (411 sq mi)
-and includes DCA and IAD (BWI is outside, so it doesn't exist). **Arlington
-Cemetery** stays on the map but is never eligible: its last train is around 7 PM,
-so it can't meet the hourly rule. That leaves 97 eligible stations both days, so
-the Weekday / Weekend toggle is hidden. The DC map has no POI data yet, so every
-POI subject is `(log only)` there.
-
 The full per-station list for every map is in [STATIONS.md](STATIONS.md).
 
 ## The question deck
 
-Each map's size selects the deck (all four are **medium** today). The full deck
+Each map's size selects the deck (all three are **medium** today). The full deck
 for the size is available in the **Ask** tab, and most of it auto-eliminates.
 What the app eliminates for:
 
@@ -208,7 +195,6 @@ What each map demotes today, all of it derived, none of it listed by hand:
 | **Bay Area** | — | — |
 | **SF Muni** | nearest commercial airport (Matching *and* Measuring — SFO/OAK/SJC all lie outside San Francisco), plus any POI category with no in-play member (e.g. amusement parks) | County Matching, City Matching |
 | **LA Metro** | County Matching | — |
-| **Washington DC** | every POI category (no POI data yet) | — |
 
 LA's county case shows why the rule is geometric rather than "is this value
 uniform?": every LA Metro station is one county's worth of the same answer, and

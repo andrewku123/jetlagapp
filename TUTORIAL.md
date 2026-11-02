@@ -24,14 +24,10 @@ The **map** picker (tap **⚙** in the top bar) chooses which map you're playing
   131 stations, one county/city).
 - **LA Metro** — Los Angeles County (rail A/B/C/D/E/K plus the G and J busways,
   158 stations).
-- **Washington DC** — the 6 Metrorail lines across DC, Maryland and Virginia (98
-  stations, 97 eligible; Arlington Cemetery's last train is too early). It's the
-  only map where **same state?** Matching eliminates. It has no POI data yet, so
-  POI questions are log only there.
 
 Each map keeps its **own saved board**, so switching maps never mixes state, and
 you can hand off a game by its board code (a code from one map won't load on the
-other). Each map also declares its own **game size** — all four are `medium`
+other). Each map also declares its own **game size** — all three are `medium`
 today, which is what decides the deck of questions you can ask; the **Legend**
 tab names it under *About this map*. A question that can't
 tell that map's stations apart is demoted automatically — see §12.
