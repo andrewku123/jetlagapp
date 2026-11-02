@@ -129,6 +129,16 @@ If the hider refuses to answer (a veto), press **Hider vetoed** instead of Log.
 The question is recorded (so you remember you can ask it again) but **eliminates
 nothing** and has no answer. It still counts toward the repeat-cost tally (§5).
 
+### If a curse gives you info
+Some curses tell the seekers something: a casting cost like "seekers must be 3+ mi
+from the hider" is a free radar. To keep the map consistent, log the equivalent
+question (here a 3 mi radar, answered **No**) and tick **From a curse** before
+pressing Log. The blurb reads `(curse info: no cards)`, the button becomes **Log
+curse info & eliminate**, and **Hider vetoed** is hidden. The record eliminates and
+shades exactly like an answer, but it isn't a question: the hider draws **no
+cards**, and it **doesn't count toward the repeat-cost tally** (§5), so asking that
+question for real later still pays ×1. The box clears after each log.
+
 ## 4. History — review and manage questions
 
 The **History** tab lists every question you've logged, newest first. Each row
@@ -137,6 +147,9 @@ shows the question, the answer, and the hider's reward. You can:
 - **Disable / Enable** — temporarily turn a question's elimination off/on without
   deleting it.
 - **Delete** — remove the question entirely.
+- **Mark / Unmark curse info** — flag a row as info from a curse (§3) after the
+  fact, or undo it. Curse-info rows are tagged `curse info` and show *Hider
+  reward: none*; eliminations don't change, only the reward and repeat counts.
 - Vetoed questions are struck through and tagged `vetoed`; they only offer Delete.
 
 ## 5. Repeat-question cost
@@ -151,6 +164,7 @@ ask a question, its reward is multiplied by n (2nd ask → ×2, 3rd → ×3, …
   blurb shows e.g. `(draw 4, keep 2 — ×2, 2nd time asked)`; switch to a fresh
   radius and it drops back to the base cost.
 - The **History** row for each ask shows the reward it actually cost.
+- Curse info (§3) is not an ask: it never adds to the count.
 
 ## 6. Satellite view
 

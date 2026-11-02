@@ -217,6 +217,14 @@ The Ask form previews this cost live as you choose parameters. If the hider
 it without an answer — it's recorded but eliminates nothing, and still counts
 toward the repeat-cost tally.
 
+When a **curse** hands the seekers information (e.g. a casting cost like
+"seekers must be 3+ mi from the hider", which is a free radar), log the
+equivalent question with **From a curse** ticked. It eliminates and shades
+exactly like an answered question, but it isn't a question: the hider draws no
+cards, and it doesn't count toward the repeat tally, so asking that question for
+real later still pays ×1. History tags the row `curse info`, and **Mark / Unmark
+curse info** fixes a row logged the wrong way.
+
 ## Endgame and hiding-zone curses
 
 Choosing **🎯 Endgame here** on a station locks the board onto it and draws its
