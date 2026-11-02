@@ -15,3 +15,6 @@ __pycache__/
 
 # generated reference deliverable
 jetlag_reference_*.pdf
+
+# NYC build downloads (GTFS feeds, MTA station list)
+scripts/_gtfs_nyc/

@@ -20,6 +20,7 @@ import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem 
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
+import { featurePolylines } from '../lib/measureFeatures'
 import {
   poiEliminatedRegion,
   endgameClippedRegion,
@@ -35,7 +36,7 @@ import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
+import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM, WEEKEND_EXCLUDED_LINES } from '../data/regions'
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -244,22 +245,27 @@ function BaseLayer() {
 
 interface TransitWay {
   type: 'Feature'
-  properties: { system: string; colors: string[] }
+  properties: { system: string; colors: string[]; name?: string }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
 }
 const TRANSIT_WAYS = (transitData as unknown as { features: TransitWay[] }).features
 
-// one line per physical track, drawn in the first color that runs on it
-const TRANSIT: GeoJSON.FeatureCollection = {
+// one line per physical track, drawn in the first color that runs on it; a
+// weekday-only line (NYC Ferry routes) is not drawn on weekends
+const transitFor = (weekend: boolean): GeoJSON.FeatureCollection => ({
   type: 'FeatureCollection',
-  features: TRANSIT_WAYS.map((w) => ({
-    type: 'Feature',
-    properties: { color: w.properties.colors[0] },
-    geometry: w.geometry,
-  })) as Feature[],
-}
+  features: TRANSIT_WAYS
+    .filter((w) => !(weekend && w.properties.name && WEEKEND_EXCLUDED_LINES.includes(w.properties.name)))
+    .map((w) => ({
+      type: 'Feature',
+      properties: { color: w.properties.colors[0] },
+      geometry: w.geometry,
+    })) as Feature[],
+})
+const TRANSIT_WD = transitFor(false)
+const TRANSIT_WE = transitFor(true)
 
 function transitStyle(feature?: Feature<Geometry, { color: string }>) {
   return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
@@ -319,6 +325,9 @@ interface Props {
   onExitEndgame: () => void
   pois: RenderPoi[]
   stationView: 'normal' | 'faded' | 'hidden'
+  // Draw the high-speed rail line (measure only: nobody rides it or hides at it).
+  showHsr?: boolean
+  weekend?: boolean
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -328,7 +337,7 @@ const LINE_LENGTH_MI = 60
 const POI_SHADED_KINDS = new Set<string>([
   'match-poi', 'measure-poi', 'measure-feature', 'match-airport', 'measure-airport',
   'match-admin1', 'match-county', 'match-city', 'measure-zip', 'tentacle', 'tentacle-line',
-  'measure-railstation',
+  'measure-railstation', 'match-landmass', 'measure-hsr',
 ])
 
 // hatched fill for the uncertainty band (pattern defined by StripeRenderer)
@@ -961,7 +970,7 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
 // "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
 // full opacity. Pane sits above the dim mask (overlayPane 400) and below POIs
 // (410), matching the previous draw order.
-function TransitLines() {
+function TransitLines({ weekend }: { weekend: boolean }) {
   const map = useMap()
   const [pane, setPane] = useState<string | null>(null)
   useEffect(() => {
@@ -981,7 +990,7 @@ function TransitLines() {
     return () => window.clearTimeout(id)
   }, [map])
   if (!pane) return null
-  return <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} pane={pane} />
+  return <GeoJSON key={weekend ? 'we' : 'wd'} data={weekend ? TRANSIT_WE : TRANSIT_WD} style={transitStyle as never} interactive={false} pane={pane} />
 }
 
 export default function MapView({
@@ -1012,6 +1021,8 @@ export default function MapView({
   onExitEndgame,
   pois,
   stationView,
+  showHsr = false,
+  weekend = false,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // the toolbar collapses to a single 🧰 button so it barely covers the map while
@@ -1123,7 +1134,7 @@ export default function MapView({
         r.kind === 'match-airport' || r.kind === 'measure-airport' ||
         r.kind === 'match-admin1' || r.kind === 'match-county' ||
         r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line' ||
-        r.kind === 'measure-railstation',
+        r.kind === 'measure-railstation' || r.kind === 'match-landmass' || r.kind === 'measure-hsr',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
@@ -1563,7 +1574,7 @@ export default function MapView({
           pathOptions={DIM_FILL}
           interactive={false}
         />
-        <TransitLines />
+        <TransitLines weekend={weekend} />
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}
@@ -1681,6 +1692,18 @@ export default function MapView({
         {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
             the circle; NO eliminates inside it. The circle outline always shows
             the radius. Suppressed in endgame (only zone-clipped shading shows). */}
+        {/* Acela: a measuring reference only (nobody rides it or hides at its
+            stations), so it shows faded and dashed with no station dots, and
+            only while a high-speed rail question is being set up. */}
+        {showHsr && featurePolylines('hsr').map((line, i) => (
+          <Polyline
+            key={`hsr-${i}`}
+            positions={line.map((p) => [p.lat, p.lon] as [number, number])}
+            pathOptions={{ color: '#6b21a8', weight: 3, opacity: 0.45, dashArray: '8 8', interactive: true }}
+          >
+            {i === 0 && <Tooltip permanent direction="center" className="hsr-label">Acela (measure only)</Tooltip>}
+          </Polyline>
+        ))}
         {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'radar')
           .map((r) => {

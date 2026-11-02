@@ -13,13 +13,18 @@ export const SYSTEM_COLORS: Record<string, string> = {
   'SFO AirTrain': '#00897b',
   Metro: DEFAULT_SYSTEM_COLOR,
   Metrorail: DEFAULT_SYSTEM_COLOR,
+  Subway: '#0039a6',
+  SIR: '#1d2f6f',
+  LIRR: '#00985f',
+  'NYC Ferry': '#ff6b00',
+  'Staten Island Ferry': '#f58220',
+  'Roosevelt Island Tram': '#c60c30',
 }
 
-export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Metro', 'Metrorail']
+export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Metro', 'Metrorail', 'Subway', 'SIR', 'LIRR', 'NYC Ferry', 'Staten Island Ferry', 'Roosevelt Island Tram']
 
-// Lines that don't run on weekends; hidden from the transit-line question in
-// Weekend mode. Caltrain Express ("Baby Bullet") and Limited are weekday-only.
-export const WEEKEND_EXCLUDED_LINES = ['Caltrain Express', 'Caltrain Limited']
+// Lines that don't run on weekends, per map (RegionData.weekendExcludedLines).
+export { WEEKEND_EXCLUDED_LINES } from '../data/regions'
 
 export function stationColor(st: Station): string {
   // primary color = first system in canonical order

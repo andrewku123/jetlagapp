@@ -66,15 +66,38 @@ def census_geo(lat, lon):
         print('census err', lat, lon, e, file=sys.stderr)
         return None, None
 
+# EPQS_OFF=1 skips the USGS point service (slow / unreachable from some hosts)
+# and reads the same 3DEP terrain from tiles.
+_EPQS_DOWN = os.environ.get('EPQS_OFF') == '1'
+
+
 def usgs_elev(lat, lon):
+    global _EPQS_DOWN
+    if _EPQS_DOWN:
+        return terrain_elev(lat, lon)
     url = f'https://epqs.nationalmap.gov/v1/json?x={lon}&y={lat}&units=Meters&wkid=4326&includeDate=false'
     try:
         d = get(url)
         v = d.get('value')
-        return round(float(v), 1) if v is not None else None
+        if v is not None:
+            return round(float(v), 1)
     except Exception as e:
-        print('elev err', lat, lon, e, file=sys.stderr)
-        return None
+        print('elev err', lat, lon, e, '- using terrain tiles from here on', file=sys.stderr)
+        _EPQS_DOWN = True
+    return terrain_elev(lat, lon)
+
+
+def terrain_elev(lat, lon):
+    """Ground elevation from the AWS Terrain Tiles build_zone_elevation.py uses
+    (USGS 3DEP in the US), for when the EPQS point service is unreachable."""
+    import math
+    import build_zone_elevation as bze
+    n = 2 ** bze.ZOOM
+    fx = (lon + 180) / 360 * n
+    fy = (1 - math.asinh(math.tan(math.radians(lat))) / math.pi) / 2 * n
+    x, y = int(fx), int(fy)
+    px, py = min(int((fx - x) * 256), 255), min(int((fy - y) * 256), 255)
+    return round(float(bze.tile(x, y)[py, px]), 1)
 
 def place_lookup(cfg):
     """name -> [rings] for the region's Census places, or None before they exist.
@@ -112,6 +135,22 @@ def state_lookup(cfg):
         polys = ([g['coordinates']] if g['type'] == 'Polygon' else g['coordinates'])
         out.append((f['properties']['name'], polys))
     return out
+
+
+def county_lookup(cfg):
+    """[(name, shapely geometry)] when the region opts into `countyFromGeo`
+    (NYC: borough polygons named as boroughs), else None (Census geocoder)."""
+    if not cfg.get('countyFromGeo'):
+        return None
+    from shapely.geometry import shape
+    fc = json.load(open(os.path.join(ROOT, cfg['countiesGeo'])))
+    return [(f['properties']['name'], shape(f['geometry'])) for f in fc['features']]
+
+
+def county_at(counties, lat, lon):
+    from shapely.geometry import Point
+    p = Point(lon, lat)
+    return min(counties, key=lambda c: c[1].distance(p))[0]
 
 
 def in_ring(lat, lon, ring):
@@ -188,6 +227,7 @@ def main():
     if places is None:
         print('no places file yet — city falls back to the Census geocoder; '
               're-run after build_region_geo.py', file=sys.stderr)
+    counties = county_lookup(cfg)
     st = json.load(open(SRC))
     CACHE = poi_geo.work(region, 'stations_enriched.json')
     cache = load_cache(CACHE)
@@ -214,8 +254,14 @@ def main():
             out.append(rec)
             print(f"{i+1}/{len(st)} {s['name']:30} CACHED", file=sys.stderr)
             continue
-        county, city = census_geo(lat, lon)
-        time.sleep(0.3)
+        if counties is not None:
+            # County from the map's own county polygons (the ones countyAt()
+            # reads), so a station can't name one county and shade another; a
+            # pier or landing just off the shoreline takes the nearest one.
+            county, city = county_at(counties, lat, lon), None
+        else:
+            county, city = census_geo(lat, lon)
+            time.sleep(0.3)
         elev = usgs_elev(lat, lon)
         time.sleep(0.2)
         dist = {k: round(hav((lat, lon), v), 1) for k, v in AIRPORTS.items()}

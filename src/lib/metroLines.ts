@@ -24,7 +24,9 @@ export interface MetroLine {
 }
 
 interface RawFeature {
-  properties: { system: string; colors: string[] }
+  // `name` (optional) labels a feature that carries several services (NYC's
+  // "8 Av: A C E" trunk); otherwise the name is derived from the stations.
+  properties: { system: string; colors: string[]; name?: string }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
@@ -134,7 +136,7 @@ function buildMetroLines(): MetroLine[] {
   return features.map((f, i) => {
     const system = f.properties.system
     const color = f.properties.colors[0]
-    const name = names[i]
+    const name = f.properties.name ?? names[i]
     const label = name.replace(/\s*\(.*\)\s*$/, '').trim() // drop the "(Antioch–SFO…)" tail
     return { id: `${system}::${color}`, system, color, name, label, polylines: toPolylines(f) }
   })
