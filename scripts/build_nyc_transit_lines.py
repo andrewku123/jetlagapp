@@ -4,8 +4,9 @@
 One feature per colour on the official MTA map: subway services that share a
 trunk share a colour (A/C/E are all 8 Av blue), so they are one feature, named
 for the trunk ("8 Av: A C E"). The three shuttles share shuttle grey. Each LIRR
-branch in play, each NYC Ferry route, SIR, the Staten Island Ferry and the
-Roosevelt Island Tram are their own features. LIRR geometry is clipped to the
+branch in play (re-traced on OSM track, see on_track), each NYC Ferry route,
+SIR, the Staten Island Ferry and the Roosevelt Island Tram are their own
+features. LIRR geometry is clipped to the
 city (plus CLIP_M, so the line visibly leaves the map), minus Nassau. An NYC Ferry route is
 drawn only between its landings that are stations, so no ferry line runs past
 nothing but non-station piers (Rockaway, Soundview, ...).
@@ -13,6 +14,7 @@ nothing but non-station piers (Rockaway, Soundview, ...).
     python3 scripts/build_nyc_transit_lines.py   # after build_nyc_stations.py
 """
 import csv
+import heapq
 import json
 import os
 
@@ -25,6 +27,9 @@ import build_nyc_stations as st
 import poi_geo
 
 OUT = poi_geo.repo_path("nyc", "transitLines")
+OSM_RAIL = os.path.join(os.path.dirname(__file__), "measure_src", "osm_rail_nyc.geojson")
+TRACK_NEAR_M = 60  # OSM track this close to a GTFS shape can carry it
+GTFS_COST = 4  # cost per metre of falling back to the GTFS line, vs 1 for track
 CLIP_DEG = 0.015
 SIMPLIFY_DEG = 0.00008  # ~8 m
 LANDING_SNAP_DEG = 0.002  # a station landing within ~200 m of a ferry shape is on it
@@ -110,6 +115,65 @@ def connected_to(g, pts, tol=0.003):
     return unary_union([p for p in getattr(g, "geoms", [g]) if p.intersects(keep)])
 
 
+def on_track(lines, clip, arcs):
+    """Each GTFS shape, cut to the clip, re-traced on OSM track (arcs, in metres):
+    the cheapest path between its ends over track near it, preferring the
+    closest track and track another of the line's shapes already took, so
+    variants don't spread over parallel tracks. Where OSM has no usable track
+    the path falls back to the GTFS line itself, at a higher cost. LIRR shapes
+    only have a point every ~60 m and cut corners; OSM has one every ~30 m."""
+    used, extra = set(), []
+    for line in lines:
+        cut = line.intersection(clip)
+        for piece in getattr(cut, "geoms", [cut]):
+            if piece.geom_type != "LineString" or piece.length == 0:
+                continue
+            guide = geo.TO_M(piece)
+            adj = {}
+
+            def edge(u, v, w, what):
+                adj.setdefault(u, []).append((v, w, what))
+                adj.setdefault(v, []).append((u, w, what))
+            for i, a in enumerate(arcs):
+                if guide.distance(a) > TRACK_NEAR_M:
+                    continue
+                off = sum(guide.distance(Point(c)) for c in a.coords) / len(a.coords)
+                edge(a.coords[0], a.coords[-1],
+                     a.length * (1 + off / 15) * (0.3 if i in used else 1), i)
+            track_nodes = list(adj)
+            gc = list(guide.coords)
+            for u, v in zip(gc, gc[1:]):
+                edge(u, v, Point(u).distance(Point(v)) * GTFS_COST, LineString([u, v]))
+            for u in gc:
+                near = [n for n in track_nodes if Point(n).distance(Point(u)) <= TRACK_NEAR_M]
+                if near:
+                    n = min(near, key=lambda n: Point(n).distance(Point(u)))
+                    edge(u, n, Point(n).distance(Point(u)) * GTFS_COST, LineString([u, n]))
+            start, goal = gc[0], gc[-1]
+            dist, prev, pq = {start: 0}, {}, [(0, 0, start)]
+            k = 0
+            while pq:
+                d, _, u = heapq.heappop(pq)
+                if u == goal:
+                    break
+                if d > dist[u]:
+                    continue
+                for v, w, what in adj[u]:
+                    if d + w < dist.get(v, float("inf")):
+                        dist[v], prev[v] = d + w, (u, what)
+                        k += 1
+                        heapq.heappush(pq, (d + w, k, v))
+            u = goal
+            while u != start:
+                u, what = prev[u]
+                if isinstance(what, int):
+                    used.add(what)
+                else:
+                    extra.append(what)
+    geoms = [arcs[i] for i in used] + extra
+    return [geo.TO_LL(unary_union(geoms))] if geoms else []
+
+
 def feature(system, color, name, lines, clip=None, stops=None):
     g = unary_union(lines)
     if clip is not None:
@@ -140,13 +204,14 @@ def main():
     lirr = st.feed("gtfslirr")
     lirr_meta = {r["route_id"]: r for r in rows(lirr, "routes.txt")}
     lirr_sh = route_shapes(lirr)
+    arcs = [geo.TO_M(shape(f["geometry"])) for f in json.load(open(OSM_RAIL))["features"]]
     stations = json.load(open(st.OUT))
     for rid, name in st.LIRR_BRANCHES.items():
         # A stretch cut off from every station of its branch (Far Rockaway, past
         # Nassau, isn't hourly) isn't drawn.
         stops = [Point(s["lon"], s["lat"]) for s in stations if name in s["lines"]]
         feats.append(feature("LIRR", "#" + lirr_meta[rid]["route_color"].lower(), name,
-                             lirr_sh[rid], clip, stops))
+                             on_track(lirr_sh[rid], clip, arcs), clip, stops))
 
     fer = st.feed("nycferry")
     ferry_lines = {l for s in stations for l in s["lines"] if l.startswith("NYC Ferry ")}
