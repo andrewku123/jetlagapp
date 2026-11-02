@@ -153,8 +153,12 @@ def rows(d, f):
 
 
 def routes_by_stop(d, route_ok=lambda r: True):
-    """{parent stop: {'wd': {route_id}, 'we': {route_id}}} for trips departing it
-    inside each day type's game window on a representative weekday/Saturday."""
+    """{parent stop: {'wd': {route_id}, 'we': {route_id}}}: the routes that stop
+    there at least hourly in both directions inside each day type's game window
+    on a representative weekday/Saturday (the station bar), so rush-hour extras
+    and planned-work detours don't add a line. A stop no route serves hourly
+    keeps the routes that stop there both ways in the window (else every route),
+    so it still has a line."""
     dates = compute_headways.representative_dates(d)
     running = compute_headways._dates_with_services(d)
     svc_day = defaultdict(set)
@@ -165,15 +169,25 @@ def routes_by_stop(d, route_ok=lambda r: True):
     trips = {t["trip_id"]: t for t in rows(d, "trips.txt")
              if svc_day.get(t["service_id"]) and route_ok(routes[t["route_id"]])}
     parent = compute_headways._parent_of(d)
-    out = defaultdict(lambda: {"wd": set(), "we": set()})
+    deps = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
     for r in rows(d, "stop_times.txt"):
         t = trips.get(r["trip_id"])
         if not t:
             continue
         sec = compute_headways._to_sec(r["departure_time"] or r["arrival_time"])
+        stop = parent.get(r["stop_id"], r["stop_id"])
         for day in svc_day[t["service_id"]]:
             if START_SEC <= sec <= END_SEC[day]:
-                out[parent.get(r["stop_id"], r["stop_id"])][day].add(t["route_id"])
+                deps[(stop, day)][t["route_id"]][t.get("direction_id", "0")].append(sec)
+    out = defaultdict(lambda: {"wd": set(), "we": set()})
+    for (stop, day), by_route in deps.items():
+        hourly = set()
+        for route, dirs in by_route.items():
+            gaps = [compute_headways.longest_gap_min(ts, END_SEC[day]) for ts in dirs.values()]
+            if len(dirs) >= 2 and all(g is not None and g <= THRESHOLD for g in gaps):
+                hourly.add(route)
+        both_ways = {r for r, dirs in by_route.items() if len(dirs) >= 2}
+        out[stop][day] = hourly or both_ways or set(by_route)
     return out
 
 
@@ -245,7 +259,7 @@ def main():
 
     # --- LIRR: in-city stops of the six passing branches ---
     lirr = feed("gtfslirr")
-    lirr_routes = routes_by_stop(lirr)
+    lirr_routes = routes_by_stop(lirr, lambda r: r["route_id"] in LIRR_BRANCHES)
     lirr_hw = headways(lirr)
     for s in rows(lirr, "stops.txt"):
         lat, lon = float(s["stop_lat"]), float(s["stop_lon"])

@@ -59,7 +59,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -376,7 +375,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -594,7 +592,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -935,7 +932,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -1016,7 +1012,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -1126,7 +1121,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
    "F"
   ],
   "aka": [],
@@ -1206,8 +1200,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -1338,8 +1331,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -1391,8 +1383,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -1627,8 +1618,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -1759,8 +1749,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -1786,8 +1775,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -1868,8 +1856,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -1895,7 +1882,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C",
    "E"
   ],
@@ -1975,8 +1961,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -2054,10 +2039,7 @@
    "Subway"
   ],
   "lines": [
-   "D",
-   "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -2137,8 +2119,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -2412,7 +2393,6 @@
   "lines": [
    "A",
    "C",
-   "City Terminal Zone",
    "E",
    "Far Rockaway Branch",
    "Hempstead Branch",
@@ -2473,8 +2453,7 @@
   "lines": [
    "D",
    "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -2554,12 +2533,9 @@
    "Subway"
   ],
   "lines": [
-   "D",
    "F",
    "G",
-   "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -2643,9 +2619,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -2862,8 +2836,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -2889,7 +2862,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C",
    "E"
   ],
@@ -2943,9 +2915,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -3054,8 +3024,7 @@
   ],
   "lines": [
    "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -3082,7 +3051,6 @@
   ],
   "lines": [
    "1",
-   "2",
    "A",
    "B",
    "C",
@@ -3114,12 +3082,7 @@
   ],
   "lines": [
    "7",
-   "City Terminal Zone",
-   "Far Rockaway Branch",
-   "Hempstead Branch",
-   "Long Beach Branch",
-   "Port Washington Branch",
-   "West Hempstead Branch"
+   "Port Washington Branch"
   ],
   "aka": [],
   "service": {
@@ -3145,8 +3108,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
-   "F",
    "M",
    "R"
   ],
@@ -3201,8 +3162,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -3228,8 +3188,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
-   "F",
    "M",
    "R"
   ],
@@ -3417,9 +3375,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "Q",
-   "R"
+   "Q"
   ],
   "aka": [],
   "service": {
@@ -3445,7 +3401,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -3633,8 +3588,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -3660,8 +3614,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -3741,7 +3694,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -3821,8 +3773,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -3874,9 +3825,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "Q",
-   "R"
+   "Q"
   ],
   "aka": [],
   "service": {
@@ -3930,7 +3879,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -3958,8 +3906,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -4011,9 +3958,7 @@
    "Subway"
   ],
   "lines": [
-   "D",
-   "R",
-   "W"
+   "D"
   ],
   "aka": [],
   "service": {
@@ -4065,9 +4010,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "Q",
-   "R"
+   "Q"
   ],
   "aka": [],
   "service": {
@@ -4119,7 +4062,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -4175,8 +4117,7 @@
    "Subway"
   ],
   "lines": [
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -4202,8 +4143,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -4441,11 +4381,7 @@
   ],
   "lines": [
    "City Terminal Zone",
-   "Far Rockaway Branch",
-   "Hempstead Branch",
-   "L",
-   "Long Beach Branch",
-   "West Hempstead Branch"
+   "L"
   ],
   "aka": [],
   "service": {
@@ -4479,14 +4415,9 @@
    "B",
    "City Terminal Zone",
    "D",
-   "Far Rockaway Branch",
-   "Hempstead Branch",
-   "Long Beach Branch",
    "N",
    "Q",
-   "R",
-   "W",
-   "West Hempstead Branch"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -4747,8 +4678,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -4852,9 +4782,7 @@
    "Subway"
   ],
   "lines": [
-   "D",
-   "R",
-   "W"
+   "D"
   ],
   "aka": [],
   "service": {
@@ -4880,8 +4808,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -5063,7 +4990,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "Rockaway Park Shuttle"
   ],
   "aka": [],
@@ -5220,7 +5146,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "Rockaway Park Shuttle"
   ],
   "aka": [],
@@ -5247,7 +5172,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "Rockaway Park Shuttle"
   ],
   "aka": [],
@@ -5300,7 +5224,6 @@
    "Subway"
   ],
   "lines": [
-   "B",
    "D"
   ],
   "aka": [],
@@ -5380,8 +5303,7 @@
   ],
   "lines": [
    "2",
-   "3",
-   "4"
+   "3"
   ],
   "aka": [],
   "service": {
@@ -5491,8 +5413,7 @@
    "3",
    "4",
    "5",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [
    "Court St"
@@ -5520,8 +5441,7 @@
    "Subway"
   ],
   "lines": [
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -5655,8 +5575,7 @@
    "Subway"
   ],
   "lines": [
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -5764,8 +5683,7 @@
    "A",
    "C",
    "J",
-   "L",
-   "Z"
+   "L"
   ],
   "aka": [],
   "service": {
@@ -5823,8 +5741,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -5879,8 +5796,7 @@
    "4",
    "5",
    "6",
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [
    "Chambers St"
@@ -5934,8 +5850,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -6018,8 +5933,7 @@
    "N",
    "Q",
    "R",
-   "W",
-   "Z"
+   "W"
   ],
   "aka": [],
   "service": {
@@ -6073,8 +5987,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -6179,7 +6092,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "B",
    "C"
   ],
@@ -6314,8 +6226,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -6554,7 +6465,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -6693,8 +6603,7 @@
    "Subway"
   ],
   "lines": [
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -6720,10 +6629,8 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
-   "4",
-   "5"
+   "4"
   ],
   "aka": [],
   "service": {
@@ -6802,11 +6709,8 @@
   ],
   "lines": [
    "B",
-   "D",
-   "N",
    "Q",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -6860,8 +6764,7 @@
   "lines": [
    "F",
    "J",
-   "M",
-   "Z"
+   "M"
   ],
   "aka": [],
   "service": {
@@ -7148,10 +7051,7 @@
    "NYC Ferry"
   ],
   "lines": [
-   "NYC Ferry Astoria",
-   "NYC Ferry East River",
-   "NYC Ferry Rockaway-Soundview",
-   "NYC Ferry South Brooklyn"
+   "NYC Ferry East River"
   ],
   "aka": [],
   "service": {
@@ -7177,8 +7077,7 @@
    "NYC Ferry"
   ],
   "lines": [
-   "NYC Ferry Astoria",
-   "NYC Ferry Rockaway-Soundview"
+   "NYC Ferry Astoria"
   ],
   "aka": [],
   "service": {
@@ -7257,8 +7156,7 @@
   ],
   "lines": [
    "2",
-   "3",
-   "4"
+   "3"
   ],
   "aka": [],
   "service": {
@@ -7310,8 +7208,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
-   "F",
    "M",
    "R"
   ],
@@ -7550,7 +7446,6 @@
    "Subway"
   ],
   "lines": [
-   "B",
    "D"
   ],
   "aka": [],
@@ -7630,7 +7525,6 @@
   ],
   "lines": [
    "Far Rockaway Branch",
-   "Hempstead Branch",
    "Long Beach Branch",
    "West Hempstead Branch"
   ],
@@ -7687,8 +7581,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -7767,7 +7660,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C",
    "Franklin Av Shuttle"
   ],
@@ -7827,8 +7719,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -7854,8 +7745,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -7939,8 +7829,7 @@
    "5",
    "A",
    "C",
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -8020,8 +7909,7 @@
   ],
   "lines": [
    "2",
-   "3",
-   "4"
+   "3"
   ],
   "aka": [],
   "service": {
@@ -8047,8 +7935,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
-   "F",
    "M",
    "R"
   ],
@@ -8347,8 +8233,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -8506,8 +8391,7 @@
    "Subway"
   ],
   "lines": [
-   "1",
-   "2"
+   "1"
   ],
   "aka": [],
   "service": {
@@ -8718,8 +8602,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -8771,8 +8654,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -8831,8 +8713,7 @@
   ],
   "lines": [
    "E",
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -8858,7 +8739,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
    "F"
   ],
   "aka": [],
@@ -8914,8 +8794,7 @@
    "A",
    "C",
    "F",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -9019,7 +8898,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -9129,8 +9007,7 @@
    "Subway"
   ],
   "lines": [
-   "N",
-   "W"
+   "N"
   ],
   "aka": [],
   "service": {
@@ -9183,7 +9060,6 @@
    "Subway"
   ],
   "lines": [
-   "B",
    "D"
   ],
   "aka": [],
@@ -9236,9 +9112,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "3",
-   "4"
+   "3"
   ],
   "aka": [],
   "service": {
@@ -9264,7 +9138,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -9343,7 +9216,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -9435,9 +9307,7 @@
   "lines": [
    "F",
    "M",
-   "N",
-   "Q",
-   "R"
+   "Q"
   ],
   "aka": [],
   "service": {
@@ -9463,7 +9333,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -9651,8 +9520,7 @@
   ],
   "lines": [
    "J",
-   "M",
-   "Z"
+   "M"
   ],
   "aka": [],
   "service": {
@@ -9939,8 +9807,7 @@
   ],
   "lines": [
    "J",
-   "M",
-   "Z"
+   "M"
   ],
   "aka": [],
   "service": {
@@ -10097,8 +9964,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -10205,7 +10071,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -10234,9 +10099,7 @@
   ],
   "lines": [
    "D",
-   "N",
-   "R",
-   "W"
+   "N"
   ],
   "aka": [
    "62 St"
@@ -10424,9 +10287,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "3",
-   "4"
+   "3"
   ],
   "aka": [],
   "service": {
@@ -10452,11 +10313,7 @@
    "LIRR"
   ],
   "lines": [
-   "City Terminal Zone",
-   "Far Rockaway Branch",
-   "Hempstead Branch",
-   "Long Beach Branch",
-   "West Hempstead Branch"
+   "City Terminal Zone"
   ],
   "aka": [],
   "service": {
@@ -10691,7 +10548,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
    "F"
   ],
   "aka": [],
@@ -10744,8 +10600,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -10797,7 +10652,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -10932,10 +10786,7 @@
    "Subway"
   ],
   "lines": [
-   "D",
-   "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -10961,8 +10812,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -11072,7 +10922,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -11178,7 +11027,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -11206,7 +11054,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -11259,7 +11106,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "Rockaway Park Shuttle"
   ],
   "aka": [],
@@ -11339,7 +11185,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -11420,7 +11265,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -11447,8 +11291,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -11768,7 +11611,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
    "F"
   ],
   "aka": [],
@@ -11799,11 +11641,7 @@
    "City Terminal Zone",
    "E",
    "Far Rockaway Branch",
-   "Hempstead Branch",
-   "J",
-   "Long Beach Branch",
-   "West Hempstead Branch",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -11855,7 +11693,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -12000,7 +11837,6 @@
    "Subway"
   ],
   "lines": [
-   "B",
    "D"
   ],
   "aka": [],
@@ -12027,10 +11863,7 @@
    "Subway"
   ],
   "lines": [
-   "D",
-   "N",
-   "R",
-   "W"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -12109,7 +11942,6 @@
    "Subway"
   ],
   "lines": [
-   "2",
    "3",
    "4"
   ],
@@ -12137,7 +11969,6 @@
    "Subway"
   ],
   "lines": [
-   "A",
    "C"
   ],
   "aka": [],
@@ -12382,11 +12213,7 @@
    "NYC Ferry"
   ],
   "lines": [
-   "NYC Ferry Astoria",
-   "NYC Ferry East River",
-   "NYC Ferry Rockaway-Soundview",
-   "NYC Ferry South Brooklyn",
-   "NYC Ferry St. George"
+   "NYC Ferry East River"
   ],
   "aka": [],
   "service": {
@@ -12412,8 +12239,7 @@
    "Subway"
   ],
   "lines": [
-   "2",
-   "5"
+   "2"
   ],
   "aka": [],
   "service": {
@@ -12570,8 +12396,7 @@
    "Subway"
   ],
   "lines": [
-   "J",
-   "Z"
+   "J"
   ],
   "aka": [],
   "service": {
@@ -12597,8 +12422,6 @@
    "Subway"
   ],
   "lines": [
-   "E",
-   "F",
    "M",
    "R"
   ],
