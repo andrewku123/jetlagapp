@@ -102,10 +102,20 @@ def route_shapes(d):
     return {rid: [lines[s] for s in ss if s in lines] for rid, ss in sids.items()}
 
 
-def feature(system, color, name, lines, clip=None):
+def connected_to(g, pts, tol=0.003):
+    """The parts of g joined (through each other) to a part within tol of pts."""
+    joined = unary_union([p.buffer(1e-5) for p in getattr(g, "geoms", [g])])
+    groups = getattr(joined, "geoms", [joined])
+    keep = unary_union([grp for grp in groups if any(grp.distance(p) < tol for p in pts)])
+    return unary_union([p for p in getattr(g, "geoms", [g]) if p.intersects(keep)])
+
+
+def feature(system, color, name, lines, clip=None, stops=None):
     g = unary_union(lines)
     if clip is not None:
         g = g.intersection(clip)
+    if stops is not None:
+        g = connected_to(g, stops)
     g = linemerge(g) if g.geom_type == "MultiLineString" else g
     g = g.simplify(SIMPLIFY_DEG)
     geom = mapping(g)
@@ -130,12 +140,15 @@ def main():
     lirr = st.feed("gtfslirr")
     lirr_meta = {r["route_id"]: r for r in rows(lirr, "routes.txt")}
     lirr_sh = route_shapes(lirr)
+    stations = json.load(open(st.OUT))
     for rid, name in st.LIRR_BRANCHES.items():
+        # A stretch cut off from every station of its branch (Far Rockaway, past
+        # Nassau, isn't hourly) isn't drawn.
+        stops = [Point(s["lon"], s["lat"]) for s in stations if name in s["lines"]]
         feats.append(feature("LIRR", "#" + lirr_meta[rid]["route_color"].lower(), name,
-                             lirr_sh[rid], clip))
+                             lirr_sh[rid], clip, stops))
 
     fer = st.feed("nycferry")
-    stations = json.load(open(st.OUT))
     ferry_lines = {l for s in stations for l in s["lines"] if l.startswith("NYC Ferry ")}
     fer_sh = route_shapes(fer)
     landings = route_landings(fer)
