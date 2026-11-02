@@ -18,8 +18,9 @@ collapse them. A complex is one station (Times Sq and Port Authority are one,
 joined by a free in-system transfer) and keeps one sign name; services go into
 `lines`, not the name.
 
-Other systems join a subway complex when their stop is within MERGE_M of it
-(adding only a line label), else they become a station of their own.
+Other systems never merge by distance (as on the Bay Area map): a stop joins a
+subway complex only when MERGE_INTO lists it as the same station or corner, else
+it is a station of its own. Ferry and tram stops are always their own stations.
 
 A line is a service letter or number. Express variants fold into the base
 service (6X -> 6, 7X -> 7, FX -> F); the three "S" shuttles are separate lines.
@@ -64,7 +65,6 @@ MTA_STATIONS_URL = "https://data.ny.gov/resource/39hk-dx4f.json?$limit=1000"
 END_SEC = {"wd": 21 * 3600 + 15 * 60, "we": compute_headways.GAME_END_SEC}
 START_SEC = compute_headways.GAME_START_SEC
 THRESHOLD = compute_headways.THRESHOLD_MIN
-MERGE_M = 250
 IN_CITY_TOL_M = 100
 
 SUBWAY_LINE = {"FX": "F", "6X": "6", "7X": "7", "GS": "42 St Shuttle",
@@ -91,11 +91,18 @@ COMPLEX_NAME = {
     "626": "Franklin Av-Medgar Evers College", "629": "Lorimer St",
     "635": "South Ferry",
 }
-# Stops that are the same station as a subway complex but sit past MERGE_M from
-# its pins: Grand Central Madison is under Grand Central Terminal, and the LIRR
-# Nostrand Av platform is directly above the A/C at Atlantic & Nostrand.
-MERGE_INTO = {("LIRR", "Grand Central"): "Grand Central-42 St",
-              ("LIRR", "Nostrand Avenue"): "Nostrand Av"}
+# LIRR stops at the same station or intersection as a subway complex (like
+# Caltrain and Muni at 4th & King); the nearest complex of that name.
+# Flushing, Forest Hills and Nostrand Av are a block or more from their subway
+# stops, so they stay separate.
+MERGE_INTO = {
+    ("LIRR", "Penn Station"): "34 St-Penn Station",
+    ("LIRR", "Grand Central"): "Grand Central-42 St",
+    ("LIRR", "Atlantic Terminal"): "Atlantic Av-Barclays Ctr",
+    ("LIRR", "Jamaica"): "Sutphin Blvd-Archer Av-JFK Airport",
+    ("LIRR", "Woodside"): "61 St-Woodside",
+    ("LIRR", "East New York"): "Atlantic Av",
+}
 
 
 def short_name(name):
@@ -220,18 +227,16 @@ def main():
 
     def attach(name, lat, lon, system, lines, hw, new_ok=True):
         name = short_name(name)
-        st, d = nearest(lat, lon)
         forced = MERGE_INTO.get((system, name)) or MERGE_INTO.get((system, name.replace(" Av", " Avenue")))
         if forced:
-            st = next(s for s in stations if s["name"] == forced)
-            d = 0.0
-        if d <= MERGE_M:
+            st = min((s for s in stations if s["name"] == forced), key=lambda s: dist(s, lat, lon))
             if system not in st["systems"]:
                 st["systems"].append(system)
             for day in ("wd", "we"):
                 st["linesDay"][day] |= lines[day]
                 st["hw"][day] = min(st["hw"][day], hw[day])
-            return f"merged into {st['name']} ({d:.0f} m)"
+            return f"merged into {st['name']} ({dist(st, lat, lon):.0f} m)"
+        st, d = nearest(lat, lon)
         if not new_ok:
             return f"dropped (not hourly, {d:.0f} m from {st['name']})"
         stations.append({"name": name, "lat": lat, "lon": lon, "systems": [system],
@@ -252,8 +257,8 @@ def main():
             print(f"  LIRR {s['stop_name']}: no passing branch, skipped")
             continue
         hw = lirr_hw.get(s["stop_id"], {"wd": 999.0, "we": 999.0})
-        # A new station must be hourly every day (the service gate); a stop next
-        # to a subway complex only adds its branch label there.
+        # A new station must be hourly every day (the service gate); a stop in
+        # MERGE_INTO only adds its branch label to that subway complex.
         hourly = max(hw.values()) <= THRESHOLD
         print(f"  LIRR {s['stop_name']} wd={hw['wd']:.0f} we={hw['we']:.0f}:",
               attach(s["stop_name"], lat, lon, "LIRR", lines, hw, new_ok=hourly))

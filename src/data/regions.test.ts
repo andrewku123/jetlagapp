@@ -302,9 +302,10 @@ describe('New York City', () => {
       expect(st.headwayMin.wd).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
       expect(st.headwayMin.we).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
     }
-    // The Staten Island Ferry runs every day and labels the stations at its ends.
+    // The Staten Island Ferry runs every day; its terminals are their own stations,
+    // not merged into the subway/SIR stops next door.
     const sif = stations.filter((s) => s.lines.includes('Staten Island Ferry')).map((s) => s.name)
-    expect(sif.sort()).toEqual(['South Ferry', 'St George'])
+    expect(sif.sort()).toEqual(['St George Terminal', 'Whitehall Terminal'])
     // An NYC Ferry route is drawn only between its station landings: no part of
     // it runs out to non-station piers (Rockaway is ~9 mi from the nearest one).
     const overlay = (await import('./nyc.transit-lines.geojson.json')).default as unknown as {
@@ -343,7 +344,7 @@ describe('New York City', () => {
       eliminates: true,
     }
     const kept = stations.filter((s) => stationPasses(s, record as never))
-    expect(kept.length).toBe(21)
+    expect(kept.length).toBe(22)
     expect(kept.every((s) => s.county === 'Staten Island')).toBe(true)
   })
 

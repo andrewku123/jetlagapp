@@ -7491,16 +7491,40 @@
   }
  },
  {
+  "name": "Flushing Main St",
+  "lat": 40.757895,
+  "lon": -73.831347,
+  "systems": [
+   "LIRR"
+  ],
+  "lines": [
+   "Port Washington Branch"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "headwayMin": {
+   "wd": 45,
+   "we": 32
+  }
+ },
+ {
   "name": "Flushing-Main St",
   "lat": 40.7596,
   "lon": -73.83003,
   "systems": [
-   "Subway",
-   "LIRR"
+   "Subway"
   ],
   "lines": [
-   "7",
-   "Port Washington Branch"
+   "7"
   ],
   "aka": [],
   "service": {
@@ -7598,22 +7622,46 @@
   }
  },
  {
+  "name": "Forest Hills",
+  "lat": 40.719576,
+  "lon": -73.844814,
+  "systems": [
+   "LIRR"
+  ],
+  "lines": [
+   "Far Rockaway Branch",
+   "Hempstead Branch",
+   "Long Beach Branch",
+   "West Hempstead Branch"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "headwayMin": {
+   "wd": 52,
+   "we": 55
+  }
+ },
+ {
   "name": "Forest Hills-71 Av",
   "lat": 40.721691,
   "lon": -73.844521,
   "systems": [
-   "Subway",
-   "LIRR"
+   "Subway"
   ],
   "lines": [
    "E",
    "F",
-   "Far Rockaway Branch",
-   "Hempstead Branch",
-   "Long Beach Branch",
    "M",
-   "R",
-   "West Hempstead Branch"
+   "R"
   ],
   "aka": [],
   "service": {
@@ -10398,20 +10446,44 @@
  },
  {
   "name": "Nostrand Av",
-  "lat": 40.680438,
-  "lon": -73.950426,
+  "lat": 40.678388,
+  "lon": -73.948221,
   "systems": [
-   "Subway",
    "LIRR"
   ],
   "lines": [
-   "A",
-   "C",
    "City Terminal Zone",
    "Far Rockaway Branch",
    "Hempstead Branch",
    "Long Beach Branch",
    "West Hempstead Branch"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "headwayMin": {
+   "wd": 60,
+   "we": 20
+  }
+ },
+ {
+  "name": "Nostrand Av",
+  "lat": 40.680438,
+  "lon": -73.950426,
+  "systems": [
+   "Subway"
+  ],
+  "lines": [
+   "A",
+   "C"
   ],
   "aka": [],
   "service": {
@@ -11211,13 +11283,11 @@
   "lat": 40.759145,
   "lon": -73.95326,
   "systems": [
-   "Subway",
-   "Roosevelt Island Tram"
+   "Subway"
   ],
   "lines": [
    "F",
-   "M",
-   "Roosevelt Island Tram"
+   "M"
   ],
   "aka": [],
   "service": {
@@ -11232,6 +11302,32 @@
   },
   "headwayMin": {
    "wd": 13,
+   "we": 20
+  }
+ },
+ {
+  "name": "Roosevelt Island Tram",
+  "lat": 40.757083,
+  "lon": -73.953968,
+  "systems": [
+   "Roosevelt Island Tram"
+  ],
+  "lines": [
+   "Roosevelt Island Tram"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "headwayMin": {
+   "wd": 15,
    "we": 15
   }
  },
@@ -11402,13 +11498,11 @@
   "lat": 40.702577,
   "lon": -74.013329,
   "systems": [
-   "Subway",
-   "Staten Island Ferry"
+   "Subway"
   ],
   "lines": [
    "1",
    "R",
-   "Staten Island Ferry",
    "W"
   ],
   "aka": [
@@ -11513,11 +11607,35 @@
   "lat": 40.643748,
   "lon": -74.073643,
   "systems": [
-   "SIR",
+   "SIR"
+  ],
+  "lines": [
+   "SIR"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "headwayMin": {
+   "wd": 30,
+   "we": 30
+  }
+ },
+ {
+  "name": "St George Terminal",
+  "lat": 40.643708,
+  "lon": -74.072961,
+  "systems": [
    "Staten Island Ferry"
   ],
   "lines": [
-   "SIR",
    "Staten Island Ferry"
   ],
   "aka": [],
@@ -12337,6 +12455,32 @@
   "headwayMin": {
    "wd": 12,
    "we": 15
+  }
+ },
+ {
+  "name": "Whitehall Terminal",
+  "lat": 40.701403,
+  "lon": -74.013189,
+  "systems": [
+   "Staten Island Ferry"
+  ],
+  "lines": [
+   "Staten Island Ferry"
+  ],
+  "aka": [],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": true
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "headwayMin": {
+   "wd": 30,
+   "we": 30
   }
  },
  {
