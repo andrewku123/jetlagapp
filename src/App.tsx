@@ -530,6 +530,7 @@ export default function App() {
             pois={visiblePois}
             stationView={tab === 'poi' ? stationView : 'normal'}
             showHsr={tab === 'ask' && formKind === 'measure-hsr'}
+            weekend={game.dayType === 'we'}
           />
         </div>
 

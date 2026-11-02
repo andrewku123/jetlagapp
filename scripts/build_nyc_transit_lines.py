@@ -6,7 +6,9 @@ trunk share a colour (A/C/E are all 8 Av blue), so they are one feature, named
 for the trunk ("8 Av: A C E"). The three shuttles share shuttle grey. Each LIRR
 branch in play, each NYC Ferry route, SIR, the Staten Island Ferry and the
 Roosevelt Island Tram are their own features. LIRR geometry is clipped to the
-city (plus CLIP_M, so the line visibly leaves the map); boats are not clipped.
+city (plus CLIP_M, so the line visibly leaves the map). An NYC Ferry route is
+drawn only between its landings that are stations, so no ferry line runs past
+nothing but non-station piers (Rockaway, Soundview, ...).
 
     python3 scripts/build_nyc_transit_lines.py   # after build_nyc_stations.py
 """
@@ -15,7 +17,8 @@ import json
 import os
 
 from shapely.geometry import LineString, mapping, shape
-from shapely.ops import linemerge, unary_union
+from shapely.geometry import Point
+from shapely.ops import linemerge, substring, unary_union
 
 import build_nyc_stations as st
 import poi_geo
@@ -23,6 +26,17 @@ import poi_geo
 OUT = poi_geo.repo_path("nyc", "transitLines")
 CLIP_DEG = 0.015
 SIMPLIFY_DEG = 0.00008  # ~8 m
+LANDING_SNAP_DEG = 0.002  # a station landing within ~200 m of a ferry shape is on it
+
+
+def between_stations(lines, pts):
+    """Each shape cut to the stretch between the first and last station landing on it."""
+    out = []
+    for line in lines:
+        ds = [line.project(p) for p in pts if line.distance(p) <= LANDING_SNAP_DEG]
+        if len(ds) >= 2 and max(ds) > min(ds):
+            out.append(substring(line, min(ds), max(ds)))
+    return out
 
 # MTA's published trunk colours.
 SUBWAY_TRUNKS = [
@@ -95,7 +109,10 @@ def main():
     for r in rows(fer, "routes.txt"):
         name = "NYC Ferry " + r["route_long_name"]
         if r["route_type"] == "4" and name in ferry_lines:
-            feats.append(feature("NYC Ferry", "#" + r["route_color"].lower(), name, fer_sh[r["route_id"]]))
+            pts = [Point(s["lon"], s["lat"]) for s in stations if name in s["lines"]]
+            cut = between_stations(fer_sh[r["route_id"]], pts)
+            if cut:
+                feats.append(feature("NYC Ferry", "#" + r["route_color"].lower(), name, cut))
 
     (_, la, lo), (_, lb, lob) = st.SI_FERRY
     feats.append(feature("Staten Island Ferry", "#f58220", "Staten Island Ferry",

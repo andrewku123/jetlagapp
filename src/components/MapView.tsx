@@ -36,7 +36,7 @@ import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
+import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM, WEEKEND_EXCLUDED_LINES } from '../data/regions'
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -245,22 +245,27 @@ function BaseLayer() {
 
 interface TransitWay {
   type: 'Feature'
-  properties: { system: string; colors: string[] }
+  properties: { system: string; colors: string[]; name?: string }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
 }
 const TRANSIT_WAYS = (transitData as unknown as { features: TransitWay[] }).features
 
-// one line per physical track, drawn in the first color that runs on it
-const TRANSIT: GeoJSON.FeatureCollection = {
+// one line per physical track, drawn in the first color that runs on it; a
+// weekday-only line (NYC Ferry routes) is not drawn on weekends
+const transitFor = (weekend: boolean): GeoJSON.FeatureCollection => ({
   type: 'FeatureCollection',
-  features: TRANSIT_WAYS.map((w) => ({
-    type: 'Feature',
-    properties: { color: w.properties.colors[0] },
-    geometry: w.geometry,
-  })) as Feature[],
-}
+  features: TRANSIT_WAYS
+    .filter((w) => !(weekend && w.properties.name && WEEKEND_EXCLUDED_LINES.includes(w.properties.name)))
+    .map((w) => ({
+      type: 'Feature',
+      properties: { color: w.properties.colors[0] },
+      geometry: w.geometry,
+    })) as Feature[],
+})
+const TRANSIT_WD = transitFor(false)
+const TRANSIT_WE = transitFor(true)
 
 function transitStyle(feature?: Feature<Geometry, { color: string }>) {
   return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
@@ -322,6 +327,7 @@ interface Props {
   stationView: 'normal' | 'faded' | 'hidden'
   // Draw the high-speed rail line (measure only: nobody rides it or hides at it).
   showHsr?: boolean
+  weekend?: boolean
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -964,7 +970,7 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
 // "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
 // full opacity. Pane sits above the dim mask (overlayPane 400) and below POIs
 // (410), matching the previous draw order.
-function TransitLines() {
+function TransitLines({ weekend }: { weekend: boolean }) {
   const map = useMap()
   const [pane, setPane] = useState<string | null>(null)
   useEffect(() => {
@@ -984,7 +990,7 @@ function TransitLines() {
     return () => window.clearTimeout(id)
   }, [map])
   if (!pane) return null
-  return <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} pane={pane} />
+  return <GeoJSON key={weekend ? 'we' : 'wd'} data={weekend ? TRANSIT_WE : TRANSIT_WD} style={transitStyle as never} interactive={false} pane={pane} />
 }
 
 export default function MapView({
@@ -1016,6 +1022,7 @@ export default function MapView({
   pois,
   stationView,
   showHsr = false,
+  weekend = false,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // the toolbar collapses to a single 🧰 button so it barely covers the map while
@@ -1567,7 +1574,7 @@ export default function MapView({
           pathOptions={DIM_FILL}
           interactive={false}
         />
-        <TransitLines />
+        <TransitLines weekend={weekend} />
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}
