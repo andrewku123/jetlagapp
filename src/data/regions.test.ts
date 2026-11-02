@@ -369,14 +369,13 @@ describe('New York City', () => {
 })
 
 describe('Bay Area landmasses', () => {
-  it('islands are their own landmass, but none holds a station, so the question stays log-only', async () => {
+  it('islands are their own landmass; the water shuttle docks reach Alameda, so the question eliminates', async () => {
     const m = await loadFor('bayarea')
-    expect(m.LANDMASS_ELIMINATES).toBe(false)
-    expect(m.STATIONLESS_LANDMASSES).toEqual(expect.arrayContaining(['Alameda', 'Treasure Island', 'Coast Guard Island']))
+    expect(m.LANDMASS_ELIMINATES).toBe(true)
+    expect(m.STATIONLESS_LANDMASSES).toEqual(expect.arrayContaining(['Treasure Island', 'Coast Guard Island']))
     const { landmassAt } = await import('../lib/landmass')
     expect(landmassAt({ lat: 37.7652, lon: -122.2416 })).toBe('Alameda')
     expect(landmassAt({ lat: 37.8044, lon: -122.2712 })).toBe('Mainland')
-    expect(await blurbFor('bayarea', 'match-landmass')).toContain('Alameda')
     expect(await blurbFor('bayarea', 'match-landmass')).not.toContain('one connected landmass')
   })
 })

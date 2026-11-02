@@ -6,9 +6,9 @@ OSM coastline (measure_src/osm_coastline_bayarea.geojson) is land that bridges,
 causeways and tubes don't join to anything else. Alameda, Treasure Island and
 Coast Guard Island are the ones people know. Each island larger than MIN_KM2
 inside the play area is its own landmass; the rest of the play area is the
-mainland. No station stands on an island (Fruitvale, the nearest to Alameda,
-is ~0.5 mi away), so the question stays log-only here, but the seeker can now be
-told truthfully which landmass they are on.
+mainland. The weekend water shuttle docks (Jack London Sq, Alameda Landing) have
+hiding zones that reach Alameda, so the question eliminates here; the seeker is
+told which landmass they are on.
 
     python3 scripts/build_bay_landmasses.py
 """

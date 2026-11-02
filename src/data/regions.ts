@@ -459,9 +459,9 @@ const countyCarves = singleCounty && boundaryCarves(countiesFc, (s) => s.county 
 const cityCarves = singleCity && boundaryCarves(placesFc, (s) => s.city ?? null)
 
 // Landmass Matching is a real question when the stations stand on more than one
-// landmass, or a hiding disk reaches across water onto another one. A map with
-// no landmass file (or whose islands hold no station, like Alameda on the Bay
-// Area) keeps it log-only.
+// landmass, or a hiding disk reaches across water onto another one (the Bay
+// Area's water shuttle docks reach Alameda). A map with no landmass file, or
+// whose islands no hiding disk reaches, keeps it log-only.
 const landmassFc = (landmassesData ?? { features: [] }) as unknown as { features: NamedFeature[] }
 const landmassOf = (s: Station) => nameAt(landmassFc, s)
 const stationLandmasses = new Set(logOnlyStations.map(landmassOf).filter((n) => n != null))
