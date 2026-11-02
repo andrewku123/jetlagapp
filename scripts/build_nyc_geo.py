@@ -66,6 +66,11 @@ NJ_WATER_COUNTIES = ["34017", "34003", "34039", "34023"]
 NJ_WATER_NAMES = {"Hudson Riv", "New York Bay", "Upper New York Bay",
                   "Kill Van Kull", "Arthur Kill", "Newark Bay"}
 NJ_WATER_BOX = (-74.30, 40.49, -73.90, 40.9155)
+# New Jersey land (its TIGER county area minus all TIGER water) grown by this
+# margin is cut from the display area, so imagery never spills onto NJ land or
+# piers; losing a strip of water along the shore is the safer error.
+NJ_FIPS = ["34003", "34013", "34017", "34023", "34025", "34039"]
+NJ_SHORE_PAD_M = 60
 # Water that stays masked even inside the city limit (lon, lat rings): Newark Bay
 # north of Bergen Point-Elizabethport, and the open Lower Bay, Raritan Bay and
 # ocean beyond the Arthur Kill mouth, Sea Gate-South Beach and Rockaway Inlet
@@ -295,9 +300,17 @@ def main():
     water = water.difference(TO_M(unary_union([Polygon(r) for r in MASKED_WATER])))
     display = unary_union([play_m, water]).buffer(1).buffer(-1)
     display = Polygon(max(parts(display), key=lambda p: p.area).exterior)
+    nj_box = box(*NJ_WATER_BOX)
+    nj_all_water = unary_union([g.intersection(nj_box) for c in NJ_FIPS
+                                for rec, g in shp_records(areawater(c), lambda r: True)])
+    nj_land = unary_union([tiger[f] for f in NJ_FIPS]).intersection(TO_M(nj_box)) \
+        .difference(TO_M(nj_all_water))
+    display = display.simplify(SIMPLIFY_M).difference(
+        nj_land.buffer(NJ_SHORE_PAD_M).simplify(SIMPLIFY_M))
+    display = max(parts(display), key=lambda p: p.area)
     write("nyc.play-area.geojson.json", [feature(play_ll, name="New York City")])
     write("nyc.display-area.geojson.json",
-          [feature(rounded(TO_LL(display.simplify(SIMPLIFY_M))), name="New York City")])
+          [feature(rounded(TO_LL(display)), name="New York City")])
     county_lines, state_lines = [], []
     ids = sorted(tiger)
     for i, a in enumerate(ids):

@@ -27,16 +27,33 @@ OUT = poi_geo.repo_path("nyc", "transitLines")
 CLIP_DEG = 0.015
 SIMPLIFY_DEG = 0.00008  # ~8 m
 LANDING_SNAP_DEG = 0.002  # a station landing within ~200 m of a ferry shape is on it
+LEG_DETOUR = 1.6  # A-B-C replaces a direct A-C leg when at most this much longer
 
 
 def between_stations(lines, pts):
-    """Each shape cut to the stretch between the first and last station landing on it."""
-    out = []
+    """One line per pair of consecutive station landings along the route's shapes,
+    so trip variants that drift apart in the river draw as a single line. A leg
+    that runs past another landing (A-C next to A-B-C) is dropped in favour of the
+    legs through it."""
+    legs = {}
     for line in lines:
-        ds = [line.project(p) for p in pts if line.distance(p) <= LANDING_SNAP_DEG]
-        if len(ds) >= 2 and max(ds) > min(ds):
-            out.append(substring(line, min(ds), max(ds)))
-    return out
+        on = sorted((line.project(p), i) for i, p in enumerate(pts)
+                    if line.distance(p) <= LANDING_SNAP_DEG)
+        for (da, a), (db, b) in zip(on, on[1:]):
+            if db > da and a != b:
+                mid = list(substring(line, da, db).coords)[1:-1]
+                leg = LineString([pts[a].coords[0], *mid, pts[b].coords[0]])
+                key = frozenset((a, b))
+                if key not in legs or leg.length < legs[key].length:
+                    legs[key] = leg
+    for key in sorted(legs, key=lambda k: -legs[k].length):
+        a, c = tuple(key)
+        for b in range(len(pts)):
+            ab, bc = legs.get(frozenset((a, b))), legs.get(frozenset((b, c)))
+            if ab is not None and bc is not None and ab.length + bc.length <= LEG_DETOUR * legs[key].length:
+                del legs[key]
+                break
+    return list(legs.values())
 
 # MTA's published trunk colours.
 SUBWAY_TRUNKS = [
