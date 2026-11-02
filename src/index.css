@@ -54,6 +54,22 @@ body { background: var(--bg); color: var(--text); }
 .gate button:disabled { opacity: 0.5; cursor: default; }
 .gate-error { color: #ffb4b4; font-size: 14px; }
 
+.map-picker {
+  max-width: 360px; margin: 14vh auto 0; padding: 0 18px 24px;
+  display: flex; flex-direction: column; gap: 10px; font-size: 15px;
+}
+.map-picker h1 { font-size: 22px; margin: 0; }
+.map-picker p { color: var(--muted); margin: 0 0 4px; }
+.map-picker-list { display: flex; flex-direction: column; gap: 8px; }
+.map-picker-list button {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  background: var(--panel); color: var(--text); border: 1px solid var(--line);
+  border-radius: 8px; padding: 14px 14px; font: inherit; text-align: left; cursor: pointer;
+}
+.map-picker-list button:hover { border-color: var(--accent); }
+.map-picker-name { font-weight: 600; }
+.map-picker-meta { color: var(--muted); font-size: 13px; }
+
 .topbar {
   display: flex; align-items: center; gap: 16px;
   padding: 8px 14px; background: var(--panel); border-bottom: 1px solid var(--line);
