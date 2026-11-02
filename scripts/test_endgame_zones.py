@@ -52,6 +52,13 @@ for rid, (st, pa, water) in MAPS.items():
     check(f"{rid}: with_endgame_zones is idempotent",
           Z.with_endgame_zones(play, stations, Z.max_hiding_radius_mi(rid), Z.load_water(water)) is play)
 
+# The app's city/county/ZIP lookups read only Polygon/MultiPolygon features.
+for fn in sorted(os.listdir(os.path.join(ROOT, "src", "data"))):
+    if any(fn.endswith(k + ".geojson.json") for k in ("places", "counties", "zctas", "play-area")):
+        bad = [f["properties"].get("name", "?") for f in data(fn)["features"]
+               if f["geometry"]["type"] not in ("Polygon", "MultiPolygon")]
+        check(f"{fn}: polygon-only geometry", not bad, bad)
+
 if FAILED:
     print(f"\n{len(FAILED)} failed")
     sys.exit(1)

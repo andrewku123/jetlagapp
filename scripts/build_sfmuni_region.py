@@ -20,7 +20,7 @@ DATA = os.path.join(os.path.dirname(__file__), '..', 'src', 'data')
 SCRIPTS = os.path.dirname(__file__)
 
 sys.path.insert(0, SCRIPTS)
-from endgame_zones import load_water, max_hiding_radius_mi, with_endgame_zones  # noqa: E402
+from endgame_zones import load_water, max_hiding_radius_mi, polygonal, with_endgame_zones  # noqa: E402
 
 MILES_PER_METER = 1 / 1609.344
 
@@ -136,7 +136,7 @@ neighbour_feats = []
 for f in places['features']:
     if f['properties']['name'] == 'San Francisco city':
         continue
-    g = shape(f['geometry']).difference(water).intersection(play_area)
+    g = polygonal(shape(f['geometry']).difference(water).intersection(play_area))
     if not g.is_empty:
         neighbour_feats.append({'type': 'Feature',
                                 'properties': {'name': f['properties']['name']},

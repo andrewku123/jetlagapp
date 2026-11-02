@@ -43,6 +43,8 @@ MIN_PIECE_DEG2 = 1e-8
 # New land thinner than ~2x this is shoreline noise (the play area and the water
 # mask trace the coast from different sources), not land the disks really add.
 SLIVER_OPEN_DEG = 0.0002  # ~20 m
+# notches narrower than ~2x this between kept new land and the old border get filled
+NOTCH_FILL_DEG = 0.0003  # ~30 m
 SHORELINE_BUF_M = 150.0  # build_play_area.py's buffered (pier-rescue) play area
 
 # poi_geo region id -> app region id (src/data/regions.ts, region-sizes.json)
@@ -99,7 +101,16 @@ def new_land(play, stations, radius_mi, water=None):
     if ext.is_empty:
         return ext
     opened = ext.buffer(-SLIVER_OPEN_DEG).buffer(SLIVER_OPEN_DEG)
-    return drop_slivers(polygonal(opened.intersection(ext).buffer(0)))
+    kept = drop_slivers(polygonal(opened.intersection(ext).buffer(0)))
+    if kept.is_empty:
+        return kept
+    # The opening rounds off the tapers where a disk arc meets the old border,
+    # leaving notches in the outline. Close them back up, but only with disk land
+    # next to a kept piece, so shoreline noise elsewhere stays out.
+    both = unary_union([play, kept])
+    closed = both.buffer(NOTCH_FILL_DEG).buffer(-NOTCH_FILL_DEG)
+    fill = closed.intersection(ext).intersection(kept.buffer(2 * NOTCH_FILL_DEG))
+    return drop_slivers(polygonal(unary_union([kept, polygonal(fill)]).buffer(0)))
 
 
 def with_endgame_zones(play, stations, radius_mi, water=None):
