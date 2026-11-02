@@ -31,6 +31,16 @@ export function thermometerTravelOk(actualMiles: number, chosenMiles: number, cu
   return actualMiles + Math.max(0.1, chosenMiles * 0.05) >= chosenMiles
 }
 
+// A curse thermometer shorter than its distance's minimum travel couldn't have
+// been a real question, so it can't be unmarked into one (delete it instead).
+export function curseUnmarkBlocked(q: Pick<QuestionRecord, 'kind' | 'params' | 'curse' | 'vetoed'>): boolean {
+  if (!q.curse || q.vetoed || q.kind !== 'thermometer') return false
+  const { fromLat, fromLon, toLat, toLon, thermometerMiles } = q.params
+  const [aLat, aLon, bLat, bLon, chosen] = [fromLat, fromLon, toLat, toLon, thermometerMiles].map(Number)
+  if (![aLat, aLon, bLat, bLon, chosen].every(Number.isFinite) || chosen <= 0) return false
+  return !thermometerTravelOk(haversineMiles({ lat: aLat, lon: aLon }, { lat: bLat, lon: bLon }), chosen)
+}
+
 export interface QuestionMeta {
   kind: QuestionKind
   category: 'Radar' | 'Thermometer' | 'Matching' | 'Measuring' | 'Tentacles' | 'Inside' | 'Photo'
