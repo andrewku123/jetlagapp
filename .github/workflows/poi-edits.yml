@@ -107,9 +107,10 @@ jobs:
     needs: apply
     if: github.event_name == 'push' && needs.apply.outputs.pushed == 'true'
     runs-on: ubuntu-latest
-    # share the gh-pages write lock with deploy.yml / preview.yml
+    # same group as this branch's preview.yml runs (head_ref there == ref_name
+    # here); other gh-pages writers are handled by the retrying push below.
     concurrency:
-      group: gh-pages-publish
+      group: gh-pages-preview-${{ github.ref_name }}
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
@@ -144,4 +145,11 @@ jobs:
           git add -A "$dir"
           git diff --cached --quiet && echo "preview unchanged" && exit 0
           git commit -m "Update pr-${{ steps.pr.outputs.n }} preview (POI edits)"
-          git push origin gh-pages
+          # Another workflow may have pushed to gh-pages meanwhile; it only
+          # touches other paths, so rebase onto it and retry (never --force).
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            git push origin gh-pages && exit 0
+            echo "push rejected (attempt $attempt), rebasing onto origin/gh-pages"
+            git pull --rebase origin gh-pages
+          done
+          echo "gave up pushing the preview after 10 attempts" && exit 1

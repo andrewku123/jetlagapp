@@ -14,9 +14,12 @@ permissions:
   contents: write
   pull-requests: write
 
-# Share the gh-pages write lock with the production deploy (see deploy.yml).
+# One group per PR branch, so a preview only ever supersedes an older preview
+# of the same PR and can never cancel a pending production deploy. Concurrent
+# gh-pages pushes from other workflows are safe (see deploy.yml): the action
+# pushes with force: false and rebases + retries on rejection.
 concurrency:
-  group: gh-pages-publish
+  group: gh-pages-preview-${{ github.head_ref }}
   cancel-in-progress: false
 
 jobs:
