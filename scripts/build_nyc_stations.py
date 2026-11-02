@@ -102,6 +102,7 @@ MERGE_INTO = {
     ("LIRR", "Jamaica"): "Sutphin Blvd-Archer Av-JFK Airport",
     ("LIRR", "Woodside"): "61 St-Woodside",
     ("LIRR", "East New York"): "Atlantic Av",
+    ("Staten Island Ferry", "St George Terminal"): "St George",
 }
 
 

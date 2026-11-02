@@ -11450,35 +11450,11 @@
   "lat": 40.643748,
   "lon": -74.073643,
   "systems": [
-   "SIR"
-  ],
-  "lines": [
-   "SIR"
-  ],
-  "aka": [],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "headwayMin": {
-   "wd": 30,
-   "we": 30
-  }
- },
- {
-  "name": "St George Terminal",
-  "lat": 40.643708,
-  "lon": -74.072961,
-  "systems": [
+   "SIR",
    "Staten Island Ferry"
   ],
   "lines": [
+   "SIR",
    "Staten Island Ferry"
   ],
   "aka": [],

@@ -246,7 +246,8 @@ function BaseLayer() {
 
 interface TransitWay {
   type: 'Feature'
-  properties: { system: string; colors: string[]; name?: string }
+  // faded: a ferry route's stretch past its counting stations (context only)
+  properties: { system: string; colors: string[]; name?: string; faded?: boolean }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
@@ -262,7 +263,7 @@ const transitFor = (day: DayType): GeoJSON.FeatureCollection => {
     features: TRANSIT_WAYS.filter((w) => !(w.properties.name && excluded.includes(w.properties.name))).map(
       (w) => ({
         type: 'Feature',
-        properties: { color: w.properties.colors[0] },
+        properties: { color: w.properties.colors[0], faded: !!w.properties.faded },
         geometry: w.geometry,
       }),
     ) as Feature[],
@@ -270,8 +271,10 @@ const transitFor = (day: DayType): GeoJSON.FeatureCollection => {
 }
 const TRANSIT: Record<DayType, GeoJSON.FeatureCollection> = { wd: transitFor('wd'), we: transitFor('we') }
 
-function transitStyle(feature?: Feature<Geometry, { color: string }>) {
-  return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
+function transitStyle(feature?: Feature<Geometry, { color: string; faded: boolean }>) {
+  const color = feature?.properties.color ?? '#666'
+  if (feature?.properties.faded) return { color, weight: 2, opacity: 0.45, dashArray: '6 6', interactive: false }
+  return { color, weight: 2.5, opacity: 0.95, interactive: false }
 }
 
 // BART line labels carry a "(start–end)" suffix; drop it for the station popup

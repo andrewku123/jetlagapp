@@ -15730,10 +15730,12 @@
   "lat": 40.643748,
   "lon": -74.073643,
   "systems": [
-   "SIR"
+   "SIR",
+   "Staten Island Ferry"
   ],
   "lines": [
-   "SIR"
+   "SIR",
+   "Staten Island Ferry"
   ],
   "aka": [],
   "service": {
@@ -15762,42 +15764,6 @@
   "nearestAirport": "LGA"
  },
  {
-  "name": "St George Terminal",
-  "lat": 40.643708,
-  "lon": -74.072961,
-  "systems": [
-   "Staten Island Ferry"
-  ],
-  "lines": [
-   "Staten Island Ferry"
-  ],
-  "aka": [],
-  "service": {
-   "wd": {
-    "served": true,
-    "hourly": true
-   },
-   "we": {
-    "served": true,
-    "hourly": true
-   }
-  },
-  "headwayMin": {
-   "wd": 30,
-   "we": 30
-  },
-  "id": "s429",
-  "nameLength": 18,
-  "county": "Staten Island",
-  "city": "New York city",
-  "elevation": 2.8,
-  "airportDist": {
-   "JFK": 24740.7,
-   "LGA": 22338.6
-  },
-  "nearestAirport": "LGA"
- },
- {
   "name": "St Lawrence Av",
   "lat": 40.831509,
   "lon": -73.867618,
@@ -15822,7 +15788,7 @@
    "wd": 12,
    "we": 15
   },
-  "id": "s430",
+  "id": "s429",
   "nameLength": 14,
   "county": "Bronx",
   "city": "New York city",
@@ -15858,7 +15824,7 @@
    "wd": 30,
    "we": 30
   },
-  "id": "s431",
+  "id": "s430",
   "nameLength": 9,
   "county": "Staten Island",
   "city": "New York city",
@@ -15895,7 +15861,7 @@
    "wd": 10,
    "we": 14
   },
-  "id": "s432",
+  "id": "s431",
   "nameLength": 11,
   "county": "Queens",
   "city": "New York city",
@@ -15932,7 +15898,7 @@
    "wd": 10,
    "we": 16
   },
-  "id": "s433",
+  "id": "s432",
   "nameLength": 11,
   "county": "Brooklyn",
   "city": "New York city",
@@ -15968,7 +15934,7 @@
    "wd": 10,
    "we": 20
   },
-  "id": "s434",
+  "id": "s433",
   "nameLength": 12,
   "county": "Queens",
   "city": "New York city",
@@ -16008,7 +15974,7 @@
    "wd": 10,
    "we": 12
   },
-  "id": "s435",
+  "id": "s434",
   "nameLength": 34,
   "county": "Queens",
   "city": "New York city",
@@ -16044,7 +16010,7 @@
    "wd": 8,
    "we": 15
   },
-  "id": "s436",
+  "id": "s435",
   "nameLength": 9,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16081,7 +16047,7 @@
    "wd": 10,
    "we": 15
   },
-  "id": "s437",
+  "id": "s436",
   "nameLength": 20,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16130,7 +16096,7 @@
    "wd": 6,
    "we": 9
   },
-  "id": "s438",
+  "id": "s437",
   "nameLength": 14,
   "county": "Manhattan",
   "city": "New York city",
@@ -16166,7 +16132,7 @@
    "wd": 30,
    "we": 30
   },
-  "id": "s439",
+  "id": "s438",
   "nameLength": 13,
   "county": "Staten Island",
   "city": "New York city",
@@ -16202,7 +16168,7 @@
    "wd": 30,
    "we": 30
   },
-  "id": "s440",
+  "id": "s439",
   "nameLength": 11,
   "county": "Staten Island",
   "city": "New York city",
@@ -16238,7 +16204,7 @@
    "wd": 15,
    "we": 15
   },
-  "id": "s441",
+  "id": "s440",
   "nameLength": 13,
   "county": "Manhattan",
   "city": "New York city",
@@ -16274,7 +16240,7 @@
    "wd": 12,
    "we": 16
   },
-  "id": "s442",
+  "id": "s441",
   "nameLength": 10,
   "county": "Bronx",
   "city": "New York city",
@@ -16310,7 +16276,7 @@
    "wd": 12,
    "we": 14
   },
-  "id": "s443",
+  "id": "s442",
   "nameLength": 8,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16347,7 +16313,7 @@
    "wd": 10,
    "we": 15
   },
-  "id": "s444",
+  "id": "s443",
   "nameLength": 8,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16383,7 +16349,7 @@
    "wd": 11,
    "we": 20
   },
-  "id": "s445",
+  "id": "s444",
   "nameLength": 25,
   "county": "Bronx",
   "city": "New York city",
@@ -16420,7 +16386,7 @@
    "wd": 12,
    "we": 15
   },
-  "id": "s446",
+  "id": "s445",
   "nameLength": 13,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16456,7 +16422,7 @@
    "wd": 12,
    "we": 20
   },
-  "id": "s447",
+  "id": "s446",
   "nameLength": 13,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16493,7 +16459,7 @@
    "wd": 12,
    "we": 17
   },
-  "id": "s448",
+  "id": "s447",
   "nameLength": 13,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16529,7 +16495,7 @@
    "wd": 6,
    "we": 8
   },
-  "id": "s449",
+  "id": "s448",
   "nameLength": 22,
   "county": "Queens",
   "city": "New York city",
@@ -16571,7 +16537,7 @@
    "wd": 6,
    "we": 11
   },
-  "id": "s450",
+  "id": "s449",
   "nameLength": 14,
   "county": "Manhattan",
   "city": "New York city",
@@ -16608,7 +16574,7 @@
    "wd": 10,
    "we": 13
   },
-  "id": "s451",
+  "id": "s450",
   "nameLength": 18,
   "county": "Brooklyn",
   "city": "New York city",
@@ -16644,7 +16610,7 @@
    "wd": 7,
    "we": 20
   },
-  "id": "s452",
+  "id": "s451",
   "nameLength": 13,
   "county": "Manhattan",
   "city": "New York city",
@@ -16680,7 +16646,7 @@
    "wd": 13,
    "we": 17
   },
-  "id": "s453",
+  "id": "s452",
   "nameLength": 16,
   "county": "Bronx",
   "city": "New York city",
@@ -16717,7 +16683,7 @@
    "wd": 8,
    "we": 15
   },
-  "id": "s454",
+  "id": "s453",
   "nameLength": 7,
   "county": "Manhattan",
   "city": "New York city",
@@ -16754,7 +16720,7 @@
    "wd": 8,
    "we": 15
   },
-  "id": "s455",
+  "id": "s454",
   "nameLength": 7,
   "county": "Manhattan",
   "city": "New York city",
@@ -16790,7 +16756,7 @@
    "wd": 35,
    "we": 999
   },
-  "id": "s456",
+  "id": "s455",
   "nameLength": 15,
   "county": "Manhattan",
   "city": "New York city",
@@ -16826,7 +16792,7 @@
    "wd": 12,
    "we": 16
   },
-  "id": "s457",
+  "id": "s456",
   "nameLength": 26,
   "county": "Bronx",
   "city": "New York city",
@@ -16862,7 +16828,7 @@
    "wd": 12,
    "we": 15
   },
-  "id": "s458",
+  "id": "s457",
   "nameLength": 27,
   "county": "Bronx",
   "city": "New York city",
@@ -16898,7 +16864,7 @@
    "wd": 30,
    "we": 30
   },
-  "id": "s459",
+  "id": "s458",
   "nameLength": 18,
   "county": "Manhattan",
   "city": "New York city",
@@ -16934,7 +16900,7 @@
    "wd": 12,
    "we": 15
   },
-  "id": "s460",
+  "id": "s459",
   "nameLength": 11,
   "county": "Bronx",
   "city": "New York city",
@@ -16970,7 +16936,7 @@
    "wd": 8,
    "we": 15
   },
-  "id": "s461",
+  "id": "s460",
   "nameLength": 9,
   "county": "Brooklyn",
   "city": "New York city",
@@ -17007,7 +16973,7 @@
    "wd": 10,
    "we": 16
   },
-  "id": "s462",
+  "id": "s461",
   "nameLength": 11,
   "county": "Brooklyn",
   "city": "New York city",
@@ -17043,7 +17009,7 @@
    "wd": 12,
    "we": 18
   },
-  "id": "s463",
+  "id": "s462",
   "nameLength": 14,
   "county": "Queens",
   "city": "New York city",
@@ -17080,7 +17046,7 @@
    "wd": 10,
    "we": 13
   },
-  "id": "s464",
+  "id": "s463",
   "nameLength": 14,
   "county": "Queens",
   "city": "New York city",
@@ -17116,7 +17082,7 @@
    "wd": 12,
    "we": 15
   },
-  "id": "s465",
+  "id": "s464",
   "nameLength": 8,
   "county": "Bronx",
   "city": "New York city",
@@ -17162,7 +17128,7 @@
    "wd": 8,
    "we": 14
   },
-  "id": "s466",
+  "id": "s465",
   "nameLength": 18,
   "county": "Manhattan",
   "city": "New York city",
@@ -17198,7 +17164,7 @@
    "wd": 10,
    "we": 20
   },
-  "id": "s467",
+  "id": "s466",
   "nameLength": 7,
   "county": "Brooklyn",
   "city": "New York city",
@@ -17234,7 +17200,7 @@
    "wd": 12,
    "we": 15
   },
-  "id": "s468",
+  "id": "s467",
   "nameLength": 9,
   "county": "Bronx",
   "city": "New York city",

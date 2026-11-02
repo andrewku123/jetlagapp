@@ -302,16 +302,22 @@ describe('New York City', () => {
       expect(st.headwayMin.wd).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
       expect(st.headwayMin.we).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
     }
-    // The Staten Island Ferry runs every day; its terminals are their own stations,
-    // not merged into the subway/SIR stops next door.
+    // The Staten Island Ferry runs every day. Whitehall is its own station; St
+    // George shares one terminal building with the SIR, so they are one station.
     const sif = stations.filter((s) => s.lines.includes('Staten Island Ferry')).map((s) => s.name)
-    expect(sif.sort()).toEqual(['St George Terminal', 'Whitehall Terminal'])
-    // An NYC Ferry route is drawn only between its station landings: no part of
-    // it runs out to non-station piers (Rockaway is ~9 mi from the nearest one).
+    expect(sif.sort()).toEqual(['St George', 'Whitehall Terminal'])
+    // An NYC Ferry route is drawn solid only between its station landings: no
+    // solid part runs out to non-station piers (Rockaway is ~9 mi from the
+    // nearest one). The rest of a route with a station is drawn faded, and a
+    // route with no station isn't drawn at all.
     const overlay = (await import('./nyc.transit-lines.geojson.json')).default as unknown as {
-      features: { properties: { system: string; name: string }; geometry: { type: string; coordinates: number[][][] } }[]
+      features: { properties: { system: string; name: string; faded?: boolean }; geometry: { type: string; coordinates: number[][][] } }[]
     }
-    const ferries = overlay.features.filter((f) => f.properties.system === 'NYC Ferry')
+    const all = overlay.features.filter((f) => f.properties.system === 'NYC Ferry')
+    for (const f of all) expect(stations.some((s) => s.lines.includes(f.properties.name)), f.properties.name).toBe(true)
+    const faded = all.filter((f) => f.properties.faded).map((f) => f.properties.name)
+    expect(faded).toEqual(expect.arrayContaining(['NYC Ferry South Brooklyn', 'NYC Ferry St. George']))
+    const ferries = all.filter((f) => !f.properties.faded)
     expect(ferries.length).toBeGreaterThan(0)
     for (const f of ferries) {
       const landings = stations.filter((s) => s.lines.includes(f.properties.name))
@@ -344,7 +350,7 @@ describe('New York City', () => {
       eliminates: true,
     }
     const kept = stations.filter((s) => stationPasses(s, record as never))
-    expect(kept.length).toBe(22)
+    expect(kept.length).toBe(21)
     expect(kept.every((s) => s.county === 'Staten Island')).toBe(true)
   })
 

@@ -27,6 +27,7 @@ OUT = poi_geo.repo_path("nyc", "transitLines")
 CLIP_DEG = 0.015
 SIMPLIFY_DEG = 0.00008  # ~8 m
 LANDING_SNAP_DEG = 0.002  # a station landing within ~200 m of a ferry shape is on it
+FADED_OVERLAP_DEG = 0.0008  # a route leg this close to a solid one is the same stretch
 LEG_DETOUR = 1.6  # A-B-C replaces a direct A-C leg when at most this much longer
 
 
@@ -76,6 +77,16 @@ def rows(d, f):
         return list(csv.DictReader(fh))
 
 
+def route_landings(d):
+    """route_id -> [Point] of every stop its trips serve."""
+    stops = {r["stop_id"]: Point(float(r["stop_lon"]), float(r["stop_lat"])) for r in rows(d, "stops.txt")}
+    route_of = {t["trip_id"]: t["route_id"] for t in rows(d, "trips.txt")}
+    ids = {}
+    for r in rows(d, "stop_times.txt"):
+        ids.setdefault(route_of.get(r["trip_id"]), set()).add(r["stop_id"])
+    return {rid: [stops[i] for i in sorted(ss) if i in stops] for rid, ss in ids.items()}
+
+
 def route_shapes(d):
     """route_id -> [LineString] of every distinct shape its trips run."""
     sids = {}
@@ -123,13 +134,24 @@ def main():
     stations = json.load(open(st.OUT))
     ferry_lines = {l for s in stations for l in s["lines"] if l.startswith("NYC Ferry ")}
     fer_sh = route_shapes(fer)
+    landings = route_landings(fer)
     for r in rows(fer, "routes.txt"):
         name = "NYC Ferry " + r["route_long_name"]
         if r["route_type"] == "4" and name in ferry_lines:
+            color = "#" + r["route_color"].lower()
             pts = [Point(s["lon"], s["lat"]) for s in stations if name in s["lines"]]
             cut = between_stations(fer_sh[r["route_id"]], pts)
             if cut:
-                feats.append(feature("NYC Ferry", "#" + r["route_color"].lower(), name, cut))
+                feats.append(feature("NYC Ferry", color, name, cut))
+            # The rest of the route, past its counting stations, drawn faded so
+            # a station's ferry visibly goes somewhere (no dots at those landings).
+            solid = unary_union(cut) if cut else None
+            rest = [l for l in between_stations(fer_sh[r["route_id"]], landings[r["route_id"]])
+                    if solid is None or l.interpolate(0.5, normalized=True).distance(solid) > FADED_OVERLAP_DEG]
+            if rest:
+                f = feature("NYC Ferry", color, name, rest)
+                f["properties"]["faded"] = True
+                feats.append(f)
 
     (_, la, lo), (_, lb, lob) = st.SI_FERRY
     feats.append(feature("Staten Island Ferry", "#f58220", "Staten Island Ferry",
