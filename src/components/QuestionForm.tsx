@@ -23,6 +23,8 @@ interface Props {
   lines: string[]
   onSubmit: (r: QuestionRecord) => void
   onPreview: (p: LatLng) => void
+  // Tells the map which question is being set up (the Acela line shows only for high-speed rail).
+  onKindChange?: (k: QuestionKind) => void
   // how many times each question group has already been asked, keyed by
   // questionGroupKey — used to preview the scaled cost of asking once more.
   askGroupCounts: Map<string, number>
@@ -193,6 +195,7 @@ export default function QuestionForm({
   lines,
   onSubmit,
   onPreview,
+  onKindChange,
   askGroupCounts,
   endgameActive,
   gameSize,
@@ -206,6 +209,7 @@ export default function QuestionForm({
   const distUnit = metric ? 'km' : 'mi'
   const elevUnit = metric ? 'm' : 'ft'
   const [kind, setKind] = useState<QuestionKind>('radar')
+  useEffect(() => onKindChange?.(kind), [kind, onKindChange])
   const meta = QUESTION_CATALOG.find((q) => q.kind === kind)!
   // A normally-eliminating question the active map can't split on (e.g. county /
   // city Matching on SF Muni — every station shares one value) is demoted to

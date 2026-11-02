@@ -12,7 +12,7 @@ import { formatDistance } from './lib/geo'
 import { rewardForKind, questionGroupKey } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
-import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem, ZoneCurses } from './types'
+import type { Annotation, DayType, GameState, LatLng, QuestionKind, QuestionRecord, Station, UnitSystem, ZoneCurses } from './types'
 import { stationsData, REGIONS, ACTIVE_REGION_ID, setActiveRegion, SINGLE_AGENCY, GAME_DAY_END } from './data/regions'
 
 const STATIONS = stationsData as unknown as Station[]
@@ -87,6 +87,7 @@ export default function App() {
   const [game, setGame] = useState<GameState>(() => loadGame())
   const [lastClick, setLastClick] = useState<LatLng | null>(null)
   const [tab, setTab] = useState<Tab>('ask')
+  const [formKind, setFormKind] = useState<QuestionKind>('radar')
   const [showEliminated, setShowEliminated] = useState(true)
   const [satellite, setSatellite] = useState(false)
   const [stripes, setStripes] = useState(true)
@@ -528,6 +529,7 @@ export default function App() {
             onExitEndgame={() => update({ endgame: null })}
             pois={visiblePois}
             stationView={tab === 'poi' ? stationView : 'normal'}
+            showHsr={tab === 'ask' && formKind === 'measure-hsr'}
           />
         </div>
 
@@ -568,6 +570,7 @@ export default function App() {
               lines={lines}
               onSubmit={addQuestion}
               onPreview={setLastClick}
+              onKindChange={setFormKind}
               askGroupCounts={askGroupCounts}
               endgameActive={game.endgame != null}
               gameSize={game.gameSize}

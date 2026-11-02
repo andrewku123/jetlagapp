@@ -20,6 +20,7 @@ import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem 
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
+import { featurePolylines } from '../lib/measureFeatures'
 import {
   poiEliminatedRegion,
   endgameClippedRegion,
@@ -319,6 +320,8 @@ interface Props {
   onExitEndgame: () => void
   pois: RenderPoi[]
   stationView: 'normal' | 'faded' | 'hidden'
+  // Draw the high-speed rail line (measure only: nobody rides it or hides at it).
+  showHsr?: boolean
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -1012,6 +1015,7 @@ export default function MapView({
   onExitEndgame,
   pois,
   stationView,
+  showHsr = false,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // the toolbar collapses to a single 🧰 button so it barely covers the map while
@@ -1681,6 +1685,18 @@ export default function MapView({
         {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
             the circle; NO eliminates inside it. The circle outline always shows
             the radius. Suppressed in endgame (only zone-clipped shading shows). */}
+        {/* Acela: a measuring reference only (nobody rides it or hides at its
+            stations), so it shows faded and dashed with no station dots, and
+            only while a high-speed rail question is being set up. */}
+        {showHsr && featurePolylines('hsr').map((line, i) => (
+          <Polyline
+            key={`hsr-${i}`}
+            positions={line.map((p) => [p.lat, p.lon] as [number, number])}
+            pathOptions={{ color: '#6b21a8', weight: 3, opacity: 0.45, dashArray: '8 8', interactive: true }}
+          >
+            {i === 0 && <Tooltip permanent direction="center" className="hsr-label">Acela (measure only)</Tooltip>}
+          </Polyline>
+        ))}
         {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'radar')
           .map((r) => {
