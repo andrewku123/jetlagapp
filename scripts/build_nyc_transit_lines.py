@@ -6,7 +6,7 @@ trunk share a colour (A/C/E are all 8 Av blue), so they are one feature, named
 for the trunk ("8 Av: A C E"). The three shuttles share shuttle grey. Each LIRR
 branch in play, each NYC Ferry route, SIR, the Staten Island Ferry and the
 Roosevelt Island Tram are their own features. LIRR geometry is clipped to the
-city (plus CLIP_M, so the line visibly leaves the map). An NYC Ferry route is
+city (plus CLIP_M, so the line visibly leaves the map), minus Nassau. An NYC Ferry route is
 drawn only between its landings that are stations, so no ferry line runs past
 nothing but non-station piers (Rockaway, Soundview, ...).
 
@@ -20,6 +20,7 @@ from shapely.geometry import LineString, mapping, shape
 from shapely.geometry import Point
 from shapely.ops import linemerge, substring, unary_union
 
+import build_nyc_geo as geo
 import build_nyc_stations as st
 import poi_geo
 
@@ -116,7 +117,10 @@ def feature(system, color, name, lines, clip=None):
 
 def main():
     city = unary_union([shape(f["geometry"]) for f in json.load(open(st.BOROUGHS))["features"]])
-    clip = city.buffer(CLIP_DEG)
+    # Nassau is cut out so the Far Rockaway Branch's loop through Lawrence and
+    # Inwood isn't drawn; the buffer only keeps tunnels and bridges into the city.
+    nassau = unary_union([g for _, g in geo.shp_records(geo.TIGER_COUNTY, lambda r: r["GEOID"] == "36059")])
+    clip = city.buffer(CLIP_DEG).difference(nassau)
     feats = []
     sub = route_shapes(st.feed("gtfs_subway"))
     for name, color, routes in SUBWAY_TRUNKS:
