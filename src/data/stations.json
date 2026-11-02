@@ -10482,7 +10482,7 @@
   }
  },
  {
-  "name": "Bohol Circle Immigrant Park",
+  "name": "Alameda Landing",
   "lat": 37.79195,
   "lon": -122.27845,
   "systems": [
@@ -10492,6 +10492,7 @@
    "Oakland Alameda Water Shuttle"
   ],
   "aka": [
+   "Bohol Circle Immigrant Park",
    "Alameda Bohol Circle Immigrant Park Dock"
   ],
   "service": {
@@ -10505,7 +10506,7 @@
    }
   },
   "id": "s265",
-  "nameLength": 27,
+  "nameLength": 15,
   "county": "Alameda",
   "city": "Alameda city",
   "elevation": 0.6,

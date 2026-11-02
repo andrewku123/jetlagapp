@@ -312,7 +312,7 @@ Ten F-only surface stops on Market St inland of Embarcadero are excluded — the
 
 | Station | Lines | WD | WE | Lat, Lon |
 |---|---|:--:|:--:|---|
-| Bohol Circle Immigrant Park | Oakland Alameda Water Shuttle | — | ✓ | 37.7919, -122.2785 |
+| Alameda Landing | Oakland Alameda Water Shuttle | — | ✓ | 37.7919, -122.2785 |
 | Jack London Sq | Oakland Alameda Water Shuttle | — | ✓ | 37.7942, -122.2777 |
 
 ## SF Muni — 131 stations

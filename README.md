@@ -48,8 +48,9 @@ rule that does not loosen on bigger maps.
 - **VTA light rail** — full system (59)
 - **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (132)
 - **SFO AirTrain** — all people-mover stops (11)
-- **Oakland Alameda Water Shuttle** — its two docks, Bohol Circle Immigrant Park
-  (Alameda) and Jack London Sq (Oakland); **weekends only** (2)
+- **Oakland Alameda Water Shuttle** — its two docks, Alameda Landing
+  (Bohol Circle Immigrant Park, Alameda) and Jack London Sq (Oakland); **weekends
+  only** (2)
 
 Muni includes **every rail stop** (both the labeled stations and the smaller
 intermediate "Other Stop" dots) on lines N/J/F/K/L/M/T, pulled from OpenStreetMap

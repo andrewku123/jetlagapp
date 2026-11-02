@@ -42,7 +42,7 @@ COLOR = '#c2185b'
 ROUTE_SHORT_NAME = 'OAS'
 # GTFS stop_id -> (display name, aka). Names in short sign form (St, Sq).
 DOCKS = {
-    '7216': ('Bohol Circle Immigrant Park', ['Alameda Bohol Circle Immigrant Park Dock']),
+    '7216': ('Alameda Landing', ['Bohol Circle Immigrant Park', 'Alameda Bohol Circle Immigrant Park Dock']),
     '7215': ('Jack London Sq', ['Oakland Jack London Square Water Shuttle Dock']),
 }
 

@@ -42,8 +42,8 @@ tell that map's stations apart is demoted automatically — see §12.
   - **Weekday / Weekend** — which service day you're playing. It changes which
     stations are eligible (some stops only run often enough on one of them) and
     which lines count. On the Bay Area map the Oakland Alameda Water Shuttle runs
-    hourly only Fri–Sun, so its two docks (Bohol Circle Immigrant Park and Jack
-    London Sq) and its line on the map appear only in **Weekend**, while Caltrain
+    hourly only Fri–Sun, so its two docks (Alameda Landing and Jack London
+    Sq) and its line on the map appear only in **Weekend**, while Caltrain
     Express/Limited drop out of the line questions in **Weekend**. This
     toggle is **hidden** on maps where the service day makes no difference (SF
     Muni and LA Metro, where every station runs often enough on both days).

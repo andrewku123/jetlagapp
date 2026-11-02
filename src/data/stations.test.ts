@@ -67,7 +67,7 @@ describe('station dataset invariants', () => {
   it('has the Oakland Alameda Water Shuttle docks as weekend-only stations', () => {
     const line = 'Oakland Alameda Water Shuttle'
     const docks = STATIONS.filter((s) => s.lines.includes(line))
-    expect(docks.map((s) => s.name).sort()).toEqual(['Bohol Circle Immigrant Park', 'Jack London Sq'])
+    expect(docks.map((s) => s.name).sort()).toEqual(['Alameda Landing', 'Jack London Sq'])
     for (const s of docks) {
       expect(s.lines).toEqual([line])
       expect(s.headwayMin.wd).toBeGreaterThan(ELIGIBLE_HEADWAY_MIN)
