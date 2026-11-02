@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import type { Station } from '../types'
 import { ELIGIBLE_HEADWAY_MIN } from './questionSets'
+import { haversineMiles } from '../lib/geo'
 
 // Loads the region registry fresh with a given active region selected, so we can
 // assert the per-map question demotion (LOG_ONLY_KINDS) and the play-area airport
@@ -304,6 +305,21 @@ describe('New York City', () => {
     // The Staten Island Ferry runs every day and labels the stations at its ends.
     const sif = stations.filter((s) => s.lines.includes('Staten Island Ferry')).map((s) => s.name)
     expect(sif.sort()).toEqual(['South Ferry', 'St George'])
+    // An NYC Ferry route is drawn only between its station landings: no part of
+    // it runs out to non-station piers (Rockaway is ~9 mi from the nearest one).
+    const overlay = (await import('./nyc.transit-lines.geojson.json')).default as unknown as {
+      features: { properties: { system: string; name: string }; geometry: { type: string; coordinates: number[][][] } }[]
+    }
+    const ferries = overlay.features.filter((f) => f.properties.system === 'NYC Ferry')
+    expect(ferries.length).toBeGreaterThan(0)
+    for (const f of ferries) {
+      const landings = stations.filter((s) => s.lines.includes(f.properties.name))
+      const parts = f.geometry.type === 'LineString' ? [f.geometry.coordinates as unknown as number[][]] : f.geometry.coordinates
+      for (const [lon, lat] of parts.flat()) {
+        const near = Math.min(...landings.map((s) => haversineMiles({ lat, lon }, { lat: s.lat, lon: s.lon })))
+        expect(near).toBeLessThan(2)
+      }
+    }
   })
 
   it('landmass Matching keeps exactly the stations on the seeker\'s landmass', async () => {
