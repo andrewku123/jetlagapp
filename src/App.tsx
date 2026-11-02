@@ -24,9 +24,30 @@ type StationView = 'normal' | 'faded' | 'hidden'
 const primarySystem = (s: Station) =>
   SYSTEM_ORDER.find((sys) => s.systems.includes(sys)) ?? s.systems[0] ?? '—'
 
-// which agency a line belongs to (line labels are prefixed by their agency)
+// Systems listed under one operator's heading: the subway and the Staten Island
+// Railway are both MTA New York City Transit.
+const AGENCY_OF_SYSTEM: Record<string, string> = { Subway: 'MTA', SIR: 'MTA' }
+const agencyOfSystem = (sys: string) => AGENCY_OF_SYSTEM[sys] ?? sys
+const agencyColor = (agency: string) =>
+  SYSTEM_COLORS[SYSTEM_ORDER.find((sys) => agencyOfSystem(sys) === agency) ?? agency] ?? '#444'
+
+// The system a line belongs to: the agency prefix of its label (Bay Area
+// "BART Red"), else the system every station on it shares (NYC's bare "1", "L").
+const LINE_SYSTEM = (() => {
+  const shared = new Map<string, string[]>()
+  for (const s of STATIONS) for (const line of s.lines) {
+    const prev = shared.get(line)
+    shared.set(line, prev ? prev.filter((sys) => s.systems.includes(sys)) : [...s.systems])
+  }
+  return new Map([...shared].map(([line, systems]) => [
+    line,
+    SYSTEM_ORDER.find((sys) => systems.includes(sys)) ?? systems[0],
+  ]))
+})()
+
+// which agency a line is listed under
 const agencyOfLine = (line: string) =>
-  SYSTEM_ORDER.find((sys) => line.startsWith(sys)) ?? '—'
+  agencyOfSystem(SYSTEM_ORDER.find((sys) => line.startsWith(sys)) ?? LINE_SYSTEM.get(line) ?? '—')
 
 interface LineGroup {
   line: string
@@ -50,7 +71,7 @@ function groupByAgencyLine(list: Station[]): AgencyGroup[] {
   }
   for (const s of list) {
     if (s.lines.length === 0) {
-      const ag = primarySystem(s)
+      const ag = agencyOfSystem(primarySystem(s))
       const e = ensure(ag)
       e.unique.add(s.id)
       if (!e.lines.has('—')) e.lines.set('—', [])
@@ -66,7 +87,7 @@ function groupByAgencyLine(list: Station[]): AgencyGroup[] {
     }
   }
   const agencyRank = (a: string) => {
-    const i = SYSTEM_ORDER.indexOf(a)
+    const i = SYSTEM_ORDER.findIndex((sys) => agencyOfSystem(sys) === a)
     return i < 0 ? SYSTEM_ORDER.length : i
   }
   return [...byAgency.keys()]
@@ -351,7 +372,7 @@ export default function App() {
     groupByAgencyLine(list).map((g) => (
       <Fragment key={g.agency}>
         <li className="sgroup agency">
-          <span className="dot" style={{ background: SYSTEM_COLORS[g.agency] ?? '#444' }} />
+          <span className="dot" style={{ background: agencyColor(g.agency) }} />
           {g.agency} ({g.count})
         </li>
         {g.lines.map((l) => {
