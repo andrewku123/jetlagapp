@@ -300,14 +300,14 @@ it would have to be hand-entered.
 
    - **CITY/COUNTY polygons must be the TRUE municipal boundary, not the play
      area.** `build_sfmuni_region.py` sets the SF play area = city land unioned
-     with each station's 0.25 mi endgame circle (so edge zones stay in play), but
+     with each station's largest endgame circle (so edge zones stay in play), but
      the metro's OWN `places` (city Matching) polygon must be the un-padded `land`
      — using `play_area` bleeds the SF polygon south across the county line into
      Brisbane and mislabels border points as "San Francisco city", which also
      breaks the endgame county/city carving that depends on the real border.
    - **Include neighbour city/county slivers that fall inside the play area** so
      the out-of-metro part of a border station's endgame zone reads its REAL
-     place, not "unincorporated / outside the play area". A 0.25 mi endgame circle
+     place, not "unincorporated / outside the play area". An endgame circle
      on an edge station (Bayshore/Sunnydale) spills past the SF↔San Mateo line
      into Brisbane; that sliver is still in play and endgame county/city must
      carve it. Two coordinated pieces:
@@ -469,12 +469,24 @@ is the template) that reads the Bay Area files and:
 polygon includes bay-water wedges reaching toward neighbours (the symptom: "a bit
 of Alameda" shows in-play / a city Matching returns the wrong across-the-water
 city). Clip it: `place.difference(water)` with the same `bay_water_mask.geojson`
-the Bay Area pipeline uses. Then **union each station's 0.25 mi endgame hiding
+the Bay Area pipeline uses. Then **union each station's largest endgame hiding
 disk** into the play area (and re-clip to land), otherwise an edge station's
-endgame zone (e.g. Bayshore/Sunnydale on SF Muni) gets dimmed out of play. Build
-the disk with a geodesic circle at **R = 6371 km** so it matches
-`circlePolygon()` in `src/lib/geo.ts` exactly (pad ~0.01 mi so the rendered
-128-gon sits fully inside). Keep waterfront POIs that sit just offshore with a
+endgame zone (e.g. Bayshore/Sunnydale on SF Muni) gets dimmed out of play.
+`scripts/endgame_zones.py` (`with_endgame_zones`) does this and every play-area
+builder calls it; the disk is geodesic at **R = 6371 km** to match
+`circlePolygon()` in `src/lib/geo.ts` (padded 0.01 mi so the rendered 128-gon
+sits fully inside).
+
+**Endgame play area rule (every map, Andrew).** Playable area = the decided map
+∪ every station's *largest possible* hiding disk = the game size's zone radius ×
+1.5² (Curse of the Prosperous Home ×1.5, at most twice: draw + duplicate), so
+Medium = 0.25 × 2.25 = **0.5625 mi**. Out-of-map land inside a disk is in play
+(cities/ZIPs/POIs there count); open water stays out. The radius reads
+`src/data/region-sizes.json`, so a map's size change moves it. To patch an
+existing map's committed data without a full rebuild: `python3
+scripts/endgame_zones.py --region <id>` (unions the zones into the play area and
+the POI pipeline's play areas, and adds the new land's Census places/ZCTAs);
+then re-run the POI pipeline only if the new land might hold POIs. Keep waterfront POIs that sit just offshore with a
 tiny `play_area.buffer(0.0006)` (~40 m) containment test — big enough for pier
 museums, far too small to re-admit across-the-bay islands. `scripts/build_sfmuni_region.py`
 is the worked example. Note the SF **city** polygon lives in the SHARED

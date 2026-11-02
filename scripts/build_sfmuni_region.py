@@ -11,6 +11,7 @@ counterparts so the region-agnostic app code needs no per-city branching.
 """
 import json
 import math
+import sys
 import os
 from shapely.geometry import shape, mapping, Point, Polygon
 from shapely.ops import unary_union
@@ -18,27 +19,10 @@ from shapely.ops import unary_union
 DATA = os.path.join(os.path.dirname(__file__), '..', 'src', 'data')
 SCRIPTS = os.path.dirname(__file__)
 
-# Endgame hiding-zone radius for a Medium game (matches SIZE_PARAMS in the app).
-HIDING_ZONE_MI = 0.25
+sys.path.insert(0, SCRIPTS)
+from endgame_zones import load_water, max_hiding_radius_mi, with_endgame_zones  # noqa: E402
+
 MILES_PER_METER = 1 / 1609.344
-
-
-def geodesic_circle(lat, lon, radius_mi, n=128):
-    """A geodesic disk of `radius_mi`, using the same spherical metric (R = 6371
-    km, destination-point formula) as the app's circlePolygon, so the play-area
-    boundary lines up exactly with the rendered green hiding-zone circle."""
-    R = 6371000.0  # metres — must match src/lib/geo.ts circlePolygon
-    d = (radius_mi / MILES_PER_METER) / R
-    lat1, lon1 = math.radians(lat), math.radians(lon)
-    pts = []
-    for i in range(n):
-        brng = 2 * math.pi * i / n
-        lat2 = math.asin(math.sin(lat1) * math.cos(d) +
-                         math.cos(lat1) * math.sin(d) * math.cos(brng))
-        lon2 = lon1 + math.atan2(math.sin(brng) * math.sin(d) * math.cos(lat1),
-                                 math.cos(d) - math.sin(lat1) * math.sin(lat2))
-        pts.append((math.degrees(lon2), math.degrees(lat2)))
-    return Polygon(pts)
 
 
 def load(name):
@@ -72,10 +56,11 @@ print('lines:', line_set)
 # 2. Play area = the SF-city place polygon(s) that actually hold Muni stations
 #    (drops the detached southern sliver + tiny offshore rings with no stations),
 #    clipped to land (the raw TIGER place includes a bay-water wedge toward
-#    Alameda), then unioned with each station's 0.25 mi endgame hiding zone so an
-#    edge station's zone (e.g. Bayshore Blvd & Sunnydale Ave) is never dimmed
-#    out of play. The final result is re-clipped to land so the zones never bulge
-#    into the bay.
+#    Alameda), then unioned with each station's largest possible endgame hiding
+#    zone (zone radius x 1.5^2, two Prosperous Home curses; endgame_zones.py) so
+#    an edge station's zone (e.g. Bayshore Blvd & Sunnydale Ave) is never dimmed
+#    out of play. Open water is clipped off the zones so they never bulge into
+#    the bay.
 places = load('places.geojson.json')
 sf_feats = [f for f in places['features'] if f['properties']['name'] == 'San Francisco city']
 station_pts = [Point(s['lon'], s['lat']) for s in muni]
@@ -95,11 +80,8 @@ for f in sf_feats:
             play_polys.append(part)
 land = unary_union(play_polys)
 
-# Union each station's endgame hiding zone (slightly padded so the rendered
-# 128-gon circle sits fully inside), then re-clip to land.
-zones = unary_union([geodesic_circle(s['lat'], s['lon'], HIDING_ZONE_MI + 0.01)
-                     for s in muni])
-play_area = unary_union([land, zones]).difference(water).buffer(0)
+endgame_water = load_water(['scripts/bay_water_mask.geojson', 'scripts/pacific_ocean.geojson.json'])
+play_area = with_endgame_zones(land, muni, max_hiding_radius_mi('sfmuni'), endgame_water)
 print('play area bounds:', [round(b, 3) for b in play_area.bounds],
       'parts:', len(play_area.geoms) if play_area.geom_type == 'MultiPolygon' else 1)
 
