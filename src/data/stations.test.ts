@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import rawStations from './stations.json'
 import counties from './counties.geojson.json'
 import { IN_PLAY_COUNTIES } from '../lib/playArea'
-import { WEEKEND_EXCLUDED_LINES } from '../lib/style'
+import { WEEKEND_EXCLUDED_LINES, linesExcludedOn } from '../lib/style'
 import { ELIGIBLE_HEADWAY_MIN } from './questionSets'
 import type { Station } from '../types'
 
@@ -17,8 +17,9 @@ function eligible(day: 'wd' | 'we') {
 }
 
 describe('station dataset invariants', () => {
-  it('has 263 unique stations', () => {
-    expect(STATIONS.length).toBe(263)
+  it('has 265 unique stations', () => {
+    expect(STATIONS.length).toBe(265)
+    expect(new Set(STATIONS.map((s) => s.id)).size).toBe(265)
   })
 
   it('has the expected per-system membership counts', () => {
@@ -27,11 +28,12 @@ describe('station dataset invariants', () => {
     expect(count('VTA')).toBe(59)
     expect(count('Muni')).toBe(131)
     expect(count('SFO AirTrain')).toBe(11)
+    expect(count('Water Shuttle')).toBe(2)
   })
 
   it('has the expected eligible counts (weekday/weekend)', () => {
     expect(eligible('wd')).toBe(262)
-    expect(eligible('we')).toBe(263)
+    expect(eligible('we')).toBe(265)
   })
 
   it('has no F-only surface stops on Market St inland of Embarcadero', () => {
@@ -60,6 +62,20 @@ describe('station dataset invariants', () => {
         expect(s.lines).toContain('Caltrain Local')
       }
     }
+  })
+
+  it('has the Oakland Alameda Water Shuttle docks as weekend-only stations', () => {
+    const line = 'Oakland Alameda Water Shuttle'
+    const docks = STATIONS.filter((s) => s.lines.includes(line))
+    expect(docks.map((s) => s.name).sort()).toEqual(['Alameda Landing', 'Jack London Sq'])
+    for (const s of docks) {
+      expect(s.lines).toEqual([line])
+      expect(s.headwayMin.wd).toBeGreaterThan(ELIGIBLE_HEADWAY_MIN)
+      expect(s.headwayMin.we).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
+    }
+    // its line counts on weekends only
+    expect(linesExcludedOn('wd')).toContain(line)
+    expect(linesExcludedOn('we')).not.toContain(line)
   })
 
   it('drops College Park entirely', () => {

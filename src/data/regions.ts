@@ -94,6 +94,12 @@ export interface RegionData {
   counties: unknown
   zctas: unknown
   transitLines: unknown
+  /**
+   * Lines that run (or pass the hourly rule) on weekends only: kept out of the
+   * line questions and off the map on weekdays. A transit-line feature for one
+   * names it in its `name` property.
+   */
+  weekdayExcludedLines?: string[]
 }
 
 export const REGIONS: RegionData[] = [
@@ -113,6 +119,10 @@ export const REGIONS: RegionData[] = [
     counties: baCounties,
     zctas: baZctas,
     transitLines: baTransit,
+    // The free water shuttle across the Oakland Estuary is hourly Fri-Sun only
+    // (Tue-Thu it stops before 8 PM, Mondays it doesn't run): its two docks are
+    // weekend hiding spots (scripts/add_water_shuttle.py).
+    weekdayExcludedLines: ['Oakland Alameda Water Shuttle'],
   },
   {
     id: 'sfmuni',
@@ -230,6 +240,7 @@ export const placesData = ACTIVE_REGION.places
 export const countiesData = ACTIVE_REGION.counties
 export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
+export const WEEKDAY_EXCLUDED_LINES: string[] = ACTIVE_REGION.weekdayExcludedLines ?? []
 export const statesData = ACTIVE_REGION.statesGeo ?? null
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
 export const MAP_SIZE: GameSize = REGION_SIZES[ACTIVE_REGION_ID]

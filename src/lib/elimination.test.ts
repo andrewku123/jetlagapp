@@ -290,6 +290,26 @@ describe('stationPasses — tentacle (nearest in-radius place)', () => {
   })
 })
 
+describe('metroLinesWithinRadius — day type', () => {
+  // Jack London Sq: the weekend-only water shuttle is in play on weekends only;
+  // without a day type (records saved before params.day) every line counts.
+  const jls = { lat: 37.79417, lon: -122.27773 }
+  const shuttle = (day?: 'wd' | 'we') =>
+    metroLinesWithinRadius(jls, 15, jls.lat, day).some((l) => l.name === 'Oakland Alameda Water Shuttle')
+
+  it('leaves the water shuttle out on weekdays only', () => {
+    expect(shuttle('we')).toBe(true)
+    expect(shuttle('wd')).toBe(false)
+    expect(shuttle()).toBe(true)
+  })
+
+  it('keeps weekday-only Caltrain geometry in play on weekends (its name is derived, not pinned)', () => {
+    const caltrain = (day: 'wd' | 'we') =>
+      metroLinesWithinRadius({ lat: 37.4434, lon: -122.165 }, 15, 37.4434, day).filter((l) => l.system === 'Caltrain').length
+    expect(caltrain('we')).toBe(caltrain('wd'))
+  })
+})
+
 describe('stationPasses — tentacle-line (nearest in-radius metro line)', () => {
   // Downtown SF: many BART/Muni lines pass within 15 mi. Derive the in-play set
   // with the same helper the engine uses so the test tracks the real geometry.

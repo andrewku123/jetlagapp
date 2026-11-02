@@ -10,7 +10,7 @@ import { stateAt, stateGeom } from './states'
 import { cityAt, cityGeom } from './cities'
 import { zipAt, zipCodes, zipGeom } from './zip'
 import { bisectorHalfPlane, circlePolygon, haversineMiles } from './geo'
-import { metroLinesWithinRadius, type MetroLine } from './metroLines'
+import { metroLinesWithinRadius, questionDay, type MetroLine } from './metroLines'
 import { indexRegion, type RegionIndex } from './zoneFit'
 import { polysByName } from './polys'
 
@@ -422,7 +422,7 @@ export function metroLineEliminatedRegion(record: QuestionRecord): LatLngMultiPo
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   if (answerId === TENTACLE_INSIDE || answerId === TENTACLE_OUTSIDE)
     return tentacleRadarRegion(seeker, radius, answerId)
-  const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
+  const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat, questionDay(p))
   if (inPlay.length < 2) return null // 0 or 1 in play → nothing is eliminated
   if (!inPlay.some((l) => l.id === answerId)) return null
 

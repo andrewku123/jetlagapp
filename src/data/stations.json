@@ -10480,5 +10480,84 @@
    "wd": 12,
    "we": 12
   }
+ },
+ {
+  "name": "Alameda Landing",
+  "lat": 37.79195,
+  "lon": -122.27845,
+  "systems": [
+   "Water Shuttle"
+  ],
+  "lines": [
+   "Oakland Alameda Water Shuttle"
+  ],
+  "aka": [
+   "Bohol Circle Immigrant Park",
+   "Alameda Bohol Circle Immigrant Park Dock"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": false
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s265",
+  "nameLength": 15,
+  "county": "Alameda",
+  "city": "Alameda city",
+  "elevation": 0.6,
+  "airportDist": {
+   "SFO": 21256.1,
+   "OAK": 9619.9,
+   "SJC": 56743.7
+  },
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 999.0,
+   "we": 40.0
+  }
+ },
+ {
+  "name": "Jack London Sq",
+  "lat": 37.79417,
+  "lon": -122.27773,
+  "systems": [
+   "Water Shuttle"
+  ],
+  "lines": [
+   "Oakland Alameda Water Shuttle"
+  ],
+  "aka": [
+   "Oakland Jack London Square Water Shuttle Dock"
+  ],
+  "service": {
+   "wd": {
+    "served": true,
+    "hourly": false
+   },
+   "we": {
+    "served": true,
+    "hourly": true
+   }
+  },
+  "id": "s266",
+  "nameLength": 14,
+  "county": "Alameda",
+  "city": "Oakland city",
+  "elevation": 0.6,
+  "airportDist": {
+   "SFO": 21506.4,
+   "OAK": 9795.7,
+   "SJC": 56916.6
+  },
+  "nearestAirport": "OAK",
+  "headwayMin": {
+   "wd": 999.0,
+   "we": 40.0
+  }
  }
 ]

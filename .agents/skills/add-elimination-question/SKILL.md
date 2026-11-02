@@ -173,7 +173,7 @@ answer isn't in the in-play set → eliminate nothing (`return true`).
 ### Point-set measuring (nearest airport / nearest rail station)
 "Closer/further from the nearest <point>" over a **discrete point set**. The two
 instances are `measure-airport` (the 3 airports, `src/lib/airports.ts`) and
-`measure-railstation` (the 264 on-map stations, `src/lib/railStations.ts`). The
+`measure-railstation` (the 265 on-map stations, `src/lib/railStations.ts`). The
 helper module exports the point list + `nearest<Thing>Miles(p)` (min haversine).
 - **Elimination** (`stationPasses`): `seekerD = nearest…Miles(seeker)`,
   `stationD = nearest…Miles(station)`; `return (stationD <= seekerD) === (answer

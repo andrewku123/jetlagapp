@@ -17,8 +17,9 @@ is still there once you enter the new one.
 
 The **map** picker (tap **⚙** in the top bar) chooses which map you're playing:
 
-- **Bay Area** — the full regional map (BART/Caltrain/VTA/Muni/AirTrain, 264
-  stations, five counties). Default.
+- **Bay Area** — the full regional map (BART/Caltrain/VTA/Muni/AirTrain plus
+  the weekend-only Oakland Alameda Water Shuttle, 265 stations, five counties).
+  Default.
 - **SF Muni** — a day-pass map scoped to San Francisco (the 7 Muni rail lines,
   132 stations, one county/city).
 - **LA Metro** — Los Angeles County (rail A/B/C/D/E/K plus the G and J busways,
@@ -39,7 +40,11 @@ tell that map's stations apart is demoted automatically — see §12.
   progress). Everything else is behind the **⚙** button:
   - **map** — which map you're playing (see §0).
   - **Weekday / Weekend** — which service day you're playing. It changes which
-    stations are eligible (some stops only run often enough on one of them). This
+    stations are eligible (some stops only run often enough on one of them) and
+    which lines count. On the Bay Area map the Oakland Alameda Water Shuttle runs
+    hourly only Fri–Sun, so its two docks (Alameda Landing and Jack London
+    Sq) and its line on the map appear only in **Weekend**, while Caltrain
+    Express/Limited drop out of the line questions in **Weekend**. This
     toggle is **hidden** on maps where the service day makes no difference (SF
     Muni and LA Metro, where every station runs often enough on both days).
   - **mi/ft / km/m** — imperial or metric for every distance and elevation in the

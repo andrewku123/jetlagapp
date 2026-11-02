@@ -97,7 +97,7 @@ show no suffix.
   fired immediately after can land in the wrong input. Re-click the visible
   `paste lat, lon` field, type, then click **Set**, and confirm the label echoes the coords.
 - Distances in the UI are rounded to 2 dp — compare against the oracle at that precision.
-- Eligible-station counts differ per region (LA 158/158, Bay 263/264 at `wd <= 60`); derive
+- Eligible-station counts differ per region (LA 158/158, Bay 262/265 wd/we at `<= 60`); derive
   them from the data, don't assume.
 - Encoding regressions: if the POI JSON was re-encoded (UTF-8 vs `\uXXXX`), search an accented
   name (e.g. `Galería de la Raza`) and confirm no `GalerÃ­a` mojibake.
