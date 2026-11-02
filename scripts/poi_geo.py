@@ -60,6 +60,8 @@ REGIONS = {
         # into the bay, so each place is clipped back to the real shore.
         "waterMask": "scripts/bay_water_mask.geojson",
         "displayWater": "bay",
+        # open water the endgame disks are clipped to (endgame_zones.py)
+        "endgameWater": ["scripts/bay_water_mask.geojson", "scripts/pacific_ocean.geojson.json"],
         # Farallon Islands: legally San Francisco, ~27 mi out in the Pacific.
         "islandLonCutoff": -122.6,
     },
@@ -128,6 +130,7 @@ REGIONS = {
         "places": "src/data/la.places.geojson.json",
         "countiesGeo": "src/data/la.counties.geojson.json",
         "zctas": "src/data/la.zctas.geojson.json",
+        "endgameWater": ["scripts/la_ocean.geojson.json"],
     },
 }
 
