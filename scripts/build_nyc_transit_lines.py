@@ -28,6 +28,10 @@ import poi_geo
 
 OUT = poi_geo.repo_path("nyc", "transitLines")
 OSM_RAIL = os.path.join(os.path.dirname(__file__), "measure_src", "osm_rail_nyc.geojson")
+OSM_WATER = os.path.join(os.path.dirname(__file__), "measure_src", "osm_ferry_tram_nyc.geojson")
+# NYC Ferry GTFS route_long_name -> refs of its OSM route relations.
+OSM_FERRY_REFS = {"Astoria": {"AST"}, "East River": {"ER"}, "Rockaway-Soundview": {"RWS"},
+                  "South Brooklyn": {"SBK"}, "St. George": {"STG"}}
 TRACK_NEAR_M = 60  # OSM track this close to a GTFS shape can carry it
 GTFS_COST = 4  # cost per metre of falling back to the GTFS line, vs 1 for track
 CLIP_DEG = 0.015
@@ -105,6 +109,23 @@ def route_shapes(d):
             (int(r["shape_pt_sequence"]), float(r["shape_pt_lon"]), float(r["shape_pt_lat"])))
     lines = {sid: LineString([(x, y) for _, x, y in sorted(v)]) for sid, v in pts.items() if len(v) > 1}
     return {rid: [lines[s] for s in ss if s in lines] for rid, ss in sids.items()}
+
+
+def points_per_km(lines):
+    km = sum(geo.TO_M(l).length for l in lines) / 1000
+    return sum(len(l.coords) for l in lines) / km if km else 0
+
+
+def denser(gtfs, osm, landings):
+    """Whichever of two drawings of a route has more points per km, so it follows
+    the real path; OSM only if it passes every landing."""
+    reaches = all(any(l.distance(p) <= LANDING_SNAP_DEG for l in osm) for p in landings)
+    return osm if osm and reaches and points_per_km(osm) > points_per_km(gtfs) else gtfs
+
+
+def osm_lines(f):
+    g = linemerge(shape(f["geometry"])) if f["geometry"]["type"] == "MultiLineString" else shape(f["geometry"])
+    return list(getattr(g, "geoms", [g]))
 
 
 def connected_to(g, pts, tol=0.003):
@@ -215,8 +236,14 @@ def main():
 
     fer = st.feed("nycferry")
     ferry_lines = {l for s in stations for l in s["lines"] if l.startswith("NYC Ferry ")}
-    fer_sh = route_shapes(fer)
+    water = json.load(open(OSM_WATER))["features"]
     landings = route_landings(fer)
+    fer_sh = {}
+    for rid, lines in route_shapes(fer).items():
+        name = next(r["route_long_name"] for r in rows(fer, "routes.txt") if r["route_id"] == rid)
+        osm = [l for f in water if f["properties"].get("operator") == "Hornblower Cruises"
+               and f["properties"]["ref"] in OSM_FERRY_REFS.get(name, ()) for l in osm_lines(f)]
+        fer_sh[rid] = denser(lines, osm, landings[rid])
     for r in rows(fer, "routes.txt"):
         name = "NYC Ferry " + r["route_long_name"]
         if r["route_type"] == "4" and name in ferry_lines:
@@ -236,11 +263,15 @@ def main():
                 feats.append(f)
 
     (_, la, lo), (_, lb, lob) = st.SI_FERRY
+    ends = [Point(lo, la), Point(lob, lb)]
+    sif = [l for f in water if f["properties"].get("ref") == "SIF" for l in osm_lines(f)]
     feats.append(feature("Staten Island Ferry", "#f58220", "Staten Island Ferry",
-                         [LineString([(lo, la), (lob, lb)])]))
+                         between_stations(denser([LineString(ends)], sif, ends), ends)))
     (_, la, lo), (_, lb, lob) = st.TRAM
+    ends = [Point(lo, la), Point(lob, lb)]
+    tram = [l for f in water if f["properties"]["name"] == "Roosevelt Island Tramway" for l in osm_lines(f)]
     feats.append(feature("Roosevelt Island Tram", "#c60c30", "Roosevelt Island Tram",
-                         [LineString([(lo, la), (lob, lb)])]))
+                         denser([LineString(ends)], tram, ends)))
     json.dump({"type": "FeatureCollection", "features": feats}, open(OUT, "w"), separators=(",", ":"))
     print(f"wrote {OUT}: {len(feats)} lines, {os.path.getsize(OUT) // 1024} KB")
 
