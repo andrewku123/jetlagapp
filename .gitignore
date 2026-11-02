@@ -15,3 +15,6 @@ __pycache__/
 
 # generated reference deliverable
 jetlag_reference_*.pdf
+
+# GTFS feeds downloaded by scripts
+scripts/_gtfs_weta/

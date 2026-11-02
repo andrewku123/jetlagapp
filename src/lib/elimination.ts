@@ -2,7 +2,7 @@ import type { QuestionRecord, Station, LatLng } from '../types'
 import { haversineMiles } from './geo'
 import { AIRPORTS } from './airports'
 import { nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
-import { metroLineDistanceMiles, metroLinesWithinRadius } from './metroLines'
+import { metroLineDistanceMiles, metroLinesWithinRadius, questionDay } from './metroLines'
 import { projectedDistanceToFeatureMiles } from './measureFeatures'
 import { cityAt } from './cities'
 import { stateAt } from './states'
@@ -255,7 +255,7 @@ function centerPasses(station: Station, record: QuestionRecord): boolean {
       // Radar-style answers (see the 'tentacle' case): within/not-within the disk.
       if (answerId === TENTACLE_INSIDE) return haversineMiles(station, seeker) <= radius
       if (answerId === TENTACLE_OUTSIDE) return haversineMiles(station, seeker) > radius
-      const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat)
+      const inPlay = metroLinesWithinRadius(seeker, radius, seeker.lat, questionDay(p))
       if (inPlay.length === 0) return true // nothing in play: eliminate nothing
       // Normal answer ⇒ hider within the radius (else they'd answer "not within"),
       // so eliminate everything outside the disk too — like a radar "yes". Skipped

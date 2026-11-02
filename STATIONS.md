@@ -8,15 +8,15 @@ train an hour through the daytime window (the game’s eligibility rule), **—*
 _Generated from the app’s own station data by `scripts/build_stations_md.mjs`
 — edit the data, not this file._
 
-- [Bay Area](#bay-area-263-stations) — 263 stations
+- [Bay Area](#bay-area-265-stations) — 265 stations
 - [SF Muni](#sf-muni-131-stations) — 131 stations
 - [LA Metro](#la-metro-158-stations) — 158 stations
 
-## Bay Area — 263 stations
+## Bay Area — 265 stations
 
-**263 unique hideable stations** (deduped within and across systems). Eligible after the at-least-hourly rule: **262 weekday / 263 weekend**.
+**265 unique hideable stations** (deduped within and across systems). Eligible after the at-least-hourly rule: **262 weekday / 265 weekend**.
 
-Each station is listed once, under its **primary system**; the "shared" tag names the others (e.g. 4th & King is under Caltrain, not also Muni). Membership counts, which do count a shared station in every system it serves: BART 50 · Caltrain 24 · VTA 59 · Muni 131 · SFO AirTrain 11.
+Each station is listed once, under its **primary system**; the "shared" tag names the others (e.g. 4th & King is under Caltrain, not also Muni). Membership counts, which do count a shared station in every system it serves: BART 50 · Caltrain 24 · VTA 59 · Muni 131 · SFO AirTrain 11 · Water Shuttle 2.
 
 Ten F-only surface stops on Market St inland of Embarcadero are excluded — they sit directly above the Muni Metro subway and duplicate those stations.
 
@@ -307,6 +307,13 @@ Ten F-only surface stops on Market St inland of Embarcadero are excluded — the
 | Terminal 2 | — | ✓ | ✓ | 37.6168, -122.3846 |
 | Terminal 3 | — | ✓ | ✓ | 37.6175, -122.3866 |
 | West Field Road | — | ✓ | ✓ | 37.6217, -122.3995 |
+
+### Water Shuttle (2)
+
+| Station | Lines | WD | WE | Lat, Lon |
+|---|---|:--:|:--:|---|
+| Bohol Circle Immigrant Park | Oakland Alameda Water Shuttle | — | ✓ | 37.7919, -122.2785 |
+| Jack London Sq | Oakland Alameda Water Shuttle | — | ✓ | 37.7942, -122.2777 |
 
 ## SF Muni — 131 stations
 

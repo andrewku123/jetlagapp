@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import type { LatLng, QuestionKind, QuestionRecord, UnitSystem } from '../types'
+import type { LatLng, QuestionKind, QuestionRecord, UnitSystem, DayType } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
@@ -30,6 +30,8 @@ interface Props {
   endgameActive: boolean
   // current game size — decides which photo cards are askable.
   gameSize: GameSize
+  // weekday/weekend — lines that don't run today aren't in play for Metro Lines.
+  dayType: DayType
 }
 
 // Optgroup each POI category falls under in the flattened subject dropdown, so
@@ -190,6 +192,7 @@ export default function QuestionForm({
   askGroupCounts,
   endgameActive,
   gameSize,
+  dayType,
 }: Props) {
   // photo cards askable in this game size
   const photoCards = PHOTO.filter((c) => c.sizes.includes(gameSize))
@@ -442,7 +445,7 @@ export default function QuestionForm({
       }
       case 'tentacle-line': {
         if (!center) return alert('Set your location (paste coordinates or click the map).')
-        const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
+        const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI, center.lat, dayType)
         if (inPlay.length === 0)
           return alert(`No metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.`)
         if (isTentacleRadarAnswer(tentLine)) {
@@ -452,6 +455,7 @@ export default function QuestionForm({
             fromLon: center.lon,
             value: tentLine,
             poiName: `${tentLine === TENTACLE_INSIDE ? 'within' : 'not within'} ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)}`,
+            day: dayType,
           }
           break
         }
@@ -465,6 +469,7 @@ export default function QuestionForm({
           fromLon: center.lon,
           value: chosen.id,
           poiName: chosen.label,
+          day: dayType,
         }
         break
       }
@@ -1096,7 +1101,7 @@ export default function QuestionForm({
         <>
           <CoordPicker label="Your location" point={center} setPoint={setCenter} lastClick={lastClick} onPreview={onPreview} />
           {center && (() => {
-            const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI)
+            const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI, center.lat, dayType)
               .map((line) => ({ line, d: metroLineDistanceMiles(center, line, center.lat) }))
               .sort((a, b) => a.d - b.d)
             if (inPlay.length === 0)

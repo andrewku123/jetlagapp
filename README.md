@@ -48,6 +48,8 @@ rule that does not loosen on bigger maps.
 - **VTA light rail** — full system (59)
 - **Muni Metro & Streetcars** — lines N, J, F, K, L, M, T (132)
 - **SFO AirTrain** — all people-mover stops (11)
+- **Oakland Alameda Water Shuttle** — its two docks, Bohol Circle Immigrant Park
+  (Alameda) and Jack London Sq (Oakland); **weekends only** (2)
 
 Muni includes **every rail stop** (both the labeled stations and the smaller
 intermediate "Other Stop" dots) on lines N/J/F/K/L/M/T, pulled from OpenStreetMap
@@ -57,13 +59,16 @@ Portal) are counted once, and North Beach on the T is excluded. The 10 F-only
 surface stops on Market St inland of Embarcadero are also excluded — they run
 directly above the Muni Metro subway and duplicate those stations. After merging
 stations shared across systems (e.g. 4th & King = Caltrain + Muni N/T; Balboa
-Park = BART + Muni; Milpitas = BART + VTA) the play area has **264 unique
+Park = BART + Muni; Milpitas = BART + VTA) the play area has **265 unique
 stations**. Distinct stations that share a city name are disambiguated by system,
 e.g. "San Bruno (BART)" vs "San Bruno (Caltrain)".
 
-Service differs by day here, so the **Weekday / Weekend** toggle is live: **263**
-stations are eligible on a weekday and **264** at the weekend (Broadway/
-Burlingame is weekend-only on Caltrain). College Park is dropped entirely as a
+Service differs by day here, so the **Weekday / Weekend** toggle is live: **262**
+stations are eligible on a weekday and **265** at the weekend (Broadway/
+Burlingame is weekend-only on Caltrain, and the water shuttle across the Oakland
+Estuary is hourly Fri–Sun only, so its docks and its line count on weekends and
+it's off the map on weekdays). Caltrain Express/Limited are weekday-only lines,
+left out of the line questions on weekends. College Park is dropped entirely as a
 peak-only flag stop that can never satisfy the hourly rule.
 
 ### SF Muni

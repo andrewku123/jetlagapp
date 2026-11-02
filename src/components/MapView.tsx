@@ -16,7 +16,7 @@ import L from 'leaflet'
 import '@maplibre/maplibre-gl-leaflet'
 import type { StyleSpecification, SymbolLayerSpecification } from 'maplibre-gl'
 import type { Feature, Geometry } from 'geojson'
-import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem } from '../types'
+import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem, DayType } from '../types'
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
@@ -32,7 +32,7 @@ import { recordZoneMi } from '../lib/elimination'
 import { cityAt, NO_CITY_LABEL } from '../lib/cities'
 import { fitTarget, zoneBoxMeters, MAP_MAX_ZOOM, type FitTarget } from '../lib/mapFit'
 import { describeRecord } from '../lib/describe'
-import { stationColor, isMultiSystem } from '../lib/style'
+import { stationColor, isMultiSystem, linesExcludedOn } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
 import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
@@ -244,22 +244,29 @@ function BaseLayer() {
 
 interface TransitWay {
   type: 'Feature'
-  properties: { system: string; colors: string[] }
+  properties: { system: string; colors: string[]; name?: string }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
 }
 const TRANSIT_WAYS = (transitData as unknown as { features: TransitWay[] }).features
 
-// one line per physical track, drawn in the first color that runs on it
-const TRANSIT: GeoJSON.FeatureCollection = {
-  type: 'FeatureCollection',
-  features: TRANSIT_WAYS.map((w) => ({
-    type: 'Feature',
-    properties: { color: w.properties.colors[0] },
-    geometry: w.geometry,
-  })) as Feature[],
+// one line per physical track, drawn in the first color that runs on it; a
+// named weekday- or weekend-only line is left off on the days it doesn't count
+const transitFor = (day: DayType): GeoJSON.FeatureCollection => {
+  const excluded = linesExcludedOn(day)
+  return {
+    type: 'FeatureCollection',
+    features: TRANSIT_WAYS.filter((w) => !(w.properties.name && excluded.includes(w.properties.name))).map(
+      (w) => ({
+        type: 'Feature',
+        properties: { color: w.properties.colors[0] },
+        geometry: w.geometry,
+      }),
+    ) as Feature[],
+  }
 }
+const TRANSIT: Record<DayType, GeoJSON.FeatureCollection> = { wd: transitFor('wd'), we: transitFor('we') }
 
 function transitStyle(feature?: Feature<Geometry, { color: string }>) {
   return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
@@ -319,6 +326,7 @@ interface Props {
   onExitEndgame: () => void
   pois: RenderPoi[]
   stationView: 'normal' | 'faded' | 'hidden'
+  dayType: DayType
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -961,7 +969,7 @@ function StationView({ mode }: { mode: 'normal' | 'faded' | 'hidden' }) {
 // "pop" in abruptly on load; the pane starts transparent and CSS-transitions to
 // full opacity. Pane sits above the dim mask (overlayPane 400) and below POIs
 // (410), matching the previous draw order.
-function TransitLines() {
+function TransitLines({ dayType }: { dayType: DayType }) {
   const map = useMap()
   const [pane, setPane] = useState<string | null>(null)
   useEffect(() => {
@@ -981,7 +989,8 @@ function TransitLines() {
     return () => window.clearTimeout(id)
   }, [map])
   if (!pane) return null
-  return <GeoJSON data={TRANSIT} style={transitStyle as never} interactive={false} pane={pane} />
+  // keyed by day: react-leaflet's GeoJSON doesn't redraw when `data` changes
+  return <GeoJSON key={dayType} data={TRANSIT[dayType]} style={transitStyle as never} interactive={false} pane={pane} />
 }
 
 export default function MapView({
@@ -1012,6 +1021,7 @@ export default function MapView({
   onExitEndgame,
   pois,
   stationView,
+  dayType,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // the toolbar collapses to a single 🧰 button so it barely covers the map while
@@ -1563,7 +1573,7 @@ export default function MapView({
           pathOptions={DIM_FILL}
           interactive={false}
         />
-        <TransitLines />
+        <TransitLines dayType={dayType} />
 
         {/* endgame: shade the ELIMINATED area outside the hiding zone (same as
             radar/thermometer); the circle outline marks the zone, left clear. */}

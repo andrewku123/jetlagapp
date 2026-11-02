@@ -5,7 +5,7 @@ import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
 import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
-import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style'
+import { SYSTEM_COLORS, SYSTEM_ORDER, linesExcludedOn } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
 import { castCurse, curseMultiplier, defaultHidingRadiusMi, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
 import { formatDistance } from './lib/geo'
@@ -161,14 +161,12 @@ export default function App() {
   }, [base, game.questions, game.manualEliminated, endgameStation, game.gameSize])
 
   const lines = useMemo(() => {
-    const all = uniqSorted(STATIONS.flatMap((s) => s.lines))
-    return game.dayType === 'we'
-      ? all.filter((l) => !WEEKEND_EXCLUDED_LINES.includes(l))
-      : all
+    const excluded = linesExcludedOn(game.dayType)
+    return uniqSorted(STATIONS.flatMap((s) => s.lines)).filter((l) => !excluded.includes(l))
   }, [game.dayType])
 
   // Weekday/Weekend only matters when the two days differ for this map — i.e. the
-  // eligible-station set changes, or the map has weekday-only lines. On SF Muni
+  // eligible-station set changes, or the map has weekday- or weekend-only lines. On SF Muni
   // (all lines run daily, same 131 eligible) it does nothing, so the toggle and
   // the split eligibility line are hidden.
   const dayTypeMatters = useMemo(() => {
@@ -177,10 +175,9 @@ export default function App() {
         .map((s) => s.id)
         .join(',')
     const hasWeekendOnlyDiff = eligibleIds('wd') !== eligibleIds('we')
-    const hasWeekendExcludedLines = STATIONS.some((s) =>
-      s.lines.some((l) => WEEKEND_EXCLUDED_LINES.includes(l)),
-    )
-    return hasWeekendOnlyDiff || hasWeekendExcludedLines
+    const dayOnly = [...linesExcludedOn('wd'), ...linesExcludedOn('we')]
+    const hasDayOnlyLines = STATIONS.some((s) => s.lines.some((l) => dayOnly.includes(l)))
+    return hasWeekendOnlyDiff || hasDayOnlyLines
   }, [])
 
   const starredSet = useMemo(() => new Set(game.starred), [game.starred])
@@ -511,6 +508,7 @@ export default function App() {
             onExitEndgame={() => update({ endgame: null })}
             pois={visiblePois}
             stationView={tab === 'poi' ? stationView : 'normal'}
+            dayType={game.dayType}
           />
         </div>
 
@@ -554,6 +552,7 @@ export default function App() {
               askGroupCounts={askGroupCounts}
               endgameActive={game.endgame != null}
               gameSize={game.gameSize}
+              dayType={game.dayType}
             />
           </div>
 

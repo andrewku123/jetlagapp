@@ -1,4 +1,5 @@
-import type { LatLng } from '../types'
+import type { DayType, LatLng } from '../types'
+import { linesExcludedOn } from './style'
 import { transitLinesData as rawGeo, stationsData as rawStations } from '../data/regions'
 import type { Station } from '../types'
 
@@ -24,7 +25,9 @@ export interface MetroLine {
 }
 
 interface RawFeature {
-  properties: { system: string; colors: string[] }
+  // `name` pins the line name (a weekday- or weekend-only line, see
+  // RegionData.weekdayExcludedLines); otherwise it's derived from station.lines.
+  properties: { system: string; colors: string[]; name?: string }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
@@ -134,7 +137,7 @@ function buildMetroLines(): MetroLine[] {
   return features.map((f, i) => {
     const system = f.properties.system
     const color = f.properties.colors[0]
-    const name = names[i]
+    const name = f.properties.name ?? names[i]
     const label = name.replace(/\s*\(.*\)\s*$/, '').trim() // drop the "(Antioch–SFO…)" tail
     return { id: `${system}::${color}`, system, color, name, label, polylines: toPolylines(f) }
   })
@@ -146,9 +149,33 @@ export const METRO_LINE_BY_ID: Record<string, MetroLine> = Object.fromEntries(
   METRO_LINES.map((l) => [l.id, l]),
 )
 
-// Lines passing within radiusMi of the seeker (the in-play set).
-export function metroLinesWithinRadius(seeker: LatLng, radiusMi: number, refLat = seeker.lat): MetroLine[] {
-  return METRO_LINES.filter((l) => metroLineDistanceMiles(seeker, l, refLat) <= radiusMi)
+// Lines with a pinned name: the only ones a day type can exclude.
+const NAMED_LINE_IDS = new Set(
+  (rawGeo as { features: RawFeature[] }).features
+    .filter((f) => f.properties.name)
+    .map((f) => `${f.properties.system}::${f.properties.colors[0]}`),
+)
+
+// Lines passing within radiusMi of the seeker (the in-play set). With a day
+// type, lines that don't run that day (linesExcludedOn) are left out.
+export function metroLinesWithinRadius(
+  seeker: LatLng,
+  radiusMi: number,
+  refLat = seeker.lat,
+  day?: DayType,
+): MetroLine[] {
+  const excluded = day ? linesExcludedOn(day) : []
+  return METRO_LINES.filter(
+    (l) =>
+      !(NAMED_LINE_IDS.has(l.id) && excluded.includes(l.name)) &&
+      metroLineDistanceMiles(seeker, l, refLat) <= radiusMi,
+  )
+}
+
+// The day type a Metro Lines question was asked on (params.day); undefined for
+// records saved before it was stored, which then count every line.
+export function questionDay(params: Record<string, unknown>): DayType | undefined {
+  return params.day === 'wd' || params.day === 'we' ? params.day : undefined
 }
 
 // The line in `lines` nearest to p (and its distance). null if `lines` empty.
