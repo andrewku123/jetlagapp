@@ -9,7 +9,7 @@ import { SYSTEM_COLORS, SYSTEM_ORDER, WEEKEND_EXCLUDED_LINES } from './lib/style
 import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
 import { castCurse, curseMultiplier, defaultHidingRadiusMi, hidingRadiusMi as effectiveRadiusMi, NO_CURSES } from './lib/hidingZone'
 import { formatDistance } from './lib/geo'
-import { rewardForKind, questionGroupKey } from './data/questions'
+import { rewardForKind, askOrdinals, askGroupCounts as countAskGroups } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem, ZoneCurses } from './types'
@@ -191,31 +191,11 @@ export default function App() {
   // thermometer also depend on their distance (a 5mi radar and a 10mi radar are
   // different questions; two 5mi radars are the same). Map each record id -> its
   // 1-based ask ordinal within its group (in ask order).
-  const askOrdinal = useMemo(() => {
-    const m = new Map<string, number>()
-    const counts = new Map<string, number>()
-    game.questions
-      .slice()
-      .sort((a, b) => a.createdAt - b.createdAt)
-      .forEach((q) => {
-        const key = questionGroupKey(q.kind, q.params)
-        const n = (counts.get(key) ?? 0) + 1
-        counts.set(key, n)
-        m.set(q.id, n)
-      })
-    return m
-  }, [game.questions])
+  const askOrdinal = useMemo(() => askOrdinals(game.questions), [game.questions])
 
   // Per-group counts of questions already asked, so the Ask form can preview the
   // scaled cost of asking a given question one more time (n = count + 1).
-  const askGroupCounts = useMemo(() => {
-    const m = new Map<string, number>()
-    for (const q of game.questions) {
-      const key = questionGroupKey(q.kind, q.params)
-      m.set(key, (m.get(key) ?? 0) + 1)
-    }
-    return m
-  }, [game.questions])
+  const askGroupCounts = useMemo(() => countAskGroups(game.questions), [game.questions])
 
   const pickedPoints = useMemo(() => {
     const pts: { label: string; point: LatLng; color: string }[] = []
@@ -304,6 +284,9 @@ export default function App() {
   }
   function toggleActive(id: string) {
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, active: !q.active } : q)) })
+  }
+  function toggleCurse(id: string) {
+    update({ questions: game.questions.map((q) => (q.id === id ? { ...q, curse: !q.curse } : q)) })
   }
   function toggleEndgame(id: string) {
     update({ questions: game.questions.map((q) => (q.id === id ? { ...q, endgame: !q.endgame } : q)) })
@@ -585,8 +568,13 @@ export default function App() {
                       {!q.eliminates && <span className="tag">info</span>}
                       {q.vetoed && <span className="tag veto">vetoed</span>}
                       {q.endgame && <span className="tag endgame">endgame</span>}
+                      {q.curse && <span className="tag curse">curse info</span>}
                     </div>
+                    {q.curse && !q.vetoed && (
+                      <div className="qreward">Hider reward: none (from a curse, not a question)</div>
+                    )}
                     {!q.vetoed &&
+                      !q.curse &&
                       (() => {
                         const n = askOrdinal.get(q.id) ?? 1
                         return (
@@ -613,6 +601,15 @@ export default function App() {
                           title="Endgame questions still eliminate map-wide (except sea level, a note until unmarked), but their shading is clipped to the hiding zone."
                         >
                           {q.endgame ? 'Unmark endgame' : 'Mark endgame'}
+                        </button>
+                      )}
+                      {!q.vetoed && (
+                        <button
+                          className={q.curse ? 'on' : ''}
+                          onClick={() => toggleCurse(q.id)}
+                          title="Curse info came from a curse (e.g. its casting cost), not a question: it eliminates the same, but the hider draws no cards and it doesn't count toward the repeat-question multiplier."
+                        >
+                          {q.curse ? 'Unmark curse info' : 'Mark curse info'}
                         </button>
                       )}
                       <button onClick={() => deleteQuestion(q.id)}>Delete</button>

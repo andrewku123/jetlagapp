@@ -280,6 +280,10 @@ export default function QuestionForm({
   // endgame, but the seeker can override per question before logging.
   const [endgameFlag, setEndgameFlag] = useState<boolean>(endgameActive)
   useEffect(() => setEndgameFlag(endgameActive), [endgameActive])
+  // Info a curse revealed (e.g. a casting cost that's effectively a free radar):
+  // logged and eliminated like an answer, but not a question, so no cards and no
+  // repeat-multiplier bump. Resets after each log.
+  const [curseFlag, setCurseFlag] = useState(false)
 
   // Sea level: a picked location fills the altitude from USGS ground elevation,
   // the same terrain the hider's zone ranges come from.
@@ -555,9 +559,10 @@ export default function QuestionForm({
       active: true,
       ...(vetoed ? { vetoed: true } : {}),
       ...(endgameFlag ? { endgame: true } : {}),
+      ...(curseFlag && !vetoed ? { curse: true } : {}),
     })
     // reset point captures but keep kind
-    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi(''); setTentLine('')
+    setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi(''); setTentLine(''); setCurseFlag(false)
   }
 
   // Preview of the hider's cost if this question were asked now: the nth ask of
@@ -756,14 +761,20 @@ export default function QuestionForm({
       <p className="blurb">
         {blurbText}{demotionNote}{' '}
         <span className="cards">
-          ({previewCards}
-          {previewMult > 1 && (
-            <span className="cards-mult">
-              {' '}— ×{previewMult}, {previewMult}
-              {ordinalSuffix(previewMult)} time asked
-            </span>
+          {curseFlag ? (
+            '(curse info: no cards)'
+          ) : (
+            <>
+              ({previewCards}
+              {previewMult > 1 && (
+                <span className="cards-mult">
+                  {' '}— ×{previewMult}, {previewMult}
+                  {ordinalSuffix(previewMult)} time asked
+                </span>
+              )}
+              )
+            </>
           )}
-          )
         </span>
       </p>
 
@@ -1259,15 +1270,36 @@ export default function QuestionForm({
         </label>
       )}
 
+      <label
+        className="endgame-check curse-check"
+        title="Use for info a curse gave you, e.g. a casting cost like “seekers must be 3+ mi away”. It eliminates like a normal answer, but it isn't a question: the hider draws no cards, and asking that question later still pays 1x."
+      >
+        <input type="checkbox" checked={curseFlag} onChange={(e) => setCurseFlag(e.target.checked)} />
+        <span className="endgame-text">
+          From a curse
+          <span className="muted">not a question: no cards, doesn't count toward repeats</span>
+        </span>
+      </label>
+
       <div className="qform-actions">
-        <button className="primary" onClick={() => submit(false)}>{eliminatesEffective ? 'Log question & eliminate' : 'Log question'}</button>
-        <button
-          className="veto"
-          onClick={() => submit(true)}
-          title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
-        >
-          Hider vetoed
+        <button className="primary" onClick={() => submit(false)}>
+          {curseFlag
+            ? eliminatesEffective
+              ? 'Log curse info & eliminate'
+              : 'Log curse info'
+            : eliminatesEffective
+              ? 'Log question & eliminate'
+              : 'Log question'}
         </button>
+        {!curseFlag && (
+          <button
+            className="veto"
+            onClick={() => submit(true)}
+            title="The hider refused to answer. Logs the question (no answer, no elimination) so you can ask it again later."
+          >
+            Hider vetoed
+          </button>
+        )}
       </div>
     </div>
   )

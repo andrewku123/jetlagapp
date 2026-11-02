@@ -244,6 +244,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .tag { background: #463a10; color: #f5d76e; font-size: 10px; padding: 1px 5px; border-radius: 4px; margin-left: 6px; }
 .tag.veto { background: #4a1f1f; color: #ff9a9a; }
 .tag.endgame { background: #0f3d24; color: #6ee7a8; }
+.tag.curse { background: #35204d; color: #d4a8ff; }
 .qactions button.on { background: #0f3d24; color: #6ee7a8; border-color: #16a34a; }
 .qform label.endgame-check { display: flex; align-items: flex-start; gap: 8px; width: auto; margin-top: 10px; font-size: 13px; color: var(--text); cursor: pointer; }
 .qform label.endgame-check input { flex: none; width: auto; margin: 2px 0 0; }

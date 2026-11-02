@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { scaleCards, rewardForKind, questionGroupKey } from './questions'
+import { scaleCards, rewardForKind, questionGroupKey, askOrdinals, askGroupCounts } from './questions'
+import type { QuestionRecord } from '../types'
 
 describe('scaleCards — repeat-question reward scaling', () => {
   it('leaves the reward unchanged for the 1st ask (×1)', () => {
@@ -44,5 +45,31 @@ describe('rewardForKind', () => {
     expect(rewardForKind('radar')).toBe('draw 2, keep 1')
     expect(rewardForKind('radar', 2)).toBe('draw 4, keep 2')
     expect(rewardForKind('match-county', 3)).toBe('draw 9, keep 3')
+  })
+})
+
+describe('curse info — not a question for rewards or repeats', () => {
+  const rec = (id: string, createdAt: number, extra: Partial<QuestionRecord> = {}): QuestionRecord => ({
+    id,
+    kind: 'radar',
+    createdAt,
+    params: { lat: 40.7, lon: -74, radiusMiles: 3, answer: 'no' },
+    eliminates: true,
+    active: true,
+    ...extra,
+  })
+  it('gives curse info no ask ordinal and keeps the next real ask at x1', () => {
+    const qs = [rec('curse', 1, { curse: true }), rec('ask', 2)]
+    const ord = askOrdinals(qs)
+    expect(ord.has('curse')).toBe(false)
+    expect(ord.get('ask')).toBe(1)
+  })
+  it('still counts a second real ask as x2', () => {
+    const ord = askOrdinals([rec('a', 1), rec('curse', 2, { curse: true }), rec('b', 3)])
+    expect(ord.get('b')).toBe(2)
+  })
+  it('leaves curse info out of the Ask-form preview counts', () => {
+    const counts = askGroupCounts([rec('curse', 1, { curse: true })])
+    expect(counts.get(questionGroupKey('radar', { radiusMiles: 3 }))).toBeUndefined()
   })
 })
