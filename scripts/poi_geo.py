@@ -151,6 +151,9 @@ REGIONS = {
         "places": "src/data/nyc.places.geojson.json",
         "countiesGeo": "src/data/nyc.counties.geojson.json",
         "zctas": "src/data/nyc.zctas.geojson.json",
+        # ZIP areas tile the land with no gaps (build_region_geo.fill_zcta_gaps),
+        # so the zone-aware ZIP band only follows real ZIP borders.
+        "zctaFill": True,
         # Station county = the borough polygon it stands in (or nearest, for a
         # ferry landing on a pier), named as the borough; see build_nyc_geo.py.
         "countyFromGeo": True,

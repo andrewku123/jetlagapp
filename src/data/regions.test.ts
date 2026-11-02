@@ -380,3 +380,40 @@ describe('Bay Area landmasses', () => {
     expect(await blurbFor('bayarea', 'match-landmass')).not.toContain('one connected landmass')
   })
 })
+
+describe('NYC ZIP zone band', () => {
+  it('a station stays possible only if its zone reaches a kept ZIP, not water or ZIP gaps', async () => {
+    const m = await loadFor('nyc')
+    const { stationPasses } = await import('../lib/elimination')
+    const { zipAt, zipCodes, zipGeom } = await import('../lib/zip')
+    const seeker = { lat: 40.7447, lon: -73.9485 } // Long Island City
+    const zip = zipAt(seeker)!
+    const r = {
+      id: 'q', kind: 'measure-zip' as const, createdAt: 0,
+      params: { fromLat: seeker.lat, fromLon: seeker.lon, value: zip, answer: 'smaller' },
+      eliminates: true, active: true, zoneMi: 0.25,
+    }
+    const kept = zipCodes().filter((z) => Number(z) <= Number(zip)).flatMap(zipGeom)
+    const milesToKept = (p: { lat: number; lon: number }) => {
+      let best = Infinity
+      for (const poly of kept) for (const ring of poly) for (let i = 1; i < ring.length; i++) {
+        const a = { lat: ring[i - 1][1], lon: ring[i - 1][0] }
+        const b = { lat: ring[i][1], lon: ring[i][0] }
+        for (let t = 0; t <= 1; t += 0.1)
+          best = Math.min(best, haversineMiles(p, { lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) }))
+      }
+      return best
+    }
+    let eliminated = 0
+    for (const st of m.stationsData as Station[]) {
+      const stZip = zipAt(st)
+      if (!stZip || Number(stZip) <= Number(zip)) continue
+      const d = milesToKept(st)
+      if (d < 0.2 || d > 0.3) {
+        expect(stationPasses(st, r), `${st.name} ${d.toFixed(2)} mi from a kept ZIP`).toBe(d <= 0.25)
+      }
+      if (!stationPasses(st, r)) eliminated++
+    }
+    expect(eliminated).toBeGreaterThan(150)
+  }, 60000)
+})

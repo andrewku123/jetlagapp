@@ -64,6 +64,7 @@ import nycStations from './nyc.stations.json'
 import nycZoneElev from './nyc.zone-elev.json'
 import nycPoi from './nyc.poi.json'
 import nycPlayArea from './nyc.play-area.geojson.json'
+import nycDisplayArea from './nyc.display-area.geojson.json'
 import nycMeasure from './nyc.measure-features.geojson.json'
 import nycPlaces from './nyc.places.geojson.json'
 import nycCounties from './nyc.counties.geojson.json'
@@ -101,6 +102,9 @@ export interface RegionData {
   zoneElev: unknown
   poi: unknown
   playArea: unknown
+  // satellite clip and out-of-play dimming only, when wider than the play area
+  // (e.g. water shown in imagery that is not in play); defaults to playArea
+  displayArea?: unknown
   measureFeatures: unknown
   places: unknown
   counties: unknown
@@ -228,6 +232,7 @@ export const REGIONS: RegionData[] = [
     zoneElev: nycZoneElev,
     poi: nycPoi,
     playArea: nycPlayArea,
+    displayArea: nycDisplayArea,
     measureFeatures: nycMeasure,
     places: nycPlaces,
     counties: nycCounties,
@@ -298,6 +303,7 @@ export const stationsData = ACTIVE_REGION.stations
 export const poiData = ACTIVE_REGION.poi
 export const zoneElevData = ACTIVE_REGION.zoneElev
 export const playAreaData = ACTIVE_REGION.playArea
+export const displayAreaData = ACTIVE_REGION.displayArea ?? ACTIVE_REGION.playArea
 export const measureFeaturesData = ACTIVE_REGION.measureFeatures
 export const placesData = ACTIVE_REGION.places
 export const countiesData = ACTIVE_REGION.counties

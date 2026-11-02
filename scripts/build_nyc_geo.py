@@ -3,10 +3,11 @@
 
 Play area: the five boroughs, shoreline-clipped (NYC Open Data "Borough
 Boundaries", water areas excluded — far finer than Census cartographic files).
-The app's play-area file adds, for the satellite view (like the Bay Area's bay),
-the water inside the city limit plus the Hudson, Upper Bay and the kills across
-to the New Jersey shore (TIGER; MASKED_WATER closes Newark Bay, the Lower Bay
-and the ocean); land-only geometry drives the landmasses and coastline.
+The play area stays land-only (it drives question geometry, zone-aware
+elimination and the landmasses). A separate display area, used only for the
+satellite clip and the out-of-play dimming, adds the water inside the city limit
+plus the Hudson, Upper Bay and the kills across to the New Jersey shore (TIGER;
+MASKED_WATER closes Newark Bay, the Lower Bay and the ocean).
 An island stays in play when it has a station or a public bridge you can walk
 across (Randalls/Wards, City Island; KEEP_ISLANDS). Boat-only or closed islands
 (Governors, Liberty, Ellis, Rikers, North/South Brother, Hart, the Jamaica Bay
@@ -283,11 +284,10 @@ def main():
         TIGER_COUNTY, lambda r: r["GEOID"] in NYC_FIPS or r["GEOID"] in NEIGHBOR_FIPS)}
     city_limit = unary_union([tiger[f] for f in NYC_FIPS])
 
-    # The app's play area also takes the water inside the city limit (like the
-    # Bay Area's bay) plus the Hudson and the kills to the New Jersey shore, so
-    # satellite imagery covers the rivers, harbor and bays. Islands ringed by
-    # that water (Rikers, Governors, ...) fill in for the imagery; they are still
-    # not land in play (no stations, not in any landmass).
+    # Display area (satellite clip + dimming only): the land plus the water
+    # inside the city limit and the Hudson and the kills to the New Jersey shore,
+    # so imagery covers the rivers, harbor and bays. Islands ringed by that water
+    # (Rikers, Governors, ...) fill in for the imagery; they stay out of play.
     water = city_limit.difference(land.buffer(1))
     nj_water = unary_union([g for c in NJ_WATER_COUNTIES for rec, g in shp_records(
         areawater(c), lambda r: r["FULLNAME"] in NJ_WATER_NAMES)])
@@ -295,7 +295,8 @@ def main():
     water = water.difference(TO_M(unary_union([Polygon(r) for r in MASKED_WATER])))
     display = unary_union([play_m, water]).buffer(1).buffer(-1)
     display = Polygon(max(parts(display), key=lambda p: p.area).exterior)
-    write("nyc.play-area.geojson.json",
+    write("nyc.play-area.geojson.json", [feature(play_ll, name="New York City")])
+    write("nyc.display-area.geojson.json",
           [feature(rounded(TO_LL(display.simplify(SIMPLIFY_M))), name="New York City")])
     county_lines, state_lines = [], []
     ids = sorted(tiger)

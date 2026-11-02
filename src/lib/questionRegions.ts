@@ -639,22 +639,27 @@ export function cityMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPo
 // eliminated side. Each station sits in exactly one ZCTA, so shading the
 // eliminated-side ZCTAs agrees exactly with the per-station rule. -----------------
 
-export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+function zipSides(record: QuestionRecord): { eliminated: Polygon[]; kept: Polygon[] } | null {
   const p = record.params
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   const seekerZipStr = String(p.value || '') || zipAt(seeker) || ''
   if (!seekerZipStr) return null
   const seekerZip = Number(seekerZipStr)
   const smaller = p.answer === 'smaller'
-  // A ZCTA is eliminated when its keep-test fails: keep is
-  // (zip <= seekerZip) === smaller, so eliminate the opposite side.
-  const polys: Polygon[] = []
+  // keep is (zip <= seekerZip) === smaller; the opposite side is eliminated.
+  const eliminated: Polygon[] = []
+  const kept: Polygon[] = []
   for (const name of zipCodes()) {
-    const keep = (Number(name) <= seekerZip) === smaller
-    if (keep) continue
-    for (const poly of zipGeom(name)) polys.push(poly)
+    const side = (Number(name) <= seekerZip) === smaller ? kept : eliminated
+    for (const poly of zipGeom(name)) side.push(poly)
   }
-  const union = robustUnion(polys)
+  return { eliminated, kept }
+}
+
+export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const sides = zipSides(record)
+  if (!sides) return null
+  const union = robustUnion(sides.eliminated)
   return union.length ? toLatLng(union) : null
 }
 
@@ -765,7 +770,12 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
   let out: ZoneRegions | null = null
   if (elim && elim.length) {
     let kept: MultiPolygon
-    try {
+    // A ZIP answer only allows the kept-side ZIP areas themselves, not the rest of
+    // the play area (water, slivers between ZCTAs), whose edges would otherwise
+    // widen the zone band deep into eliminated ZIPs.
+    const zipKept = record.kind === 'measure-zip' ? zipSides(record)?.kept : undefined
+    if (zipKept) kept = robustUnion(zipKept)
+    else try {
       kept = PLAY_AREA.length ? polygonClipping.difference(PLAY_AREA, elim) : polygonClipping.difference([WORLD_RING], elim)
     } catch {
       kept = polygonClipping.difference([WORLD_RING], elim)

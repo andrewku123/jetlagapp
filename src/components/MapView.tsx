@@ -36,7 +36,7 @@ import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem, linesExcludedOn } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
+import { displayAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -53,8 +53,9 @@ const HIT_OPTS = { stroke: false, fill: true, fillColor: '#000', fillOpacity: 0 
 // scripts/build_play_area.py — a place qualifies if any part is within a hiding
 // zone of an eligible station, or it is a transit-enclosed enclave). Used for
 // the satellite-imagery clip, tile culling, and the out-of-play dimming mask.
+// A region's display area (if any) widens this to water shown in imagery.
 const IN_PLAY_FEATURES = (
-  playAreaData as unknown as GeoJSON.FeatureCollection
+  displayAreaData as unknown as GeoJSON.FeatureCollection
 ).features
 
 // Bounding box of the play area; used as a cheap first-pass filter on satellite

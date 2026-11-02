@@ -38,6 +38,8 @@ import zipfile
 from shapely.geometry import (shape, mapping, box, Polygon, MultiPolygon,
                               GeometryCollection)
 from shapely.ops import transform, unary_union
+from shapely.strtree import STRtree
+import shapely
 
 import poi_geo
 
@@ -173,6 +175,29 @@ def build_places(region, play):
     write(poi_geo.repo_path(region, "places"), feats, "places")
 
 
+def fill_zcta_gaps(clipped, play):
+    """Hand every piece of the play area no ZCTA covers (parks, yards, slivers)
+    to the neighbouring ZCTA it shares the most border with, so the ZIP areas
+    tile the play area with no gaps."""
+    names = sorted(clipped)
+    geoms = [clipped[zc] for zc in names]
+    tree = STRtree(geoms)
+    gaps = valid(polygonal(play.difference(unary_union(geoms))))
+    filled = {zc: [] for zc in names}
+    for gap in getattr(gaps, "geoms", [gaps]):
+        if gap.is_empty:
+            continue
+        edge = gap.boundary
+        cands = tree.query(gap.buffer(1e-6))
+        shared = {i: edge.intersection(geoms[i].buffer(1e-6)).length for i in cands}
+        best = max(shared, key=shared.get) if shared and max(shared.values()) > 0 \
+            else tree.nearest(gap)
+        filled[names[best]].append(gap)
+    for zc, pieces in filled.items():
+        if pieces:
+            clipped[zc] = valid(polygonal(unary_union([clipped[zc]] + pieces)))
+
+
 def build_zctas(region, play):
     import shapefile
     minx, miny, maxx, maxy = play.bounds
@@ -194,9 +219,16 @@ def build_zctas(region, play):
             continue
         clipped[str(d[zip_field])] = g
 
+    if poi_geo.REGIONS[region].get("zctaFill"):
+        fill_zcta_gaps(clipped, play)
+        names = sorted(clipped)
+        simple = dict(zip(names, shapely.coverage_simplify(
+            [clipped[zc] for zc in names], SIMPLIFY_DEG)))
+    else:
+        simple = {zc: g.simplify(SIMPLIFY_DEG, preserve_topology=True) for zc, g in clipped.items()}
     feats = []
-    for zc in sorted(clipped):
-        g = rounded(polygonal(clipped[zc].simplify(SIMPLIFY_DEG, preserve_topology=True)))
+    for zc in sorted(simple):
+        g = rounded(polygonal(simple[zc]))
         if g.is_empty or g.area < MIN_AREA_DEG2:
             continue
         feats.append({"type": "Feature", "properties": {"name": zc},
