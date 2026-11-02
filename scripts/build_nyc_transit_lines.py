@@ -7,7 +7,8 @@ for the trunk ("8 Av: A C E"). The three shuttles share shuttle grey. Each LIRR
 branch in play (re-traced on OSM track, see on_track), each NYC Ferry route,
 SIR, the Staten Island Ferry and the Roosevelt Island Tram are their own
 features. LIRR geometry is clipped to the
-city (plus CLIP_M, so the line visibly leaves the map), minus Nassau. An NYC Ferry route is
+city (plus CLIP_DEG, so the line visibly leaves the map) minus Nassau, plus the
+endgame area around every station (ENDGAME_M). An NYC Ferry route is
 drawn only between its landings that are stations, so no ferry line runs past
 nothing but non-station piers (Rockaway, Soundview, ...).
 
@@ -35,6 +36,10 @@ OSM_FERRY_REFS = {"Astoria": {"AST"}, "East River": {"ER"}, "Rockaway-Soundview"
 TRACK_NEAR_M = 60  # OSM track this close to a GTFS shape can carry it
 GTFS_COST = 4  # cost per metre of falling back to the GTFS line, vs 1 for track
 CLIP_DEG = 0.015
+# Endgame hiding zone at its largest: 0.25 mi x 1.5^2 (Curse of the Prosperous
+# Home drawn once and duplicated). The endgame area is the play area plus this
+# around every station.
+ENDGAME_M = 0.25 * 1.5 ** 2 * 1609.344
 SIMPLIFY_DEG = 0.00008  # ~8 m
 LANDING_SNAP_DEG = 0.002  # a station landing within ~200 m of a ferry shape is on it
 FADED_OVERLAP_DEG = 0.0008  # a route leg this close to a solid one is the same stretch
@@ -227,12 +232,15 @@ def main():
     lirr_sh = route_shapes(lirr)
     arcs = [geo.TO_M(shape(f["geometry"])) for f in json.load(open(OSM_RAIL))["features"]]
     stations = json.load(open(st.OUT))
+    endgame = geo.TO_LL(unary_union([geo.TO_M(Point(s["lon"], s["lat"])).buffer(ENDGAME_M)
+                                     for s in stations]))
+    lirr_clip = clip.union(endgame)
     for rid, name in st.LIRR_BRANCHES.items():
         # A stretch cut off from every station of its branch (Far Rockaway, past
         # Nassau, isn't hourly) isn't drawn.
         stops = [Point(s["lon"], s["lat"]) for s in stations if name in s["lines"]]
         feats.append(feature("LIRR", "#" + lirr_meta[rid]["route_color"].lower(), name,
-                             on_track(lirr_sh[rid], clip, arcs), clip, stops))
+                             on_track(lirr_sh[rid], lirr_clip, arcs), lirr_clip, stops))
 
     fer = st.feed("nycferry")
     ferry_lines = {l for s in stations for l in s["lines"] if l.startswith("NYC Ferry ")}
