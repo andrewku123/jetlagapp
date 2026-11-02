@@ -11,6 +11,7 @@ _Generated from the app’s own station data by `scripts/build_stations_md.mjs`
 - [Bay Area](#bay-area-265-stations) — 265 stations
 - [SF Muni](#sf-muni-131-stations) — 131 stations
 - [LA Metro](#la-metro-158-stations) — 158 stations
+- [Washington DC](#washington-dc-98-stations) — 98 stations
 
 ## Bay Area — 265 stations
 
@@ -621,3 +622,110 @@ Metro rail (A/B/C/D/E/K) plus the two busways the rulebook counts as rapid trans
 | Wilshire / Western | D Line | ✓ | ✓ | 34.0617, -118.3088 |
 | Woodley | G Line | ✓ | ✓ | 34.1862, -118.4836 |
 | Woodman | G Line | ✓ | ✓ | 34.1790, -118.4295 |
+
+## Washington DC — 98 stations
+
+**98 unique hideable stations**. Eligible after the at-least-hourly rule: **97 weekday / 97 weekend**.
+
+All six Metrorail lines across DC, Maryland and Virginia. Arlington Cemetery stays listed but is never eligible: its last train is around 7 PM.
+
+| Station | Lines | WD | WE | Lat, Lon |
+|---|---|:--:|:--:|---|
+| Addison Rd | Blue Line, Silver Line | ✓ | ✓ | 38.8867, -76.8944 |
+| Anacostia | Green Line | ✓ | ✓ | 38.8622, -76.9953 |
+| Archives | Green Line, Yellow Line | ✓ | ✓ | 38.8937, -77.0219 |
+| Arlington Cemetery | Blue Line | — | — | 38.8846, -77.0631 |
+| Ashburn | Silver Line | ✓ | ✓ | 39.0050, -77.4912 |
+| Ballston–MU | Orange Line, Silver Line | ✓ | ✓ | 38.8820, -77.1115 |
+| Benning Rd | Blue Line, Silver Line | ✓ | ✓ | 38.8904, -76.9375 |
+| Bethesda | Red Line | ✓ | ✓ | 38.9844, -77.0942 |
+| Braddock Rd | Blue Line, Yellow Line | ✓ | ✓ | 38.8141, -77.0537 |
+| Branch Av | Green Line | ✓ | ✓ | 38.8269, -76.9121 |
+| Brookland–CUA | Red Line | ✓ | ✓ | 38.9332, -76.9945 |
+| Capitol Heights | Blue Line, Silver Line | ✓ | ✓ | 38.8893, -76.9132 |
+| Capitol South | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8851, -77.0061 |
+| Cheverly | Orange Line, Silver Line | ✓ | ✓ | 38.9166, -76.9167 |
+| Clarendon | Orange Line, Silver Line | ✓ | ✓ | 38.8871, -77.0952 |
+| Cleveland Park | Red Line | ✓ | ✓ | 38.9355, -77.0584 |
+| College Park–U of Md | Green Line, Yellow Line | ✓ | ✓ | 38.9785, -76.9283 |
+| Columbia Heights | Green Line, Yellow Line | ✓ | ✓ | 38.9287, -77.0328 |
+| Congress Heights | Green Line | ✓ | ✓ | 38.8451, -76.9881 |
+| Court House | Orange Line, Silver Line | ✓ | ✓ | 38.8908, -77.0856 |
+| Crystal City | Blue Line, Yellow Line | ✓ | ✓ | 38.8579, -77.0503 |
+| Deanwood | Orange Line, Silver Line | ✓ | ✓ | 38.9081, -76.9353 |
+| Downtown Largo | Blue Line, Silver Line | ✓ | ✓ | 38.9005, -76.8446 |
+| Dunn Loring | Orange Line | ✓ | ✓ | 38.8834, -77.2281 |
+| Dupont Circle | Red Line | ✓ | ✓ | 38.9097, -77.0436 |
+| East Falls Church | Orange Line, Silver Line | ✓ | ✓ | 38.8860, -77.1568 |
+| Eastern Market | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8842, -76.9958 |
+| Eisenhower Av | Yellow Line | ✓ | ✓ | 38.8003, -77.0711 |
+| Farragut North | Red Line | ✓ | ✓ | 38.9033, -77.0397 |
+| Farragut West | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.9014, -77.0404 |
+| Federal Center SW | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8851, -77.0151 |
+| Federal Triangle | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8935, -77.0280 |
+| Foggy Bottom–GWU | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.9009, -77.0503 |
+| Forest Glen | Red Line | ✓ | ✓ | 39.0153, -77.0431 |
+| Fort Totten | Green Line, Red Line, Yellow Line | ✓ | ✓ | 38.9518, -77.0024 |
+| Franconia–Springfield | Blue Line | ✓ | ✓ | 38.7663, -77.1684 |
+| Friendship Heights | Red Line | ✓ | ✓ | 38.9595, -77.0850 |
+| Gallery Place | Green Line, Red Line, Yellow Line | ✓ | ✓ | 38.8986, -77.0222 |
+| Georgia Av–Petworth | Green Line, Yellow Line | ✓ | ✓ | 38.9369, -77.0242 |
+| Glenmont | Red Line | ✓ | ✓ | 39.0618, -77.0536 |
+| Greenbelt | Green Line, Yellow Line | ✓ | ✓ | 39.0111, -76.9112 |
+| Greensboro | Silver Line | ✓ | ✓ | 38.9211, -77.2340 |
+| Grosvenor–Strathmore | Red Line | ✓ | ✓ | 39.0291, -77.1038 |
+| Herndon | Silver Line | ✓ | ✓ | 38.9528, -77.3853 |
+| Huntington | Yellow Line | ✓ | ✓ | 38.7938, -77.0753 |
+| Hyattsville Crossing | Green Line, Yellow Line | ✓ | ✓ | 38.9653, -76.9567 |
+| Innovation Center | Silver Line | ✓ | ✓ | 38.9610, -77.4161 |
+| Judiciary Sq | Red Line | ✓ | ✓ | 38.8961, -77.0167 |
+| King St–Old Town | Blue Line, Yellow Line | ✓ | ✓ | 38.8065, -77.0610 |
+| L'Enfant Plaza | Blue Line, Green Line, Orange Line, Silver Line, Yellow Line | ✓ | ✓ | 38.8851, -77.0222 |
+| Landover | Orange Line, Silver Line | ✓ | ✓ | 38.9335, -76.8913 |
+| Loudoun Gateway | Silver Line | ✓ | ✓ | 38.9922, -77.4610 |
+| McLean | Silver Line | ✓ | ✓ | 38.9245, -77.2101 |
+| McPherson Sq | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.9014, -77.0320 |
+| Medical Center | Red Line | ✓ | ✓ | 38.9988, -77.0968 |
+| Metro Center | Blue Line, Orange Line, Red Line, Silver Line | ✓ | ✓ | 38.8981, -77.0283 |
+| Minnesota Av | Orange Line, Silver Line | ✓ | ✓ | 38.8992, -76.9467 |
+| Morgan Blvd | Blue Line, Silver Line | ✓ | ✓ | 38.8937, -76.8683 |
+| Mount Vernon Sq | Green Line, Yellow Line | ✓ | ✓ | 38.9055, -77.0219 |
+| Navy Yard–Ballpark | Green Line | ✓ | ✓ | 38.8765, -77.0059 |
+| Naylor Rd | Green Line | ✓ | ✓ | 38.8511, -76.9567 |
+| New Carrollton | Orange Line, Silver Line | ✓ | ✓ | 38.9480, -76.8719 |
+| NoMa–Gallaudet U | Red Line | ✓ | ✓ | 38.9070, -77.0032 |
+| North Bethesda | Red Line | ✓ | ✓ | 39.0482, -77.1128 |
+| Pentagon | Blue Line, Yellow Line | ✓ | ✓ | 38.8691, -77.0541 |
+| Pentagon City | Blue Line, Yellow Line | ✓ | ✓ | 38.8630, -77.0594 |
+| Potomac Av | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8813, -76.9852 |
+| Potomac Yard | Blue Line, Yellow Line | ✓ | ✓ | 38.8332, -77.0464 |
+| Reston Town Center | Silver Line | ✓ | ✓ | 38.9528, -77.3607 |
+| Rhode Island Av | Red Line | ✓ | ✓ | 38.9208, -76.9960 |
+| Rockville | Red Line | ✓ | ✓ | 39.0842, -77.1461 |
+| Ronald Reagan Washington National Airport | Blue Line, Yellow Line | ✓ | ✓ | 38.8534, -77.0440 |
+| Rosslyn | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8960, -77.0709 |
+| Shady Grove | Red Line | ✓ | ✓ | 39.1199, -77.1647 |
+| Shaw–Howard U | Green Line, Yellow Line | ✓ | ✓ | 38.9135, -77.0219 |
+| Silver Spring | Red Line | ✓ | ✓ | 38.9938, -77.0313 |
+| Smithsonian | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8885, -77.0286 |
+| Southern Av | Green Line | ✓ | ✓ | 38.8414, -76.9749 |
+| Spring Hill | Silver Line | ✓ | ✓ | 38.9293, -77.2419 |
+| Stadium–Armory | Blue Line, Orange Line, Silver Line | ✓ | ✓ | 38.8883, -76.9771 |
+| Suitland | Green Line | ✓ | ✓ | 38.8445, -76.9327 |
+| Takoma | Red Line | ✓ | ✓ | 38.9756, -77.0179 |
+| Tenleytown–AU | Red Line | ✓ | ✓ | 38.9481, -77.0793 |
+| Twinbrook | Red Line | ✓ | ✓ | 39.0627, -77.1212 |
+| Tysons | Silver Line | ✓ | ✓ | 38.9206, -77.2223 |
+| U St | Green Line, Yellow Line | ✓ | ✓ | 38.9170, -77.0274 |
+| Union Station | Red Line | ✓ | ✓ | 38.8978, -77.0074 |
+| Van Dorn St | Blue Line | ✓ | ✓ | 38.7993, -77.1291 |
+| Van Ness–UDC | Red Line | ✓ | ✓ | 38.9442, -77.0635 |
+| Vienna | Orange Line | ✓ | ✓ | 38.8776, -77.2723 |
+| Virginia Square–GMU | Orange Line, Silver Line | ✓ | ✓ | 38.8829, -77.1033 |
+| Washington Dulles International Airport | Silver Line | ✓ | ✓ | 38.9558, -77.4483 |
+| Waterfront | Green Line | ✓ | ✓ | 38.8764, -77.0175 |
+| West Falls Church | Orange Line | ✓ | ✓ | 38.9008, -77.1890 |
+| West Hyattsville | Green Line, Yellow Line | ✓ | ✓ | 38.9552, -76.9695 |
+| Wheaton | Red Line | ✓ | ✓ | 39.0387, -77.0507 |
+| Wiehle–Reston East | Silver Line | ✓ | ✓ | 38.9477, -77.3401 |
+| Woodley Park | Red Line | ✓ | ✓ | 38.9250, -77.0524 |
