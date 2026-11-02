@@ -543,10 +543,12 @@ by a **derived condition**, never `if (region==='sfmuni')`:
   so zero-count agencies don't render.
 - **Weekday/Weekend toggle** (`DayToggle` in the header): compute
   `dayTypeMatters` = the eligible-station **id set** differs between `wd`/`we`
-  (`headwayMin[day] <= ELIGIBLE_HEADWAY_MIN`) **OR** any station is on a
-  `WEEKEND_EXCLUDED_LINES` line. Hide the toggle when false and collapse the
-  legend eligibility line to a single count. SF Muni runs daily → hidden; Bay
-  Area has weekday-only Caltrain (263 vs 264 eligible) → shown.
+  (`headwayMin[day] <= ELIGIBLE_HEADWAY_MIN`) **OR** any station is on a line in
+  `linesExcludedOn('wd')` / `linesExcludedOn('we')` (the region's
+  `weekdayExcludedLines` plus `WEEKEND_EXCLUDED_LINES`). Hide the toggle when false
+  and collapse the legend eligibility line to a single count. SF Muni runs daily →
+  hidden; Bay Area has weekday-only Caltrain and the weekend-only water shuttle
+  (262 vs 265 eligible) → shown.
 - **Tab title**: `index.html` ships a non-region-specific static `<title>`
   ("Jet Lag: Hide & Seek"); a `useEffect` in `App.tsx` then sets
   `document.title = \`${MAP_NAME} Hide & Seek\`` so it tracks the active map.

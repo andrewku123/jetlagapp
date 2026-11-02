@@ -145,6 +145,16 @@ Every station carrying Express/Limited also carries **Caltrain Local**, so it
 stays selectable on weekends (asserted in `stations.test.ts`). Add any other
 weekday-only line to `WEEKEND_EXCLUDED_LINES` — don't remove it from the data.
 
+**Weekend-only services** are the mirror case: the **Oakland Alameda Water
+Shuttle** (WETA route `OAS`) is hourly Fri–Sun only. Its two docks come from
+`scripts/add_water_shuttle.py` (re-run it after a rebuild; it is idempotent and
+reads the WETA GTFS), with `headwayMin.wd = 999` so they're weekend-only hiding
+spots. The line is listed in the region's `weekdayExcludedLines`
+(`src/data/regions.ts`), and its feature in `transit-lines.geojson.json` carries a
+`name` property so the overlay and the Metro Lines tentacle can drop it on
+weekdays. `linesExcludedOn(day)` in `style.ts` returns the right list for a day;
+use it rather than reading either constant directly.
+
 The line *geometry* overlay (`src/data/transit-lines.geojson.json`) is built
 separately by `scripts/fetch_transit_lines.py` (see `continuous-transit-lines`).
 Note its `matches()` classifier keys on **operator/network only, never the route

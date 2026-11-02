@@ -69,7 +69,7 @@ before the next failure-mode test, or the guard alone suppresses the reload and 
 
 The reload must not wipe game state. The board key is **`bahs.game.v1.<ACTIVE_REGION_ID>`**
 (`bayarea | sfmuni | la | dc`) — note the existing `verify-map-interactions` skill documents the older
-unsuffixed `bahs.game.v1`. Check the header count (`131 of 263`) and the `History (n)` tab label
+unsuffixed `bahs.game.v1`. Check the header count (`131 of 262` on a Bay Area weekday) and the `History (n)` tab label
 before and after each reload.
 
 ## Endgame region outlines are drawn on CANVAS, not SVG

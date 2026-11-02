@@ -14,7 +14,7 @@ map so a code from one map is rejected on the other.
 
 | Map | Transit | Stations | Play area |
 |---|---|--:|--:|
-| **Bay Area** (default) | BART + Caltrain + VTA + Muni + SFO AirTrain, five counties | 264 | 1,236 sq mi |
+| **Bay Area** (default) | BART + Caltrain + VTA + Muni + SFO AirTrain + Oakland Alameda Water Shuttle (weekends), five counties | 265 | 1,236 sq mi |
 | **SF Muni** | the 7 Muni rail lines J/K/L/M/N/T/F, one city/county | 132 | 46 sq mi |
 | **LA Metro** | Metro rail A/B/C/D/E/K + the G and J busways, Los Angeles County | 158 | 907 sq mi |
 
