@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { scaleCards, rewardForKind, questionGroupKey, askOrdinals, askGroupCounts } from './questions'
+import { scaleCards, rewardForKind, questionGroupKey, askOrdinals, askGroupCounts, thermometerTravelOk } from './questions'
 import type { QuestionRecord } from '../types'
 
 describe('scaleCards — repeat-question reward scaling', () => {
@@ -71,5 +71,19 @@ describe('curse info — not a question for rewards or repeats', () => {
   it('leaves curse info out of the Ask-form preview counts', () => {
     const counts = askGroupCounts([rec('curse', 1, { curse: true })])
     expect(counts.get(questionGroupKey('radar', { radiusMiles: 3 }))).toBeUndefined()
+  })
+})
+
+describe('thermometerTravelOk — minimum A→B travel', () => {
+  it('requires the chosen distance, less a small tolerance', () => {
+    expect(thermometerTravelOk(0.5, 0.5)).toBe(true)
+    expect(thermometerTravelOk(0.41, 0.5)).toBe(true)
+    expect(thermometerTravelOk(0.3, 0.5)).toBe(false)
+    expect(thermometerTravelOk(2.8, 3)).toBe(false)
+    expect(thermometerTravelOk(2.86, 3)).toBe(true)
+  })
+  it('has no minimum for curse info (a curse move shorter than 0.5 mi still counts)', () => {
+    expect(thermometerTravelOk(0.2, 0.5, true)).toBe(true)
+    expect(thermometerTravelOk(0.05, 3, true)).toBe(true)
   })
 })

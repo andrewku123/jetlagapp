@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, UnitSystem, DayType } from '../types'
-import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards } from '../data/questions'
+import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards, thermometerTravelOk } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
 import { QUESTION_POI_CATEGORIES, POI_COUNTS, poiCategoryLabel, poiCategoryLabelPlural, nearestPoi, nearestPoiMiles, TENTACLE_CATEGORIES, tentacleCategory, poisWithinRadius, poiKey, TENTACLE_OUTSIDE, TENTACLE_INSIDE, isTentacleRadarAnswer } from '../lib/poi'
@@ -326,14 +326,6 @@ export default function QuestionForm({
     return Number(thermo)
   }
 
-  // The thermometer distance is a *minimum* travel: A→B must be at least the
-  // chosen distance. This is how far the actual A↔B gap may fall *short* of the
-  // chosen distance before it's flagged: 5% of it, floored at 0.1 mi so hand-
-  // placed points right at the threshold aren't rejected.
-  function thermoTolMiles(chosen: number): number {
-    return Math.max(0.1, chosen * 0.05)
-  }
-
   function submit(vetoed = false) {
     let params: Record<string, unknown> = {}
     switch (kind) {
@@ -356,7 +348,7 @@ export default function QuestionForm({
         if (!Number.isFinite(tMiles) || tMiles <= 0)
           return alert('Choose which thermometer you used (a travel distance greater than 0).')
         const actualMiles = haversineMiles(ptA, ptB)
-        if (actualMiles + thermoTolMiles(tMiles) < tMiles)
+        if (!thermometerTravelOk(actualMiles, tMiles, curseFlag && !vetoed))
           return alert(
             `Start A and end B are only ${formatDistance(actualMiles, units)} apart, but a ${formatDistance(tMiles, units)} thermometer needs a travel of at least ${formatDistance(tMiles, units)}. ` +
             `Move A/B farther apart, or pick a shorter thermometer.`,
@@ -827,12 +819,13 @@ export default function QuestionForm({
           {ptA && ptB && (() => {
             const actual = haversineMiles(ptA, ptB)
             const chosen = thermoMiles()
-            const ok = Number.isFinite(chosen) && chosen > 0 && actual + thermoTolMiles(chosen) >= chosen
+            const meets = Number.isFinite(chosen) && chosen > 0 && thermometerTravelOk(actual, chosen)
+            const ok = meets || (curseFlag && Number.isFinite(chosen) && chosen > 0)
             return (
               <p className={`blurb poi-readout${ok ? '' : ' warn'}`}>
                 A↔B distance: <b>{formatDistance(actual, units)}</b>
                 {Number.isFinite(chosen) && chosen > 0 && (
-                  <> {ok ? `✓ meets the ${formatDistance(chosen, units)} thermometer` : `⚠ must be at least ${formatDistance(chosen, units)}`}</>
+                  <> {meets ? `✓ meets the ${formatDistance(chosen, units)} thermometer` : ok ? '✓ curse info: no minimum travel' : `⚠ must be at least ${formatDistance(chosen, units)}`}</>
                 )}
               </p>
             )
