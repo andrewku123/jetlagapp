@@ -53,6 +53,8 @@ from shapely.geometry import (LineString, MultiLineString, Point, Polygon, box,
 from shapely.ops import linemerge, transform, unary_union
 from shapely.prepared import prep
 
+from endgame_zones import census_pieces, max_hiding_radius_mi, polygonal, with_endgame_zones
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 DATA = os.path.join(ROOT, "src", "data")
@@ -315,20 +317,57 @@ def main():
         c = TO_LL(p.representative_point())
         print(f"  dropped island {p.area / 1e6:.2f} km2 at {c.y:.4f},{c.x:.4f}")
     play_m = unary_union(kept)
+
+    # --- endgame area (endgame_zones.py): every station's largest hiding zone
+    # (0.25 mi x 1.5^2) is in play too, even where it crosses the city limit into
+    # Nassau, Westchester or New Jersey or reaches an island dropped above; open
+    # water (everything that isn't TIGER county land minus AREAWATER) stays out.
+    tiger_rec = {rec["GEOID"]: (rec, TO_M(g)) for rec, g in shp_records(
+        TIGER_COUNTY, lambda r: r["GEOID"] in NYC_FIPS or r["GEOID"] in NEIGHBOR_FIPS)}
+    tiger = {f: g for f, (rec, g) in tiger_rec.items()}
+    city_limit = unary_union([tiger[f] for f in NYC_FIPS])
+    near = sorted(NEIGHBOR_FIPS - {"09001"})  # Fairfield, CT is miles from any station
+    beyond = {f: tiger[f].difference(TO_M(unary_union(
+        [g for rec, g in shp_records(areawater(f), lambda r: True)]))) for f in near}
+    open_water = box(*BBOX).difference(TO_LL(unary_union([land] + list(beyond.values()))))
+    play_ll = with_endgame_zones(TO_LL(play_m), stations, max_hiding_radius_mi("nyc"), open_water)
+    extra_m = TO_M(play_ll).difference(play_m.buffer(1))
+    play_m = TO_M(play_ll).buffer(0)
+    print(f"  endgame area adds {extra_m.area / 1e6:.2f} km2 "
+          f"({extra_m.difference(city_limit).area / 1e6:.2f} km2 outside the city limit)")
     play_ll = rounded(TO_LL(play_m.simplify(SIMPLIFY_M)))
 
-    # --- boroughs (county Matching) and the one Census place (city Matching)
-    write("nyc.counties.geojson.json", [
-        feature(rounded(TO_LL(g.intersection(play_m).simplify(SIMPLIFY_M))), name=BOROUGH_NAME[n])
-        for n, g in sorted(boro.items())])
-    write("nyc.places.geojson.json", [feature(play_ll, name="New York city")])
+    # --- counties (boroughs, plus the neighbours the endgame area reaches) and
+    # places (New York city, plus the Census places of land past the city limit)
+    counties = [feature(rounded(TO_LL(g.intersection(play_m).simplify(SIMPLIFY_M))),
+                        name=BOROUGH_NAME[n]) for n, g in sorted(boro.items())]
+    for f in near:
+        g = beyond[f].intersection(extra_m).difference(city_limit)
+        if g.area > 1000:
+            counties.append(feature(rounded(TO_LL(g.simplify(SIMPLIFY_M))),
+                                    name=tiger_rec[f][0]["NAME"]))
+    write("nyc.counties.geojson.json", counties)
+    places = [feature(rounded(polygonal(TO_LL(play_m.intersection(city_limit).simplify(SIMPLIFY_M)))),
+                      name="New York city")]
+    outside_ll = TO_LL(extra_m.difference(city_limit))
+    if not outside_ll.is_empty:
+        import build_region_geo as brg
+        shps = [brg.ensure_shapefile(brg.PLACE_URL.format(fips=fips), f"tl_2023_{fips}_place")
+                for fips in ("36", "34")]
+        for name, g in sorted(census_pieces(outside_ll, shps, ["NAMELSAD"]).items()):
+            places.append(feature(rounded(g.simplify(SIMPLIFY_M / 111000)), name=name))
+    write("nyc.places.geojson.json", places)
 
     # --- landmasses
     seeds = {name: [TO_M(Point(lon, lat)) for lat, lon in pts] for name, pts in LANDMASSES.items()}
     groups = {name: [] for name in LANDMASSES}
-    for p in kept:
+    for p in parts(play_m):
         near = prep(p.buffer(30))
         hit = [n for n, pts in seeds.items() if any(near.contains(q) for q in pts)]
+        if not hit and p.intersects(extra_m.buffer(-1)) and not p.intersects(unary_union(kept)):
+            c = TO_LL(p.representative_point())
+            print(f"  endgame-only land {p.area / 1e6:.3f} km2 at {c.y:.4f},{c.x:.4f}: no landmass")
+            continue
         if len(hit) != 1:
             c = TO_LL(p.representative_point())
             raise SystemExit(f"land piece at {c.y:.4f},{c.x:.4f} matches landmasses {hit}")
@@ -355,15 +394,12 @@ def main():
     rj = JAMAICA_MIN_MI * M_PER_MI / 2
     jam_wide = jam.buffer(-rj).buffer(rj + COAST_REACH_M / 2)
     coastal = unary_union([wide, jam_wide, water.intersection(TO_M(Polygon(HUDSON)))])
-    shore = unary_union([LineString(ring.coords) for p in parts(play_m)
+    shore = unary_union([LineString(ring.coords) for p in kept
                          for ring in [p.exterior]])
     coast = shore.intersection(coastal.buffer(40)).difference(TO_M(Polygon(EAST_RIVER)))
     feats = [feature(multiline(lines_of(coast), 50), key="coastline")]
 
     # --- county / state borders from TIGER (polygons extend over water)
-    tiger = {rec["GEOID"]: TO_M(g) for rec, g in shp_records(
-        TIGER_COUNTY, lambda r: r["GEOID"] in NYC_FIPS or r["GEOID"] in NEIGHBOR_FIPS)}
-    city_limit = unary_union([tiger[f] for f in NYC_FIPS])
 
     # Display area (satellite clip + dimming only): the land plus the water
     # inside the city limit and the Hudson and the kills to the New Jersey shore,
@@ -384,7 +420,8 @@ def main():
     nj_land = nj_land.union(TO_M(unary_union([Polygon(r) for r in NJ_EXTRA_LAND])))
     display = display.simplify(SIMPLIFY_M).difference(
         nj_land.buffer(NJ_SHORE_PAD_M).simplify(SIMPLIFY_M))
-    display = max(parts(display), key=lambda p: p.area)
+    display = unary_union([max(parts(display), key=lambda p: p.area),
+                           play_m.simplify(SIMPLIFY_M)]).buffer(0)
     write("nyc.play-area.geojson.json", [feature(play_ll, name="New York City")])
     write("nyc.display-area.geojson.json",
           [feature(rounded(TO_LL(display)), name="New York City")])

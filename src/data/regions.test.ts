@@ -258,10 +258,11 @@ describe('New York City', () => {
     expect(m.LANDMASS_ELIMINATES).toBe(true)
     expect(m.HSR_ELIMINATES).toBe(true)
     expect(m.MULTI_STATE).toBe(false)
-    // All of NYC is one Census place and the play area stops at the city line,
-    // so "same city?" can't carve anything; five boroughs keep county live.
-    expect([...m.LOG_ONLY_KINDS].sort()).toEqual(['match-admin1', 'match-city'])
-    expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual([])
+    // Every station is in New York city, but the endgame disks reach Mount
+    // Vernon, Yonkers and the Nassau villages past the city line, so "same
+    // city?" carves endgame zones only; five boroughs keep county live.
+    expect([...m.LOG_ONLY_KINDS].sort()).toEqual(['match-admin1'])
+    expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual(['match-city'])
     expect(m.GAME_DAY_END.wd).toBe('21:15')
     expect(m.WEEKEND_EXCLUDED_LINES).toEqual(expect.arrayContaining(['B', 'W', 'Z', 'NYC Ferry East River']))
   })

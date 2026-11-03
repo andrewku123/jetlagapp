@@ -145,9 +145,10 @@ REGIONS = {
                         "aquarium", "amusement_park", "park", "golf_course",
                         "consulate", "mountain", "stadium"],
         # --- map build (stations + geometry) ---
-        # The five boroughs, shoreline-clipped, built by build_nyc_geo.py (play
+        # The five boroughs, shoreline-clipped, plus every station's largest
+        # endgame disk (endgame_zones.py), built by build_nyc_geo.py (play
         # area, landmasses, coastline, borders, HSR) rather than
-        # build_play_area.py: the city limit IS the play area, no curation.
+        # build_play_area.py: no curation.
         "states": [("36", "New York")],
         "stations": "src/data/nyc.stations.json",
         "transitLines": "src/data/nyc.transit-lines.geojson.json",
