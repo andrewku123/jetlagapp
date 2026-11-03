@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { scaleCards, rewardForKind, questionGroupKey, askOrdinals, askGroupCounts } from './questions'
+import { scaleCards, rewardForKind, questionGroupKey, askOrdinals, askGroupCounts, thermometerTravelOk, curseUnmarkBlocked } from './questions'
 import type { QuestionRecord } from '../types'
 
 describe('scaleCards — repeat-question reward scaling', () => {
@@ -71,5 +71,33 @@ describe('curse info — not a question for rewards or repeats', () => {
   it('leaves curse info out of the Ask-form preview counts', () => {
     const counts = askGroupCounts([rec('curse', 1, { curse: true })])
     expect(counts.get(questionGroupKey('radar', { radiusMiles: 3 }))).toBeUndefined()
+  })
+})
+
+describe('thermometerTravelOk — minimum A→B travel', () => {
+  it('requires the chosen distance, less a small tolerance', () => {
+    expect(thermometerTravelOk(0.5, 0.5)).toBe(true)
+    expect(thermometerTravelOk(0.41, 0.5)).toBe(true)
+    expect(thermometerTravelOk(0.3, 0.5)).toBe(false)
+    expect(thermometerTravelOk(2.8, 3)).toBe(false)
+    expect(thermometerTravelOk(2.86, 3)).toBe(true)
+  })
+  it('has no minimum for curse info (a curse move shorter than 0.5 mi still counts)', () => {
+    expect(thermometerTravelOk(0.2, 0.5, true)).toBe(true)
+    expect(thermometerTravelOk(0.05, 3, true)).toBe(true)
+  })
+})
+
+describe('curseUnmarkBlocked — a too-short curse thermometer stays curse info', () => {
+  // ~0.21 mi apart along a meridian
+  const short = { fromLat: 37.77, fromLon: -122.42, toLat: 37.773, toLon: -122.42, thermometerMiles: 0.5, answer: 'hotter' }
+  const long = { ...short, toLat: 37.78 }
+  it('blocks unmarking a curse thermometer under its minimum travel', () => {
+    expect(curseUnmarkBlocked({ kind: 'thermometer', params: short, curse: true })).toBe(true)
+  })
+  it('allows unmarking when the move meets the minimum, or the row is not curse info', () => {
+    expect(curseUnmarkBlocked({ kind: 'thermometer', params: long, curse: true })).toBe(false)
+    expect(curseUnmarkBlocked({ kind: 'thermometer', params: short })).toBe(false)
+    expect(curseUnmarkBlocked({ kind: 'radar', params: { radiusMiles: 3 }, curse: true })).toBe(false)
   })
 })

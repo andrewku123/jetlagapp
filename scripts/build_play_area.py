@@ -38,6 +38,7 @@ from shapely.geometry import shape, Point, Polygon, mapping
 from shapely.ops import transform, unary_union
 
 import poi_geo
+from endgame_zones import load_water, max_hiding_radius_mi, with_endgame_zones, APP_ID
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
@@ -551,7 +552,13 @@ def main():
             zones.append(zone)
         union_m = unary_union([union_m] + zones)
 
-    union_ll = transform(to_ll, union_m)
+    # Every station's endgame hiding zone at zone radius x 1.5^2 (two Prosperous
+    # Homes: drawn + duplicated; a third is too rare to cover) is playable, even where it crosses the
+    # decided map's edge; open water stays out (endgame_zones.py).
+    union_ll = with_endgame_zones(transform(to_ll, union_m), stations,
+                                  max_hiding_radius_mi(APP_ID.get(REGION, REGION)),
+                                  load_water(CFG.get("endgameWater", [])))
+    union_m = transform(to_m, union_ll)
     buf_ll = transform(to_ll, union_m.buffer(SHORELINE_BUF_M))
 
     # A place the candidate scan never saw can still end up enclosed by the play

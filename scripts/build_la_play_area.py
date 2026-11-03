@@ -37,6 +37,8 @@ import os
 from shapely.geometry import LineString, Point, Polygon, box, mapping, shape
 from shapely.ops import linemerge, nearest_points, polygonize, unary_union
 
+from endgame_zones import max_hiding_radius_mi, with_endgame_zones
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 CITIES = os.path.join(HERE, "la_play_area_cities.geojson.json")
 WATER = os.path.join(HERE, "la_inland_water.geojson.json")
@@ -48,6 +50,7 @@ DAMS_FILE = os.path.join(HERE, "la_coast_dams.json")
 # each pier instead of chopping it off at the beach.
 PIERS_FILE = os.path.join(HERE, "la_piers.geojson.json")
 OUT = os.path.join(HERE, "..", "src", "data", "la.play-area.geojson.json")
+STATIONS = os.path.join(HERE, "..", "src", "data", "la.stations.json")
 
 # The OSM coastline dump reaches to lon -118.80; keep the frame just inside it so
 # the mainland coast closes cleanly against the frame's west edge.
@@ -159,6 +162,9 @@ def main():
     if piers is not None:
         parts_play.append(piers)
     play = unary_union(parts_play).buffer(0)
+    # Each station's two-Prosperous endgame hiding zone (zone x 1.5^2) is playable land too.
+    play = with_endgame_zones(play, json.load(open(STATIONS)),
+                              max_hiding_radius_mi("la"), ocean_for_play)
     play = fill_small_holes(play)
     play = play.simplify(SIMPLIFY_DEG, preserve_topology=True)
 

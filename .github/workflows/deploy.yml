@@ -9,10 +9,19 @@ on:
 permissions:
   contents: write
 
-# Serialise every write to gh-pages (production deploy + PR previews share this
-# group) so concurrent runs never clobber each other's git push.
+# Production deploys get their own group. GitHub keeps only one *pending* run
+# per concurrency group and cancels the older one when another queues, so
+# sharing a group with PR previews let a preview silently drop a waiting main
+# deploy. Here a pending main deploy can only be replaced by a newer main
+# deploy, which builds a later commit.
+#
+# Previews (preview.yml, poi-edits.yml) may now publish while this runs. That
+# is safe: every writer pushes to gh-pages without --force and fetches,
+# rebases and retries when its push is rejected, and the writers touch
+# disjoint paths (this one the site root, previews only pr-preview/pr-<n>/),
+# so a rebase never conflicts and no push can overwrite another's commit.
 concurrency:
-  group: gh-pages-publish
+  group: gh-pages-deploy-main
   cancel-in-progress: false
 
 jobs:
@@ -33,12 +42,17 @@ jobs:
         env:
           BASE: /${{ github.event.repository.name }}/
         run: npm run build
+      # Same action (and pinned version) pr-preview-action uses for previews.
+      # force: false makes a rejected push fetch + rebase + retry instead of
+      # failing (peaceiris/actions-gh-pages has no retry) or overwriting.
       - name: Publish to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: JamesIves/github-pages-deploy-action@4a3abc783e1a24aeb44c16e869ad83caf6b4cc23 # v4.7.4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: dist
+          force: false
+          attempt-limit: 10
           # keep PR-preview folders (and other non-root files) intact when the
           # production site is republished.
-          keep_files: true
+          clean: false

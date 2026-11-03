@@ -570,6 +570,25 @@ function MapFocusPoi({ target }: { target: { lat: number; lon: number; nonce: nu
   return null
 }
 
+// Leaflet focuses the map container on every mousedown (for arrow-key panning),
+// which makes the browser draw its keyboard focus ring on a plain click. Tag
+// pointer-driven focus so CSS can hide the ring; Tab focus still shows it.
+function MapPointerFocus() {
+  const map = useMap()
+  useEffect(() => {
+    const el = map.getContainer()
+    const onPointerDown = () => el.classList.add('pointer-focused')
+    const onBlur = () => el.classList.remove('pointer-focused')
+    el.addEventListener('pointerdown', onPointerDown)
+    el.addEventListener('blur', onBlur)
+    return () => {
+      el.removeEventListener('pointerdown', onPointerDown)
+      el.removeEventListener('blur', onBlur)
+    }
+  }, [map])
+  return null
+}
+
 // Exposes the live Leaflet map instance to the parent via a ref, so popup
 // action buttons can call map.closePopup() after acting.
 function MapRefCapture({ mapRef }: { mapRef: MutableRefObject<L.Map | null> }) {
@@ -1564,6 +1583,7 @@ export default function MapView({
         <BaseLayer />
         {satellite && <SatelliteLayer />}
         <MapRefCapture mapRef={mapInstanceRef} />
+        <MapPointerFocus />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
         <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
