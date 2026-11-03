@@ -198,7 +198,10 @@ def feature(geom, **props):
 
 
 def rounded(g, nd=6):
-    return shapely.set_precision(g, 10 ** -nd)
+    g = shapely.set_precision(shapely.make_valid(g), 10 ** -nd)
+    if g.geom_type == "GeometryCollection":
+        g = unary_union([p for p in g.geoms if p.geom_type in ("Polygon", "MultiPolygon")])
+    return g
 
 
 def write(name, features):
@@ -343,7 +346,11 @@ def main():
         pieces[best] = unary_union([pieces[best], p])
     print(f"  {len(slivers)} county slivers folded in "
           f"({sum(p.area for p in slivers) / 1e6:.3f} km2)")
-    counties = [feature(rounded(TO_LL(polygonal(g.buffer(0)))), name=n) for n, g in pieces.items()]
+    # A 5 m lip over the water outside the play area, so coordinate rounding never
+    # opens a hairline coastal gap between a county and the play-area edge.
+    counties = [feature(rounded(TO_LL(polygonal(unary_union(
+        [g, g.buffer(5, quad_segs=1, join_style="mitre").difference(play_s).simplify(1)]).buffer(0)))),
+        name=n) for n, g in pieces.items()]
     write("nyc.counties.geojson.json", counties)
     places = [feature(rounded(polygonal(TO_LL(play_m.intersection(city_limit).simplify(SIMPLIFY_M)))),
                       name="New York city")]
