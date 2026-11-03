@@ -735,6 +735,31 @@ function playAreaGeom(): MultiPolygon {
 }
 const PLAY_AREA: MultiPolygon = playAreaGeom()
 
+// Hair-thin strips where a play-area edge and a county line nearly coincide
+// (Dublin vs Contra Costa) aren't land anyone answers from.
+const MIN_LAND_WIDTH_M = 12
+
+// Mean width of a polygon, 2·area / perimeter, in metres.
+function polyWidthM(poly: Polygon): number {
+  const ring0 = poly[0]
+  if (!ring0?.length) return 0
+  const kx = 111320 * Math.cos((ring0[0][1] * Math.PI) / 180)
+  const ky = 110574
+  let area = 0
+  let perim = 0
+  poly.forEach((ring, i) => {
+    let a = 0
+    for (let j = 1; j < ring.length; j++) {
+      const [x0, y0] = ring[j - 1]
+      const [x1, y1] = ring[j]
+      a += (x0 * kx) * (y1 * ky) - (x1 * kx) * (y0 * ky)
+      perim += Math.hypot((x1 - x0) * kx, (y1 - y0) * ky)
+    }
+    area += (i === 0 ? 1 : -1) * Math.abs(a / 2)
+  })
+  return perim > 0 ? (2 * area) / perim : 0
+}
+
 // Land the hider can stand on: the play area within the (land-only) county
 // polygons, so open water a map's play area spans (SF Bay) never counts.
 let playLandCache: MultiPolygon | null | undefined
@@ -770,9 +795,11 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
   let out: ZoneRegions | null = null
   if (elim && elim.length) {
     let kept: MultiPolygon
-    const area = (LAND_ONLY_KINDS.has(record.kind) ? playLand() : null) ?? PLAY_AREA
+    const land = LAND_ONLY_KINDS.has(record.kind) ? playLand() : null
+    const area = land ?? PLAY_AREA
     try {
       kept = area.length ? polygonClipping.difference(area, elim) : polygonClipping.difference([WORLD_RING], elim)
+      if (land) kept = kept.filter((poly) => polyWidthM(poly) >= MIN_LAND_WIDTH_M)
     } catch {
       kept = polygonClipping.difference([WORLD_RING], elim)
     }

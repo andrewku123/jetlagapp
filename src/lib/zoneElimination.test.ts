@@ -6,6 +6,8 @@ import { defaultHidingRadiusMi, hidingRadiusMi } from './hidingZone'
 import type { QuestionRecord, Station } from '../types'
 import stationsJson from '../data/stations.json'
 import { TENTACLE_INSIDE } from './poi'
+import polygonClipping from 'polygon-clipping'
+import { shadeSplit } from './questionRegions'
 
 // The hider answers from anywhere in their hiding zone: a station survives when
 // any in-play point within its zone radius is consistent with the answer.
@@ -195,5 +197,10 @@ describe('area matching counts land only', () => {
   })
   it('"not SF": a zone reaching San Mateo County land survives', () => {
     expect(stationPasses(byId('s172'), notSF(0.25))).toBe(true)
+  })
+  it('"not Alameda": no stripes off hair-thin slivers along the Contra Costa line at Dublin', () => {
+    const r = record('match-county', { fromLat: 37.7, fromLon: -121.9, value: 'Alameda', answer: 'no' }, 0.25)
+    const dublin: [number, number][][] = [[[-121.98, 37.70], [-121.85, 37.70], [-121.85, 37.76], [-121.98, 37.76], [-121.98, 37.70]]]
+    expect(polygonClipping.intersection(shadeSplit(r, 0.25)!.stripes, [dublin])).toEqual([])
   })
 })
