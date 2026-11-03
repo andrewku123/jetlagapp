@@ -5,6 +5,7 @@ import './index.css'
 import App from './App'
 import { CrashBoundary } from './components/CrashScreen'
 import { PasswordGate } from './components/PasswordGate'
+import { MapPicker } from './components/MapPicker'
 import { watchForNewBuild } from './lib/version'
 
 watchForNewBuild()
@@ -13,7 +14,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <CrashBoundary>
       <PasswordGate>
-        <App />
+        <MapPicker>
+          <App />
+        </MapPicker>
       </PasswordGate>
     </CrashBoundary>
   </StrictMode>,

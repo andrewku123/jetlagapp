@@ -8,8 +8,8 @@ import regionSizes from './region-sizes.json'
 // the add-transit-city skill). Adding a city = adding its data files + one entry
 // here.
 //
-// The active region is chosen once per page load from localStorage (default =
-// Bay Area). Switching regions persists the choice and reloads the page, so the
+// The active region is chosen once per page load: a `?map=` URL param, else the
+// map last used (localStorage); a first visit opens on the map picker. Switching regions persists the choice and reloads the page, so the
 // module-level constants that many lib files derive from their region's data are
 // simply recomputed on the fresh load — no giant reactive refactor needed, and
 // switching maps can't leave stale cross-map state behind.
@@ -190,15 +190,74 @@ export const REGIONS: RegionData[] = [
 
 export const DEFAULT_REGION_ID = 'bayarea'
 const STORAGE_KEY = 'bahs.region'
+/** URL query parameter that names a map, e.g. `?map=la`: a shared link opens straight on it. */
+export const MAP_URL_PARAM = 'map'
 
-function readActiveId(): string {
+function isRegionId(v: string | null | undefined): v is string {
+  return !!v && REGIONS.some((r) => r.id === v)
+}
+
+function storedRegion(): string | null {
   try {
-    const v = localStorage.getItem(STORAGE_KEY)
-    if (v && REGIONS.some((r) => r.id === v)) return v
+    return localStorage.getItem(STORAGE_KEY)
   } catch {
-    /* no localStorage (SSR / tests) → default */
+    return null
   }
-  return DEFAULT_REGION_ID
+}
+
+function persistRegion(id: string): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, id)
+  } catch {
+    /* ignore */
+  }
+}
+
+// `?map=<id>` from the page URL, stripped from the address bar once read so a
+// later switch in the settings menu (which reloads) isn't overridden by it.
+function takeUrlRegion(): string | null {
+  try {
+    const url = new URL(window.location.href)
+    const v = url.searchParams.get(MAP_URL_PARAM)
+    if (v === null) return null
+    url.searchParams.delete(MAP_URL_PARAM)
+    window.history.replaceState(window.history.state, '', url.toString())
+    return v
+  } catch {
+    return null /* no window (tests) */
+  }
+}
+
+// Players who used the app before the picker existed never stored a region (the
+// Bay Area default wasn't persisted), but they do have a saved Bay Area board.
+function hasSavedDefaultBoard(): boolean {
+  try {
+    return localStorage.getItem(`bahs.game.v1.${DEFAULT_REGION_ID}`) !== null
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Which map this page load opens, and whether to show the map picker first.
+ * A map named in the URL wins (and is remembered); then the last map used. The
+ * picker shows on a first visit, or when the remembered map isn't in this build
+ * (the main site and PR previews share one origin, so a preview-only map can be
+ * stored).
+ */
+export function resolveActiveRegion(): { id: string; needsPick: boolean } {
+  const fromUrl = takeUrlRegion()
+  if (isRegionId(fromUrl)) {
+    persistRegion(fromUrl)
+    return { id: fromUrl, needsPick: false }
+  }
+  const stored = storedRegion()
+  if (isRegionId(stored)) return { id: stored, needsPick: false }
+  if (stored === null && hasSavedDefaultBoard()) {
+    persistRegion(DEFAULT_REGION_ID)
+    return { id: DEFAULT_REGION_ID, needsPick: false }
+  }
+  return { id: DEFAULT_REGION_ID, needsPick: true }
 }
 
 /**
@@ -211,18 +270,22 @@ function readActiveId(): string {
  */
 export const REGION_SIZES = regionSizes as Record<string, GameSize>
 
-export const ACTIVE_REGION_ID = readActiveId()
+const RESOLVED = resolveActiveRegion()
+export const ACTIVE_REGION_ID = RESOLVED.id
+/** True when this load should open on the map picker instead of a map. */
+export const NEEDS_MAP_PICK = RESOLVED.needsPick
 export const ACTIVE_REGION: RegionData =
   REGIONS.find((r) => r.id === ACTIVE_REGION_ID) ?? REGIONS[0]
+
+/** Remember a map choice without reloading (the picker's pick of the already-loaded map). */
+export function rememberRegion(id: string): void {
+  persistRegion(id)
+}
 
 /** Persist the chosen region and reload so all region-derived data recomputes. */
 export function setActiveRegion(id: string): void {
   if (id === ACTIVE_REGION_ID) return
-  try {
-    localStorage.setItem(STORAGE_KEY, id)
-  } catch {
-    /* ignore */
-  }
+  persistRegion(id)
   try {
     window.location.reload()
   } catch {
