@@ -6,6 +6,8 @@ import { defaultHidingRadiusMi, hidingRadiusMi } from './hidingZone'
 import type { QuestionRecord, Station } from '../types'
 import stationsJson from '../data/stations.json'
 import { TENTACLE_INSIDE } from './poi'
+import polygonClipping from 'polygon-clipping'
+import { shadeSplit } from './questionRegions'
 
 // The hider answers from anywhere in their hiding zone: a station survives when
 // any in-play point within its zone radius is consistent with the answer.
@@ -183,4 +185,28 @@ describe('sea level with terrain zone ranges', () => {
   it('ranges include a safety margin', () => {
     expect(ZONE_ELEV_MARGIN_M).toBeGreaterThan(0)
   })
+})
+
+describe('area matching counts land only', () => {
+  const sf = { lat: 37.7793, lon: -122.4193 } // City Hall
+  const notSF = (zoneMi: number) =>
+    record('match-county', { fromLat: sf.lat, fromLon: sf.lon, value: 'San Francisco', answer: 'no' }, zoneMi)
+  const byId = (id: string) => (stationsJson as unknown as Station[]).find((s) => s.id === id)!
+  it('"not SF": a waterfront zone reaching only bay water is eliminated', () => {
+    for (const id of ['s108', 's109', 's116']) expect(stationPasses(byId(id), notSF(0.25)), id).toBe(false)
+  })
+  it('"not SF": a zone reaching San Mateo County land survives', () => {
+    expect(stationPasses(byId('s172'), notSF(0.25))).toBe(true)
+  })
+  it('"not Alameda": no stripes off hair-thin slivers along the Contra Costa line at Dublin', () => {
+    const r = record('match-county', { fromLat: 37.7, fromLon: -121.9, value: 'Alameda', answer: 'no' }, 0.25)
+    const dublin: [number, number][][] = [[[-121.98, 37.70], [-121.85, 37.70], [-121.85, 37.76], [-121.98, 37.76], [-121.98, 37.70]]]
+    expect(polygonClipping.intersection(shadeSplit(r, 0.25)!.stripes, [dublin])).toEqual([])
+  })
+  it('ZIP answers whose clip needs a snapped retry still count land only', () => {
+    // "≤ 94002" fails the unsnapped clip; the old fallback counted water and
+    // out-of-play land, which kept these stations.
+    const r = record('measure-zip', { fromLat: 37.8, fromLon: -122.3, value: '94002', answer: 'smaller' }, 0.25)
+    for (const id of ['s005', 's022', 's046']) expect(stationPasses(byId(id), r), id).toBe(false)
+  }, 60000)
 })
