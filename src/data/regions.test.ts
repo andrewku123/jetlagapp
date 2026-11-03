@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import type { Station } from '../types'
 import { ELIGIBLE_HEADWAY_MIN } from './questionSets'
+import { haversineMiles } from '../lib/geo'
 
 // Loads the region registry fresh with a given active region selected, so we can
 // assert the per-map question demotion (LOG_ONLY_KINDS) and the play-area airport
@@ -48,7 +49,7 @@ describe('every map has one city per station', () => {
     // eliminate on another (Bay Fair read "Ashland CDP" from the Census geocoder
     // while sitting in San Leandro). The baked field is written from these same
     // polygons — `build_attributes.py --cities-only` — so they can't drift.
-    for (const id of ['bayarea', 'sfmuni', 'la', 'dc']) {
+    for (const id of ['bayarea', 'sfmuni', 'la', 'dc', 'nyc']) {
       const m = await loadFor(id)
       const { cityAt } = await import('../lib/cities')
       for (const s of m.ACTIVE_REGION.stations as Station[]) {
@@ -247,4 +248,201 @@ describe('play-area scoping and question demotion', () => {
     expect(cityAt(central)).toBe('San Francisco city')
     expect(countyAt(central)).toBe('San Francisco')
   })
+})
+
+describe('New York City', () => {
+  it('JFK/LGA in play; landmass and high-speed rail are real questions; one state and one city', async () => {
+    const m = await loadFor('nyc')
+    expect(m.MAP_SIZE).toBe('medium')
+    expect(Object.keys(m.AIRPORTS).sort()).toEqual(['JFK', 'LGA'])
+    expect(m.LANDMASS_ELIMINATES).toBe(true)
+    expect(m.HSR_ELIMINATES).toBe(true)
+    expect(m.MULTI_STATE).toBe(false)
+    // Every station is in New York city, but the endgame disks reach Mount
+    // Vernon, Yonkers and the Nassau villages past the city line, so "same
+    // city?" carves endgame zones only; five boroughs keep county live.
+    expect([...m.LOG_ONLY_KINDS].sort()).toEqual(['match-admin1'])
+    expect([...m.ENDGAME_ELIMINATES_KINDS]).toEqual(['match-city'])
+    expect(m.GAME_DAY_END.wd).toBe('21:15')
+    expect(m.WEEKEND_EXCLUDED_LINES).toEqual(expect.arrayContaining(['B', 'W', 'Z', 'NYC Ferry East River']))
+  })
+
+  it('stations are MTA complexes, not names: the six "86 St" stay six', async () => {
+    const stations = (await import('./nyc.stations.json')).default as unknown as Station[]
+    expect(stations.filter((s) => s.name === '86 St').length).toBe(6)
+    // Times Sq and Port Authority are one complex (free transfer), one station.
+    const times = stations.filter((s) => s.name === 'Times Sq-42 St')
+    expect(times.length).toBe(1)
+    expect(times[0].aka).toContain('42 St-Port Authority Bus Terminal')
+    expect(times[0].lines).toEqual(expect.arrayContaining(['1', '7', 'A', 'N', '42 St Shuttle']))
+    for (const s of stations) {
+      expect(typeof s.headwayMin.wd).toBe('number')
+      expect(typeof s.headwayMin.we).toBe('number')
+      expect(['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island']).toContain(s.county)
+      expect(s.lines.length).toBeGreaterThan(0)
+    }
+    // Express services fold into their base; the shuttles stay separate lines.
+    const lines = new Set(stations.flatMap((s) => s.lines))
+    for (const l of ['6X', '7X', 'FX', 'S', 'GS']) expect(lines.has(l)).toBe(false)
+    for (const l of ['42 St Shuttle', 'Franklin Av Shuttle', 'Rockaway Park Shuttle', 'SIR'])
+      expect(lines.has(l)).toBe(true)
+  })
+
+  it('NYC Ferry landings are hiding stations on weekdays only', async () => {
+    const stations = (await import('./nyc.stations.json')).default as unknown as Station[]
+    const ferry = stations.filter((s) => s.systems.length === 1 && s.systems[0] === 'NYC Ferry')
+    expect(ferry.length).toBeGreaterThan(0)
+    for (const s of ferry) {
+      expect(s.headwayMin.wd).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
+      expect(s.headwayMin.we).toBe(999)
+    }
+    // A long-term diversion in the feed (Flushing-bound 7 skips 52 St and 69 St
+    // through 2027) must not drop real stations from the map.
+    for (const name of ['52 St', '69 St']) {
+      const st = stations.find((s) => s.name === name && s.lines.includes('7'))!
+      expect(st.headwayMin.wd).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
+      expect(st.headwayMin.we).toBeLessThanOrEqual(ELIGIBLE_HEADWAY_MIN)
+    }
+    // The Staten Island Ferry runs every day. Whitehall is its own station; St
+    // George shares one terminal building with the SIR, so they are one station.
+    const sif = stations.filter((s) => s.lines.includes('Staten Island Ferry')).map((s) => s.name)
+    expect(sif.sort()).toEqual(['St George', 'Whitehall Terminal'])
+    // An NYC Ferry route is drawn solid only between its station landings: no
+    // solid part runs out to non-station piers (Rockaway is ~9 mi from the
+    // nearest one). The rest of a route with a station is drawn faded, and a
+    // route with no station isn't drawn at all.
+    const overlay = (await import('./nyc.transit-lines.geojson.json')).default as unknown as {
+      features: { properties: { system: string; name: string; faded?: boolean }; geometry: { type: string; coordinates: number[][][] } }[]
+    }
+    const all = overlay.features.filter((f) => f.properties.system === 'NYC Ferry')
+    for (const f of all) expect(stations.some((s) => s.lines.includes(f.properties.name)), f.properties.name).toBe(true)
+    const faded = all.filter((f) => f.properties.faded).map((f) => f.properties.name)
+    expect(faded).toEqual(expect.arrayContaining(['NYC Ferry South Brooklyn', 'NYC Ferry St. George']))
+    const ferries = all.filter((f) => !f.properties.faded)
+    expect(ferries.length).toBeGreaterThan(0)
+    for (const f of ferries) {
+      const landings = stations.filter((s) => s.lines.includes(f.properties.name))
+      const parts = f.geometry.type === 'LineString' ? [f.geometry.coordinates as unknown as number[][]] : f.geometry.coordinates
+      for (const [lon, lat] of parts.flat()) {
+        const near = Math.min(...landings.map((s) => haversineMiles({ lat, lon }, { lat: s.lat, lon: s.lon })))
+        expect(near).toBeLessThan(2)
+      }
+    }
+  })
+
+  it('landmass Matching keeps exactly the stations on the seeker\'s landmass', async () => {
+    await loadFor('nyc')
+    const { landmassAt } = await import('../lib/landmass')
+    const { stationPasses } = await import('../lib/elimination')
+    const stations = (await import('./nyc.stations.json')).default as unknown as Station[]
+    const stGeorge = { lat: 40.6437, lon: -74.0737 }
+    expect(landmassAt(stGeorge)).toBe('Staten Island')
+    expect(landmassAt({ lat: 40.7831, lon: -73.9712 })).toBe('Manhattan')
+    // Marble Hill is Manhattan's borough but stands on the mainland.
+    expect(landmassAt({ lat: 40.8745, lon: -73.9105 })).toBe('Mainland (Bronx)')
+    // Nassau is out of play, so the Rockaways only reach Queens by bridge.
+    expect(landmassAt({ lat: 40.5806, lon: -73.8358 })).toBe('Rockaway Peninsula')
+    expect(landmassAt({ lat: 40.6005, lon: -73.7545 })).toBe('Rockaway Peninsula')
+    expect(landmassAt({ lat: 40.6782, lon: -73.9442 })).toBe('Long Island (Brooklyn, Queens)')
+    const record = {
+      id: 'q1',
+      kind: 'match-landmass' as const,
+      params: { value: 'Staten Island', fromLat: stGeorge.lat, fromLon: stGeorge.lon, answer: 'yes' },
+      active: true,
+      vetoed: false,
+      eliminates: true,
+    }
+    const kept = stations.filter((s) => stationPasses(s, record as never))
+    expect(kept.length).toBe(21)
+    expect(kept.every((s) => s.county === 'Staten Island')).toBe(true)
+  })
+
+  it('high-speed rail Measuring measures to the Acela line', async () => {
+    await loadFor('nyc')
+    const { stationPasses } = await import('../lib/elimination')
+    const { distanceToFeatureMiles } = await import('../lib/measureFeatures')
+    const stations = (await import('./nyc.stations.json')).default as unknown as Station[]
+    const penn = { lat: 40.7506, lon: -73.9935 }
+    expect(distanceToFeatureMiles(penn, 'hsr')).toBeLessThan(0.2)
+    const record = {
+      id: 'q2',
+      kind: 'measure-hsr' as const,
+      params: { feature: 'hsr', fromLat: 40.5795, fromLon: -74.1502, answer: 'closer' },
+      active: true,
+      vetoed: false,
+      eliminates: true,
+    }
+    const kept = stations.filter((s) => stationPasses(s, record as never))
+    expect(kept.length).toBeGreaterThan(0)
+    expect(kept.length).toBeLessThan(stations.length)
+  })
+})
+
+describe('Bay Area landmasses', () => {
+  it('islands are their own landmass; the water shuttle docks reach Alameda, so the question eliminates', async () => {
+    const m = await loadFor('bayarea')
+    expect(m.LANDMASS_ELIMINATES).toBe(true)
+    expect(m.STATIONLESS_LANDMASSES).toEqual(expect.arrayContaining(['Treasure Island', 'Coast Guard Island']))
+    const { landmassAt } = await import('../lib/landmass')
+    expect(landmassAt({ lat: 37.7652, lon: -122.2416 })).toBe('Alameda')
+    expect(landmassAt({ lat: 37.8044, lon: -122.2712 })).toBe('Mainland')
+    expect(await blurbFor('bayarea', 'match-landmass')).not.toContain('one connected landmass')
+  })
+})
+
+describe('NYC ZIP zone band', () => {
+  it('a station stays possible only if its zone reaches a kept ZIP, not water or ZIP gaps', async () => {
+    const m = await loadFor('nyc')
+    const { stationPasses } = await import('../lib/elimination')
+    const { zipAt, zipCodes, zipGeom } = await import('../lib/zip')
+    const seeker = { lat: 40.7447, lon: -73.9485 } // Long Island City
+    const zip = zipAt(seeker)!
+    const r = {
+      id: 'q', kind: 'measure-zip' as const, createdAt: 0,
+      params: { fromLat: seeker.lat, fromLon: seeker.lon, value: zip, answer: 'smaller' },
+      eliminates: true, active: true, zoneMi: 0.25,
+    }
+    const kept = zipCodes().filter((z) => Number(z) <= Number(zip)).flatMap(zipGeom)
+    const milesToKept = (p: { lat: number; lon: number }) => {
+      let best = Infinity
+      for (const poly of kept) for (const ring of poly) for (let i = 1; i < ring.length; i++) {
+        const a = { lat: ring[i - 1][1], lon: ring[i - 1][0] }
+        const b = { lat: ring[i][1], lon: ring[i][0] }
+        for (let t = 0; t <= 1; t += 0.1)
+          best = Math.min(best, haversineMiles(p, { lat: a.lat + t * (b.lat - a.lat), lon: a.lon + t * (b.lon - a.lon) }))
+      }
+      return best
+    }
+    let eliminated = 0
+    for (const st of m.stationsData as Station[]) {
+      const stZip = zipAt(st)
+      if (!stZip || Number(stZip) <= Number(zip)) continue
+      const d = milesToKept(st)
+      if (d < 0.2 || d > 0.3) {
+        expect(stationPasses(st, r), `${st.name} ${d.toFixed(2)} mi from a kept ZIP`).toBe(d <= 0.25)
+      }
+      if (!stationPasses(st, r)) eliminated++
+    }
+    expect(eliminated).toBeGreaterThan(150)
+  }, 60000)
+})
+
+describe('NYC county zone band', () => {
+  it('"not Queens" keeps a Queens station only if its zone reaches other land, never water', async () => {
+    const m = await loadFor('nyc')
+    const { stationPasses } = await import('../lib/elimination')
+    const seeker = { lat: 40.7447, lon: -73.9485 } // Long Island City
+    const r = {
+      id: 'q', kind: 'match-county' as const, createdAt: 0,
+      params: { fromLat: seeker.lat, fromLon: seeker.lon, value: 'Queens', answer: 'no' },
+      eliminates: true, active: true, zoneMi: 0.375,
+    }
+    const stations = m.stationsData as Station[]
+    const byName = (n: string) => stations.find((s) => s.name === n && s.county === 'Queens')!
+    // the Rockaways are 0.4-2.5 mi from Brooklyn / Nassau land, all of it across water
+    for (const n of ['Beach 25 St', 'Beach 67 St', 'Beach 105 St', 'Rockaway Park-Beach 116 St', 'Far Rockaway-Mott Av', 'Broad Channel'])
+      expect(stationPasses(byName(n), r), n).toBe(false)
+    // a zone that crosses into Brooklyn on land keeps the station
+    expect(stationPasses(byName('Halsey St'), r)).toBe(true)
+  }, 60000)
 })

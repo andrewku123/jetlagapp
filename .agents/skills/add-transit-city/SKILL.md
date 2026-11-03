@@ -508,6 +508,16 @@ a per-city flag:
 - `MULTI_STATE = statesGeo != null && distinct(stations.state) > 1` gates the
   label, the blurb, `LOG_ONLY_KINDS`, the `MATCH_LOGONLY` list in `QuestionForm`
   and the shading dispatch in `MapView`.
+- **Landmass** works the same derived way (first real on NYC): an optional
+  `<slug>.landmasses.geojson.json` (one named feature per connected piece of
+  land; bridges and tunnels never join two) wired as `RegionData.landmasses?`.
+  `LANDMASS_ELIMINATES` = stations stand on more than one landmass, or a hiding
+  disk crosses onto another one; otherwise the question stays log-only and its
+  blurb names the stationless islands (Bay Area: Alameda, Treasure Island).
+  NYC builds them in `build_nyc_geo.py`, the Bay Area from the OSM coastline's
+  closed rings in `build_bay_landmasses.py`.
+- **High-speed rail** Measuring eliminates when the measure features carry an
+  in-play `hsr` line (`HSR_ELIMINATES`; NYC's Acela, from Amtrak's GTFS shapes).
 - Point-in-polygon lives once in `src/lib/polys.ts` (`polysByName` +
   `pointInPolys`); `states.ts` and `counties.ts` both use it.
 - **Do not use the bundled `measure_src/us-states.geojson` for the state-border
@@ -558,10 +568,14 @@ by a **derived condition**, never `if (region==='sfmuni')`:
   `dayTypeMatters` = the eligible-station **id set** differs between `wd`/`we`
   (`headwayMin[day] <= ELIGIBLE_HEADWAY_MIN`) **OR** any station is on a line in
   `linesExcludedOn('wd')` / `linesExcludedOn('we')` (the region's
-  `weekdayExcludedLines` plus `WEEKEND_EXCLUDED_LINES`). Hide the toggle when false
-  and collapse the legend eligibility line to a single count. SF Muni runs daily →
-  hidden; Bay Area has weekday-only Caltrain and the weekend-only water shuttle
-  (262 vs 265 eligible) → shown.
+  `weekdayExcludedLines` / `weekendExcludedLines`: Bay Area's weekend-only water
+  shuttle and weekday-only Caltrain Express/Limited, NYC's B/W/Z and NYC Ferry
+  routes). A station that only counts on weekdays (an NYC Ferry landing) carries
+  `headwayMin.we = 999`; a map whose weekday game day ends early sets
+  `RegionData.gameDayEnd` and passes the same end to
+  `compute_headways.gtfs_headways(end_sec=…)`. Hide the toggle when false and
+  collapse the legend eligibility line to a single count. SF Muni runs daily →
+  hidden; Bay Area (262 vs 265 eligible) → shown.
 - **Tab title**: `index.html` ships a non-region-specific static `<title>`
   ("Jet Lag: Hide & Seek"); a `useEffect` in `App.tsx` then sets
   `document.title = \`${MAP_NAME} Hide & Seek\`` so it tracks the active map.

@@ -24,7 +24,8 @@ export interface Station {
   airportDist: Record<string, number>
   nearestAirport: string
   service: { wd: ServiceFlags; we: ServiceFlags }
-  // longest gap (minutes) between departures across the 07:30–22:00 game day,
+  // longest gap (minutes) between departures across the 07:30–22:00 game day
+  // (or the map's earlier RegionData.gameDayEnd, e.g. NYC weekdays end 21:15),
   // worst direction, counting the window edges — so a station that closes early
   // scores its gap to 22:00, not its running headway. 999 = no service. A
   // station is a hiding spot on a day type only if this is <= ELIGIBLE_HEADWAY_MIN.

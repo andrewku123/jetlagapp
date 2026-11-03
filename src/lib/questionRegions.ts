@@ -13,6 +13,7 @@ import { bisectorHalfPlane, circlePolygon, haversineMiles } from './geo'
 import { metroLinesWithinRadius, questionDay, type MetroLine } from './metroLines'
 import { indexRegion, type RegionIndex } from './zoneFit'
 import { polysByName } from './polys'
+import { landmassAt, landmassGeom } from './landmass'
 
 // Shaded eliminated regions for the POI Matching / Measuring questions, mirroring
 // the radar (circle) and thermometer (half-plane) shading. Geometry is computed
@@ -489,7 +490,7 @@ export function poiMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiP
 
 export function featureMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   const p = record.params
-  const key = String(p.feature)
+  const key = record.kind === 'measure-hsr' ? 'hsr' : String(p.feature)
   const lines = featurePolylines(key)
   if (!lines.length) return null
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
@@ -604,6 +605,20 @@ export function countyMatchEliminatedRegion(record: QuestionRecord): LatLngMulti
   return elim.length ? toLatLng(elim) : null
 }
 
+// --- Matching a landmass: shade off (Yes) / on (No) the seeker's landmass. ---
+
+export function landmassMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const p = record.params
+  const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
+  const name = String(p.value || '') || landmassAt(seeker) || ''
+  const geom = landmassGeom(name)
+  if (!geom.length) return null
+  const elim = p.answer === 'yes'
+    ? polygonClipping.difference([WORLD_RING], geom)
+    : polygonClipping.intersection([WORLD_RING], geom)
+  return elim.length ? toLatLng(elim) : null
+}
+
 // --- Matching a city (3rd admin): shade outside (Yes) / inside (No) the
 // seeker's city polygon. -----------------------------------------------------
 
@@ -624,22 +639,27 @@ export function cityMatchEliminatedRegion(record: QuestionRecord): LatLngMultiPo
 // eliminated side. Each station sits in exactly one ZCTA, so shading the
 // eliminated-side ZCTAs agrees exactly with the per-station rule. -----------------
 
-export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+function zipSides(record: QuestionRecord): { eliminated: Polygon[]; kept: Polygon[] } | null {
   const p = record.params
   const seeker: LatLng = { lat: Number(p.fromLat), lon: Number(p.fromLon) }
   const seekerZipStr = String(p.value || '') || zipAt(seeker) || ''
   if (!seekerZipStr) return null
   const seekerZip = Number(seekerZipStr)
   const smaller = p.answer === 'smaller'
-  // A ZCTA is eliminated when its keep-test fails: keep is
-  // (zip <= seekerZip) === smaller, so eliminate the opposite side.
-  const polys: Polygon[] = []
+  // keep is (zip <= seekerZip) === smaller; the opposite side is eliminated.
+  const eliminated: Polygon[] = []
+  const kept: Polygon[] = []
   for (const name of zipCodes()) {
-    const keep = (Number(name) <= seekerZip) === smaller
-    if (keep) continue
-    for (const poly of zipGeom(name)) polys.push(poly)
+    const side = (Number(name) <= seekerZip) === smaller ? kept : eliminated
+    for (const poly of zipGeom(name)) side.push(poly)
   }
-  const union = robustUnion(polys)
+  return { eliminated, kept }
+}
+
+export function zipMeasureEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon | null {
+  const sides = zipSides(record)
+  if (!sides) return null
+  const union = robustUnion(sides.eliminated)
   return union.length ? toLatLng(union) : null
 }
 
@@ -658,13 +678,14 @@ export function poiEliminatedRegion(record: QuestionRecord): LatLngMultiPolygon 
 function buildPoiRegion(record: QuestionRecord): LatLngMultiPolygon | null {
   if (record.kind === 'match-poi') return poiMatchEliminatedRegion(record)
   if (record.kind === 'measure-poi') return poiMeasureEliminatedRegion(record)
-  if (record.kind === 'measure-feature') return featureMeasureEliminatedRegion(record)
+  if (record.kind === 'measure-feature' || record.kind === 'measure-hsr') return featureMeasureEliminatedRegion(record)
   if (record.kind === 'match-airport') return airportMatchEliminatedRegion(record)
   if (record.kind === 'measure-airport') return airportMeasureEliminatedRegion(record)
   if (record.kind === 'measure-railstation') return railStationMeasureEliminatedRegion(record)
   if (record.kind === 'match-admin1') return stateMatchEliminatedRegion(record)
   if (record.kind === 'match-county') return countyMatchEliminatedRegion(record)
   if (record.kind === 'match-city') return cityMatchEliminatedRegion(record)
+  if (record.kind === 'match-landmass') return landmassMatchEliminatedRegion(record)
   if (record.kind === 'measure-zip') return zipMeasureEliminatedRegion(record)
   if (record.kind === 'tentacle') return tentacleEliminatedRegion(record)
   if (record.kind === 'tentacle-line') return metroLineEliminatedRegion(record)
@@ -749,7 +770,12 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
   let out: ZoneRegions | null = null
   if (elim && elim.length) {
     let kept: MultiPolygon
-    try {
+    // A ZIP answer only allows the kept-side ZIP areas themselves, not the rest of
+    // the play area (water, slivers between ZCTAs), whose edges would otherwise
+    // widen the zone band deep into eliminated ZIPs.
+    const zipKept = record.kind === 'measure-zip' ? zipSides(record)?.kept : undefined
+    if (zipKept) kept = robustUnion(zipKept)
+    else try {
       kept = PLAY_AREA.length ? polygonClipping.difference(PLAY_AREA, elim) : polygonClipping.difference([WORLD_RING], elim)
     } catch {
       kept = polygonClipping.difference([WORLD_RING], elim)

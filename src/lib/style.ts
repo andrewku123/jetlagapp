@@ -1,5 +1,5 @@
 import type { DayType, Station } from '../types'
-import { WEEKDAY_EXCLUDED_LINES } from '../data/regions'
+import { WEEKDAY_EXCLUDED_LINES, WEEKEND_EXCLUDED_LINES } from '../data/regions'
 
 // Dot color for an agency with no entry below — which is every single-agency
 // map, where one color reads better than a per-line dot under the per-line
@@ -15,13 +15,18 @@ export const SYSTEM_COLORS: Record<string, string> = {
   'Water Shuttle': '#c2185b',
   Metro: DEFAULT_SYSTEM_COLOR,
   Metrorail: DEFAULT_SYSTEM_COLOR,
+  Subway: '#0039a6',
+  SIR: '#1d2f6f',
+  LIRR: '#00985f',
+  'NYC Ferry': '#ff6b00',
+  'Staten Island Ferry': '#f58220',
+  'Roosevelt Island Tram': '#c60c30',
 }
 
-export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Water Shuttle', 'Metro', 'Metrorail']
+export const SYSTEM_ORDER = ['BART', 'Caltrain', 'VTA', 'Muni', 'SFO AirTrain', 'Water Shuttle', 'Metro', 'Metrorail', 'Subway', 'SIR', 'LIRR', 'NYC Ferry', 'Staten Island Ferry', 'Roosevelt Island Tram']
 
-// Lines that don't run on weekends; hidden from the transit-line question in
-// Weekend mode. Caltrain Express ("Baby Bullet") and Limited are weekday-only.
-export const WEEKEND_EXCLUDED_LINES = ['Caltrain Express', 'Caltrain Limited']
+// Lines that don't run on weekends, per map (RegionData.weekendExcludedLines).
+export { WEEKEND_EXCLUDED_LINES }
 
 // Lines that don't count on the given day type: the weekday-only lines on a
 // weekend, the weekend-only lines (RegionData.weekdayExcludedLines) on a weekday.

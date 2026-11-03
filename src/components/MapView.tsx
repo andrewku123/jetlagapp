@@ -20,6 +20,7 @@ import type { Annotation, LatLng, QuestionRecord, Station, DrawTool, UnitSystem,
 import type { RenderPoi } from '../lib/poi'
 import { nearestPoi, poiCategoryLabel, POI_BY_CATEGORY, poiKey } from '../lib/poi'
 import { nearestAirport } from '../lib/airports'
+import { featurePolylines } from '../lib/measureFeatures'
 import {
   poiEliminatedRegion,
   endgameClippedRegion,
@@ -35,7 +36,7 @@ import { describeRecord } from '../lib/describe'
 import { stationColor, isMultiSystem, linesExcludedOn } from '../lib/style'
 import { bisectorPolyline, bisectorHalfPlane, circlePolygon, haversineMiles, formatDistance, formatElevation, parseLatLng } from '../lib/geo'
 import { RADAR_OPTIONS } from '../data/questions'
-import { playAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
+import { displayAreaData, transitLinesData as transitData, MAP_CENTER, MAP_ZOOM } from '../data/regions'
 
 // Touch devices have no fine pointer, so the small station dots are hard to tap.
 // We keep the dots their original visual size but, on a coarse pointer, lay a
@@ -52,8 +53,9 @@ const HIT_OPTS = { stroke: false, fill: true, fillColor: '#000', fillOpacity: 0 
 // scripts/build_play_area.py — a place qualifies if any part is within a hiding
 // zone of an eligible station, or it is a transit-enclosed enclave). Used for
 // the satellite-imagery clip, tile culling, and the out-of-play dimming mask.
+// A region's display area (if any) widens this to water shown in imagery.
 const IN_PLAY_FEATURES = (
-  playAreaData as unknown as GeoJSON.FeatureCollection
+  displayAreaData as unknown as GeoJSON.FeatureCollection
 ).features
 
 // Bounding box of the play area; used as a cheap first-pass filter on satellite
@@ -244,7 +246,8 @@ function BaseLayer() {
 
 interface TransitWay {
   type: 'Feature'
-  properties: { system: string; colors: string[]; name?: string }
+  // faded: a ferry route's stretch past its counting stations (context only)
+  properties: { system: string; colors: string[]; name?: string; faded?: boolean }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
@@ -260,7 +263,7 @@ const transitFor = (day: DayType): GeoJSON.FeatureCollection => {
     features: TRANSIT_WAYS.filter((w) => !(w.properties.name && excluded.includes(w.properties.name))).map(
       (w) => ({
         type: 'Feature',
-        properties: { color: w.properties.colors[0] },
+        properties: { color: w.properties.colors[0], faded: !!w.properties.faded },
         geometry: w.geometry,
       }),
     ) as Feature[],
@@ -268,8 +271,10 @@ const transitFor = (day: DayType): GeoJSON.FeatureCollection => {
 }
 const TRANSIT: Record<DayType, GeoJSON.FeatureCollection> = { wd: transitFor('wd'), we: transitFor('we') }
 
-function transitStyle(feature?: Feature<Geometry, { color: string }>) {
-  return { color: feature?.properties.color ?? '#666', weight: 2.5, opacity: 0.95, interactive: false }
+function transitStyle(feature?: Feature<Geometry, { color: string; faded: boolean }>) {
+  const color = feature?.properties.color ?? '#666'
+  if (feature?.properties.faded) return { color, weight: 2, opacity: 0.45, dashArray: '6 6', interactive: false }
+  return { color, weight: 2.5, opacity: 0.95, interactive: false }
 }
 
 // BART line labels carry a "(start–end)" suffix; drop it for the station popup
@@ -327,6 +332,8 @@ interface Props {
   pois: RenderPoi[]
   stationView: 'normal' | 'faded' | 'hidden'
   dayType: DayType
+  // Draw the high-speed rail line (measure only: nobody rides it or hides at it).
+  showHsr?: boolean
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -336,7 +343,7 @@ const LINE_LENGTH_MI = 60
 const POI_SHADED_KINDS = new Set<string>([
   'match-poi', 'measure-poi', 'measure-feature', 'match-airport', 'measure-airport',
   'match-admin1', 'match-county', 'match-city', 'measure-zip', 'tentacle', 'tentacle-line',
-  'measure-railstation',
+  'measure-railstation', 'match-landmass', 'measure-hsr',
 ])
 
 // hatched fill for the uncertainty band (pattern defined by StripeRenderer)
@@ -1041,6 +1048,7 @@ export default function MapView({
   pois,
   stationView,
   dayType,
+  showHsr = false,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // the toolbar collapses to a single 🧰 button so it barely covers the map while
@@ -1152,7 +1160,7 @@ export default function MapView({
         r.kind === 'match-airport' || r.kind === 'measure-airport' ||
         r.kind === 'match-admin1' || r.kind === 'match-county' ||
         r.kind === 'match-city' || r.kind === 'measure-zip' || r.kind === 'tentacle' || r.kind === 'tentacle-line' ||
-        r.kind === 'measure-railstation',
+        r.kind === 'measure-railstation' || r.kind === 'match-landmass' || r.kind === 'measure-hsr',
       )
       .map((r) => `${r.id}:${r.active}:${r.vetoed}:${r.eliminates}:${r.params.poiCat ?? ''}:${r.params.feature ?? ''}:${r.params.value ?? ''}:${r.params.radiusMi ?? ''}:${r.params.fromLat}:${r.params.fromLon}:${r.params.answer}`)
       .join('|'),
@@ -1711,6 +1719,18 @@ export default function MapView({
         {/* radar: shade the ELIMINATED area. YES (within X) eliminates outside
             the circle; NO eliminates inside it. The circle outline always shows
             the radius. Suppressed in endgame (only zone-clipped shading shows). */}
+        {/* Acela: a measuring reference only (nobody rides it or hides at its
+            stations), so it shows faded and dashed with no station dots, and
+            only while a high-speed rail question is being set up. */}
+        {showHsr && featurePolylines('hsr').map((line, i) => (
+          <Polyline
+            key={`hsr-${i}`}
+            positions={line.map((p) => [p.lat, p.lon] as [number, number])}
+            pathOptions={{ color: '#6b21a8', weight: 3, opacity: 0.45, dashArray: '8 8', interactive: true }}
+          >
+            {i === 0 && <Tooltip permanent direction="center" className="hsr-label">Acela (measure only)</Tooltip>}
+          </Polyline>
+        ))}
         {!endgameStation && records
           .filter((r) => r.active && !r.vetoed && r.eliminates && r.kind === 'radar')
           .map((r) => {
