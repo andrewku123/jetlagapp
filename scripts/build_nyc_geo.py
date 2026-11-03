@@ -31,7 +31,8 @@ Measure features (src/data/nyc.measure-features.geojson.json):
   state-border  the New York / New Jersey line (Hudson, Kill Van Kull, Arthur
                 Kill) inside the city limit.
   hsr           Amtrak's Acela route (Andrew's call: Acela counts as high-speed
-                rail), from Amtrak's GTFS shapes, clipped to the city limit and
+                rail), traced on FRA rail-network track along Amtrak's GTFS
+                shapes, clipped to the city limit and
                 the display area: Penn Station, the Hudson tunnels out to the
                 satellite edge by the New Jersey shore, the East River tunnels,
                 Sunnyside, the Hell Gate Bridge and the east Bronx.
@@ -70,22 +71,6 @@ NJ_WATER_COUNTIES = ["34017", "34003", "34039", "34023"]
 NJ_WATER_NAMES = {"Hudson Riv", "New York Bay", "Upper New York Bay",
                   "Kill Van Kull", "Arthur Kill", "Newark Bay"}
 NJ_WATER_BOX = (-74.30, 40.49, -73.90, 40.9155)
-# New Jersey land (its TIGER county area minus all TIGER water) grown by this
-# margin is cut from the display area, so imagery never spills onto NJ land or
-# piers; losing a strip of water along the shore is the safer error.
-NJ_FIPS = ["34003", "34013", "34017", "34023", "34025", "34039"]
-NJ_SHORE_PAD_M = 60
-# NJ land and piers that TIGER files as water, which imagery shows (lon, lat
-# rings, added to NJ land before the margin): the Linden power plant and its
-# piers on the Arthur Kill, the Bayonne oil-terminal piers on the Kill Van Kull,
-# and the diked marsh by the Bayonne Golf Club off Port Jersey.
-NJ_EXTRA_LAND = [
-    [(-74.2100, 40.6195), (-74.2052, 40.6195), (-74.2047, 40.6230), (-74.2047, 40.6252),
-     (-74.2040, 40.6256), (-74.2040, 40.6285), (-74.2100, 40.6285)],
-    [(-74.1203, 40.6463), (-74.1192, 40.6463), (-74.1173, 40.6469), (-74.1161, 40.6477), (-74.1150, 40.6481), (-74.1136, 40.6491), (-74.1122, 40.6492), (-74.1110, 40.6494), (-74.1081, 40.6495), (-74.1067, 40.6493), (-74.1019, 40.6489), (-74.0986, 40.6487), (-74.0961, 40.6488), (-74.0941, 40.6495), (-74.0911, 40.6507), (-74.0882, 40.6519), (-74.0877, 40.6530), (-74.0847, 40.6532), (-74.0840, 40.6547), (-74.0847, 40.6553), (-74.0858, 40.6558), (-74.0886, 40.6562), (-74.1220, 40.6562), (-74.1220, 40.6463)],
-    [(-74.0967, 40.6640), (-74.0967, 40.6664), (-74.0944, 40.6661), (-74.0917, 40.6657),
-     (-74.0899, 40.6656), (-74.0891, 40.6651), (-74.0891, 40.6640)],
-]
 # Water that stays masked even inside the city limit (lon, lat rings): Newark Bay
 # north of Bergen Point-Elizabethport, and the open Lower Bay, Raritan Bay and
 # ocean beyond the Arthur Kill mouth, Sea Gate-South Beach and Rockaway Inlet
@@ -118,9 +103,10 @@ NARN_URL = ("https://services.arcgis.com/xOi1kZaI0eWDREZv/arcgis/rest/services/"
             "&spatialRel=esriSpatialRelIntersects&outFields=FRAARCID,RROWNER1,NET"
             "&outSR=4326&f=geojson&resultRecordCount=2000")
 NARN_NEAR_M = 400
-# The Acela is routed between these (lon, lat): the NJ side of the Hudson
-# tunnels and New Rochelle, both past the city limit.
-ACELA_ENDS = [(-74.03, 40.762), (-73.76, 40.92)]
+# The Acela is routed between these (lon, lat): the west end of NARN's Hudson
+# tunnel arc in the Meadowlands (a start nearer the river snaps to the arc's
+# mid-river state-line end, short of the display edge), and New Rochelle.
+ACELA_ENDS = [(-74.115, 40.7467), (-73.76, 40.92)]
 
 NYC_FIPS = {"36005": "Bronx", "36047": "Kings", "36061": "New York",
             "36081": "Queens", "36085": "Richmond"}
@@ -412,15 +398,7 @@ def main():
     water = water.difference(TO_M(unary_union([Polygon(r) for r in MASKED_WATER])))
     display = unary_union([play_m, water]).buffer(1).buffer(-1)
     display = Polygon(max(parts(display), key=lambda p: p.area).exterior)
-    nj_box = box(*NJ_WATER_BOX)
-    nj_all_water = unary_union([g.intersection(nj_box) for c in NJ_FIPS
-                                for rec, g in shp_records(areawater(c), lambda r: True)])
-    nj_land = unary_union([tiger[f] for f in NJ_FIPS]).intersection(TO_M(nj_box)) \
-        .difference(TO_M(nj_all_water))
-    nj_land = nj_land.union(TO_M(unary_union([Polygon(r) for r in NJ_EXTRA_LAND])))
-    display = display.simplify(SIMPLIFY_M).difference(
-        nj_land.buffer(NJ_SHORE_PAD_M).simplify(SIMPLIFY_M))
-    display = unary_union([max(parts(display), key=lambda p: p.area),
+    display = unary_union([display.simplify(SIMPLIFY_M),
                            play_m.simplify(SIMPLIFY_M)]).buffer(0)
     write("nyc.play-area.geojson.json", [feature(play_ll, name="New York City")])
     write("nyc.display-area.geojson.json",
