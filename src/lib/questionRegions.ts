@@ -177,6 +177,25 @@ function robustUnion(polys: Polygon[]): MultiPolygon {
   return []
 }
 
+// Difference that retries on snapped coordinates when the clipper fails
+// ("Unable to complete output ring" on nearly-coincident edges).
+function robustDifference(a: MultiPolygon, b: MultiPolygon): MultiPolygon | null {
+  try {
+    return polygonClipping.difference(a, b)
+  } catch {
+    // retry snapped below
+  }
+  for (const dp of [7, 6, 5, 4]) {
+    const snap = (mp: MultiPolygon): MultiPolygon => mp.map((poly) => poly.map((r) => snapRing(r, dp)))
+    try {
+      return polygonClipping.difference(snap(a), snap(b))
+    } catch {
+      // coarser snap on the next pass
+    }
+  }
+  return null
+}
+
 // --- Matching: shade everything outside (Yes) / inside (No) the seeker's
 // nearest-POI Voronoi cell. -----------------------------------------------------
 
@@ -797,10 +816,10 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
     let kept: MultiPolygon
     const land = LAND_ONLY_KINDS.has(record.kind) ? playLand() : null
     const area = land ?? PLAY_AREA
-    try {
-      kept = area.length ? polygonClipping.difference(area, elim) : polygonClipping.difference([WORLD_RING], elim)
-      if (land) kept = kept.filter((poly) => polyWidthM(poly) >= MIN_LAND_WIDTH_M)
-    } catch {
+    const diff = robustDifference(area.length ? area : [[WORLD_RING]], elim)
+    if (diff) {
+      kept = land ? diff.filter((poly) => polyWidthM(poly) >= MIN_LAND_WIDTH_M) : diff
+    } else {
       kept = polygonClipping.difference([WORLD_RING], elim)
     }
     out = { eliminated: indexRegion(elim), kept: indexRegion(kept), keptGeom: kept }

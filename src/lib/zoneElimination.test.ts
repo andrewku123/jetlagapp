@@ -203,4 +203,10 @@ describe('area matching counts land only', () => {
     const dublin: [number, number][][] = [[[-121.98, 37.70], [-121.85, 37.70], [-121.85, 37.76], [-121.98, 37.76], [-121.98, 37.70]]]
     expect(polygonClipping.intersection(shadeSplit(r, 0.25)!.stripes, [dublin])).toEqual([])
   })
+  it('ZIP answers whose clip needs a snapped retry still count land only', () => {
+    // "≤ 94002" fails the unsnapped clip; the old fallback counted water and
+    // out-of-play land, which kept these stations.
+    const r = record('measure-zip', { fromLat: 37.8, fromLon: -122.3, value: '94002', answer: 'smaller' }, 0.25)
+    for (const id of ['s005', 's022', 's046']) expect(stationPasses(byId(id), r), id).toBe(false)
+  }, 60000)
 })
