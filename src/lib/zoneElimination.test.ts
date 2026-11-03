@@ -184,3 +184,16 @@ describe('sea level with terrain zone ranges', () => {
     expect(ZONE_ELEV_MARGIN_M).toBeGreaterThan(0)
   })
 })
+
+describe('area matching counts land only', () => {
+  const sf = { lat: 37.7793, lon: -122.4193 } // City Hall
+  const notSF = (zoneMi: number) =>
+    record('match-county', { fromLat: sf.lat, fromLon: sf.lon, value: 'San Francisco', answer: 'no' }, zoneMi)
+  const byId = (id: string) => (stationsJson as unknown as Station[]).find((s) => s.id === id)!
+  it('"not SF": a waterfront zone reaching only bay water is eliminated', () => {
+    for (const id of ['s108', 's109', 's116']) expect(stationPasses(byId(id), notSF(0.25)), id).toBe(false)
+  })
+  it('"not SF": a zone reaching San Mateo County land survives', () => {
+    expect(stationPasses(byId('s172'), notSF(0.25))).toBe(true)
+  })
+})
