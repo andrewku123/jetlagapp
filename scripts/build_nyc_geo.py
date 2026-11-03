@@ -321,17 +321,29 @@ def main():
     play_m = TO_M(play_ll).buffer(0)
     print(f"  endgame area adds {extra_m.area / 1e6:.2f} km2 "
           f"({extra_m.difference(city_limit).area / 1e6:.2f} km2 outside the city limit)")
-    play_ll = rounded(TO_LL(play_m.simplify(SIMPLIFY_M)))
+    play_s = play_m.simplify(SIMPLIFY_M)
+    play_ll = rounded(TO_LL(play_s))
 
     # --- counties (boroughs, plus the neighbours the endgame area reaches) and
-    # places (New York city, plus the Census places of land past the city limit)
-    counties = [feature(rounded(TO_LL(g.intersection(play_m).simplify(SIMPLIFY_M))),
-                        name=BOROUGH_NAME[n]) for n, g in sorted(boro.items())]
+    # places (New York city, plus the Census places of land past the city limit).
+    # The counties tile the play area exactly: a shoreline sliver left out of
+    # every county would count as "not this county" and keep a coastal station's
+    # zone alive (the Rockaways vs "not Queens"), so slivers join the county they
+    # touch most, and each county is cut from the same simplified play area.
+    pieces = {BOROUGH_NAME[n]: polygonal(g.simplify(SIMPLIFY_M).intersection(play_s))
+              for n, g in sorted(boro.items())}
     for f in near:
         g = beyond[f].intersection(extra_m).difference(city_limit)
         if g.area > 1000:
-            counties.append(feature(rounded(TO_LL(g.simplify(SIMPLIFY_M))),
-                                    name=tiger_rec[f][0]["NAME"]))
+            pieces[tiger_rec[f][0]["NAME"]] = polygonal(g.simplify(SIMPLIFY_M).intersection(play_s))
+    slivers = parts(polygonal(play_s.difference(unary_union(list(pieces.values())))))
+    for p in slivers:
+        best = min(pieces, key=lambda k: (round(pieces[k].distance(p)),
+                                           -p.boundary.intersection(pieces[k].buffer(0.5)).length))
+        pieces[best] = unary_union([pieces[best], p])
+    print(f"  {len(slivers)} county slivers folded in "
+          f"({sum(p.area for p in slivers) / 1e6:.3f} km2)")
+    counties = [feature(rounded(TO_LL(polygonal(g.buffer(0)))), name=n) for n, g in pieces.items()]
     write("nyc.counties.geojson.json", counties)
     places = [feature(rounded(polygonal(TO_LL(play_m.intersection(city_limit).simplify(SIMPLIFY_M)))),
                       name="New York city")]

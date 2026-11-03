@@ -426,3 +426,23 @@ describe('NYC ZIP zone band', () => {
     expect(eliminated).toBeGreaterThan(150)
   }, 60000)
 })
+
+describe('NYC county zone band', () => {
+  it('"not Queens" keeps a Queens station only if its zone reaches other land, never water', async () => {
+    const m = await loadFor('nyc')
+    const { stationPasses } = await import('../lib/elimination')
+    const seeker = { lat: 40.7447, lon: -73.9485 } // Long Island City
+    const r = {
+      id: 'q', kind: 'match-county' as const, createdAt: 0,
+      params: { fromLat: seeker.lat, fromLon: seeker.lon, value: 'Queens', answer: 'no' },
+      eliminates: true, active: true, zoneMi: 0.375,
+    }
+    const stations = m.stationsData as Station[]
+    const byName = (n: string) => stations.find((s) => s.name === n && s.county === 'Queens')!
+    // the Rockaways are 0.4-2.5 mi from Brooklyn / Nassau land, all of it across water
+    for (const n of ['Beach 25 St', 'Beach 67 St', 'Beach 105 St', 'Rockaway Park-Beach 116 St', 'Far Rockaway-Mott Av', 'Broad Channel'])
+      expect(stationPasses(byName(n), r), n).toBe(false)
+    // a zone that crosses into Brooklyn on land keeps the station
+    expect(stationPasses(byName('Halsey St'), r)).toBe(true)
+  }, 60000)
+})

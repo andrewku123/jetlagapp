@@ -3,7 +3,7 @@ import type { LatLng, QuestionRecord } from '../types'
 import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
-import { REGION_FRAME, playAreaData } from '../data/regions'
+import { REGION_FRAME, countiesData, playAreaData } from '../data/regions'
 import { RAIL_STATIONS, nearestRailStationMiles } from './railStations'
 import { countyAt, countyGeom } from './counties'
 import { stateAt, stateGeom } from './states'
@@ -756,6 +756,27 @@ function playAreaGeom(): MultiPolygon {
 }
 const PLAY_AREA: MultiPolygon = playAreaGeom()
 
+// Land the hider can stand on: the play area within the (land-only) county
+// polygons, so open water a map's play area spans (SF Bay) never counts.
+let playLandCache: MultiPolygon | null | undefined
+function playLand(): MultiPolygon | null {
+  if (playLandCache !== undefined) return playLandCache
+  playLandCache = null
+  try {
+    const counties = robustUnion(Object.values(polysByName(countiesData)).flat())
+    const land = PLAY_AREA.length ? polygonClipping.intersection(PLAY_AREA, counties) : counties
+    if (land.length) playLandCache = land
+  } catch {
+    // no land mask: fall back to the whole play area
+  }
+  return playLandCache
+}
+
+// Area answers (same county / city, ZIP higher / lower) only hold on land: a
+// station survives Yes if its zone reaches the asked area's land, and No (or
+// the other ZIP side) if it reaches any other area's land.
+const LAND_ONLY_KINDS = new Set<QuestionRecord['kind']>(['match-county', 'match-city', 'measure-zip'])
+
 export interface ZoneRegions {
   eliminated: RegionIndex
   // in play and not eliminated: where the hider could have answered from
@@ -774,9 +795,17 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
     // the play area (water, slivers between ZCTAs), whose edges would otherwise
     // widen the zone band deep into eliminated ZIPs.
     const zipKept = record.kind === 'measure-zip' ? zipSides(record)?.kept : undefined
-    if (zipKept) kept = robustUnion(zipKept)
-    else try {
-      kept = PLAY_AREA.length ? polygonClipping.difference(PLAY_AREA, elim) : polygonClipping.difference([WORLD_RING], elim)
+    const land = LAND_ONLY_KINDS.has(record.kind) ? playLand() : null
+    const area = land ?? PLAY_AREA
+    if (zipKept) {
+      kept = robustUnion(zipKept)
+      if (land) try {
+        kept = polygonClipping.intersection(kept, land)
+      } catch {
+        // keep the unclipped ZIP side
+      }
+    } else try {
+      kept = area.length ? polygonClipping.difference(area, elim) : polygonClipping.difference([WORLD_RING], elim)
     } catch {
       kept = polygonClipping.difference([WORLD_RING], elim)
     }
