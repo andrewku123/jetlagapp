@@ -482,3 +482,19 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
   .slist .star { font-size: 20px; }
   .leaflet-touch .leaflet-bar a { width: 34px; height: 34px; line-height: 34px; }
 }
+
+/* Ask form: what each possible answer would leave */
+.split-preview { margin: 10px 0; padding: 8px 10px; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; }
+.split-head { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+.split-head .muted, .split-more { font-weight: 400; color: var(--muted); font-size: 11px; }
+.qform .split-row { display: flex; align-items: center; gap: 8px; width: 100%; margin: 4px 0; padding: 5px 8px; background: var(--panel); text-align: left; font-size: 13px; }
+.qform .split-row.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.qform .split-row.impossible { color: var(--muted); }
+.split-label { flex: 0 1 40%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.split-bar { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.split-bar span { display: block; height: 100%; background: var(--accent); }
+.split-count { flex: none; min-width: 64px; text-align: right; font-variant-numeric: tabular-nums; }
+.split-verdict { margin-top: 6px; font-size: 12px; color: #7ee787; }
+.split-verdict.none { color: #f0b72f; }
+.preview-banner { background: #dbeafe; color: #1e3a8a; border-color: #2f81f7; }
+.preview-banner button { border-color: #2f81f7; color: #1e3a8a; }

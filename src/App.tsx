@@ -12,6 +12,7 @@ import { formatDistance } from './lib/geo'
 import { rewardForKind, askOrdinals, askGroupCounts as countAskGroups, curseUnmarkBlocked } from './data/questions'
 import { POI_CATEGORIES, POI_BY_CATEGORY } from './lib/poi'
 import type { RenderPoi } from './lib/poi'
+import type { AnswerOutcome } from './lib/answerSplit'
 import type { Annotation, DayType, GameState, LatLng, QuestionRecord, Station, UnitSystem, ZoneCurses } from './types'
 import { stationsData, REGIONS, ACTIVE_REGION_ID, setActiveRegion, SINGLE_AGENCY } from './data/regions'
 
@@ -159,6 +160,21 @@ export default function App() {
     const elim = base.filter((s) => !remainIds.has(s.id))
     return { remaining: remain, eliminated: elim }
   }, [base, game.questions, game.manualEliminated, endgameStation, game.gameSize])
+
+  // Answer-split preview from the Ask form: while one answer is picked, the map
+  // shows the board as if the hider had given it (Ask tab only, not in endgame).
+  const [outcomeKey, setOutcomeKey] = useState<string | null>(null)
+  const [outcome, setOutcome] = useState<AnswerOutcome | null>(null)
+  const preview = tab === 'ask' && !endgameStation ? outcome : null
+  const mapBoard = useMemo(() => {
+    if (!preview) return { remaining, eliminated, records: game.questions }
+    const keepIds = new Set(preview.keep.map((s) => s.id))
+    return {
+      remaining: preview.keep,
+      eliminated: base.filter((s) => !keepIds.has(s.id)),
+      records: [preview.record, ...game.questions],
+    }
+  }, [preview, remaining, eliminated, base, game.questions])
 
   const lines = useMemo(() => {
     const excluded = linesExcludedOn(game.dayType)
@@ -483,8 +499,8 @@ export default function App() {
       <div className={`body${sheetOpen ? ' sheet-open' : ''}`}>
         <div className="mapwrap">
           <MapView
-            remaining={remaining}
-            eliminated={eliminated}
+            remaining={mapBoard.remaining}
+            eliminated={mapBoard.eliminated}
             showEliminated={showEliminated}
             satellite={satellite}
             starred={starredSet}
@@ -493,7 +509,9 @@ export default function App() {
             onPickLocation={setLastClick}
             onToggleStar={toggleStar}
             onToggleEliminate={toggleManual}
-            records={game.questions}
+            records={mapBoard.records}
+            preview={preview ? { label: preview.label, left: preview.keep.length } : null}
+            onClearPreview={() => setOutcomeKey(null)}
             pickedPoints={pickedPoints}
             annotations={game.annotations}
             onAddAnnotation={addAnnotation}
@@ -549,12 +567,23 @@ export default function App() {
               lastClick={lastClick}
               units={game.units}
               lines={lines}
-              onSubmit={addQuestion}
+              onSubmit={(q) => {
+                setOutcomeKey(null)
+                addQuestion(q)
+              }}
               onPreview={setLastClick}
               askGroupCounts={askGroupCounts}
               endgameActive={game.endgame != null}
               gameSize={game.gameSize}
               dayType={game.dayType}
+              remaining={remaining}
+              zoneMi={hidingRadiusMi}
+              outcomeKey={outcomeKey}
+              onOutcomeKey={(key) => {
+                setOutcomeKey(key)
+                if (key) setSheetOpen(false) // reveal the map on phones
+              }}
+              onOutcomePreview={setOutcome}
             />
           </div>
 

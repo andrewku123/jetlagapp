@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import type { LatLng, QuestionKind, QuestionRecord, UnitSystem, DayType } from '../types'
+import { useState, useEffect, useMemo } from 'react'
+import type { LatLng, QuestionKind, QuestionRecord, Station, UnitSystem, DayType } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards, thermometerTravelOk } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
 import { KM_PER_MILE, FEET_PER_METER, parseLatLng, formatDistance, haversineMiles } from '../lib/geo'
@@ -14,6 +14,7 @@ import { cityAt, inPlayArea, NO_CITY_LABEL } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { usgsGroundElevationM } from '../lib/usgsElevation'
 import { PHOTO, type GameSize } from '../data/questionSets'
+import { answerOptions, answerOutcomes, worstCaseLeft, type AnswerOutcome } from '../lib/answerSplit'
 import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
 
 interface Props {
@@ -32,6 +33,14 @@ interface Props {
   gameSize: GameSize
   // weekday/weekend — lines that don't run today aren't in play for Metro Lines.
   dayType: DayType
+  // stations still possible, and the hiding zone the next answer is given under:
+  // the answer-split preview counts what each possible answer would leave.
+  remaining: Station[]
+  zoneMi: number
+  // which answer's survivors the map is previewing (an AnswerOption key)
+  outcomeKey: string | null
+  onOutcomeKey: (key: string | null) => void
+  onOutcomePreview: (o: AnswerOutcome | null) => void
 }
 
 // Optgroup each POI category falls under in the flattened subject dropdown, so
@@ -193,6 +202,11 @@ export default function QuestionForm({
   endgameActive,
   gameSize,
   dayType,
+  remaining,
+  zoneMi,
+  outcomeKey,
+  onOutcomeKey,
+  onOutcomePreview,
 }: Props) {
   // photo cards askable in this game size
   const photoCards = PHOTO.filter((c) => c.sizes.includes(gameSize))
@@ -326,11 +340,12 @@ export default function QuestionForm({
     return Number(thermo)
   }
 
-  function submit(vetoed = false) {
+  // The params the form would log, or the message explaining what is missing.
+  function buildParams(vetoed: boolean): Record<string, unknown> | string {
     let params: Record<string, unknown> = {}
     switch (kind) {
       case 'radar': {
-        if (!center) return alert('Set the radar center (click the map or enter coordinates).')
+        if (!center) return 'Set the radar center (click the map or enter coordinates).'
         const radiusMiles =
           radius === 'custom'
             ? metric
@@ -338,55 +353,55 @@ export default function QuestionForm({
               : Number(customRadius)
             : Number(radius)
         if (!Number.isFinite(radiusMiles) || radiusMiles <= 0)
-          return alert('Enter a valid radar radius greater than 0.')
+          return 'Enter a valid radar radius greater than 0.'
         params = { lat: center.lat, lon: center.lon, radiusMiles, answer: yesno }
         break
       }
       case 'thermometer': {
-        if (!ptA || !ptB) return alert('Set both start (A) and end (B) points.')
+        if (!ptA || !ptB) return 'Set both start (A) and end (B) points.'
         const tMiles = thermoMiles()
         if (!Number.isFinite(tMiles) || tMiles <= 0)
-          return alert('Choose which thermometer you used (a travel distance greater than 0).')
+          return 'Choose which thermometer you used (a travel distance greater than 0).'
         const actualMiles = haversineMiles(ptA, ptB)
         if (!thermometerTravelOk(actualMiles, tMiles, curseFlag && !vetoed))
-          return alert(
+          return (
             `Start A and end B are only ${formatDistance(actualMiles, units)} apart, but a ${formatDistance(tMiles, units)} thermometer needs a travel of at least ${formatDistance(tMiles, units)}. ` +
-            `Move A/B farther apart, or pick a shorter thermometer.`,
+            `Move A/B farther apart, or pick a shorter thermometer.`
           )
         params = { fromLat: ptA.lat, fromLon: ptA.lon, toLat: ptB.lat, toLon: ptB.lon, thermometerMiles: tMiles, answer: hotcold }
         break
       }
       case 'measure-airport':
       case 'measure-railstation': {
-        if (!center) return alert('Set your location by clicking the map.')
+        if (!center) return 'Set your location by clicking the map.'
         params = { fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
       }
       case 'match-poi': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const np = nearestPoi(center, poiCat)
-        if (!np) return alert('No places of that type are in the play area.')
+        if (!np) return 'No places of that type are in the play area.'
         params = { poiCat, fromLat: center.lat, fromLon: center.lon, poiName: np.name, answer: yesno }
         break
       }
       case 'measure-poi': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         if (!Number.isFinite(nearestPoiMiles(center, poiCat)))
-          return alert('No places of that type are in the play area.')
+          return 'No places of that type are in the play area.'
         params = { poiCat, fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
       }
       case 'measure-feature': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         // A feature with no in-play geometry is demoted to log-only (still logged
         // for the seeker's notes, but eliminates nothing) rather than blocked.
         if (!featureDemoted(feature) && !Number.isFinite(distanceToFeatureMiles(center, feature)))
-          return alert('That feature has no geometry in the play area.')
+          return 'That feature has no geometry in the play area.'
         params = { feature, fromLat: center.lat, fromLon: center.lon, answer: closefar }
         break
       }
       case 'measure-sealevel': {
-        if (num === '') return alert(`Enter your altitude in ${elevUnit}.`)
+        if (num === '') return `Enter your altitude in ${elevUnit}.`
         const meters = metric ? Number(num) : Number(num) / FEET_PER_METER
         params = center
           ? { value: meters, fromLat: center.lat, fromLon: center.lon, answer: closefar }
@@ -394,21 +409,21 @@ export default function QuestionForm({
         break
       }
       case 'measure-zip': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const z = zipAt(center)
-        if (!z) return alert(inPlayArea(center)
+        if (!z) return (inPlayArea(center)
           ? 'No ZIP code here.'
           : 'Outside the play area.')
         params = { value: z, fromLat: center.lat, fromLon: center.lon, answer: smalllarge }
         break
       }
       case 'tentacle': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const tc = tentacleCategory(tentCat)
-        if (!tc) return alert('Pick a tentacle subject.')
+        if (!tc) return 'Pick a tentacle subject.'
         const inPlay = poisWithinRadius(center, tentCat, tc.radiusMi)
         if (inPlay.length === 0)
-          return alert(`No ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`)
+          return `No ${poiCategoryLabelPlural(tentCat)} within ${formatDistance(tc.radiusMi, units)} of here — this question can't be asked from this spot.`
         if (isTentacleRadarAnswer(tentPoi)) {
           // Radar answer: hider revealed only whether they're within the radius.
           params = {
@@ -422,9 +437,9 @@ export default function QuestionForm({
           break
         }
         if (inPlay.length === 1)
-          return alert(`Answer whether the hider is within ${formatDistance(tc.radiusMi, units)} of you.`)
+          return `Answer whether the hider is within ${formatDistance(tc.radiusMi, units)} of you.`
         const chosen = inPlay.find((poi) => poiKey(poi) === tentPoi)
-        if (!chosen) return alert('Pick which in-range place the hider is closest to.')
+        if (!chosen) return 'Pick which in-range place the hider is closest to.'
         params = {
           poiCat: tentCat,
           radiusMi: tc.radiusMi,
@@ -436,10 +451,10 @@ export default function QuestionForm({
         break
       }
       case 'tentacle-line': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const inPlay = metroLinesWithinRadius(center, METRO_TENTACLE_RADIUS_MI, center.lat, dayType)
         if (inPlay.length === 0)
-          return alert(`No metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.`)
+          return `No metro lines within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of here — this question can't be asked from this spot.`
         if (isTentacleRadarAnswer(tentLine)) {
           params = {
             radiusMi: METRO_TENTACLE_RADIUS_MI,
@@ -452,9 +467,9 @@ export default function QuestionForm({
           break
         }
         if (inPlay.length === 1)
-          return alert(`Answer whether the hider is within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of you.`)
+          return `Answer whether the hider is within ${formatDistance(METRO_TENTACLE_RADIUS_MI, units)} of you.`
         const chosen = inPlay.find((l) => l.id === tentLine)
-        if (!chosen) return alert('Pick which in-range metro line the hider is closest to.')
+        if (!chosen) return 'Pick which in-range metro line the hider is closest to.'
         params = {
           radiusMi: METRO_TENTACLE_RADIUS_MI,
           fromLat: center.lat,
@@ -466,19 +481,19 @@ export default function QuestionForm({
         break
       }
       case 'match-namelength': {
-        if (num === '') return alert('Enter your station name length.')
+        if (num === '') return 'Enter your station name length.'
         params = { value: Number(num), answer: yesno }
         break
       }
       case 'match-airport': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         params = { value: nearestAirport(center).code, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
       case 'match-county': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const c = countyAt(center)
-        if (!c) return alert('Outside the play area.')
+        if (!c) return 'Outside the play area.'
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
@@ -488,23 +503,23 @@ export default function QuestionForm({
           params = { description: value.trim() || undefined, answer: yesno }
           break
         }
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const st = stateAt(center)
-        if (!st) return alert('Outside the play area.')
+        if (!st) return 'Outside the play area.'
         params = { value: st, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
       case 'match-city': {
-        if (!center) return alert('Set your location (paste coordinates or click the map).')
+        if (!center) return 'Set your location (paste coordinates or click the map).'
         const c = cityAt(center)
-        if (!c) return alert(inPlayArea(center)
+        if (!c) return (inPlayArea(center)
           ? "No city here — you're on unincorporated land, so there's no municipality to match."
           : 'Outside the play area.')
         params = { value: c, fromLat: center.lat, fromLon: center.lon, answer: yesno }
         break
       }
       case 'match-line': {
-        if (!value) return alert('Choose a value.')
+        if (!value) return 'Choose a value.'
         params = { value, answer: yesno }
         break
       }
@@ -521,8 +536,8 @@ export default function QuestionForm({
         break
       }
       case 'inside-floor': {
-        if (!building.trim()) return alert('Enter the building you are inside.')
-        if (!floor.trim()) return alert('Enter the floor you are on.')
+        if (!building.trim()) return 'Enter the building you are inside.'
+        if (!floor.trim()) return 'Enter the floor you are on.'
         params = { building: building.trim(), floor: floor.trim(), answer: floorAns }
         break
       }
@@ -533,16 +548,23 @@ export default function QuestionForm({
       }
       case 'traffic': {
         // Log-only: record the hider's reported foot-traffic count.
-        if (num === '') return alert("Enter the hider's reported count.")
+        if (num === '') return "Enter the hider's reported count."
         params = { value: Number(num) }
         break
       }
       case 'photo': {
-        if (!photoTitle) return alert('Pick which photo you asked for.')
+        if (!photoTitle) return 'Pick which photo you asked for.'
         params = { photoTitle }
         break
       }
     }
+    return params
+  }
+
+  function submit(vetoed = false) {
+    const built = buildParams(vetoed)
+    if (typeof built === 'string') return alert(built)
+    const params = built
     // A vetoed question carries no answer (the hider refused to answer), so it
     // eliminates nothing but is still logged.
     if (vetoed) delete params.answer
@@ -559,6 +581,7 @@ export default function QuestionForm({
       ...(curseFlag && !vetoed ? { curse: true } : {}),
     })
     // reset point captures but keep kind
+    onOutcomeKey(null)
     setCenter(null); setPtA(null); setPtB(null); setValue(''); setNum(''); setBuilding(''); setFloor(''); setNote(''); setCustomRadius(''); setCustomThermo(''); setTentPoi(''); setTentLine(''); setCurseFlag(false)
   }
 
@@ -593,6 +616,45 @@ export default function QuestionForm({
     return (askGroupCounts.get(key) ?? 0) + 1
   })()
   const previewCards = scaleCards(meta.cards, previewMult)
+
+  // Answer-split preview: what each possible answer would leave. Tentacles are
+  // set up before the hider picks a place, so their params are built here
+  // rather than by buildParams (which wants the chosen answer).
+  const splitParams = ((): Record<string, unknown> | null => {
+    if (!eliminatesEffective || endgameActive) return null
+    if (kind === 'tentacle') {
+      const tc = tentacleCategory(tentCat)
+      if (!center || !tc) return null
+      return { poiCat: tentCat, radiusMi: tc.radiusMi, fromLat: center.lat, fromLon: center.lon }
+    }
+    if (kind === 'tentacle-line') {
+      if (!center) return null
+      return { radiusMi: METRO_TENTACLE_RADIUS_MI, fromLat: center.lat, fromLon: center.lon, day: dayType }
+    }
+    const built = buildParams(false)
+    return typeof built === 'string' ? null : built
+  })()
+  const splitKey = splitParams ? `${kind}|${endgameFlag}|${zoneMi}|${JSON.stringify(splitParams)}` : ''
+  const outcomes = useMemo(() => {
+    if (!splitParams || remaining.length === 0) return []
+    const template: Omit<QuestionRecord, 'params'> = {
+      id: 'answer-split-preview',
+      kind,
+      createdAt: 0,
+      eliminates: true,
+      active: true,
+      zoneMi,
+      ...(endgameFlag ? { endgame: true } : {}),
+    }
+    return answerOutcomes(remaining, template, answerOptions(kind, splitParams), zoneMi)
+    // splitKey covers kind, params, endgame flag and zone
+  }, [splitKey, remaining])
+  const shownOutcome = outcomes.find((o) => o.key === outcomeKey) ?? null
+  useEffect(() => onOutcomePreview(shownOutcome), [shownOutcome, onOutcomePreview])
+  const worst = worstCaseLeft(outcomes)
+  // with many answers (tentacles), the impossible ones fold into one line
+  const listed = outcomes.length > 2 ? outcomes.filter((o) => o.keep.length > 0) : outcomes
+  const impossibleCount = outcomes.length - listed.length
 
   const yesNo = (
     <div className="row">
@@ -1251,6 +1313,38 @@ export default function QuestionForm({
             return card ? <p className="blurb poi-readout">{card.requirement}</p> : null
           })()}
         </>
+      )}
+
+      {outcomes.length > 0 && (
+        <div className="split-preview">
+          <div className="split-head">
+            If the hider answers… <span className="muted">{remaining.length} possible now · tap to preview on the map</span>
+          </div>
+          {listed.map((o) => {
+            const pct = (o.keep.length / remaining.length) * 100
+            const on = o.key === outcomeKey
+            return (
+              <button
+                key={o.key}
+                className={`split-row${on ? ' on' : ''}${o.keep.length === 0 ? ' impossible' : ''}`}
+                onClick={() => onOutcomeKey(on ? null : o.key)}
+                title={on ? 'Stop previewing' : 'Preview this answer on the map'}
+              >
+                <span className="split-label">{o.label}</span>
+                <span className="split-bar"><span style={{ width: `${pct}%` }} /></span>
+                <span className="split-count">{o.keep.length === 0 ? 'impossible' : `${o.keep.length} left`}</span>
+              </button>
+            )
+          })}
+          {impossibleCount > 0 && (
+            <div className="split-more muted">+{impossibleCount} other answer{impossibleCount > 1 ? 's' : ''} impossible (0 left)</div>
+          )}
+          <div className={`split-verdict${worst === remaining.length ? ' none' : ''}`}>
+            {worst === remaining.length
+              ? `Splits nothing: one answer keeps all ${remaining.length}.`
+              : `Worst case ${worst} left — cuts at least ${remaining.length - worst} (${Math.round(((remaining.length - worst) / remaining.length) * 100)}%).`}
+          </div>
+        </div>
       )}
 
       <div className="row">

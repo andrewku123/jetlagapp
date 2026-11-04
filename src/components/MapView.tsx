@@ -310,6 +310,9 @@ interface Props {
   onToggleStar: (id: string) => void
   onToggleEliminate: (id: string) => void
   records: QuestionRecord[]
+  // an Ask-form answer being previewed: the board shows it as if answered
+  preview: { label: string; left: number } | null
+  onClearPreview: () => void
   pickedPoints: { label: string; point: LatLng; color: string }[]
   annotations: Annotation[]
   onAddAnnotation: (a: Annotation) => void
@@ -492,14 +495,25 @@ function MapFit({
   remaining,
   endgame,
   radiusMi,
+  previewKey,
 }: {
   remaining: Station[]
   endgame: Station | null
   radiusMi: number
+  previewKey: string | null
 }) {
   const map = useMap()
   const didInit = useRef(false)
   const lastEndgame = useRef<string | null>(null)
+  const lastPreview = useRef<string | null>(null)
+  // frame an answer preview's survivors when it opens; clearing leaves the view
+  useEffect(() => {
+    if (previewKey === lastPreview.current) return
+    lastPreview.current = previewKey
+    if (!previewKey || endgame) return
+    const target = fitTarget(remaining, null, radiusMi)
+    if (target) applyFit(map, target)
+  }, [map, previewKey, remaining, endgame, radiusMi])
   useEffect(() => {
     if (didInit.current) return
     const target = fitTarget(remaining, endgame, radiusMi)
@@ -1024,6 +1038,8 @@ export default function MapView({
   onToggleStar,
   onToggleEliminate,
   records,
+  preview,
+  onClearPreview,
   pickedPoints,
   annotations,
   onAddAnnotation,
@@ -1556,6 +1572,15 @@ export default function MapView({
         )}
       </div>
 
+      {preview && !endgameStation && (
+        <div className="endgame-banner preview-banner">
+          <span>
+            <b>Preview:</b> if “{preview.label}”, {preview.left} left
+          </span>
+          <button onClick={onClearPreview}>Clear</button>
+        </div>
+      )}
+
       {endgameStation && (
         <div className="endgame-banner">
           <span>
@@ -1577,7 +1602,12 @@ export default function MapView({
         <MapRefCapture mapRef={mapInstanceRef} />
         <MapPointerFocus />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
-        <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
+        <MapFit
+          remaining={remaining}
+          endgame={endgameStation}
+          radiusMi={hidingRadiusMi}
+          previewKey={preview ? `${preview.label}|${preview.left}` : null}
+        />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
