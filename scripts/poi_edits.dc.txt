@@ -1,0 +1,25 @@
+# POI decisions for Washington DC — replayed onto the review map by
+#   python3 scripts/poi_apply_edits.py --region dc
+# One decision per line. Paste the block the review map's "Copy edits" button
+# gives you; nothing here is ever overwritten by a rebuild.
+#
+#   delete  <name> [@ lat,lon]              drop the pin entirely
+#   merge   <keep this> <- <a> | <b>        fold pins into one place
+#   rename  <old> -> <new>                  fix a name
+#   keep    <name>                          undo an automatic merge
+#   rep     <name>                          make this pin the group's pin
+
+merge   Freeman Store & Museum @ 38.90336,-77.26504 <- Vienna Caboose @ 38.90361,-77.26570
+merge   Freeman Store & Museum @ 38.90336,-77.26504 <- Vienna’s Historic Original 1897 Library @ 38.90341,-77.26461
+
+delete  Tinner Hill Historic Park @ 38.87918,-77.17679
+delete  Athenaeum @ 38.80346,-77.04181
+delete  Old Quarry Boiler & Equipment @ 38.91302,-77.10347
+closed  Tall Ship Providence @ 38.80324,-77.03867
+
+closed  Beall-Dawson Museum @ 39.08473,-77.15527
+delete  Rockville Science Center Storefront @ 39.05853,-77.12294
+delete  Brahma Kumaris Meditation Museum @ 39.01113,-77.04068
+delete  Smithsonian Exhibits @ 38.93898,-76.88103
+delete  National Park Service Museum Resource Center @ 38.93020,-76.87523
+delete  The Smithsonian's Museum Conservation Institute @ 38.84335,-76.94132
