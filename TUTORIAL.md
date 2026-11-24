@@ -288,7 +288,7 @@ Helpful behaviors:
   from another map is rejected.
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
-- **Reset** wipes everything — only use it to start a brand-new game.
+- **Reset** wipes everything — only use it to start a brand-new round.
 - **Press the curse button the moment Prosperous/Tiny Home is played.** Each
   question keeps the zone size it was logged with, so questions logged before a
   late +50% could wrongly eliminate the hider's station.
