@@ -113,8 +113,9 @@ What the app eliminates for:
   **state** and **international border** subjects are offered too, but the Bay
   Area, SF Muni and LA Metro have neither in play, so there they are
   `(log only)`. A **ZIP code** smaller/larger question is also supported. A
-  **rail station** measuring question also auto-eliminates, but it's mostly useful in the **endgame**: every hiding zone
-  contains its own station (distance 0), so "closer" rules nothing out and
+  **rail station** measuring question also auto-eliminates, but it's mostly
+  useful in the **endgame**: every hiding zone contains its own station
+  (distance 0), so "closer" rules nothing out and
   "further" only bites when you're almost a full zone radius from a station. In
   the endgame it carves the hiding zone (union of your-distance disks around
   every station on the map).
