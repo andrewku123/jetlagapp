@@ -317,11 +317,11 @@ What that means per map:
 
 | Map | `(log only)` | `(endgame only)` |
 |---|---|---|
-| **Bay Area** | nothing | nothing |
-| **SF Muni** | nearest **commercial airport**, Matching and Measuring (SFO/OAK/SJC are all outside San Francisco, so no airport exists in play), and any POI category with no in-play locations (e.g. amusement parks) | **County** and **City** Matching |
-| **LA Metro** | **County** Matching | nothing |
+| **Bay Area** | **State** Matching (every station is in California) | nothing |
+| **SF Muni** | **State** Matching, nearest **commercial airport** Matching and Measuring (SFO/OAK/SJC are all outside San Francisco, so no airport exists in play), and any POI category with no in-play locations (e.g. amusement parks) | **County** and **City** Matching |
+| **LA Metro** | **State** Matching, **County** Matching, and **Zoo** Matching (the LA Zoo is the only zoo in play, so everyone's nearest zoo is the same) | nothing |
 
-On every map the **state border** and **international border** Measuring
+On all three maps the **state border** and **international border** Measuring
 subjects are `(log only)` too — none of these play areas has one.
 
 The Ask form marks the subject with the tag, the button changes to **Log

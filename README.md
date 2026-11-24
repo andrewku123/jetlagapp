@@ -110,10 +110,10 @@ What the app eliminates for:
 - **Measuring** — "compared to me, are you closer to or further from ___?" for a
   **commercial airport**, **sea level** (altitude), a **coastline**, a **county
   border**, and any of the 12 mapped **POI** categories (as in Matching). The
-  **state** and **international border** subjects are offered too, but no map
-  ships one in play today, so they are `(log only)`. A **ZIP code** smaller/larger
-  question is also supported. A **rail station** measuring question also
-  auto-eliminates, but it's mostly useful in the **endgame**: every hiding zone
+  **state** and **international border** subjects are offered too, but the Bay
+  Area, SF Muni and LA Metro have neither in play, so there they are
+  `(log only)`. A **ZIP code** smaller/larger question is also supported. A
+  **rail station** measuring question also auto-eliminates, but it's mostly useful in the **endgame**: every hiding zone
   contains its own station (distance 0), so "closer" rules nothing out and
   "further" only bites when you're almost a full zone radius from a station. In
   the endgame it carves the hiding zone (union of your-distance disks around
@@ -192,9 +192,9 @@ What each map demotes today, all of it derived, none of it listed by hand:
 
 | Map | Log-only | Endgame-only |
 |---|---|---|
-| **Bay Area** | — | — |
-| **SF Muni** | nearest commercial airport (Matching *and* Measuring — SFO/OAK/SJC all lie outside San Francisco), plus any POI category with no in-play member (e.g. amusement parks) | County Matching, City Matching |
-| **LA Metro** | County Matching | — |
+| **Bay Area** | State Matching (every station is in California) | — |
+| **SF Muni** | State Matching, nearest commercial airport (Matching *and* Measuring — SFO/OAK/SJC all lie outside San Francisco), plus any POI category with no in-play member (e.g. amusement parks) | County Matching, City Matching |
+| **LA Metro** | State Matching, County Matching, Zoo Matching (the LA Zoo is the only zoo in play) | — |
 
 LA's county case shows why the rule is geometric rather than "is this value
 uniform?": every LA Metro station is one county's worth of the same answer, and
