@@ -486,6 +486,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 /* Ask form: what each possible answer would leave */
 .split-preview { margin: 10px 0; padding: 8px 10px; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; }
 .split-head { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+.split-preview.stale .split-row, .split-preview.stale .split-verdict { opacity: 0.55; }
 .split-head .muted, .split-more { font-weight: 400; color: var(--muted); font-size: 11px; }
 .qform .split-row { display: flex; align-items: center; gap: 8px; width: 100%; margin: 4px 0; padding: 5px 8px; background: var(--panel); text-align: left; font-size: 13px; }
 .qform .split-row.on { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }

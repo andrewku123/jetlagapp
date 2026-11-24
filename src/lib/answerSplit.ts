@@ -1,5 +1,5 @@
 import type { DayType, QuestionKind, QuestionRecord, Station } from '../types'
-import { applyFilters } from './elimination'
+import { applyFilters, stationPasses } from './elimination'
 import { poiKey, poisWithinRadius, TENTACLE_INSIDE, TENTACLE_OUTSIDE } from './poi'
 import { metroLinesWithinRadius } from './metroLines'
 
@@ -75,6 +75,47 @@ export function answerOutcomes(
     const record: QuestionRecord = { ...template, params: o.params }
     return { ...o, record, keep: applyFilters(stations, [record], fallbackZoneMi).remaining }
   })
+}
+
+// answerOutcomes computed a few stations at a time, yielding between slices so
+// slow questions (coastline, nearest park, metro-line tentacles over hundreds of
+// stations) never freeze the form. Calls onDone with the same result as
+// answerOutcomes; the returned function cancels the run.
+export function answerOutcomesSliced(
+  stations: Station[],
+  template: Omit<QuestionRecord, 'params'>,
+  options: AnswerOption[],
+  fallbackZoneMi: number,
+  onProgress: (done: number) => void,
+  onDone: (outcomes: AnswerOutcome[]) => void,
+  sliceMs = 12,
+): () => void {
+  const records: QuestionRecord[] = options.map((o) => ({ ...template, params: o.params }))
+  const keeps: Station[][] = options.map(() => [])
+  let i = 0
+  let timer: ReturnType<typeof setTimeout> | null = null
+  const step = () => {
+    const t0 = performance.now()
+    // at least one station per slice, so a slow station can't stall the run
+    do {
+      const st = stations[i++]
+      if (!st) break
+      records.forEach((r, k) => {
+        if (stationPasses(st, r, fallbackZoneMi)) keeps[k].push(st)
+      })
+    } while (i < stations.length && performance.now() - t0 < sliceMs)
+    if (i < stations.length) {
+      onProgress(i)
+      timer = setTimeout(step, 0)
+      return
+    }
+    timer = null
+    onDone(options.map((o, k) => ({ ...o, record: records[k], keep: keeps[k] })))
+  }
+  timer = setTimeout(step, 0)
+  return () => {
+    if (timer) clearTimeout(timer)
+  }
 }
 
 // Stations the seeker is guaranteed to keep whatever the answer: the largest

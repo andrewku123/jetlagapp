@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import type { LatLng, QuestionKind, QuestionRecord, Station, UnitSystem, DayType } from '../types'
 import { QUESTION_CATALOG, RADAR_OPTIONS, THERMOMETER_OPTIONS, questionGroupKey, scaleCards, thermometerTravelOk } from '../data/questions'
 import type { QuestionMeta } from '../data/questions'
@@ -14,7 +14,7 @@ import { cityAt, inPlayArea, NO_CITY_LABEL } from '../lib/cities'
 import { zipAt } from '../lib/zip'
 import { usgsGroundElevationM } from '../lib/usgsElevation'
 import { PHOTO, type GameSize } from '../data/questionSets'
-import { answerOptions, answerOutcomes, worstCaseLeft, type AnswerOutcome } from '../lib/answerSplit'
+import { answerOptions, answerOutcomesSliced, worstCaseLeft, type AnswerOutcome } from '../lib/answerSplit'
 import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
 
 interface Props {
@@ -634,9 +634,19 @@ export default function QuestionForm({
     const built = buildParams(false)
     return typeof built === 'string' ? null : built
   })()
-  const splitKey = splitParams ? `${kind}|${endgameFlag}|${zoneMi}|${JSON.stringify(splitParams)}` : ''
-  const outcomes = useMemo(() => {
-    if (!splitParams || remaining.length === 0) return []
+  // The seeker's own picked answer doesn't change what the answers are.
+  const splitKey = splitParams
+    ? `${kind}|${endgameFlag}|${zoneMi}|${JSON.stringify({ ...splitParams, answer: undefined })}`
+    : ''
+  // Counted in slices off the render path; the last result stays up (dimmed)
+  // while a changed question recounts, so an open map preview doesn't blink.
+  const [split, setSplit] = useState<{ key: string; stations: Station[]; outcomes: AnswerOutcome[] } | null>(null)
+  const [splitDone, setSplitDone] = useState(0)
+  useEffect(() => {
+    if (!splitParams || remaining.length === 0) {
+      setSplit(null)
+      return
+    }
     const template: Omit<QuestionRecord, 'params'> = {
       id: 'answer-split-preview',
       kind,
@@ -646,9 +656,17 @@ export default function QuestionForm({
       zoneMi,
       ...(endgameFlag ? { endgame: true } : {}),
     }
-    return answerOutcomes(remaining, template, answerOptions(kind, splitParams), zoneMi)
+    const key = splitKey
+    setSplitDone(0)
+    return answerOutcomesSliced(remaining, template, answerOptions(kind, splitParams), zoneMi, setSplitDone, (outcomes) =>
+      setSplit({ key, stations: remaining, outcomes }),
+    )
     // splitKey covers kind, params, endgame flag and zone
   }, [splitKey, remaining])
+  const outcomes = splitParams ? split?.outcomes ?? [] : []
+  const splitStale = !!splitParams && (split?.key !== splitKey || split?.stations !== remaining)
+  // counts are out of the stations they were counted over
+  const splitTotal = split?.stations.length ?? remaining.length
   const shownOutcome = outcomes.find((o) => o.key === outcomeKey) ?? null
   useEffect(() => onOutcomePreview(shownOutcome), [shownOutcome, onOutcomePreview])
   const worst = worstCaseLeft(outcomes)
@@ -1315,13 +1333,18 @@ export default function QuestionForm({
         </>
       )}
 
-      {outcomes.length > 0 && (
-        <div className="split-preview">
+      {splitParams && remaining.length > 0 && (outcomes.length > 0 || splitStale) && (
+        <div className={`split-preview${splitStale ? ' stale' : ''}`}>
           <div className="split-head">
-            If the hider answers… <span className="muted">{remaining.length} possible now · tap to preview on the map</span>
+            If the hider answers…{' '}
+            <span className="muted">
+              {splitStale
+                ? `counting… ${Math.round((splitDone / remaining.length) * 100)}%`
+                : `${splitTotal} possible now · tap to preview on the map`}
+            </span>
           </div>
           {listed.map((o) => {
-            const pct = (o.keep.length / remaining.length) * 100
+            const pct = (o.keep.length / splitTotal) * 100
             const on = o.key === outcomeKey
             return (
               <button
@@ -1339,11 +1362,13 @@ export default function QuestionForm({
           {impossibleCount > 0 && (
             <div className="split-more muted">+{impossibleCount} other answer{impossibleCount > 1 ? 's' : ''} impossible (0 left)</div>
           )}
-          <div className={`split-verdict${worst === remaining.length ? ' none' : ''}`}>
-            {worst === remaining.length
-              ? `Splits nothing: one answer keeps all ${remaining.length}.`
-              : `Worst case ${worst} left — cuts at least ${remaining.length - worst} (${Math.round(((remaining.length - worst) / remaining.length) * 100)}%).`}
-          </div>
+          {outcomes.length > 0 && (
+            <div className={`split-verdict${worst === splitTotal ? ' none' : ''}`}>
+              {worst === splitTotal
+                ? `Splits nothing: one answer keeps all ${splitTotal}.`
+                : `Worst case ${worst} left — cuts at least ${splitTotal - worst} (${Math.round(((splitTotal - worst) / splitTotal) * 100)}%).`}
+            </div>
+          )}
         </div>
       )}
 

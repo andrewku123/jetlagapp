@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { answerOptions, answerOutcomes, worstCaseLeft } from './answerSplit'
+import { answerOptions, answerOutcomes, answerOutcomesSliced, worstCaseLeft } from './answerSplit'
+import type { AnswerOutcome } from './answerSplit'
 import { applyFilters } from './elimination'
 import { TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import type { QuestionRecord, Station } from '../types'
@@ -72,5 +73,59 @@ describe('answerOutcomes', () => {
     const outcomes = answerOutcomes(some, template('radar'), answerOptions('radar', { lat: OAK.lat, lon: OAK.lon, radiusMiles: 500, answer: 'no' }), ZONE)
     expect(outcomes.find((o) => o.key === 'yes')!.keep).toHaveLength(10)
     expect(outcomes.find((o) => o.key === 'no')!.keep).toHaveLength(0)
+  })
+})
+
+describe('answerOutcomesSliced', () => {
+  const sliced = (kind: QuestionRecord['kind'], params: Record<string, unknown>, sliceMs: number) =>
+    new Promise<{ outcomes: AnswerOutcome[]; progress: number[] }>((resolve) => {
+      const progress: number[] = []
+      answerOutcomesSliced(STATIONS, template(kind), answerOptions(kind, params), ZONE, (n) => progress.push(n), (outcomes) =>
+        resolve({ outcomes, progress }),
+      sliceMs)
+    })
+
+  it('gives the same result as counting in one go, across many slices', async () => {
+    const cases: [QuestionRecord['kind'], Record<string, unknown>][] = [
+      ['radar', { lat: OAK.lat, lon: OAK.lon, radiusMiles: 3, answer: 'yes' }],
+      ['measure-airport', { fromLat: OAK.lat, fromLon: OAK.lon, answer: 'closer' }],
+      ['tentacle', { poiCat: 'museum', radiusMi: 1, fromLat: OAK.lat, fromLon: OAK.lon }],
+    ]
+    for (const [kind, params] of cases) {
+      const { outcomes, progress } = await sliced(kind, params, 1)
+      expect(progress.length).toBeGreaterThan(1)
+      const once = answerOutcomes(STATIONS, template(kind), answerOptions(kind, params), ZONE)
+      expect(outcomes.map((o) => [o.key, o.keep.map((s) => s.id)])).toEqual(once.map((o) => [o.key, o.keep.map((s) => s.id)]))
+    }
+  }, 30000)
+
+  it('stops when cancelled', async () => {
+    let done = false
+    const cancel = answerOutcomesSliced(STATIONS, template('radar'), answerOptions('radar', { lat: OAK.lat, lon: OAK.lon, radiusMiles: 3, answer: 'yes' }), ZONE, () => {}, () => {
+      done = true
+    }, 0)
+    cancel()
+    await new Promise((r) => setTimeout(r, 50))
+    expect(done).toBe(false)
+  })
+})
+
+describe('every station survives some answer (Bay Area)', () => {
+  // The hider is somewhere, so no station may be ruled out by every answer.
+  it('holds for each question type from downtown Oakland', () => {
+    const at = { fromLat: OAK.lat, fromLon: OAK.lon }
+    const cases: [QuestionRecord['kind'], Record<string, unknown>][] = [
+      ['radar', { lat: OAK.lat, lon: OAK.lon, radiusMiles: 5, answer: 'yes' }],
+      ['thermometer', { ...at, toLat: OAK.lat + 0.02, toLon: OAK.lon, thermometerMiles: 1, answer: 'hotter' }],
+      ['measure-airport', { ...at, answer: 'closer' }],
+      ['match-county', { ...at, value: 'Alameda', answer: 'yes' }],
+      ['tentacle', { poiCat: 'museum', radiusMi: 1, ...at }],
+    ]
+    for (const [kind, params] of cases) {
+      const outcomes = answerOutcomes(STATIONS, template(kind), answerOptions(kind, params), ZONE)
+      expect(outcomes.length, kind).toBeGreaterThan(1)
+      const union = new Set(outcomes.flatMap((o) => o.keep.map((s) => s.id)))
+      expect(union.size, kind).toBe(STATIONS.length)
+    }
   })
 })

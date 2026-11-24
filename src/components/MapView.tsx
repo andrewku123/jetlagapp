@@ -311,7 +311,7 @@ interface Props {
   onToggleEliminate: (id: string) => void
   records: QuestionRecord[]
   // an Ask-form answer being previewed: the board shows it as if answered
-  preview: { label: string; left: number } | null
+  preview: { key: string; label: string; left: number } | null
   onClearPreview: () => void
   pickedPoints: { label: string; point: LatLng; color: string }[]
   annotations: Annotation[]
@@ -506,7 +506,8 @@ function MapFit({
   const didInit = useRef(false)
   const lastEndgame = useRef<string | null>(null)
   const lastPreview = useRef<string | null>(null)
-  // frame an answer preview's survivors when it opens; clearing leaves the view
+  // frame an answer's survivors when the seeker taps it; a recount of the same
+  // answer (e.g. a moved radar center) and clearing both leave the view alone
   useEffect(() => {
     if (previewKey === lastPreview.current) return
     lastPreview.current = previewKey
@@ -1606,7 +1607,7 @@ export default function MapView({
           remaining={remaining}
           endgame={endgameStation}
           radiusMi={hidingRadiusMi}
-          previewKey={preview ? `${preview.label}|${preview.left}` : null}
+          previewKey={preview ? preview.key : null}
         />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <MapFocusPoi target={poiFocus} />

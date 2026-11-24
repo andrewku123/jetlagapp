@@ -510,7 +510,7 @@ export default function App() {
             onToggleStar={toggleStar}
             onToggleEliminate={toggleManual}
             records={mapBoard.records}
-            preview={preview ? { label: preview.label, left: preview.keep.length } : null}
+            preview={preview ? { key: preview.key, label: preview.label, left: preview.keep.length } : null}
             onClearPreview={() => setOutcomeKey(null)}
             pickedPoints={pickedPoints}
             annotations={game.annotations}
