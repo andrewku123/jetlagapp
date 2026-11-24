@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
 import {
   MapContainer,
   CircleMarker,
@@ -490,7 +490,8 @@ function MapClicks({
 
 // Fits the view to the live area: once on first load (to the remaining
 // stations), and again whenever endgame locks onto a station (to its
-// hiding-zone circle). Manual zoom/pan afterwards is left untouched.
+// hiding-zone circle), and to a previewed answer's survivors. Manual zoom/pan
+// afterwards is left untouched.
 function MapFit({
   remaining,
   endgame,
@@ -506,15 +507,48 @@ function MapFit({
   const didInit = useRef(false)
   const lastEndgame = useRef<string | null>(null)
   const lastPreview = useRef<string | null>(null)
-  // frame an answer's survivors when the seeker taps it; a recount of the same
-  // answer (e.g. a moved radar center) and clearing both leave the view alone
+  const lastPreviewFit = useRef('')
+  // the map follows a previewed answer's survivors (refitting as the question is
+  // edited) until the seeker pans or zooms it themselves; tapping an answer
+  // resumes following
+  const following = useRef(false)
+  const fitting = useRef(false)
+  const fitPreview = useCallback(
+    (stations: Station[]) => {
+      lastPreviewFit.current = stations.map((s) => s.id).join(',')
+      const target = fitTarget(stations, null, radiusMi)
+      if (!target) return
+      fitting.current = true
+      applyFit(map, target)
+      // a fit that doesn't move the map fires no moveend
+      window.setTimeout(() => (fitting.current = false), 800)
+    },
+    [map, radiusMi],
+  )
+  useMapEvents({
+    dragstart() {
+      following.current = false
+    },
+    movestart() {
+      if (!fitting.current) following.current = false
+    },
+    zoomstart() {
+      if (!fitting.current) following.current = false
+    },
+    moveend() {
+      fitting.current = false
+    },
+  })
   useEffect(() => {
-    if (previewKey === lastPreview.current) return
-    lastPreview.current = previewKey
-    if (!previewKey || endgame) return
-    const target = fitTarget(remaining, null, radiusMi)
-    if (target) applyFit(map, target)
-  }, [map, previewKey, remaining, endgame, radiusMi])
+    if (previewKey !== lastPreview.current) {
+      lastPreview.current = previewKey
+      following.current = !!previewKey && !endgame
+      if (following.current) fitPreview(remaining)
+      return
+    }
+    if (!previewKey || endgame || !following.current) return
+    if (remaining.map((s) => s.id).join(',') !== lastPreviewFit.current) fitPreview(remaining)
+  }, [previewKey, remaining, endgame, fitPreview])
   useEffect(() => {
     if (didInit.current) return
     const target = fitTarget(remaining, endgame, radiusMi)

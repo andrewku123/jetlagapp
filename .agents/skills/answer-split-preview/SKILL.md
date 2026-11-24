@@ -28,7 +28,9 @@ possible answer with how many of the **current** suspects it would leave
   remaining/eliminated/records for the preview while on the Ask tab. Picking a row
   closes the phone sheet; logging a question clears the preview.
 - `MapView.tsx`: blue `.preview-banner` with Clear; `MapFit` frames the survivors
-  when a preview opens (`previewKey`), and leaves the view alone on clear.
+  when a row is tapped (`previewKey`) and keeps refitting as they change, until the
+  user pans/zooms (`following` ref; programmatic fits are flagged by `fitting`).
+  Clear leaves the view alone.
 
 ## Verify
 `src/lib/answerSplit.test.ts` checks each outcome equals logging it via
