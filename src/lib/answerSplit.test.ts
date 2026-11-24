@@ -4,6 +4,9 @@ import type { AnswerOutcome } from './answerSplit'
 import { applyFilters } from './elimination'
 import { TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import type { QuestionRecord, Station } from '../types'
+import { countyAt } from './counties'
+import { cityAt } from './cities'
+import { zipAt } from './zip'
 import stationsJson from '../data/stations.json'
 
 const STATIONS = stationsJson as unknown as Station[]
@@ -128,4 +131,39 @@ describe('every station survives some answer (Bay Area)', () => {
       expect(union.size, kind).toBe(STATIONS.length)
     }
   })
+})
+
+describe('area answers match logging (Bay Area, land-only)', () => {
+  // county / city / ZIP only hold on land, so a station near the water or an
+  // area edge is where the preview could drift from a logged answer
+  const SEEKERS = {
+    oakland: OAK,
+    sfEmbarcadero: { lat: 37.7929, lon: -122.3971 },
+    alameda: { lat: 37.7652, lon: -122.2416 },
+    sanJose: { lat: 37.3297, lon: -121.9024 },
+  }
+  // the form stores the seeker's own area as `value`
+  const KINDS: [QuestionRecord['kind'], string, (p: { lat: number; lon: number }) => string | null][] = [
+    ['match-county', 'yes', countyAt],
+    ['match-city', 'yes', cityAt],
+    ['measure-zip', 'smaller', zipAt],
+  ]
+  for (const [where, at] of Object.entries(SEEKERS)) {
+    it(`from ${where}`, async () => {
+      for (const [kind, answer, areaAt] of KINDS) {
+        const value = areaAt(at)
+        expect(value, `${kind} area`).toBeTruthy()
+        const params = { value, fromLat: at.lat, fromLon: at.lon, answer }
+        const opts = answerOptions(kind, params)
+        expect(opts, kind).toHaveLength(2)
+        const outcomes = await new Promise<AnswerOutcome[]>((done) => {
+          answerOutcomesSliced(STATIONS, template(kind), opts, ZONE, () => {}, done, 5)
+        })
+        for (const o of outcomes) {
+          const logged = applyFilters(STATIONS, [{ ...template(kind), params: o.params }], ZONE).remaining
+          expect(o.keep.map((s) => s.id), `${kind} ${o.key}`).toEqual(logged.map((s) => s.id))
+        }
+      }
+    }, 60000)
+  }
 })
