@@ -3,7 +3,7 @@ import type { LatLng, QuestionRecord } from '../types'
 import { POI_BY_CATEGORY, nearestPoi, nearestPoiMiles, poiKey, poisWithinRadius, TENTACLE_OUTSIDE, TENTACLE_INSIDE } from './poi'
 import { projectedDistanceToFeatureMiles, featurePolylines } from './measureFeatures'
 import { AIRPORTS, nearestAirport } from './airports'
-import { REGION_FRAME, playAreaData } from '../data/regions'
+import { REGION_FRAME, countiesData, playAreaData } from '../data/regions'
 import { RAIL_STATIONS, nearestRailStationMiles } from './railStations'
 import { countyAt, countyGeom } from './counties'
 import { stateAt, stateGeom } from './states'
@@ -175,6 +175,25 @@ function robustUnion(polys: Polygon[]): MultiPolygon {
     }
   }
   return []
+}
+
+// Difference that retries on snapped coordinates when the clipper fails
+// ("Unable to complete output ring" on nearly-coincident edges).
+function robustDifference(a: MultiPolygon, b: MultiPolygon): MultiPolygon | null {
+  try {
+    return polygonClipping.difference(a, b)
+  } catch {
+    // retry snapped below
+  }
+  for (const dp of [7, 6, 5, 4]) {
+    const snap = (mp: MultiPolygon): MultiPolygon => mp.map((poly) => poly.map((r) => snapRing(r, dp)))
+    try {
+      return polygonClipping.difference(snap(a), snap(b))
+    } catch {
+      // coarser snap on the next pass
+    }
+  }
+  return null
 }
 
 // --- Matching: shade everything outside (Yes) / inside (No) the seeker's
@@ -735,6 +754,52 @@ function playAreaGeom(): MultiPolygon {
 }
 const PLAY_AREA: MultiPolygon = playAreaGeom()
 
+// Hair-thin strips where a play-area edge and a county line nearly coincide
+// (Dublin vs Contra Costa) aren't land anyone answers from.
+const MIN_LAND_WIDTH_M = 12
+
+// Mean width of a polygon, 2·area / perimeter, in metres.
+function polyWidthM(poly: Polygon): number {
+  const ring0 = poly[0]
+  if (!ring0?.length) return 0
+  const kx = 111320 * Math.cos((ring0[0][1] * Math.PI) / 180)
+  const ky = 110574
+  let area = 0
+  let perim = 0
+  poly.forEach((ring, i) => {
+    let a = 0
+    for (let j = 1; j < ring.length; j++) {
+      const [x0, y0] = ring[j - 1]
+      const [x1, y1] = ring[j]
+      a += (x0 * kx) * (y1 * ky) - (x1 * kx) * (y0 * ky)
+      perim += Math.hypot((x1 - x0) * kx, (y1 - y0) * ky)
+    }
+    area += (i === 0 ? 1 : -1) * Math.abs(a / 2)
+  })
+  return perim > 0 ? (2 * area) / perim : 0
+}
+
+// Land the hider can stand on: the play area within the (land-only) county
+// polygons, so open water a map's play area spans (SF Bay) never counts.
+let playLandCache: MultiPolygon | null | undefined
+function playLand(): MultiPolygon | null {
+  if (playLandCache !== undefined) return playLandCache
+  playLandCache = null
+  try {
+    const counties = robustUnion(Object.values(polysByName(countiesData)).flat())
+    const land = PLAY_AREA.length ? polygonClipping.intersection(PLAY_AREA, counties) : counties
+    if (land.length) playLandCache = land
+  } catch {
+    // no land mask: fall back to the whole play area
+  }
+  return playLandCache
+}
+
+// Area answers (same county / city, ZIP higher / lower) only hold on land: a
+// station survives Yes if its zone reaches the asked area's land, and No (or
+// the other ZIP side) if it reaches any other area's land.
+const LAND_ONLY_KINDS = new Set<QuestionRecord['kind']>(['match-county', 'match-city', 'measure-zip'])
+
 export interface ZoneRegions {
   eliminated: RegionIndex
   // in play and not eliminated: where the hider could have answered from
@@ -749,9 +814,12 @@ export function zoneRegions(record: QuestionRecord): ZoneRegions | null {
   let out: ZoneRegions | null = null
   if (elim && elim.length) {
     let kept: MultiPolygon
-    try {
-      kept = PLAY_AREA.length ? polygonClipping.difference(PLAY_AREA, elim) : polygonClipping.difference([WORLD_RING], elim)
-    } catch {
+    const land = LAND_ONLY_KINDS.has(record.kind) ? playLand() : null
+    const area = land ?? PLAY_AREA
+    const diff = robustDifference(area.length ? area : [[WORLD_RING]], elim)
+    if (diff) {
+      kept = land ? diff.filter((poly) => polyWidthM(poly) >= MIN_LAND_WIDTH_M) : diff
+    } else {
       kept = polygonClipping.difference([WORLD_RING], elim)
     }
     out = { eliminated: indexRegion(elim), kept: indexRegion(kept), keptGeom: kept }
