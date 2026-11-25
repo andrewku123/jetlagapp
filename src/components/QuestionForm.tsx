@@ -786,7 +786,7 @@ export default function QuestionForm({
   function suggestLabel(s: Suggestion): string {
     switch (s.kind) {
       case 'radar':
-        return `Radar ${formatDistance(Number(s.subject), units)}`
+        return `Radar ${metric ? formatDistance(Number(s.subject), units) : `${s.subject} mi`}`
       case 'match-poi':
         return `Matching: nearest ${poiCategoryLabel(s.subject ?? '')}`
       case 'measure-poi':

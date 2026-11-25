@@ -502,5 +502,7 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .suggest-head .muted { color: var(--muted); }
 .qform .suggest-go { font-size: 12px; font-weight: 600; }
 .suggest.stale .suggest-row { opacity: 0.55; }
+.qform .suggest-row { flex-wrap: wrap; row-gap: 3px; }
+.suggest-row .split-label { flex: 1 1 100%; white-space: normal; }
 .preview-banner { background: #dbeafe; color: #1e3a8a; border-color: #2f81f7; }
 .preview-banner button { border-color: #2f81f7; color: #1e3a8a; }
