@@ -93,6 +93,17 @@ can eliminate stations.
    - **Tentacles** — set your location; the app lists the in-range POIs of the
      chosen category and you pick the one the hider answers.
    - **Inside** — type the building and floor.
+   Once the parameters are valid, the **If the hider answers…** block lists every
+   possible answer with how many of the current suspects it would leave (e.g.
+   `Yes 22 left / No 240 left`) and a worst-case line, so you can compare
+   questions before asking and pick the one that splits the field best. Tentacles
+   list each in-range place plus **Not within**. Tap a row to preview that answer
+   on the map: it shades as if logged, zooms to the survivors, and shows a blue
+   **Preview** banner. While a row is highlighted the map follows it as you change
+   the center or radius; pan or zoom the map yourself and it stays put until you
+   tap a row again. **Clear** (or tapping the row again) goes back to the real
+   board without moving the map. Big recounts show `counting… N%` and the form
+   stays usable. The block is hidden for log-only questions and in the endgame.
 5. Record the hider's answer (Yes/No, Hotter/Colder, Closer/Further, …).
 6. (Optional) add a **Note**.
 7. (Optional) tick **Endgame question** — the question still eliminates stations

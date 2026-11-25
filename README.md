@@ -208,6 +208,27 @@ In the Ask form a demoted subject is tagged `(log only)` / `(endgame only)`, the
 button reads **Log question** (not **…& eliminate**) unless it's an endgame
 question that eliminates, and the blurb explains why.
 
+## Answer preview (which question splits best)
+
+While you set up an eliminating question, before entering the answer, the Ask
+form's **If the hider answers…** block shows how many of the current suspects
+each possible answer would leave (e.g. `Yes 22 left / No 240 left`) plus
+`Worst case N left — cuts at least M`. Binary questions show both answers
+(yes/no, hotter/colder, closer/further, smaller/larger); Tentacles list every
+in-range place plus **Not within**, with impossible answers folded into one line.
+Counts use the same per-station check as logging, so logging an answer leaves
+exactly the previewed count. Starred and manually eliminated stations follow the
+current board. The block is hidden for log-only questions and in the endgame.
+
+Tap a row to preview that answer on the map: the board shades as if it were
+logged, zooms to fit the survivors and shows a blue **Preview** banner with
+**Clear**. While a row is highlighted the map follows it: changing the center,
+radius or coordinates refits to the new survivors. Once you pan or zoom the map
+yourself it stops following until you tap a row again. Clear leaves the view
+where it is; tapping the row again, logging the question or leaving the Ask tab
+also returns to the real board. Counting runs in short slices, so the form stays
+usable during big recounts (`counting… N%`, old rows dimmed).
+
 ## Card rewards and repeat cost
 
 Every logged question shows the hider's card reward. Re-asking the **same**

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react'
 import {
   MapContainer,
   CircleMarker,
@@ -310,6 +310,9 @@ interface Props {
   onToggleStar: (id: string) => void
   onToggleEliminate: (id: string) => void
   records: QuestionRecord[]
+  // an Ask-form answer being previewed: the board shows it as if answered
+  preview: { key: string; label: string; left: number } | null
+  onClearPreview: () => void
   pickedPoints: { label: string; point: LatLng; color: string }[]
   annotations: Annotation[]
   onAddAnnotation: (a: Annotation) => void
@@ -487,19 +490,65 @@ function MapClicks({
 
 // Fits the view to the live area: once on first load (to the remaining
 // stations), and again whenever endgame locks onto a station (to its
-// hiding-zone circle). Manual zoom/pan afterwards is left untouched.
+// hiding-zone circle), and to a previewed answer's survivors. Manual zoom/pan
+// afterwards is left untouched.
 function MapFit({
   remaining,
   endgame,
   radiusMi,
+  previewKey,
 }: {
   remaining: Station[]
   endgame: Station | null
   radiusMi: number
+  previewKey: string | null
 }) {
   const map = useMap()
   const didInit = useRef(false)
   const lastEndgame = useRef<string | null>(null)
+  const lastPreview = useRef<string | null>(null)
+  const lastPreviewFit = useRef('')
+  // the map follows a previewed answer's survivors (refitting as the question is
+  // edited) until the seeker pans or zooms it themselves; tapping an answer
+  // resumes following
+  const following = useRef(false)
+  const fitting = useRef(false)
+  const fitPreview = useCallback(
+    (stations: Station[]) => {
+      lastPreviewFit.current = stations.map((s) => s.id).join(',')
+      const target = fitTarget(stations, null, radiusMi)
+      if (!target) return
+      fitting.current = true
+      applyFit(map, target)
+      // a fit that doesn't move the map fires no moveend
+      window.setTimeout(() => (fitting.current = false), 800)
+    },
+    [map, radiusMi],
+  )
+  useMapEvents({
+    dragstart() {
+      following.current = false
+    },
+    movestart() {
+      if (!fitting.current) following.current = false
+    },
+    zoomstart() {
+      if (!fitting.current) following.current = false
+    },
+    moveend() {
+      fitting.current = false
+    },
+  })
+  useEffect(() => {
+    if (previewKey !== lastPreview.current) {
+      lastPreview.current = previewKey
+      following.current = !!previewKey && !endgame
+      if (following.current) fitPreview(remaining)
+      return
+    }
+    if (!previewKey || endgame || !following.current) return
+    if (remaining.map((s) => s.id).join(',') !== lastPreviewFit.current) fitPreview(remaining)
+  }, [previewKey, remaining, endgame, fitPreview])
   useEffect(() => {
     if (didInit.current) return
     const target = fitTarget(remaining, endgame, radiusMi)
@@ -1024,6 +1073,8 @@ export default function MapView({
   onToggleStar,
   onToggleEliminate,
   records,
+  preview,
+  onClearPreview,
   pickedPoints,
   annotations,
   onAddAnnotation,
@@ -1556,6 +1607,15 @@ export default function MapView({
         )}
       </div>
 
+      {preview && !endgameStation && (
+        <div className="endgame-banner preview-banner">
+          <span>
+            <b>Preview:</b> if “{preview.label}”, {preview.left} left
+          </span>
+          <button onClick={onClearPreview}>Clear</button>
+        </div>
+      )}
+
       {endgameStation && (
         <div className="endgame-banner">
           <span>
@@ -1577,7 +1637,12 @@ export default function MapView({
         <MapRefCapture mapRef={mapInstanceRef} />
         <MapPointerFocus />
         <MapClicks onClick={handleClick} onHover={setHover} snapPoints={snapPoints} />
-        <MapFit remaining={remaining} endgame={endgameStation} radiusMi={hidingRadiusMi} />
+        <MapFit
+          remaining={remaining}
+          endgame={endgameStation}
+          radiusMi={hidingRadiusMi}
+          previewKey={preview ? preview.key : null}
+        />
         <MapFocus target={focusTarget} radiusMi={hidingRadiusMi} />
         <MapFocusPoi target={poiFocus} />
         <StationRenderer onChange={setStationRenderer} />
