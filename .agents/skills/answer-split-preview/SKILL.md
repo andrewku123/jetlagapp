@@ -36,3 +36,21 @@ possible answer with how many of the **current** suspects it would leave
 `src/lib/answerSplit.test.ts` checks each outcome equals logging it via
 `applyFilters`. On a preview: unlock the gate (localStorage `bahs.unlock`), open
 `?map=<id>`, pick Radar, paste a center into "paste lat, lon" → Set, then tap a row.
+
+## Best-next-question suggestions (prototype)
+- `src/lib/questionSuggest.ts`: `suggestionCandidates(at, gameSize, dayType)`
+  lists every question askable from one spot with the params the form would log
+  (radar at each `RADAR_OPTIONS` radius, airport / rail / county / city / state /
+  ZIP, POI match+measure per category, measure features, tentacles per size).
+  It skips kinds in `LOG_ONLY_KINDS` / `ENDGAME_ELIMINATES_KINDS` and anything
+  needing more than a location (thermometer, sea level, station-name / line).
+- `suggestQuestionsSliced` counts each candidate's answers with `stationPasses`
+  in ~12 ms slices (Bay Area ≈5 s total in node, mostly ZIP / park / coastline /
+  county border) and reports the ranked list after each question;
+  `rankSuggestions` sorts by worst case, then sum of squared counts.
+- Gated to `SUGGEST_REGION_IDS` (bayarea, sfmuni, la) and hidden in the endgame.
+  `QuestionForm.tsx` shows it at the top of the Ask form; the seeker spot is the
+  set location, else the last map click; tapping a row loads that question with
+  its subject and center so the answer-split block shows its answers.
+- `src/lib/questionSuggest.test.ts` checks every suggested count equals logging
+  that answer via `applyFilters`.

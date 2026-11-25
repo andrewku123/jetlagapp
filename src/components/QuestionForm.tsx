@@ -16,6 +16,7 @@ import { usgsGroundElevationM } from '../lib/usgsElevation'
 import { PHOTO, type GameSize } from '../data/questionSets'
 import { answerOptions, answerOutcomesSliced, worstCaseLeft, type AnswerOutcome } from '../lib/answerSplit'
 import { HAS_AIRPORTS, LOG_ONLY_KINDS, ENDGAME_ELIMINATES_KINDS, MULTI_STATE } from '../data/regions'
+import { SUGGEST_ON_THIS_MAP, suggestionCandidates, suggestQuestionsSliced, type Suggestion } from '../lib/questionSuggest'
 
 interface Props {
   lastClick: LatLng | null
@@ -755,6 +756,61 @@ export default function QuestionForm({
       else setPoiCat(param)
     }
   }
+  // Best next questions: every question askable from the seeker's spot (their
+  // set location, else the last map click), ranked by the stations its worst
+  // answer would leave, counted like the answer-split preview.
+  const seekerAt = center ?? lastClick
+  const [suggest, setSuggest] = useState<{
+    at: LatLng
+    stations: Station[]
+    ranked: Suggestion[]
+    done: number
+    total: number
+  } | null>(null)
+  const [suggestRun, setSuggestRun] = useState<{ at: LatLng; n: number } | null>(null)
+  const suggestOn = SUGGEST_ON_THIS_MAP && !endgameActive
+  useEffect(() => {
+    if (!suggestRun || !suggestOn) return
+    const { at } = suggestRun
+    const stations = remaining
+    const candidates = suggestionCandidates(at, gameSize, dayType)
+    setSuggest({ at, stations, ranked: [], done: 0, total: candidates.length })
+    return suggestQuestionsSliced(stations, candidates, zoneMi, (ranked, done) =>
+      setSuggest({ at, stations, ranked, done, total: candidates.length }),
+    )
+  }, [suggestRun])
+  const suggestStale =
+    !!suggest &&
+    (suggest.stations !== remaining || !seekerAt || seekerAt.lat !== suggest.at.lat || seekerAt.lon !== suggest.at.lon)
+  const suggestCounting = !!suggest && suggest.done < suggest.total
+  function suggestLabel(s: Suggestion): string {
+    switch (s.kind) {
+      case 'radar':
+        return `Radar ${formatDistance(Number(s.subject), units)}`
+      case 'match-poi':
+        return `Matching: nearest ${poiCategoryLabel(s.subject ?? '')}`
+      case 'measure-poi':
+        return `Measuring: nearest ${poiCategoryLabel(s.subject ?? '')}`
+      case 'measure-feature':
+        return `Measuring: ${measureFeatureNoun(s.subject ?? '')}`
+      case 'tentacle':
+        return `Tentacles: ${poiCategoryLabelPlural(s.subject ?? '')}`
+      default:
+        return (QUESTION_CATALOG.find((q) => q.kind === s.kind)?.label ?? s.kind).replace(' — ', ': ')
+    }
+  }
+  function applySuggestion(s: Suggestion, at: LatLng) {
+    setCategory(QUESTION_CATALOG.find((q) => q.kind === s.kind)!.category)
+    if (s.kind === 'radar') {
+      setKind('radar')
+      setRadius(s.subject!)
+    } else pickSubject(s.id)
+    setCenter(at)
+    onOutcomeKey(null)
+  }
+  const suggestTotal = suggest?.stations.length ?? 0
+  const suggestRows = (suggest?.ranked ?? []).filter((s) => s.worst < suggestTotal).slice(0, 6)
+
   const subjectGroups: { group: string; opts: SubjectOption[] }[] = []
   for (const o of subjectOptions) {
     let g = subjectGroups.find((x) => x.group === o.group)
@@ -813,6 +869,40 @@ export default function QuestionForm({
 
   return (
     <div className="qform">
+      {suggestOn && remaining.length > 1 && (
+        <div className={`suggest${suggestStale ? ' stale' : ''}`}>
+          <div className="suggest-head">
+            <button
+              className="suggest-go"
+              disabled={!seekerAt || (suggestCounting && !suggestStale)}
+              onClick={() => seekerAt && setSuggestRun((r) => ({ at: seekerAt, n: (r?.n ?? 0) + 1 }))}
+            >
+              {suggest && !suggestStale ? 'Best questions from here' : 'Suggest best questions from here'}
+            </button>
+            <span className="muted">
+              {!seekerAt
+                ? 'set your location or click the map first'
+                : !suggest
+                  ? `from ${fmt(seekerAt)}`
+                  : suggestStale
+                    ? 'location or stations changed — tap to recount'
+                    : suggestCounting
+                      ? `counting… ${suggest.done}/${suggest.total} questions`
+                      : `${suggest.total} questions · ${suggestTotal} possible now · tap one to ask it`}
+            </span>
+          </div>
+          {suggest && suggestRows.map((s) => (
+            <button key={s.id} className="split-row suggest-row" onClick={() => applySuggestion(s, suggest.at)}>
+              <span className="split-label" title={suggestLabel(s)}>{suggestLabel(s)}</span>
+              <span className="split-bar"><span style={{ width: `${((suggestTotal - s.worst) / suggestTotal) * 100}%` }} /></span>
+              <span className="split-count">≤ {s.worst} left</span>
+            </button>
+          ))}
+          {suggest && !suggestCounting && suggestRows.length === 0 && (
+            <div className="split-verdict none">No question from here splits the {suggestTotal} stations.</div>
+          )}
+        </div>
+      )}
       <div className="row qrow-cat">
         <label>Type</label>
         <div className="seg seg-wrap qcat">

@@ -497,5 +497,10 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .split-count { flex: none; min-width: 64px; text-align: right; font-variant-numeric: tabular-nums; }
 .split-verdict { margin-top: 6px; font-size: 12px; color: #7ee787; }
 .split-verdict.none { color: #f0b72f; }
+.suggest { margin: 0 0 10px; padding: 8px 10px; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; }
+.suggest-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; font-size: 11px; }
+.suggest-head .muted { color: var(--muted); }
+.qform .suggest-go { font-size: 12px; font-weight: 600; }
+.suggest.stale .suggest-row { opacity: 0.55; }
 .preview-banner { background: #dbeafe; color: #1e3a8a; border-color: #2f81f7; }
 .preview-banner button { border-color: #2f81f7; color: #1e3a8a; }
