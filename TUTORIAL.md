@@ -93,6 +93,17 @@ can eliminate stations.
    - **Tentacles** — set your location; the app lists the in-range POIs of the
      chosen category and you pick the one the hider answers.
    - **Inside** — type the building and floor.
+   Once the parameters are valid, the **If the hider answers…** block lists every
+   possible answer with how many of the current suspects it would leave (e.g.
+   `Yes 22 left / No 240 left`) and a worst-case line, so you can compare
+   questions before asking and pick the one that splits the field best. Tentacles
+   list each in-range place plus **Not within**. Tap a row to preview that answer
+   on the map: it shades as if logged, zooms to the survivors, and shows a blue
+   **Preview** banner. While a row is highlighted the map follows it as you change
+   the center or radius; pan or zoom the map yourself and it stays put until you
+   tap a row again. **Clear** (or tapping the row again) goes back to the real
+   board without moving the map. Big recounts show `counting… N%` and the form
+   stays usable. The block is hidden for log-only questions and in the endgame.
 5. Record the hider's answer (Yes/No, Hotter/Colder, Closer/Further, …).
 6. (Optional) add a **Note**.
 7. (Optional) tick **Endgame question** — the question still eliminates stations
@@ -288,7 +299,7 @@ Helpful behaviors:
   from another map is rejected.
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
-- **Reset** wipes everything — only use it to start a brand-new game.
+- **Reset** wipes everything — only use it to start a brand-new round.
 - **Press the curse button the moment Prosperous/Tiny Home is played.** Each
   question keeps the zone size it was logged with, so questions logged before a
   late +50% could wrongly eliminate the hider's station.
@@ -317,11 +328,11 @@ What that means per map:
 
 | Map | `(log only)` | `(endgame only)` |
 |---|---|---|
-| **Bay Area** | nothing | nothing |
-| **SF Muni** | nearest **commercial airport**, Matching and Measuring (SFO/OAK/SJC are all outside San Francisco, so no airport exists in play), and any POI category with no in-play locations (e.g. amusement parks) | **County** and **City** Matching |
-| **LA Metro** | **County** Matching | nothing |
+| **Bay Area** | **State** Matching (every station is in California) | nothing |
+| **SF Muni** | **State** Matching, nearest **commercial airport** Matching and Measuring (SFO/OAK/SJC are all outside San Francisco, so no airport exists in play), and any POI category with no in-play locations (e.g. amusement parks) | **County** and **City** Matching |
+| **LA Metro** | **State** Matching, **County** Matching, and **Zoo** Matching (the LA Zoo is the only zoo in play, so everyone's nearest zoo is the same) | nothing |
 
-On every map the **state border** and **international border** Measuring
+On all three maps the **state border** and **international border** Measuring
 subjects are `(log only)` too — none of these play areas has one.
 
 The Ask form marks the subject with the tag, the button changes to **Log

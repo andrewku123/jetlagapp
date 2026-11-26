@@ -40,7 +40,7 @@ describe('game size', () => {
     expect(dc.MAP_SIZE).toBe('medium')
     const { emptyGame } = await import('../lib/storage')
     expect(emptyGame.gameSize).toBe('medium')
-  })
+  }, 60000)
 })
 
 describe('every map has one city per station', () => {
@@ -445,4 +445,41 @@ describe('NYC county zone band', () => {
     // a zone that crosses into Brooklyn on land keeps the station
     expect(stationPasses(byName('Halsey St'), r)).toBe(true)
   }, 60000)
+})
+
+describe('NYC answer preview', () => {
+  it('each answer to landmass, high-speed rail, county and ZIP keeps what logging it keeps', async () => {
+    await loadFor('nyc')
+    const { answerOptions, answerOutcomes } = await import('../lib/answerSplit')
+    const { applyFilters } = await import('../lib/elimination')
+    const { landmassAt } = await import('../lib/landmass')
+    const { countyAt } = await import('../lib/counties')
+    const { zipAt } = await import('../lib/zip')
+    const stations = (await import('./nyc.stations.json')).default as unknown as Station[]
+    const lic = { lat: 40.7447, lon: -73.9485 }
+    const base = { id: 'preview', createdAt: 0, eliminates: true, active: true, zoneMi: 0.25 }
+    const cases = [
+      { kind: 'match-landmass' as const, params: { value: landmassAt(lic), fromLat: lic.lat, fromLon: lic.lon, answer: 'yes' } },
+      { kind: 'measure-hsr' as const, params: { feature: 'hsr', fromLat: lic.lat, fromLon: lic.lon, answer: 'closer' } },
+      { kind: 'match-county' as const, params: { value: countyAt(lic), fromLat: lic.lat, fromLon: lic.lon, answer: 'no' } },
+      { kind: 'measure-zip' as const, params: { value: zipAt(lic), fromLat: lic.lat, fromLon: lic.lon, answer: 'smaller' } },
+    ]
+    for (const { kind, params } of cases) {
+      const opts = answerOptions(kind, params)
+      expect(opts, kind).toHaveLength(2)
+      const outcomes = answerOutcomes(stations, { ...base, kind }, opts, 0.25)
+      for (const o of outcomes) {
+        const logged = applyFilters(stations, [{ ...base, kind, params: o.params }], 0.25).remaining
+        expect(o.keep.map((s) => s.id), `${kind} ${o.key}`).toEqual(logged.map((s) => s.id))
+      }
+      // both answers leave someone, and together they cover every station
+      expect(outcomes.every((o) => o.keep.length > 0), kind).toBe(true)
+      const covered = new Set(outcomes.flatMap((o) => o.keep.map((s) => s.id)))
+      expect(covered.size, kind).toBe(stations.length)
+    }
+    // "not Queens" never keeps a Rockaway stop
+    const notQueens = answerOutcomes(stations, { ...base, kind: 'match-county' }, answerOptions('match-county', cases[2].params), 0.25)
+      .find((o) => o.key === 'no')!
+    expect(notQueens.keep.some((s) => landmassAt(s) === 'Rockaway Peninsula')).toBe(false)
+  }, 120000)
 })

@@ -110,11 +110,12 @@ What the app eliminates for:
 - **Measuring** — "compared to me, are you closer to or further from ___?" for a
   **commercial airport**, **sea level** (altitude), a **coastline**, a **county
   border**, and any of the 12 mapped **POI** categories (as in Matching). The
-  **state** and **international border** subjects are offered too, but no map
-  ships one in play today, so they are `(log only)`. A **ZIP code** smaller/larger
-  question is also supported. A **rail station** measuring question also
-  auto-eliminates, but it's mostly useful in the **endgame**: every hiding zone
-  contains its own station (distance 0), so "closer" rules nothing out and
+  **state** and **international border** subjects are offered too, but the Bay
+  Area, SF Muni and LA Metro have neither in play, so there they are
+  `(log only)`. A **ZIP code** smaller/larger question is also supported. A
+  **rail station** measuring question also auto-eliminates, but it's mostly
+  useful in the **endgame**: every hiding zone contains its own station
+  (distance 0), so "closer" rules nothing out and
   "further" only bites when you're almost a full zone radius from a station. In
   the endgame it carves the hiding zone (union of your-distance disks around
   every station on the map).
@@ -192,9 +193,9 @@ What each map demotes today, all of it derived, none of it listed by hand:
 
 | Map | Log-only | Endgame-only |
 |---|---|---|
-| **Bay Area** | — | — |
-| **SF Muni** | nearest commercial airport (Matching *and* Measuring — SFO/OAK/SJC all lie outside San Francisco), plus any POI category with no in-play member (e.g. amusement parks) | County Matching, City Matching |
-| **LA Metro** | County Matching | — |
+| **Bay Area** | State Matching (every station is in California) | — |
+| **SF Muni** | State Matching, nearest commercial airport (Matching *and* Measuring — SFO/OAK/SJC all lie outside San Francisco), plus any POI category with no in-play member (e.g. amusement parks) | County Matching, City Matching |
+| **LA Metro** | State Matching, County Matching, Zoo Matching (the LA Zoo is the only zoo in play) | — |
 
 LA's county case shows why the rule is geometric rather than "is this value
 uniform?": every LA Metro station is one county's worth of the same answer, and
@@ -206,6 +207,27 @@ and LGB are inside the play area; BUR/ONT/SNA are not, and so do not exist).
 In the Ask form a demoted subject is tagged `(log only)` / `(endgame only)`, the
 button reads **Log question** (not **…& eliminate**) unless it's an endgame
 question that eliminates, and the blurb explains why.
+
+## Answer preview (which question splits best)
+
+While you set up an eliminating question, before entering the answer, the Ask
+form's **If the hider answers…** block shows how many of the current suspects
+each possible answer would leave (e.g. `Yes 22 left / No 240 left`) plus
+`Worst case N left — cuts at least M`. Binary questions show both answers
+(yes/no, hotter/colder, closer/further, smaller/larger); Tentacles list every
+in-range place plus **Not within**, with impossible answers folded into one line.
+Counts use the same per-station check as logging, so logging an answer leaves
+exactly the previewed count. Starred and manually eliminated stations follow the
+current board. The block is hidden for log-only questions and in the endgame.
+
+Tap a row to preview that answer on the map: the board shades as if it were
+logged, zooms to fit the survivors and shows a blue **Preview** banner with
+**Clear**. While a row is highlighted the map follows it: changing the center,
+radius or coordinates refits to the new survivors. Once you pan or zoom the map
+yourself it stops following until you tap a row again. Clear leaves the view
+where it is; tapping the row again, logging the question or leaving the Ask tab
+also returns to the real board. Counting runs in short slices, so the form stays
+usable during big recounts (`counting… N%`, old rows dimmed).
 
 ## Card rewards and repeat cost
 
