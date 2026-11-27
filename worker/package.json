@@ -1,0 +1,16 @@
+{
+  "name": "jetlag-recorder",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --test-scheduled",
+    "deploy": "wrangler deploy",
+    "migrate": "wrangler d1 migrations apply jetlag-recorder --remote",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261123.1",
+    "typescript": "^5.6.3",
+    "wrangler": "^4.40.0"
+  }
+}

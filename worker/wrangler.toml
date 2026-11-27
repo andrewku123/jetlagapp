@@ -1,0 +1,26 @@
+name = "jetlag-recorder"
+main = "src/index.ts"
+compatibility_date = "2025-11-01"
+account_id = "5954c65673727607cd322305d62eed42"
+workers_dev = true
+preview_urls = false
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "jetlag-recorder"
+database_id = "a8de77bd-5345-4dcc-bd3c-821a6764c2e0"
+migrations_dir = "migrations"
+
+[[durable_objects.bindings]]
+name = "RECORDER"
+class_name = "Recorder"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Recorder"]
+
+[observability]
+enabled = true
