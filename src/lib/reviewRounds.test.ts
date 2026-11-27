@@ -34,7 +34,13 @@ describe('saved review rounds', () => {
 
   it('keeps the queue when no backend is configured', async () => {
     saveRound(played)
-    expect(await flushUploads('', ok)).toBe(0)
+    expect(await flushUploads('', ok, 'pw')).toBe(0)
+    expect(pendingUploads()).toHaveLength(1)
+  })
+
+  it('keeps the queue when no group password is stored', async () => {
+    saveRound(played)
+    expect(await flushUploads('https://api.example', ok, '')).toBe(0)
     expect(pendingUploads()).toHaveLength(1)
   })
 
@@ -43,11 +49,11 @@ describe('saved review rounds', () => {
     const b = saveRound(played, 2)!
     const posted: string[] = []
     const fetchFn = ((url: string, init: RequestInit) => {
-      posted.push(`${url} ${JSON.parse(init.body as string).id}`)
+      posted.push(`${url} ${JSON.parse(init.body as string).id} ${(init.headers as Record<string, string>)['X-Group-Password']}`)
       return Promise.resolve(new Response('{}', { status: 200 }))
     }) as unknown as typeof fetch
-    expect(await flushUploads('https://api.example/', fetchFn)).toBe(2)
-    expect(posted).toEqual([`https://api.example/rounds ${a.id}`, `https://api.example/rounds ${b.id}`])
+    expect(await flushUploads('https://api.example/', fetchFn, 'pw')).toBe(2)
+    expect(posted).toEqual([`https://api.example/rounds ${a.id} pw`, `https://api.example/rounds ${b.id} pw`])
     expect(pendingUploads()).toEqual([])
   })
 
@@ -59,7 +65,7 @@ describe('saved review rounds', () => {
       calls++
       return calls === 1 ? Promise.resolve(new Response('{}', { status: 200 })) : Promise.reject(new Error('offline'))
     }) as typeof fetch
-    expect(await flushUploads('https://api.example', fetchFn)).toBe(1)
+    expect(await flushUploads('https://api.example', fetchFn, 'pw')).toBe(1)
     expect(pendingUploads()).toEqual([b.id])
   })
 })

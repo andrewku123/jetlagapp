@@ -1,10 +1,11 @@
 import type { GameState } from '../types'
 import { ACTIVE_REGION_ID } from '../data/regions'
 import { BUILD_ID } from './version'
+import { groupPassword } from './gate'
 
 // Rounds saved for the postgame review. Reset saves the board here before
 // clearing it, and each saved round waits in an upload queue until the shared
-// review backend (VITE_REVIEW_API_URL) accepts it.
+// review backend (the jetlag-recorder Worker, POST /rounds) accepts it.
 export interface SavedRound {
   id: string
   region: string
@@ -15,7 +16,8 @@ export interface SavedRound {
 
 const ROUNDS_KEY = `bahs.review.v1.${ACTIVE_REGION_ID}`
 const QUEUE_KEY = `bahs.review.queue.v1.${ACTIVE_REGION_ID}`
-export const REVIEW_API_URL: string = import.meta.env.VITE_REVIEW_API_URL ?? ''
+export const REVIEW_API_URL: string =
+  import.meta.env.VITE_REVIEW_API_URL ?? 'https://jetlag-recorder.andrew-js-ku.workers.dev'
 
 function read<T>(key: string, fallback: T): T {
   try {
@@ -77,8 +79,9 @@ export function saveRound(game: GameState, now: number = Date.now()): SavedRound
 export async function flushUploads(
   apiUrl: string = REVIEW_API_URL,
   fetchFn: typeof fetch = (...args) => fetch(...args),
+  password: string = groupPassword(),
 ): Promise<number> {
-  if (!apiUrl) return 0
+  if (!apiUrl || !password) return 0
   const queue = pendingUploads()
   if (queue.length === 0) return 0
   const byId = new Map(loadSavedRounds().map((r) => [r.id, r]))
@@ -90,7 +93,7 @@ export async function flushUploads(
     try {
       const res = await fetchFn(`${apiUrl.replace(/\/$/, '')}/rounds`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Group-Password': password },
         body: JSON.stringify(round),
       })
       if (!res.ok) break

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { hashPassword, isUnlocked, PASSWORD_HASH, tryUnlock } from './gate'
+import { groupPassword, hashPassword, isUnlocked, PASSWORD_HASH, tryUnlock } from './gate'
 
 const store = new Map<string, string>()
 Object.defineProperty(globalThis, 'localStorage', {
@@ -30,6 +30,12 @@ describe('password gate', () => {
   it('remembers a correct password across loads', async () => {
     expect(await tryUnlock(' fixture-pw ', FIXTURE)).toBe(true)
     expect(isUnlocked(FIXTURE)).toBe(true)
+    expect(groupPassword()).toBe('fixture-pw')
+  })
+
+  it('asks once more on a phone unlocked before the password was kept', () => {
+    store.set('bahs.unlock', FIXTURE)
+    expect(isUnlocked(FIXTURE)).toBe(false)
   })
 
   it('locks again once the password changes, without touching saved boards', async () => {
