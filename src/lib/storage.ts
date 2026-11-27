@@ -28,6 +28,7 @@ export const emptyGame: GameState = {
   units: 'imperial',
   questions: [],
   manualEliminated: [],
+  eliminationLog: [],
   starred: [],
   notes: {},
   annotations: [],
@@ -45,6 +46,7 @@ export function loadGame(): GameState {
       ...emptyGame,
       ...parsed,
       gameSize: emptyGame.gameSize,
+      eliminationLog: Array.isArray(parsed.eliminationLog) ? parsed.eliminationLog : [],
       zoneCurses: normalizeCurses(parsed.zoneCurses),
     }
   } catch {

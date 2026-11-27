@@ -4,6 +4,8 @@ import QuestionForm from './components/QuestionForm'
 import { applyFilters } from './lib/elimination'
 import { describeRecord } from './lib/describe'
 import { loadGame, saveGame, emptyGame } from './lib/storage'
+import { logManualChange } from './lib/eliminationLog'
+import { flushUploads, isEmptyBoard, saveRound } from './lib/reviewRounds'
 import { encodeElimination, decodeElimination, MAP_NAME } from './lib/shareCode'
 import { SYSTEM_COLORS, SYSTEM_ORDER, linesExcludedOn } from './lib/style'
 import { ELIGIBLE_HEADWAY_MIN } from './data/questionSets'
@@ -128,6 +130,17 @@ export default function App() {
   }, [tab])
 
   const update = (patch: Partial<GameState>) => setGame((g) => ({ ...g, ...patch }))
+  // every hand cross-out / restore goes through here so it's timed in eliminationLog
+  const setManual = (next: string[]) =>
+    setGame((g) => ({
+      ...g,
+      manualEliminated: next,
+      eliminationLog: logManualChange(g.eliminationLog, g.manualEliminated, next, Date.now()),
+    }))
+
+  useEffect(() => {
+    void flushUploads()
+  }, [])
 
   // A station is a valid hiding spot only if it's served at least hourly (the
   // canonical Jet Lag rule, flat across all sizes).
@@ -316,7 +329,7 @@ export default function App() {
     const set = new Set(game.manualEliminated)
     if (set.has(id)) set.delete(id)
     else set.add(id)
-    update({ manualEliminated: [...set] })
+    setManual([...set])
   }
   // Bulk hand-eliminate every station in `ids` (e.g. a whole line). Interlined
   // stations serve several lines, so this eliminates them even if they also sit
@@ -324,16 +337,24 @@ export default function App() {
   function eliminateMany(ids: string[]) {
     const set = new Set(game.manualEliminated)
     for (const id of ids) set.add(id)
-    update({ manualEliminated: [...set] })
+    setManual([...set])
   }
   // Undo a bulk elimination: only restores stations that were eliminated BY HAND
   // (a station still ruled out by a question stays eliminated).
   function restoreMany(ids: string[]) {
     const drop = new Set(ids)
-    update({ manualEliminated: game.manualEliminated.filter((id) => !drop.has(id)) })
+    setManual(game.manualEliminated.filter((id) => !drop.has(id)))
   }
+  // Rounds are played back to back, so starting a new one saves the old one for
+  // the postgame review before clearing it.
   function resetGame() {
-    if (confirm('Clear all questions, eliminations and notes?')) setGame({ ...emptyGame })
+    const empty = isEmptyBoard(game)
+    if (!confirm(empty ? 'Clear all questions, eliminations and notes?' : 'Start a new round? This one is saved for review.')) return
+    if (!empty) {
+      saveRound(game)
+      void flushUploads()
+    }
+    setGame({ ...emptyGame })
   }
 
   const zoneMultiplier = curseMultiplier(game.zoneCurses)
@@ -860,7 +881,7 @@ export default function App() {
                       }
                       const set = new Set(game.manualEliminated)
                       for (const id of res.ids) set.add(id)
-                      update({ manualEliminated: [...set] })
+                      setManual([...set])
                       setShareMsg(`Loaded ${res.ids.length} eliminated station${res.ids.length === 1 ? '' : 's'}.`)
                     }}
                     disabled={!shareCode.trim()}
