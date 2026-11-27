@@ -18,6 +18,7 @@ import regionSizes from './region-sizes.json'
 import baStations from './stations.json'
 import baZoneElev from './zone-elev.json'
 import baPoi from './poi.json'
+import baLandmasses from './landmasses.geojson.json'
 import baPlayArea from './play-area.geojson.json'
 import baMeasure from './measure-features.geojson.json'
 import baPlaces from './places.geojson.json'
@@ -58,6 +59,18 @@ import dcCounties from './dc.counties.geojson.json'
 import dcZctas from './dc.zctas.geojson.json'
 import dcTransit from './dc.transit-lines.geojson.json'
 import dcStates from './dc.states.geojson.json'
+// --- New York City (subway, SIR, LIRR in the city, ferries, the tram) --------
+import nycStations from './nyc.stations.json'
+import nycZoneElev from './nyc.zone-elev.json'
+import nycPoi from './nyc.poi.json'
+import nycPlayArea from './nyc.play-area.geojson.json'
+import nycDisplayArea from './nyc.display-area.geojson.json'
+import nycMeasure from './nyc.measure-features.geojson.json'
+import nycPlaces from './nyc.places.geojson.json'
+import nycCounties from './nyc.counties.geojson.json'
+import nycZctas from './nyc.zctas.geojson.json'
+import nycTransit from './nyc.transit-lines.geojson.json'
+import nycLandmasses from './nyc.landmasses.geojson.json'
 
 export interface RegionData {
   id: string
@@ -89,11 +102,26 @@ export interface RegionData {
   zoneElev: unknown
   poi: unknown
   playArea: unknown
+  // satellite clip and out-of-play dimming only, when wider than the play area
+  // (e.g. water shown in imagery that is not in play); defaults to playArea
+  displayArea?: unknown
   measureFeatures: unknown
   places: unknown
   counties: unknown
   zctas: unknown
   transitLines: unknown
+  /**
+   * Landmass polygons (scripts/build_nyc_geo.py, build_bay_landmasses.py), one
+   * feature per connected piece of land. Absent = the play area is one landmass.
+   */
+  landmasses?: unknown
+  /** Lines that don't run on weekends: kept out of the line questions and off the map on weekends. */
+  weekendExcludedLines?: string[]
+  /**
+   * When the game day ends, per day type, if not 22:00 (headways are computed
+   * over 07:30 to this time). NYC weekdays end at 21:15 for the ferries.
+   */
+  gameDayEnd?: { wd: string; we: string }
   /**
    * Lines that run (or pass the hourly rule) on weekends only: kept out of the
    * line questions and off the map on weekdays. A transit-line feature for one
@@ -123,6 +151,11 @@ export const REGIONS: RegionData[] = [
     // (Tue-Thu it stops before 8 PM, Mondays it doesn't run): its two docks are
     // weekend hiding spots (scripts/add_water_shuttle.py).
     weekdayExcludedLines: ['Oakland Alameda Water Shuttle'],
+    // Alameda, Treasure Island, Coast Guard Island… are landmasses of their own
+    // (scripts/build_bay_landmasses.py); none holds a station.
+    landmasses: baLandmasses,
+    // Caltrain Express ("Baby Bullet") and Limited are weekday-only.
+    weekendExcludedLines: ['Caltrain Express', 'Caltrain Limited'],
   },
   {
     id: 'sfmuni',
@@ -185,6 +218,41 @@ export const REGIONS: RegionData[] = [
     counties: dcCounties,
     zctas: dcZctas,
     transitLines: dcTransit,
+  },
+  {
+    id: 'nyc',
+    name: 'NYC',
+    center: [40.72, -73.94],
+    zoom: 11,
+    // The five boroughs, named as boroughs (the Census counties are New York,
+    // Kings, Queens, Bronx and Richmond).
+    inPlayCounties: ['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'],
+    states: ['New York'],
+    stations: nycStations,
+    zoneElev: nycZoneElev,
+    poi: nycPoi,
+    playArea: nycPlayArea,
+    displayArea: nycDisplayArea,
+    measureFeatures: nycMeasure,
+    places: nycPlaces,
+    counties: nycCounties,
+    zctas: nycZctas,
+    transitLines: nycTransit,
+    landmasses: nycLandmasses,
+    // B, W and Z run weekdays only; NYC Ferry counts on weekdays only (its
+    // weekend boats start too late and run too rarely), so the Staten Island
+    // Ferry is the only boat on a weekend.
+    weekendExcludedLines: [
+      'B',
+      'W',
+      'Z',
+      'NYC Ferry Astoria',
+      'NYC Ferry East River',
+      'NYC Ferry Rockaway-Soundview',
+      'NYC Ferry South Brooklyn',
+      'NYC Ferry St. George',
+    ],
+    gameDayEnd: { wd: '21:15', we: '22:00' },
   },
 ]
 
@@ -298,6 +366,7 @@ export const stationsData = ACTIVE_REGION.stations
 export const poiData = ACTIVE_REGION.poi
 export const zoneElevData = ACTIVE_REGION.zoneElev
 export const playAreaData = ACTIVE_REGION.playArea
+export const displayAreaData = ACTIVE_REGION.displayArea ?? ACTIVE_REGION.playArea
 export const measureFeaturesData = ACTIVE_REGION.measureFeatures
 export const placesData = ACTIVE_REGION.places
 export const countiesData = ACTIVE_REGION.counties
@@ -305,6 +374,9 @@ export const zctasData = ACTIVE_REGION.zctas
 export const transitLinesData = ACTIVE_REGION.transitLines
 export const WEEKDAY_EXCLUDED_LINES: string[] = ACTIVE_REGION.weekdayExcludedLines ?? []
 export const statesData = ACTIVE_REGION.statesGeo ?? null
+export const landmassesData = ACTIVE_REGION.landmasses ?? null
+export const WEEKEND_EXCLUDED_LINES: string[] = ACTIVE_REGION.weekendExcludedLines ?? []
+export const GAME_DAY_END = ACTIVE_REGION.gameDayEnd ?? { wd: '22:00', we: '22:00' }
 export const IN_PLAY_COUNTIES = new Set<string>(ACTIVE_REGION.inPlayCounties)
 export const MAP_SIZE: GameSize = REGION_SIZES[ACTIVE_REGION_ID]
 export const MAP_STATES = ACTIVE_REGION.states
@@ -337,6 +409,8 @@ const AIRPORT_SITES: Record<string, LatLng> = {
   DCA: { lat: 38.850108, lon: -77.039176 },
   IAD: { lat: 38.952248, lon: -77.457889 },
   BWI: { lat: 39.177414, lon: -76.668394 },
+  JFK: { lat: 40.6446124, lon: -73.7797278 },
+  LGA: { lat: 40.7766392, lon: -73.87425 },
 }
 interface NamedFeature {
   properties?: { name?: string }
@@ -452,6 +526,27 @@ const placesFc = placesData as unknown as { features: NamedFeature[] }
 // the same suffixed value, so compare against the polygon name directly.
 const countyCarves = singleCounty && boundaryCarves(countiesFc, (s) => s.county ?? null)
 const cityCarves = singleCity && boundaryCarves(placesFc, (s) => s.city ?? null)
+
+// Landmass Matching is a real question when the stations stand on more than one
+// landmass, or a hiding disk reaches across water onto another one (the Bay
+// Area's water shuttle docks reach Alameda). A map with no landmass file, or
+// whose islands no hiding disk reaches, keeps it log-only.
+const landmassFc = (landmassesData ?? { features: [] }) as unknown as { features: NamedFeature[] }
+const landmassOf = (s: Station) => nameAt(landmassFc, s)
+const stationLandmasses = new Set(logOnlyStations.map(landmassOf).filter((n) => n != null))
+export const LANDMASS_ELIMINATES =
+  landmassFc.features.length > 1 &&
+  (stationLandmasses.size > 1 || boundaryCarves(landmassFc, landmassOf))
+/** Landmasses with no station on them (islands the hider can't be on). */
+export const STATIONLESS_LANDMASSES: string[] = landmassFc.features
+  .map((f) => f.properties?.name ?? '')
+  .filter((n) => n && !stationLandmasses.has(n))
+
+// High-speed rail Measuring eliminates on a map whose measure features carry an
+// in-play `hsr` line (NYC's Acela); everywhere else it stays log-only.
+export const HSR_ELIMINATES = (
+  measureFeaturesData as { features: { properties: { key: string }; geometry: { coordinates: unknown[] } }[] }
+).features.some((f) => f.properties.key === 'hsr' && f.geometry.coordinates.length > 0)
 
 // Always log-only: the question can't help in the regular game OR the endgame.
 //  - single-line: every station is on the same line (a non-spatial attribute, so

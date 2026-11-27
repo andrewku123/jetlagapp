@@ -45,6 +45,7 @@ REGIONS = {
     "sfmuni": ("src/data/sfmuni.stations.json", "src/data/sfmuni.play-area.geojson.json", "src/data/sfmuni.zone-elev.json"),
     "la": ("src/data/la.stations.json", "src/data/la.play-area.geojson.json", "src/data/la.zone-elev.json"),
     "dc": ("src/data/dc.stations.json", "src/data/dc.play-area.geojson.json", "src/data/dc.zone-elev.json"),
+    "nyc": ("src/data/nyc.stations.json", "src/data/nyc.play-area.geojson.json", "src/data/nyc.zone-elev.json"),
 }
 
 

@@ -123,14 +123,15 @@ def _day_type(cal_row: dict) -> str | None:
     return None
 
 
-def longest_gap_min(times_sec: list[int]) -> float | None:
+def longest_gap_min(times_sec: list[int], end_sec: int = GAME_END_SEC) -> float | None:
     """Longest gap (minutes) between consecutive departures inside the game
-    window. Returns None when the direction has no usable service in the window."""
-    pts = sorted({t for t in times_sec if GAME_START_SEC <= t <= GAME_END_SEC})
+    window (07:30 to `end_sec`). Returns None when the direction has no usable
+    service in the window."""
+    pts = sorted({t for t in times_sec if GAME_START_SEC <= t <= end_sec})
     if not pts:
         return None
     if INCLUDE_WINDOW_EDGES:
-        pts = [GAME_START_SEC] + pts + [GAME_END_SEC]
+        pts = [GAME_START_SEC] + pts + [end_sec]
     if len(pts) < 2:
         return None
     return max((pts[i + 1] - pts[i]) / 60 for i in range(len(pts) - 1))
@@ -149,7 +150,8 @@ def _parent_of(gtfs_dir: str) -> dict[str, str]:
     return out
 
 
-def gtfs_headways(gtfs_dir: str, by_date: bool | None = None) -> dict[str, dict[str, float]]:
+def gtfs_headways(gtfs_dir: str, by_date: bool | None = None,
+                  end_sec: dict[str, int] | None = None) -> dict[str, dict[str, float]]:
     """Return {station_id: {'wd': headwayMin, 'we': headwayMin}} for a GTFS feed,
     keyed by parent station where the feed has one.
 
@@ -159,6 +161,9 @@ def gtfs_headways(gtfs_dir: str, by_date: bool | None = None) -> dict[str, dict[
     `by_date` reads a representative weekday/Saturday instead of classifying each
     service_id; it defaults to on for a feed with no calendar.txt, where
     per-service classification isn't possible.
+
+    `end_sec` overrides the window end per day type ({'wd': sec, 'we': sec}) for
+    a map whose game day ends early (NYC weekdays end at 21:15).
     """
     has_calendar = os.path.exists(os.path.join(gtfs_dir, "calendar.txt"))
     if by_date is None:
@@ -204,7 +209,8 @@ def gtfs_headways(gtfs_dir: str, by_date: bool | None = None) -> dict[str, dict[
         rec: dict[str, float] = {}
         for day in ("wd", "we"):
             dirs = by_day.get(day, {})
-            per_dir = [longest_gap_min(times) for times in dirs.values()]
+            end = (end_sec or {}).get(day, GAME_END_SEC)
+            per_dir = [longest_gap_min(times, end) for times in dirs.values()]
             per_dir = [g for g in per_dir if g is not None]
             # No service in a needed direction => not hourly => sentinel 999.
             if not per_dir or len(dirs) < 2:

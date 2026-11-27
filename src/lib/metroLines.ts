@@ -25,9 +25,13 @@ export interface MetroLine {
 }
 
 interface RawFeature {
-  // `name` pins the line name (a weekday- or weekend-only line, see
-  // RegionData.weekdayExcludedLines); otherwise it's derived from station.lines.
-  properties: { system: string; colors: string[]; name?: string }
+  // `name` pins the line name: a weekday- or weekend-only line (see
+  // RegionData.weekdayExcludedLines / weekendExcludedLines), or a feature that
+  // carries several services (NYC's "8 Av: A C E" trunk); otherwise it's
+  // derived from station.lines.
+  // `faded`: the part of a route past its counting stations, drawn for context
+  // only, so it is not a line of its own here.
+  properties: { system: string; colors: string[]; name?: string; faded?: boolean }
   geometry:
     | { type: 'LineString'; coordinates: number[][] }
     | { type: 'MultiLineString'; coordinates: number[][][] }
@@ -131,8 +135,10 @@ function deriveNames(features: RawFeature[]): string[] {
   })
 }
 
+const RIDDEN_FEATURES = (rawGeo as { features: RawFeature[] }).features.filter((f) => !f.properties.faded)
+
 function buildMetroLines(): MetroLine[] {
-  const features = (rawGeo as { features: RawFeature[] }).features
+  const features = RIDDEN_FEATURES
   const names = deriveNames(features)
   return features.map((f, i) => {
     const system = f.properties.system
@@ -151,7 +157,7 @@ export const METRO_LINE_BY_ID: Record<string, MetroLine> = Object.fromEntries(
 
 // Lines with a pinned name: the only ones a day type can exclude.
 const NAMED_LINE_IDS = new Set(
-  (rawGeo as { features: RawFeature[] }).features
+  RIDDEN_FEATURES
     .filter((f) => f.properties.name)
     .map((f) => `${f.properties.system}::${f.properties.colors[0]}`),
 )

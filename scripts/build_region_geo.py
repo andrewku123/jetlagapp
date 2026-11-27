@@ -38,6 +38,8 @@ import zipfile
 from shapely.geometry import (shape, mapping, box, Polygon, MultiPolygon,
                               GeometryCollection)
 from shapely.ops import transform, unary_union
+from shapely.strtree import STRtree
+import shapely
 
 import poi_geo
 
@@ -55,6 +57,10 @@ STATE_STEM = "cb_2023_us_state_500k"
 
 SIMPLIFY_DEG = 0.0002   # ~22 m; plenty for point-in-polygon + shading
 MIN_AREA_DEG2 = 1e-7    # drop sliver clip artifacts (~1000 m^2)
+# A ZCTA whose in-play part is under ~0.03 sq mi and is a sliver of a ZIP that
+# lies mostly outside the play area (Elmont's 11003 poking over the Queens line)
+# is a boundary mismatch, not a real ZIP area: its piece goes to a neighbour.
+ZCTA_SCRAP_DEG2 = 8e-6
 NEIGHBOR_TOL_DEG = 0.002  # counties within ~200 m of an in-play one are neighbours
 
 
@@ -173,6 +179,29 @@ def build_places(region, play):
     write(poi_geo.repo_path(region, "places"), feats, "places")
 
 
+def fill_zcta_gaps(clipped, play):
+    """Hand every piece of the play area no ZCTA covers (parks, yards, slivers)
+    to the neighbouring ZCTA it shares the most border with, so the ZIP areas
+    tile the play area with no gaps."""
+    names = sorted(clipped)
+    geoms = [clipped[zc] for zc in names]
+    tree = STRtree(geoms)
+    gaps = valid(polygonal(play.difference(unary_union(geoms))))
+    filled = {zc: [] for zc in names}
+    for gap in getattr(gaps, "geoms", [gaps]):
+        if gap.is_empty:
+            continue
+        edge = gap.boundary
+        cands = tree.query(gap.buffer(1e-6))
+        shared = {i: edge.intersection(geoms[i].buffer(1e-6)).length for i in cands}
+        best = max(shared, key=shared.get) if shared and max(shared.values()) > 0 \
+            else tree.nearest(gap)
+        filled[names[best]].append(gap)
+    for zc, pieces in filled.items():
+        if pieces:
+            clipped[zc] = valid(polygonal(unary_union([clipped[zc]] + pieces)))
+
+
 def build_zctas(region, play):
     import shapefile
     minx, miny, maxx, maxy = play.bounds
@@ -181,6 +210,7 @@ def build_zctas(region, play):
     zip_field = "ZCTA5CE20" if "ZCTA5CE20" in flds else "ZCTA5CE10"
 
     clipped = {}
+    full = {}
     for sh, rec in zip(r.iterShapes(), r.iterRecords()):
         bx0, by0, bx1, by1 = sh.bbox  # cheap reject before building geometry
         if bx1 < minx or bx0 > maxx or by1 < miny or by0 > maxy:
@@ -193,10 +223,23 @@ def build_zctas(region, play):
         if g.is_empty or g.area < MIN_AREA_DEG2:
             continue
         clipped[str(d[zip_field])] = g
+        full[str(d[zip_field])] = shape(sh.__geo_interface__).area
 
+    if poi_geo.REGIONS[region].get("zctaFill"):
+        scraps = sorted(zc for zc, g in clipped.items()
+                        if g.area < ZCTA_SCRAP_DEG2 and g.area < 0.5 * full[zc])
+        for zc in scraps:
+            del clipped[zc]
+        print(f"  folded out-of-area ZIP scraps into neighbours: {', '.join(scraps)}")
+        fill_zcta_gaps(clipped, play)
+        names = sorted(clipped)
+        simple = dict(zip(names, shapely.coverage_simplify(
+            [clipped[zc] for zc in names], SIMPLIFY_DEG)))
+    else:
+        simple = {zc: g.simplify(SIMPLIFY_DEG, preserve_topology=True) for zc, g in clipped.items()}
     feats = []
-    for zc in sorted(clipped):
-        g = rounded(polygonal(clipped[zc].simplify(SIMPLIFY_DEG, preserve_topology=True)))
+    for zc in sorted(simple):
+        g = rounded(polygonal(simple[zc]))
         if g.is_empty or g.area < MIN_AREA_DEG2:
             continue
         feats.append({"type": "Feature", "properties": {"name": zc},
