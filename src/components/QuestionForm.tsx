@@ -39,7 +39,8 @@ interface Props {
   zoneMi: number
   // which answer's survivors the map is previewing (an AnswerOption key)
   outcomeKey: string | null
-  onOutcomeKey: (key: string | null) => void
+  // fromRow: the seeker tapped a preview row (vs. changing the form's answer)
+  onOutcomeKey: (key: string | null, fromRow?: boolean) => void
   onOutcomePreview: (o: AnswerOutcome | null) => void
 }
 
@@ -668,6 +669,23 @@ export default function QuestionForm({
   // counts are out of the stations they were counted over
   const splitTotal = split?.stations.length ?? remaining.length
   const shownOutcome = outcomes.find((o) => o.key === outcomeKey) ?? null
+  // The previewed answer and the form's answer are one choice: tapping a row
+  // picks that answer, and picking another answer moves an open preview to it.
+  const formAnswerKey =
+    kind === 'tentacle' ? tentPoi : kind === 'tentacle-line' ? tentLine : String(splitParams?.answer ?? '')
+  function pickAnswer(key: string) {
+    if (kind === 'tentacle') setTentPoi(key)
+    else if (kind === 'tentacle-line') setTentLine(key)
+    else if (key === 'yes' || key === 'no') setYesno(key)
+    else if (key === 'hotter' || key === 'colder') setHotcold(key)
+    else if (key === 'closer' || key === 'further') setClosefar(key)
+    else if (key === 'smaller' || key === 'larger') setSmalllarge(key)
+  }
+  useEffect(() => {
+    if (outcomeKey && formAnswerKey !== outcomeKey && outcomes.some((o) => o.key === formAnswerKey)) {
+      onOutcomeKey(formAnswerKey)
+    }
+  }, [outcomeKey, formAnswerKey, outcomes, onOutcomeKey])
   useEffect(() => onOutcomePreview(shownOutcome), [shownOutcome, onOutcomePreview])
   const worst = worstCaseLeft(outcomes)
   // with many answers (tentacles), the impossible ones fold into one line
@@ -1350,8 +1368,11 @@ export default function QuestionForm({
               <button
                 key={o.key}
                 className={`split-row${on ? ' on' : ''}${o.keep.length === 0 ? ' impossible' : ''}`}
-                onClick={() => onOutcomeKey(on ? null : o.key)}
-                title={on ? 'Stop previewing' : 'Preview this answer on the map'}
+                onClick={() => {
+                  if (!on) pickAnswer(o.key)
+                  onOutcomeKey(on ? null : o.key, true)
+                }}
+                title={on ? 'Stop previewing' : 'Pick this answer and preview it on the map'}
               >
                 <span className="split-label">{o.label}</span>
                 <span className="split-bar"><span style={{ width: `${pct}%` }} /></span>

@@ -579,9 +579,9 @@ export default function App() {
               remaining={remaining}
               zoneMi={hidingRadiusMi}
               outcomeKey={outcomeKey}
-              onOutcomeKey={(key) => {
+              onOutcomeKey={(key, fromRow) => {
                 setOutcomeKey(key)
-                if (key) setSheetOpen(false) // reveal the map on phones
+                if (key && fromRow) setSheetOpen(false) // reveal the map on phones
               }}
               onOutcomePreview={setOutcome}
             />
