@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { emptyGame } from './storage'
 import {
   exportRound,
@@ -85,15 +85,25 @@ describe('saved review rounds', () => {
 describe('review page rounds', () => {
   beforeEach(() => store.clear())
 
-  it('exports and imports a round, queueing it for upload once', () => {
+  it('imports a round once, on this phone only: never queued or uploaded', async () => {
     const r = saveRound(played, 1000)!
     const text = exportRound(r)
     store.clear()
     const back = importRound(text)
-    expect(back).toEqual(r)
+    expect(back).toEqual({ ...r, phoneOnly: true })
     importRound(text)
     expect(loadSavedRounds()).toHaveLength(1)
-    expect(pendingUploads()).toEqual([r.id])
+    expect(pendingUploads()).toEqual([])
+    const fetchFn = vi.fn(async () => new Response('{}'))
+    expect(await flushUploads('https://api.example', fetchFn, 'pw')).toBe(0)
+    expect(fetchFn).not.toHaveBeenCalled()
+  })
+
+  it("keeps an imported round local even if the server has a copy, so setup isn't sent", () => {
+    const r = { ...saveRound(played, 1000)!, phoneOnly: true }
+    const merged = mergeRounds([r], [{ ...r, phoneOnly: undefined, review: null, remote: true }], {})
+    expect(merged).toHaveLength(1)
+    expect(merged[0].remote).toBe(false)
   })
 
   it('rejects a file from another map or not a round', () => {
