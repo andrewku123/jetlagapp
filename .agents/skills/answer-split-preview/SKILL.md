@@ -25,8 +25,12 @@ possible answer with how many of the **current** suspects it would leave
   `buildParams` needs the chosen place. Null for log-only kinds, invalid forms and
   endgame mode → block hidden. With >2 answers, impossible ones fold into one line.
 - `App.tsx`: `outcomeKey` (selected row) + `outcome`; `mapBoard` swaps the map's
-  remaining/eliminated/records for the preview while on the Ask tab. Picking a row
+  remaining/eliminated/records for the preview while on the Ask tab. Tapping a row
   closes the phone sheet; logging a question clears the preview.
+- Preview and form answer stay in sync (`QuestionForm`): tapping a row calls
+  `pickAnswer(key)` (option keys are the form's answer values: yes/no…, tentacle
+  `poiKey` / line id / within markers), and an effect moves an open preview to
+  `formAnswerKey` when the seeker changes the answer in the form.
 - `MapView.tsx`: blue `.preview-banner` with Clear; `MapFit` frames the survivors
   when a row is tapped (`previewKey`) and keeps refitting as they change, until the
   user pans/zooms (`following` ref; programmatic fits are flagged by `fitting`).
