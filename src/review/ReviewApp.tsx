@@ -3,6 +3,8 @@ import MapView from '../components/MapView'
 import { describeRecord } from '../lib/describe'
 import { emptyGame, loadGame, saveGame } from '../lib/storage'
 import { hidingRadiusMi } from '../lib/hidingZone'
+import { haversineMeters } from '../lib/geo'
+import { countyAt } from '../lib/counties'
 import { ELIGIBLE_HEADWAY_MIN } from '../data/questionSets'
 import { ACTIVE_REGION_ID, MAP_NAME, REGIONS, setActiveRegion, stationsData } from '../data/regions'
 import {
@@ -21,16 +23,167 @@ import {
   type ReviewRound,
   type ReviewSetup,
 } from '../lib/reviewRounds'
-import { buildTimeline, countedQuestions, remainingAt, REVIEW_CUTOFF_MIN, type TimelineEvent } from '../lib/reviewTimeline'
-import type { LatLng, Station } from '../types'
+import { asActive, buildTimeline, countedQuestions, remainingAt, REVIEW_CUTOFF_MIN, type TimelineEvent } from '../lib/reviewTimeline'
+import { arrivalAt, BOARD_BUFFER_S, dayTimetable, earliestArrivals, legsTo, pacificTime, quickestTrip, serviceDate, type DayTimetable, type Leg, type NetworkFile } from '../lib/transitNetwork'
+import { curseMinutes, curseOrigin, curseOver, fastestClear, type ClearTrip, type ReviewCurse } from '../lib/reviewCurses'
+import type { LatLng, QuestionRecord, Station } from '../types'
 
 const STATIONS = stationsData as Station[]
 const NAME = new Map(STATIONS.map((s) => [s.id, s.name]))
 const noop = () => {}
 
-const clock = (t: number) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
-const day = (t: number) => new Date(t).toLocaleDateString([], { weekday: 'short', month: 'numeric', day: 'numeric' })
-const dayKey = (t: number) => new Date(t).toDateString()
+// Where the seekers stood when they asked: every located question stores it.
+// Seekers leave once they've asked, without waiting for the answer.
+const askedAt = (q: QuestionRecord) => q.askedAt ?? q.createdAt
+
+function spotOf(q: QuestionRecord): LatLng | null {
+  const lat = Number(q.params.fromLat ?? q.params.lat)
+  const lon = Number(q.params.fromLon ?? q.params.lon)
+  return Number.isFinite(lat) && Number.isFinite(lon) && (lat !== 0 || lon !== 0) ? { lat, lon } : null
+}
+
+// A question asked from a moving train (ticked in cleanup, or a spot in the
+// water like the Transbay Tube) counts travel from the nearest station.
+function travelSpot(q: QuestionRecord, onTrain: Set<string>): { spot: LatLng; onBoard?: string } | null {
+  const spot = spotOf(q)
+  if (!spot) return null
+  if (!onTrain.has(q.id) && countyAt(spot)) return { spot }
+  let near: Station | null = null
+  let d = Infinity
+  for (const s of STATIONS) {
+    const m = haversineMeters(spot, s)
+    if (m < d) [near, d] = [s, m]
+  }
+  return near ? { spot: { lat: near.lat, lon: near.lon }, onBoard: near.name } : { spot }
+}
+
+interface Travel {
+  fastest: number // minutes, leaving the previous spot when that question was asked
+  took: number
+  via: string
+  onBoard: string[]
+}
+
+function useNetwork(): NetworkFile | null | 'none' {
+  const [net, setNet] = useState<NetworkFile | null | 'none'>(null)
+  useEffect(() => {
+    let live = true
+    fetch(`${import.meta.env.BASE_URL}transit/${ACTIVE_REGION_ID}.json`)
+      .then((r): Promise<NetworkFile | 'none'> | 'none' => (r.ok ? r.json() : 'none'))
+      .catch((): 'none' => 'none')
+      .then((n) => {
+        if (live) setNet(n)
+      })
+    return () => {
+      live = false
+    }
+  }, [])
+  return net
+}
+
+// One timetable per game day, read on a stand-in day when the saved file
+// doesn't cover it.
+const dayCache = new WeakMap<NetworkFile, Map<string, DayTimetable | null>>()
+function timetables(net: NetworkFile) {
+  let days = dayCache.get(net)
+  if (!days) dayCache.set(net, (days = new Map()))
+  return (t: number) => {
+    const { date, sec } = pacificTime(t)
+    if (!days.has(date)) {
+      const d = serviceDate(net, date)
+      days.set(date, d ? dayTimetable(net, d, STATIONS) : null)
+    }
+    return { tt: days.get(date) ?? null, sec }
+  }
+}
+
+// Fastest transit time between consecutive question spots, against how long it
+// took. A stretch that overlaps a curse is curse time, and anything from the
+// endgame start on is endgame; neither gets a comparison.
+function travelBetweenQuestions(
+  net: NetworkFile,
+  questions: QuestionRecord[],
+  curses: ReviewCurse[],
+  onTrain: Set<string>,
+  endgameAt?: number,
+): Map<string, Travel> {
+  const out = new Map<string, Travel>()
+  const day = timetables(net)
+  let prev: { q: QuestionRecord; spot: LatLng; onBoard?: string } | null = null
+  for (const q of [...questions].sort((a, b) => a.createdAt - b.createdAt)) {
+    const here = travelSpot(q, onTrain)
+    if (!here) continue
+    const { spot } = here
+    if (endgameAt !== undefined && q.createdAt >= endgameAt) break
+    if (prev && !curseOver(curses, askedAt(prev.q), askedAt(q))) {
+      const { tt, sec } = day(askedAt(prev.q))
+      if (tt) {
+        let secs: number
+        let legs: Leg[]
+        if (prev.onBoard) {
+          // Already aboard: they ride on from the nearest station with no wait.
+          const quick = quickestTrip(tt, prev.spot, spot, sec)
+          secs = quick.secs
+          legs = quick.legs
+          if (prev.onBoard && legs.some((l) => l.kind === 'ride')) secs = Math.max(0, secs - BOARD_BUFFER_S)
+        } else {
+          const a = earliestArrivals(tt, prev.spot, sec)
+          const best = arrivalAt(tt, a, spot)
+          secs = best.at - sec
+          legs = best.station < 0 ? [] : legsTo(tt, a, best.station)
+        }
+        const rides = legs.flatMap((l) => (l.kind === 'ride' ? [l.route] : []))
+        out.set(q.id, {
+          fastest: Math.round(secs / 60),
+          took: Math.round((askedAt(q) - askedAt(prev.q)) / 60_000),
+          via: rides.length ? rides.join(' → ') : 'walking',
+          onBoard: [prev.onBoard, here.onBoard].filter((n): n is string => !!n),
+        })
+      }
+    }
+    prev = { q, ...here }
+  }
+  return out
+}
+
+// Each question whose stretch since the previous one overlaps a curse.
+function cursedQuestions(questions: QuestionRecord[], curses: ReviewCurse[], startAt?: number): Map<string, ReviewCurse> {
+  const out = new Map<string, ReviewCurse>()
+  let prev = startAt
+  for (const q of [...questions].sort((a, b) => a.createdAt - b.createdAt)) {
+    const c = prev === undefined ? null : curseOver(curses, prev, q.createdAt)
+    if (c) out.set(q.id, c)
+    prev = q.createdAt
+  }
+  return out
+}
+
+interface CurseTrips {
+  listed: ClearTrip | null
+  hindsight: ClearTrip | null
+}
+
+function curseTrips(net: NetworkFile, curses: ReviewCurse[], questions: QuestionRecord[], onTrain: Set<string>): Map<string, CurseTrips> {
+  const out = new Map<string, CurseTrips>()
+  const day = timetables(net)
+  for (const c of curses) {
+    if (!c.clearAt?.length && !c.hindsightAt?.length) continue
+    const origin = curseOrigin(c, questions, STATIONS, (q) => travelSpot(q, onTrain)?.spot ?? null)
+    const { tt } = day(c.startAt)
+    if (!origin || !tt) continue
+    out.set(c.id, {
+      listed: c.clearAt?.length ? fastestClear(tt, origin, c, STATIONS) : null,
+      hindsight: c.hindsightAt?.length ? fastestClear(tt, origin, c, STATIONS, c.hindsightAt) : null,
+    })
+  }
+  return out
+}
+
+// Games are played in the Bay Area, so the review shows Pacific time on any device.
+const TZ = 'America/Los_Angeles'
+const clock = (t: number) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', timeZone: TZ })
+const day = (t: number) => new Date(t).toLocaleDateString([], { weekday: 'short', month: 'numeric', day: 'numeric', timeZone: TZ })
+const dayKey = (t: number) => pacificTime(t).date
 const startOf = (r: ReviewRound) => r.review?.startAt ?? r.game.questions[0]?.createdAt ?? r.savedAt
 
 // "Sat 11/28, round 3, 2:10 pm": rounds are numbered within their day
@@ -57,14 +210,25 @@ function download(name: string, text: string) {
   URL.revokeObjectURL(url)
 }
 
-// datetime-local <-> unix ms, in the phone's time zone
+// datetime-local <-> unix ms, in Pacific time
+const pad = (n: number) => String(n).padStart(2, '0')
 const toLocalInput = (t?: number) => {
   if (t === undefined) return ''
-  const d = new Date(t)
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
-  return d.toISOString().slice(0, 16)
+  const { date, sec } = pacificTime(t)
+  return `${date}T${pad(Math.floor(sec / 3600))}:${pad(Math.floor(sec / 60) % 60)}`
 }
-const fromLocalInput = (v: string) => (v ? new Date(v).getTime() : undefined)
+const fromLocalInput = (v: string) => {
+  if (!v) return undefined
+  const [d, hm = '0:0'] = v.split('T')
+  const [h, m] = hm.split(':').map(Number)
+  const want = Date.parse(`${d}T00:00:00Z`) + (h * 60 + m) * 60_000
+  let t = want
+  for (let i = 0; i < 2; i++) {
+    const p = pacificTime(t)
+    t += want - (Date.parse(`${p.date}T00:00:00Z`) + p.sec * 1000)
+  }
+  return t
+}
 
 export default function ReviewApp() {
   const [rounds, setRounds] = useState<ReviewRound[]>(() => mergeRounds(loadSavedRounds(), [], loadLocalSetups()))
@@ -205,16 +369,49 @@ function RoundView({
   const base = useMemo(() => STATIONS.filter((s) => s.headwayMin[game.dayType] <= ELIGIBLE_HEADWAY_MIN), [game.dayType])
   const events = useMemo(() => buildTimeline(base, game, excluded, setup.hiderStation), [base, game, excluded, setup.hiderStation])
   const questions = useMemo(() => countedQuestions(game, excluded), [game, excluded])
+  const net = useNetwork()
+  const curses = useMemo(() => setup.curses ?? [], [setup.curses])
+  const onTrain = useMemo(() => new Set(setup.onTrain ?? []), [setup.onTrain])
+  const travel = useMemo(
+    () => (net && net !== 'none' ? travelBetweenQuestions(net, questions, curses, onTrain, setup.endgameStartAt) : new Map<string, Travel>()),
+    [net, questions, curses, onTrain, setup.endgameStartAt],
+  )
+  const cursed = useMemo(() => cursedQuestions(questions, curses, setup.startAt), [questions, curses, setup.startAt])
+  const trips = useMemo(
+    () => (net && net !== 'none' ? curseTrips(net, curses, questions, onTrain) : new Map<string, CurseTrips>()),
+    [net, curses, questions],
+  )
+  const standIn = useMemo(() => {
+    if (!net || net === 'none' || !questions.length) return null
+    const { date } = pacificTime(questions[0].createdAt)
+    const d = serviceDate(net, date)
+    return d && d !== date ? d : null
+  }, [net, questions])
+  const rows = useMemo(
+    () =>
+      [
+        ...events.map((ev, i) => ({ at: ev.at, ev, i })),
+        ...curses.map((c) => ({ at: c.startAt, curse: c })),
+      ].sort((a, b) => a.at - b.at),
+    [events, curses],
+  )
 
   const first = events[0]?.at ?? round.savedAt
   const last = events[events.length - 1]?.at ?? round.savedAt
   const [t, setT] = useState(last)
+  const asked = useMemo(
+    () => events.filter((e): e is Extract<TimelineEvent, { kind: 'question' }> => e.kind === 'question'),
+    [events],
+  )
+  const step = asked.reduce((k, e, i) => (e.at <= t ? i : k), -1)
+  const cur = step >= 0 ? asked[step] : null
+  const go = (i: number) => setT(i < 0 ? first - 1 : asked[Math.min(i, asked.length - 1)].at)
   const remaining = useMemo(() => remainingAt(base, game, questions, t), [base, game, questions, t])
   const eliminated = useMemo(() => {
     const keep = new Set(remaining.map((s) => s.id))
     return base.filter((s) => !keep.has(s.id))
   }, [base, remaining])
-  const records = useMemo(() => questions.filter((q) => q.createdAt <= t).map((q) => ({ ...q, active: true })), [questions, t])
+  const records = useMemo(() => questions.filter((q) => q.createdAt <= t).map(asActive), [questions, t])
   const manualAt = useMemo(
     () =>
       new Set(
@@ -291,18 +488,25 @@ function RoundView({
           />
         </div>
         <aside className="sidebar review-side">
-          <div className="review-slider">
-            <input
-              type="range"
-              min={first}
-              max={last}
-              step={1000}
-              value={t}
-              onChange={(e) => setT(Number(e.target.value))}
-              aria-label="Replay time"
-              disabled={events.length === 0}
-            />
-            <span className="hint">{clock(t)}</span>
+          <div className="review-step">
+            <button onClick={() => go(step - 1)} disabled={step < 0}>
+              ‹ Prev
+            </button>
+            <div className="review-now">
+              {cur ? (
+                <>
+                  <span className="hint">
+                    Q{step + 1} of {asked.length} · {clock(cur.at)} · {cur.before === cur.left ? `${cur.left} left` : `${cur.before} → ${cur.left} left`}
+                  </span>
+                  <div>{describeRecord(cur.record, game.units)}</div>
+                </>
+              ) : (
+                <span className="hint">{asked.length ? 'Start, before the first question' : 'No questions logged'}</span>
+              )}
+            </div>
+            <button onClick={() => go(step + 1)} disabled={step >= asked.length - 1}>
+              Next ›
+            </button>
           </div>
           <nav className="tabs">
             {(['timeline', 'setup', 'cleanup'] as Tab[]).map((k) => (
@@ -314,14 +518,33 @@ function RoundView({
           {tab === 'timeline' && (
             <div className="panel">
               <p className="hint">
-                Move ranks (#X of N, minutes slower than best) come once game-day travel times are added. Tap a row to
-                replay the map to that moment.
+                Move ranks (#X of N, minutes slower than best) aren't in yet. Each question shows the fastest transit time
+                from the previous question's spot, timed from when each was asked (or logged, if the ask time isn't saved). Tap a row to replay the map to that moment.
               </p>
+              {standIn && (
+                <p className="hint">
+                  This game day isn't in the saved timetable, so times use the published schedule for {standIn} (same
+                  weekday).
+                </p>
+              )}
               {events.length === 0 && <p className="hint">Nothing was logged in this round.</p>}
               <ul className="qlist review-timeline">
-                {events.map((ev, i) => (
-                  <TimelineRow key={i} ev={ev} units={game.units} on={ev.at <= t && (events[i + 1]?.at ?? Infinity) > t} onPick={() => setT(ev.at)} />
-                ))}
+                {rows.map((r) =>
+                  'curse' in r ? (
+                    <CurseRow key={`c-${r.curse.id}`} curse={r.curse} trips={trips.get(r.curse.id)} on={r.curse.startAt <= t && r.curse.endAt > t} onPick={() => setT(Math.min(Math.max(r.curse.startAt, first), last))} />
+                  ) : (
+                    <TimelineRow
+                      key={r.i}
+                      ev={r.ev}
+                      travel={r.ev.kind === 'question' ? travel.get(r.ev.record.id) : undefined}
+                      curse={r.ev.kind === 'question' ? cursed.get(r.ev.record.id) : undefined}
+                      endgame={r.ev.kind === 'question' && setup.endgameStartAt !== undefined && r.ev.record.createdAt >= setup.endgameStartAt}
+                      units={game.units}
+                      on={r.ev.at <= t && (events[r.i + 1]?.at ?? Infinity) > t}
+                      onPick={() => setT(r.ev.at)}
+                    />
+                  ),
+                )}
               </ul>
             </div>
           )}
@@ -329,7 +552,7 @@ function RoundView({
             <div className="panel qform">
               <div className="row">
                 <label>Game date</label>
-                <input type="date" value={setup.gameDate ?? new Date(round.savedAt).toLocaleDateString('en-CA')} onChange={(e) => edit({ gameDate: e.target.value })} />
+                <input type="date" value={setup.gameDate ?? pacificTime(round.savedAt).date} onChange={(e) => edit({ gameDate: e.target.value })} />
               </div>
               <div className="row">
                 <label>Seekers released</label>
@@ -357,10 +580,12 @@ function RoundView({
                 <label>Endgame started</label>
                 <input type="datetime-local" value={toLocalInput(setup.endgameStartAt)} onChange={(e) => edit({ endgameStartAt: fromLocalInput(e.target.value) })} />
               </div>
+              <p className="hint">Questions from this time on are endgame: their eliminations still count, but they aren't ranked.</p>
               <div className="row">
                 <label>Hider found</label>
                 <input type="datetime-local" value={toLocalInput(setup.foundAt)} onChange={(e) => edit({ foundAt: fromLocalInput(e.target.value) })} />
               </div>
+              <CurseEditor curses={curses} options={stationOptions} defaultAt={first} onChange={(next) => edit({ curses: next })} />
               <button className="primary" onClick={() => void save()}>
                 Save setup
               </button>
@@ -369,7 +594,7 @@ function RoundView({
           )}
           {tab === 'cleanup' && (
             <div className="panel">
-              <p className="hint">Untick records the review should skip. This only changes the review, never the saved game.</p>
+              <p className="hint">Untick records the review should skip. Tick "asked on a train" when the seekers asked while riding, so travel counts from the nearest station. This only changes the review, never the saved game.</p>
               <ul className="qlist">
                 {game.questions.map((q, i) => {
                   const flags: string[] = []
@@ -395,6 +620,21 @@ function RoundView({
                         />
                         {clock(q.createdAt)} · {describeRecord(q, game.units)}
                       </label>
+                      {spotOf(q) && (
+                        <label className="chk review-train">
+                          <input
+                            type="checkbox"
+                            checked={onTrain.has(q.id)}
+                            onChange={(e) => {
+                              const next = new Set(onTrain)
+                              if (e.target.checked) next.add(q.id)
+                              else next.delete(q.id)
+                              edit({ onTrain: [...next] })
+                            }}
+                          />
+                          asked on a train
+                        </label>
+                      )}
                       {flags.map((f) => (
                         <span key={f} className="tag">
                           {f}
@@ -429,7 +669,23 @@ function StationSelect({ value, options, onChange }: { value?: string; options: 
   )
 }
 
-function TimelineRow({ ev, units, on, onPick }: { ev: TimelineEvent; units: 'imperial' | 'metric'; on: boolean; onPick: () => void }) {
+function TimelineRow({
+  ev,
+  travel,
+  curse,
+  endgame,
+  units,
+  on,
+  onPick,
+}: {
+  ev: TimelineEvent
+  travel?: Travel
+  curse?: ReviewCurse
+  endgame?: boolean
+  units: 'imperial' | 'metric'
+  on: boolean
+  onPick: () => void
+}) {
   const text =
     ev.kind === 'question'
       ? describeRecord(ev.record, units)
@@ -439,13 +695,131 @@ function TimelineRow({ ev, units, on, onPick }: { ev: TimelineEvent; units: 'imp
     <li className={on ? 'review-on' : ''} onClick={onPick}>
       <div className="qtext">
         <span className="review-time">{clock(ev.at)}</span> {text}
-        {photo && <span className="tag">unranked</span>}
+        {photo && !endgame && <span className="tag">unranked</span>}
+        {curse && !endgame && <span className="tag curse">curse time</span>}
+        {endgame && <span className="tag">endgame, not ranked</span>}
         {ev.kind === 'question' && ev.record.curse && <span className="tag curse">curse info</span>}
       </div>
       <div className="qreward">
         {ev.before === ev.left ? `${ev.left} left` : `${ev.before} → ${ev.left} left`}
         {ev.keptHider === false && <span className="tag veto">ruled out hider's station</span>}
       </div>
+      {travel && (
+        <div className="hint">
+          Fastest from last spot: {travel.fastest} min ({travel.via}) · took {travel.took} min
+          {travel.onBoard.length > 0 && ` · asked on a train, counted from ${travel.onBoard.join(' and ')}`}
+          {travel.fastest > travel.took && <span className="tag">schedule mismatch, not counted</span>}
+        </div>
+      )}
     </li>
+  )
+}
+
+function CurseRow({ curse, trips, on, onPick }: { curse: ReviewCurse; trips?: CurseTrips; on: boolean; onPick: () => void }) {
+  const listed = trips?.listed
+  const hind = trips?.hindsight
+  const lost = listed ? Math.max(0, listed.took - listed.fastest) : null
+  return (
+    <li className={on ? 'review-on' : ''} onClick={onPick}>
+      <div className="qtext">
+        <span className="review-time">{clock(curse.startAt)}</span> Curse: {curse.name || 'unnamed'}
+        <span className="tag curse">curse time</span>
+      </div>
+      <div className="qreward">
+        {clock(curse.startAt)}–{clock(curse.endAt)} · {curseMinutes(curse)} min, not ranked
+      </div>
+      {listed && (
+        <div className="hint">
+          Fastest to clear: {listed.fastest} min to {NAME.get(listed.place) ?? listed.place} ({listed.via}) · took {listed.took} min
+          {listed && listed.fastest > listed.took ? <span className="tag">schedule mismatch, not counted</span> : lost ? ` · ${lost} min lost` : ' · no time lost'}
+        </div>
+      )}
+      {hind && (
+        <div className="hint">
+          Hindsight: {hind.fastest} min to {NAME.get(hind.place) ?? hind.place}
+          {listed && hind.fastest < listed.fastest ? ` (${listed.fastest - hind.fastest} min faster, not counted)` : ' (not counted)'}
+        </div>
+      )}
+    </li>
+  )
+}
+
+function PlaceList({ ids, options, onChange }: { ids: string[]; options: Station[]; onChange: (ids: string[]) => void }) {
+  return (
+    <div className="review-places">
+      {ids.map((id) => (
+        <span key={id} className="tag">
+          {NAME.get(id) ?? id}{' '}
+          <button type="button" aria-label={`Remove ${NAME.get(id) ?? id}`} onClick={() => onChange(ids.filter((x) => x !== id))}>
+            ×
+          </button>
+        </span>
+      ))}
+      <StationSelect value={undefined} options={options.filter((s) => !ids.includes(s.id))} onChange={(v) => v && onChange([...ids, v])} />
+    </div>
+  )
+}
+
+// Curses entered after the game: a window is all that's needed; places are optional.
+function CurseEditor({
+  curses,
+  options,
+  defaultAt,
+  onChange,
+}: {
+  curses: ReviewCurse[]
+  options: Station[]
+  defaultAt: number
+  onChange: (next: ReviewCurse[]) => void
+}) {
+  const set = (id: string, patch: Partial<ReviewCurse>) => onChange(curses.map((c) => (c.id === id ? { ...c, ...patch } : c)))
+  return (
+    <div className="review-curses">
+      <h3>Curses</h3>
+      <p className="hint">
+        The window between cast and cleared is curse time: nothing in it is ranked. Places where it could be cleared are
+        optional; with them, the trip is checked against the fastest one. Hindsight places are only a side note.
+      </p>
+      {curses.map((c) => (
+        <div key={c.id} className="review-curse">
+          <div className="row">
+            <label>Curse</label>
+            <input value={c.name} placeholder="e.g. Planespotter" onChange={(e) => set(c.id, { name: e.target.value })} />
+          </div>
+          <div className="row">
+            <label>Cast</label>
+            <input type="datetime-local" value={toLocalInput(c.startAt)} onChange={(e) => set(c.id, { startAt: fromLocalInput(e.target.value) ?? c.startAt })} />
+          </div>
+          <div className="row">
+            <label>Cleared</label>
+            <input type="datetime-local" value={toLocalInput(c.endAt)} onChange={(e) => set(c.id, { endAt: fromLocalInput(e.target.value) ?? c.endAt })} />
+          </div>
+          <div className="row">
+            <label>Seekers were at</label>
+            <StationSelect value={c.fromStation} options={options} onChange={(v) => set(c.id, { fromStation: v })} />
+          </div>
+          <p className="hint">Leave blank to use the last question's spot before the cast.</p>
+          <div className="row">
+            <label>Could clear at</label>
+            <PlaceList ids={c.clearAt ?? []} options={options} onChange={(ids) => set(c.id, { clearAt: ids })} />
+          </div>
+          <div className="row">
+            <label>Hindsight places</label>
+            <PlaceList ids={c.hindsightAt ?? []} options={options} onChange={(ids) => set(c.id, { hindsightAt: ids })} />
+          </div>
+          <button type="button" onClick={() => onChange(curses.filter((x) => x.id !== c.id))}>
+            Remove curse
+          </button>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() =>
+          onChange([...curses, { id: `curse-${Date.now().toString(36)}`, name: '', startAt: defaultAt, endAt: defaultAt + 15 * 60_000 }])
+        }
+      >
+        Add curse
+      </button>
+    </div>
   )
 }

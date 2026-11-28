@@ -517,8 +517,17 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
   display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%;
   background: none; border: 0; color: var(--text); padding: 0 0 8px; cursor: pointer; text-align: left;
 }
-.review-slider { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); }
-.review-slider input { flex: 1; }
+.review-step { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.review-step button { flex: none; }
+.review-now { flex: 1; min-width: 0; font-size: 13px; }
+.review-train { margin-left: 22px; font-size: 12px; opacity: 0.85; }
 .review-timeline li { cursor: pointer; }
 .review-timeline li.review-on { outline: 1px solid var(--accent); }
 .review-time { color: var(--muted); font-variant-numeric: tabular-nums; }
+.review-curses { margin: 12px 0; border-top: 1px solid #333; padding-top: 8px; }
+.review-curses h3 { font-size: 14px; margin: 4px 0; }
+.review-curse { border: 1px solid #35204d; border-radius: 6px; padding: 6px; margin: 8px 0; }
+.review-places { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; flex: 1; min-width: 0; }
+.review-places select { max-width: 100%; }
+.review-places .tag { margin-left: 0; white-space: normal; }
+.review-places .tag button { background: none; border: none; color: inherit; padding: 0 2px; cursor: pointer; }

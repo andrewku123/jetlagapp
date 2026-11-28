@@ -22,11 +22,37 @@ export function remainingAt(
   questions: QuestionRecord[],
   t: number,
 ): Station[] {
-  const records = questions.filter((q) => q.createdAt <= t).map((q) => ({ ...q, active: true }))
+  const zoneMi = defaultHidingRadiusMi(game.gameSize)
   const out = new Set(
     game.eliminationLog.filter((m) => m.outAt <= t && (m.backAt === undefined || m.backAt > t)).map((m) => m.stationId),
   )
-  return applyFilters(base, records, defaultHidingRadiusMi(game.gameSize)).remaining.filter((s) => !out.has(s.id))
+  for (const q of questions) if (q.createdAt <= t) for (const id of ruledOut(base, q, zoneMi)) out.add(id)
+  return base.filter((s) => !out.has(s.id))
+}
+
+// The review counts a question even if it was switched off in the game. One
+// stable copy per record keeps the geometry caches (keyed by record) warm.
+const activeCopy = new WeakMap<QuestionRecord, QuestionRecord>()
+export function asActive(q: QuestionRecord): QuestionRecord {
+  let rec = activeCopy.get(q)
+  if (!rec) activeCopy.set(q, (rec = { ...q, active: true }))
+  return rec
+}
+
+// Each answer rules stations out on its own, so the stations a question
+// eliminates are worked out once per record and reused for every timeline row.
+const ruledOutCache = new WeakMap<QuestionRecord, WeakMap<Station[], Map<number, Set<string>>>>()
+function ruledOut(base: Station[], q: QuestionRecord, zoneMi: number): Set<string> {
+  let byBase = ruledOutCache.get(q)
+  if (!byBase) ruledOutCache.set(q, (byBase = new WeakMap()))
+  let byZone = byBase.get(base)
+  if (!byZone) byBase.set(base, (byZone = new Map()))
+  let ids = byZone.get(zoneMi)
+  if (!ids) {
+    ids = applyFilters(base, [asActive(q)], zoneMi).eliminatedByQuestion
+    byZone.set(zoneMi, ids)
+  }
+  return ids
 }
 
 // One row per logged question, hand cross-out and put-back, oldest first, with

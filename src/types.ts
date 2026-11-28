@@ -94,6 +94,9 @@ export interface QuestionRecord {
   // hiding-zone radius (mi) in force when the question was logged: the hider
   // could have answered from anywhere within it. Absent on older boards.
   zoneMi?: number
+  // when the question was asked, if known (createdAt is when it was logged,
+  // usually with the answer). The review times moves between asks.
+  askedAt?: number
 }
 
 // Manual compass / straightedge annotations the seeker draws on the map.
