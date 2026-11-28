@@ -178,6 +178,26 @@ export function arrivalAt(tt: DayTimetable, a: Arrivals, point: LatLng): { at: n
   return { at: best, station }
 }
 
+// The quickest trip when the first train needs no wait (the seekers were already
+// on it): the shortest door-to-door time over every start in the next `window`.
+export function quickestTrip(
+  tt: DayTimetable,
+  origin: LatLng,
+  point: LatLng,
+  t0: number,
+  window = 30 * 60,
+): { secs: number; legs: Leg[] } {
+  let best: { secs: number; a: Arrivals; station: number } | null = null
+  for (let w = 0; w <= window; w += 60) {
+    const a = earliestArrivals(tt, origin, t0 + w, t0 + w + 3 * 3600)
+    const r = arrivalAt(tt, a, point)
+    const secs = r.at - (t0 + w)
+    if (!best || secs < best.secs) best = { secs, a, station: r.station }
+  }
+  const b = best!
+  return { secs: b.secs, legs: b.station < 0 ? [] : legsTo(tt, b.a, b.station) }
+}
+
 export type Leg =
   | { kind: 'walk'; from: number | null; to: number }
   | { kind: 'ride'; route: string; from: number; to: number; dep: number; arr: number }

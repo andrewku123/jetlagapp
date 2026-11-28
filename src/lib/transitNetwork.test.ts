@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, serviceDate, type NetworkFile } from './transitNetwork'
+import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, quickestTrip, serviceDate, type NetworkFile } from './transitNetwork'
 import stations from '../data/stations.json'
 import bayarea from '../../public/transit/bayarea.json'
 
@@ -82,5 +82,18 @@ describe('transit network', () => {
     expect(min).toBeGreaterThan(8)
     expect(min).toBeLessThan(30)
     expect(legsTo(tt, a, to).some((l) => l.kind === 'ride' && l.route.startsWith('BART'))).toBe(true)
+  })
+
+  it('Bay Area: riding on from 19th St with no wait reaches West Oakland in a few minutes', () => {
+    const file = bayarea as unknown as NetworkFile
+    const tt = dayTimetable(file, '2026-11-22', stations)!
+    const from = stations.find((s) => s.name.startsWith('19th St'))!
+    const to = stations.find((s) => s.name.startsWith('West Oakland'))!
+    const t0 = 19 * 3600 + 19 * 60
+    const quick = quickestTrip(tt, from, to, t0)
+    const scheduled = arrivalAt(tt, earliestArrivals(tt, from, t0), to).at - t0
+    expect(quick.secs).toBeLessThanOrEqual(scheduled)
+    expect(quick.secs / 60).toBeLessThan(8)
+    expect(quick.legs.some((l) => l.kind === 'ride' && l.route.startsWith('BART'))).toBe(true)
   })
 })

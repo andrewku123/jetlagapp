@@ -24,7 +24,7 @@ import {
   type ReviewSetup,
 } from '../lib/reviewRounds'
 import { asActive, buildTimeline, countedQuestions, remainingAt, REVIEW_CUTOFF_MIN, type TimelineEvent } from '../lib/reviewTimeline'
-import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, serviceDate, type DayTimetable, type NetworkFile } from '../lib/transitNetwork'
+import { arrivalAt, BOARD_BUFFER_S, dayTimetable, earliestArrivals, legsTo, pacificTime, quickestTrip, serviceDate, type DayTimetable, type Leg, type NetworkFile } from '../lib/transitNetwork'
 import { curseMinutes, curseOrigin, curseOver, fastestClear, type ClearTrip, type ReviewCurse } from '../lib/reviewCurses'
 import type { LatLng, QuestionRecord, Station } from '../types'
 
@@ -115,11 +115,23 @@ function travelBetweenQuestions(
     if (prev && !curseOver(curses, prev.q.createdAt, q.createdAt)) {
       const { tt, sec } = day(prev.q.createdAt)
       if (tt) {
-        const a = earliestArrivals(tt, prev.spot, sec)
-        const best = arrivalAt(tt, a, spot)
-        const rides = best.station < 0 ? [] : legsTo(tt, a, best.station).flatMap((l) => (l.kind === 'ride' ? [l.route] : []))
+        let secs: number
+        let legs: Leg[]
+        if (prev.onBoard) {
+          // Already aboard: they ride on from the nearest station with no wait.
+          const quick = quickestTrip(tt, prev.spot, spot, sec)
+          secs = quick.secs
+          legs = quick.legs
+          if (prev.onBoard && legs.some((l) => l.kind === 'ride')) secs = Math.max(0, secs - BOARD_BUFFER_S)
+        } else {
+          const a = earliestArrivals(tt, prev.spot, sec)
+          const best = arrivalAt(tt, a, spot)
+          secs = best.at - sec
+          legs = best.station < 0 ? [] : legsTo(tt, a, best.station)
+        }
+        const rides = legs.flatMap((l) => (l.kind === 'ride' ? [l.route] : []))
         out.set(q.id, {
-          fastest: Math.round((best.at - sec) / 60),
+          fastest: Math.round(secs / 60),
           took: Math.round((q.createdAt - prev.q.createdAt) / 60_000),
           via: rides.length ? rides.join(' → ') : 'walking',
           onBoard: [prev.onBoard, here.onBoard].filter((n): n is string => !!n),
@@ -693,6 +705,7 @@ function TimelineRow({
         <div className="hint">
           Fastest from last spot: {travel.fastest} min ({travel.via}) · took {travel.took} min
           {travel.onBoard.length > 0 && ` · asked on a train, counted from ${travel.onBoard.join(' and ')}`}
+          {travel.fastest > travel.took && <span className="tag">schedule mismatch, not counted</span>}
         </div>
       )}
     </li>
@@ -715,7 +728,7 @@ function CurseRow({ curse, trips, on, onPick }: { curse: ReviewCurse; trips?: Cu
       {listed && (
         <div className="hint">
           Fastest to clear: {listed.fastest} min to {NAME.get(listed.place) ?? listed.place} ({listed.via}) · took {listed.took} min
-          {lost ? ` · ${lost} min lost` : ' · no time lost'}
+          {listed && listed.fastest > listed.took ? <span className="tag">schedule mismatch, not counted</span> : lost ? ` · ${lost} min lost` : ' · no time lost'}
         </div>
       )}
       {hind && (
