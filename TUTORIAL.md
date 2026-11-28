@@ -54,7 +54,7 @@ tell that map's stations apart is demoted automatically — see §12.
   - **uncertainty stripes** — show striped "maybe" bands inside shading (see
     §3, *What the shading means*).
   - **zone** `+50%` / `−50%` — hiding-zone curses (see §9).
-  - **Reset** — clear the whole game (questions, manual eliminations, drawings).
+  - **Reset** — start a new round: saves the current one for later review, then clears the board (questions, manual eliminations, drawings).
 - **Right panel tabs:** **Ask**, **History**, **Suspects**, **POI**, **Legend**.
 
 On a phone the map fills the screen and the panel becomes a slide-up bottom
@@ -302,7 +302,7 @@ Helpful behaviors:
   from another map is rejected.
 - Use **Disable** instead of Delete if you suspect you mis-entered an answer and
   want to compare the board with/without it.
-- **Reset** wipes everything — only use it to start a brand-new round.
+- **Reset** clears the board — only use it to start a brand-new round. The old round is saved for review first.
 - **Press the curse button the moment Prosperous/Tiny Home is played.** Each
   question keeps the zone size it was logged with, so questions logged before a
   late +50% could wrongly eliminate the hider's station.

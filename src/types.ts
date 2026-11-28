@@ -130,6 +130,15 @@ export interface ZoneCurses {
   tiny: number
 }
 
+// One hand cross-out: when the station was ruled out and, if it was put back,
+// when. Kept so a postgame review can judge each move on what the seekers
+// believed at that time.
+export interface EliminationMark {
+  stationId: string
+  outAt: number
+  backAt?: number
+}
+
 export interface GameState {
   dayType: DayType
   // the active map's declared size (src/data/region-sizes.json), never inferred
@@ -138,6 +147,7 @@ export interface GameState {
   units: UnitSystem
   questions: QuestionRecord[]
   manualEliminated: string[] // station ids eliminated by hand
+  eliminationLog: EliminationMark[] // timed history of manualEliminated
   starred: string[] // station ids flagged as suspects
   notes: Record<string, string> // station id -> note
   annotations: Annotation[] // compass / straightedge drawings
