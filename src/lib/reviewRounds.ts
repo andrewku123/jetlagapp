@@ -13,6 +13,8 @@ export interface SavedRound {
   build: string
   savedAt: number
   game: GameState
+  // imported from a file: stays on this phone, never uploaded or shared
+  phoneOnly?: boolean
 }
 
 const ROUNDS_KEY = `bahs.review.v1.${ACTIVE_REGION_ID}`
@@ -90,7 +92,7 @@ export async function flushUploads(
   let i = 0
   for (; i < queue.length; i++) {
     const round = byId.get(queue[i])
-    if (!round) continue
+    if (!round || round.phoneOnly) continue
     try {
       const res = await fetchFn(`${apiUrl.replace(/\/$/, '')}/rounds`, {
         method: 'POST',
@@ -162,6 +164,7 @@ export function mergeRounds(local: SavedRound[], remote: ReviewRound[], setups: 
   for (const r of local) byId.set(r.id, { ...r, review: setups[r.id] ?? null, remote: false })
   for (const r of remote) {
     const mine = byId.get(r.id)
+    if (mine?.phoneOnly) continue
     byId.set(r.id, { ...r, review: setups[r.id] ?? r.review ?? mine?.review ?? null, remote: true })
   }
   return [...byId.values()].sort((a, b) => b.savedAt - a.savedAt)
@@ -239,11 +242,9 @@ export function importRound(text: string): SavedRound | string {
     build: typeof data.build === 'string' ? data.build : '',
     savedAt: data.savedAt,
     game: { ...data.game, eliminationLog: Array.isArray(data.game.eliminationLog) ? data.game.eliminationLog : [] },
+    phoneOnly: true,
   }
   const rounds = loadSavedRounds()
-  if (!rounds.some((r) => r.id === round.id)) {
-    write(ROUNDS_KEY, [...rounds, round])
-    write(QUEUE_KEY, [...pendingUploads(), round.id])
-  }
+  if (!rounds.some((r) => r.id === round.id)) write(ROUNDS_KEY, [...rounds, round])
   return round
 }

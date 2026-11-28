@@ -301,14 +301,14 @@ export default function ReviewApp() {
       </header>
       <p className="hint">
         Only saved rounds show here. Reset in the game saves a round; the last one of the day is saved with the button
-        below.
+        below. Imported files stay on this phone and are never shared.
       </p>
       <div className="review-actions">
         <button onClick={saveLastRound} disabled={liveEmpty}>
           Save last round
         </button>
         <label className="review-import">
-          Import
+          Import (this phone only)
           <input type="file" accept="application/json,.json" onChange={(e) => e.target.files?.[0] && onImport(e.target.files[0])} />
         </label>
         <button onClick={() => void refresh()}>Refresh</button>
