@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -29,4 +30,13 @@ export default defineConfig({
   plugins: [react(), emitVersion(BUILD_ID)],
   base: process.env.BASE ?? '/',
   define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
+  // second page: the postgame review at /review/ (src/review), never loaded by the game
+  build: {
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('index.html', import.meta.url)),
+        review: fileURLToPath(new URL('review/index.html', import.meta.url)),
+      },
+    },
+  },
 })

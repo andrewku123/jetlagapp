@@ -330,6 +330,8 @@ interface Props {
   pois: RenderPoi[]
   stationView: 'normal' | 'faded' | 'hidden'
   dayType: DayType
+  // review page: no drawing tools or station actions
+  readOnly?: boolean
 }
 
 // length each side of the midpoint that a drawn line / bisector is extended (mi)
@@ -1092,6 +1094,7 @@ export default function MapView({
   pois,
   stationView,
   dayType,
+  readOnly = false,
 }: Props) {
   const [tool, setTool] = useState<DrawTool>('select')
   // the toolbar collapses to a single 🧰 button so it barely covers the map while
@@ -1388,12 +1391,12 @@ export default function MapView({
         <strong>{st.name}</strong>
         <div className="muted">{st.systems.join(' · ')}</div>
         <div className="muted">Eliminated.</div>
-        <div className="popup-actions">
+        {!readOnly && <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{starred.has(st.id) ? '★ Unstar' : '☆ Star'}</button>
           {manualEliminated.has(st.id) && (
             <button onClick={() => { onToggleEliminate(st.id); closePopup() }}>↩ Restore</button>
           )}
-        </div>
+        </div>}
       </div>
     </Popup>
   )
@@ -1410,7 +1413,7 @@ export default function MapView({
           {cityAt(st) ?? NO_CITY_LABEL}, {st.county ?? '?'} Co. · {st.nameLength} chars
           {st.elevation != null ? ` · ${formatElevation(st.elevation, units)}` : ''}
         </div>
-        <div className="popup-actions">
+        {!readOnly && <div className="popup-actions">
           <button onClick={() => onToggleStar(st.id)}>{star ? '★ Unstar' : '☆ Star'}</button>
           <button onClick={() => { onToggleEliminate(st.id); closePopup() }}>✕ Eliminate</button>
           {endgameStation?.id === st.id ? (
@@ -1418,13 +1421,14 @@ export default function MapView({
           ) : (
             <button onClick={() => { onStartEndgame(st.id); closePopup() }}>🎯 Endgame here</button>
           )}
-        </div>
+        </div>}
       </div>
     </Popup>
   )
 
   return (
     <>
+      {!readOnly && (
       <div className={'draw-toolbar' + (toolbarOpen ? ' open' : '')}>
         <button
           className={'draw-toggle' + (toolbarOpen ? ' on' : '')}
@@ -1606,6 +1610,7 @@ export default function MapView({
           </div>
         )}
       </div>
+      )}
 
       {preview && !endgameStation && (
         <div className="endgame-banner preview-banner">

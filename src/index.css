@@ -499,3 +499,26 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .split-verdict.none { color: #f0b72f; }
 .preview-banner { background: #dbeafe; color: #1e3a8a; border-color: #2f81f7; }
 .preview-banner button { border-color: #2f81f7; color: #1e3a8a; }
+
+/* postgame review page (src/review) */
+.review-home { max-width: 640px; margin: 0 auto; padding: 16px; font-size: 15px; }
+.review-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.review-head h1 { font-size: 20px; margin: 0; }
+.review-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.review-actions button, .review-import, .review-back {
+  background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+  border-radius: 6px; padding: 8px 12px; cursor: pointer; font-size: 14px;
+}
+.review-actions button:disabled { color: var(--muted); cursor: default; }
+.review-import input { display: none; }
+.review-rounds { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.review-rounds li { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+.review-open {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%;
+  background: none; border: 0; color: var(--text); padding: 0 0 8px; cursor: pointer; text-align: left;
+}
+.review-slider { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.review-slider input { flex: 1; }
+.review-timeline li { cursor: pointer; }
+.review-timeline li.review-on { outline: 1px solid var(--accent); }
+.review-time { color: var(--muted); font-variant-numeric: tabular-nums; }
