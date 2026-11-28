@@ -75,14 +75,21 @@ function timetables(net: NetworkFile) {
 }
 
 // Fastest transit time between consecutive question spots, against how long it
-// took. A stretch that overlaps a curse is curse time and gets no comparison.
-function travelBetweenQuestions(net: NetworkFile, questions: QuestionRecord[], curses: ReviewCurse[]): Map<string, Travel> {
+// took. A stretch that overlaps a curse is curse time, and anything from the
+// endgame start on is endgame; neither gets a comparison.
+function travelBetweenQuestions(
+  net: NetworkFile,
+  questions: QuestionRecord[],
+  curses: ReviewCurse[],
+  endgameAt?: number,
+): Map<string, Travel> {
   const out = new Map<string, Travel>()
   const day = timetables(net)
   let prev: { q: QuestionRecord; spot: LatLng } | null = null
   for (const q of [...questions].sort((a, b) => a.createdAt - b.createdAt)) {
     const spot = spotOf(q)
     if (!spot) continue
+    if (endgameAt !== undefined && q.createdAt >= endgameAt) break
     if (prev && !curseOver(curses, prev.q.createdAt, q.createdAt)) {
       const { tt, sec } = day(prev.q.createdAt)
       if (tt) {
@@ -314,8 +321,8 @@ function RoundView({
   const net = useNetwork()
   const curses = useMemo(() => setup.curses ?? [], [setup.curses])
   const travel = useMemo(
-    () => (net && net !== 'none' ? travelBetweenQuestions(net, questions, curses) : new Map<string, Travel>()),
-    [net, questions, curses],
+    () => (net && net !== 'none' ? travelBetweenQuestions(net, questions, curses, setup.endgameStartAt) : new Map<string, Travel>()),
+    [net, questions, curses, setup.endgameStartAt],
   )
   const cursed = useMemo(() => cursedQuestions(questions, curses, setup.startAt), [questions, curses, setup.startAt])
   const trips = useMemo(
@@ -465,6 +472,7 @@ function RoundView({
                       ev={r.ev}
                       travel={r.ev.kind === 'question' ? travel.get(r.ev.record.id) : undefined}
                       curse={r.ev.kind === 'question' ? cursed.get(r.ev.record.id) : undefined}
+                      endgame={r.ev.kind === 'question' && setup.endgameStartAt !== undefined && r.ev.record.createdAt >= setup.endgameStartAt}
                       units={game.units}
                       on={r.ev.at <= t && (events[r.i + 1]?.at ?? Infinity) > t}
                       onPick={() => setT(r.ev.at)}
@@ -506,6 +514,7 @@ function RoundView({
                 <label>Endgame started</label>
                 <input type="datetime-local" value={toLocalInput(setup.endgameStartAt)} onChange={(e) => edit({ endgameStartAt: fromLocalInput(e.target.value) })} />
               </div>
+              <p className="hint">Questions from this time on are endgame: their eliminations still count, but they aren't ranked.</p>
               <div className="row">
                 <label>Hider found</label>
                 <input type="datetime-local" value={toLocalInput(setup.foundAt)} onChange={(e) => edit({ foundAt: fromLocalInput(e.target.value) })} />
@@ -583,6 +592,7 @@ function TimelineRow({
   ev,
   travel,
   curse,
+  endgame,
   units,
   on,
   onPick,
@@ -590,6 +600,7 @@ function TimelineRow({
   ev: TimelineEvent
   travel?: Travel
   curse?: ReviewCurse
+  endgame?: boolean
   units: 'imperial' | 'metric'
   on: boolean
   onPick: () => void
@@ -603,8 +614,9 @@ function TimelineRow({
     <li className={on ? 'review-on' : ''} onClick={onPick}>
       <div className="qtext">
         <span className="review-time">{clock(ev.at)}</span> {text}
-        {photo && <span className="tag">unranked</span>}
-        {curse && <span className="tag curse">curse time</span>}
+        {photo && !endgame && <span className="tag">unranked</span>}
+        {curse && !endgame && <span className="tag curse">curse time</span>}
+        {endgame && <span className="tag">endgame, not ranked</span>}
         {ev.kind === 'question' && ev.record.curse && <span className="tag curse">curse info</span>}
       </div>
       <div className="qreward">
