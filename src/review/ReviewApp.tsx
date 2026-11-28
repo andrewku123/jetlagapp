@@ -22,11 +22,70 @@ import {
   type ReviewSetup,
 } from '../lib/reviewRounds'
 import { buildTimeline, countedQuestions, remainingAt, REVIEW_CUTOFF_MIN, type TimelineEvent } from '../lib/reviewTimeline'
-import type { LatLng, Station } from '../types'
+import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, type DayTimetable, type NetworkFile } from '../lib/transitNetwork'
+import type { LatLng, QuestionRecord, Station } from '../types'
 
 const STATIONS = stationsData as Station[]
 const NAME = new Map(STATIONS.map((s) => [s.id, s.name]))
 const noop = () => {}
+
+// Where the seekers stood when they asked: every located question stores it.
+function spotOf(q: QuestionRecord): LatLng | null {
+  const lat = Number(q.params.fromLat ?? q.params.lat)
+  const lon = Number(q.params.fromLon ?? q.params.lon)
+  return Number.isFinite(lat) && Number.isFinite(lon) && (lat !== 0 || lon !== 0) ? { lat, lon } : null
+}
+
+interface Travel {
+  fastest: number // minutes, leaving the previous spot when that question was asked
+  took: number
+  via: string
+}
+
+function useNetwork(): NetworkFile | null | 'none' {
+  const [net, setNet] = useState<NetworkFile | null | 'none'>(null)
+  useEffect(() => {
+    let live = true
+    fetch(`${import.meta.env.BASE_URL}transit/${ACTIVE_REGION_ID}.json`)
+      .then((r): Promise<NetworkFile | 'none'> | 'none' => (r.ok ? r.json() : 'none'))
+      .catch((): 'none' => 'none')
+      .then((n) => {
+        if (live) setNet(n)
+      })
+    return () => {
+      live = false
+    }
+  }, [])
+  return net
+}
+
+// Fastest transit time between consecutive question spots, against how long it took.
+function travelBetweenQuestions(net: NetworkFile, questions: QuestionRecord[]): Map<string, Travel> {
+  const out = new Map<string, Travel>()
+  const days = new Map<string, DayTimetable | null>()
+  let prev: { q: QuestionRecord; spot: LatLng } | null = null
+  for (const q of [...questions].sort((a, b) => a.createdAt - b.createdAt)) {
+    const spot = spotOf(q)
+    if (!spot) continue
+    if (prev) {
+      const { date, sec } = pacificTime(prev.q.createdAt)
+      if (!days.has(date)) days.set(date, dayTimetable(net, date, STATIONS))
+      const tt = days.get(date)
+      if (tt) {
+        const a = earliestArrivals(tt, prev.spot, sec)
+        const best = arrivalAt(tt, a, spot)
+        const rides = best.station < 0 ? [] : legsTo(tt, a, best.station).flatMap((l) => (l.kind === 'ride' ? [l.route] : []))
+        out.set(q.id, {
+          fastest: Math.round((best.at - sec) / 60),
+          took: Math.round((q.createdAt - prev.q.createdAt) / 60_000),
+          via: rides.length ? rides.join(' → ') : 'walking',
+        })
+      }
+    }
+    prev = { q, spot }
+  }
+  return out
+}
 
 const clock = (t: number) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
 const day = (t: number) => new Date(t).toLocaleDateString([], { weekday: 'short', month: 'numeric', day: 'numeric' })
@@ -205,6 +264,11 @@ function RoundView({
   const base = useMemo(() => STATIONS.filter((s) => s.headwayMin[game.dayType] <= ELIGIBLE_HEADWAY_MIN), [game.dayType])
   const events = useMemo(() => buildTimeline(base, game, excluded, setup.hiderStation), [base, game, excluded, setup.hiderStation])
   const questions = useMemo(() => countedQuestions(game, excluded), [game, excluded])
+  const net = useNetwork()
+  const travel = useMemo(
+    () => (net && net !== 'none' ? travelBetweenQuestions(net, questions) : new Map<string, Travel>()),
+    [net, questions],
+  )
 
   const first = events[0]?.at ?? round.savedAt
   const last = events[events.length - 1]?.at ?? round.savedAt
@@ -314,13 +378,13 @@ function RoundView({
           {tab === 'timeline' && (
             <div className="panel">
               <p className="hint">
-                Move ranks (#X of N, minutes slower than best) come once game-day travel times are added. Tap a row to
-                replay the map to that moment.
+                Move ranks (#X of N, minutes slower than best) aren't in yet. Each question shows the fastest transit time
+                from the previous question's spot. Tap a row to replay the map to that moment.
               </p>
               {events.length === 0 && <p className="hint">Nothing was logged in this round.</p>}
               <ul className="qlist review-timeline">
                 {events.map((ev, i) => (
-                  <TimelineRow key={i} ev={ev} units={game.units} on={ev.at <= t && (events[i + 1]?.at ?? Infinity) > t} onPick={() => setT(ev.at)} />
+                  <TimelineRow key={i} ev={ev} travel={ev.kind === 'question' ? travel.get(ev.record.id) : undefined} units={game.units} on={ev.at <= t && (events[i + 1]?.at ?? Infinity) > t} onPick={() => setT(ev.at)} />
                 ))}
               </ul>
             </div>
@@ -429,7 +493,19 @@ function StationSelect({ value, options, onChange }: { value?: string; options: 
   )
 }
 
-function TimelineRow({ ev, units, on, onPick }: { ev: TimelineEvent; units: 'imperial' | 'metric'; on: boolean; onPick: () => void }) {
+function TimelineRow({
+  ev,
+  travel,
+  units,
+  on,
+  onPick,
+}: {
+  ev: TimelineEvent
+  travel?: Travel
+  units: 'imperial' | 'metric'
+  on: boolean
+  onPick: () => void
+}) {
   const text =
     ev.kind === 'question'
       ? describeRecord(ev.record, units)
@@ -446,6 +522,11 @@ function TimelineRow({ ev, units, on, onPick }: { ev: TimelineEvent; units: 'imp
         {ev.before === ev.left ? `${ev.left} left` : `${ev.before} → ${ev.left} left`}
         {ev.keptHider === false && <span className="tag veto">ruled out hider's station</span>}
       </div>
+      {travel && (
+        <div className="hint">
+          Fastest from last spot: {travel.fastest} min ({travel.via}) · took {travel.took} min
+        </div>
+      )}
     </li>
   )
 }
