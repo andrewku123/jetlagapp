@@ -164,9 +164,11 @@ function curseTrips(net: NetworkFile, curses: ReviewCurse[], questions: Question
   return out
 }
 
-const clock = (t: number) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
-const day = (t: number) => new Date(t).toLocaleDateString([], { weekday: 'short', month: 'numeric', day: 'numeric' })
-const dayKey = (t: number) => new Date(t).toDateString()
+// Games are played in the Bay Area, so the review shows Pacific time on any device.
+const TZ = 'America/Los_Angeles'
+const clock = (t: number) => new Date(t).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', timeZone: TZ })
+const day = (t: number) => new Date(t).toLocaleDateString([], { weekday: 'short', month: 'numeric', day: 'numeric', timeZone: TZ })
+const dayKey = (t: number) => pacificTime(t).date
 const startOf = (r: ReviewRound) => r.review?.startAt ?? r.game.questions[0]?.createdAt ?? r.savedAt
 
 // "Sat 11/28, round 3, 2:10 pm": rounds are numbered within their day
@@ -193,14 +195,25 @@ function download(name: string, text: string) {
   URL.revokeObjectURL(url)
 }
 
-// datetime-local <-> unix ms, in the phone's time zone
+// datetime-local <-> unix ms, in Pacific time
+const pad = (n: number) => String(n).padStart(2, '0')
 const toLocalInput = (t?: number) => {
   if (t === undefined) return ''
-  const d = new Date(t)
-  d.setMinutes(d.getMinutes() - d.getTimezoneOffset())
-  return d.toISOString().slice(0, 16)
+  const { date, sec } = pacificTime(t)
+  return `${date}T${pad(Math.floor(sec / 3600))}:${pad(Math.floor(sec / 60) % 60)}`
 }
-const fromLocalInput = (v: string) => (v ? new Date(v).getTime() : undefined)
+const fromLocalInput = (v: string) => {
+  if (!v) return undefined
+  const [d, hm = '0:0'] = v.split('T')
+  const [h, m] = hm.split(':').map(Number)
+  const want = Date.parse(`${d}T00:00:00Z`) + (h * 60 + m) * 60_000
+  let t = want
+  for (let i = 0; i < 2; i++) {
+    const p = pacificTime(t)
+    t += want - (Date.parse(`${p.date}T00:00:00Z`) + p.sec * 1000)
+  }
+  return t
+}
 
 export default function ReviewApp() {
   const [rounds, setRounds] = useState<ReviewRound[]>(() => mergeRounds(loadSavedRounds(), [], loadLocalSetups()))
@@ -524,7 +537,7 @@ function RoundView({
             <div className="panel qform">
               <div className="row">
                 <label>Game date</label>
-                <input type="date" value={setup.gameDate ?? new Date(round.savedAt).toLocaleDateString('en-CA')} onChange={(e) => edit({ gameDate: e.target.value })} />
+                <input type="date" value={setup.gameDate ?? pacificTime(round.savedAt).date} onChange={(e) => edit({ gameDate: e.target.value })} />
               </div>
               <div className="row">
                 <label>Seekers released</label>
