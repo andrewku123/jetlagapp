@@ -70,6 +70,8 @@ describe('transit network', () => {
     const stand = serviceDate(file, '2026-08-30')!
     expect(new Date(stand + 'T12:00:00Z').getUTCDay()).toBe(0)
     expect(stand > file.firstDay).toBe(true)
+    // 12/6 runs a different BART service; the stand-in is a typical Sunday
+    expect(serviceDate(file, '2026-08-30')).not.toBe('2026-12-06')
   })
 
   it('Bay Area: 12th Street to Embarcadero on a Sunday morning is a short BART ride', () => {

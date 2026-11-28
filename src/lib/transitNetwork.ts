@@ -52,10 +52,19 @@ export function serviceDate(net: NetworkFile, date: string): string | null {
   const first = dayNumber(net.firstDay)
   const day = dayNumber(date)
   if (day - first >= 0 && day - first < net.days) return date
+  // The most common service pattern for that weekday, so a holiday or track-work
+  // day isn't picked as the stand-in.
+  const seen = new Map<string, { d: number; n: number }>()
   for (let d = first + 1; d < first + net.days; d++) {
-    if ((((d - day) % 7) + 7) % 7 === 0) return new Date(d * 86_400_000).toISOString().slice(0, 10)
+    if ((((d - day) % 7) + 7) % 7 !== 0) continue
+    const key = net.services.map((s) => s[d - first]).join('')
+    const e = seen.get(key)
+    if (e) e.n++
+    else seen.set(key, { d, n: 1 })
   }
-  return null
+  let best: { d: number; n: number } | null = null
+  for (const e of seen.values()) if (!best || e.n > best.n || (e.n === best.n && e.d < best.d)) best = e
+  return best ? new Date(best.d * 86_400_000).toISOString().slice(0, 10) : null
 }
 
 export function dayTimetable(net: NetworkFile, date: string, points: StationPoint[]): DayTimetable | null {

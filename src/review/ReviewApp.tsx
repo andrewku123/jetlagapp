@@ -33,6 +33,9 @@ const NAME = new Map(STATIONS.map((s) => [s.id, s.name]))
 const noop = () => {}
 
 // Where the seekers stood when they asked: every located question stores it.
+// Seekers leave once they've asked, without waiting for the answer.
+const askedAt = (q: QuestionRecord) => q.askedAt ?? q.createdAt
+
 function spotOf(q: QuestionRecord): LatLng | null {
   const lat = Number(q.params.fromLat ?? q.params.lat)
   const lon = Number(q.params.fromLon ?? q.params.lon)
@@ -112,8 +115,8 @@ function travelBetweenQuestions(
     if (!here) continue
     const { spot } = here
     if (endgameAt !== undefined && q.createdAt >= endgameAt) break
-    if (prev && !curseOver(curses, prev.q.createdAt, q.createdAt)) {
-      const { tt, sec } = day(prev.q.createdAt)
+    if (prev && !curseOver(curses, askedAt(prev.q), askedAt(q))) {
+      const { tt, sec } = day(askedAt(prev.q))
       if (tt) {
         let secs: number
         let legs: Leg[]
@@ -132,7 +135,7 @@ function travelBetweenQuestions(
         const rides = legs.flatMap((l) => (l.kind === 'ride' ? [l.route] : []))
         out.set(q.id, {
           fastest: Math.round(secs / 60),
-          took: Math.round((q.createdAt - prev.q.createdAt) / 60_000),
+          took: Math.round((askedAt(q) - askedAt(prev.q)) / 60_000),
           via: rides.length ? rides.join(' → ') : 'walking',
           onBoard: [prev.onBoard, here.onBoard].filter((n): n is string => !!n),
         })
@@ -516,7 +519,7 @@ function RoundView({
             <div className="panel">
               <p className="hint">
                 Move ranks (#X of N, minutes slower than best) aren't in yet. Each question shows the fastest transit time
-                from the previous question's spot. Tap a row to replay the map to that moment.
+                from the previous question's spot, timed from when each was asked (or logged, if the ask time isn't saved). Tap a row to replay the map to that moment.
               </p>
               {standIn && (
                 <p className="hint">
