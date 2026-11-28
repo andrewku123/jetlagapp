@@ -8,7 +8,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   plugins: ['@typescript-eslint'],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'scripts'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts', 'scripts', 'worker/.wrangler'],
   rules: {
     '@typescript-eslint/no-explicit-any': 'warn',
   },
