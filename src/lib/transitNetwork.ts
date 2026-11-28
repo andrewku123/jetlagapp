@@ -45,6 +45,19 @@ const dayNumber = (ymd: string) => Math.round(Date.UTC(+ymd.slice(0, 4), +ymd.sl
 // Every connection (one train between two consecutive stations) running on
 // `date`, sorted by departure. Trips of the day before that run past midnight
 // are included with their times shifted back a day.
+// The date whose timetable stands in for `date`: itself when the saved file
+// covers it, else the first covered date on the same weekday (an older game is
+// read on today's schedule). Skips the first day so last night's late trips exist.
+export function serviceDate(net: NetworkFile, date: string): string | null {
+  const first = dayNumber(net.firstDay)
+  const day = dayNumber(date)
+  if (day - first >= 0 && day - first < net.days) return date
+  for (let d = first + 1; d < first + net.days; d++) {
+    if ((((d - day) % 7) + 7) % 7 === 0) return new Date(d * 86_400_000).toISOString().slice(0, 10)
+  }
+  return null
+}
+
 export function dayTimetable(net: NetworkFile, date: string, points: StationPoint[]): DayTimetable | null {
   const day = dayNumber(date) - dayNumber(net.firstDay)
   if (day < 0 || day >= net.days) return null

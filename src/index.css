@@ -522,3 +522,10 @@ button.primary { background: var(--accent); border-color: var(--accent); color: 
 .review-timeline li { cursor: pointer; }
 .review-timeline li.review-on { outline: 1px solid var(--accent); }
 .review-time { color: var(--muted); font-variant-numeric: tabular-nums; }
+.review-curses { margin: 12px 0; border-top: 1px solid #333; padding-top: 8px; }
+.review-curses h3 { font-size: 14px; margin: 4px 0; }
+.review-curse { border: 1px solid #35204d; border-radius: 6px; padding: 6px; margin: 8px 0; }
+.review-places { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; flex: 1; min-width: 0; }
+.review-places select { max-width: 100%; }
+.review-places .tag { margin-left: 0; white-space: normal; }
+.review-places .tag button { background: none; border: none; color: inherit; padding: 0 2px; cursor: pointer; }

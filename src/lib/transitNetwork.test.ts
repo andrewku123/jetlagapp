@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, type NetworkFile } from './transitNetwork'
+import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, serviceDate, type NetworkFile } from './transitNetwork'
 import stations from '../data/stations.json'
 import bayarea from '../../public/transit/bayarea.json'
 
@@ -62,6 +62,14 @@ describe('transit network', () => {
 
   it('reads Pacific time', () => {
     expect(pacificTime(Date.parse('2026-11-29T14:15:30-08:00'))).toEqual({ date: '2026-11-29', sec: 14 * 3600 + 15 * 60 + 30 })
+  })
+
+  it('reads a game outside the saved days on the same weekday', () => {
+    const file = bayarea as unknown as NetworkFile
+    expect(serviceDate(file, file.firstDay)).toBe(file.firstDay)
+    const stand = serviceDate(file, '2026-08-30')!
+    expect(new Date(stand + 'T12:00:00Z').getUTCDay()).toBe(0)
+    expect(stand > file.firstDay).toBe(true)
   })
 
   it('Bay Area: 12th Street to Embarcadero on a Sunday morning is a short BART ride', () => {

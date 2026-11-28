@@ -1,4 +1,5 @@
 import type { GameState } from '../types'
+import type { ReviewCurse } from './reviewCurses'
 import { ACTIVE_REGION_ID } from '../data/regions'
 import { BUILD_ID } from './version'
 import { groupPassword } from './gate'
@@ -119,6 +120,7 @@ export interface ReviewSetup {
   endgameStartAt?: number
   foundAt?: number
   excluded?: string[] // question ids unticked in cleanup
+  curses?: ReviewCurse[]
 }
 
 export interface ReviewRound extends SavedRound {
