@@ -120,6 +120,7 @@ export interface ReviewSetup {
   endgameStartAt?: number
   foundAt?: number
   excluded?: string[] // question ids unticked in cleanup
+  onTrain?: string[] // question ids asked from a moving train
   curses?: ReviewCurse[]
 }
 

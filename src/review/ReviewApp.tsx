@@ -3,6 +3,8 @@ import MapView from '../components/MapView'
 import { describeRecord } from '../lib/describe'
 import { emptyGame, loadGame, saveGame } from '../lib/storage'
 import { hidingRadiusMi } from '../lib/hidingZone'
+import { haversineMeters } from '../lib/geo'
+import { countyAt } from '../lib/counties'
 import { ELIGIBLE_HEADWAY_MIN } from '../data/questionSets'
 import { ACTIVE_REGION_ID, MAP_NAME, REGIONS, setActiveRegion, stationsData } from '../data/regions'
 import {
@@ -21,7 +23,7 @@ import {
   type ReviewRound,
   type ReviewSetup,
 } from '../lib/reviewRounds'
-import { buildTimeline, countedQuestions, remainingAt, REVIEW_CUTOFF_MIN, type TimelineEvent } from '../lib/reviewTimeline'
+import { asActive, buildTimeline, countedQuestions, remainingAt, REVIEW_CUTOFF_MIN, type TimelineEvent } from '../lib/reviewTimeline'
 import { arrivalAt, dayTimetable, earliestArrivals, legsTo, pacificTime, serviceDate, type DayTimetable, type NetworkFile } from '../lib/transitNetwork'
 import { curseMinutes, curseOrigin, curseOver, fastestClear, type ClearTrip, type ReviewCurse } from '../lib/reviewCurses'
 import type { LatLng, QuestionRecord, Station } from '../types'
@@ -37,10 +39,26 @@ function spotOf(q: QuestionRecord): LatLng | null {
   return Number.isFinite(lat) && Number.isFinite(lon) && (lat !== 0 || lon !== 0) ? { lat, lon } : null
 }
 
+// A question asked from a moving train (ticked in cleanup, or a spot in the
+// water like the Transbay Tube) counts travel from the nearest station.
+function travelSpot(q: QuestionRecord, onTrain: Set<string>): { spot: LatLng; onBoard?: string } | null {
+  const spot = spotOf(q)
+  if (!spot) return null
+  if (!onTrain.has(q.id) && countyAt(spot)) return { spot }
+  let near: Station | null = null
+  let d = Infinity
+  for (const s of STATIONS) {
+    const m = haversineMeters(spot, s)
+    if (m < d) [near, d] = [s, m]
+  }
+  return near ? { spot: { lat: near.lat, lon: near.lon }, onBoard: near.name } : { spot }
+}
+
 interface Travel {
   fastest: number // minutes, leaving the previous spot when that question was asked
   took: number
   via: string
+  onBoard: string[]
 }
 
 function useNetwork(): NetworkFile | null | 'none' {
@@ -62,8 +80,10 @@ function useNetwork(): NetworkFile | null | 'none' {
 
 // One timetable per game day, read on a stand-in day when the saved file
 // doesn't cover it.
+const dayCache = new WeakMap<NetworkFile, Map<string, DayTimetable | null>>()
 function timetables(net: NetworkFile) {
-  const days = new Map<string, DayTimetable | null>()
+  let days = dayCache.get(net)
+  if (!days) dayCache.set(net, (days = new Map()))
   return (t: number) => {
     const { date, sec } = pacificTime(t)
     if (!days.has(date)) {
@@ -81,14 +101,16 @@ function travelBetweenQuestions(
   net: NetworkFile,
   questions: QuestionRecord[],
   curses: ReviewCurse[],
+  onTrain: Set<string>,
   endgameAt?: number,
 ): Map<string, Travel> {
   const out = new Map<string, Travel>()
   const day = timetables(net)
-  let prev: { q: QuestionRecord; spot: LatLng } | null = null
+  let prev: { q: QuestionRecord; spot: LatLng; onBoard?: string } | null = null
   for (const q of [...questions].sort((a, b) => a.createdAt - b.createdAt)) {
-    const spot = spotOf(q)
-    if (!spot) continue
+    const here = travelSpot(q, onTrain)
+    if (!here) continue
+    const { spot } = here
     if (endgameAt !== undefined && q.createdAt >= endgameAt) break
     if (prev && !curseOver(curses, prev.q.createdAt, q.createdAt)) {
       const { tt, sec } = day(prev.q.createdAt)
@@ -100,10 +122,11 @@ function travelBetweenQuestions(
           fastest: Math.round((best.at - sec) / 60),
           took: Math.round((q.createdAt - prev.q.createdAt) / 60_000),
           via: rides.length ? rides.join(' → ') : 'walking',
+          onBoard: [prev.onBoard, here.onBoard].filter((n): n is string => !!n),
         })
       }
     }
-    prev = { q, spot }
+    prev = { q, ...here }
   }
   return out
 }
@@ -125,12 +148,12 @@ interface CurseTrips {
   hindsight: ClearTrip | null
 }
 
-function curseTrips(net: NetworkFile, curses: ReviewCurse[], questions: QuestionRecord[]): Map<string, CurseTrips> {
+function curseTrips(net: NetworkFile, curses: ReviewCurse[], questions: QuestionRecord[], onTrain: Set<string>): Map<string, CurseTrips> {
   const out = new Map<string, CurseTrips>()
   const day = timetables(net)
   for (const c of curses) {
     if (!c.clearAt?.length && !c.hindsightAt?.length) continue
-    const origin = curseOrigin(c, questions, STATIONS, spotOf)
+    const origin = curseOrigin(c, questions, STATIONS, (q) => travelSpot(q, onTrain)?.spot ?? null)
     const { tt } = day(c.startAt)
     if (!origin || !tt) continue
     out.set(c.id, {
@@ -320,13 +343,14 @@ function RoundView({
   const questions = useMemo(() => countedQuestions(game, excluded), [game, excluded])
   const net = useNetwork()
   const curses = useMemo(() => setup.curses ?? [], [setup.curses])
+  const onTrain = useMemo(() => new Set(setup.onTrain ?? []), [setup.onTrain])
   const travel = useMemo(
-    () => (net && net !== 'none' ? travelBetweenQuestions(net, questions, curses, setup.endgameStartAt) : new Map<string, Travel>()),
-    [net, questions, curses, setup.endgameStartAt],
+    () => (net && net !== 'none' ? travelBetweenQuestions(net, questions, curses, onTrain, setup.endgameStartAt) : new Map<string, Travel>()),
+    [net, questions, curses, onTrain, setup.endgameStartAt],
   )
   const cursed = useMemo(() => cursedQuestions(questions, curses, setup.startAt), [questions, curses, setup.startAt])
   const trips = useMemo(
-    () => (net && net !== 'none' ? curseTrips(net, curses, questions) : new Map<string, CurseTrips>()),
+    () => (net && net !== 'none' ? curseTrips(net, curses, questions, onTrain) : new Map<string, CurseTrips>()),
     [net, curses, questions],
   )
   const standIn = useMemo(() => {
@@ -347,12 +371,19 @@ function RoundView({
   const first = events[0]?.at ?? round.savedAt
   const last = events[events.length - 1]?.at ?? round.savedAt
   const [t, setT] = useState(last)
+  const asked = useMemo(
+    () => events.filter((e): e is Extract<TimelineEvent, { kind: 'question' }> => e.kind === 'question'),
+    [events],
+  )
+  const step = asked.reduce((k, e, i) => (e.at <= t ? i : k), -1)
+  const cur = step >= 0 ? asked[step] : null
+  const go = (i: number) => setT(i < 0 ? first - 1 : asked[Math.min(i, asked.length - 1)].at)
   const remaining = useMemo(() => remainingAt(base, game, questions, t), [base, game, questions, t])
   const eliminated = useMemo(() => {
     const keep = new Set(remaining.map((s) => s.id))
     return base.filter((s) => !keep.has(s.id))
   }, [base, remaining])
-  const records = useMemo(() => questions.filter((q) => q.createdAt <= t).map((q) => ({ ...q, active: true })), [questions, t])
+  const records = useMemo(() => questions.filter((q) => q.createdAt <= t).map(asActive), [questions, t])
   const manualAt = useMemo(
     () =>
       new Set(
@@ -429,18 +460,25 @@ function RoundView({
           />
         </div>
         <aside className="sidebar review-side">
-          <div className="review-slider">
-            <input
-              type="range"
-              min={first}
-              max={last}
-              step={1000}
-              value={t}
-              onChange={(e) => setT(Number(e.target.value))}
-              aria-label="Replay time"
-              disabled={events.length === 0}
-            />
-            <span className="hint">{clock(t)}</span>
+          <div className="review-step">
+            <button onClick={() => go(step - 1)} disabled={step < 0}>
+              ‹ Prev
+            </button>
+            <div className="review-now">
+              {cur ? (
+                <>
+                  <span className="hint">
+                    Q{step + 1} of {asked.length} · {clock(cur.at)} · {cur.before === cur.left ? `${cur.left} left` : `${cur.before} → ${cur.left} left`}
+                  </span>
+                  <div>{describeRecord(cur.record, game.units)}</div>
+                </>
+              ) : (
+                <span className="hint">{asked.length ? 'Start, before the first question' : 'No questions logged'}</span>
+              )}
+            </div>
+            <button onClick={() => go(step + 1)} disabled={step >= asked.length - 1}>
+              Next ›
+            </button>
           </div>
           <nav className="tabs">
             {(['timeline', 'setup', 'cleanup'] as Tab[]).map((k) => (
@@ -528,7 +566,7 @@ function RoundView({
           )}
           {tab === 'cleanup' && (
             <div className="panel">
-              <p className="hint">Untick records the review should skip. This only changes the review, never the saved game.</p>
+              <p className="hint">Untick records the review should skip. Tick "asked on a train" when the seekers asked while riding, so travel counts from the nearest station. This only changes the review, never the saved game.</p>
               <ul className="qlist">
                 {game.questions.map((q, i) => {
                   const flags: string[] = []
@@ -554,6 +592,21 @@ function RoundView({
                         />
                         {clock(q.createdAt)} · {describeRecord(q, game.units)}
                       </label>
+                      {spotOf(q) && (
+                        <label className="chk review-train">
+                          <input
+                            type="checkbox"
+                            checked={onTrain.has(q.id)}
+                            onChange={(e) => {
+                              const next = new Set(onTrain)
+                              if (e.target.checked) next.add(q.id)
+                              else next.delete(q.id)
+                              edit({ onTrain: [...next] })
+                            }}
+                          />
+                          asked on a train
+                        </label>
+                      )}
                       {flags.map((f) => (
                         <span key={f} className="tag">
                           {f}
@@ -626,6 +679,7 @@ function TimelineRow({
       {travel && (
         <div className="hint">
           Fastest from last spot: {travel.fastest} min ({travel.via}) · took {travel.took} min
+          {travel.onBoard.length > 0 && ` · asked on a train, counted from ${travel.onBoard.join(' and ')}`}
         </div>
       )}
     </li>
